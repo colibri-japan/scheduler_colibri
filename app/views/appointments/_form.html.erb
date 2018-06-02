@@ -1,0 +1,39 @@
+<%= form_with(model: appointment, remote: true) do |form| %>
+  <% if appointment.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+
+    <ul>
+      <% appointment.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, id: :appointment_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :appointment_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.datetime_select :start, id: :appointment_start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_time %>
+    <%= form.datetime_select :end, id: :appointment_end_time %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+    <%= link_to 'New Recurring Appointment', new_recurring_appointment_path, class: 'btn btn-default', remote: true if appointment.new_record? %>
+    <%= link_to 'Delete', appointment, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}, remote: true unless appointment.new_record? %>
+  </div>
+<% end %>

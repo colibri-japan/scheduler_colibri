@@ -1,0 +1,1 @@
+json.partial! "recurring_appointments/recurring_appointment", recurring_appointment: @recurring_appointment

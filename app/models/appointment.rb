@@ -1,5 +1,7 @@
 class Appointment < ApplicationRecord
 
+	belongs_to :nurse, optional: true
+
 	validates :title, presence: true
 
 	def all_day_appointment?

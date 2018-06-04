@@ -36,6 +36,11 @@
     <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true) %>
   </div>
 
+  <div class="field">
+    <%= form.label :patient_id %>
+    <%= form.collection_select(:patient_id, @patients, :id, :name, :prompt => true) %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
     <%= link_to 'New Recurring Appointment', new_recurring_appointment_path, class: 'btn btn-default', remote: true if appointment.new_record? %>

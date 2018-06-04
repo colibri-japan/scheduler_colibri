@@ -1,6 +1,6 @@
 class Appointment < ApplicationRecord
-
 	belongs_to :nurse, optional: true
+	belongs_to :patient, optional: true
 
 	validates :title, presence: true
 

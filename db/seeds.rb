@@ -6,4 +6,4 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-	nurses = Nurse.create([{name: 'ヘルパー１', phone_number: '07010893954', phone_mail: 'helper1234@docomo.co.jp', address: '横浜市港北区日吉本町2－43－7'}, {name: 'ヘルパー２', phone_number: '07090753952', phone_mail: 'helper4567@docomo.co.jp', address: '横浜市港北区日吉本町2－89－2'}, {name: 'ヘルパー３', phone_number: '07010898790', phone_mail: 'helper7890@docomo.co.jp', address: '横浜市港北区日吉本町1－46－3'}])
+	patients = Patient.create([{name: "利用者１", phone_number: "07010567834", phone_mail: "patient1234@docomo.co.jp", address: "横浜市港北区日吉本町２－５６７－４"}, {name: "利用者２", phone_number: "07017658790", phone_mail: "patient5678@docomo.co.jp", address: "横浜市港北区日吉本町２－６５－５"}, {name: "利用者３", phone_number: "07076907835", phone_mail: "patient3679@docomo.co.jp", address: "横浜市港北区日吉本町１－５－４５"}])

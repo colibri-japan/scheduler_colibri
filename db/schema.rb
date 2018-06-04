@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604092928) do
+ActiveRecord::Schema.define(version: 20180604094840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,10 +23,21 @@ ActiveRecord::Schema.define(version: 20180604092928) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "nurse_id"
+    t.bigint "patient_id"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
   end
 
   create_table "nurses", force: :cascade do |t|
+    t.string "name"
+    t.string "phone_number"
+    t.string "phone_mail"
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "patients", force: :cascade do |t|
     t.string "name"
     t.string "phone_number"
     t.string "phone_mail"
@@ -42,7 +53,9 @@ ActiveRecord::Schema.define(version: 20180604092928) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "nurse_id"
+    t.bigint "patient_id"
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
+    t.index ["patient_id"], name: "index_recurring_appointments_on_patient_id"
   end
 
 end

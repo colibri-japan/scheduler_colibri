@@ -15,10 +15,12 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments/new
   def new
     @recurring_appointment = RecurringAppointment.new
+    @nurses = Nurse.all
   end
 
   # GET /recurring_appointments/1/edit
   def edit
+    @nurses = Nurse.all
   end
 
   # POST /recurring_appointments
@@ -70,6 +72,6 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :frequency)
+      params.require(:recurring_appointment).permit(:title, :anchor, :frequency, :nurse_id)
     end
 end

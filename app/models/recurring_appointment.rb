@@ -1,4 +1,5 @@
 class RecurringAppointment < ApplicationRecord
+	belongs_to :nurse, optional: true
 
 	before_save :default_frequency
 

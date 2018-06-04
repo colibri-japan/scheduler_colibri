@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604091421) do
+ActiveRecord::Schema.define(version: 20180604092928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 20180604091421) do
     t.integer "frequency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "nurse_id"
+    t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
   end
 
 end

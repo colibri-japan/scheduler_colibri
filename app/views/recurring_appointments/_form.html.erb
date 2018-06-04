@@ -26,6 +26,11 @@
     <%= form.select(:frequency,  options_for_select([['weekly',0], ['biweekly', 1], ['monthly', 2]]), id: :recurring_appointment_frequency) %>
   </div>
 
+  <div class="field">
+    <%= form.label :nurse_id %>
+    <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true) %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
     <%= link_to 'New Appointment', new_appointment_path, class: 'btn btn-default', remote: true if recurring_appointment.new_record? %>

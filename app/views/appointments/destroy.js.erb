@@ -1,2 +1,2 @@
-$('.calendar').fullCalendar('removeEvents', [<%= @appointment.id %>])
+$('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>')
 $('.modal').modal('hide');

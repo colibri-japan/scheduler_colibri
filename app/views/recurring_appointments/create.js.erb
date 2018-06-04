@@ -1,6 +1,6 @@
 $('.modal').modal('hide');
 $('.calendar').fullCalendar(
-  'renderEvent', 
-  jQuery.parseJSON("<%= j @recurring_appointment.to_json.html_safe %>"),
+  'renderEvents', 
+  jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
   true
 );

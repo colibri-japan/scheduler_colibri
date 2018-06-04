@@ -58,6 +58,7 @@ class RecurringAppointmentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
       format.json { head :no_content }
+      format.js
     end
   end
 

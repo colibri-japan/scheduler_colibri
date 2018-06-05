@@ -27,7 +27,9 @@ class RecurringAppointment < ApplicationRecord
 
 	end
 
-
+	def all_day_recurring_appointment?
+		self.start_time == self.start_time.midnight && self.end_time == self.end_time.mignight ? true : false
+	end
 
 	def appointments(start_date, end_date)
 		start_frequency = start_date ? start_date.to_date : Date.today - 1.year

@@ -50,8 +50,6 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointment.update(anchor: params[:appointment][:start])
     else
       @recurring_appointment.update(recurring_appointment_params)
-      puts "@recurring_appointment"
-      puts @recurring_appointment
     end
   end
 
@@ -74,6 +72,6 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :frequency, :nurse_id, :patient_id)
+      params.require(:recurring_appointment).permit(:title, :anchor, :start_time, :end_time, :frequency, :nurse_id, :patient_id)
     end
 end

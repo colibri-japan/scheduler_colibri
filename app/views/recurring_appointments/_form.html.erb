@@ -18,7 +18,17 @@
 
   <div class="field">
     <%= form.label :anchor %>
-    <%= form.datetime_select :anchor, id: :recurring_appointment_anchor %>
+    <%= form.date_select :anchor, id: :recurring_appointment_anchor %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.time_select :start_time, id: :recurring_appointment_start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_time %>
+    <%= form.time_select :end_time, id: :recurring_appointment_end_time %>
   </div>
 
   <div class="field">

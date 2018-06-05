@@ -1,0 +1,21 @@
+<%= javascript_tag do %>
+	window.appointmentsURL = "<%= j planning_appointments_url(@planning) %>";
+	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>"
+<% end %>
+
+<p>
+  <strong>Business Month:</strong>
+  <%= @planning.business_month %>
+</p>
+
+<p>
+  <strong>Business Year:</strong>
+  <%= @planning.business_year %>
+</p>
+
+<div class="calendar">
+  
+</div>
+
+<%= link_to 'Edit', edit_planning_path(@planning) %> |
+<%= link_to 'Back', plannings_path %>

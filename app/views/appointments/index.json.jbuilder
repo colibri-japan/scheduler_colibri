@@ -2,7 +2,7 @@ json.array!(@appointments) do |appointment|
 json.id "appointment_#{appointment.id}"
 json.extract! appointment, :title, :description, :start, :end
 
-json.base_url appointment_url(appointment)
-json.edit_url edit_appointment_url(appointment)
-json.update_url appointment_url(appointment, method: :patch)
+json.base_url planning_appointment_url(@planning, appointment)
+json.edit_url edit_planning_appointment_url(@planning, appointment)
+json.update_url planning_appointment_url(@planning, appointment, method: :patch)
 end

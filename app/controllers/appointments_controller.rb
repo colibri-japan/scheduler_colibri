@@ -1,10 +1,11 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
+  before_action :set_planning
 
   # GET /appointments
   # GET /appointments.json
   def index
-    @appointments = Appointment.all
+    @appointments = @planning.appointments.all
   end
 
   # GET /appointments/1
@@ -74,6 +75,10 @@ class AppointmentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_appointment
       @appointment = Appointment.find(params[:id])
+    end
+
+    def set_planning
+      @planning = Planning.find(params[:planning_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

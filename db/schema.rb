@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180605140833) do
+ActiveRecord::Schema.define(version: 20180605161745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,8 +24,10 @@ ActiveRecord::Schema.define(version: 20180605140833) do
     t.datetime "updated_at", null: false
     t.bigint "nurse_id"
     t.bigint "patient_id"
+    t.bigint "planning_id"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.index ["planning_id"], name: "index_appointments_on_planning_id"
   end
 
   create_table "corporations", force: :cascade do |t|
@@ -73,8 +75,10 @@ ActiveRecord::Schema.define(version: 20180605140833) do
     t.bigint "patient_id"
     t.datetime "start_time"
     t.datetime "end_time"
+    t.bigint "planning_id"
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
     t.index ["patient_id"], name: "index_recurring_appointments_on_patient_id"
+    t.index ["planning_id"], name: "index_recurring_appointments_on_planning_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -97,4 +101,6 @@ ActiveRecord::Schema.define(version: 20180605140833) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "appointments", "plannings"
+  add_foreign_key "recurring_appointments", "plannings"
 end

@@ -1,4 +1,4 @@
-<%= form_with(model: appointment, remote: true) do |form| %>
+<%= form_for [@planning, appointment], remote: true do |form| %>
   <% if appointment.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
@@ -43,7 +43,7 @@
 
   <div class="actions">
     <%= form.submit %>
-    <%= link_to 'New Recurring Appointment', new_recurring_appointment_path, class: 'btn btn-default', remote: true if appointment.new_record? %>
-    <%= link_to 'Delete', appointment, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}, remote: true unless appointment.new_record? %>
+    <%= link_to 'New Recurring Appointment', new_planning_recurring_appointment_path(@planning), class: 'btn btn-default', remote: true if appointment.new_record? %>
+    <%= link_to 'Delete', planning_appointment_path(@planning, appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}, remote: true unless appointment.new_record? %>
   </div>
 <% end %>

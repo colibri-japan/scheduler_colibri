@@ -3,6 +3,6 @@ $('.modal').modal('hide');
 
 $('.calendar').fullCalendar(
   'renderEvent', 
-  $.parseJSON("<%= j render(partial: @appointment, formats: :json, locals: {appointment: @appointment}).html_safe  %>"), 
+  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
   true
 );

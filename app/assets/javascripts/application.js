@@ -20,8 +20,6 @@
 //= require_tree .
 
 
-
-
 var initialize_calendar;
 initialize_calendar = function() {
   $('.calendar').each(function(){
@@ -37,7 +35,7 @@ initialize_calendar = function() {
       editable: true,
       eventLimit: true,
 
-      eventSources: ['/appointments.json', '/recurring_appointments.json'],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
 
       select: function(start, end) {
         $.getScript('/appointments/new', function() {});

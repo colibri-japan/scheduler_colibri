@@ -1,5 +1,7 @@
 class PlanningsController < ApplicationController
 
+	before_action :set_corporation
+
 	def index
 		@plannings = @corporation.plannings.all
 	end
@@ -14,16 +16,27 @@ class PlanningsController < ApplicationController
 
 	def create
 		@planning = Planning.new(planning_params)
+		@planning.corporation_id = current_user.corporation_id
 
 		respond_to do |format|
 			if @planning.save
-				format.html {redirect_to @planning, notice: 'Schedule successfully created'}
+				format.html {redirect_to @planning, notice: 'Planning successfully created'}
 				format.js
 			else
 				format.html { render :new }
 				format.js
 			end
 		end
+	end
+
+	def destroy
+	  @planning = Planning.find(params[:id])
+	  @planning.destroy
+	  respond_to do |format|
+	    format.html { redirect_to plannings_url, notice: 'Planning was successfully destroyed.' }
+	    format.json { head :no_content }
+	    format.js
+	  end
 	end
 
 

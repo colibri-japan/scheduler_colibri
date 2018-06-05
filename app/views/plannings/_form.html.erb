@@ -1,0 +1,30 @@
+<%= form_with(model: planning, local: true) do |form| %>
+  <% if planning.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(planning.errors.count, "error") %> prohibited this planning from being saved:</h2>
+
+    <ul>
+      <% planning.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :business_month %>
+    <%= form.number_field :business_month, id: :planning_business_month %>
+  </div>
+
+  <div class="field">
+    <%= form.label :business_year %>
+    <%= form.number_field :business_year, id: :planning_business_year %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+    <% unless planning.new_record? %>
+      <%= link_to 'Delete', planning, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'} %>
+    <% end %>
+  </div>
+<% end %>

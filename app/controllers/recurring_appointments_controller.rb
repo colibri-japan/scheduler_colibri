@@ -1,10 +1,11 @@
 class RecurringAppointmentsController < ApplicationController
   before_action :set_recurring_appointment, only: [:show, :edit, :update, :destroy]
+  before_action :set_planning
 
   # GET /recurring_appointments
   # GET /recurring_appointments.json
   def index
-    @recurring_appointments = RecurringAppointment.all
+    @recurring_appointments = @planning.recurring_appointments.all
   end
 
   # GET /recurring_appointments/1
@@ -68,6 +69,10 @@ class RecurringAppointmentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_recurring_appointment
       @recurring_appointment = RecurringAppointment.find(params[:id])
+    end
+
+    def set_planning
+      @planning = Planning.find(params[:planning_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

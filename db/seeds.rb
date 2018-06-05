@@ -6,4 +6,4 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Corporation.create(name: 'Colibri', address: '横浜市のどこか', identifier: '4596879294')
+Corporation.create(name: 'Scheduler', address: '横浜市のどこか', identifier: '4596845674')

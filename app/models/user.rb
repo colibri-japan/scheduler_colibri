@@ -4,5 +4,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  belongs_to :corporation, optional: true
+  belongs_to :corporation
+
+  before_save :set_default_corporation
+
+  private
+
+  def set_default_corporation
+  	self.corporation_id = 1 unless self.corporation_id
+  end
+
 end

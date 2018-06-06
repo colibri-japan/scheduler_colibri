@@ -29,7 +29,7 @@ class AppointmentsController < ApplicationController
   # POST /appointments
   # POST /appointments.json
   def create
-    @appointment = Appointment.new(appointment_params)
+    @appointment = @planning.appointments.create(appointment_params)
 
     respond_to do |format|
       if @appointment.save
@@ -83,6 +83,6 @@ class AppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def appointment_params
-      params.require(:appointment).permit(:title, :description, :start, :end, :nurse_id, :patient_id)
+      params.require(:appointment).permit(:title, :description, :start, :end, :nurse_id, :patient_id, :planning_id)
     end
 end

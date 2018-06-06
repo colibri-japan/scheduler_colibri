@@ -47,7 +47,7 @@ initialize_calendar = function() {
 
 
       select: function(start, end) {
-        $.getScript('/appointments/new', function() {});
+        $.getScript(window.createAppointmentURL, function() {});
 
         calendar.fullCalendar('unselect');
       },

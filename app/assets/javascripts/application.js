@@ -17,6 +17,7 @@
 //= require popper
 //= require bootstrap
 //= require fullcalendar
+//= require scheduler
 //= require_tree .
 
 
@@ -25,6 +26,8 @@ initialize_calendar = function() {
   $('.calendar').each(function(){
     var calendar = $(this);
     calendar.fullCalendar({
+      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+      defaultView: 'agendaDay',
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -35,7 +38,13 @@ initialize_calendar = function() {
       editable: true,
       eventLimit: true,
 
+      resources: {
+        url: window.corporationNursesURL,
+      }, 
+
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
+
+
 
       select: function(start, end) {
         $.getScript('/appointments/new', function() {});

@@ -1,9 +1,11 @@
 <%= javascript_tag do %>
-	window.appointmentsURL = "<%= j planning_appointments_url(@planning) %>";
-	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
+	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
+	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createAppointmentURL = "<%= j new_planning_appointment_url(@planning) %>"
 <% end %>
+
+<h1><%= @nurse.name %>のスケジュール</h1>
 
 <p>
   <strong>Business Month:</strong>
@@ -21,7 +23,7 @@
 	<%= link_to '利用者', planning_patients_path(@planning) %>
 </div>
 
-<div class="calendar">
+<div class="weekly_calendar">
   
 </div>
 

@@ -5,7 +5,13 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   # GET /appointments.json
   def index
-    @appointments = @planning.appointments.all
+    if params[:nurse_id].present?
+      @appointments = @planning.appointments.where(nurse_id: params[:nurse_id])
+    elsif params[:patient_id].present?
+      @appointments = @planning.appointments.where(patient_id: params[:patient_id])
+    else
+     @appointments = @planning.appointments.all
+   end
   end
 
   # GET /appointments/1

@@ -20,6 +20,55 @@
 //= require scheduler
 //= require_tree .
 
+var initialize_nurse_calendar;
+initialize_nurse_calendar = function(){
+  $('.weekly_calendar').each(function(){
+    var calendar = $(this);
+    calendar.fullCalendar({
+      defaultView: 'agendaWeek',
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      selectable: true,
+      selectHelper: true,
+      editable: true,
+      eventLimit: true,
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
+
+
+      select: function(start, end) {
+        $.getScript(window.createAppointmentURL, function() {});
+
+        calendar.fullCalendar('unselect');
+      },
+
+      eventDrop: function(appointment, delta, revertFunc) {
+           appointment_data = { 
+             appointment: {
+               id: appointment.id,
+               start: appointment.start.format(),
+               end: appointment.end.format()
+             }
+           };
+           $.ajax({
+               url: appointment.base_url + '.js',
+               type: 'PATCH',
+               beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+               data: appointment_data,
+           });
+         },
+         
+      eventClick: function(appointment, jsEvent, view) {
+           $.getScript(appointment.edit_url, function() {});
+         }
+
+
+
+    });
+  })
+};
 
 var initialize_calendar;
 initialize_calendar = function() {
@@ -76,4 +125,4 @@ initialize_calendar = function() {
     });
   })
 };
-$(document).on('turbolinks:load', initialize_calendar);
+$(document).on('turbolinks:load', initialize_calendar, initialize_nurse_calendar);

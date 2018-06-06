@@ -5,7 +5,13 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments
   # GET /recurring_appointments.json
   def index
-    @recurring_appointments = @planning.recurring_appointments.all
+     if params[:nurse_id].present?
+       @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id])
+     elsif params[:patient_id].present?
+       @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id])
+     else
+      @recurrring_appointments = @planning.recurring_appointments.all
+    end
   end
 
   # GET /recurring_appointments/1

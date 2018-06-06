@@ -1,0 +1,30 @@
+<h1>利用者</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>電話番号</th>
+      <th>メール</th>
+      <th>住所</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @patients.each do |patient| %>
+      <tr>
+        <td><%= patient.name %></td>
+        <td><%= patient.phone_number %></td>
+        <td><%= patient.phone_mail %></td>
+        <td><%= patient.address %></td>
+        <td><%= link_to 'Show', planning_patient_path(@planning, patient) %></td>
+        <td><%= link_to 'Edit', edit_planning_patient_path(@planning, patient) %></td>
+        <td><%= link_to 'Destroy', planning_patient_path(@planning, patient), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to '新規利用者', new_patient_path, class: 'btn btn-info' %>

@@ -1,14 +1,14 @@
-class NursesController < ApplicationController
+class PatientsController < ApplicationController
   before_action :set_corporation
 
   def index
-  	@nurses = @corporation.nurses.all
+  	@patients = @corporation.patients.all
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 
   def show
   	@planning = Planning.find(params[:planning_id])
-  	@nurse = Nurse.find(params[:id])
+  	@patient = Patient.find(params[:id])
   end
 
   private

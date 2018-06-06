@@ -13,7 +13,7 @@
 //= require rails-ujs
 //= require turbolinks
 //= require jquery
-//= require moment
+//= require moment.min
 //= require popper
 //= require bootstrap
 //= require fullcalendar

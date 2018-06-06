@@ -33,12 +33,6 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'fullcalendar-rails'
-
-gem 'fullcalendar_engine'
-
-gem 'momentjs-rails'
-
 gem 'jquery-rails'
 
 gem 'bootstrap'

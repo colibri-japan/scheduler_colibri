@@ -23,8 +23,8 @@
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
   $('.weekly_calendar').each(function(){
-    var calendar = $(this);
-    calendar.fullCalendar({
+    var nurse_calendar = $(this);
+    nurse_calendar.fullCalendar({
       defaultView: 'agendaWeek',
       header: {
         left: 'prev,next today',
@@ -41,7 +41,7 @@ initialize_nurse_calendar = function(){
       select: function(start, end) {
         $.getScript(window.createAppointmentURL, function() {});
 
-        calendar.fullCalendar('unselect');
+        nurse_calendar.fullCalendar('unselect');
       },
 
       eventDrop: function(appointment, delta, revertFunc) {
@@ -125,4 +125,5 @@ initialize_calendar = function() {
     });
   })
 };
-$(document).on('turbolinks:load', initialize_calendar, initialize_nurse_calendar);
+$(document).on('turbolinks:load', initialize_nurse_calendar); 
+$(document).on('turbolinks:load', initialize_calendar); 

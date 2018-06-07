@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :plannings do
   	resources :appointments
   	resources :recurring_appointments
-    resources :nurses, only: [:index, :show]
+    resources :nurses
     resources :patients
   end
 

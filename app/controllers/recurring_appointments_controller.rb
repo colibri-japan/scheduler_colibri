@@ -10,8 +10,9 @@ class RecurringAppointmentsController < ApplicationController
      elsif params[:patient_id].present?
        @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id])
      else
-      @recurrring_appointments = @planning.recurring_appointments.all
+      @recurring_appointments = @planning.recurring_appointments.all
     end
+
   end
 
   # GET /recurring_appointments/1

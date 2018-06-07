@@ -1,0 +1,8 @@
+<% if activity.trackable %>
+	がサービスをアップデートしました。<br/>
+	サービスタイプ：<%= activity.trackable.title %><br/>
+	ヘルパー名：<%= activity.trackable.nurse.name %><br/>
+	利用者名：<%= activity.trackable.patient.name %><br/>
+<% else %>
+	がその後削除されたサービスをアップデートしました。
+<% end %>

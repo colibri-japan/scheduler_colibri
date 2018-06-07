@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     resources :patients
   end
 
+  resources :activities
+
   resources :patients, only: [:new, :create]
 
   resources :nurses, only: [:new, :create]

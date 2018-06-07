@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resources :plannings do
   	resources :appointments
   	resources :recurring_appointments
+    resources :unavailabilities
+    resources :recurring_unavailabilities
     resources :nurses
     resources :patients
   end

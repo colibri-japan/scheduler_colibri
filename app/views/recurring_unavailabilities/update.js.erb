@@ -1,0 +1,8 @@
+$('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_unavailability.id}" %>');
+$('.modal').modal('hide');
+
+$('.calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_unavailabilities/recurring_unavailability.json', locals: {recurring_unavailability: @recurring_unavailability}).html_safe %>"), 
+  true
+);

@@ -22,7 +22,41 @@
 
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
-  $('.weekly_calendar').each(function(){
+  $('.nurse_calendar').each(function(){
+    var patient_calendar = $(this);
+    patient_calendar.fullCalendar({
+      defaultView: 'agendaWeek',
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      selectable: true,
+      selectHelper: true,
+      editable: true,
+      eventLimit: true,
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesURL, window.recurringUnavailabilitiesURL],
+
+
+      select: function(start, end) {
+        $.getScript(window.createUnavailabilityURL, function() {});
+
+        nurse_calendar.fullCalendar('unselect');
+      },
+         
+      eventClick: function(unavailability, jsEvent, view) {
+           $.getScript(unavailability.edit_url, function() {});
+         }
+
+
+
+    })
+  })
+}
+
+var initialize_patient_calendar;
+initialize_patient_calendar = function(){
+  $('.patient_calendar').each(function(){
     var nurse_calendar = $(this);
     nurse_calendar.fullCalendar({
       defaultView: 'agendaWeek',
@@ -126,5 +160,6 @@ initialize_calendar = function() {
   })
 };
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
+$(document).on('turbolinks:load', initialize_patient_calendar); 
 
 $(document).on('turbolinks:load', initialize_calendar); 

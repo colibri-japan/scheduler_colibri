@@ -1,0 +1,2 @@
+module RecurringUnavailabilitiesHelper
+end

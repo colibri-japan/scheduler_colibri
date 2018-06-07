@@ -1,0 +1,49 @@
+<%= form_for [@planning, recurring_unavailability], remote: true do |form| %>
+  <% if recurring_unavailability.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(recurring_unavailability.errors.count, "error") %> prohibited this unavailability from being saved:</h2>
+
+    <ul>
+      <% recurring_unavailability.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, id: :recurring_unavailability_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :anchor %>
+    <%= form.date_select :anchor, id: :recurring_unavailability_anchor %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.time_select :start_time, id: :recurring_unavailability_start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_time %>
+    <%= form.time_select :end_time, id: :recurring_unavailability_end_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :frequency %>
+    <%= form.select(:frequency,  options_for_select([['weekly',0], ['biweekly', 1], ['monthly', 2]]), id: :recurring_unavailability_frequency) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nurse_id %>
+    <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true) %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+    <%= link_to 'New unavailability', new_planning_unavailability_path(@planning), class: 'btn btn-default', remote: true if recurring_unavailability.new_record? %>
+    <%= link_to 'Delete', planning_recurring_unavailability_path(@planning, recurring_unavailability), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}, remote: true unless recurring_unavailability.new_record? %>
+  </div>
+<% end %>

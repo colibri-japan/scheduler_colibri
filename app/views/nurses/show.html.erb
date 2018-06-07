@@ -2,7 +2,9 @@
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
-	window.createAppointmentURL = "<%= j new_planning_appointment_url(@planning) %>"
+	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>";
+	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
+	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
 <% end %>
 
 <h1><%= @nurse.name %>のスケジュール</h1>
@@ -23,7 +25,7 @@
 	<%= link_to '利用者', planning_patients_path(@planning) %>
 </div>
 
-<div class="weekly_calendar">
+<div class="nurse_calendar">
   
 </div>
 

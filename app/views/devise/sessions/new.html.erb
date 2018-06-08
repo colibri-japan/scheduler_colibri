@@ -1,26 +1,33 @@
-<h2>Log in</h2>
+<div class="colibri-devise-form"> 
+  <p class="colibri-devise-title">ログイン</p>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="form-group">
+      <%= f.text_field :email, autofocus: true, placeholder: "メールアドレス", class: "form-control" %>
     </div>
-  <% end -%>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <div class="form-group">
+      <%= f.password_field :password, autocomplete: "off", placeholder: "パスワード", class: "form-control" %>
+    </div>
+
+    <% if devise_mapping.rememberable? -%>
+      <div class="remember-me">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, "ユーザー情報を保存する" %>
+      </div>
+    <% end -%>
+
+    <div class="actions">
+      <%= f.submit "ログイン", class: "btn btn-info btn-block" %>
+    </div>
+  <% end %>
+
+  <div id="colibri-devise-links">
+    <%= render "devise/shared/links" %>
   </div>
-<% end %>
 
-<%= render "devise/shared/links" %>
+  
+</div>
+
+

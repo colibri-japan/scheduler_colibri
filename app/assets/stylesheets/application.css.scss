@@ -17,3 +17,92 @@
  */
 
  @import "bootstrap";
+
+
+body {
+	background-color: #F7F9FE;
+}
+
+#colibri-scheduler-nav {
+	background-color: #4f5b66;
+	display: flex;
+	justify-content: space-between;
+}
+
+a.colibri-nav-link {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 1.2em;
+}
+
+a:hover {
+	background-color: transparent;
+	color: inherit;
+	text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+	float: right;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+#tab-panel {
+	padding-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	font-size: 2em;
+	display: table;
+}
+
+ul.nav.nav-tabs {
+	list-style: none;
+	text-align: center;
+	border-bottom: 0px;
+}
+
+.colibri-app-menu {
+	font-size: 1.6em;
+	display: inline;
+	font-color: #4f5b66;
+	width: 8.5em;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-right: 0px;
+	padding-bottom: 8px;
+}
+
+li.colibri-app-menu a.nav-url {
+	font-color: #4f5b66;
+}
+
+.colibri-app-menu:hover {
+	cursor: pointer;
+	background-color: transparent;
+	border-bottom: 4px solid #ddd;
+}
+
+.nav-selected {
+	border-bottom: 4px solid #5bc0de;
+	font-color: #000;
+}
+
+.text-white {
+	font-color: white;
+}

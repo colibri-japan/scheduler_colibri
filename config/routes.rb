@@ -14,9 +14,9 @@ Rails.application.routes.draw do
 
   resources :activities
 
-  resources :patients, only: [:new, :create]
+  resources :patients
 
-  resources :nurses, only: [:new, :create]
+  resources :nurses
 
   resources :corporations do
   	resources :nurses, only: :index

@@ -9,17 +9,21 @@
   </head>
 
   <body>
-    <div id="header">
+    <div id="header-navigation">
       <%= render "layouts/navigation" %>
     </div>
 
     <div id="flash">
       <% flash.each do |key, value| %>
-        <% if value.length > 0 %><div class="alert alert-<%= key %>"><%= value %></div><% end %>
+        <% if value.length > 0 %><div class="alert alert-<%= key_helper(key) %>"><%= value %></div><% end %>
       <% end %>
     </div>
 
-    <%= yield %>
+    <div class="container-fluid">
+      <%= yield %>
+    </div>
+
+
 
     <div id="remote_container">
     </div>

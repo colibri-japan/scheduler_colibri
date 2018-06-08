@@ -1,10 +1,10 @@
-<h1>Plannings</h1>
+<%= render 'layouts/planning_menu' %>
 
 <table>
   <thead>
     <tr>
-      <th>month</th>
-      <th>year</th>
+      <th>月</th>
+      <th>年</th>
     </tr>
   </thead>
 
@@ -13,9 +13,9 @@
       <tr>
         <td><%= planning.business_month %></td>
         <td><%= planning.business_year %></td>
-        <td><%= link_to 'Show', planning %></td>
-        <td><%= link_to 'Edit', edit_planning_path(planning) %></td>
-        <td><%= link_to 'Destroy', planning, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to '詳細', planning %></td>
+        <td><%= link_to 'エディット', edit_planning_path(planning) %></td>
+        <td><%= link_to '削除', planning, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -23,4 +23,4 @@
 
 <br>
 
-<%= link_to 'New Planning', new_planning_path, class: 'btn btn-info' %>
+<%= link_to '新規スケジュールを作成する', new_planning_path, class: 'btn btn-info text-white' %>

@@ -1,0 +1,41 @@
+// Place all the styles related to the devise controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+
+.colibri-devise-form {
+	width : 470px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 60px;
+	margin-bottom: 40px;
+	background-color: #fff;
+	padding-left: 35px;
+	padding-right: 35px;
+	padding-top: 15px;
+	padding-bottom: 35px;
+	border-radius: 3px;
+	border: 1px solid #ddd;
+}
+
+.remember-me {
+	color: #aaa;
+	font-size: 1em;
+}
+
+#colibri-devise-links {
+	margin-top: 15px;
+}
+
+.colibri-devise-title {
+	font-size: 2.2em;
+	color: #4f5b66;
+	text-align: center;
+	padding: 20px;
+}
+
+.colibri-form-label {
+	color: #aaa;
+	font-size: 1em;
+}

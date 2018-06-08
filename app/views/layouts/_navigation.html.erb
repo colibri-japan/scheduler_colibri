@@ -1,28 +1,28 @@
-<nav class="navbar navbar-custom">
-  <div class="container">
-    <div class="navbar-header">
-      <%= link_to image_tag('logo_jpeg_test.jpeg', size: "40x40"), root_path, id: 'brand' %>
-      <span id="span-brand">Colibri</span> 
+<nav id="colibri-scheduler-nav">
+    <div>
+      <a href="#" class="colibri-nav-link">Colibri Schedule</a>
     </div>
 
-    <div id="navbar">
-    <ul class="nav navbar-nav pull-right">
-        <% if user_signed_in? %>
-        <li>
-          <%= link_to 'アカウント', edit_user_registration_path(current_user), class: 'nav-item nav-item-cell' %>  
-        </li>
-        <li>
-          <%= link_to 'ホームページ', "https://www.home.colibri.jp", target: "_blank", class: 'nav-item', id: "link-to-home"  %>
-        </li>
-        <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete,  class: 'nav-item' %></li>
-        <div id="current-user"></div>
-        <% else %>
-          <li>
-            <%= link_to 'ホームページ', "https://www.home.colibri.jp", target: "_blank", class: 'nav-item', id: "link-to-home"  %>
-          </li>
-          <li><%= link_to 'ログイン', new_user_session_path, class: 'nav-item' %></li>
-          <li><%= link_to '新規登録', new_user_registration_path, class: 'nav-item' %></li>
-        <% end %>
-    </ul>
-  </div>
+
+    	<ul>
+    	    <% if user_signed_in? %>
+    	    <li class="li-float-right">
+    	      <%= link_to 'アカウント', edit_user_registration_path(current_user), class: 'colibri-nav-link' %>  
+    	    </li>
+    	    <li class="li-float-right">
+    	      <%= link_to 'ホームページ', "https://www.home.colibri.jp", target: "_blank", class: 'colibri-nav-link',  id: "link-to-home"  %>
+    	    </li>
+    	    <li class="li-float-right"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'colibri-nav-link' %></li>
+    	    <div id="current-user"></div>
+    	    <% else %>
+    	      <li class="li-float-right">
+    	        <%= link_to 'ホームページ', "https://www.home.colibri.jp", target: "_blank", id: "link-to-home", class: 'colibri-nav-link'  %>
+    	      </li>
+    	      <li class="li-float-right"><%= link_to 'ログイン', new_user_session_path, class: 'colibri-nav-link' %></li>
+    	      <li class="li-float-right"><%= link_to '新規登録', new_user_registration_path, class: 'colibri-nav-link' %></li>
+    	    <% end %>
+    	</ul>
+
+
+
 </nav>

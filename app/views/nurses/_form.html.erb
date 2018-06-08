@@ -1,0 +1,38 @@
+<%= form_with(model: nurse, local: true) do |form| %>
+  <% if nurse.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(nurse.errors.count, "error") %> prohibited this nurse from being saved:</h2>
+
+    <ul>
+      <% nurse.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :nurse_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phone_number %>
+    <%= form.text_field :phone_number, id: :nurse_phone_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phone_mail %>
+    <%= form.text_field :phone_mail, id: :nurse_phone_mail %>
+  </div>
+
+  <div class="field">
+    <%= form.label :address %>
+    <%= form.text_area :address, id: :nurse_address %>
+  </div>
+
+
+  <div class="actions">
+    <%= form.submit 'セーブする', class: 'btn btn-info text-white' %>
+  </div>
+<% end %>

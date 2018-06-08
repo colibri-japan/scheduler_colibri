@@ -1,4 +1,9 @@
-<h1>利用者</h1>
+<% if @planning.present? %>
+  <%= render 'layouts/planning_menu' %>
+  <%= render 'plannings/planning_patients_submenu' %>
+<% else %>
+  <%= render 'layouts/patients_menu' %>
+<% end %>
 
 <table>
   <thead>
@@ -17,9 +22,12 @@
         <td><%= patient.phone_number %></td>
         <td><%= patient.phone_mail %></td>
         <td><%= patient.address %></td>
-        <td><%= link_to 'Show', planning_patient_path(@planning, patient) %></td>
-        <td><%= link_to 'Edit', edit_planning_patient_path(@planning, patient) %></td>
-        <td><%= link_to 'Destroy', planning_patient_path(@planning, patient), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if @planning.present? %>
+          <td><%= link_to '利用者のサービスを変換する', planning_patient_path(@planning, patient) %></td>
+        <% else %>
+          <td><%= link_to 'エディット', edit_patient_path(patient) %></td>
+          <td><%= link_to '削除', patient_path(patient), method: :delete, data: {confirm: '利用者が削除されます'} %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -27,4 +35,6 @@
 
 <br>
 
-<%= link_to '新規利用者', new_patient_path, class: 'btn btn-info' %>
+<% if @patients.nil? %>
+<%= link_to '新規利用者', new_patient_path, class: 'btn btn-info text-white' %>
+<% end %>

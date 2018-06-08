@@ -25,6 +25,7 @@ initialize_nurse_calendar = function(){
   $('.nurse_calendar').each(function(){
     var patient_calendar = $(this);
     patient_calendar.fullCalendar({
+      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
       header: {
         left: 'prev,next today',
@@ -59,6 +60,7 @@ initialize_patient_calendar = function(){
   $('.patient_calendar').each(function(){
     var nurse_calendar = $(this);
     nurse_calendar.fullCalendar({
+      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
       header: {
         left: 'prev,next today',

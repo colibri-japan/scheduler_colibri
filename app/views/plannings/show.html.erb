@@ -5,20 +5,14 @@
 	window.createAppointmentURL = "<%= j new_planning_appointment_url(@planning) %>"
 <% end %>
 
-<p>
-  <strong>Business Month:</strong>
-  <%= @planning.business_month %>
-</p>
+<%= render 'layouts/planning_menu' %>
 
-<p>
-  <strong>Business Year:</strong>
-  <%= @planning.business_year %>
-</p>
+<div id="planning-menu-container">
+	<div id="planning-menu-title">
+		<%= planning_title(@planning) %>
+	</div>
 
-<div id="planning-menu">
-	<%= link_to 'スケジュール', @planning %>
-	<%= link_to 'ヘルパー', planning_nurses_path(@planning) %>
-	<%= link_to '利用者', planning_patients_path(@planning) %>
+	<%= render 'planning_view_submenu' %>
 </div>
 
 <div class="calendar">

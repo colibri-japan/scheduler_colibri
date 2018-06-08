@@ -1,4 +1,9 @@
-<h1>ヘルパー</h1>
+<% if @planning.present? %>
+  <%= render 'layouts/planning_menu' %>
+  <%= render 'plannings/planning_nurses_submenu' %>
+<% else %>
+  <%= render 'layouts/nurses_menu' %>
+<% end %>
 
 <table>
   <thead>
@@ -17,9 +22,12 @@
         <td><%= nurse.phone_number %></td>
         <td><%= nurse.phone_mail %></td>
         <td><%= nurse.address %></td>
-        <td><%= link_to 'Show', planning_nurse_path(@planning, nurse) %></td>
-        <td><%= link_to 'Edit', edit_planning_nurse_path(@planning, nurse) %></td>
-        <td><%= link_to 'Destroy', planning_nurse_path(@planning, nurse), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if @planning.present? %>
+          <td><%= link_to 'ヘルパーの空き時間を変換する', planning_nurse_path(@planning, nurse) %></td>
+        <% else %>
+          <td><%= link_to 'エディット', edit_nurse_path(nurse) %></td>
+          <td><%= link_to '削除', nurse_path(nurse), method: :delete, data: { confirm: 'ヘルパーが削除されます' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -27,4 +35,7 @@
 
 <br>
 
-<%= link_to '新規ヘルパー', new_nurse_path, class: 'btn btn-info' %>
+<% if @planning.nil? %>
+<%= link_to '新規ヘルパー', new_nurse_path, class: 'btn btn-info text-white' %>
+<% end %>
+  

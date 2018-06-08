@@ -1,0 +1,14 @@
+<div id="planning-menu-container">
+	<div id="planning-menu-title">
+		<%= planning_title(@planning) %>
+	</div>
+
+	<div id="planning-menu-list">
+		<ul class="nav nav-tabs">
+			<li class="planning-menu-items"><%= link_to 'スケジュール.ビュー', @planning %></li>
+			<li class="planning-menu-items planning-menu-selected"><%= link_to 'ヘルパーの空き時間調整', planning_nurses_path(@planning) %></li>
+			<li class="planning-menu-items"><%= link_to '利用者のサービス調整', planning_patients_path(@planning) %></li>
+		</ul>
+	</div>
+	
+</div>

@@ -4,23 +4,11 @@
 	window.createAppointmentURL = "<%= j new_planning_appointment_url(@planning) %>"
 <% end %>
 
-<h1><%= @patient.name %>のスケジュール</h1>
+<%= render 'layouts/planning_menu' %>
+<%= render 'plannings/planning_patients_submenu' %>
 
-<p>
-  <strong>Business Month:</strong>
-  <%= @planning.business_month %>
-</p>
+<h2><%= @patient.name %>のスケジュール</h2>
 
-<p>
-  <strong>Business Year:</strong>
-  <%= @planning.business_year %>
-</p>
-
-<div id="planning-menu">
-	<%= link_to 'スケジュール', @planning %>
-	<%= link_to 'ヘルパー', planning_patients_path(@planning) %>
-	<%= link_to '利用者', planning_patients_path(@planning) %>
-</div>
 
 <div class="patient_calendar">
   

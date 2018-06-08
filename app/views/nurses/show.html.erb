@@ -7,23 +7,10 @@
 	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
 <% end %>
 
-<h1><%= @nurse.name %>のスケジュール</h1>
+<%= render 'layouts/planning_menu' %>
+<%= render 'plannings/planning_nurses_submenu' %>
 
-<p>
-  <strong>Business Month:</strong>
-  <%= @planning.business_month %>
-</p>
-
-<p>
-  <strong>Business Year:</strong>
-  <%= @planning.business_year %>
-</p>
-
-<div id="planning-menu">
-	<%= link_to 'スケジュール', @planning %>
-	<%= link_to 'ヘルパー', planning_nurses_path(@planning) %>
-	<%= link_to '利用者', planning_patients_path(@planning) %>
-</div>
+<h2><%= @nurse.name %>の空き時間を変換する</h2>
 
 <div class="nurse_calendar">
   

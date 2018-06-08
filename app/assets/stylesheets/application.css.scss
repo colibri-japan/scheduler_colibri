@@ -106,3 +106,44 @@ li.colibri-app-menu a.nav-url {
 .text-white {
 	font-color: white;
 }
+
+#planning-menu-container {
+	padding-top: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+
+#planning-menu-title {
+	font-size: 1.8em;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+#planning-menu-list {
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 2em;
+	display: table;
+}
+
+.planning-menu-items {
+	font-size: 1.4em;
+	display: inline;
+	font-color: #4f5b66;
+	width: 13.5em;
+	padding-top: 7px;
+	padding-bottom: 7px;
+
+	border: 0.5px solid #aaa;
+}
+
+.planning-menu-items:hover {
+	cursor: pointer;
+	background-color: #DAE1F4;
+}
+
+.planning-menu-selected {
+	background-color: #DAE1F4;
+}

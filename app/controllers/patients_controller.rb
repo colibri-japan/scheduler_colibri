@@ -1,5 +1,6 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
+  before_action :set_patient, only: [:show, :edit, :update, :destroy]
 
   def index
   	@patients = @corporation.patients.all
@@ -8,12 +9,60 @@ class PatientsController < ApplicationController
 
   def show
   	@planning = Planning.find(params[:planning_id])
-  	@patient = Patient.find(params[:id])
   end
+
+  def edit
+  end
+
+  def new
+    @patient = Patient.new
+  end
+
+  def create
+    @patient = Patient.new(patient_params)
+    @patient.corporation_id = @corporation.id
+
+    respond_to do |format|
+      if @patient.save
+        format.html { redirect_to patients_path, notice: '利用者がセーブされました' }
+      else
+        format.html { render :new }
+      end
+    end
+  end
+
+  def update
+    respond_to do |format|
+      if @patient.update(patient_params)
+        format.html {redirect_to patients_path, notice: '利用者の情報がアップデートされました' }
+      else
+        format.html {render :edit}
+      end
+    end
+  end
+
+  def destroy
+    @patient.destroy
+    respond_to do |format|
+      format.html { redirect_to patients_url, notice: '利用者が削除されました' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+
 
   private
 
+  def set_patient
+    @patient = Patient.find(params[:id])
+  end
+
   def set_corporation
   	@corporation = Corporation.find(current_user.corporation_id)
+  end
+
+  def patient_params
+    params.require(:patient).permit(:name, :phone_mail, :phone_number, :address)
   end
 end

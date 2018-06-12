@@ -17,6 +17,7 @@
 //= require popper
 //= require bootstrap
 //= require fullcalendar
+//= require locale-all
 //= require scheduler
 //= require_tree .
 
@@ -27,7 +28,8 @@ initialize_nurse_calendar = function(){
     patient_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
-      minTime: 7,
+      locale: 'ja',
+      minTime: '07:00:00',   
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -63,6 +65,8 @@ initialize_patient_calendar = function(){
     nurse_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
+      minTime: '07:00:00',
+      locale: 'ja',
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -114,6 +118,11 @@ initialize_calendar = function() {
     calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaDay',
+      locale: 'ja',
+      validRange: {
+        start: window.validRangeStart,
+        end: window.validRangeEnd,
+      },
       minTime: '07:00:00',
       header: {
         left: 'prev,next today',

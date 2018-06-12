@@ -1,13 +1,14 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
+	before_action :set_planning, only: [:show, :destroy]
 
 	def index
 		@plannings = @corporation.plannings.all
 	end
 
 	def show
-		@planning = Planning.find(params[:id])
+		set_valid_range
 		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).limit(6)
 	end
 
@@ -31,7 +32,6 @@ class PlanningsController < ApplicationController
 	end
 
 	def destroy
-	  @planning = Planning.find(params[:id])
 	  @planning.destroy
 	  respond_to do |format|
 	    format.html { redirect_to plannings_url, notice: 'Planning was successfully destroyed.' }
@@ -42,6 +42,17 @@ class PlanningsController < ApplicationController
 
 
 	private
+
+	def set_planning
+		@planning = Planning.find(params[:id])
+	end
+
+	def set_valid_range
+		valid_month = @planning.business_month
+		valid_year = @planning.business_year
+		@start_valid = Date.new(valid_year, valid_month, 1).strftime("%Y-%m-%d")
+		@end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
+	end
 
 	def planning_params
 		params.require(:planning).permit(:business_month, :business_year)

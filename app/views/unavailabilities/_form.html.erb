@@ -11,34 +11,34 @@
   </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title, id: :unavailability_title %>
+  <div class="form-group">
+    <%= form.label :title, "タイトル", class: "colibri-form-label" %>
+    <%= form.text_field :title, id: :unavailability_title, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description, id: :unavailability_description %>
+  <div class="form-group">
+    <%= form.label :description, "コメント", class: "colibri-form-label" %>
+    <%= form.text_area :description, id: :unavailability_description, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :start_time %>
-    <%= form.datetime_select :start, id: :unavailability_start_time %>
+  <div class="form-group">
+    <%= form.label :start_time, "スタート", class: "colibri-form-label" %>
+    <%= form.datetime_select :start, id: :unavailability_start_time, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :end_time %>
-    <%= form.datetime_select :end, id: :unavailability_end_time %>
+  <div class="form-group">
+    <%= form.label :end_time, "修了", class: "colibri-form-label" %>
+    <%= form.datetime_select :end, id: :unavailability_end_time, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :nurse_id %>
+  <div class="form-group">
+    <%= form.label :nurse_id, "ヘルパー名", class: "colibri-form-label" %>
     <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true) %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
-    <%= link_to 'New Recurring unavailability', new_planning_recurring_unavailability_path(@planning), class: 'btn btn-default', remote: true if unavailability.new_record? %>
-    <%= link_to 'Delete', planning_unavailability_path(@planning, unavailability), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}, remote: true unless unavailability.new_record? %>
+    <%= form.submit "セーブする", class: "btn btn-info btn-block form-control" %>
+    <%= link_to '働けない時間（リピート）を作成', new_planning_recurring_unavailability_path(@planning), class: 'btn btn-default', remote: true if unavailability.new_record? %>
+    <%= link_to '削除', planning_unavailability_path(@planning, unavailability), method: :delete, class: 'btn btn-danger', data: {confirm: 'この働けない時間が削除されます'}, remote: true unless unavailability.new_record? %>
   </div>
 <% end %>

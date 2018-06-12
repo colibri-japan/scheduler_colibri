@@ -11,39 +11,39 @@
   </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title, id: :appointment_title %>
+  <div class="form-group">
+    <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
+    <%= form.text_field :title, id: :appointment_title, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description, id: :appointment_description %>
+  <div class="form-group">
+    <%= form.label :description, "コメント", class: "colibri-form-label" %>
+    <%= form.text_area :description, id: :appointment_description, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :start_time %>
-    <%= form.datetime_select :start, id: :appointment_start_time %>
+  <div class="form-group">
+    <%= form.label :start_time, "スタート", class: "colibri-form-label" %>
+    <%= form.datetime_select :start, id: :appointment_start_time, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :end_time %>
-    <%= form.datetime_select :end, id: :appointment_end_time %>
+  <div class="form-group">
+    <%= form.label :end_time, "修了", class: "colibri-form-label" %>
+    <%= form.datetime_select :end, id: :appointment_end_time, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :nurse_id %>
-    <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true) %>
+  <div class="form-group">
+    <%= form.label :nurse_id, "ヘルパー名", class: "colibri-form-label" %>
+    <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true, class: "form-control") %>
   </div>
 
-  <div class="field">
-    <%= form.label :patient_id %>
-    <%= form.collection_select(:patient_id, @patients, :id, :name, :prompt => true) %>
+  <div class="form-group">
+    <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %>
+    <%= form.collection_select(:patient_id, @patients, :id, :name, :prompt => true, class: "form-control") %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
-    <%= link_to 'New Recurring Appointment', new_planning_recurring_appointment_path(@planning), class: 'btn btn-default', remote: true if appointment.new_record? %>
-    <%= link_to 'Delete', planning_appointment_path(@planning, appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}, remote: true unless appointment.new_record? %>
+    <%= form.submit "セーブする", class: "btn btn-info btn-block form-control" %>
+    <%= link_to '新規リピートサービス', new_planning_recurring_appointment_path(@planning), class: 'btn btn-default', remote: true if appointment.new_record? %>
+    <%= link_to '削除', planning_appointment_path(@planning, appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'サービスが削除されます'}, remote: true unless appointment.new_record? %>
   </div>
 <% end %>

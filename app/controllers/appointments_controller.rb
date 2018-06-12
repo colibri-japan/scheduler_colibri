@@ -35,7 +35,7 @@ class AppointmentsController < ApplicationController
   # POST /appointments
   # POST /appointments.json
   def create
-    @appointment = @planning.appointments.create(appointment_params)
+    @appointment = @planning.appointments.new(appointment_params)
 
     respond_to do |format|
       if @appointment.save

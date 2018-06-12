@@ -27,6 +27,7 @@ initialize_nurse_calendar = function(){
     patient_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
+      minTime: 7,
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -113,6 +114,7 @@ initialize_calendar = function() {
     calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaDay',
+      minTime: '07:00:00',
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -122,6 +124,7 @@ initialize_calendar = function() {
       selectHelper: true,
       editable: true,
       eventLimit: true,
+      eventColor: '#7AD5DE',
 
       resources: {
         url: window.corporationNursesURL,

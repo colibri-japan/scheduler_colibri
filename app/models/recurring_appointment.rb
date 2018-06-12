@@ -1,6 +1,8 @@
 class RecurringAppointment < ApplicationRecord
 	include PublicActivity::Model
 	tracked owner: Proc.new{ |controller, model| controller.current_user }
+	tracked planning_id: Proc.new{ |controller, model| model.planning_id }
+
 	
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
@@ -32,7 +34,7 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def all_day_recurring_appointment?
-		self.start_time == self.start_time.midnight && self.end_time == self.end_time.mignight ? true : false
+		self.start == self.start.midnight && self.end == self.end.mignight ? true : false
 	end
 
 	def appointments(start_date, end_date)

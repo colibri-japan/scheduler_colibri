@@ -8,6 +8,7 @@ class PlanningsController < ApplicationController
 
 	def show
 		@planning = Planning.find(params[:id])
+		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).limit(6)
 	end
 
 	def new

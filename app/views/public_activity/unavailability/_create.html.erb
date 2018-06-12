@@ -1,7 +1,7 @@
 <% if activity.trackable %>
-	が<span class="activity-important-fields"><%= activity.trackable.patient.name %>様</span>のサービスをアップデートしました。<br/>
+	がヘルパーが働けない時間を追加しました。<br/>
 	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.name   }"  %></span>
 	<%= weekday(activity.trackable.start) %><%= activity.trackable.start.strftime("%H:%M") %> ~ <%= activity.trackable.end.strftime("%H:%M") %>
 <% else %>
-	がその後削除されたサービスをアップデートしました。
+	がその後削除されたヘルパーの働けない時間を追加しました。
 <% end %>

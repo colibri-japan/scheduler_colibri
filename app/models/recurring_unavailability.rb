@@ -1,9 +1,13 @@
 class RecurringUnavailability < ApplicationRecord
   include PublicActivity::Model
   tracked owner: Proc.new{ |controller, model| controller.current_user }
+  tracked planning_id: Proc.new{ |controller, model| model.planning_id }
+
 
   belongs_to :planning
   belongs_to :nurse, optional: true
+  belongs_to :patient, optional: true
+
 
   before_save :default_frequency
 
@@ -31,7 +35,7 @@ class RecurringUnavailability < ApplicationRecord
   end
 
   def all_day_recurring_unavailability?
-  	self.start_time == self.start_time.midnight && self.end_time == self.end_time.mignight ? true : false
+  	self.start == self.start.midnight && self.end == self.end.mignight ? true : false
   end
 
   def unavailabilities(start_date, end_date)

@@ -10,9 +10,8 @@ Rails.application.routes.draw do
     resources :recurring_unavailabilities
     resources :nurses
     resources :patients
+    resources :activities
   end
-
-  resources :activities
 
   resources :patients
 

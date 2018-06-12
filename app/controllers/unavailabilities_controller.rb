@@ -35,7 +35,7 @@ class UnavailabilitiesController < ApplicationController
 	# POST /unavailabilities
 	# POST /unavailabilities.json
 	def create
-	  @unavailability = @planning.unavailabilities.create(unavailability_params)
+	  @unavailability = @planning.unavailabilities.new(unavailability_params)
 
 	  respond_to do |format|
 	    if @unavailability.save

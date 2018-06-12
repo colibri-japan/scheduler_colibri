@@ -36,7 +36,7 @@ class RecurringUnavailabilitiesController < ApplicationController
 	# POST /recurring_unavailabilities
 	# POST /recurring_unavailabilities.json
 	def create
-	  @recurring_unavailability = @planning.recurring_unavailabilities.create(recurring_unavailability_params)
+	  @recurring_unavailability = @planning.recurring_unavailabilities.new(recurring_unavailability_params)
 
 	  respond_to do |format|
 	    if @recurring_unavailability.save
@@ -84,6 +84,6 @@ class RecurringUnavailabilitiesController < ApplicationController
 
 	  # Never trust parameters from the scary internet, only allow the white list through.
 	  def recurring_unavailability_params
-	    params.require(:recurring_unavailability).permit(:title, :anchor, :start_time, :end_time, :frequency, :nurse_id, :patient_id, :planning_id)
+	    params.require(:recurring_unavailability).permit(:title, :anchor, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id)
 	  end
 end

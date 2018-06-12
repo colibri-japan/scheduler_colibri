@@ -1,7 +1,6 @@
-<h1>Activities</h1>
+<%= render 'layouts/planning_menu' %>
+<%= render 'plannings/planning_activities_submenu' %>
 
 <% @activities.each do |activity| %>
-	<div class="activity">
-		<%= activity.owner.name %><%= render_activity activity %>
-	</div>
+	<%= render partial: 'activities/activity', locals: {activity: activity} %>
 <% end %>

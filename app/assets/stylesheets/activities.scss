@@ -1,3 +1,18 @@
 // Place all the styles related to the activities controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.activity-wrapper {
+	border-bottom: 0.5px solid #aaa;
+	font-size: 0.85em;
+	color: #4f5b66;
+}
+
+.activity-datetime {
+	color: #bbb;
+}
+
+.activity-important-fields {
+	font-weight: bold;
+}

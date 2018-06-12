@@ -8,16 +8,24 @@
 <%= render 'layouts/planning_menu' %>
 
 <div id="planning-menu-container">
-	<div id="planning-menu-title">
-		<%= planning_title(@planning) %>
-	</div>
-
 	<%= render 'planning_view_submenu' %>
 </div>
 
-<div class="calendar">
-  
+<div id="planning-container">
+
+	<div class="calendar"></div>
+
+	<div id="planning-activity-module">
+		<p class="planning-activity-module-title">最新アクティビティ</p>
+		<% @activities.each do |activity| %>
+			<%= render partial: 'activities/activity', locals: {activity: activity} %>
+		<% end %>
+	</div>
 </div>
+
+
+
+
 
 <%= link_to 'Edit', edit_planning_path(@planning) %> |
 <%= link_to 'Back', plannings_path %>

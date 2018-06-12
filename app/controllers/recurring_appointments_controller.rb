@@ -36,7 +36,7 @@ class RecurringAppointmentsController < ApplicationController
   # POST /recurring_appointments
   # POST /recurring_appointments.json
   def create
-    @recurring_appointment = @planning.recurring_appointments.create(recurring_appointment_params)
+    @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
 
     respond_to do |format|
       if @recurring_appointment.save
@@ -84,6 +84,6 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :start_time, :end_time, :frequency, :nurse_id, :patient_id, :planning_id)
+      params.require(:recurring_appointment).permit(:title, :anchor, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id)
     end
 end

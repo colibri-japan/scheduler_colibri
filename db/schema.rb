@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180607143213) do
+ActiveRecord::Schema.define(version: 20180612134744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,8 +26,10 @@ ActiveRecord::Schema.define(version: 20180607143213) do
     t.bigint "recipient_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "planning_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
+    t.index ["planning_id"], name: "index_activities_on_planning_id"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
     t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
@@ -96,8 +98,8 @@ ActiveRecord::Schema.define(version: 20180607143213) do
     t.datetime "updated_at", null: false
     t.bigint "nurse_id"
     t.bigint "patient_id"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "start"
+    t.datetime "end"
     t.bigint "planning_id"
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
     t.index ["patient_id"], name: "index_recurring_appointments_on_patient_id"
@@ -108,13 +110,15 @@ ActiveRecord::Schema.define(version: 20180607143213) do
     t.string "title"
     t.date "anchor"
     t.integer "frequency"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "start"
+    t.datetime "end"
     t.bigint "planning_id"
     t.bigint "nurse_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "patient_id"
     t.index ["nurse_id"], name: "index_recurring_unavailabilities_on_nurse_id"
+    t.index ["patient_id"], name: "index_recurring_unavailabilities_on_patient_id"
     t.index ["planning_id"], name: "index_recurring_unavailabilities_on_planning_id"
   end
 
@@ -127,7 +131,9 @@ ActiveRecord::Schema.define(version: 20180607143213) do
     t.bigint "planning_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "patient_id"
     t.index ["nurse_id"], name: "index_unavailabilities_on_nurse_id"
+    t.index ["patient_id"], name: "index_unavailabilities_on_patient_id"
     t.index ["planning_id"], name: "index_unavailabilities_on_planning_id"
   end
 

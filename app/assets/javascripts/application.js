@@ -29,6 +29,10 @@ initialize_nurse_calendar = function(){
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
       locale: 'ja',
+      validRange: {
+        start: window.validRangeStart,
+        end: window.validRangeEnd,
+      },
       minTime: '07:00:00',   
       header: {
         left: 'prev,next today',
@@ -67,6 +71,10 @@ initialize_patient_calendar = function(){
       defaultView: 'agendaWeek',
       minTime: '07:00:00',
       locale: 'ja',
+      validRange: {
+        start: window.validRangeStart,
+        end: window.validRangeEnd,
+      },
       header: {
         left: 'prev,next today',
         center: 'title',

@@ -2,6 +2,8 @@
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {patient_id: @patient.id}) %>";
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, params: {patient_id: @patient.id}) %>";
 	window.createAppointmentURL = "<%= j new_planning_appointment_url(@planning) %>"
+	window.validRangeStart = "<%= j @start_valid %>";
+	window.validRangeEnd = "<%= j @end_valid %>"
 <% end %>
 
 <%= render 'layouts/planning_menu' %>

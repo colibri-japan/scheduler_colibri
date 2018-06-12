@@ -9,6 +9,7 @@ class NursesController < ApplicationController
 
   def show
   	@planning = Planning.find(params[:planning_id])
+    set_valid_range
   end
 
   def edit
@@ -57,8 +58,26 @@ class NursesController < ApplicationController
     @nurse = Nurse.find(params[:id])
   end
 
+  def set_valid_range
+    valid_month = @planning.business_month
+    valid_year = @planning.business_year
+    @start_valid = Date.new(valid_year, valid_month, 1).strftime("%Y-%m-%d")
+    @end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
+  end
+
   def set_corporation
   	@corporation = Corporation.find(current_user.corporation_id)
+  end
+
+  def set_planning
+    @planning = Planning.find(params[:planning_id])
+  end
+
+  def set_valid_range
+    valid_month = @planning.business_month
+    valid_year = @planning.business_year
+    @start_valid = Date.new(valid_year, valid_month, 1).strftime("%Y-%m-%d")
+    @end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
   end
 
   def nurse_params

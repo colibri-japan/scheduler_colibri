@@ -11,18 +11,18 @@
   </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :business_month %>
-    <%= form.number_field :business_month, id: :planning_business_month %>
+  <div class="form-group row">
+    <%= form.label :business_month, "月", class: "col-sm-3 colibri-form-label" %>
+    <%= form.number_field :business_month, id: :planning_business_month, class: "col-sm-8 form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :business_year %>
-    <%= form.number_field :business_year, id: :planning_business_year %>
+  <div class="form-group row">
+    <%= form.label :business_year, "年", class: "col-sm-3 colibri-form-label" %>
+    <%= form.number_field :business_year, id: :planning_business_year, class: "col-sm-8 form-control" %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "スケジュールを作成する", class: "btn btn-info btn-block form-control" %>
     <% unless planning.new_record? %>
       <%= link_to 'Delete', planning, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'} %>
     <% end %>

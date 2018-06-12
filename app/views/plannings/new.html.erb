@@ -1,5 +1,8 @@
-<h1>新規スケジュール</h1>
+<div class="colibri-devise-form">
+	<p class="colibri-devise-title">新規スケジュール</p>
+	<%= render 'form', planning: @planning %>
 
-<%= render 'form', planning: @planning %>
+	<%= link_to '戻る', plannings_path %>
+</div>
 
-<%= link_to '戻る', plannings_path %>
+

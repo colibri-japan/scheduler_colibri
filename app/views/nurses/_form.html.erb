@@ -11,28 +11,28 @@
   </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, id: :nurse_name %>
+  <div class="form-group">
+    <%= form.label :name, "ヘルパー名", class: "colibri-form-label" %>
+    <%= form.text_field :name, id: :nurse_name, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :phone_number %>
-    <%= form.text_field :phone_number, id: :nurse_phone_number %>
+  <div class="form-group">
+    <%= form.label :phone_number, "電話番号", class: "colibri-form-label" %>
+    <%= form.text_field :phone_number, id: :nurse_phone_number, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :phone_mail %>
-    <%= form.text_field :phone_mail, id: :nurse_phone_mail %>
+  <div class="form-group">
+    <%= form.label :phone_mail, "携帯メールアドレス", class: "colibri-form-label" %>
+    <%= form.text_field :phone_mail, id: :nurse_phone_mail, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :address %>
-    <%= form.text_area :address, id: :nurse_address %>
+  <div class="form-group">
+    <%= form.label :address, "住所", class: "colibri-form-label" %>
+    <%= form.text_area :address, id: :nurse_address, class: "form-control" %>
   </div>
 
 
   <div class="actions">
-    <%= form.submit 'セーブする', class: 'btn btn-info text-white' %>
+    <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
   </div>
 <% end %>

@@ -6,7 +6,8 @@
 	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.validRangeStart = "<%= j @start_valid %>";
-	window.validRangeEnd = "<%= j @end_valid %>"
+	window.validRangeEnd = "<%= j @end_valid %>";
+	window.nurseId = "<%= j @nurse.id.to_s %>"
 <% end %>
 
 <%= render 'layouts/planning_menu' %>

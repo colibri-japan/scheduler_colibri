@@ -9,7 +9,7 @@ class PlanningsController < ApplicationController
 
 	def show
 		set_valid_range
-		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).limit(6)
+		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 	end
 
 	def new

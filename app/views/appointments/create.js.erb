@@ -5,3 +5,9 @@ $('.calendar').fullCalendar(
   jQuery.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"),
   true
 );
+
+$('.patient_calendar').fullCalendar(
+  'renderEvent', 
+  jQuery.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"),
+  true
+);

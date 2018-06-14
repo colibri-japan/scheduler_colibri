@@ -13,6 +13,7 @@
  *= require_tree .
  *= require fullcalendar
  *= require scheduler
+ *= require daterangepicker
  *= require_self
  */
 
@@ -146,4 +147,12 @@ li.colibri-app-menu a.nav-url {
 
 .planning-menu-selected {
 	background-color: #DAE1F4;
+}
+
+.date-hidden {
+	display: none;
+}
+
+.fc-bgevent {
+	background-color: #D46A6A !important;
 }

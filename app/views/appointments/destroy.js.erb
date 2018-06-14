@@ -1,2 +1,5 @@
 $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>');
+$('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>');
 $('.modal').modal('hide');
+
+$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

@@ -11,3 +11,5 @@ $('.patient_calendar').fullCalendar(
   jQuery.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"),
   true
 );
+
+$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

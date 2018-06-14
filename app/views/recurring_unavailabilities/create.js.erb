@@ -1,5 +1,5 @@
 $('.modal').modal('hide');
-$('.calendar').fullCalendar(
+$('.nurse_calendar').fullCalendar(
   'renderEvents', 
   jQuery.parseJSON("<%= j render(partial: 'recurring_unavailabilities/recurring_unavailability.json', locals: {recurring_unavailability: @recurring_unavailability}).html_safe %>"),
   true

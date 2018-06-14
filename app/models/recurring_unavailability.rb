@@ -10,7 +10,7 @@ class RecurringUnavailability < ApplicationRecord
 
 
   before_save :default_frequency
-
+  before_validation :set_title
   validates :anchor, presence: true
   validates :frequency, presence: true
   validates :frequency, inclusion: 0..2
@@ -48,6 +48,10 @@ class RecurringUnavailability < ApplicationRecord
 
   def default_frequency
   	self.frequency ||=0
+  end
+
+  def set_title
+    self.title = "働けない時間（リピート）"
   end
   
 end

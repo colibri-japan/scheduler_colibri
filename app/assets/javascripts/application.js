@@ -49,18 +49,15 @@ initialize_nurse_calendar = function(){
 
 
       select: function(start, end) {
-        $.getScript(window.createUnavailabilityURL, function() {
-        	$('#unavailability_start_1i').val(moment(start).format('YYYY'));
-        	$('#unavailability_start_2i').val(moment(start).format('M'));
-        	$('#unavailability_start_3i').val(moment(start).format('DD'));
-        	$('#unavailability_start_4i').val(moment(start).format('HH'));
-        	$('#unavailability_start_5i').val(moment(start).format('mm'));
-        	$('#unavailability_end_1i').val(moment(end).format('YYYY'));
-        	$('#unavailability_end_2i').val(moment(end).format('M'));
-        	$('#unavailability_end_3i').val(moment(end).format('DD'));
-        	$('#unavailability_end_4i').val(moment(end).format('HH'));
-        	$('#unavailability_end_5i').val(moment(end).format('mm'));
-        	$("#unavailability_nurse_id").val(window.nurseId)
+        $.getScript(window.createRecurringUnavailabilityURL, function() {
+        	$('#recurring_unavailability_anchor_1i').val(moment(start).format('YYYY'));
+        	$('#recurring_unavailability_anchor_2i').val(moment(start).format('M'));
+        	$('#recurring_unavailability_anchor_3i').val(moment(start).format('DD'));
+        	$('#recurring_unavailability_start_4i').val(moment(start).format('HH'));
+        	$('#recurring_unavailability_start_5i').val(moment(start).format('mm'));
+        	$('#recurring_unavailability_end_4i').val(moment(end).format('HH'));
+        	$('#recurring_unavailability_end_5i').val(moment(end).format('mm'));
+        	$("#recurring_unavailability_nurse_id").val(window.nurseId)
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -103,18 +100,15 @@ initialize_patient_calendar = function(){
 
 
       select: function(start, end) {
-        $.getScript(window.createAppointmentURL, function() {
-        	$('#appointment_start_1i').val(moment(start).format('YYYY'));
-        	$('#appointment_start_2i').val(moment(start).format('M'));
-        	$('#appointment_start_3i').val(moment(start).format('DD'));
-        	$('#appointment_start_4i').val(moment(start).format('HH'));
-        	$('#appointment_start_5i').val(moment(start).format('mm'));
-        	$('#appointment_end_1i').val(moment(end).format('YYYY'));
-        	$('#appointment_end_2i').val(moment(end).format('M'));
-        	$('#appointment_end_3i').val(moment(end).format('DD'));
-        	$('#appointment_end_4i').val(moment(end).format('HH'));
-        	$('#appointment_end_5i').val(moment(end).format('mm'));
-        	$("#appointment_patient_id").val(window.patientId)
+        $.getScript(window.createRecurringAppointmentURL, function() {
+        	$('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
+          $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
+          $('#recurring_appointment_anchor_3i').val(moment(start).format('DD'));
+          $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
+          $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
+          $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
+          $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+          $("#recurring_appointment_patient_id").val(window.patientId)
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -178,20 +172,17 @@ initialize_calendar = function() {
 
 
 
-      select: function(start, end, resource) {
-      	$.getScript(window.createAppointmentURL, function() {
-      		$('#appointment_start_1i').val(moment(start).format('YYYY'));
-      		$('#appointment_start_2i').val(moment(start).format('M'));
-      		$('#appointment_start_3i').val(moment(start).format('DD'));
-      		$('#appointment_start_4i').val(moment(start).format('HH'));
-      		$('#appointment_start_5i').val(moment(start).format('mm'));
-      		$('#appointment_end_1i').val(moment(end).format('YYYY'));
-      		$('#appointment_end_2i').val(moment(end).format('M'));
-      		$('#appointment_end_3i').val(moment(end).format('DD'));
-      		$('#appointment_end_4i').val(moment(end).format('HH'));
-      		$('#appointment_end_5i').val(moment(end).format('mm'));
-      		$('#appointment_nurse_id').val(resource.id)
-      	});
+      select: function(start, end, jsEvent, view, resource) {
+      	$.getScript(window.createRecurringAppointmentURL, function() {
+          $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
+          $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
+          $('#recurring_appointment_anchor_3i').val(moment(start).format('DD'));
+          $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
+          $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
+          $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
+          $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+          $('#recurring_appointment_nurse_id').val(resource.id)
+        });
 
         calendar.fullCalendar('unselect');
       },

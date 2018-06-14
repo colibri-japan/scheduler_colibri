@@ -1,2 +1,4 @@
 $('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
+$('.patient_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
 $('.modal').modal('hide');
+$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

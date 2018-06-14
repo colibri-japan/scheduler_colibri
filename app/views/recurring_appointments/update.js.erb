@@ -6,3 +6,12 @@ $('.calendar').fullCalendar(
   $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
   true
 );
+
+$('.patient_calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
+  true
+);
+
+$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+

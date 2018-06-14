@@ -10,7 +10,7 @@ class RecurringAppointmentsController < ApplicationController
      elsif params[:patient_id].present?
        @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id])
      else
-      @recurring_appointments = @planning.recurring_appointments.all
+      @recurring_appointments = @planning.recurring_appointments.all.includes(:patient)
     end
 
   end
@@ -40,6 +40,8 @@ class RecurringAppointmentsController < ApplicationController
 
     respond_to do |format|
       if @recurring_appointment.save
+        @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).last
+
         format.html { redirect_to @recurring_appointment, notice: 'Recurring appointment was successfully created.' }
         format.js
         format.json { render :show, status: :created, location: @recurring_appointment }
@@ -54,18 +56,23 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1
   # PATCH/PUT /recurring_appointments/1.json
   def update
+    store_id = @recurring_appointment.id
     if params[:appointment]
       @recurring_appointment.update(anchor: params[:appointment][:start])
+      @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
     else
       @recurring_appointment.update(recurring_appointment_params)
+      @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
     end
   end
 
   # DELETE /recurring_appointments/1
   # DELETE /recurring_appointments/1.json
   def destroy
+    store_id = @recurring_appointment.id
     @recurring_appointment.destroy
     respond_to do |format|
+      @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
       format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
       format.json { head :no_content }
       format.js

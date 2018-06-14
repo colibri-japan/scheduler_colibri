@@ -10,7 +10,7 @@ class AppointmentsController < ApplicationController
     elsif params[:patient_id].present?
       @appointments = @planning.appointments.where(patient_id: params[:patient_id])
     else
-     @appointments = @planning.appointments.all
+     @appointments = @planning.appointments.all.includes(:patient)
    end
   end
 
@@ -39,6 +39,7 @@ class AppointmentsController < ApplicationController
 
     respond_to do |format|
       if @appointment.save
+        @activity = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id).last
         format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
         format.js
         format.json { render :show, status: :created, location: @appointment }
@@ -53,8 +54,10 @@ class AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1
   # PATCH/PUT /appointments/1.json
   def update
+    save_id = @appointment.id
     respond_to do |format|
       if @appointment.update(appointment_params)
+        @activity = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: save_id).last
         format.html { redirect_to @appointment, notice: 'Appointment was successfully updated.' }
         format.js
         format.json { render :show, status: :ok, location: @appointment }
@@ -69,8 +72,10 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1
   # DELETE /appointments/1.json
   def destroy
+    save_id = @appointment.id
     @appointment.destroy
     respond_to do |format|
+      @activity = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: save_id).last
       format.html { redirect_to appointments_url, notice: 'Appointment was successfully destroyed.' }
       format.json { head :no_content }
       format.js

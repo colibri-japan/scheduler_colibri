@@ -1,6 +1,9 @@
 <%= render 'layouts/planning_menu' %>
 <%= render 'plannings/planning_activities_submenu' %>
 
-<% @activities.each do |activity| %>
-	<%= render partial: 'activities/activity', locals: {activity: activity} %>
-<% end %>
+<div id="index-container">
+	<% @activities.each do |activity| %>
+		<%= render partial: 'activities/activity', locals: {activity: activity} %>
+	<% end %>
+</div>
+

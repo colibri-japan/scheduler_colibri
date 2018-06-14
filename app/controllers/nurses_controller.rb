@@ -3,7 +3,7 @@ class NursesController < ApplicationController
   before_action :set_nurse, only: [:edit, :show, :update, :destroy]
 
   def index
-  	@nurses = @corporation.nurses.all
+  	@nurses = @corporation.nurses.all.order(created_at: :asc)
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 

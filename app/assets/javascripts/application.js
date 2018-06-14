@@ -215,3 +215,8 @@ $(document).on('turbolinks:load', initialize_nurse_calendar);
 $(document).on('turbolinks:load', initialize_patient_calendar); 
 
 $(document).on('turbolinks:load', initialize_calendar); 
+$(document).on('turbolinks:load', function(){
+  $("table > tbody > tr[data-link]").not('thead').click(function(){
+    window.location = this.dataset.link
+  });
+}); 

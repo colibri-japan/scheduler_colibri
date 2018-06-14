@@ -5,36 +5,46 @@
   <%= render 'layouts/patients_menu' %>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>名前</th>
-      <th>電話番号</th>
-      <th>メール</th>
-      <th>住所</th>
-    </tr>
-  </thead>
+<div id="index-container">
 
-  <tbody>
-    <% @patients.each do |patient| %>
-      <tr>
-        <td><%= patient.name %></td>
-        <td><%= patient.phone_number %></td>
-        <td><%= patient.phone_mail %></td>
-        <td><%= patient.address %></td>
-        <% if @planning.present? %>
-          <td><%= link_to '利用者のサービスを変換する', planning_patient_path(@planning, patient) %></td>
-        <% else %>
-          <td><%= link_to 'エディット', edit_patient_path(patient) %></td>
-          <td><%= link_to '削除', patient_path(patient), method: :delete, data: {confirm: '利用者が削除されます'} %></td>
+  <% if @planning.nil? %>
+  <%= link_to '新規利用者', new_patient_path, class: 'btn btn-info text-white' %>
+  <% end %>
+
+  <div id="index-table-container">
+    <table class="<%= @planning ? 'table table-hover' : 'table' %>">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>電話番号</th>
+          <th>メール</th>
+          <th>住所</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @patients.each do |patient| %>
+          <tr class="<%= 'clickable-row' if @planning %>" data-link="<%= planning_patient_path(@planning, patient) if @planning %>">
+            <td><%= patient.name %></td>
+            <td><%= patient.phone_number %></td>
+            <td><%= patient.phone_mail %></td>
+            <td><%= patient.address %></td>
+            <% if @planning.present? %>
+              <td><%= link_to '利用者のサービスを変換する', planning_patient_path(@planning, patient) %></td>
+            <% else %>
+              <td><%= link_to 'エディット', edit_patient_path(patient) %></td>
+              <td><%= link_to '削除', patient_path(patient), method: :delete, data: {confirm: '利用者が削除されます'} %></td>
+            <% end %>
+          </tr>
         <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+
+
+
 
 <br>
-
-<% if @planning.nil? %>
-<%= link_to '新規利用者', new_patient_path, class: 'btn btn-info text-white' %>
-<% end %>

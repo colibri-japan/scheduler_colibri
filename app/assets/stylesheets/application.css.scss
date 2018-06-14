@@ -120,6 +120,7 @@ li.colibri-app-menu a.nav-url {
 	font-weight: bold;
 	text-align: center;
 	padding: 5px;
+	color: #4F4F4F;
 }
 
 #planning-menu-list {
@@ -129,30 +130,50 @@ li.colibri-app-menu a.nav-url {
 	display: table;
 }
 
-.planning-menu-items {
+li.planning-menu-items {
 	font-size: 1.4em;
 	display: inline;
-	font-color: #4f5b66;
+
 	width: 13.5em;
 	padding-top: 7px;
 	padding-bottom: 7px;
 
-	border: 0.5px solid #aaa;
+	border-bottom: 0.5px solid #aaa;
+	border-top: 0.5px solid #aaa;
 }
 
-.planning-menu-items:hover {
+li.planning-menu-items:hover {
 	cursor: pointer;
-	background-color: #DAE1F4;
+	background-color: #EEF1F9;
+	color: black;
+
 }
 
-.planning-menu-selected {
-	background-color: #DAE1F4;
+li.planning-menu-selected {
+	background-color: #EEF1F9;
+	color: black !important;
 }
 
 .date-hidden {
 	display: none;
 }
 
+#planning-container {
+	color: #4F4F4F;
+}
+
 .fc-bgevent {
 	background-color: #D46A6A !important;
+}
+
+.fc-today {
+	background-color: white !important;
+}
+
+.fc-resource-cell {
+	font-weight: normal !important;
+}
+
+tr.clickable-row:hover {
+	cursor:pointer;
 }

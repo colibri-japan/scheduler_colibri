@@ -5,37 +5,45 @@
   <%= render 'layouts/nurses_menu' %>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>名前</th>
-      <th>電話番号</th>
-      <th>メール</th>
-      <th>住所</th>
-    </tr>
-  </thead>
+<div id="index-container">
+  <% if @planning.nil? %>
+  <%= link_to '新規ヘルパー', new_nurse_path, class: 'btn btn-info text-white' %>
+  <% end %>
 
-  <tbody>
-    <% @nurses.each do |nurse| %>
-      <tr>
-        <td><%= nurse.name %></td>
-        <td><%= nurse.phone_number %></td>
-        <td><%= nurse.phone_mail %></td>
-        <td><%= nurse.address %></td>
-        <% if @planning.present? %>
-          <td><%= link_to 'ヘルパーの空き時間を変換する', planning_nurse_path(@planning, nurse) %></td>
-        <% else %>
-          <td><%= link_to 'エディット', edit_nurse_path(nurse) %></td>
-          <td><%= link_to '削除', nurse_path(nurse), method: :delete, data: { confirm: 'ヘルパーが削除されます' } %></td>
+  <div id="index-table-container">
+    <table class="<%= @planning ? 'table table-hover' : 'table' %>">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>電話番号</th>
+          <th>メール</th>
+          <th>住所</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @nurses.each do |nurse| %>
+          <tr class="<%= 'clickable-row' if @planning %>" data-link="<%= planning_nurse_path(@planning, nurse) if @planning %>">
+            <td><%= nurse.name %></td>
+            <td><%= nurse.phone_number %></td>
+            <td><%= nurse.phone_mail %></td>
+            <td><%= nurse.address %></td>
+            <% if @planning.present? %>
+              <td><%= link_to 'ヘルパーの空き時間を変換する', planning_nurse_path(@planning, nurse) %></td>
+            <% else %>
+              <td><%= link_to 'エディット', edit_nurse_path(nurse) %></td>
+              <td><%= link_to '削除', nurse_path(nurse), method: :delete, data: { confirm: 'ヘルパーが削除されます' } %></td>
+            <% end %>
+          </tr>
         <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
 
-<br>
 
-<% if @planning.nil? %>
-<%= link_to '新規ヘルパー', new_nurse_path, class: 'btn btn-info text-white' %>
-<% end %>
+</div>
+
+
+
+
   

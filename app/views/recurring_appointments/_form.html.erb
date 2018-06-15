@@ -13,7 +13,7 @@
 
   <div class="form-group">
     <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
-    <%= form.text_field :title, id: :recurring_appointment_title, class: "form-control" %>
+    <%= form.text_field :title, id: :recurring_appointment_title, required: true, class: "form-control" %>
   </div>
 
   <div class="form-group">
@@ -38,12 +38,12 @@
 
   <div class="form-group">
     <%= form.label :nurse_id, "ヘルパー名", class: "colibri-form-label" %>
-    <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true) %>
+    <%= form.collection_select(:nurse_id, @nurses, :id, :name, :prompt => true, required: true) %>
   </div>
 
   <div class="form-group">
     <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %>
-    <%= form.collection_select(:patient_id, @patients, :id, :name, :prompt => true) %>
+    <%= form.collection_select(:patient_id, @patients, :id, :name, :prompt => true, required: true) %>
   </div>
 
   <div class="actions">

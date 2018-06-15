@@ -1,6 +1,6 @@
 <% if activity.trackable %>
 	がヘルパーが働けない時間を追加しました。<br/>
-	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.name   }"  %></span>
+	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
 	<%= weekday(activity.trackable.anchor) %><%= activity.trackable.start.strftime("%H:%M") %> ~ <%= activity.trackable.end.strftime("%H:%M") %>
 <% else %>
 	がその後削除されたヘルパーの働けない時間を追加しました。

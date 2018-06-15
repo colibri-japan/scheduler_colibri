@@ -14,7 +14,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :frequency, presence: true
 	validates :frequency, inclusion: 0..2
 
-	#frequencies : 0 for weekly, 1 for biweekly, 2 for monthly
+	#frequencies : 0 for weekly, 1 for biweekly, 2 for one timer
 
 	def schedule
 		@schedule ||= begin
@@ -25,8 +25,7 @@ class RecurringAppointment < ApplicationRecord
 				schedule.add_recurrence_rule IceCube::Rule.weekly(1)
 			when 1
 				schedule.add_recurrence_rule IceCube::Rule.weekly(2)
-			when 2
-				schedule.add_recurrence_rule IceCube::Rule.monthly(1)
+			else
 			end
 			schedule
 		end

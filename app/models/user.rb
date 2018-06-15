@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   belongs_to :corporation
 
-  before_save :set_default_corporation
+  before_validation :set_default_corporation
 
   def self.assign_to_base_corporation
     @corporation = Corporation.create(name: 'Colibri Trial', address: 'Paris, France', identifier: '0123456789')

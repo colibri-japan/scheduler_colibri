@@ -33,7 +33,7 @@
 
   <div class="form-group">
     <%= form.label :nurse_id, "ヘルパー名", class: "colibri-form-label" %>
-    <%= form.collection_select(:nurse_id, @nurses, :id, :name, {required: true}, :prompt => true) %>
+    <%= form.collection_select(:nurse_id, @nurses, :id, :name, {prompt: 'ヘルパー選択'}, {:required => true}) %>
   </div>
 
   <div class="actions">

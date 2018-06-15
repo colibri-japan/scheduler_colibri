@@ -36,6 +36,7 @@ class RecurringUnavailabilitiesController < ApplicationController
 	# POST /recurring_unavailabilities.json
 	def create
 	  @recurring_unavailability = @planning.recurring_unavailabilities.new(recurring_unavailability_params)
+	  @nurse = Nurse.find(recurring_unavailability_params[:nurse_id])
 
 	  respond_to do |format|
 	    if @recurring_unavailability.save
@@ -56,6 +57,7 @@ class RecurringUnavailabilitiesController < ApplicationController
 	  if params[:unavailability]
 	    @recurring_unavailability.update(anchor: params[:unavailability][:start])
 	  else
+	  	@nurse = Nurse.find(recurring_unavailability_params[:nurse_id])
 	    @recurring_unavailability.update(recurring_unavailability_params)
 	  end
 	end

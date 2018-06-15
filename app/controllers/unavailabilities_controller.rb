@@ -35,6 +35,7 @@ class UnavailabilitiesController < ApplicationController
 	# POST /unavailabilities.json
 	def create
 	  @unavailability = @planning.unavailabilities.new(unavailability_params)
+	  @nurse = Nurse.find(unavailability_params[:nurse_id])
 
 	  respond_to do |format|
 	    if @unavailability.save
@@ -54,6 +55,7 @@ class UnavailabilitiesController < ApplicationController
 	def update
 	  respond_to do |format|
 	    if @unavailability.update(unavailability_params)
+	      @nurse = Nurse.find(unavailability_params[:nurse_id])
 	      format.html { redirect_to @unavailability, notice: 'unavailability was successfully updated.' }
 	      format.js
 	      format.json { render :show, status: :ok, location: @unavailability }

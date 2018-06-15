@@ -1,7 +1,7 @@
-$('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_unavailability.id}" %>');
+$('.nurse_calendar').fullCalendar('removeEvents', '<%= "recurringUnavailability_#{@recurring_unavailability.id}" %>');
 $('.modal').modal('hide');
 
-$('.calendar').fullCalendar(
+$('.nurse_calendar').fullCalendar(
   'renderEvents', 
   $.parseJSON("<%= j render(partial: 'recurring_unavailabilities/recurring_unavailability.json', locals: {recurring_unavailability: @recurring_unavailability}).html_safe %>"), 
   true

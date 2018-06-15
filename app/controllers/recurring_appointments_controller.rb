@@ -57,8 +57,10 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1.json
   def update
     store_id = @recurring_appointment.id
-    if params[:appointment]
-      @recurring_appointment.update(anchor: params[:appointment][:start])
+    puts "processed by right controller"
+    if params[:appointment].present?
+      puts "passed if statement"
+      @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
       @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
     else
       @recurring_appointment.update(recurring_appointment_params)

@@ -1,7 +1,15 @@
 $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+$('.patient-calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+
 $('.modal').modal('hide');
 
 $('.calendar').fullCalendar(
+  'renderEvent', 
+  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+  true
+);
+
+$('.patient-calendar').fullCalendar(
   'renderEvent', 
   $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
   true

@@ -42,6 +42,7 @@ initialize_nurse_calendar = function(){
       },
       selectable: true,
       selectHelper: true,
+      eventStartEditable: false,
       eventColor: '#7AD5DE',
       editable: true,
       eventLimit: true,
@@ -164,11 +165,12 @@ initialize_calendar = function() {
       eventLimit: true,
       eventColor: '#7AD5DE',
 
+
       resources: {
         url: window.corporationNursesURL,
       }, 
 
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesURL, window.recurringUnavailabilitiesURL],
 
 
 

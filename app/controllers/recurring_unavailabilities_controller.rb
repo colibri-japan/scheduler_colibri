@@ -6,9 +6,8 @@ class RecurringUnavailabilitiesController < ApplicationController
 	# GET /recurring_unavailabilities.json
 	def index
 	   if params[:nurse_id].present?
+	   	 @nurse = Nurse.find(params[:nurse_id])
 	     @recurring_unavailabilities = @planning.recurring_unavailabilities.where(nurse_id: params[:nurse_id])
-	   elsif params[:patient_id].present?
-	     @recurring_unavailabilities = @planning.recurring_unavailabilities.where(patient_id: params[:patient_id])
 	   else
 	    @recurring_unavailabilities = @planning.recurring_unavailabilities.all
 	  end

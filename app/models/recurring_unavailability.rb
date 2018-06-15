@@ -50,7 +50,7 @@ class RecurringUnavailability < ApplicationRecord
   end
 
   def set_title
-    self.title = "働けない時間（リピート）"
+    self.title = "働けない時間"
   end
   
 end

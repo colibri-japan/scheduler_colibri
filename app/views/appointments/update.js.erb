@@ -1,5 +1,5 @@
-$('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
-$('.patient-calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+$('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@old_appointment.id}" %>' );
+$('.patient-calendar').fullCalendar('removeEvents', '<%= "appointment_#{@old_appointment.id}" %>' );
 
 $('.modal').modal('hide');
 

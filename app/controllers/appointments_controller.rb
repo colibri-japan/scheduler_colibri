@@ -1,16 +1,16 @@
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: [:show, :edit, :update, :destroy]
+  before_action :set_appointment, only: [:show, :edit, :destroy]
   before_action :set_planning
 
   # GET /appointments
   # GET /appointments.json
   def index
     if params[:nurse_id].present?
-      @appointments = @planning.appointments.where(nurse_id: params[:nurse_id])
+      @appointments = @planning.appointments.where(nurse_id: params[:nurse_id], displayable: true)
     elsif params[:patient_id].present?
-      @appointments = @planning.appointments.where(patient_id: params[:patient_id])
+      @appointments = @planning.appointments.where(patient_id: params[:patient_id], displayable: true)
     else
-     @appointments = @planning.appointments.all.includes(:patient)
+     @appointments = @planning.appointments.where(displayable: true).includes(:patient)
    end
   end
 
@@ -39,7 +39,7 @@ class AppointmentsController < ApplicationController
 
     respond_to do |format|
       if @appointment.save
-        @activity = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id).last
+        @activity = @appointment.create_activity :create, owner: current_user, planning_id: @planning.id
         format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
         format.js
         format.json { render :show, status: :created, location: @appointment }
@@ -54,10 +54,16 @@ class AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1
   # PATCH/PUT /appointments/1.json
   def update
-    save_id = @appointment.id
+    @old_appointment = Appointment.find(params[:id])
+    @appointment = @old_appointment.dup
+    @appointment.master = false
+    @appointment.displayable = true
+    @appointment.save
+
     respond_to do |format|
       if @appointment.update(appointment_params)
-        @activity = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: save_id).last
+        @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+        @old_appointment.update(displayable: false)
         format.html { redirect_to @appointment, notice: 'Appointment was successfully updated.' }
         format.js
         format.json { render :show, status: :ok, location: @appointment }
@@ -75,7 +81,7 @@ class AppointmentsController < ApplicationController
     save_id = @appointment.id
     @appointment.destroy
     respond_to do |format|
-      @activity = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: save_id).last
+      @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
       format.html { redirect_to appointments_url, notice: 'Appointment was successfully destroyed.' }
       format.json { head :no_content }
       format.js

@@ -1,16 +1,16 @@
 class RecurringAppointmentsController < ApplicationController
-  before_action :set_recurring_appointment, only: [:show, :edit, :update, :destroy]
+  before_action :set_recurring_appointment, only: [:show, :edit, :destroy]
   before_action :set_planning
 
   # GET /recurring_appointments
   # GET /recurring_appointments.json
   def index
      if params[:nurse_id].present?
-       @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id])
+       @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true)
      elsif params[:patient_id].present?
-       @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id])
+       @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true)
      else
-      @recurring_appointments = @planning.recurring_appointments.all.includes(:patient)
+      @recurring_appointments = @planning.recurring_appointments.where(displayable: true).includes(:patient)
     end
 
   end
@@ -40,7 +40,7 @@ class RecurringAppointmentsController < ApplicationController
 
     respond_to do |format|
       if @recurring_appointment.save
-        @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).last
+        @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id
 
         format.html { redirect_to @recurring_appointment, notice: 'Recurring appointment was successfully created.' }
         format.js
@@ -56,15 +56,28 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1
   # PATCH/PUT /recurring_appointments/1.json
   def update
-    store_id = @recurring_appointment.id
-    puts "processed by right controller"
+    @original_recurring_appointment = RecurringAppointment.find(params[:id])
+
+    @recurring_appointment = @original_recurring_appointment.dup
+    @recurring_appointment.master = false
+    @recurring_appointment.displayable = true
+    @recurring_appointment.original_id = @original_recurring_appointment.id
+
+    @recurring_appointment.save
+
+
     if params[:appointment].present?
-      puts "passed if statement"
       @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
-      @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
+      @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+
+      @original_recurring_appointment.update(displayable: false)
     else
       @recurring_appointment.update(recurring_appointment_params)
-      @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
+      @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+
+      @original_recurring_appointment.update(displayable: false)
+      #@recurring_appointment.update(recurring_appointment_params)
+      #@activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
     end
   end
 
@@ -74,7 +87,8 @@ class RecurringAppointmentsController < ApplicationController
     store_id = @recurring_appointment.id
     @recurring_appointment.destroy
     respond_to do |format|
-      @activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
+      @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
+
       format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
       format.json { head :no_content }
       format.js

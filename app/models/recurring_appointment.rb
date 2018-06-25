@@ -1,14 +1,17 @@
 class RecurringAppointment < ApplicationRecord
-	include PublicActivity::Model
-	tracked owner: Proc.new{ |controller, model| controller.current_user }
-	tracked planning_id: Proc.new{ |controller, model| model.planning_id }
+	include PublicActivity::Common
+	# tracked owner: Proc.new{ |controller, model| controller.current_user }
+	# tracked planning_id: Proc.new{ |controller, model| model.planning_id }
 
 	
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
 	belongs_to :planning
+	belongs_to :original, class_name: 'RecurringAppointment', optional: true
 
 	before_save :default_frequency
+	before_save :default_master
+	before_save :default_displayable
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -45,6 +48,14 @@ class RecurringAppointment < ApplicationRecord
 	private
 
 	def default_frequency
-		self.frequency ||=0
+		self.frequency =0 if self.frequency.nil?
+	end
+
+	def default_master
+		self.master = true if self.master.nil?
+	end
+
+	def default_displayable
+		self.displayable = true if self.displayable.nil?
 	end
 end

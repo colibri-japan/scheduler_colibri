@@ -293,6 +293,9 @@ $(document).on('turbolinks:load', initialize_master_calendar);
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', function(){
   $("table > tbody > tr[data-link]").not('thead').click(function(){
-    window.location = this.dataset.link
+    if (this.dataset.link != '') {
+      window.location = this.dataset.link
+    } 
+
   });
 }); 

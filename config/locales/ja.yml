@@ -1,0 +1,5 @@
+ja: 
+ pundit:
+  default: 'このページにはアクセスできません。'
+  planning_policy:
+   is_employee?: 'このスケジュールは他の事業所が所有してます。'

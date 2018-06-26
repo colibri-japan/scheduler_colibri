@@ -1,0 +1,3 @@
+class RecurringAppointmentPolicy < ApplicationPolicy
+
+end

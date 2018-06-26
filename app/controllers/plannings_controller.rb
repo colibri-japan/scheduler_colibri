@@ -8,6 +8,8 @@ class PlanningsController < ApplicationController
 	end
 
 	def show
+		authorize @planning, :is_employee?
+		
 		set_valid_range
 		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 	end
@@ -32,6 +34,8 @@ class PlanningsController < ApplicationController
 	end
 
 	def destroy
+	  authorize @planning, :is_employee?
+
 	  @planning.destroy
 	  respond_to do |format|
 	    format.html { redirect_to plannings_url, notice: 'Planning was successfully destroyed.' }
@@ -41,6 +45,8 @@ class PlanningsController < ApplicationController
 	end
 
 	def master
+		authorize @planning, :is_employee?
+
 		set_valid_range
 		@admin = current_user.admin.to_s
 		puts "this is @admin"

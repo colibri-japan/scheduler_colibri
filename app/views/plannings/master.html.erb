@@ -4,7 +4,10 @@
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.validRangeStart = "<%= j @start_valid %>";
-	window.validRangeEnd = "<%= j @end_valid %>
+	window.validRangeEnd = "<%= j @end_valid %>"
+	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning) %>";
+	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning) %>";
+	window.userIsAdmin = "<%= j @admin %>";
 <% end %>
 
 <%= render 'layouts/planning_menu' %>
@@ -13,20 +16,11 @@
 	<%= render 'planning_view_submenu' %>
 </div>
 
-<div id="planning-container">
 
-	<div class="calendar"></div>
+<div class="master-calendar"></div>
 
-	<div id="planning-activity-module">
-		<p class="planning-activity-module-title">最新アクティビティ</p>
-		<div id="planning-activities">
-			<% @activities.each do |activity| %>
-				<%= render partial: 'activities/activity', locals: {activity: activity} %>
-			<% end %>
-		</div>
-		
-	</div>
-</div>
+
+
 
 
 

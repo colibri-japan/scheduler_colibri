@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy]
+	before_action :set_planning, only: [:show, :destroy, :master]
 
 	def index
 		@plannings = @corporation.plannings.all
@@ -38,6 +38,13 @@ class PlanningsController < ApplicationController
 	    format.json { head :no_content }
 	    format.js
 	  end
+	end
+
+	def master
+		set_valid_range
+		@admin = current_user.admin.to_s
+		puts "this is @admin"
+		puts @admin
 	end
 
 

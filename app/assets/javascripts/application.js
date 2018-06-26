@@ -141,6 +141,79 @@ initialize_patient_calendar = function(){
   })
 };
 
+var initialize_master_calendar;
+initialize_master_calendar = function() {
+  $('.master-calendar').each(function(){
+    var master_calendar = $(this);
+    master_calendar.fullCalendar({
+      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+      defaultView: 'agendaDay',
+      locale: 'ja',
+      validRange: {
+        start: window.validRangeStart,
+        end: window.validRangeEnd,
+      },
+      minTime: '07:00:00',
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      selectable: (window.userIsAdmin == 'true') ? true : false,
+      selectHelper: (window.userIsAdmin == 'true') ? true : false,
+      editable: (window.userIsAdmin == 'true') ? true : false,
+      eventLimit: true,
+      eventColor: '#74d680',
+
+
+      resources: {
+        url: window.corporationNursesURL,
+      }, 
+
+      eventSources: [ window.appointmentsURL + '?q=master', window.recurringAppointmentsURL + '?q=master'],
+
+
+      select: function(start, end, jsEvent, view, resource) {
+        $.getScript(window.createRecurringAppointmentURL, function() {
+          $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
+          $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
+          $('#recurring_appointment_anchor_3i').val(moment(start).format('DD'));
+          $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
+          $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
+          $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
+          $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+          $('#recurring_appointment_nurse_id').val(resource.id)
+        });
+
+        calendar.fullCalendar('unselect');
+      },
+
+      eventDrop: function(appointment, delta, revertFunc) {
+           appointment_data = { 
+             appointment: {
+               id: appointment.id,
+               start: appointment.start.format(),
+               end: appointment.end.format()
+             }
+           };
+           $.ajax({
+               url: appointment.base_url + '.js',
+               type: 'PATCH',
+               beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+               data: appointment_data,
+           });
+         },
+         
+      eventClick: function(appointment, jsEvent, view) {
+            if (window.userIsAdmin == 'true') {
+              $.getScript(appointment.edit_url, function() {});
+            }
+            return false;
+         }
+    })
+  });
+};
+
 var initialize_calendar;
 initialize_calendar = function() {
   $('.calendar').each(function(){
@@ -215,6 +288,7 @@ initialize_calendar = function() {
 };
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
+$(document).on('turbolinks:load', initialize_master_calendar); 
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', function(){

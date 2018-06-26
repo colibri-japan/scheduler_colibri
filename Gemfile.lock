@@ -75,6 +75,8 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
+    devise-i18n (1.6.2)
+      devise (>= 4.4)
     erubi (1.7.1)
     execjs (2.7.0)
     ffi (1.9.23-x86-mingw32)
@@ -133,6 +135,9 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
+    rails-i18n (5.1.1)
+      i18n (>= 0.7, < 2)
+      railties (>= 5.0, < 6)
     railties (5.1.6)
       actionpack (= 5.1.6)
       activesupport (= 5.1.6)
@@ -202,6 +207,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   devise
+  devise-i18n
   ice_cube
   jbuilder (~> 2.5)
   jquery-rails
@@ -209,6 +215,7 @@ DEPENDENCIES
   public_activity
   puma (~> 3.7)
   rails (~> 5.1.6)
+  rails-i18n (~> 5.1)
   sass-rails (~> 5.0)
   selenium-webdriver
   turbolinks (~> 5)

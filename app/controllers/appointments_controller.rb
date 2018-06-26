@@ -9,6 +9,8 @@ class AppointmentsController < ApplicationController
       @appointments = @planning.appointments.where(nurse_id: params[:nurse_id], displayable: true)
     elsif params[:patient_id].present?
       @appointments = @planning.appointments.where(patient_id: params[:patient_id], displayable: true)
+    elsif params[:q] == 'master'
+      @appointments = @planning.appointments.where(master: true).includes(:patient)
     else
      @appointments = @planning.appointments.where(displayable: true).includes(:patient)
    end

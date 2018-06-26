@@ -8,6 +8,7 @@
 			<li class="planning-menu-items"><%= link_to 'スケジュール.ビュー', @planning %></li>
 			<li class="planning-menu-items"><%= link_to 'ヘルパーの空き時間調整', planning_nurses_path(@planning) %></li>
 			<li class="planning-menu-items planning-menu-selected"><%= link_to '利用者のサービス調整', planning_patients_path(@planning) %></li>
+			<li class="planning-menu-items"><%= link_to 'マスター', planning_master_path(@planning) %></li>
 			<li class="planning-menu-items"><%= link_to 'アクティビティ', planning_activities_path(@planning) %></li>
 		</ul>
 	</div>

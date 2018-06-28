@@ -46,6 +46,8 @@
     <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
   </div>
 
+  <%= hidden_field_tag(:q, 'master') if @master == true %>
+
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
     <%= link_to '新規サービス', new_planning_appointment_path(@planning), class: 'btn btn-default', remote: true if recurring_appointment.new_record? %>

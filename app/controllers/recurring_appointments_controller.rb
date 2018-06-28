@@ -27,30 +27,47 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment = RecurringAppointment.new
     @nurses = Nurse.all
     @patients = Patient.all
+    @master = true if params[:q] == 'master'
   end
 
   # GET /recurring_appointments/1/edit
   def edit
     @nurses = Nurse.all
     @patients = Patient.all
+    @master = true if params[:q] == 'master'
   end
 
   # POST /recurring_appointments
   # POST /recurring_appointments.json
   def create
-    @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
+    if params[:q] == 'master'
+      @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
+      @recurring_appointment.master = true
 
-    respond_to do |format|
-      if @recurring_appointment.save
-        @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id
+      respond_to do |format|
+        if @recurring_appointment.save
+          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id
+          format.js
+          format.json { render :show, status: :created, location: @recurring_appointment }
+        else
+          format.js
+          format.json { render json: @recurring_appointment.errors, status: :unprocessable_entity }
+        end
+      end
 
-        format.html { redirect_to @recurring_appointment, notice: 'Recurring appointment was successfully created.' }
-        format.js
-        format.json { render :show, status: :created, location: @recurring_appointment }
-      else
-        format.html { render :new }
-        format.js
-        format.json { render json: @recurring_appointment.errors, status: :unprocessable_entity }
+    else       
+      @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
+      @recurring_appointment.master = false
+
+      respond_to do |format|
+        if @recurring_appointment.save
+          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id
+          format.js
+          format.json { render :show, status: :created, location: @recurring_appointment }
+        else
+          format.js
+          format.json { render json: @recurring_appointment.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -58,39 +75,44 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1
   # PATCH/PUT /recurring_appointments/1.json
   def update
-    @original_recurring_appointment = RecurringAppointment.find(params[:id])
-
-    @recurring_appointment = @original_recurring_appointment.dup
-    @recurring_appointment.master = false
-    @recurring_appointment.displayable = true
-    @recurring_appointment.original_id = @original_recurring_appointment.id
-
-    @recurring_appointment.save
-
-
-    if params[:appointment].present?
-      @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
-      @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
-
-      @original_recurring_appointment.update(displayable: false)
-    else
+    if params[:q] == 'master'
+      @recurring_appointment = RecurringAppointment.find(params[:id])
+      @original_recurring_appointment = @recurring_appointment
       @recurring_appointment.update(recurring_appointment_params)
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
 
-      @original_recurring_appointment.update(displayable: false)
-      #@recurring_appointment.update(recurring_appointment_params)
-      #@activity = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: store_id).last
+    else
+      @original_recurring_appointment = RecurringAppointment.find(params[:id])
+
+      @recurring_appointment = @original_recurring_appointment.dup
+      @recurring_appointment.master = false
+      @recurring_appointment.displayable = true
+      @recurring_appointment.original_id = @original_recurring_appointment.id
+
+      @recurring_appointment.save
+
+
+      if params[:appointment].present?
+        @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+
+        @original_recurring_appointment.update(displayable: false)
+      else
+        @recurring_appointment.update(recurring_appointment_params)
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+
+        @original_recurring_appointment.update(displayable: false)
+      end
     end
   end
+
 
   # DELETE /recurring_appointments/1
   # DELETE /recurring_appointments/1.json
   def destroy
-    store_id = @recurring_appointment.id
+    @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
     @recurring_appointment.destroy
     respond_to do |format|
-      @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
-
       format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
       format.json { head :no_content }
       format.js

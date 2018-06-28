@@ -1,5 +1,6 @@
 $('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
 $('.patient_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
+$('.master-calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
 
 $('.modal').modal('hide');
 
@@ -10,6 +11,12 @@ $('.calendar').fullCalendar(
 );
 
 $('.patient_calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
+  true
+);
+
+$('.master-calendar').fullCalendar(
   'renderEvents', 
   $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
   true

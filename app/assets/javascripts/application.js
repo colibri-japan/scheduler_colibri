@@ -174,7 +174,7 @@ initialize_master_calendar = function() {
 
 
       select: function(start, end, jsEvent, view, resource) {
-        $.getScript(window.createRecurringAppointmentURL, function() {
+        $.getScript(window.createRecurringAppointmentURL + '?q=master', function() {
           $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
           $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
           $('#recurring_appointment_anchor_3i').val(moment(start).format('DD'));
@@ -206,7 +206,7 @@ initialize_master_calendar = function() {
          
       eventClick: function(appointment, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(appointment.edit_url, function() {});
+              $.getScript(appointment.edit_url + '?q=master', function() {});
             }
             return false;
          }
@@ -286,16 +286,17 @@ initialize_calendar = function() {
     });
   })
 };
+
+$(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
 $(document).on('turbolinks:load', initialize_master_calendar); 
 
-$(document).on('turbolinks:load', initialize_calendar); 
+
 $(document).on('turbolinks:load', function(){
   $("table > tbody > tr[data-link]").not('thead').click(function(){
     if (this.dataset.link != '') {
       window.location = this.dataset.link
     } 
-
   });
 }); 

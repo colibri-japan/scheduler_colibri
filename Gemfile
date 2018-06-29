@@ -41,6 +41,8 @@ gem 'ice_cube'
 
 gem 'devise'
 
+gem 'devise_invitable'
+
 gem 'public_activity'
 
 gem 'devise-i18n'

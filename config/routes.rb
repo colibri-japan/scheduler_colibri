@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   get 'nurses/index'
 
-  devise_for :users
+  devise_for :users, controllers: {
+    invitations: "invitations"
+  }
 
   resources :users, only: [:index, :edit, :update]
 
@@ -22,6 +24,8 @@ Rails.application.routes.draw do
   resources :corporations do
   	resources :nurses, only: :index
   end
+
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master

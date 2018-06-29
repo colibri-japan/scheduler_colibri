@@ -300,6 +300,22 @@ $(document).on('turbolinks:load', function(){
     } 
   });
 
+  $('#account-edit').click(function(){
+    $('#account-delete-body').hide();
+    $('#account-edit-body').show();
+    $('.account-menu-item').removeClass('account-menu-selected');
+    $(this).addClass('account-menu-selected');
+  });
+
+  $('#account-delete').click(function(){
+    $('#account-edit-body').hide();
+    $('#account-delete-body').show();
+    $('.account-menu-item').removeClass('account-menu-selected');
+    $(this).addClass('account-menu-selected');
+  });
+
+  $('#account-delete-body').hide();
+
   $('.switch').each(function(){
     $this = $(this);
     if ($this.data('admin') == true ) {

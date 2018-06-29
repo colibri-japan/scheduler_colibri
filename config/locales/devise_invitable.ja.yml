@@ -10,11 +10,11 @@ ja:
       no_invitations_remaining: 'これ以上招待できません。'
       invitation_removed: '招待を取り消しました。'
       new:
-        header: '招待する'
+        header: 'ユーザーを招待する'
         submit_button: '招待メールを送る'
       edit:
         header: 'パスワードを設定する'
-        submit_button: 'パスワードを設定する'
+        submit_button: 'セーブしてログインする'
     mailer:
       invitation_instructions:
         subject: '招待を承認するには'

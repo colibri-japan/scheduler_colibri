@@ -1,48 +1,80 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<%= render 'layouts/neutral_menu' %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+<div id="account-update-container">
+  <div id="account-update-menu">
+    <div class="account-menu-item account-menu-selected" id="account-edit">
+      エディット
+    </div>
+    <div class="account-menu-item" id="account-delete">
+      削除
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autocomplete: "email" %>
+  <div id="account-update-body">
+    <div id="account-edit-body" class="account-body">
+
+      <div class="account-update-title">
+        <p class="colibri-devise-title">アカウント情報をエディットする</p>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <%= devise_error_messages! %>
+
+        <div class="form-group">
+          <%= f.label :name, 'ご自身のユーザー名', class: "colibri-form-label" %><br />
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control"   %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :email, class: "colibri-form-label" %><br />
+          <%= f.email_field :email, readonly: true, autocomplete: "email", class: "form-control"   %>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :password, class: "colibri-form-label" %><br />
+          <%= f.password_field :password, autocomplete: "off", class: "form-control"   %>
+          <% if @minimum_password_length %>
+            <br />
+            <em><%= @minimum_password_length %>桁以上のパスワードを選んでください</em>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation, class: "colibri-form-label" %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control"   %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :current_password, class: "colibri-form-label" %> <i>(アカウントをアップデートするためには現在のパスワードが必要です)</i><br />
+          <%= f.password_field :current_password, autocomplete: "off", class: "form-control"   %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Update" , class: 'btn btn-info btn-block form-control' %>
+        </div>
+      <% end %>
+      
+    </div>
+
+    <div id="account-delete-body" class="account-body">
+
+      <div class="account-update-title">
+        <p class="colibri-devise-title">アカウントを削除する</p>
+      </div>
+
+      <p><%= button_to "アカウントを削除する", registration_path(resource_name), data: { confirm: "アカウントが削除されます" }, method: :delete, class: 'btn btn-danger btn-block form-control' %></p>
+    </div>
   </div>
+  
+</div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "off" %>
-  </div>
 
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
 <%= link_to "Back", :back %>

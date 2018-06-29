@@ -290,7 +290,7 @@ initialize_calendar = function() {
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
-$(document).on('turbolinks:load', initialize_master_calendar); 
+$(document).on('turbolinks:load', initialize_master_calendar);
 
 
 $(document).on('turbolinks:load', function(){
@@ -299,4 +299,26 @@ $(document).on('turbolinks:load', function(){
       window.location = this.dataset.link
     } 
   });
+
+  $('.switch').each(function(){
+    $this = $(this);
+    if ($this.data('admin') == true ) {
+      $this.find('.switch-input').prop("checked", true);
+    }
+
+  });
+
+  $('.slider').bind('sendAjax', function(){
+    $.ajax({
+      url: $(this).data('admin-toggle'),
+      type: 'PATCH',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    })
+  })
+
+  $('.slider').click(function(){
+    $(this).trigger('sendAjax');
+
+  });
+
 }); 

@@ -2,9 +2,9 @@
   <ul class="nav nav-tabs">
   	<li class="colibri-app-menu" id="nav-timeline"><%= link_to 'スケジュール一覧', plannings_path, class: "colibri-menu-link", id: "timeline-url" %></li>
     <li class="colibri-app-menu" id="nav-projects"><%= link_to '利用者一覧', patients_path, class: "colibri-menu-link", id: "projects-url" %></li>
-    <li class="colibri-app-menu nav-selected" id="nav-contacts"><%= link_to 'ヘルパー一覧', nurses_path, class: "colibri-menu-link", id: "contacts-url" %></li>
+    <li class="colibri-app-menu" id="nav-contacts"><%= link_to 'ヘルパー一覧', nurses_path, class: "colibri-menu-link", id: "contacts-url" %></li>
     <% if policy(:user).is_admin? %>
-    	<li class="colibri-app-menu" id="nav-contacts"><%= link_to '事業所設定', users_path, class: "colibri-menu-link", id: "contacts-url" %></li>
+    	<li class="colibri-app-menu nav-selected" id="nav-contacts"><%= link_to '事業所設定', users_path, class: "colibri-menu-link", id: "contacts-url" %></li>
     <% end %>
   </ul>
 </div>

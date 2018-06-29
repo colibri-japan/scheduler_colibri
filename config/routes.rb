@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resources :users, only: [:index, :edit, :update]
+
   resources :plannings do
   	resources :appointments
   	resources :recurring_appointments
@@ -23,6 +25,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
+
+  patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
 
   root 'plannings#index'
 end

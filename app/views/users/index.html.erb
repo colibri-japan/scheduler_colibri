@@ -1,0 +1,38 @@
+<%= render 'layouts/users_menu' %>
+
+
+<div id="index-container">
+  <div id="index-table-container">
+    <table class="table table-hover%>">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>メール</th>
+          <th>アドミン権限</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td>
+              <label class="switch" data-admin="<%= user.admin %>">
+                <input class="switch-input" type="checkbox" id="<%= user.id %>">
+                <span class="slider round" data-admin-toggle="<%= toggle_admin_path(user) %>" id="<%= user.id %>"></span>
+              </label>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+</div>
+
+
+
+
+  

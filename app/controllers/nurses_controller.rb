@@ -1,6 +1,6 @@
 class NursesController < ApplicationController
   before_action :set_corporation
-  before_action :set_nurse, only: [:edit, :show, :update, :destroy]
+  before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable]
 
   def index
   	@nurses = @corporation.nurses.all.order(created_at: :asc)
@@ -49,6 +49,10 @@ class NursesController < ApplicationController
       format.json { head :no_content }
       format.js
     end
+  end
+
+  def payable
+    @provided_services = @nurse.provided_services.order(created_at: 'desc').includes(:payable)
   end
 
 

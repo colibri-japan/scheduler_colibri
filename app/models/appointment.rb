@@ -7,6 +7,7 @@ class Appointment < ApplicationRecord
 	belongs_to :patient, optional: true
 	belongs_to :planning
 	belongs_to :original, class_name: 'Appointment', optional: true
+	has_many :provided_services, as: :payable
 
 	validates :title, presence: true
 
@@ -18,6 +19,7 @@ class Appointment < ApplicationRecord
 	end
 
 	private
+
 
 	def default_master
 		self.master = true if self.master.nil?

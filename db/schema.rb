@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180629100915) do
+ActiveRecord::Schema.define(version: 20180702103354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,19 @@ ActiveRecord::Schema.define(version: 20180629100915) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["corporation_id"], name: "index_plannings_on_corporation_id"
+  end
+
+  create_table "provided_services", force: :cascade do |t|
+    t.string "payable_type"
+    t.bigint "payable_id"
+    t.integer "hourly_wage"
+    t.integer "service_duration"
+    t.integer "total_wage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "nurse_id"
+    t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
+    t.index ["payable_type", "payable_id"], name: "index_provided_services_on_payable_type_and_payable_id"
   end
 
   create_table "recurring_appointments", force: :cascade do |t|

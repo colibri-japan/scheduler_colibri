@@ -8,6 +8,7 @@ class RecurringAppointment < ApplicationRecord
 	belongs_to :patient, optional: true
 	belongs_to :planning
 	belongs_to :original, class_name: 'RecurringAppointment', optional: true
+	has_many :provided_services, as: :payable
 
 	before_save :default_frequency
 	before_save :default_master
@@ -46,6 +47,25 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	private
+
+	def self.count_as_payable
+		recurring_appointments = RecurringAppointment.where(displayable: true, anchor: Time.now.beginning_of_month..Time.now.end_of_month).all
+
+		date = Date.today
+		timezone = ActiveSupport::TimeZone['Asia/Tokyo']
+		start_time = timezone.local(date.year, date.month, date.day)
+
+		end_time = start_time.end_of_day
+
+		recurring_appointments.each do |recurring_appointment|
+			occurrences = recurring_appointment.appointments(start_time, end_time)
+			unless occurrences.blank?
+				duration = recurring_appointment.end - recurring_appointment.start
+				provided = recurring_appointment.provided_services.create(service_duration: duration, nurse_id: recurring_appointment.nurse_id)
+			end
+		end
+
+	end
 
 	def default_frequency
 		self.frequency =0 if self.frequency.nil?

@@ -1,0 +1,28 @@
+<table>
+	<thead>
+		<tr>
+			<th>日付</th>
+			<th>サービスタイプ</th>
+			<th>利用者名</th>
+			<th>提供時間</th>
+			<th>時給</th>
+			<th>計</th>
+		</tr>
+		
+	</thead>
+
+	<tbody>
+		<% @provided_services.each do |provided_service| %>
+		<tr>
+			<td><%= provided_service.created_at.strftime("%-m月%-d日") %></td>
+			<td><%= provided_service.payable.try(:title) %></td>
+			<td><%= provided_service.patient.try(:name) %> </td>
+			<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
+			<td><%= provided_service.hourly_wage %></td>
+			<td><%= provided_service.total_wage %></td>
+
+		</tr>
+		<% end %>
+	</tbody>
+	
+</table>

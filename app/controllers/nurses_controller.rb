@@ -53,6 +53,12 @@ class NursesController < ApplicationController
 
   def payable
     @provided_services = @nurse.provided_services.order(created_at: 'desc').includes(:payable, :patient)
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @provided_services.to_csv }
+      format.xls 
+    end
   end
 
 

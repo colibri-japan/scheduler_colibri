@@ -2,6 +2,10 @@
 
 <div id="index-container">
 	<h2><%= "#{@nurse.name}の給付管理" %></h2>
+
+	<div class="align-right">
+		<%= link_to 'エクセルをダウンロードする', nurse_payable_path(@nurse, format: :xls), class: 'btn btn-success text-white' %>
+	</div>
 	<table class="table">
 		<thead>
 			<tr>

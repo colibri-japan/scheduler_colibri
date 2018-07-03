@@ -2,6 +2,7 @@ class ProvidedServicesController < ApplicationController
 
 	def update
 		@provided_service = ProvidedService.find(params[:id])
+		@old_salary = @provided_service.total_wage
 
 		respond_to do |format|
 			if @provided_service.update(provided_service_params)

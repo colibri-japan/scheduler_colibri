@@ -41,10 +41,18 @@
 						<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
 					<% end %>
 				</td>
-				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %></td>
+				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
 
 			</tr>
 			<% end %>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td id="total-salary-label">合計：</td>
+				<td id="total-salary"><%= @provided_services.sum { |p| p.total_wage } %>¥</td>
+			</tr>
 		</tbody>
 		
 	</table>

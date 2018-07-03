@@ -51,16 +51,35 @@ class RecurringAppointment < ApplicationRecord
 	def self.count_as_payable
 		recurring_appointments = RecurringAppointment.where(displayable: true, anchor: Time.now.beginning_of_month..Time.now.end_of_month).all
 
+		puts "ids:"
+		puts recurring_appointments.ids
+
 		date = Date.today
 		timezone = ActiveSupport::TimeZone['Asia/Tokyo']
 		start_time = timezone.local(date.year, date.month, date.day)
 
 		end_time = start_time.end_of_day
 
+		puts "date"
+		puts date
+		puts "timezone"
+		puts timezone
+
+		puts "start:"
+		puts start_time
+		puts "end:"
+		puts end_time
+
 		recurring_appointments.each do |recurring_appointment|
+			puts "recurr appo number:"
+			puts recurring_appointment.id
 			occurrences = recurring_appointment.appointments(start_time, end_time)
+			puts "occurences"
+			puts occurrences
 			unless occurrences.blank?
 				duration = recurring_appointment.end - recurring_appointment.start
+				puts "duration"
+				puts duration
 				provided = recurring_appointment.provided_services.create(service_duration: duration, nurse_id: recurring_appointment.nurse_id, planning_id: recurring_appointment.planning_id)
 			end
 		end

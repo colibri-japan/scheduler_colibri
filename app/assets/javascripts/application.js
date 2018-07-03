@@ -337,4 +337,13 @@ $(document).on('turbolinks:load', function(){
 
   });
 
+  $('input.edit-hourly-wage').change(function(){
+    $.ajax({
+      url: $(this).data('service-url') + '.js',
+      type: 'PATCH',
+      data:  { 'provided_service': { 'hourly_wage': $(this).val() }  },
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    })
+  });
+
 }); 

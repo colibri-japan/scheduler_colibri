@@ -52,7 +52,7 @@ class NursesController < ApplicationController
   end
 
   def payable
-    @provided_services = @nurse.provided_services.order(created_at: 'desc').includes(:payable)
+    @provided_services = @nurse.provided_services.order(created_at: 'desc').includes(:payable, :patient)
   end
 
 

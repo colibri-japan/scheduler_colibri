@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     resources :activities
   end
 
+  resources :provided_services, only: [:update, :show]
+
   resources :patients
 
   resources :nurses

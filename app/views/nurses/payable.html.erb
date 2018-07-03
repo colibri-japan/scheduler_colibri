@@ -1,6 +1,7 @@
 <%= render 'layouts/nurses_menu' %>
 
 <div id="index-container">
+	<h2><%= "#{@nurse.name}の給付管理" %></h2>
 	<table class="table">
 		<thead>
 			<tr>
@@ -17,10 +18,16 @@
 		<tbody>
 			<% @provided_services.each do |provided_service| %>
 			<tr>
-				<td><%= provided_service.created_at.strftime("%D") %></td>
-				<td><%= provided_service.payable.title %></td>
-				<td><%= provided_service.payable.patient_id %> </td>
+				<td><%= provided_service.created_at.strftime("%-m月%-d日") %></td>
+				<td><%= provided_service.payable.try(:title) %></td>
+				<td><%= provided_service.patient.try(:name) %> </td>
 				<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
+				<td>
+					<%= form_for provided_service, url: {action: 'update'}, remote: true do |f| %>
+						<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
+					<% end %>
+				</td>
+				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %></td>
 
 			</tr>
 			<% end %>

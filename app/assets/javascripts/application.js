@@ -346,4 +346,10 @@ $(document).on('turbolinks:load', function(){
     })
   });
 
+  $('#schedule-filter').change(function(){
+    window.location = nursePayableUrl + '?p=' + $(this).val();
+  });
+
+  $('#schedule-filter option').append('月');
+
 }); 

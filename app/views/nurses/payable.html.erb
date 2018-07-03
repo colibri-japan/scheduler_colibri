@@ -1,10 +1,20 @@
+<%= javascript_tag do  %>
+	window.nursePayableUrl = "<%= j nurse_payable_path(@nurse) %>"
+<% end %>
+
+
 <%= render 'layouts/nurses_menu' %>
 
 <div id="index-container">
 	<h2><%= "#{@nurse.name}の給付管理" %></h2>
 
+	<div class="">
+		フィルター：
+		<%= select_tag('schedule-filter', options_from_collection_for_select(@plannings, 'id', 'business_month', @planning.id), prompt: "スケジュール") %>
+	</div>
+
 	<div class="align-right">
-		<%= link_to 'エクセルをダウンロードする', nurse_payable_path(@nurse, format: :xls), class: 'btn btn-success text-white' %>
+		<%= link_to 'ダウンロードする', nurse_payable_path(@nurse, format: :xls), class: 'btn btn-success text-white' %>
 	</div>
 	<table class="table">
 		<thead>

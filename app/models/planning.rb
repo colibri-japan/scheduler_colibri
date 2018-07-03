@@ -4,5 +4,5 @@ class Planning < ApplicationRecord
 	has_many :recurring_appointments
 	has_many :unavailabilities
 	has_many :recurring_unavailabilities
-
+	has_many :provided_services
 end

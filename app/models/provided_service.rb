@@ -2,6 +2,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :payable, polymorphic: true
 	belongs_to :nurse
 	belongs_to :patient
+	belongs_to :planning
 
 	before_save :calculate_total_wage
 

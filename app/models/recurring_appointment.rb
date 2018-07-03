@@ -61,7 +61,7 @@ class RecurringAppointment < ApplicationRecord
 			occurrences = recurring_appointment.appointments(start_time, end_time)
 			unless occurrences.blank?
 				duration = recurring_appointment.end - recurring_appointment.start
-				provided = recurring_appointment.provided_services.create(service_duration: duration, nurse_id: recurring_appointment.nurse_id)
+				provided = recurring_appointment.provided_services.create(service_duration: duration, nurse_id: recurring_appointment.nurse_id, planning_id: recurring_appointment.planning_id)
 			end
 		end
 

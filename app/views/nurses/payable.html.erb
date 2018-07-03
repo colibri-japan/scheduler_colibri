@@ -51,7 +51,7 @@
 				<td></td>
 				<td></td>
 				<td id="total-salary-label">合計：</td>
-				<td id="total-salary"><%= @provided_services.sum { |p| p.total_wage } %>¥</td>
+				<td id="total-salary"><%= @provided_services.sum { |p| p.total_wage.present? ? p.total_wage : 0 }  %>¥</td>
 			</tr>
 		</tbody>
 		

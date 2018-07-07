@@ -1,6 +1,8 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :destroy]
   before_action :set_planning
+  before_action :set_corporation
+
 
   # GET /appointments
   # GET /appointments.json
@@ -24,14 +26,14 @@ class AppointmentsController < ApplicationController
   # GET /appointments/new
   def new
     @appointment = Appointment.new
-    @nurses = Nurse.all
-    @patients = Patient.all
+    @nurses = @corporation.nurses.all 
+    @patients = @corporation.patients.all
   end
 
   # GET /appointments/1/edit
   def edit
-    @nurses = Nurse.all
-    @patients = Patient.all
+    @nurses = @corporation.nurses.all 
+    @patients = @corporation.patients.all
   end
 
   # POST /appointments
@@ -94,6 +96,10 @@ class AppointmentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_appointment
       @appointment = Appointment.find(params[:id])
+    end
+
+    def set_corporation
+      @corporation = Corporation.find(current_user.corporation_id)
     end
 
     def set_planning

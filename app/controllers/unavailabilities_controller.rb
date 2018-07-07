@@ -1,6 +1,7 @@
 class UnavailabilitiesController < ApplicationController
 	before_action :set_unavailability, only: [:show, :edit, :update, :destroy]
 	before_action :set_planning
+	before_action :set_corporation
 
 	# GET /unavailabilities
 	# GET /unavailabilities.json
@@ -21,14 +22,14 @@ class UnavailabilitiesController < ApplicationController
 	# GET /unavailabilities/new
 	def new
 	  @unavailability = Unavailability.new
-	  @nurses = Nurse.all
-	  @patients = Patient.all
+	  @nurses = @corporation.nurses.all 
+	  @patients = @corporation.patients.all
 	end
 
 	# GET /unavailabilities/1/edit
 	def edit
-	  @nurses = Nurse.all
-	  @patients = Patient.all
+	　@nurses = @corporation.nurses.all 
+	　@patients = @corporation.patients.all
 	end
 
 	# POST /unavailabilities
@@ -82,6 +83,10 @@ class UnavailabilitiesController < ApplicationController
 	  # Use callbacks to share common setup or constraints between actions.
 	  def set_unavailability
 	    @unavailability = Unavailability.find(params[:id])
+	  end
+
+	  def set_corporation
+	    @corporation = Corporation.find(current_user.corporation_id)
 	  end
 
 	  def set_planning

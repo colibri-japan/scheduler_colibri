@@ -1,6 +1,7 @@
 class RecurringUnavailabilitiesController < ApplicationController
 	before_action :set_recurring_unavailability, only: [:show, :edit, :update, :destroy]
 	before_action :set_planning
+	before_action :set_corporation
 
 	# GET /recurring_unavailabilities
 	# GET /recurring_unavailabilities.json
@@ -22,14 +23,14 @@ class RecurringUnavailabilitiesController < ApplicationController
 	# GET /recurring_unavailabilities/new
 	def new
 	  @recurring_unavailability = RecurringUnavailability.new
-	  @nurses = Nurse.all
-	  @patients = Patient.all
+	  @nurses = @corporation.nurses.all 
+	  @patients = @corporation.patients.all
 	end
 
 	# GET /recurring_unavailabilities/1/edit
 	def edit
-	  @nurses = Nurse.all
-	  @patients = Patient.all
+	  @nurses = @corporation.nurses.all 
+	  @patients = @corporation.patients.all
 	end
 
 	# POST /recurring_unavailabilities

@@ -20,7 +20,7 @@
 	<div class="calendar"></div>
 
 	<div id="planning-activity-module">
-		<p class="planning-activity-module-title">最新アクティビティ</p>
+		<p class="planning-activity-module-title">最新編集履歴</p>
 		<div id="planning-activities">
 			<% @activities.each do |activity| %>
 				<%= render partial: 'activities/activity', locals: {activity: activity} %>

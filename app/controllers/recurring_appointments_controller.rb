@@ -1,6 +1,7 @@
 class RecurringAppointmentsController < ApplicationController
   before_action :set_recurring_appointment, only: [:show, :edit, :destroy]
   before_action :set_planning
+  before_action :set_valid_range, only: [:new, :edit]
 
   # GET /recurring_appointments
   # GET /recurring_appointments.json
@@ -127,6 +128,13 @@ class RecurringAppointmentsController < ApplicationController
 
     def set_planning
       @planning = Planning.find(params[:planning_id])
+    end
+
+    def set_valid_range
+      valid_month = @planning.business_month
+      valid_year = @planning.business_year
+      @start_valid = Date.new(valid_year, valid_month, 1).strftime("%Y-%m-%d")
+      @end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

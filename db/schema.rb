@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180703120918) do
+ActiveRecord::Schema.define(version: 20180705155605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,14 @@ ActiveRecord::Schema.define(version: 20180703120918) do
     t.string "identifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "deleted_occurrences", force: :cascade do |t|
+    t.bigint "recurring_appointment_id"
+    t.date "deleted_day"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recurring_appointment_id"], name: "index_deleted_occurrences_on_recurring_appointment_id"
   end
 
   create_table "nurses", force: :cascade do |t|
@@ -196,5 +204,6 @@ ActiveRecord::Schema.define(version: 20180703120918) do
   end
 
   add_foreign_key "appointments", "plannings"
+  add_foreign_key "deleted_occurrences", "recurring_appointments"
   add_foreign_key "recurring_appointments", "plannings"
 end

@@ -9,6 +9,7 @@ class RecurringAppointment < ApplicationRecord
 	belongs_to :planning
 	belongs_to :original, class_name: 'RecurringAppointment', optional: true
 	has_many :provided_services, as: :payable
+	has_many :deleted_occurrences
 
 	before_save :default_frequency
 	before_save :default_master
@@ -43,16 +44,21 @@ class RecurringAppointment < ApplicationRecord
 	def appointments(start_date, end_date)
 		start_frequency = start_date ? start_date.to_date : Date.today - 1.year
 		end_frequency = end_date ? end_date.to_date : Date.today + 1.year
-		schedule.occurrences_between(start_frequency, end_frequency)
+
+		deleted_occurrences = self.deleted_occurrences.map { |d| d.deleted_day }
+		initial_occurrences = schedule.occurrences_between(start_frequency, end_frequency)
+		initial_occurrences.map! {|occurrence| occurrence.to_date }
+
+		initial_occurrences - deleted_occurrences
 	end
+
 
 	private
 
 	def self.count_as_payable
 		recurring_appointments = RecurringAppointment.where(displayable: true, anchor: Time.now.beginning_of_month..Time.now.end_of_month).all
 
-		puts "ids:"
-		puts recurring_appointments.ids
+
 
 		date = Date.today
 		timezone = ActiveSupport::TimeZone['Asia/Tokyo']
@@ -60,26 +66,13 @@ class RecurringAppointment < ApplicationRecord
 
 		end_time = start_time.end_of_day
 
-		puts "date"
-		puts date
-		puts "timezone"
-		puts timezone
-
-		puts "start:"
-		puts start_time
-		puts "end:"
-		puts end_time
 
 		recurring_appointments.each do |recurring_appointment|
-			puts "recurr appo number:"
-			puts recurring_appointment.id
+
 			occurrences = recurring_appointment.appointments(start_time, end_time)
-			puts "occurences"
-			puts occurrences
+
 			unless occurrences.blank?
 				duration = recurring_appointment.end - recurring_appointment.start
-				puts "duration"
-				puts duration
 				provided = ProvidedService.create!(payable: recurring_appointment, service_duration: duration, nurse_id: recurring_appointment.nurse_id, patient_id: recurring_appointment.patient_id, planning_id: recurring_appointment.planning_id)
 			end
 		end

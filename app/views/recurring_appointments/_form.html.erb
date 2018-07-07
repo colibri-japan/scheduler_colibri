@@ -46,11 +46,34 @@
     <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
   </div>
 
+
+
   <%= hidden_field_tag(:q, 'master') if @master == true %>
 
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
     <%= link_to '新規サービス', new_planning_appointment_path(@planning), class: 'btn btn-default', remote: true if recurring_appointment.new_record? %>
-    <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'サービスが削除されます'}, remote: true unless recurring_appointment.new_record? %>
+    <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除されます'}, remote: true unless recurring_appointment.new_record? %>
+    
+  </div>
+<% end %>
+
+<% unless recurring_appointment.new_record? %>
+  <div class="form-group">
+    <p class="colibri-form-label">サービス日程詳細</p>
+    <table>
+      <% recurring_appointment.appointments(@start_valid, @end_valid).each do |appointment| %>
+        <tr>
+          <th><%= appointment.strftime("%-m月%-d日") %></th>
+          <th>
+            <%= form_for [recurring_appointment, recurring_appointment.deleted_occurrences.build], remote: true do |f| %>
+              <%= f.hidden_field :deleted_day, value: appointment %>
+              <%= f.submit '削除する', data: {confirm: "#{appointment.strftime("%-m月%-d日")}のサービスが削除されます"} %>
+            <% end %>
+          </th>
+        </tr>
+      <% end %>
+    </table>
+
   </div>
 <% end %>

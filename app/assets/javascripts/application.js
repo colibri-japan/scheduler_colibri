@@ -292,7 +292,6 @@ $(document).on('turbolinks:load', initialize_nurse_calendar);
 $(document).on('turbolinks:load', initialize_patient_calendar); 
 $(document).on('turbolinks:load', initialize_master_calendar);
 
-
 $(document).on('turbolinks:load', function(){
   $("table > tbody > tr[data-link]").not('thead').click(function(){
     if (this.dataset.link != '') {
@@ -352,4 +351,17 @@ $(document).on('turbolinks:load', function(){
 
   $('#schedule-filter option').append('月');
 
+  $('span.appointment-delete-occurrence').on('click', function(){
+    alert('clicked');
+
+
+  });
+
 }); 
+
+
+$(document).on('page:change', function(){
+  $('#new_recurring_appointment').on('shown.bs.modal', function(){
+    alert("I want this to happen");
+  });
+});

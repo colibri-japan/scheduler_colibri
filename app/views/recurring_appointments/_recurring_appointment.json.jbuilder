@@ -1,4 +1,5 @@
 appointments = recurring_appointment.appointments(params[:start], params[:end])
+
 json.array! appointments do |appointment|
 	date_format = recurring_appointment.all_day_recurring_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 	json.id "recurring_#{recurring_appointment.id}"

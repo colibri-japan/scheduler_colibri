@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     resources :activities
   end
 
+  resources :recurring_appointments do
+    resources :deleted_occurrences, only: [:new, :create]
+  end
+
   resources :provided_services, only: [:update, :show]
 
   resources :patients

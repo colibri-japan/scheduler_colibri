@@ -12,9 +12,9 @@ class RecurringAppointmentsController < ApplicationController
      elsif params[:patient_id].present?
        @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true)
      elsif params[:q] == 'master'
-       @recurring_appointments = @planning.recurring_appointments.where(master: true).includes(:patient)
+       @recurring_appointments = @planning.recurring_appointments.where(master: true).includes(:patient, :nurse)
      else
-      @recurring_appointments = @planning.recurring_appointments.where(displayable: true).includes(:patient)
+      @recurring_appointments = @planning.recurring_appointments.where(displayable: true).includes(:patient, :nurse)
     end
 
   end

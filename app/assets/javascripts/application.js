@@ -243,7 +243,7 @@ initialize_calendar = function() {
         url: window.corporationNursesURL,
       }, 
 
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesURL, window.recurringUnavailabilitiesURL],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
 
 
 

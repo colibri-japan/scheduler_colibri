@@ -147,7 +147,14 @@ initialize_master_calendar = function() {
     var master_calendar = $(this);
     master_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      defaultView: 'agendaDay',
+      defaultView: 'agendaWeek',
+      views: {
+      	agendaThreeDay: {
+      		type: 'agenda',
+      		duration: {days: 3},
+      		buttonText: '３日'
+      	}
+      },
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -157,7 +164,7 @@ initialize_master_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: (window.userIsAdmin == 'true') ? true : false,
@@ -220,7 +227,14 @@ initialize_calendar = function() {
     var calendar = $(this);
     calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      defaultView: 'agendaDay',
+      defaultView: 'agendaWeek',
+      views: {
+      	agendaThreeDay: {
+      		type: 'agenda',
+      		duration: {days: 3},
+      		buttonText: '３日'
+      	}
+      },
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -230,7 +244,7 @@ initialize_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: true,
       selectHelper: true,

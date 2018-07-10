@@ -24,6 +24,7 @@
 				<th>利用者名</th>
 				<th>提供時間</th>
 				<th>時給</th>
+				<th>回数</th>
 				<th>計</th>
 			</tr>
 			
@@ -41,11 +42,24 @@
 						<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
 					<% end %>
 				</td>
+				<td></td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
 
 			</tr>
 			<% end %>
+			<% if @counter.present? %>
+				<tr>
+					<td><%= @counter.created_at.strftime("%-m月%-d日") %></td>
+					<td>移動手当</td>
+					<td></td>
+					<td></td>
+					<td><%= @counter.hourly_wage %></td>
+					<td><%= @counter.service_counts %></td>
+					<td><%= @counter.total_wage %></td>
+				</tr>
+			<% end %>
 			<tr>
+				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>

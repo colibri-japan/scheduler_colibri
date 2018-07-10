@@ -12,6 +12,7 @@
         <Cell><Data ss:Type="String">利用者名</Data></Cell>
         <Cell><Data ss:Type="String">提供時間</Data></Cell>
         <Cell><Data ss:Type="String">時給</Data></Cell>
+        <Cell><Data ss:Type="String">回数</Data></Cell>
         <Cell><Data ss:Type="String">計</Data></Cell>
       </Row>
     <% @provided_services.each do |provided_service| %>
@@ -21,9 +22,30 @@
         <Cell><Data ss:Type="String"><%= provided_service.patient.try(:name) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= provided_service.hourly_wage %></Data></Cell>
+        <Cell><Data ss:Type="Number"></Data></Cell>
         <Cell><Data ss:Type="Number"><%= provided_service.total_wage %></Data></Cell>
       </Row>
     <% end %>
+    <% if @counter.present? %>
+    	<Row>
+    		<Cell><Data ss:Type="String"><%= @counter.created_at.strftime("%-m月%-d日") %></Data></Cell>
+    		<Cell><Data ss:Type="String">移動手当</Data></Cell>
+    		<Cell><Data ss:Type="String"></Data></Cell>
+    		<Cell><Data ss:Type="String"></Data></Cell>
+    		<Cell><Data ss:Type="Number"><%= @counter.hourly_wage %></Data></Cell>
+    		<Cell><Data ss:Type="Number"><%= @counter.service_counts %></Data></Cell>
+    		<Cell><Data ss:Type="Number"><%= @counter.total_wage %></Data></Cell>
+    	</Row>
+    <% end %>
+    	<Row>
+    		<Cell><Data ss:Type="String"></Data></Cell>
+    		<Cell><Data ss:Type="String"></Data></Cell>
+    		<Cell><Data ss:Type="String"></Data></Cell>
+    		<Cell><Data ss:Type="String"></Data></Cell>
+    		<Cell><Data ss:Type="Number"></Data></Cell>
+    		<Cell><Data ss:Type="Number">合計:</Data></Cell>
+    		<Cell><Data ss:Type="Number"><%= @provided_services.sum { |p| p.total_wage.present? ? p.total_wage : 0 }  %>¥</Data></Cell>
+    	</Row>
     </Table>
   </Worksheet>
 </Workbook>

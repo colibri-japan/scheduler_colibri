@@ -55,7 +55,11 @@ class NursesController < ApplicationController
     @plannings = @corporation.plannings.all
     params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p]) : @planning = @plannings.last
     
-    @provided_services = @nurse.provided_services.where(planning_id: @planning.id).order(created_at: 'desc').includes(:payable, :patient)
+    @provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false).order(created_at: 'desc').includes(:payable, :patient)
+
+    @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true)
+    @counter.update(service_counts: @provided_services.count )
+    
 
     respond_to do |format|
       format.html

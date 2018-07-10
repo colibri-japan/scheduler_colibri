@@ -1,28 +1,29 @@
-<table>
-	<thead>
-		<tr>
-			<th>日付</th>
-			<th>サービスタイプ</th>
-			<th>利用者名</th>
-			<th>提供時間</th>
-			<th>時給</th>
-			<th>計</th>
-		</tr>
-		
-	</thead>
-
-	<tbody>
-		<% @provided_services.each do |provided_service| %>
-		<tr>
-			<td><%= provided_service.created_at.strftime("%-m月%-d日") %></td>
-			<td><%= provided_service.payable.try(:title) %></td>
-			<td><%= provided_service.patient.try(:name) %> </td>
-			<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
-			<td><%= provided_service.hourly_wage %></td>
-			<td><%= provided_service.total_wage %></td>
-
-		</tr>
-		<% end %>
-	</tbody>
-	
-</table>
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">日付</Data></Cell>
+        <Cell><Data ss:Type="String">サービスタイプ</Data></Cell>
+        <Cell><Data ss:Type="String">利用者名</Data></Cell>
+        <Cell><Data ss:Type="String">提供時間</Data></Cell>
+        <Cell><Data ss:Type="String">時給</Data></Cell>
+        <Cell><Data ss:Type="String">計</Data></Cell>
+      </Row>
+    <% @provided_services.each do |provided_service| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= provided_service.created_at.strftime("%-m月%-d日") %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= provided_service.payable.try(:title) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= provided_service.patient.try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= provided_service.hourly_wage %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= provided_service.total_wage %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

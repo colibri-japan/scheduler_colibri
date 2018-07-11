@@ -80,8 +80,15 @@ class RecurringAppointmentsController < ApplicationController
     if params[:q] == 'master'
       @recurring_appointment = RecurringAppointment.find(params[:id])
       @original_recurring_appointment = @recurring_appointment
-      @recurring_appointment.update(recurring_appointment_params)
-      @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+
+      if params[:appointment].present?
+        @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+      else
+        @recurring_appointment.update(recurring_appointment_params)
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
+      end
+
 
     else
       @original_recurring_appointment = RecurringAppointment.find(params[:id])

@@ -204,7 +204,7 @@ initialize_master_calendar = function() {
              }
            };
            $.ajax({
-               url: appointment.base_url + '.js',
+               url: appointment.base_url + '.js?q=master',
                type: 'PATCH',
                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
                data: appointment_data,

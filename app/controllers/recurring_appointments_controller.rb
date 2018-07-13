@@ -77,54 +77,41 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1
   # PATCH/PUT /recurring_appointments/1.json
   def update
+    @original_recurring_appointment = RecurringAppointment.find(params[:id])
+    @recurring_appointment = @original_recurring_appointment.dup
+
+    @recurring_appointment.original_id = @original_recurring_appointment.id
+
     if params[:q] == 'master'
-      @recurring_appointment = RecurringAppointment.find(params[:id])
-      @original_recurring_appointment = @recurring_appointment
-
-      if params[:appointment].present?
-        @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
-        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
-      else
-        @recurring_appointment.update(recurring_appointment_params)
-        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
-      end
-
-
+      @original_recurring_appointment.update(master: false, displayable: false)
     else
-      @original_recurring_appointment = RecurringAppointment.find(params[:id])
-
-      @recurring_appointment = @original_recurring_appointment.dup
+      @original_recurring_appointment.update(displayable: false)
       @recurring_appointment.master = false
-      @recurring_appointment.displayable = true
-      @recurring_appointment.original_id = @original_recurring_appointment.id
-
-      @recurring_appointment.save
-
-
-      if params[:appointment].present?
-        @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
-        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
-
-        @original_recurring_appointment.update(displayable: false)
-      else
-        @recurring_appointment.update(recurring_appointment_params)
-        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id
-
-        @original_recurring_appointment.update(displayable: false)
-      end
     end
+
+    @recurring_appointment.save
+
+    if params[:appointment].present?
+      @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
+    else
+      @recurring_appointment.update(recurring_appointment_params)
+    end  
+
+    @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
   end
 
 
   # DELETE /recurring_appointments/1
   # DELETE /recurring_appointments/1.json
-  def destroy
-    @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
-    @recurring_appointment.destroy
+  def destroy    
     respond_to do |format|
-      format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
-      format.json { head :no_content }
-      format.js
+      if @recurring_appointment.update(displayable: false)
+        @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
+
+        format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
+        format.json { head :no_content }
+        format.js
+      end
     end
   end
 

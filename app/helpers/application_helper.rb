@@ -11,23 +11,25 @@ module ApplicationHelper
 	end
 
 	def weekday(date)
-		case date.wday
-		when 1
-			"(月)"
-		when 2
-			"(火)"
-		when 3
-			"(水)"
-		when 4
-			"(木)"
-		when 5
-			"(金)"
-		when 6
-			"(土)"
-		when 7
-			"(日)"
-		else
-			""
+		unless date.nil?
+			case date.wday
+			when 1
+				"(月)"
+			when 2
+				"(火)"
+			when 3
+				"(水)"
+			when 4
+				"(木)"
+			when 5
+				"(金)"
+			when 6
+				"(土)"
+			when 7
+				"(日)"
+			else
+				""
+			end
 		end
 	end
 end

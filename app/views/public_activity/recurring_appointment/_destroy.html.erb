@@ -1,1 +1,4 @@
 がサービスを削除しました。
+<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %><%= '様' if activity.trackable.patient.name.present? %></span>
+<span class="activity-important-fields"><%= activity.trackable.nurse.try(:name) %></span>
+<%= weekday(activity.trackable.try(:anchor) ) %><%= activity.trackable.try(:start).strftime("%H:%M") %> <%= activity.trackable.try(:end).strftime("%H:%M") %>

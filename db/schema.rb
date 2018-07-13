@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180710135706) do
+ActiveRecord::Schema.define(version: 20180713141629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,11 @@ ActiveRecord::Schema.define(version: 20180710135706) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "planning_id"
+    t.string "previous_patient"
+    t.string "previous_nurse"
+    t.datetime "previous_start"
+    t.datetime "previous_end"
+    t.date "previous_anchor"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
     t.index ["planning_id"], name: "index_activities_on_planning_id"

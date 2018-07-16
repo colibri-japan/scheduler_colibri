@@ -31,5 +31,4 @@ class ProvidedService < ApplicationRecord
 		self.countable = false unless self.countable.present?
 	end
 
-
 end

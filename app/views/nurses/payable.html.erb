@@ -23,7 +23,7 @@
 				<th>サービスタイプ</th>
 				<th>利用者名</th>
 				<th>提供時間</th>
-				<th>時給</th>
+				<th>時給/手数料</th>
 				<th>回数</th>
 				<th>計</th>
 			</tr>
@@ -53,9 +53,13 @@
 					<td>移動手当</td>
 					<td></td>
 					<td></td>
-					<td><%= @counter.hourly_wage %></td>
+					<td>
+						<%= form_for @counter, url: {action: 'update'}, remote: true do |f| %>
+							<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(@counter)}, class: 'edit-hourly-wage' %>
+						<% end %>
+					</td>
 					<td><%= @counter.service_counts %></td>
-					<td><%= @counter.total_wage %></td>
+					<td id="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
 				</tr>
 			<% end %>
 			<tr>

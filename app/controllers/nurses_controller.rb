@@ -57,7 +57,7 @@ class NursesController < ApplicationController
     
     @provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false).order(created_at: 'desc').includes(:payable, :patient)
 
-    @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true)
+    set_counter
     @counter.update(service_counts: @provided_services.count )
     
 
@@ -99,5 +99,16 @@ class NursesController < ApplicationController
 
   def nurse_params
     params.require(:nurse).permit(:name, :address, :phone_number, :phone_mail)
+  end
+
+  def set_counter
+    @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true).take
+
+    unless @counter.present?
+      @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true)
+    end
+  end
+
+  def update_counter
   end
 end

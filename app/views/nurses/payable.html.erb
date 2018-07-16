@@ -58,7 +58,11 @@
 							<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(@counter)}, class: 'edit-hourly-wage' %>
 						<% end %>
 					</td>
-					<td><%= @counter.service_counts %></td>
+					<td>
+						<%= form_for @counter, url: {action: 'update'}, remote: true do |f| %>
+							<%= f.text_field :service_counts, data: {service_url: provided_service_path(@counter)}, class: 'edit-service-counts' %>
+						<% end %>
+					</td>
 					<td id="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
 				</tr>
 			<% end %>

@@ -359,6 +359,15 @@ $(document).on('turbolinks:load', function(){
     })
   });
 
+  $('input.edit-service-counts').change(function(){
+    $.ajax({
+      url: $(this).data('service-url') + '.js',
+      type: 'PATCH',
+      data: {'provided_service': {'service_counts': $(this).val()}},
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))}
+    })
+  });
+
   $('#schedule-filter').change(function(){
     window.location = nursePayableUrl + '?p=' + $(this).val();
   });

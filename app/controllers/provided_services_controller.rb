@@ -16,7 +16,7 @@ class ProvidedServicesController < ApplicationController
 	private
 
 	def provided_service_params
-		params.require(:provided_service).permit(:hourly_wage)
+		params.require(:provided_service).permit(:hourly_wage, :service_counts)
 	end
 
 

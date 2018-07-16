@@ -12,3 +12,9 @@ task :provided_services => :environment do
 	RecurringAppointment.count_as_payable
 	puts "Today's services counted as payable"
 end
+
+task :add_title_to_provided_services => :environment do
+	puts "Adding title to previously saved provided services"
+	ProvidedService.add_title 
+	puts "Finished adding titles"
+end

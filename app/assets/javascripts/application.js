@@ -30,6 +30,8 @@ initialize_nurse_calendar = function(){
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
       locale: 'ja',
+      slotLabelFormat: 'H:mm',
+      slotDuration: '00:15:00',
       validRange: {
         start: window.validRangeStart,
         end: window.validRangeEnd,
@@ -82,6 +84,8 @@ initialize_patient_calendar = function(){
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
       minTime: '07:00:00',
+      slotLabelFormat: 'H:mm',
+      slotDuration: '00:15:00',
       locale: 'ja',
       eventColor: '#7AD5DE',
       validRange: {
@@ -155,6 +159,8 @@ initialize_master_calendar = function() {
       		buttonText: '３日'
       	}
       },
+      slotLabelFormat: 'H:mm',
+      slotDuration: '00:15:00',
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -232,9 +238,11 @@ initialize_calendar = function() {
       	agendaThreeDay: {
       		type: 'agenda',
       		duration: {days: 3},
-      		buttonText: '３日'
-      	}
+      		buttonText: '３日',
+      	},
       },
+      slotLabelFormat: 'H:mm',
+      slotDuration: '00:15:00',
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -374,17 +382,23 @@ $(document).on('turbolinks:load', function(){
 
   $('#schedule-filter option').append('月');
 
-  $('span.appointment-delete-occurrence').on('click', function(){
-    alert('clicked');
+  $('#planning-activity-module').hide();
+  $('#activity-hide-button').hide();
 
-
+  $('#activity-show-button').click(function(){
+    $('#planning-activity-module').show();
+    $('.calendar').css({'max-width': '75%'});
+    $(this).hide();
+    $('#activity-hide-button').show();
   });
+
+  $('#activity-hide-button').click(function(){
+    $(this).hide();
+    $('.calendar').css({'max-width': ''});
+    $('#activity-show-button').show();
+    $('#planning-activity-module').hide();
+  });
+
 
 }); 
 
-
-$(document).on('page:change', function(){
-  $('#new_recurring_appointment').on('shown.bs.modal', function(){
-    alert("I want this to happen");
-  });
-});

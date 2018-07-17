@@ -8,11 +8,11 @@
 }
 
 .calendar {
-	max-width: 75%;
+	max-width: 100%;
 }
 
 
-#planning-activity-module{
+#planning-activity-module {
 	padding-top: 10px;
 	padding-left: 10px;
 
@@ -33,3 +33,9 @@
 #index-table-container {
 	margin-top: 18px;
 }
+
+#activity-show-button-container {
+	text-align: right;
+	margin-bottom: 10px;
+}
+

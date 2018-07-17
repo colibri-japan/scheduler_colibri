@@ -11,6 +11,12 @@ $('.patient_calendar').fullCalendar(
   true
 );
 
+$('.nurse_calendar').fullCalendar(
+  'renderEvents', 
+  jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
+  true
+);
+
 $('.master-calendar').fullCalendar(
   'renderEvents', 
   jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),

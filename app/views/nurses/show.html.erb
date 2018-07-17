@@ -2,9 +2,7 @@
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
-	window.createRecurringUnavailabilityURL = "<%= j new_planning_recurring_unavailability_url(@planning) %>";
-	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
-	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
+	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.validRangeStart = "<%= j @start_valid %>";
 	window.validRangeEnd = "<%= j @end_valid %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>"
@@ -13,7 +11,7 @@
 <%= render 'layouts/planning_menu' %>
 <%= render 'plannings/planning_nurses_submenu' %>
 
-<h2><%= @nurse.name %>の空き時間を変換する</h2>
+<h2><%= @nurse.name %>のスケジュール</h2>
 
 <div class="nurse_calendar">
   

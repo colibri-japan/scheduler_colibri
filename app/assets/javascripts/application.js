@@ -30,6 +30,13 @@ initialize_nurse_calendar = function(){
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
       locale: 'ja',
+      views: {
+        agendaThreeDay: {
+          type: 'agenda',
+          duration: {days: 3},
+          buttonText: '３日'
+        }
+      },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
       validRange: {
@@ -40,7 +47,7 @@ initialize_nurse_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'month,agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: true,
       selectHelper: true,
@@ -48,19 +55,19 @@ initialize_nurse_calendar = function(){
       eventColor: '#7AD5DE',
       editable: true,
       eventLimit: true,
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesURL, window.recurringUnavailabilitiesURL],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
 
 
       select: function(start, end) {
-        $.getScript(window.createRecurringUnavailabilityURL, function() {
-        	$('#recurring_unavailability_anchor_1i').val(moment(start).format('YYYY'));
-        	$('#recurring_unavailability_anchor_2i').val(moment(start).format('M'));
-        	$('#recurring_unavailability_anchor_3i').val(moment(start).format('D'));
-        	$('#recurring_unavailability_start_4i').val(moment(start).format('HH'));
-        	$('#recurring_unavailability_start_5i').val(moment(start).format('mm'));
-        	$('#recurring_unavailability_end_4i').val(moment(end).format('HH'));
-        	$('#recurring_unavailability_end_5i').val(moment(end).format('mm'));
-        	$("#recurring_unavailability_nurse_id").val(window.nurseId)
+        $.getScript(window.createRecurringAppointmentURL, function() {
+        	$('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
+        	$('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
+        	$('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
+        	$('#recurring_appointment_start_4i').val(moment(start).format('HH'));
+        	$('#recurring_appointment_start_5i').val(moment(start).format('mm'));
+        	$('#recurring_appointment_end_4i').val(moment(end).format('HH'));
+        	$('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+        	$("#recurring_appointment_nurse_id").val(window.nurseId)
         });
 
         nurse_calendar.fullCalendar('unselect');

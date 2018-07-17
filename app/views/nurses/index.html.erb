@@ -29,7 +29,7 @@
             <td><%= nurse.phone_mail %></td>
             <td><%= nurse.address %></td>
             <% if @planning.present? %>
-              <td><%= link_to 'ヘルパーの空き時間を変換する', planning_nurse_path(@planning, nurse) %></td>
+              <td><%= link_to 'ヘルパーのスケジュールを変換する', planning_nurse_path(@planning, nurse) %></td>
             <% else %>
               <td><%= link_to '給与管理', nurse_payable_path(nurse) %></td>
               <td><%= link_to 'エディット', edit_nurse_path(nurse) %></td>

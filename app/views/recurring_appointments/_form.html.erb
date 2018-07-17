@@ -52,7 +52,6 @@
 
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
-    <%= link_to '新規サービス', new_planning_appointment_path(@planning), class: 'btn btn-default', remote: true if recurring_appointment.new_record? %>
     <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除されます'}, remote: true unless recurring_appointment.new_record? %>
     
   </div>

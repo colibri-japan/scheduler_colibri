@@ -48,7 +48,7 @@ class RecurringAppointmentsController < ApplicationController
 
       respond_to do |format|
         if @recurring_appointment.save
-          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id
+          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
           format.js
           format.json { render :show, status: :created, location: @recurring_appointment }
         else
@@ -63,7 +63,7 @@ class RecurringAppointmentsController < ApplicationController
 
       respond_to do |format|
         if @recurring_appointment.save
-          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id
+          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
           format.js
           format.json { render :show, status: :created, location: @recurring_appointment }
         else
@@ -97,7 +97,7 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointment.update(recurring_appointment_params)
     end  
 
-    @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+    @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
   end
 
 
@@ -106,7 +106,7 @@ class RecurringAppointmentsController < ApplicationController
   def destroy    
     respond_to do |format|
       if @recurring_appointment.update(displayable: false)
-        @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
+        @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
 
         format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
         format.json { head :no_content }

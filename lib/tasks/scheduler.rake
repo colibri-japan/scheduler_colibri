@@ -18,3 +18,13 @@ task :add_title_to_provided_services => :environment do
 	ProvidedService.add_title 
 	puts "Finished adding titles"
 end
+
+task :add_nurse_patient_to_activities => :environment do
+	puts "Adding nurse and patient to previous activities"
+	PublicActivity::Activity.all.each do |activity|
+		activity.nurse_id = activity.trackable.nurse_id if activity.trackable.present?
+		activity.patient_id = activity.trackable.patient_id if activity.trackable.present?
+		activity.save 
+	end
+	puts "Finished adding nurse and patients"
+end

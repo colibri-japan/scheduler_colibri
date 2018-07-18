@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180718112915) do
+ActiveRecord::Schema.define(version: 20180718190245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,8 +32,12 @@ ActiveRecord::Schema.define(version: 20180718112915) do
     t.datetime "previous_start"
     t.datetime "previous_end"
     t.date "previous_anchor"
+    t.bigint "nurse_id"
+    t.bigint "patient_id"
+    t.index ["nurse_id"], name: "index_activities_on_nurse_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
+    t.index ["patient_id"], name: "index_activities_on_patient_id"
     t.index ["planning_id"], name: "index_activities_on_planning_id"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
     t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"

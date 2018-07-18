@@ -9,6 +9,8 @@ class NursesController < ApplicationController
 
   def show
   	@planning = Planning.find(params[:planning_id])
+    authorize @nurse, :is_employee?
+
     set_valid_range
   end
 
@@ -33,6 +35,7 @@ class NursesController < ApplicationController
   end
 
   def update
+    authorize @nurse, :is_employee?
     respond_to do |format|
       if @nurse.update(nurse_params)
         format.html {redirect_to nurses_path, notice: 'ヘルパーの情報がアップデートされました' }
@@ -43,6 +46,7 @@ class NursesController < ApplicationController
   end
 
   def destroy
+    authorize @nurse, :is_employee?
     @nurse.destroy
     respond_to do |format|
       format.html { redirect_to nurses_url, notice: '利用者が削除されました' }
@@ -52,6 +56,9 @@ class NursesController < ApplicationController
   end
 
   def payable
+    authorize current_user, :is_admin?
+    authorize @nurse, :is_employee?
+
     @plannings = @corporation.plannings.all
     params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p]) : @planning = @plannings.last
     

@@ -31,7 +31,9 @@
             <% if @planning.present? %>
               <td><%= link_to 'ヘルパーのスケジュールを変換する', planning_nurse_path(@planning, nurse) %></td>
             <% else %>
-              <td><%= link_to '給与管理', nurse_payable_path(nurse) %></td>
+              <% if policy(:user).is_admin? %>
+                <td><%= link_to '給与管理', nurse_payable_path(nurse) %></td>
+              <% end %>
               <td><%= link_to 'エディット', edit_nurse_path(nurse) %></td>
               <td><%= link_to '削除', nurse_path(nurse), method: :delete, data: { confirm: 'ヘルパーが削除されます' } %></td>
             <% end %>

@@ -435,15 +435,3 @@ $(document).on('turbolinks:load', function(){
 
 
 }); 
-
-$(document).bind( 'scroll', function() {
-
-        var scroll= $(document).scrollTop();
-
-        if ( scroll >= 150 ) {
-
-            $('#tableheader').css({'position':'fixed'});
-            $('#tablebody').css({'marign-top':$('#tableheader').height()+'px'});
-        }
-});
-

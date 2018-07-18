@@ -61,17 +61,29 @@ class NursesController < ApplicationController
 
     @plannings = @corporation.plannings.all
     params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p]) : @planning = @plannings.last
-    
-    @provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false).order(created_at: 'desc').includes(:payable, :patient)
+
+    provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false).order(created_at: 'desc').includes(:payable, :patient)
 
     set_counter
-    @counter.update(service_counts: @provided_services.count )
+
+    if params[:grouped]=='true'
+      @hash = Hash.new
+      provided_services.each do |service|
+        title = service.payable.title
+        @hash[title] ? @hash[title] += service.service_duration.to_i : @hash[title] = service.service_duration.to_i
+      end
+    else
+      @provided_services = provided_services
+      @counter.update(service_counts: @provided_services.count )
+    end
+    
+
     
 
     respond_to do |format|
       format.html
       format.csv { send_data @provided_services.to_csv }
-      format.xls 
+      format.xls
     end
   end
 

@@ -8,6 +8,7 @@ json.array! appointments do |appointment|
 	json.end DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.end.hour, recurring_appointment.end.min)
 	json.allDay recurring_appointment.all_day_recurring_appointment? ? true : false
 	json.resourceId recurring_appointment.nurse_id
+	json.color recurring_appointment.color if recurring_appointment.color.present?
 
 	json.base_url planning_recurring_appointment_path(@planning, recurring_appointment)
 	json.update_url planning_recurring_appointment_path(@planning, recurring_appointment, method: :patch)

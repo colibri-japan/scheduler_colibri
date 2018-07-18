@@ -1,7 +1,18 @@
+<%= javascript_tag do  %>
+	window.planningActivitiesUrl = "<%= j planning_activities_path(@planning) %>"
+<% end %>
+
 <%= render 'layouts/planning_menu' %>
 <%= render 'plannings/planning_activities_submenu' %>
 
+
+
 <div id="index-container">
+	<div id="activity-filter">
+		<%= select_tag('nurse-filter', options_from_collection_for_select(@nurses, 'id', 'name'), prompt: "ヘルパー別") %>
+		<%= select_tag('patient-filter', options_from_collection_for_select(@patients, 'id', 'name'), prompt: "利用者別") %>
+	</div>
+
 	<% @activities.each do |activity| %>
 		<%= render partial: 'activities/activity', locals: {activity: activity} %>
 	<% end %>

@@ -387,6 +387,14 @@ $(document).on('turbolinks:load', function(){
     window.location = nursePayableUrl + '?p=' + $(this).val();
   });
 
+  $('#nurse-filter').change(function(){
+    window.location = planningActivitiesUrl + '?n=' + $(this).val();
+  });
+
+  $('#patient-filter').change(function(){
+    window.location = planningActivitiesUrl + '?pat=' + $(this).val();
+  });
+
   $('#schedule-filter option').append('月');
 
   $('#planning-activity-module').hide();

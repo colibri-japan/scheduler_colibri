@@ -39,6 +39,7 @@ initialize_nurse_calendar = function(){
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      nowIndicator: true,
       validRange: {
         start: window.validRangeStart,
         end: window.validRangeEnd,
@@ -93,6 +94,7 @@ initialize_patient_calendar = function(){
       minTime: '07:00:00',
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      nowIndicator: true,
       locale: 'ja',
       eventColor: '#7AD5DE',
       validRange: {
@@ -168,6 +170,7 @@ initialize_master_calendar = function() {
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      nowIndicator: true,
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -250,6 +253,8 @@ initialize_calendar = function() {
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      nowIndicator: true,
+      height: 'auto',
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -414,6 +419,31 @@ $(document).on('turbolinks:load', function(){
     $('#planning-activity-module').hide();
   });
 
+  $('#unzoom-button').hide();
+
+  $('#zoom-button').click(function(){
+    $(this).hide();
+    $('#unzoom-button').show();
+    $('#planning-container .fc-view > table').css({'width': '300%'})
+  });
+
+  $('#unzoom-button').click(function(){
+    $(this).hide();
+    $('#zoom-button').show();
+    $('#planning-container .fc-view > table').css({'width': ''})
+  });
+
 
 }); 
+
+$(document).bind( 'scroll', function() {
+
+        var scroll= $(document).scrollTop();
+
+        if ( scroll >= 150 ) {
+
+            $('#tableheader').css({'position':'fixed'});
+            $('#tablebody').css({'marign-top':$('#tableheader').height()+'px'});
+        }
+});
 

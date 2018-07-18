@@ -196,6 +196,26 @@ tr.clickable-row:hover {
 	font-weight: bold;
 }
 
+#planning-container .fc-view {
+	overflow-x: scroll;
+}
+
+td.fc-head-container {
+	padding-right: 16px !important;
+}
+
+.fc-day-grid {
+	padding-right: 16px;
+}
+
+div .fc-scroller {
+    max-height: 75vh !important;
+}
+
+
+
+
+
 
 
 

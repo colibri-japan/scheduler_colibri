@@ -280,7 +280,34 @@ initialize_calendar = function() {
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
 
       eventRender: function eventRender(event, element, view) {
-        return  ['', event.patientId.toString()].indexOf($('#patient-filter-zentai').val()) >= 0 && ['', event.resourceId].indexOf($('#nurse-filter-zentai').val()) >= 0  ;
+        var patientFilterArray = $('#patient-filter-zentai_').val();
+        var nurseFilterArray = $('#nurse-filter-zentai_').val();
+        if (patientFilterArray === null) {
+          patientFilterArray = ['']
+        };
+
+        if (nurseFilterArray === null) {
+          nurseFilterArray = ['']
+        };
+
+        var filterPatient = function(){
+          for (var i=0; i < patientFilterArray.length; i++) {
+            if (['', event.patientId.toString()].indexOf(patientFilterArray[i]) >= 0) {
+              return true
+            }
+          }
+          return false
+        }
+        var filterNurse = function() {
+          for (var i=0; i< nurseFilterArray.length; i++) {
+            if (['', event.resourceId].indexOf(nurseFilterArray[i]) >= 0) {
+              return true
+            }
+          }
+          return false
+        } 
+
+        return filterPatient() && filterNurse() ;
       },
 
 
@@ -435,11 +462,11 @@ $(document).on('turbolinks:load', function(){
     $('#planning-container .fc-view > table').css({'width': ''})
   });
 
-  $('#nurse-filter-zentai').on('change', function(){
+  $('#nurse-filter-zentai_').on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   });  
 
-  $('#patient-filter-zentai').on('change', function(){
+  $('#patient-filter-zentai_').on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   });
 

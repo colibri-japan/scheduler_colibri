@@ -74,11 +74,11 @@ class PlanningsController < ApplicationController
 	end
 
 	def set_nurses
-		@nurses = @corporation.nurses
+		@nurses = @corporation.nurses.order(id: 'asc')
 	end
 
 	def set_patients
-		@patients = @corporation.patients
+		@patients = @corporation.patients.order(id: 'asc')
 	end
 
 	def planning_params

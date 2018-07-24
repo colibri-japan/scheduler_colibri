@@ -279,6 +279,10 @@ initialize_calendar = function() {
 
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
 
+      eventRender: function eventRender(event, element, view) {
+        return  ['', event.patientId.toString()].indexOf($('#patient-filter-zentai').val()) >= 0 && ['', event.resourceId].indexOf($('#nurse-filter-zentai').val()) >= 0  ;
+      },
+
 
 
       select: function(start, end, jsEvent, view, resource) {
@@ -430,6 +434,16 @@ $(document).on('turbolinks:load', function(){
     $('#zoom-button').show();
     $('#planning-container .fc-view > table').css({'width': ''})
   });
+
+  $('#nurse-filter-zentai').on('change', function(){
+    $('.calendar').fullCalendar('rerenderEvents');
+  });  
+
+  $('#patient-filter-zentai').on('change', function(){
+    $('.calendar').fullCalendar('rerenderEvents');
+  });
+
+
 
 
 }); 

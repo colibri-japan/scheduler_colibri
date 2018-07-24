@@ -2,6 +2,8 @@ class PlanningsController < ApplicationController
 
 	before_action :set_corporation
 	before_action :set_planning, only: [:show, :destroy, :master]
+	before_action :set_nurses, only: [:show]
+	before_action :set_patients, only: [:show]
 
 	def index
 		@plannings = @corporation.plannings.all
@@ -56,6 +58,10 @@ class PlanningsController < ApplicationController
 
 	private
 
+	def set_corporation
+		@corporation = Corporation.find(current_user.corporation_id)
+	end
+
 	def set_planning
 		@planning = Planning.find(params[:id])
 	end
@@ -67,12 +73,18 @@ class PlanningsController < ApplicationController
 		@end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
 	end
 
+	def set_nurses
+		@nurses = @corporation.nurses
+	end
+
+	def set_patients
+		@patients = @corporation.patients
+	end
+
 	def planning_params
 		params.require(:planning).permit(:business_month, :business_year)
 	end
 
-	def set_corporation
-		@corporation = Corporation.find(current_user.corporation_id)
-	end
+
 
 end

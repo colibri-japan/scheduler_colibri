@@ -4,6 +4,7 @@ json.id "appointment_#{appointment.id}"
 json.title "#{appointment.patient.try(:name)} - #{appointment.title}"
 json.extract! appointment, :description, :start, :end
 json.resourceId appointment.nurse_id
+json.patientId appointment.patient_id
 
 json.allDay appointment.all_day_appointment? ? true : false
 

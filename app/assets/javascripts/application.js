@@ -59,7 +59,6 @@ initialize_nurse_calendar = function(){
       selectable: true,
       selectHelper: true,
       eventStartEditable: false,
-      eventColor: '#7AD5DE',
       editable: true,
       eventLimit: true,
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
@@ -79,9 +78,15 @@ initialize_nurse_calendar = function(){
 
         nurse_calendar.fullCalendar('unselect');
       },
+
+      eventRender: function(event, element, view){
+        return event.displayable;
+      },
          
-      eventClick: function(unavailability, jsEvent, view) {
-           $.getScript(unavailability.edit_url, function() {});
+      eventClick: function(event, jsEvent, view) {
+          if (event.editable === true) {
+            $.getScript(event.edit_url, function() {});
+          }
          }
 
 
@@ -132,6 +137,10 @@ initialize_patient_calendar = function(){
         });
 
         nurse_calendar.fullCalendar('unselect');
+      },
+
+      eventRender: function(appointment, element, view){
+        return appointment.displayable;
       },
 
       eventDrop: function(appointment, delta, revertFunc) {

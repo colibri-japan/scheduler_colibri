@@ -8,7 +8,9 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments.json
   def index
      if params[:nurse_id].present?
-       @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true)
+       displayable_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true)
+       original_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], master: true, displayable: false)
+       @recurring_appointments =(displayable_appointments + original_appointments).uniq
      elsif params[:patient_id].present?
        @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true)
      elsif params[:q] == 'master'
@@ -64,7 +66,7 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
     if recurring_appointment_params
-    	if recurring_appointment_params[:master] == true && @original_recurring_appointment.master
+    	if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
     		@original_recurring_appointment.update(master: false, displayable: false)
     	else
     		@original_recurring_appointment.update(displayable: false)

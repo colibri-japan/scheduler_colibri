@@ -11,9 +11,21 @@ $('.calendar').fullCalendar(
   true
 );
 
+$('.calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
+  true
+);
+
 $('.patient_calendar').fullCalendar(
   'renderEvents', 
   $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
+  true
+);
+
+$('.patient_calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
   true
 );
 
@@ -23,9 +35,21 @@ $('.nurse_calendar').fullCalendar(
   true
 );
 
+$('.nurse_calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
+  true
+);
+
 $('.master-calendar').fullCalendar(
   'renderEvents', 
   $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
+  true
+);
+
+$('.master-calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
   true
 );
 

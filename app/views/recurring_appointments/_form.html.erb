@@ -23,7 +23,7 @@
 
   <div class="form-group">
     <%= form.label :color, "カラー", class: "colibri-form-label" %>
-    <%= form.select(:color,  options_for_select([['デフォルト', ''], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']]), id: :recurring_appointment_color) %>
+    <%= form.select(:color,  options_for_select([['デフォルト', ''], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], recurring_appointment.color), id: :recurring_appointment_color) %>
   </div> 
 
   <div class="form-group">
@@ -43,7 +43,7 @@
 
   <div class="form-group">
     <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
-    <%= form.select(:frequency,  options_for_select([['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]]), id: :recurring_appointment_frequency) %>
+    <%= form.select(:frequency,  options_for_select([['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]], recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
   </div>
 
   <div class="form-group">

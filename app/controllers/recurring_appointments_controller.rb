@@ -63,11 +63,12 @@ class RecurringAppointmentsController < ApplicationController
 
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
-    if params[:q] == 'master'
-      @original_recurring_appointment.update(master: false, displayable: false)
-    else
-      @original_recurring_appointment.update(displayable: false)
-      @recurring_appointment.master = false
+    if recurring_appointment_params
+    	if recurring_appointment_params[:master] == true && @original_recurring_appointment.master
+    		@original_recurring_appointment.update(master: false, displayable: false)
+    	else
+    		@original_recurring_appointment.update(displayable: false)
+    	end
     end
 
     @recurring_appointment.save

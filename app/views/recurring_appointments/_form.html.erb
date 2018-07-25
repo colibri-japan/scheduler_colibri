@@ -59,7 +59,7 @@
   <% if current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
     <div class="form-group">
       <%= form.label :master, "予定としてセーブする", class: "colibri-form-label" %>
-      <%= form.check_box :master %>
+      <%= form.check_box :master, checked: current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
     </div>
   <% end %>
 

@@ -2,6 +2,27 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#planning-menu-container {
+	padding-top: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+
+#planning-menu-title {
+	font-size: 1.8em;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+	color: #4F4F4F;
+}
+
+#planning-menu-list {
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 2em;
+	display: table;
+}
 
 #planning-container {
 	display: flex;
@@ -9,6 +30,10 @@
 
 .calendar {
 	max-width: 100%;
+}
+
+.nurse_calendar {
+	max-widht: 100%;
 }
 
 

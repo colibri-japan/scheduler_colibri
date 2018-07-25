@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180718190245) do
+ActiveRecord::Schema.define(version: 20180725072022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,6 +147,8 @@ ActiveRecord::Schema.define(version: 20180718190245) do
     t.bigint "original_id"
     t.string "color"
     t.text "description"
+    t.boolean "deleted"
+    t.datetime "deleted_at"
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_recurring_appointments_on_original_id"
     t.index ["patient_id"], name: "index_recurring_appointments_on_patient_id"

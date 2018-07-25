@@ -22,6 +22,12 @@
 //= require daterangepicker
 //= require_tree .
 
+var adjustCalendar;
+adjustCalendar = function(){
+  $('td.fc-head-container').css({'padding-right': '16px'});
+  $('.fc-day-grid').css({'padding-right': '16px'});
+};
+
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
   $('.nurse_calendar').each(function(){
@@ -349,8 +355,11 @@ initialize_calendar = function() {
 
 
     });
-  })
+  });
+  adjustCalendar();
 };
+
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
@@ -437,6 +446,7 @@ $(document).on('turbolinks:load', function(){
   $('#activity-show-button').click(function(){
     $('#planning-activity-module').show();
     $('.calendar').css({'max-width': '75%'});
+    $('.nurse_calendar').css({'max-width': '75%'});
     $(this).hide();
     $('#activity-hide-button').show();
   });
@@ -444,6 +454,7 @@ $(document).on('turbolinks:load', function(){
   $('#activity-hide-button').click(function(){
     $(this).hide();
     $('.calendar').css({'max-width': ''});
+    $('.nurse_calendar').css({'max-width': ''});
     $('#activity-show-button').show();
     $('#planning-activity-module').hide();
   });

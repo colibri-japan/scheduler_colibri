@@ -11,6 +11,9 @@ class NursesController < ApplicationController
   	@planning = Planning.find(params[:planning_id])
     authorize @nurse, :is_employee?
 
+    @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
+
+    puts @activities.map{|a| a.key}
     set_valid_range
   end
 

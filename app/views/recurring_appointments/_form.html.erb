@@ -56,6 +56,12 @@
     <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
   </div>
 
+  <% if current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
+    <div class="form-group">
+      <%= form.label :master, "予定としてセーブする", class: "colibri-form-label" %>
+      <%= form.check_box :master %>
+    </div>
+  <% end %>
 
 
   <%= hidden_field_tag(:q, 'master') if @master == true %>

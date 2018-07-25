@@ -42,34 +42,15 @@ class RecurringAppointmentsController < ApplicationController
   # POST /recurring_appointments
   # POST /recurring_appointments.json
   def create
-    if params[:q] == 'master'
-      @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
-      @recurring_appointment.master = true
-
-      respond_to do |format|
-        if @recurring_appointment.save
-          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
-          format.js
-          format.json { render :show, status: :created, location: @recurring_appointment }
-        else
-          format.js
-          format.json { render json: @recurring_appointment.errors, status: :unprocessable_entity }
-        end
-      end
-
-    else       
-      @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
-      @recurring_appointment.master = false
-
-      respond_to do |format|
-        if @recurring_appointment.save
-          @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
-          format.js
-          format.json { render :show, status: :created, location: @recurring_appointment }
-        else
-          format.js
-          format.json { render json: @recurring_appointment.errors, status: :unprocessable_entity }
-        end
+    @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
+    respond_to do |format|
+      if @recurring_appointment.save
+        @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+        format.js
+        format.json { render :show, status: :created, location: @recurring_appointment }
+      else
+        format.js
+        format.json { render json: @recurring_appointment.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -105,7 +86,7 @@ class RecurringAppointmentsController < ApplicationController
   # DELETE /recurring_appointments/1.json
   def destroy    
     respond_to do |format|
-      if @recurring_appointment.update(displayable: false)
+      if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.now)
         @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
 
         format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
@@ -139,6 +120,6 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description)
+      params.require(:recurring_appointment).permit(:title, :anchor, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master)
     end
 end

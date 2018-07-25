@@ -5,7 +5,7 @@
 
 <%= render 'layouts/nurses_menu' %>
 
-<div id="index-container">
+<div id="payable-container">
 	<h2><%= "#{@nurse.name}の給与管理" %></h2>
 
 	<div class="">
@@ -29,6 +29,8 @@
 				<th>サービスタイプ</th>
 				<th>利用者名</th>
 				<th>提供時間</th>
+				<th>スタート</th>
+				<th>修了</th>
 				<th>時給/単価</th>
 				<th>回数</th>
 				<th>計</th>
@@ -44,6 +46,8 @@
 					<td><%= provided_service.payable.try(:title) %></td>
 					<td><%= provided_service.patient.try(:name) %> </td>
 					<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
+					<td><%= provided_service.payable.start.strftime("%H:%M") %></td>
+					<td><%= provided_service.payable.end.strftime("%H:%M") %></td>
 					<td>
 						<%= form_for provided_service, url: {action: 'update'}, remote: true do |f| %>
 							<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
@@ -64,6 +68,8 @@
 						<td></td>
 						<td></td>
 						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
 				<% end %>
 			<% end %>
@@ -71,6 +77,8 @@
 				<tr>
 					<td><%= @counter.created_at.strftime("%-m月%-d日") %></td>
 					<td>移動手当</td>
+					<td></td>
+					<td></td>
 					<td></td>
 					<td></td>
 					<td>
@@ -88,6 +96,8 @@
 			<% end %>
 			<% if @provided_services %>
 				<tr>
+					<td></td>
+					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>

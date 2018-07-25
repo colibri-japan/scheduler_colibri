@@ -12,7 +12,9 @@ class RecurringAppointmentsController < ApplicationController
        original_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], master: true, displayable: false)
        @recurring_appointments =(displayable_appointments + original_appointments).uniq
      elsif params[:patient_id].present?
-       @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true)
+       displayable_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true)
+       original_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], master: true, displayable: false)
+       @recurring_appointments = (displayable_appointments + original_appointments).uniq
      elsif params[:q] == 'master'
        @recurring_appointments = @planning.recurring_appointments.where(master: true).includes(:patient, :nurse)
      else
@@ -65,19 +67,17 @@ class RecurringAppointmentsController < ApplicationController
 
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
-    if recurring_appointment_params
-    	if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
-    		@original_recurring_appointment.update(master: false, displayable: false)
-    	else
-    		@original_recurring_appointment.update(displayable: false)
-    	end
-    end
-
     @recurring_appointment.save
 
     if params[:appointment].present?
-      @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start])
+      @original_recurring_appointment.update(displayable: false)
+      @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start], master: false)
     else
+      if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
+      	@original_recurring_appointment.update(master: false, displayable: false)
+      else
+      	@original_recurring_appointment.update(displayable: false)
+      end
       @recurring_appointment.update(recurring_appointment_params)
     end  
 

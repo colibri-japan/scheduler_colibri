@@ -57,10 +57,11 @@ initialize_nurse_calendar = function(){
         right: 'month,agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: true,
-      selectHelper: true,
+      selectHelper: false,
       eventStartEditable: false,
       editable: true,
       eventLimit: true,
+      eventColor: '#7AD5DE',
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
 
 
@@ -118,7 +119,7 @@ initialize_patient_calendar = function(){
         right: 'month,agendaWeek,agendaDay'
       },
       selectable: true,
-      selectHelper: true,
+      selectHelper: false,
       editable: true,
       eventLimit: true,
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
@@ -198,10 +199,10 @@ initialize_master_calendar = function() {
         right: 'agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
-      selectHelper: (window.userIsAdmin == 'true') ? true : false,
+      selectHelper: false,
       editable: (window.userIsAdmin == 'true') ? true : false,
       eventLimit: true,
-      eventColor: '#74d680',
+      eventColor: '#7AD5DE',
 
 
       resources: {
@@ -282,7 +283,7 @@ initialize_calendar = function() {
         right: 'agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: true,
-      selectHelper: true,
+      selectHelper: false,
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
@@ -456,6 +457,7 @@ $(document).on('turbolinks:load', function(){
     $('#planning-activity-module').show();
     $('.calendar').css({'max-width': '75%'});
     $('.nurse_calendar').css({'max-width': '75%'});
+    $('.patient_calendar').css({'max-width': '75%'});
     $(this).hide();
     $('#activity-hide-button').show();
   });
@@ -464,6 +466,7 @@ $(document).on('turbolinks:load', function(){
     $(this).hide();
     $('.calendar').css({'max-width': ''});
     $('.nurse_calendar').css({'max-width': ''});
+    $('.patient_calendar').css({'max-width': ''});
     $('#activity-show-button').show();
     $('#planning-activity-module').hide();
   });

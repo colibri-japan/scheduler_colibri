@@ -9,6 +9,7 @@ class PatientsController < ApplicationController
 
   def show
     @planning = Planning.find(params[:planning_id])
+    @activities = PublicActivity::Activity.where(planning_id: @planning.id, patient_id: @patient.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
     set_valid_range
   end
 

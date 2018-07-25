@@ -13,12 +13,10 @@ json.array! appointments do |appointment|
 		json.color '#E8E8EE'
 	elsif recurring_appointment.color.present?
 		json.color recurring_appointment.color
-	elsif recurring_appointment.color.blank? && recurring_appointment.master == true
-		json.color '#74d680'
-	elsif recurring_appointment.color.blank? && recurring_appointment.master == false
+	elsif recurring_appointment.color.blank?
 		json.color '#7AD5DE'
 	end
-	json.borderColor recurring_appointment.master == true ? '' : '#4f5b66'
+	json.borderColor recurring_appointment.master == true ? '' : '#74d680'
 	json.editable recurring_appointment.displayable == true ? true : false
 	json.textColor '#aaa' if recurring_appointment.displayable == false
 	json.displayable  recurring_appointment.master == false && recurring_appointment.displayable == false ? false : true

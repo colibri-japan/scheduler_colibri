@@ -47,6 +47,7 @@ class RecurringAppointmentsController < ApplicationController
   # POST /recurring_appointments.json
   def create
     @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
+    @recurring_appointment.master = false if !current_user.admin?
     respond_to do |format|
       if @recurring_appointment.save
         @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
@@ -77,6 +78,7 @@ class RecurringAppointmentsController < ApplicationController
       	@original_recurring_appointment.update(master: false, displayable: false)
       else
       	@original_recurring_appointment.update(displayable: false)
+        @recurring_appointment.master = false
       end
       @recurring_appointment.update(recurring_appointment_params)
     end  

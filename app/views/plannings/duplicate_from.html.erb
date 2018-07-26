@@ -1,0 +1,15 @@
+<div class="colibri-devise-form">
+	<p class="colibri-devise-title">過去のスケジュールを反映する</p>
+
+	<%= select_tag('duplicate-from', options_from_collection_for_select(@plannings, 'id', 'business_month'), prompt: "スケジュール選択") %>
+
+	<div id="duplicate-button-wrapper">
+		<div class="btn btn-info text-white btn-block form-control">反映する</div>
+	</div>
+	
+	
+	<div id="no-duplicate-button-wrapper">
+		<%= link_to '反映せずに進む', plannings_path, class: "btn btn-secondary text-white" %>
+	</div>
+	
+</div>

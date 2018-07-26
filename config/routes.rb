@@ -36,6 +36,10 @@ Rails.application.routes.draw do
 
   get 'nurses/:id/payable' => 'nurses#payable', as: :nurse_payable
 
+  get 'plannings/:id/duplicate_from' => 'plannings#duplicate_from', as: :duplicate_from
+
+  patch 'plannings/:id/duplicate' => 'planning#duplicate', as: :duplicate
+
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
 
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin

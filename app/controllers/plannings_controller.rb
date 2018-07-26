@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master]
+	before_action :set_planning, only: [:show, :destroy, :master, :duplicate_planning]
 	before_action :set_nurses, only: [:show]
 	before_action :set_patients, only: [:show]
 
@@ -26,13 +26,20 @@ class PlanningsController < ApplicationController
 
 		respond_to do |format|
 			if @planning.save
-				format.html {redirect_to @planning, notice: 'スケジュールがセーブされました'}
+				format.html { redirect_to duplicate_from_path(@planning), notice: 'スケジュールがセーブされました'}
 				format.js
 			else
 				format.html { render :new }
 				format.js
 			end
 		end
+	end
+
+	def duplicate_from
+		@plannings = @corporation.plannings.all 
+	end
+
+	def duplicate
 	end
 
 	def destroy

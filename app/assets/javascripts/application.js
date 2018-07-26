@@ -496,8 +496,8 @@ $(document).on('turbolinks:load', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   });
 
-  $('#nurse-filter-zentai_').chosen();
-  $('#patient-filter-zentai_').chosen();
+  $('#nurse-filter-zentai_').chosen({no_results_text: "ヘルパーが見つかりません"});
+  $('#patient-filter-zentai_').chosen({no_results_text: "利用者が見つかりません"});
 
 
 

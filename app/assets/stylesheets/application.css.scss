@@ -14,6 +14,7 @@
  *= require fullcalendar
  *= require scheduler
  *= require daterangepicker
+ *= require chosen
  *= require_self
  */
 
@@ -114,29 +115,6 @@ li.colibri-app-menu a.nav-url {
 
 
 
-li.planning-menu-items {
-	font-size: 1.4em;
-	display: inline;
-
-	width: 13.5em;
-	padding-top: 7px;
-	padding-bottom: 7px;
-
-	border-bottom: 0.5px solid #aaa;
-	border-top: 0.5px solid #aaa;
-}
-
-li.planning-menu-items:hover {
-	cursor: pointer;
-	background-color: #EEF1F9;
-	color: black;
-
-}
-
-li.planning-menu-selected {
-	background-color: #EEF1F9;
-	color: black !important;
-}
 
 .date-hidden {
 	display: none;
@@ -190,9 +168,6 @@ div .fc-scroller {
     max-height: 75vh !important;
 }
 
-.resource-list-element {
-	margin-bottom: 4px;
-}
 
 
 

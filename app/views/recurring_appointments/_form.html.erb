@@ -58,7 +58,7 @@
 
   <% if current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
     <div class="form-group">
-      <%= form.label :master, "予定としてセーブする", class: "colibri-form-label" %>
+      <%= form.label :master, "マスターとしてセーブする", class: "colibri-form-label" %>
       <%= form.check_box :master, checked: current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
     </div>
   <% end %>
@@ -69,7 +69,7 @@
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
     <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除されます。'}, remote: true unless recurring_appointment.new_record? %>
-    <%= link_to '予定から削除', planning_recurring_appointment_path(@planning, recurring_appointment, master: "1"), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除され、予定サービスから削除されます。'}, remote: true unless recurring_appointment.new_record? || recurring_appointment.master == false %>
+    <%= link_to 'マスターから削除', planning_recurring_appointment_path(@planning, recurring_appointment, master: "1"), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除され、マスターから削除されます。'}, remote: true unless recurring_appointment.new_record? || recurring_appointment.master == false %>
     
   </div>
 <% end %>

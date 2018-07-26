@@ -14,6 +14,7 @@
 //= require turbolinks
 //= require jquery
 //= require moment.min
+//= require chosen-jquery
 //= require popper
 //= require bootstrap
 //= require fullcalendar
@@ -492,6 +493,10 @@ $(document).on('turbolinks:load', function(){
   $('#patient-filter-zentai_').on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   });
+
+  $('#nurse-filter-zentai_').chosen();
+  $('#patient-filter-zentai_').chosen();
+
 
 
 

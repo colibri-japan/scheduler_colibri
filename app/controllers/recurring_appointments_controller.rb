@@ -87,7 +87,9 @@ class RecurringAppointmentsController < ApplicationController
 
   # DELETE /recurring_appointments/1
   # DELETE /recurring_appointments/1.json
-  def destroy    
+  def destroy
+  	@recurring_appointment.update(master: false) if params[:master] == "1"
+  	
     respond_to do |format|
       if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.now)
         @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id

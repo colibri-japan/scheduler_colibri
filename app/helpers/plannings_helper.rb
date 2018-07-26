@@ -1,6 +1,6 @@
 module PlanningsHelper
 
-	def planning_title(planning)
-		"#{planning.business_month}月のスケジュール"
+	def title(planning)
+		planning.title.present? ? "#{planning.title} (#{planning.business_month}月)" : "#{planning.business_month}月のスケジュール"
 	end
 end

@@ -26,7 +26,7 @@ class PlanningsController < ApplicationController
 
 		respond_to do |format|
 			if @planning.save
-				format.html {redirect_to @planning, notice: 'Planning successfully created'}
+				format.html {redirect_to @planning, notice: 'スケジュールがセーブされました'}
 				format.js
 			else
 				format.html { render :new }
@@ -40,7 +40,7 @@ class PlanningsController < ApplicationController
 
 	  @planning.destroy
 	  respond_to do |format|
-	    format.html { redirect_to plannings_url, notice: 'Planning was successfully destroyed.' }
+	    format.html { redirect_to plannings_url, notice: 'サービスなどを含めて、スケジュールが削除されました。' }
 	    format.json { head :no_content }
 	    format.js
 	  end
@@ -82,7 +82,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def planning_params
-		params.require(:planning).permit(:business_month, :business_year)
+		params.require(:planning).permit(:business_month, :business_year, :title)
 	end
 
 

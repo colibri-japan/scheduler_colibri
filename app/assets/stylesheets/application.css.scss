@@ -39,6 +39,10 @@ a.colibri-nav-link {
 	font-size: 1.2em;
 }
 
+a {
+	color: inherit;
+}
+
 a:hover {
 	background-color: transparent;
 	color: inherit;
@@ -186,6 +190,9 @@ div .fc-scroller {
     max-height: 75vh !important;
 }
 
+.resource-list-element {
+	margin-bottom: 4px;
+}
 
 
 

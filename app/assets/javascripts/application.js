@@ -327,6 +327,9 @@ initialize_calendar = function() {
         return filterPatient() && filterNurse() ;
       },
 
+      viewRender: function(view, element){
+        adjustCalendar();
+      },
 
 
       select: function(start, end, jsEvent, view, resource) {
@@ -367,7 +370,6 @@ initialize_calendar = function() {
 
     });
   });
-  adjustCalendar();
 };
 
 

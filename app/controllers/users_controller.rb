@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def index
     authorize current_user, :is_admin?
-    @users = @corporation.users.all 
+    @users = @corporation.users.all.order_by_kana
   end
 
   def toggle_admin

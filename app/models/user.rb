@@ -9,6 +9,8 @@ class User < ApplicationRecord
   before_validation :set_default_corporation
   before_create :invited_corporation
 
+  scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
+
   def self.assign_to_base_corporation
     @corporation = Corporation.create(name: 'Colibri Trial', address: 'Paris, France', identifier: '0123456789')
 

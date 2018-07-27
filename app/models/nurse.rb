@@ -6,4 +6,6 @@ class Nurse < ApplicationRecord
 
 	validates :name, presence: true
 
+	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
+
 end

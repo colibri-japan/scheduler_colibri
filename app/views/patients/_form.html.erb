@@ -17,6 +17,11 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :kana, "フリガナ", class: "colibri-form-label" %>
+    <%= form.text_field :kana, id: :patient_kana, required: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
     <%= form.label :phone_number, "電話番号", class: "colibri-form-label" %>
     <%= form.text_field :phone_number, id: :patient_phone_number, class: "form-control" %>
   </div>

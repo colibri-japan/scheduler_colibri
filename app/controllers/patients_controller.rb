@@ -3,7 +3,7 @@ class PatientsController < ApplicationController
   before_action :set_patient, only: [:show, :edit, :update, :destroy]
 
   def index
-  	@patients = @corporation.patients.all
+  	@patients = @corporation.patients.all.order(kana: :asc)
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 
@@ -11,7 +11,7 @@ class PatientsController < ApplicationController
     @planning = Planning.find(params[:planning_id])
     authorize @patient, :is_employee?
     
-    @patients = @corporation.patients.all
+    @patients = @corporation.patients.all.order(kana: :asc)
     @activities = PublicActivity::Activity.where(planning_id: @planning.id, patient_id: @patient.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
     set_valid_range
   end
@@ -75,6 +75,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :phone_mail, :phone_number, :address)
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address)
   end
 end

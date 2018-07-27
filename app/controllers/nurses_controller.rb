@@ -3,7 +3,7 @@ class NursesController < ApplicationController
   before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable]
 
   def index
-  	@nurses = @corporation.nurses.all.order(created_at: :asc)
+  	@nurses = @corporation.nurses.all.order(kana: :asc)
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 
@@ -11,7 +11,7 @@ class NursesController < ApplicationController
   	@planning = Planning.find(params[:planning_id])
     authorize @nurse, :is_employee?
 
-    @nurses = @corporation.nurses.all.order(id: :asc)
+    @nurses = @corporation.nurses.all.order(kana: :asc)
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 
@@ -122,7 +122,7 @@ class NursesController < ApplicationController
   end
 
   def nurse_params
-    params.require(:nurse).permit(:name, :address, :phone_number, :phone_mail)
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail)
   end
 
   def set_counter

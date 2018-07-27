@@ -19,6 +19,7 @@ class User < ApplicationRecord
       user.save
     end
   end
+
   private
 
   def set_default_corporation

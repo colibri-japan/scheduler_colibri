@@ -10,6 +10,11 @@
     </div>
 
     <div class="form-group">
+      <%= f.label :kana, "ユーザー名(フリガナ)", class: "colibri-form-label" %><span class="required-true">*</span>
+      <%= f.text_field :kana, required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
       <%= f.label :email, "ご自身のメールアドレス", class: "colibri-form-label" %><span class="required-true">*</span>
       <%= f.email_field :email, required: true, class: "form-control" %>
     </div>

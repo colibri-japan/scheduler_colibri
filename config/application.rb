@@ -16,7 +16,7 @@ module Scheduler
 
     config.i18n.default_locale = :ja
 
-
+    config.serve_static_assets = true
 
 
 

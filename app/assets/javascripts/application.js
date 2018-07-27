@@ -499,7 +499,6 @@ $(document).on('turbolinks:load', function(){
   $('#nurse-filter-zentai_').chosen({no_results_text: "ヘルパーが見つかりません"});
   $('#patient-filter-zentai_').chosen({no_results_text: "利用者が見つかりません"});
 
-  $('#duplicate-from').chosen({no_results_text: "スケジュールが見つかりません"})
 
   $('#trigger-duplication').click(function(){
     var template_id = $('#duplicate-from').val() ;

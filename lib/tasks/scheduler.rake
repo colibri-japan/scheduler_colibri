@@ -28,3 +28,9 @@ task :add_nurse_patient_to_activities => :environment do
 	end
 	puts "Finished adding nurse and patients"
 end
+
+task :add_title_to_plannings => :environment do 
+	puts "Adding title to existing plannings"
+	Planning.add_title
+	puts "Finished adding title to Plannings"
+end

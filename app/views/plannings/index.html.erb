@@ -15,7 +15,7 @@
         <tbody>
           <% @plannings.each do |planning| %>
             <tr class="clickable-row" data-link="<%= planning_path(planning) %>">
-              <td><%= title(planning) %></td>
+              <td><%= planning.title %></td>
               <td><%= link_to '詳細', planning %></td>
               <td><%= link_to '削除', planning, method: :delete, data: { confirm: 'サービス、提供されたサービス（給与管理）などを含めてスケジュールが削除されます。' } if current_user.admin? %></td>
             </tr>

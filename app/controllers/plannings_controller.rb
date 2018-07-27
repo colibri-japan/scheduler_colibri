@@ -36,8 +36,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def duplicate_from
-		@plannings = @corporation.plannings.all 
-
+		@plannings = @corporation.plannings.all - [@planning]
 	end
 
 	def duplicate

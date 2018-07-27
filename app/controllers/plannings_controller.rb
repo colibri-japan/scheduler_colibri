@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :duplicate_planning]
+	before_action :set_planning, only: [:show, :destroy, :master, :duplicate_from, :duplicate]
 	before_action :set_nurses, only: [:show]
 	before_action :set_patients, only: [:show]
 
@@ -26,7 +26,7 @@ class PlanningsController < ApplicationController
 
 		respond_to do |format|
 			if @planning.save
-				format.html { redirect_to duplicate_from_path(@planning), notice: 'スケジュールがセーブされました'}
+				format.html { redirect_to planning_duplicate_from_path(@planning), notice: 'スケジュールがセーブされました'}
 				format.js
 			else
 				format.html { render :new }
@@ -37,9 +37,48 @@ class PlanningsController < ApplicationController
 
 	def duplicate_from
 		@plannings = @corporation.plannings.all 
+
 	end
 
 	def duplicate
+		ids = @corporation.plannings.ids
+
+
+		if ids.include?(params[:template_id].to_i)
+			template_planning = Planning.find(params[:template_id]) 
+
+			original_appointments = template_planning.recurring_appointments.where(displayable: true)
+
+			original_appointments.each do |appointment|
+				#get the new anchor day in the new month
+				original_day_wday = appointment.anchor.wday
+				first_day = Date.new(@planning.business_year, @planning.business_month, 1)
+				first_day_wday = first_day.wday
+
+				first_day_wday > original_day_wday ? new_anchor_day = first_day + 7 - (first_day_wday - original_day_wday) : new_anchor_day = first_day + (original_day_wday - first_day_wday)
+
+				#create new recurring_appointment with updated anchor
+				recurring_appointment = appointment.dup 
+				recurring_appointment.planning_id = @planning.id
+				recurring_appointment.anchor = new_anchor_day
+				recurring_appointment.start = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.start.hour, appointment.start.min)
+				recurring_appointment.end = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.end.hour, appointment.end.min)
+				recurring_appointment.master = true
+				recurring_appointment.displayable = true
+				recurring_appointment.original_id = ''
+
+				#save the duplicated recurring appointment to the new planning
+				recurring_appointment.save
+			end
+
+			redirect_to @planning, notice: 'サービスのコピーが成功しました。'
+
+		else
+			redirect_to planning_duplicate_from_path(@planning), notice: 'このスケジュールはコピーできません。'
+		end
+
+
+
 	end
 
 	def destroy

@@ -501,7 +501,19 @@ $(document).on('turbolinks:load', function(){
 
   $('#duplicate-from').chosen({no_results_text: "スケジュールが見つかりません"})
 
+  $('#trigger-duplication').click(function(){
+    var template_id = $('#duplicate-from').val() ;
+    if (template_id) {
+      $.ajax({
+        url: window.duplicateUrl + '?template_id=' + template_id,
+        type: 'PATCH',
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      });
+    } else {
+      alert('反映したいスケジュールを選択してください');
+    }
 
+  })
 
 
 

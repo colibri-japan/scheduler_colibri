@@ -119,11 +119,11 @@ class PlanningsController < ApplicationController
 	end
 
 	def set_nurses
-		@nurses = @corporation.nurses.order(kana: :asc)
+		@nurses = @corporation.nurses.order_by_kana
 	end
 
 	def set_patients
-		@patients = @corporation.patients.order(kana: :asc)
+		@patients = @corporation.patients.order_by_kana
 	end
 
 	def planning_params

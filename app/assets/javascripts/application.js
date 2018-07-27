@@ -14,7 +14,7 @@
 //= require turbolinks
 //= require jquery
 //= require moment.min
-//= require chosen-jquery
+//= require chosen.jquery
 //= require popper
 //= require bootstrap
 //= require fullcalendar

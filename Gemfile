@@ -51,8 +51,6 @@ gem 'rails-i18n', '~> 5.1'
 
 gem 'pundit'
 
-gem 'chosen-rails'
-
 gem 'miyabi'
 
 group :development, :test do

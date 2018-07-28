@@ -6,8 +6,8 @@
 	<div id="planning-menu-list">
 		<ul class="nav nav-tabs">
 			<li class="planning-menu-items"><%= link_to '全体', @planning %></li>
-			<li class="planning-menu-items"><%= link_to 'ヘルパー別', planning_nurses_path(@planning) %></li>
 			<li class="planning-menu-items"><%= link_to '利用者別', planning_patients_path(@planning) %></li>
+			<li class="planning-menu-items"><%= link_to 'ヘルパー別', planning_nurses_path(@planning) %></li>
 			<li class="planning-menu-items planning-menu-selected"><%= link_to 'マスター', planning_master_path(@planning) %></li>
 			<li class="planning-menu-items"><%= link_to '編集履歴', planning_activities_path(@planning) %></li>
 		</ul>

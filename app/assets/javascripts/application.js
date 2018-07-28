@@ -337,6 +337,9 @@ initialize_calendar = function() {
           $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
           $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
           $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
+          $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
+          $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
+          $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
           $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));

@@ -14,6 +14,7 @@ class RecurringAppointment < ApplicationRecord
 	before_save :default_frequency
 	before_save :default_master
 	before_save :default_displayable
+	before_save :calculate_duration
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -38,7 +39,7 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def all_day_recurring_appointment?
-		self.start == self.start.midnight && self.end == self.end.mignight ? true : false
+		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
 	end
 
 	def appointments(start_date, end_date)
@@ -89,5 +90,13 @@ class RecurringAppointment < ApplicationRecord
 
 	def default_displayable
 		self.displayable = true if self.displayable.nil?
+	end
+
+	def calculate_duration
+		if self.end_day.present? && self.anchor.present? && self.end_day != self.anchor
+			self.duration = self.end_day - self.anchor
+		else
+			self.duration = 0
+		end
 	end
 end

@@ -17,6 +17,7 @@
 //= require chosen.jquery
 //= require popper
 //= require bootstrap
+//= require bootstrap-toggle
 //= require fullcalendar
 //= require locale-all
 //= require scheduler
@@ -73,7 +74,7 @@ initialize_nurse_calendar = function(){
         	$('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
           $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
           $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-          $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
+          $('#recurring_appointment_end_day_3i').val(moment(end).format('D')); 
         	$('#recurring_appointment_start_4i').val(moment(start).format('HH'));
         	$('#recurring_appointment_start_5i').val(moment(start).format('mm'));
         	$('#recurring_appointment_end_4i').val(moment(end).format('HH'));
@@ -126,22 +127,33 @@ initialize_patient_calendar = function(){
       selectHelper: false,
       editable: true,
       eventLimit: true,
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesUrl + '?patient_id=' + window.patientId],
 
 
       select: function(start, end) {
-        $.getScript(window.createRecurringAppointmentURL, function() {
-        	$('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
+        $.getScript(window.bootstrapToggleUrl, function() {
+          $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
           $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
-          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
+          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));        	
           $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
           $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-          $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
+          $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));          
           $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-          $("#recurring_appointment_patient_id").val(window.patientId)
+          $("#recurring_appointment_patient_id").val(window.patientId);
+          $('#unavailability_start_1i').val(moment(start).format('YYYY'));
+          $('#unavailability_start_2i').val(moment(start).format('M'));
+          $('#unavailability_start_3i').val(moment(start).format('D'));
+          $('#unavailability_start_4i').val(moment(start).format('HH'));
+          $('#unavailability_start_5i').val(moment(start).format('mm'));
+          $('#unavailability_end_1i').val(moment(end).format('YYYY'));
+          $('#unavailability_end_2i').val(moment(end).format('M'));
+          $('#unavailability_end_3i').val(moment(end).format('D'));
+          $('#unavailability_end_4i').val(moment(end).format('HH'));
+          $('#unavailability_end_5i').val(moment(end).format('mm'));
+          $("#unavailability_patient_id").val(window.patientId);
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -524,8 +536,17 @@ $(document).on('turbolinks:load', function(){
       alert('反映したいスケジュールを選択してください');
     }
 
-  })
+  });
 
+  $('input[type="checkbox"]#bootstrap-toggle').change(function(){
+    if (window.bootstrapToggleUrl === window.createRecurringAppointmentURL) {
+      window.bootstrapToggleUrl = window.createUnavailabilityURL
+    } else {
+      window.bootstrapToggleUrl =  window.createRecurringAppointmentURL
+    }
+  });
 
+  $('#bootstrap-toggle').bootstrapToggle();
 
 }); 
+

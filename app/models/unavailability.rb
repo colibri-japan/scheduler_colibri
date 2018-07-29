@@ -13,12 +13,12 @@ class Unavailability < ApplicationRecord
 
 
 	def all_day_unavailability?
-		self.start == self.start.midnight && self.end == self.end.mignight ? true : false
+		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
 	end
 
 	private
 
 	def set_title
-		self.title = "働けない時間"
+		self.title = "サービス不可" if self.title.empty?
 	end
 end

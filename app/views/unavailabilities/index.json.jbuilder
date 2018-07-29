@@ -1,8 +1,6 @@
 json.array!(@unavailabilities) do |unavailability|
 json.id "unavailability_#{unavailability.id}"
 json.extract! unavailability, :title, :description, :start, :end
-json.resourceId unavailability.nurse_id
-json.rendering 'background' unless @nurse.present?
 
 json.color '#D46A6A'
 

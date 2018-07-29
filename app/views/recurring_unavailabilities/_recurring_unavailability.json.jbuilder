@@ -8,7 +8,6 @@ json.array! unavailabilities do |unavailability|
 	json.allDay recurring_unavailability.all_day_recurring_unavailability? ? true : false
 	json.resourceId recurring_unavailability.nurse_id
 	json.color '#D46A6A'
-	json.rendering 'background' unless @nurse.present?
 
 	json.base_url planning_recurring_unavailability_path(@planning, recurring_unavailability)
 	json.update_url planning_recurring_unavailability_path(@planning, recurring_unavailability, method: :patch)

@@ -2,10 +2,8 @@ date_format = unavailability.all_day_unavailability? ? '%Y-%m-%d' : '%Y-%m-%dT%H
 
 json.id "unavailability_#{unavailability.id}"
 json.extract! unavailability, :title, :description, :start, :end
-json.resourceId unavailability.nurse_id
 
 json.allDay unavailability.all_day_unavailability? ? true : false
-json.rendering 'background' unless @nurse.present?
 
 json.color '#D46A6A'
 

@@ -9,6 +9,8 @@ class UnavailabilitiesController < ApplicationController
 	  if params[:nurse_id].present?
 	  	@nurse = Nurse.find(params[:nurse_id])
 	    @unavailabilities = @planning.unavailabilities.where(nurse_id: params[:nurse_id])
+	  elsif params[:patient_id].present?
+	  	@unavailabilities = @planning.unavailabilities.where(patient_id: params[:patient_id])
 	  else
 	   @unavailabilities = @planning.unavailabilities.all
 	 end
@@ -36,7 +38,6 @@ class UnavailabilitiesController < ApplicationController
 	# POST /unavailabilities.json
 	def create
 	  @unavailability = @planning.unavailabilities.new(unavailability_params)
-	  @nurse = Nurse.find(unavailability_params[:nurse_id])
 
 	  respond_to do |format|
 	    if @unavailability.save
@@ -95,6 +96,6 @@ class UnavailabilitiesController < ApplicationController
 
 	  # Never trust parameters from the scary internet, only allow the white list through.
 	  def unavailability_params
-	    params.require(:unavailability).permit(:title, :description, :start, :end, :nurse_id, :planning_id)
+	    params.require(:unavailability).permit(:title, :description, :start, :end, :nurse_id, :patient_id, :planning_id)
 	  end
 end

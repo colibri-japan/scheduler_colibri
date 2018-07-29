@@ -74,10 +74,10 @@ class UnavailabilitiesController < ApplicationController
 	# DELETE /unavailabilities/1
 	# DELETE /unavailabilities/1.json
 	def destroy
+	  @activity = @unavailability.create_activity :destroy, owner: current_user, planning_id: @planning.id, patient_id: @unavailability.patient_id
+
 	  @unavailability.destroy
 	  respond_to do |format|
-	  	@activity = @unavailability.create_activity :destroy, owner: current_user, planning_id: @planning.id, patient_id: @unavailability.patient_id
-
 	    format.html { redirect_to unavailabilities_url, notice: 'unavailability was successfully destroyed.' }
 	    format.json { head :no_content }
 	    format.js

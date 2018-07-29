@@ -1,7 +1,7 @@
 <% if activity.trackable %>
-	がヘルパーが働けない時間をアップデートしました。<br/>
-	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
-	<%= weekday(activity.trackable.start) %><%= activity.trackable.start.strftime("%H:%M") %> ~ <%= activity.trackable.end.strftime("%H:%M") %>
+	がサービスが不可能な時間をアップデートしました。<br/>
+	<span class="activity-important-fields"><%= activity.trackable.nurse.present? ? "#{activity.trackable.nurse.try(:name)  }" : "#{activity.trackable.patient.try(:name)}様"  %></span>
+	<%= weekday(activity.trackable.start) %><%= activity.trackable.start.strftime("%H:%M") %> ~ <%= weekday(activity.trackable.end) %><%= activity.trackable.end.strftime("%H:%M") %>
 <% else %>
-	がその後削除されたヘルパーの働けない時間をアップデートしました。
+	がその後削除されたサービスが不可能な時間をアップデートしました。
 <% end %>

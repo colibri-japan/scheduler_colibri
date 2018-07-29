@@ -30,8 +30,8 @@ class UnavailabilitiesController < ApplicationController
 
 	# GET /unavailabilities/1/edit
 	def edit
-	　@nurses = @corporation.nurses.all 
-	　@patients = @corporation.patients.all
+	  @nurses= @corporation.nurses.all
+	  @patients = @corporation.patients.all
 	end
 
 	# POST /unavailabilities
@@ -41,6 +41,7 @@ class UnavailabilitiesController < ApplicationController
 
 	  respond_to do |format|
 	    if @unavailability.save
+	      @activity = @unavailability.create_activity :create, owner: current_user, planning_id: @planning.id, patient_id: @unavailability.patient_id
 	      format.html { redirect_to @unavailability, notice: 'unavailability was successfully created.' }
 	      format.js
 	      format.json { render :show, status: :created, location: @unavailability }
@@ -57,7 +58,8 @@ class UnavailabilitiesController < ApplicationController
 	def update
 	  respond_to do |format|
 	    if @unavailability.update(unavailability_params)
-	      @nurse = Nurse.find(unavailability_params[:nurse_id])
+	      @activity = @unavailability.create_activity :update, owner: current_user, planning_id: @planning.id, patient_id: @unavailability.patient_id
+
 	      format.html { redirect_to @unavailability, notice: 'unavailability was successfully updated.' }
 	      format.js
 	      format.json { render :show, status: :ok, location: @unavailability }
@@ -74,6 +76,8 @@ class UnavailabilitiesController < ApplicationController
 	def destroy
 	  @unavailability.destroy
 	  respond_to do |format|
+	  	@activity = @unavailability.create_activity :destroy, owner: current_user, planning_id: @planning.id, patient_id: @unavailability.patient_id
+
 	    format.html { redirect_to unavailabilities_url, notice: 'unavailability was successfully destroyed.' }
 	    format.json { head :no_content }
 	    format.js

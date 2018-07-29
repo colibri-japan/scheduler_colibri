@@ -183,8 +183,6 @@ initialize_patient_calendar = function(){
            $.getScript(appointment.edit_url, function() {});
          }
 
-
-
     });
   })
 };

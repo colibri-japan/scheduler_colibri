@@ -5,3 +5,5 @@ $('.patient_calendar').fullCalendar(
   jQuery.parseJSON("<%= j render(partial: 'unavailabilities/unavailability.json', locals: {unavailability: @unavailability}).html_safe %>"),
   true
 );
+
+$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

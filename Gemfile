@@ -37,21 +37,34 @@ gem 'jquery-rails'
 
 gem 'bootstrap'
 
+#schedule occcurrences
 gem 'ice_cube'
 
+#user session and registration management
 gem 'devise'
 
+#add invitable to devise
 gem 'devise_invitable'
 
+#activity tracker
 gem 'public_activity'
 
+#translations for devise
 gem 'devise-i18n'
 
+#translations for rails
 gem 'rails-i18n', '~> 5.1'
 
+#authorizations
 gem 'pundit'
 
+#japanese text conversions
 gem 'miyabi'
+
+#create excel templates with axlsx
+gem 'rubyzip', '>= 1.2.1'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'axlsx_rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

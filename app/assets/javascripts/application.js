@@ -469,7 +469,11 @@ $(document).on('turbolinks:load', function(){
 
   $('#activity-filter').change(function(){
     window.location = planningActivitiesUrl + '?n=' + $('#nurse-filter').val() + '&pat=' + $('#patient-filter').val() + '&us=' + $('#user-filter').val();
-  })
+  });
+
+  $('.excel-download').click(function(){
+    window.location = window.excelUrl + '?p=' + $('#schedule-filter').val();
+  });
 
 
 

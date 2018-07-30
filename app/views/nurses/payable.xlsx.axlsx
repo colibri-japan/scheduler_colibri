@@ -1,0 +1,8 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "給与詳細") do |sheet|
+	sheet.add_row ['日付', 'サービスタイプ', '利用者名', '提供時間', 'スタート', '終了', '時給/単価', '回数', '計']
+	@provided_services.each do |service|
+		sheet.add_row [service.created_at.strftime("%-m月%-d日"), service.payable.try(:title), service.patient.try(:name), Time.at(service.service_duration).utc.strftime("%H:%M"), service.payable.start.strftime("%H:%M"), service.payable.end.strftime("%H:%M"), service.try(:hourly_wage), '', service.try(:total_wage) ]
+	end
+end

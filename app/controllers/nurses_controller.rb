@@ -65,7 +65,13 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
 
     @plannings = @corporation.plannings.all
-    params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p]) : @planning = @plannings.last
+    params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p].to_i) : @planning = @plannings.last
+
+    if params[:p].present? && @plannings.ids.include?(params[:p].to_i)
+      puts "true" 
+      else  
+        puts "false"
+      end
 
     provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false).order(created_at: 'desc').includes(:payable, :patient)
 
@@ -89,6 +95,7 @@ class NursesController < ApplicationController
       format.html
       format.csv { send_data @provided_services.to_csv }
       format.xls
+      format.xlsx
     end
   end
 

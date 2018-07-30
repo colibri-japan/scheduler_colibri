@@ -1,5 +1,6 @@
 <%= javascript_tag do  %>
-	window.nursePayableUrl = "<%= j nurse_payable_path(@nurse) %>"
+	window.nursePayableUrl = "<%= j nurse_payable_path(@nurse) %>";
+	window.excelUrl = "<%= j nurse_payable_path(@nurse, format: :xlsx) %>"
 <% end %>
 
 
@@ -16,10 +17,10 @@
 	<div class="align-right">
 		<% if @provided_services %>
 			<%= link_to 'サービスタイプをまとめる', nurse_payable_path(@nurse, grouped: 'true'), class: 'btn btn-success text-white' %>
-			<%= link_to 'ダウンロードする', nurse_payable_path(@nurse, format: :xls), class: 'btn btn-success text-white' %>
+			<div class="excel-download btn btn-success text-white">ダウンロードする</div>
 		<% elsif @hash %>
 			<%= link_to 'サービスの詳細へ戻る', nurse_payable_path(@nurse), class: 'btn btn-secondary text-white' %>
-			<%= link_to 'ダウンロードする', nurse_payable_path(@nurse, grouped: 'true', format: :xls), class: 'btn btn-success' %>
+			<%= link_to 'ダウンロードする', nurse_payable_path(@nurse, grouped: 'true', format: :xlsx), class: 'btn btn-success' %>
 		<% end %>
 	</div>
 	<table class="table">

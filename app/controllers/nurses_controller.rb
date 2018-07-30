@@ -67,29 +67,31 @@ class NursesController < ApplicationController
     @plannings = @corporation.plannings.all
     params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p].to_i) : @planning = @plannings.last
 
-    if params[:p].present? && @plannings.ids.include?(params[:p].to_i)
-      puts "true" 
-      else  
-        puts "false"
-      end
-
-    provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false).order(created_at: 'desc').includes(:payable, :patient)
-
+    #retrieves all provided services and calculates moving fees
+    @provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false, temporary: false).order(created_at: 'desc').includes(:payable, :patient)
     set_counter
+    @counter.update(service_counts: @provided_services.count )
 
-    if params[:grouped]=='true'
-      @hash = Hash.new
-      provided_services.each do |service|
-        title = service.payable.title
-        @hash[title] ? @hash[title] += service.service_duration.to_i : @hash[title] = service.service_duration.to_i
-      end
-    else
-      @provided_services = provided_services
-      @counter.update(service_counts: @provided_services.count )
+    #calculate total
+    sum_provided= @provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
+    @counter.total_wage.present? ? @total_wage = sum_provided + @counter.try(:total_wage) : @total_wage = sum_provided
+
+    #creates temporary provided_services for grouped services
+    already_seen = []
+    @grouped_services = []
+    @provided_services.each do |service|
+      already_seen << service.title unless already_seen.include?(service.title)
+    end
+
+    already_seen.each do |service_title|
+      matching_services = @provided_services.where(title: service_title)
+      sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
+      sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
+      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, total_wage: sum_total_wage, temporary: true)
+      @grouped_services << new_service
     end
     
-
-    
+    #response
 
     respond_to do |format|
       format.html
@@ -133,7 +135,7 @@ class NursesController < ApplicationController
   end
 
   def set_counter
-    @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true).take
+    @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true, temporary: false).take
 
     unless @counter.present?
       @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true)

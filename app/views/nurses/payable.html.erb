@@ -11,7 +11,7 @@
 
 	<div class="">
 		フィルター：
-		<%= select_tag('schedule-filter', options_from_collection_for_select(@plannings, 'id', 'business_month', @planning.id), prompt: "スケジュール") %>
+		<%= select_tag('schedule-filter', options_from_collection_for_select(@plannings, 'id', 'title', @planning.id), prompt: "スケジュール") %>
 	</div>
 
 	<div class="align-right">
@@ -26,53 +26,37 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th>日付</th>
-				<th>サービスタイプ</th>
-				<th>利用者名</th>
-				<th>提供時間</th>
-				<th>スタート</th>
-				<th>終了</th>
-				<th>時給/単価</th>
-				<th>回数</th>
-				<th>計</th>
+				<th class="table-important-fields">日付</th>
+				<th class="table-important-fields">サービスタイプ</th>
+				<th class="table-important-fields">利用者名</th>
+				<th class="table-important-fields">提供時間</th>
+				<th class="table-important-fields">スタート</th>
+				<th class="table-important-fields">終了</th>
+				<th class="table-important-fields">時給/単価</th>
+				<th class="table-important-fields">回数</th>
+				<th class="table-important-fields">計</th>
 			</tr>
 			
 		</thead>
 
 		<tbody>
-			<% if @provided_services.present? %>
-				<% @provided_services.each do |provided_service| %>
-				<tr>
-					<td><%= provided_service.created_at.strftime("%-m月%-d日") %></td>
-					<td><%= provided_service.payable.try(:title) %></td>
-					<td><%= provided_service.patient.try(:name) %> </td>
-					<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
-					<td><%= provided_service.payable.start.strftime("%H:%M") %></td>
-					<td><%= provided_service.payable.end.strftime("%H:%M") %></td>
-					<td>
-						<%= form_for provided_service, url: {action: 'update'}, remote: true do |f| %>
-							<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
-						<% end %>
-					</td>
-					<td></td>
-					<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
+			<% @provided_services.each do |provided_service| %>
+			<tr>
+				<td><%= provided_service.created_at.strftime("%-m月%-d日") %></td>
+				<td><%= provided_service.payable.try(:title) %></td>
+				<td><%= provided_service.patient.try(:name) %> </td>
+				<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
+				<td><%= provided_service.payable.start.strftime("%H:%M") %></td>
+				<td><%= provided_service.payable.end.strftime("%H:%M") %></td>
+				<td>
+					<%= form_for provided_service, url: {action: 'update'}, remote: true do |f| %>
+						<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
+					<% end %>
+				</td>
+				<td></td>
+				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
 
-				</tr>
-				<% end %>
-			<% elsif @hash.present? %>
-				<% @hash.each do |key, value| %>
-					<tr>
-						<td></td>
-						<td><%= key %></td>
-						<td></td>
-						<td><%= Time.at(value).utc.strftime("%H:%M") %></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				<% end %>
+			</tr>
 			<% end %>
 			<% if @counter.present? %>
 				<tr>
@@ -95,21 +79,63 @@
 					<td id="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
 				</tr>
 			<% end %>
-			<% if @provided_services %>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td id="total-salary-label">合計：</td>
-					<td id="total-salary"><%= @provided_services.sum { |p| p.total_wage.present? ? p.total_wage : 0 }  %>¥</td>
-				</tr>
-			<% end %>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td id="total-salary-label">合計：</td>
+				<td id="total-salary"><%= @total_wage %>¥</td>
+			</tr>
 		</tbody>
 		
+	</table>
+
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="table-important-fields">サービスタイプ</th>
+				<th class="table-important-fields">提供時間</th>
+				<th class="table-important-fields">時給/単価</th>
+				<th class="table-important-fields">回数</th>
+				<th class="table-important-fields">計</th>
+			</tr>
+		</thead>
+		<tbody class="text-not-bold">
+			<% @grouped_services.each do |service| %>
+				<tr>
+					<th><%= service.title %></th>
+					<th><%= Time.at(service.service_duration).utc.strftime("%H:%M") %></th>
+					<th><%= service.hourly_wage %></th>
+					<th></th>
+					<th><%= service.total_wage %></th>
+				</tr>
+			<% end %>
+			<% if @counter.present? %>
+				<tr>
+					<td>移動手当</td>
+					<td></td>
+					<td>
+						<%= @counter.hourly_wage %>
+					</td>
+					<td>
+						<%= @counter.service_counts %>
+					</td>
+					<td class="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
+				</tr>
+			<% end %>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td id="total-salary-label">合計：</td>
+				<td id="total-salary"><%= @total_wage %>¥</td>
+			</tr>
+		</tbody>
 	</table>
 	
 </div>

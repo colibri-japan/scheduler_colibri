@@ -475,10 +475,6 @@ $(document).on('turbolinks:load', function(){
     window.location = window.excelUrl + '?p=' + $('#schedule-filter').val();
   });
 
-
-
-  $('#schedule-filter option').append('月');
-
   $('#planning-activity-module').hide();
   $('#activity-hide-button').hide();
 

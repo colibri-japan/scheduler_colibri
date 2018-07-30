@@ -15,7 +15,6 @@ class NursesController < ApplicationController
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 
-    puts @activities.map{|a| a.key}
     set_valid_range
   end
 
@@ -97,7 +96,7 @@ class NursesController < ApplicationController
       format.html
       format.csv { send_data @provided_services.to_csv }
       format.xls
-      format.xlsx
+      format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="ヘルパー給与.xlsx"'}
     end
   end
 

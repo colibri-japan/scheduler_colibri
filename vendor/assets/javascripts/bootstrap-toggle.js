@@ -23,7 +23,7 @@
 
 	Toggle.DEFAULTS = {
 		on: 'サービス追加',
-		off: 'サービス不可',
+		off: 'サービス以外',
 		onstyle: 'info',
 		offstyle: 'danger',
 		size: 'normal',

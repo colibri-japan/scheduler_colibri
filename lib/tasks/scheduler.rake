@@ -34,3 +34,9 @@ task :add_title_to_plannings => :environment do
 	Planning.add_title
 	puts "Finished adding title to Plannings"
 end
+
+task :send_reminders => :environment do 
+	puts "Sending reminders to nurses"
+	Nurse.service_reminder 
+	puts "Finished sending reminders"
+end

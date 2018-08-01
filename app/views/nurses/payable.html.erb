@@ -16,7 +16,6 @@
 
 	<div class="align-right">
 		<% if @provided_services %>
-			<%= link_to 'サービスタイプをまとめる', nurse_payable_path(@nurse, grouped: 'true'), class: 'btn btn-success text-white' %>
 			<div class="excel-download btn btn-success text-white">ダウンロードする</div>
 		<% elsif @hash %>
 			<%= link_to 'サービスの詳細へ戻る', nurse_payable_path(@nurse), class: 'btn btn-secondary text-white' %>
@@ -111,7 +110,7 @@
 					<th><%= service.title %></th>
 					<th><%= Time.at(service.service_duration).utc.strftime("%H:%M") %></th>
 					<th><%= service.hourly_wage %></th>
-					<th></th>
+					<th><%= service.service_counts %></th>
 					<th><%= service.total_wage %></th>
 				</tr>
 			<% end %>

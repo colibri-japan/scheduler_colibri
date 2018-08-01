@@ -86,7 +86,7 @@ class NursesController < ApplicationController
       matching_services = @provided_services.where(title: service_title)
       sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
       sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, total_wage: sum_total_wage, temporary: true)
+      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: matching_services.count, total_wage: sum_total_wage, temporary: true)
       @grouped_services << new_service
     end
     
@@ -94,8 +94,6 @@ class NursesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv { send_data @provided_services.to_csv }
-      format.xls
       format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="ヘルパー給与.xlsx"'}
     end
   end

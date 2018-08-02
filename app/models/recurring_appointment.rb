@@ -117,7 +117,9 @@ class RecurringAppointment < ApplicationRecord
 				start_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
 				end_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
 				occurrence_range = Range.new(start_time, end_time)
-				overlap << recurring_appointment if range.overlaps?(occurrence_range)
+				if range.overlaps?(occurrence_range) && range.first != occurrence_range.last && range.last != occurrence_range.first
+					overlap << recurring_appointment 
+				end
 			end
 		end
 

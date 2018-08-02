@@ -16,6 +16,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :anchor, presence: true
 	validates :frequency, presence: true
 	validates :frequency, inclusion: 0..2
+	validate :cannot_overlap_existing_appointment
 
 	#frequencies : 0 for weekly, 1 for biweekly, 2 for one timer
 
@@ -96,4 +97,36 @@ class RecurringAppointment < ApplicationRecord
 			self.duration = 0
 		end
 	end
+
+	def cannot_overlap_existing_appointment
+		planning = Planning.find(self.planning_id)
+		first_day = Date.new(planning.business_year, planning.business_month, 1)
+		last_day = Date.new(planning.business_year, planning.business_month, -1)
+
+		start_of_appointment = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.start.hour, self.start.min)
+		end_of_appointment = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.end.hour, self.end.min)
+
+		range = Range.new(start_of_appointment, end_of_appointment)
+		overlap = []
+
+		recurring_appointments = RecurringAppointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true)
+
+		recurring_appointments.each do |recurring_appointment|
+			occurrences = recurring_appointment.appointments(first_day, last_day)
+			occurrences.each do |appointment|
+				start_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
+				end_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
+				occurrence_range = Range.new(start_time, end_time)
+				overlap << recurring_appointment if range.overlaps?(occurrence_range)
+			end
+		end
+
+
+		#does not take into acccount full day appointments, nor multi day appointments
+		errors.add(:nurse_id, "選択されたヘルパーはすでにその時間帯にサービスを提供してます。") if overlap.present?
+
+	end
+
+	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
+	scope :exclude_self, -> id { where.not(id: id) }
 end

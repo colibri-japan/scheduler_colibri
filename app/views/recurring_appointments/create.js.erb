@@ -1,26 +1,31 @@
-$('.modal').modal('hide');
-$('.calendar').fullCalendar(
-  'renderEvents', 
-  jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-  true
-);
+<% if @recurring_appointment.errors.any? %>
+  alert("<%= j @recurring_appointment.errors.values.join('; ') %>");
+<% else %>
 
-$('.patient_calendar').fullCalendar(
-  'renderEvents', 
-  jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-  true
-);
+  $('.modal').modal('hide');
+  $('.calendar').fullCalendar(
+    'renderEvents', 
+    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
+    true
+  );
 
-$('.nurse_calendar').fullCalendar(
-  'renderEvents', 
-  jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-  true
-);
+  $('.patient_calendar').fullCalendar(
+    'renderEvents', 
+    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
+    true
+  );
 
-$('.master-calendar').fullCalendar(
-  'renderEvents', 
-  jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-  true
-);
+  $('.nurse_calendar').fullCalendar(
+    'renderEvents', 
+    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
+    true
+  );
 
-$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  $('.master-calendar').fullCalendar(
+    'renderEvents', 
+    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
+    true
+  );
+
+  $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+<% end %>

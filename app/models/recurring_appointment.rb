@@ -8,10 +8,10 @@ class RecurringAppointment < ApplicationRecord
 	has_many :provided_services, as: :payable
 	has_many :deleted_occurrences
 
-	before_save :default_frequency
+	before_validation :calculate_duration
+	before_validation :default_frequency
 	before_save :default_master
 	before_save :default_displayable
-	before_save :calculate_duration
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -104,12 +104,15 @@ class RecurringAppointment < ApplicationRecord
 		last_day = Date.new(planning.business_year, planning.business_month, -1)
 
 		start_of_appointment = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.start.hour, self.start.min)
-		end_of_appointment = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.end.hour, self.end.min)
+		end_of_appointment = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.end.hour, self.end.min) + self.duration.to_i
 
 		range = Range.new(start_of_appointment, end_of_appointment)
 		overlap = []
 
 		recurring_appointments = RecurringAppointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true)
+
+		recurring_appointments = recurring_appointments.where.not(id: self.original_id) if self.original_id.present?
+		recurring_appointments = recurring_appointments.where.not(id: self.id, original_id: self.id) if self.id.present?
 
 		recurring_appointments.each do |recurring_appointment|
 			occurrences = recurring_appointment.appointments(first_day, last_day)
@@ -117,6 +120,7 @@ class RecurringAppointment < ApplicationRecord
 				start_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
 				end_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
 				occurrence_range = Range.new(start_time, end_time)
+
 				if range.overlaps?(occurrence_range) && range.first != occurrence_range.last && range.last != occurrence_range.first
 					overlap << recurring_appointment 
 				end

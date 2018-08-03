@@ -70,8 +70,10 @@ class RecurringAppointmentsController < ApplicationController
 
     @recurring_appointment.save
 
+
     if params[:appointment].present?
       @original_recurring_appointment.update(displayable: false)
+
       @recurring_appointment.update(start: params[:appointment][:start], end: params[:appointment][:end], anchor: params[:appointment][:start], master: false)
     else
       if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
@@ -80,10 +82,11 @@ class RecurringAppointmentsController < ApplicationController
       	@original_recurring_appointment.update(displayable: false)
         @recurring_appointment.master = false
       end
+
       @recurring_appointment.update(recurring_appointment_params)
     end  
 
-    @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+    @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor if @recurring_appointment
   end
 
 

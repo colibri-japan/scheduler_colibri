@@ -1,7 +1,34 @@
 <% if @recurring_appointment.errors.any?  %>
   alert("<%= j @recurring_appointment.errors.values.join('; ') %>");
-<% elsif @original_recurring_appointment.errors.any? %>
-  alert("<%= j @original_recurring_appointment.errors.values.join('; ') %>");
+  $('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
+  $('.patient_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
+  $('.nurse_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
+  $('.master-calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
+
+  $('.calendar').fullCalendar(
+    'renderEvents', 
+    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
+    true
+  );
+
+  $('.patient_calendar').fullCalendar(
+    'renderEvents', 
+    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
+    true
+  );
+
+  $('.nurse_calendar').fullCalendar(
+    'renderEvents', 
+    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
+    true
+  );
+
+  $('.master-calendar').fullCalendar(
+    'renderEvents', 
+    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
+    true
+  );
+
 <% else %>
 
   $('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');

@@ -90,16 +90,18 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-          if (event.editable === true) {
-            $.getScript(event.edit_url, function() {});
-          }
-         }
+        if (event.editable === true) {
+          $.getScript(event.edit_url, function() {});
+        }
+
+      }
 
 
 
     })
   })
 }
+
 
 var initialize_patient_calendar;
 initialize_patient_calendar = function(){
@@ -386,7 +388,21 @@ initialize_calendar = function() {
          },
          
       eventClick: function(appointment, jsEvent, view) {
-           $.getScript(appointment.edit_url, function() {});
+           $.getScript(appointment.edit_url, function() {
+           	$('#edit_recurring_appointment').submit(function(){
+           	  if ($('#recurring_appointment_master').is(":checked")) {
+           	    message = confirm("このサービスはマスターとしてセーブされます。マスターとしてセーブしたくない場合は、キャンセルボタンを押し、フォームの「マスター」チェックボックスを外してからセーブしてください。");
+           	    if (message) {
+           	      return true;
+           	    } else {
+           	      return false;
+           	    }
+           	  } else {
+           	    return true;
+           	  }
+           	  
+           	})
+           });
          }
 
 

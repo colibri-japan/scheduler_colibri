@@ -3,7 +3,7 @@ $('.modal').modal('hide');
 $('.patient_calendar').fullCalendar(
   'renderEvent', 
   jQuery.parseJSON("<%= j render(partial: 'unavailabilities/unavailability.json', locals: {unavailability: @unavailability}).html_safe %>"),
-  true
+  false
 );
 
 $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

@@ -6,25 +6,25 @@
   $('.calendar').fullCalendar(
     'renderEvents', 
     jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    true
+    false
   );
 
   $('.patient_calendar').fullCalendar(
     'renderEvents', 
     jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    true
+    false
   );
 
   $('.nurse_calendar').fullCalendar(
     'renderEvents', 
     jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    true
+    false
   );
 
   $('.master-calendar').fullCalendar(
     'renderEvents', 
     jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    true
+    false
   );
 
   $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

@@ -73,6 +73,7 @@ class RecurringAppointmentsController < ApplicationController
     	@recurring_appointment.start = params[:appointment][:start]
     	@recurring_appointment.end = params[:appointment][:end]
     	@recurring_appointment.anchor = params[:appointment][:start]
+    	@recurring_appointment.end_day = params[:appointment][:end]
     	@recurring_appointment.master = false
 
     	if @recurring_appointment.save

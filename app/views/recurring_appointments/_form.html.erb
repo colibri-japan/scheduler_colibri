@@ -46,10 +46,14 @@
     <%= form.time_select :end, id: :recurring_appointment_end, class: "form-control" %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
-    <%= form.select(:frequency,  options_for_select([['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]], recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
-  </div>
+  <% if recurring_appointment.new_record? %>
+
+	  <div class="form-group">
+	    <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
+	    <%= form.select(:frequency,  options_for_select([['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]], recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
+	  </div>
+
+  <% end %>
 
   <div class="form-group">
     <%= form.label :nurse_id, "ヘルパー名", class: "colibri-form-label" %>
@@ -60,6 +64,11 @@
     <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %>
     <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
   </div>
+
+  <% unless recurring_appointment.new_record? %>
+  	<%= form.label :edited_occurrence, 'エディットする日', class: "colibri-form-label" %>
+  	<%= form.select(:edited_occurrence, options_for_select(@collection), id: :recurring_appointment_edited_occurrence) %>
+  <% end %>
 
   <% if current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
     <div class="form-group">
@@ -83,7 +92,7 @@
   <div class="form-group">
     <p class="colibri-form-label">サービス日程詳細</p>
     <table>
-      <% recurring_appointment.appointments(@start_valid, @end_valid).each do |appointment| %>
+      <% @appointments.each do |appointment| %>
         <tr>
           <th><%= appointment.strftime("%-m月%-d日") %></th>
           <th>

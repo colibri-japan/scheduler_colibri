@@ -2,6 +2,24 @@ $('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appoint
 $('.patient_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
 $('.master-calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
 
+$('.calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
+  false
+);
+
+$('.patient_calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
+  false
+);
+
+$('.master-calendar').fullCalendar(
+  'renderEvents', 
+  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
+  false
+);
+
 $('.modal').modal('hide');
 
 $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

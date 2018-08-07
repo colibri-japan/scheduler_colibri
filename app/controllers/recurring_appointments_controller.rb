@@ -40,6 +40,8 @@ class RecurringAppointmentsController < ApplicationController
   def edit
     @nurses = @corporation.nurses.all 
     @patients = @corporation.patients.all
+    @appointments = @recurring_appointment.appointments(@start_valid, @end_valid)
+    @collection = [""] + @appointments
     @master = true if params[:q] == 'master'
   end
 
@@ -64,38 +66,63 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1.json
   def update
     @original_recurring_appointment = RecurringAppointment.find(params[:id])
+
     @recurring_appointment = @original_recurring_appointment.dup
 
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
+    if recurring_appointment_params[:edited_occurrence].present?
+      puts "params present"
 
-    if params[:appointment].present?
-    	@recurring_appointment.start = params[:appointment][:start]
-    	@recurring_appointment.end = params[:appointment][:end]
-    	@recurring_appointment.anchor = params[:appointment][:start]
-    	@recurring_appointment.end_day = params[:appointment][:end]
-    	@recurring_appointment.master = false
+      edited_occurrence = recurring_appointment_params[:edited_occurrence]
+      deleted_occurrence = DeletedOccurrence.create(recurring_appointment_id: @original_recurring_appointment.id, deleted_day: edited_occurrence)
 
-    	if @recurring_appointment.save
-    		@original_recurring_appointment.update(displayable: false)
-    		@activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
-    	end
+      @recurring_appointment.update(recurring_appointment_params)
+
+      @recurring_appointment.frequency = 2
+      @recurring_appointment.anchor = edited_occurrence
+      @recurring_appointment.end_day = edited_occurrence
+
+      if @recurring_appointment.save
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+
+      end
+
 
     else
-      if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
-      	@original_recurring_appointment.master = false
-      	@original_recurring_appointment.displayable = false
-      else
-      	@original_recurring_appointment.displayable = false
+      if params[:appointment].present?
+        @recurring_appointment.start = params[:appointment][:start]
+        @recurring_appointment.end = params[:appointment][:end]
+        @recurring_appointment.anchor = params[:appointment][:start]
+        @recurring_appointment.end_day = params[:appointment][:end]
         @recurring_appointment.master = false
-      end
 
-      
-      if @recurring_appointment.update(recurring_appointment_params)
-      	@original_recurring_appointment.save
-      	@activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
-      end
-    end  
+        if @recurring_appointment.save
+          @original_recurring_appointment.update(displayable: false)
+          @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+        end
+
+      else
+        if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
+          @original_recurring_appointment.master = false
+          @original_recurring_appointment.displayable = false
+        else
+          @original_recurring_appointment.displayable = false
+          @recurring_appointment.master = false
+        end
+
+        
+        if @recurring_appointment.update(recurring_appointment_params)
+          @original_recurring_appointment.save
+
+          @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+        end
+      end  
+    end
+
+
+
+
 
   end
 
@@ -140,6 +167,6 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master)
+      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :edited_occurrence)
     end
 end

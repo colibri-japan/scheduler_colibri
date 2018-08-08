@@ -106,27 +106,35 @@ class RecurringAppointment < ApplicationRecord
 		first_day = Date.new(planning.business_year, planning.business_month, 1)
 		last_day = Date.new(planning.business_year, planning.business_month, -1)
 
-		start_of_appointment = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.start.hour, self.start.min)
-		end_of_appointment = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.end.hour, self.end.min) + self.duration.to_i
 
-		range = Range.new(start_of_appointment, end_of_appointment)
 		overlap = []
+		if [0,1].include?(self.frequency)
+			self_occurrences = self.appointments(first_day, last_day)
 
-		recurring_appointments = RecurringAppointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true)
+			recurring_appointments = RecurringAppointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true)
 
-		recurring_appointments = recurring_appointments.where.not(id: self.original_id) if self.original_id.present?
-		recurring_appointments = recurring_appointments.where.not(id: self.id, original_id: self.id) if self.id.present?
+			recurring_appointments = recurring_appointments.where.not(id: self.original_id) if self.original_id.present?
+			recurring_appointments = recurring_appointments.where.not(id: self.id, original_id: self.id) if self.id.present?
 
-		recurring_appointments.each do |recurring_appointment|
-			occurrences = recurring_appointment.appointments(first_day, last_day)
-			occurrences.each do |appointment|
-				start_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
-				end_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
-				occurrence_range = Range.new(start_time, end_time)
+			self_occurrences.each do |self_occurrence|
+				start_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.start.hour, self.start.min)
+				end_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.end.hour, self.end.min) + self.duration.to_i
 
-				if range.overlaps?(occurrence_range) && range.first != occurrence_range.last && range.last != occurrence_range.first
-					overlap << recurring_appointment 
+				range = Range.new(start_of_appointment, end_of_appointment)
+
+				recurring_appointments.each do |recurring_appointment|
+					occurrences = recurring_appointment.appointments(first_day, last_day)
+					occurrences.each do |appointment|
+						start_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
+						end_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
+						occurrence_range = Range.new(start_time, end_time)
+
+						if range.overlaps?(occurrence_range) && range.first != occurrence_range.last && range.last != occurrence_range.first
+							overlap << recurring_appointment 
+						end
+					end
 				end
+
 			end
 		end
 

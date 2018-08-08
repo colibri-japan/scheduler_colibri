@@ -41,7 +41,7 @@ class RecurringAppointmentsController < ApplicationController
     @nurses = @corporation.nurses.all 
     @patients = @corporation.patients.all
     @appointments = @recurring_appointment.appointments(@start_valid, @end_valid)
-    @collection = [""] + @appointments
+    @collection = ["全繰り返し"] + @appointments
     @master = true if params[:q] == 'master'
   end
 
@@ -71,7 +71,7 @@ class RecurringAppointmentsController < ApplicationController
 
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
-    if recurring_appointment_params[:edited_occurrence].present?
+    if recurring_appointment_params[:edited_occurrence].present? && recurring_appointment_params[:edited_occurrence] != "全繰り返し"
       puts "params present"
 
       edited_occurrence = recurring_appointment_params[:edited_occurrence]

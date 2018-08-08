@@ -72,9 +72,9 @@ initialize_nurse_calendar = function(){
         	$('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
         	$('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
         	$('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
-          $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-          $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-          $('#recurring_appointment_end_day_3i').val(moment(end).format('D')); 
+            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(end).format('D')); 
         	$('#recurring_appointment_start_4i').val(moment(start).format('HH'));
         	$('#recurring_appointment_start_5i').val(moment(start).format('mm'));
         	$('#recurring_appointment_end_4i').val(moment(end).format('HH'));
@@ -302,7 +302,7 @@ initialize_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'agendaWeek,agendaThreeDay,agendaDay'
+        right: 'month,agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: true,
       selectHelper: false,
@@ -388,7 +388,7 @@ initialize_calendar = function() {
          },
          
       eventClick: function(appointment, jsEvent, view) {
-           $.getScript(appointment.edit_url, function() {
+           $.getScript(appointment.edit_url + '?view_start=' + moment(view.intervalStart).format('YYYY-MM-DD') + '&view_end=' + moment(view.intervalEnd).format('YYYY-MM-DD') , function() {
            	$('#edit_recurring_appointment').submit(function(){
            	  if ($('#recurring_appointment_master').is(":checked")) {
            	    message = confirm("このサービスはマスターとしてセーブされます。マスターとしてセーブしたくない場合は、キャンセルボタンを押し、フォームの「マスター」チェックボックスを外してからセーブしてください。");

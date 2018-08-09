@@ -1,7 +1,9 @@
 json.array!(@unavailabilities) do |unavailability|
 json.id "unavailability_#{unavailability.id}"
-json.extract! unavailability, :title, :description, :start, :end
+json.title "#{unavailability.patient.try(:name)}: #{unavailability.title}" 
+json.extract! unavailability, :description, :start, :end
 json.allDay unavailability.all_day_unavailability? ? true : false
+json.patientId unavailability.patient_id
 
 json.color '#D46A6A'
 

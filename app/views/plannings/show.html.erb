@@ -3,6 +3,9 @@
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
+	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>"
+	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning) %>"
+	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>"
 	window.validRangeStart = "<%= j @start_valid %>";
 	window.validRangeEnd = "<%= j @end_valid %>";
 	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning) %>";
@@ -19,6 +22,7 @@
 	<div id="activity-show-button-container">
 		<%= select_tag 'nurse-filter-zentai[]', options_from_collection_for_select(@nurses, 'id', 'name', 0), data: {placeholder: "全ヘルパー"}, multiple: true %>
 		<%= select_tag 'patient-filter-zentai[]', options_from_collection_for_select(@patients, 'id', 'name', ''), data: {placeholder: "全利用者"}, multiple: true %>
+		<input type="checkbox" checked data-toggle="toggle" id="bootstrap-toggle">
 		<span id="zoom-button" class="btn btn-success">ズーム</span>
 		<span id="unzoom-button" class="btn btn-secondary">元のズーム</span>
 		<span id="activity-show-button" class="btn btn-success">最新編集履歴</span>

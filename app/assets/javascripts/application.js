@@ -315,7 +315,7 @@ initialize_calendar = function() {
         url: window.corporationNursesURL,
       }, 
 
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesUrl],
 
       eventRender: function eventRender(event, element, view) {
         var patientFilterArray = $('#patient-filter-zentai_').val();
@@ -354,7 +354,7 @@ initialize_calendar = function() {
 
 
       select: function(start, end, jsEvent, view, resource) {
-      	$.getScript(window.createRecurringAppointmentURL, function() {
+      	$.getScript(window.bootstrapToggleUrl, function() {
           $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
           $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
           $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
@@ -365,7 +365,16 @@ initialize_calendar = function() {
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-          $('#recurring_appointment_nurse_id').val(resource.id)
+          $('#unavailability_start_1i').val(moment(start).format('YYYY'));
+          $('#unavailability_start_2i').val(moment(start).format('M'));
+          $('#unavailability_start_3i').val(moment(start).format('D'));
+          $('#unavailability_start_4i').val(moment(start).format('HH'));
+          $('#unavailability_start_5i').val(moment(start).format('mm'));
+          $('#unavailability_end_1i').val(moment(end).format('YYYY'));
+          $('#unavailability_end_2i').val(moment(end).format('M'));
+          $('#unavailability_end_3i').val(moment(end).format('D'));
+          $('#unavailability_end_4i').val(moment(end).format('HH'));
+          $('#unavailability_end_5i').val(moment(end).format('mm'));
         });
 
         calendar.fullCalendar('unselect');

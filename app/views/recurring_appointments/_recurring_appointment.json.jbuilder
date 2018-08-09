@@ -16,7 +16,7 @@ json.array! appointments do |appointment|
 	elsif recurring_appointment.color.blank?
 		json.color '#7AD5DE'
 	end
-	json.borderColor recurring_appointment.master == true ? '' : '#74d680'
+	json.borderColor recurring_appointment.master == true ? '' : '#69747E'
 	json.editable recurring_appointment.displayable == true ? true : false
 	json.textColor '#aaa' if recurring_appointment.displayable == false
 	json.displayable  recurring_appointment.master == false && recurring_appointment.displayable == false ? false : true

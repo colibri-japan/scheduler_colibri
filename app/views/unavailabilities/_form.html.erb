@@ -37,7 +37,6 @@
   </div>
 
 
-
   <div class="actions">
     <%= form.submit "セーブする", class: "btn btn-info btn-block form-control" %>
     <%= link_to '削除', planning_unavailability_path(@planning, unavailability), method: :delete, class: 'btn btn-danger', data: {confirm: 'サービスが不可能な日が削除されます'}, remote: true unless unavailability.new_record? %>

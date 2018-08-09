@@ -6,4 +6,10 @@ $('.patient_calendar').fullCalendar(
   false
 );
 
+$('.calendar').fullCalendar(
+  'renderEvent', 
+  jQuery.parseJSON("<%= j render(partial: 'unavailabilities/unavailability.json', locals: {unavailability: @unavailability}).html_safe %>"),
+  false
+);
+
 $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");

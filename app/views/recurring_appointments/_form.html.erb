@@ -83,7 +83,7 @@
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
     <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除されます。'}, remote: true unless recurring_appointment.new_record? %>
-    <%= link_to 'マスターから削除', planning_recurring_appointment_path(@planning, recurring_appointment, master: "1"), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除され、マスターから削除されます。'}, remote: true unless recurring_appointment.new_record? || recurring_appointment.master == false %>
+    <%= link_to 'マスターから削除', planning_recurring_appointment_path(@planning, recurring_appointment, master: "1"), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除され、マスターから削除されます。'}, remote: true unless recurring_appointment.new_record? || recurring_appointment.master == false || !current_user.admin? %>
     
   </div>
 <% end %>

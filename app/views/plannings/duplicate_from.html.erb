@@ -10,7 +10,7 @@
 	<%= select_tag('duplicate-from', options_from_collection_for_select(@plannings, 'id', "title"), prompt: "スケジュール選択") %>
 
 	<div id="duplicate-button-wrapper">
-		<div id="trigger-duplication" class="btn btn-info text-white btn-block form-control">反映する</div>
+		<div id="trigger-duplication" class="btn btn-info text-white btn-block form-control" data-submitted="false">反映する</div>
 	</div>
 	
 	

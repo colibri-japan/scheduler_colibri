@@ -60,6 +60,7 @@ class PlanningsController < ApplicationController
 				recurring_appointment = appointment.dup 
 				recurring_appointment.planning_id = @planning.id
 				recurring_appointment.anchor = new_anchor_day
+				recurring_appointment.end_day = new_anchor_day + appointment.duration
 				recurring_appointment.start = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.start.hour, appointment.start.min)
 				recurring_appointment.end = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.end.hour, appointment.end.min)
 				recurring_appointment.master = true

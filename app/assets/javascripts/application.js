@@ -30,6 +30,8 @@ adjustCalendar = function(){
   $('.fc-day-grid').css({'padding-right': '16px'});
 };
 
+
+
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
   $('.nurse_calendar').each(function(){
@@ -548,13 +550,17 @@ $(document).on('turbolinks:load', function(){
 
 
   $('#trigger-duplication').click(function(){
+  	var $this = $(this);
     var template_id = $('#duplicate-from').val() ;
-    if (template_id) {
+    if (template_id && $this.data('submitted') !== true) {
       $.ajax({
         url: window.duplicateUrl + '?template_id=' + template_id,
         type: 'PATCH',
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
       });
+      $this.data('submitted', true);
+    } else if (template_id && $this.data('submitted') === true) {
+    	alert('スケジュールの反映中です、少々お待ちください');
     } else {
       alert('反映したいスケジュールを選択してください');
     }

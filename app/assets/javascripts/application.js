@@ -377,6 +377,7 @@ initialize_calendar = function() {
           $('#unavailability_end_3i').val(moment(end).format('D'));
           $('#unavailability_end_4i').val(moment(end).format('HH'));
           $('#unavailability_end_5i').val(moment(end).format('mm'));
+          $('#recurring_appointment_nurse_id').val(resource.id);
         });
 
         calendar.fullCalendar('unselect');
@@ -387,7 +388,8 @@ initialize_calendar = function() {
              appointment: {
                id: appointment.id,
                start: appointment.start.format(),
-               end: appointment.end.format()
+               end: appointment.end.format(),
+               nurse_id: appointment.resourceId
              }
            };
            $.ajax({

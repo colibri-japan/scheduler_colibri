@@ -71,7 +71,20 @@ class RecurringAppointmentsController < ApplicationController
 
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
-    if recurring_appointment_params[:edited_occurrence].present? && recurring_appointment_params[:edited_occurrence] != "全繰り返し"
+    if params[:appointment].present?
+        @recurring_appointment.start = params[:appointment][:start]
+        @recurring_appointment.end = params[:appointment][:end]
+        @recurring_appointment.anchor = params[:appointment][:start]
+        @recurring_appointment.end_day = params[:appointment][:end]
+        @recurring_appointment.master = false
+        @recurring_appointment.nurse_id = params[:appointment][:nurse_id]
+
+        if @recurring_appointment.save
+          @original_recurring_appointment.update(displayable: false)
+          @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+        end
+
+    elsif recurring_appointment_params[:edited_occurrence].present? && recurring_appointment_params[:edited_occurrence] != "全繰り返し"
       puts "params present"
 
       edited_occurrence = recurring_appointment_params[:edited_occurrence]
@@ -88,36 +101,22 @@ class RecurringAppointmentsController < ApplicationController
 
       end
 
-
     else
-      if params[:appointment].present?
-        @recurring_appointment.start = params[:appointment][:start]
-        @recurring_appointment.end = params[:appointment][:end]
-        @recurring_appointment.anchor = params[:appointment][:start]
-        @recurring_appointment.end_day = params[:appointment][:end]
-        @recurring_appointment.master = false
 
-        if @recurring_appointment.save
-          @original_recurring_appointment.update(displayable: false)
-          @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
-        end
-
+      
+      if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
+        @original_recurring_appointment.master = false
+        @original_recurring_appointment.displayable = false
       else
-        if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
-          @original_recurring_appointment.master = false
-          @original_recurring_appointment.displayable = false
-        else
-          @original_recurring_appointment.displayable = false
-          @recurring_appointment.master = false
-        end
-
-        
-        if @recurring_appointment.update(recurring_appointment_params)
-          @original_recurring_appointment.save
-
-          @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
-        end
-      end  
+        @original_recurring_appointment.displayable = false
+        @recurring_appointment.master = false
+      end
+      
+      if @recurring_appointment.update(recurring_appointment_params)
+        @original_recurring_appointment.save
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+      end
+      
     end
 
 

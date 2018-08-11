@@ -13,6 +13,8 @@ class PatientsController < ApplicationController
     
     @patients = @corporation.patients.all.order_by_kana
     @activities = PublicActivity::Activity.where(planning_id: @planning.id, patient_id: @patient.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
+    @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
+
     set_valid_range
   end
 

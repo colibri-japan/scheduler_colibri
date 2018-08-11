@@ -423,6 +423,15 @@ initialize_calendar = function() {
   });
 };
 
+var loadRecurringAppointments;
+loadRecurringAppointments = function(){
+  $.ajax({
+    url: window.recurringAppointmentsURL + '&recurring_block=true',
+    type: 'GET',
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+  });
+};
+
 
 
 $(document).on('turbolinks:load', initialize_calendar); 
@@ -578,6 +587,8 @@ $(document).on('turbolinks:load', function(){
   });
 
   $('#bootstrap-toggle').bootstrapToggle();
+
+  loadRecurringAppointments();
 
 }); 
 

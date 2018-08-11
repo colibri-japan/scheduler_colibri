@@ -12,9 +12,13 @@ class RecurringAppointmentsController < ApplicationController
        original_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], master: true, displayable: false)
        @recurring_appointments =(displayable_appointments + original_appointments).uniq
      elsif params[:patient_id].present?
+      if params[:recurring_block] == true
+        puts 'recurring called'
+      else
        displayable_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true)
        original_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], master: true, displayable: false)
        @recurring_appointments = (displayable_appointments + original_appointments).uniq
+     end
      elsif params[:q] == 'master'
        @recurring_appointments = @planning.recurring_appointments.where(master: true).includes(:patient, :nurse)
      else

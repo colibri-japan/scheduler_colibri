@@ -14,7 +14,7 @@
 <%= render 'plannings/planning_patients_submenu' %>
 
 <div id="detail-container">
-	<div id="resource-list-container">
+	<div id="resource-list-container" class="no-print">
 		<% @patients.each do |patient| %>
 			<p class="resource-list-element"><%= link_to "#{patient.name}", planning_patient_path(@planning, patient) %></p>
 		<% end %>
@@ -23,7 +23,8 @@
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
 			<p class="planning-activity-module-title"><%= @patient.name %></p>
-			<div id="activity-show-button-container">
+			<div id="activity-show-button-container" class="no-print">
+				<a href="javascript:window.print()">印刷</a>
 				<input type="checkbox" checked data-toggle="toggle" id="bootstrap-toggle">
 
 				<span id="zoom-button" class="btn btn-success">ズーム</span>
@@ -34,7 +35,7 @@
 		</div>
 		<div id="planning-container">
 			<div class="patient_calendar"></div>
-			<div id="planning-activity-module">
+			<div id="planning-activity-module" class="no-print">
 				<p class="planning-activity-module-title">最新編集履歴</p>
 				<div id="planning-activities">
 					<% @activities.each do |activity| %>
@@ -48,6 +49,9 @@
 	
 </div>
 
+<div id="recurring_appointment_details" class="print">
+	
+</div>
 
 
 

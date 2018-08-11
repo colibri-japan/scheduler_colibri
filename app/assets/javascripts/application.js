@@ -283,7 +283,7 @@ initialize_calendar = function() {
     var calendar = $(this);
     calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      defaultView: 'agendaWeek',
+      defaultView: window.defaultView,
       views: {
       	agendaThreeDay: {
       		type: 'agenda',

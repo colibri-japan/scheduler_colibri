@@ -10,6 +10,7 @@
 	window.validRangeEnd = "<%= j @end_valid %>";
 	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning) %>";
 	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning) %>";
+	window.defaultView = "<%= j @corporation.default_view %>"
 <% end %>
 
 <%= render 'layouts/planning_menu' %>

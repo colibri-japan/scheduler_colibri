@@ -34,6 +34,7 @@ adjustCalendar = function(){
 
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
+
   $('.nurse_calendar').each(function(){
     var nurse_calendar = $(this);
     nurse_calendar.fullCalendar({
@@ -66,7 +67,7 @@ initialize_nurse_calendar = function(){
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL + '?nurse_id=' + window.nurseId],
 
 
       select: function(start, end) {
@@ -88,6 +89,9 @@ initialize_nurse_calendar = function(){
       },
 
       eventRender: function(event, element, view){
+        element.find('.fc-title').text(function(i, t){
+          return event.patient_name;
+        });
         return event.displayable;
       },
          
@@ -107,6 +111,7 @@ initialize_nurse_calendar = function(){
 
 var initialize_patient_calendar;
 initialize_patient_calendar = function(){
+  loadPatientRecurringAppointments();
   $('.patient_calendar').each(function(){
     var patient_calendar = $(this);
     patient_calendar.fullCalendar({
@@ -115,6 +120,7 @@ initialize_patient_calendar = function(){
       minTime: '07:00:00',
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      timeFormat: 'h:mm',
       nowIndicator: true,
       locale: 'ja',
       eventColor: '#7AD5DE',
@@ -131,7 +137,7 @@ initialize_patient_calendar = function(){
       selectHelper: false,
       editable: true,
       eventLimit: true,
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesUrl + '?patient_id=' + window.patientId],
+      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL + '?patient_id=' + window.patientId, window.unavailabilitiesUrl + '?patient_id=' + window.patientId],
 
 
       select: function(start, end) {
@@ -164,6 +170,9 @@ initialize_patient_calendar = function(){
       },
 
       eventRender: function(appointment, element, view){
+        element.find('.fc-title').text(function(i, t){
+          return appointment.nurse_name;
+        });
         return appointment.displayable;
       },
 
@@ -274,6 +283,7 @@ initialize_master_calendar = function() {
             return false;
          }
     })
+    
   });
 };
 
@@ -423,14 +433,25 @@ initialize_calendar = function() {
   });
 };
 
-var loadRecurringAppointments;
-loadRecurringAppointments = function(){
+var loadPatientRecurringAppointments;
+loadPatientRecurringAppointments = function(){
   $.ajax({
-    url: window.recurringAppointmentsURL + '&recurring_block=true',
+    url: window.recurringAppointmentsURL + '.js?patient_id=' + window.patientId + '&print=true',
     type: 'GET',
     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
   });
+  return true;
 };
+
+var loadNurseRecurringAppointments;
+loadNurseRecurringAppointments = function(){
+  $.ajax({
+    url: window.recurringAppointmentsURL + '.js?nurse_id=' + window.nurseId + '&print=true',
+    type: 'GET',
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+  });
+  return true;
+}
 
 
 
@@ -513,6 +534,10 @@ $(document).on('turbolinks:load', function(){
     window.location = window.excelUrl + '?p=' + $('#schedule-filter').val();
   });
 
+  $('li.planning-menu-items').click(function(){
+    window.location = $(this).data('url');
+  })
+
   $('#planning-activity-module').hide();
   $('#activity-hide-button').hide();
 
@@ -588,7 +613,19 @@ $(document).on('turbolinks:load', function(){
 
   $('#bootstrap-toggle').bootstrapToggle();
 
-  loadRecurringAppointments();
+  $('#recurring-appointment-details').hide();
+
+  $('#print-button').click(function(){
+    $('#recurring-appointment-details').show();
+    window.print();
+  });
+
+  $('.resource-list-element').click(function(){
+    window.location = $(this).data('url');
+  })
+
+
+  
 
 }); 
 

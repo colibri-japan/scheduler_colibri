@@ -1,6 +1,6 @@
 <%= javascript_tag do %>
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
-	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
+	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.validRangeStart = "<%= j @start_valid %>";
@@ -12,15 +12,15 @@
 <%= render 'plannings/planning_nurses_submenu' %>
 
 <div id="detail-container">
-	<div id="resource-list-container">
+	<div id="resource-list-container" class="no-print">
 		<% @nurses.each do |nurse| %>
-			<p class="resource-list-element"><%= link_to "#{nurse.name}", planning_nurse_path(@planning, nurse) %></p>
+			<p class="resource-list-element" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 		<% end %>
 	</div>
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
 			<p class="planning-activity-module-title"><%= @nurse.name %></p>
-			<div id="activity-show-button-container">
+			<div id="activity-show-button-container" class="no-print">
 				<span id="zoom-button" class="btn btn-success">ズーム</span>
 				<span id="unzoom-button" class="btn btn-secondary">元のズーム</span>
 				<span id="activity-show-button" class="btn btn-success">最新編集履歴</span>
@@ -30,7 +30,7 @@
 
 		<div id="planning-container">
 			<div class="nurse_calendar"></div>
-			<div id="planning-activity-module">
+			<div id="planning-activity-module" class="no-print">
 				<p class="planning-activity-module-title">最新編集履歴</p>
 				<div id="planning-activities">
 					<% @activities.each do |activity| %>
@@ -41,6 +41,11 @@
 		</div>
 
 	</div>
+</div>
+
+<div id="recurring-appointment-details">
+	<div class="planning-activity-module-title">サービスの詳細</div>
+	
 </div>
 
 

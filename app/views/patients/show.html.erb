@@ -1,6 +1,6 @@
 <%= javascript_tag do %>
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {patient_id: @patient.id}) %>";
-	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, params: {patient_id: @patient.id}) %>";
+	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>"
 	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>"
 	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning) %>"
@@ -16,7 +16,7 @@
 <div id="detail-container">
 	<div id="resource-list-container" class="no-print">
 		<% @patients.each do |patient| %>
-			<p class="resource-list-element"><%= link_to "#{patient.name}", planning_patient_path(@planning, patient) %></p>
+			<p class="resource-list-element" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
 		<% end %>
 		
 	</div>
@@ -24,7 +24,7 @@
 		<div id="detail-planning-title">
 			<p class="planning-activity-module-title"><%= @patient.name %></p>
 			<div id="activity-show-button-container" class="no-print">
-				<a href="javascript:window.print()">印刷</a>
+				<div class="btn btn-success text-white" id="print-button">印刷</div>
 				<input type="checkbox" checked data-toggle="toggle" id="bootstrap-toggle">
 
 				<span id="zoom-button" class="btn btn-success">ズーム</span>
@@ -49,7 +49,8 @@
 	
 </div>
 
-<div id="recurring_appointment_details" class="print">
+<div id="recurring-appointment-details">
+	<div class="planning-activity-module-title">サービスの詳細</div>
 	
 </div>
 

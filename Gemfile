@@ -61,6 +61,9 @@ gem 'pundit'
 #japanese text conversions
 gem 'miyabi'
 
+#japanese dates
+gem 'wareki'
+
 #create excel templates with axlsx
 gem 'rubyzip', '>= 1.2.1'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'

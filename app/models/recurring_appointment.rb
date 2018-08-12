@@ -2,7 +2,6 @@ class RecurringAppointment < ApplicationRecord
 	include PublicActivity::Common
 
 	attribute :edited_occurrence, :date
-
 	
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true

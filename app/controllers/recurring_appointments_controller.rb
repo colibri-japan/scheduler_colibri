@@ -1,7 +1,7 @@
 class RecurringAppointmentsController < ApplicationController
   before_action :set_recurring_appointment, only: [:show, :edit, :destroy]
   before_action :set_planning
-  before_action :set_valid_range, only: [:new, :edit, :index]
+  before_action :set_valid_range, only: [:new, :edit, :index, :update]
   before_action :set_corporation
 
   # GET /recurring_appointments
@@ -86,20 +86,45 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
     if params[:appointment].present?
+      #obtain original day using delta
+      delta = params[:delta].to_i
+      start_day = DateTime.parse(params[:appointment][:start])
+      start_day = start_day.strftime('%Q').to_i
+
+      original_day_milliseconds = (start_day - delta)
+      original_day = Time.strptime(original_day_milliseconds.to_s, '%Q').utc
+      original_day = [original_day.strftime("%Y-%m-%d").to_s]
+      puts original_day
+
+      #obtain the occurrence that happends on the original day
+      appointments = @original_recurring_appointment.appointments(@start_valid, @end_valid)
+      appointments.map!{|e| e.to_s}
+      puts appointments
+      appointment_to_delete = appointments & original_day
+
+      puts "common appointment present?"
+      puts appointment_to_delete.present?
+
+      if appointment_to_delete.present?
+
+        #create a new one-time appointment happening that specific day with the right parameters
+
+        @recurring_appointment.frequency = 2
         @recurring_appointment.start = params[:appointment][:start]
         @recurring_appointment.end = params[:appointment][:end]
         @recurring_appointment.anchor = params[:appointment][:start]
         @recurring_appointment.end_day = params[:appointment][:end]
         @recurring_appointment.master = false
-        @recurring_appointment.nurse_id = params[:appointment][:nurse_id]
+        @recurring_appointment.nurse_id = params[:appointment][:nurse_id] if params[:appointment][:nurse_id].present?
 
         if @recurring_appointment.save
-          @original_recurring_appointment.update(displayable: false)
+          @deleted_occurrence = DeletedOccurrence.create(deleted_day: appointment_to_delete[0], recurring_appointment_id: @original_recurring_appointment.id)
           @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
         end
 
+      end
+
     elsif recurring_appointment_params[:edited_occurrence].present? && recurring_appointment_params[:edited_occurrence] != "全繰り返し"
-      puts "params present"
 
       edited_occurrence = recurring_appointment_params[:edited_occurrence]
       deleted_occurrence = DeletedOccurrence.create(recurring_appointment_id: @original_recurring_appointment.id, deleted_day: edited_occurrence)

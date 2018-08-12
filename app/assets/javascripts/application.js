@@ -181,11 +181,11 @@ initialize_patient_calendar = function(){
              appointment: {
                id: appointment.id,
                start: appointment.start.format(),
-               end: appointment.end.format()
+               end: appointment.end.format(),
              }
            };
            $.ajax({
-               url: appointment.base_url + '.js',
+               url: appointment.base_url + '.js?delta=' + delta,
                type: 'PATCH',
                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
                data: appointment_data,

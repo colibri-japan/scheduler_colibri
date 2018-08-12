@@ -30,6 +30,9 @@
   );
 
 <% else %>
+  <% if @deleted_occurrence.present? %>
+    alert('サービスがその日のみアップデートされました。');
+  <% end %>
 
   $('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
   $('.patient_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
@@ -50,11 +53,6 @@
     false
   );
 
-  $('.patient_calendar').fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
-    false
-  );
 
   $('.nurse_calendar').fullCalendar(
     'renderEvents', 
@@ -62,11 +60,6 @@
     false
   );
 
-  $('.nurse_calendar').fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
-    false
-  );
 
   $('.master-calendar').fullCalendar(
     'renderEvents', 

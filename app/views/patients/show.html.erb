@@ -7,7 +7,9 @@
 	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>"
 	window.validRangeStart = "<%= j @start_valid %>";
 	window.validRangeEnd = "<%= j @end_valid %>";
-	window.patientId = "<%= j @patient.id.to_s %>"
+	window.patientId = "<%= j @patient.id.to_s %>";
+	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
+	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 <% end %>
 
 <%= render 'layouts/planning_menu' %>

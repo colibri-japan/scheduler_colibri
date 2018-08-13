@@ -56,7 +56,8 @@ initialize_nurse_calendar = function(){
         start: window.validRangeStart,
         end: window.validRangeEnd,
       },
-      minTime: '07:00:00',   
+      minTime: window.minTime,
+      maxTime: window.maxTime, 
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -119,7 +120,8 @@ initialize_patient_calendar = function(){
     patient_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: 'agendaWeek',
-      minTime: '07:00:00',
+      minTime: window.minTime,
+      maxTime: window.maxTime, 
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
       timeFormat: 'h:mm',
@@ -224,7 +226,8 @@ initialize_master_calendar = function() {
         start: window.validRangeStart,
         end: window.validRangeEnd,
       },
-      minTime: '07:00:00',
+      minTime: window.minTime,
+      maxTime: window.maxTime, 
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -312,7 +315,8 @@ initialize_calendar = function() {
         start: window.validRangeStart,
         end: window.validRangeEnd,
       },
-      minTime: '07:00:00',
+      minTime: window.minTime,
+      maxTime: window.maxTime, 
       header: {
         left: 'prev,next today',
         center: 'title',

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180811145703) do
+ActiveRecord::Schema.define(version: 20180813095948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 20180811145703) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "default_view", default: "agendaWeek"
+    t.string "business_start_hour", default: "07:00:00"
+    t.string "business_end_hour", default: "24:00:00"
   end
 
   create_table "deleted_occurrences", force: :cascade do |t|

@@ -51,6 +51,7 @@ initialize_nurse_calendar = function(){
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      timeFormat: 'H:mm',
       nowIndicator: true,
       validRange: {
         start: window.validRangeStart,
@@ -124,7 +125,7 @@ initialize_patient_calendar = function(){
       maxTime: window.maxTime, 
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
-      timeFormat: 'h:mm',
+      timeFormat: 'H:mm',
       nowIndicator: true,
       locale: 'ja',
       eventColor: '#7AD5DE',
@@ -220,6 +221,7 @@ initialize_master_calendar = function() {
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      timeFormat: 'H:mm',
       nowIndicator: true,
       locale: 'ja',
       validRange: {
@@ -308,6 +310,7 @@ initialize_calendar = function() {
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
+      timeFormat: 'H:mm',
       nowIndicator: true,
       height: 'auto',
       locale: 'ja',

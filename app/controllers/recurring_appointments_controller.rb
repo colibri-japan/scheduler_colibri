@@ -8,6 +8,7 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments.json
   def index
     if params[:nurse_id].present?
+      @nurse = Nurse.find(params[:nurse_id])
       @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true)
     elsif params[:patient_id].present?
       @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true)
@@ -23,7 +24,8 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointments.each do |recurring_appointment|
         appointments = recurring_appointment.appointments(@start_valid, @end_valid)
         appointments.each do |appointment|
-          @occurrence_appointments[appointment] = recurring_appointment
+          date = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
+          @occurrence_appointments[date] = recurring_appointment
         end
       end
 

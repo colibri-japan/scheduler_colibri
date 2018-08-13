@@ -34,8 +34,9 @@ adjustCalendar = function(){
 
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
-
+  
   $('.nurse_calendar').each(function(){
+    loadNurseRecurringAppointments();
     var nurse_calendar = $(this);
     nurse_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -111,8 +112,9 @@ initialize_nurse_calendar = function(){
 
 var initialize_patient_calendar;
 initialize_patient_calendar = function(){
-  loadPatientRecurringAppointments();
+  
   $('.patient_calendar').each(function(){
+    loadPatientRecurringAppointments();
     var patient_calendar = $(this);
     patient_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',

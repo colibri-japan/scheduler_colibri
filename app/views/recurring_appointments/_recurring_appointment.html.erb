@@ -1,6 +1,7 @@
 <div class="recurring-appointment-detail-wrapper">
-	<%= occurrence.strftime("%Jf") %>
-	<%= recurring_appointment.nurse.try(:name) %>
+	<%= occurrence.to_date.strftime("%Jf") %>
+	<%= recurring_appointment.nurse.try(:name) unless @nurse.present? %>
+	<%= recurring_appointment.patient.try(:name) if @nurse.present? %>
 	<%= recurring_appointment.start.strftime("%-H:%M") %> ~
 	<%= recurring_appointment.end.strftime("%-H:%M") %>
 	<%= recurring_appointment.description %>

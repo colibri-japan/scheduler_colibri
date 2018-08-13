@@ -5,14 +5,11 @@ $('.master-calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_
 $('.modal').modal('hide');
 $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 
-$('.patient_calendar').fullCalendar(
+$('.master-calendar').fullCalendar(
   'renderEvents', 
   $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
   false
 );
 
-$('.nurse_calendar').fullCalendar(
-  'renderEvents', 
-  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
-  false
-);
+$('#recurring-appointment-details').empty();
+loadPatientRecurringAppointments();

@@ -75,5 +75,8 @@
 
   $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 
+  $('#recurring-appointment-details').empty();
+  loadPatientRecurringAppointments();
+
 <% end %>
 

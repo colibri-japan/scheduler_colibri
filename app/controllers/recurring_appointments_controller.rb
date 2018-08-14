@@ -3,6 +3,8 @@ class RecurringAppointmentsController < ApplicationController
   before_action :set_planning
   before_action :set_valid_range, only: [:new, :edit, :index, :update]
   before_action :set_corporation
+  before_action :set_nurses, only: [:new, :edit]
+  before_action :set_patients, only: [:new, :edit]
 
   # GET /recurring_appointments
   # GET /recurring_appointments.json
@@ -47,15 +49,11 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments/new
   def new
     @recurring_appointment = RecurringAppointment.new
-    @nurses = @corporation.nurses.all
-    @patients = @corporation.patients.all
     @master = true if params[:q] == 'master'
   end
 
   # GET /recurring_appointments/1/edit
   def edit
-    @nurses = @corporation.nurses.all 
-    @patients = @corporation.patients.all
     @appointments = @recurring_appointment.appointments(@start_valid, @end_valid)
     @collection = ["全繰り返し"] + @appointments
     @master = true if params[:q] == 'master'
@@ -96,16 +94,11 @@ class RecurringAppointmentsController < ApplicationController
       original_day_milliseconds = (start_day - delta)
       original_day = Time.strptime(original_day_milliseconds.to_s, '%Q').utc
       original_day = [original_day.strftime("%Y-%m-%d").to_s]
-      puts original_day
 
       #obtain the occurrence that happends on the original day
       appointments = @original_recurring_appointment.appointments(@start_valid, @end_valid)
       appointments.map!{|e| e.to_s}
-      puts appointments
       appointment_to_delete = appointments & original_day
-
-      puts "common appointment present?"
-      puts appointment_to_delete.present?
 
       if appointment_to_delete.present?
 
@@ -191,6 +184,14 @@ class RecurringAppointmentsController < ApplicationController
 
     def set_corporation
       @corporation = Corporation.find(current_user.corporation_id)
+    end
+
+    def set_nurses
+      @nurses = @corporation.nurses.all.order_by_kana
+    end
+
+    def set_patients
+      @patients = @corporation.patients.all.order_by_kana
     end
 
 

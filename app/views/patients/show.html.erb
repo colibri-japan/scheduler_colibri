@@ -24,7 +24,7 @@
 	</div>
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
-			<p class="planning-activity-module-title"><%= @patient.name %></p>
+			<p class="planning-activity-module-title"><%= @patient.try(:name) %>様</p>
 			<div id="activity-show-button-container" class="no-print">
 				<div class="btn btn-success text-white" id="print-button">印刷</div>
 				<input type="checkbox" checked data-toggle="toggle" id="bootstrap-toggle">

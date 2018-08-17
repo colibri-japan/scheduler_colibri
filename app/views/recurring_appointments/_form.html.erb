@@ -11,6 +11,9 @@
   </div>
   <% end %>
 
+
+
+
   <div class="form-group">
     <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
     <%= form.text_field :title, id: :recurring_appointment_title, required: true, class: "form-control" %>
@@ -65,16 +68,27 @@
     <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
   </div>
 
-  <% unless recurring_appointment.new_record? %>
-  	<%= form.label :edited_occurrence, 'エディットする日', class: "colibri-form-label" %>
-  	<%= form.select(:edited_occurrence, options_for_select(@collection), id: :recurring_appointment_edited_occurrence) %>
-  <% end %>
-
-  <% if current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
+  <% if current_user.admin? && recurring_appointment.new_record? %>
     <div class="form-group">
       <%= form.label :master, "マスターとしてセーブする", class: "colibri-form-label" %>
-      <%= form.check_box :master, checked: current_user.admin? && recurring_appointment.new_record? || current_user.admin? && recurring_appointment.master %>
+      <%= form.check_box :master, checked: true %>
     </div>
+  <% end %>
+
+  <% unless recurring_appointment.new_record? %>
+    編集オプション
+    <div class="form-group">
+      <%= form.label :edited_occurrence, 'エディットする日', class: "colibri-form-label" %>
+      <%= form.select(:edited_occurrence, options_for_select(@collection), id: :recurring_appointment_edited_occurrence) %>
+    </div>
+
+    <% if current_user.admin? %>
+      <div class="form-group">
+          <%= form.label :master, "マスターをエディットする", class: "colibri-form-label" %>
+          <%= form.check_box :master, checked:  current_user.admin? && recurring_appointment.master %>
+      </div>
+    <% end %>
+    
   <% end %>
 
 
@@ -82,8 +96,10 @@
 
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
-    <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除されます。'}, remote: true unless recurring_appointment.new_record? %>
-    <%= link_to 'マスターから削除', planning_recurring_appointment_path(@planning, recurring_appointment, master: "1"), method: :delete, class: 'btn btn-danger', data: {confirm: 'このサービスのすべての繰り返しが削除され、マスターから削除されます。'}, remote: true unless recurring_appointment.new_record? || recurring_appointment.master == false || !current_user.admin? %>
+    <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, class: 'btn btn-danger', remote: true unless recurring_appointment.new_record? %>
+    <div class="btn btn-success text-white">
+      編集リストに追加
+    </div>
     
   </div>
 <% end %>

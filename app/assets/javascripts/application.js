@@ -622,11 +622,16 @@ $(document).on('turbolinks:load', function(){
 
   $('#bootstrap-toggle').bootstrapToggle();
 
-  $('#recurring-appointment-details').hide();
-
   $('#print-button').click(function(){
-    $('#recurring-appointment-details').show();
-    window.print();
+  	var confirm = window.confirm('サービスのコメントを含めて印刷する。');
+  	if (confirm == true) {
+  		$('#recurring-appointment-details-container').show();
+  		window.print();
+  	} else {
+  		$('#recurring-appointment-details-container').hide();
+  		window.print();
+  	}
+    
   });
 
   $('.resource-list-element').click(function(){

@@ -178,7 +178,18 @@ th {
 	font-weight: bold;
 }
 
+.print {
+	display: none;
+}
 
+@media print {
+	.no-print {
+		display: none !important;
+	}
+	.print {
+		display: block;
+	}
+}
 
 
 

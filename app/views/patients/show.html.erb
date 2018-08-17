@@ -24,15 +24,12 @@
 	</div>
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
-			<p class="planning-activity-module-title"><%= @patient.try(:name) %>様</p>
+			<p class="planning-activity-module-title"><%= @patient.try(:name) %> 様</p>
 			<div id="activity-show-button-container" class="no-print">
-				<div class="btn btn-success text-white" id="print-button">印刷</div>
 				<input type="checkbox" checked data-toggle="toggle" id="bootstrap-toggle">
-
-				<span id="zoom-button" class="btn btn-success">ズーム</span>
-				<span id="unzoom-button" class="btn btn-secondary">元のズーム</span>
-				<span id="activity-show-button" class="btn btn-success">最新編集履歴</span>
-				<span id="activity-hide-button" class="btn btn-secondary">最新編集履歴を閉じる</span>
+				<div class="btn btn-success text-white" id="print-button"><%= image_tag('printer-24.png') %> 印刷</div>
+				<span id="activity-show-button" class="btn btn-success"><%= image_tag('literature-24.png') %> 最新編集履歴</span>
+				<span id="activity-hide-button" class="btn btn-secondary"><%= image_tag('literature-24.png') %> 最新編集履歴を閉じる</span>
 			</div>
 		</div>
 		<div id="planning-container">
@@ -46,18 +43,20 @@
 				</div>
 			</div>
 		</div>
+
+		<div id="recurring-appointment-details-container">
+			<div class="planning-activity-module-title">サービスの詳細</div>
+			<div id="recurring-appointment-details">
+				
+			</div>
+			
+		</div>
 		
 	</div>
 	
 </div>
 
-<div id="recurring-appointment-details-container">
-	<div class="planning-activity-module-title">サービスの詳細</div>
-	<div id="recurring-appointment-details">
-		
-	</div>
-	
-</div>
+
 
 
 

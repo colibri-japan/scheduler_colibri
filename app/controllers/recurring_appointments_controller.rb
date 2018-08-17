@@ -22,6 +22,7 @@ class RecurringAppointmentsController < ApplicationController
 
     if params[:print] == 'true'
       @occurrence_appointments = {}
+      @recurring_appointments = @recurring_appointments.where.not(description: [nil, ''])
 
       @recurring_appointments.each do |recurring_appointment|
         appointments = recurring_appointment.appointments(@start_valid, @end_valid)

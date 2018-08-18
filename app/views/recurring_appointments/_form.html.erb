@@ -100,19 +100,23 @@
       <%= hidden_field_tag(:q, 'master') if @master == true %>
 
       <div class="actions">
-        <div class="btn btn-info text-white" id="form-save-decoy">
-          セーブする
-        </div>        
-        <div class="btn btn-secondary text-white" id="form-edit-list-decoy">
-          編集リストへ追加
-        </div>
-        <%= form.submit 'セーブする', class: 'btn btn-info', id: 'form-save' %>
-        <%= form.submit '編集リストへ追加', class: 'btn btn-secondary', id: 'form-edit-list' unless recurring_appointment.new_record? %>
-        <% unless recurring_appointment.new_record? %>
+        <% if recurring_appointment.new_record? %>
+          <%= form.submit 'セーブする', class: 'btn btn-info form-control' %>
+        <% else %>
+          <div class="btn btn-info text-white" id="form-save-decoy">
+            セーブする
+          </div>   
+          <div class="btn btn-secondary text-white" id="form-edit-list-decoy">
+            編集リストへ追加
+          </div>
           <div class="btn btn-danger text-white" id="form-delete">
             削除する
           </div>
+
+          <%= form.submit 'セーブする', class: 'btn btn-info', id: 'form-save' %>
+          <%= form.submit '編集リストへ追加', class: 'btn btn-secondary', id: 'form-edit-list' unless recurring_appointment.new_record? %>
         <% end %>
+
       </div>
   </div>
 

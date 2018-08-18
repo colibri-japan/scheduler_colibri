@@ -341,6 +341,7 @@ initialize_calendar = function() {
       eventRender: function eventRender(event, element, view) {
         var patientFilterArray = $('#patient-filter-zentai_').val();
         var nurseFilterArray = $('#nurse-filter-zentai_').val();
+        var editRequestFilter = $('#edit-request-filter').prop('checked');
         if (patientFilterArray === null) {
           patientFilterArray = ['']
         };
@@ -365,8 +366,15 @@ initialize_calendar = function() {
           }
           return false
         } 
+        var filterEditRequested = function(){
+          if (editRequestFilter == true) {
+            return event.editRequested;
+          } else {
+            return true;
+          }
+        }
 
-        return filterPatient() && filterNurse() ;
+        return filterPatient() && filterNurse() && filterEditRequested() ;
       },
 
       viewRender: function(view, element){
@@ -626,11 +634,15 @@ $(document).on('turbolinks:load', function(){
 
   $('#nurse-filter-zentai_').on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
-  });  
+  }); 
 
   $('#patient-filter-zentai_').on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   });
+
+  $('#edit-request-filter').parent().on('change', function(){
+    $('.calendar').fullCalendar('rerenderEvents');
+  })
 
   $('#nurse-filter-zentai_').chosen({no_results_text: "ヘルパーが見つかりません"});
   $('#patient-filter-zentai_').chosen({no_results_text: "利用者が見つかりません"});
@@ -677,7 +689,9 @@ $(document).on('turbolinks:load', function(){
 
   $('.resource-list-element').click(function(){
     window.location = $(this).data('url');
-  })
+  });
+
+
 
 
   

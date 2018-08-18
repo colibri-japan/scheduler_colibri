@@ -18,10 +18,17 @@ json.array! appointments do |appointment|
 	elsif recurring_appointment.color.blank?
 		json.color '#7AD5DE'
 	end
-	json.borderColor recurring_appointment.master == true ? '' : '#69747E'
+	if recurring_appointment.edit_requested == true
+		json.borderColor '#F98050'
+	elsif recurring_appointment.master == true
+		json.borderColor '#69747E'
+	else
+		json.borderColor ''
+	end
 	json.editable recurring_appointment.displayable == true ? true : false
 	json.textColor '#aaa' if recurring_appointment.displayable == false
 	json.displayable  recurring_appointment.master == false && recurring_appointment.displayable == false ? false : true
+	json.editRequested recurring_appointment.edit_requested
 
 	json.base_url planning_recurring_appointment_path(@planning, recurring_appointment)
 	json.update_url planning_recurring_appointment_path(@planning, recurring_appointment, method: :patch)

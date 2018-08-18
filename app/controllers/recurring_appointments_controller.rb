@@ -56,6 +56,7 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments/1/edit
   def edit
     @appointments = @recurring_appointment.appointments(@start_valid, @end_valid)
+    @appointments.map! {|appointment| appointment.strftime('%Jf')}
     @collection = ["全繰り返し"] + @appointments
     @master = true if params[:q] == 'master'
   end
@@ -87,6 +88,7 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.original_id = @original_recurring_appointment.id
 
     if params[:appointment].present?
+      #drag
       #obtain original day using delta
       delta = params[:delta].to_i
       start_day = DateTime.parse(params[:appointment][:start])
@@ -121,6 +123,7 @@ class RecurringAppointmentsController < ApplicationController
       end
 
     elsif recurring_appointment_params[:edited_occurrence].present? && recurring_appointment_params[:edited_occurrence] != "全繰り返し"
+      #general case with one day edit
 
       edited_occurrence = recurring_appointment_params[:edited_occurrence]
       deleted_occurrence = DeletedOccurrence.create(recurring_appointment_id: @original_recurring_appointment.id, deleted_day: edited_occurrence)
@@ -137,6 +140,7 @@ class RecurringAppointmentsController < ApplicationController
       end
 
     else
+      #general case
 
       
       if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
@@ -164,17 +168,31 @@ class RecurringAppointmentsController < ApplicationController
   # DELETE /recurring_appointments/1
   # DELETE /recurring_appointments/1.json
   def destroy
-  	@recurring_appointment.update(master: false) if params[:master] == "1"
-  	
-    respond_to do |format|
-      if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.now)
-        @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+    
+    if recurring_appointment_params[:edited_occurrence] == '全繰り返し'
+      @recurring_appointment.update(master: false) if recurring_appointment_params[:master] == "1"
 
-        format.html { redirect_to recurring_appointments_url, notice: 'Recurring appointment was successfully destroyed.' }
-        format.json { head :no_content }
-        format.js
+      respond_to do |format|
+        if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.now)
+          @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+
+          format.js
+        end
       end
+    else
+      deleted_day = Wareki::Date.parse(recurring_appointment_params[:edited_occurrence])
+      @deleted_occurrence = @recurring_appointment.deleted_occurrences.new(deleted_day: deleted_day.strftime('%Y-%m-%d'))
+
+      respond_to do |format|
+        if @deleted_occurrence.save
+          @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+
+          format.js
+        end
+      end
+
     end
+  
   end
 
   private

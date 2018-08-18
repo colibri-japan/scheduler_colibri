@@ -421,7 +421,35 @@ initialize_calendar = function() {
          
       eventClick: function(appointment, jsEvent, view) {
            $.getScript(appointment.edit_url + '?view_start=' + moment(view.intervalStart).format('YYYY-MM-DD') + '&view_end=' + moment(view.intervalEnd).format('YYYY-MM-DD') , function() {
-           	$('#edit_recurring_appointment').submit(function(){
+           	$('.master-toggle').bootstrapToggle({
+              on: 'マスター',
+              off: '普通',
+              size: 'normal',
+              onstyle: 'success',
+              offstyle: 'info',
+              width: 100,
+            });
+
+            $('#form-delete').click(function(){
+              var deletedDays = $('#recurring_appointment_edited_occurrence').val();
+              var message = confirm('選択された繰り返しが削除されます：' + deletedDays);
+              if (message) {
+                destroy_data = {
+                  recurring_appointment: {
+                    edited_occurrence: deletedDays,
+                    master: $('#recurring_appointment_master').val(),
+                  }
+                }
+                $.ajax({
+                  url: appointment.base_url + '.js',
+                  type: 'DELETE',
+                  data: destroy_data,
+                  beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                })
+              }
+            });
+
+            $('#edit_recurring_appointment').submit(function(){
            	  if ($('#recurring_appointment_master').is(":checked")) {
            	    message = confirm("このサービスはマスターとしてセーブされます。マスターとしてセーブしたくない場合は、キャンセルボタンを押し、フォームの「マスター」チェックボックスを外してからセーブしてください。");
            	    if (message) {
@@ -432,9 +460,9 @@ initialize_calendar = function() {
            	  } else {
            	    return true;
            	  }
-           	  
            	})
            });
+
          }
 
 
@@ -612,7 +640,7 @@ $(document).on('turbolinks:load', function(){
 
   });
 
-  $('input[type="checkbox"]#bootstrap-toggle').change(function(){
+  $('input[type="checkbox"].bootstrap-toggle').change(function(){
     if (window.bootstrapToggleUrl === window.createRecurringAppointmentURL) {
       window.bootstrapToggleUrl = window.createUnavailabilityURL
     } else {
@@ -620,7 +648,6 @@ $(document).on('turbolinks:load', function(){
     }
   });
 
-  $('#bootstrap-toggle').bootstrapToggle();
 
   $('#print-button').click(function(){
   	var confirm = window.confirm('サービスのコメントを含めて印刷する。');

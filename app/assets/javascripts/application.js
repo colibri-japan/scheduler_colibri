@@ -449,18 +449,32 @@ initialize_calendar = function() {
               }
             });
 
-            $('#edit_recurring_appointment').submit(function(){
-           	  if ($('#recurring_appointment_master').is(":checked")) {
-           	    message = confirm("このサービスはマスターとしてセーブされます。マスターとしてセーブしたくない場合は、キャンセルボタンを押し、フォームの「マスター」チェックボックスを外してからセーブしてください。");
-           	    if (message) {
-           	      return true;
-           	    } else {
-           	      return false;
-           	    }
-           	  } else {
-           	    return true;
-           	  }
-           	})
+            $('#form-save-decoy').click(function(){
+              if ($('#recurring_appointment_master').is(":checked")) {
+                var message = confirm("このサービスはマスターとしてセーブされます。");
+                if (message) {
+                  $('#form-save').click();
+                } else {
+                  return false;
+                }
+              } else {
+                $('#form-save').click();
+              }
+            });
+
+
+            $('#form-edit-list-decoy').click(function(){
+              var editRequested = $('#recurring_appointment_edited_occurrence').val();
+              var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);
+              if (message) {
+                $('#form-edit-list').click();
+              } else {
+                return false;
+              }
+            });
+
+
+
            });
 
          }

@@ -19,7 +19,7 @@
       <%= form.select(:edited_occurrence, options_for_select(@collection), id: :recurring_appointment_edited_occurrence) %>
     </div>
 
-    <% if current_user.admin? %>
+    <% if current_user.admin? && recurring_appointment.master %>
       <div class="form-group">
           <%= form.check_box :master, checked:  current_user.admin? && recurring_appointment.master, data: {toggle: 'toggle'}, class: 'master-toggle' %>
       </div>
@@ -100,8 +100,14 @@
       <%= hidden_field_tag(:q, 'master') if @master == true %>
 
       <div class="actions">
-        <%= form.submit 'セーブする', class: 'btn btn-info' %>
-        <%= form.submit '編集リストへ追加', class: 'btn btn-secondary' unless recurring_appointment.new_record? %>
+        <div class="btn btn-info text-white" id="form-save-decoy">
+          セーブする
+        </div>        
+        <div class="btn btn-secondary text-white" id="form-edit-list-decoy">
+          編集リストへ追加
+        </div>
+        <%= form.submit 'セーブする', class: 'btn btn-info', id: 'form-save' %>
+        <%= form.submit '編集リストへ追加', class: 'btn btn-secondary', id: 'form-edit-list' unless recurring_appointment.new_record? %>
         <% unless recurring_appointment.new_record? %>
           <div class="btn btn-danger text-white" id="form-delete">
             削除する

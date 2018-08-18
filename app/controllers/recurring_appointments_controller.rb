@@ -125,14 +125,20 @@ class RecurringAppointmentsController < ApplicationController
     elsif recurring_appointment_params[:edited_occurrence].present? && recurring_appointment_params[:edited_occurrence] != "全繰り返し"
       #general case with one day edit
 
-      edited_occurrence = recurring_appointment_params[:edited_occurrence]
+      edited_occurrence = Wareki::Date.parse(recurring_appointment_params[:edited_occurrence])
+      edited_occurrence = edited_occurrence.strftime('%Y-%m-%d')
       deleted_occurrence = DeletedOccurrence.create(recurring_appointment_id: @original_recurring_appointment.id, deleted_day: edited_occurrence)
 
-      @recurring_appointment.update(recurring_appointment_params)
-
+      @recurring_appointment.title = recurring_appointment_params[:title]
+      @recurring_appointment.description = recurring_appointment_params[:description]
+      @recurring_appointment.color = recurring_appointment_params[:color]
+      @recurring_appointment.nurse_id = recurring_appointment_params[:nurse_id]
+      @recurring_appointment.patient_id = recurring_appointment_params[:patient_id]
+      @recurring_appointment.master = recurring_appointment_params[:master]
       @recurring_appointment.frequency = 2
       @recurring_appointment.anchor = edited_occurrence
       @recurring_appointment.end_day = edited_occurrence
+      @recurring_appointment.edit_requested = true if params[:commit] == '編集リストへ追加'
 
       if @recurring_appointment.save
         @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
@@ -140,9 +146,7 @@ class RecurringAppointmentsController < ApplicationController
       end
 
     else
-      #general case
-
-      
+      #general case   
       if recurring_appointment_params[:master] == '1' && @original_recurring_appointment.master == true
         @original_recurring_appointment.master = false
         @original_recurring_appointment.displayable = false
@@ -150,6 +154,8 @@ class RecurringAppointmentsController < ApplicationController
         @original_recurring_appointment.displayable = false
         @recurring_appointment.master = false
       end
+
+      @recurring_appointment.edit_requested = true if params[:commit] == '編集リストへ追加'
       
       if @recurring_appointment.update(recurring_appointment_params)
         @original_recurring_appointment.save
@@ -157,9 +163,6 @@ class RecurringAppointmentsController < ApplicationController
       end
       
     end
-
-
-
 
 
   end

@@ -3,7 +3,7 @@ class NursesController < ApplicationController
   before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable]
 
   def index
-  	@nurses = @corporation.nurses.all.order_by_kana
+  	@nurses = @corporation.nurses.where(displayable: true).all.order_by_kana
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 

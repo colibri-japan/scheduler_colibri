@@ -11,7 +11,7 @@ class PlanningsController < ApplicationController
 
 	def show
 		authorize @planning, :is_employee?
-		
+		@checked = true if @planning.recurring_appointments.where(displayable: true, edit_requested: true).count > 0
 		set_valid_range
 		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 	end
@@ -46,7 +46,7 @@ class PlanningsController < ApplicationController
 		if ids.include?(params[:template_id].to_i)
 			template_planning = Planning.find(params[:template_id]) 
 
-			original_appointments = template_planning.recurring_appointments.where(displayable: true, frequency: [0,1]).all
+			original_appointments = template_planning.recurring_appointments.where(displayable: true, frequency: [0,1], edit_requested: false).all
 
 			original_appointments.each do |appointment|
 				#get the new anchor day in the new month

@@ -66,6 +66,8 @@ class RecurringAppointmentsController < ApplicationController
   def create
     @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
     @recurring_appointment.master = false if !current_user.admin?
+    params[:commit] == '編集リストへ追加' ?  @recurring_appointment.edit_requested = true : @recurring_appointment.edit_requested = false
+
     respond_to do |format|
       if @recurring_appointment.save
         @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
@@ -138,10 +140,10 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointment.frequency = 2
       @recurring_appointment.anchor = edited_occurrence
       @recurring_appointment.end_day = edited_occurrence
-      @recurring_appointment.edit_requested = true if params[:commit] == '編集リストへ追加'
+      params[:commit] == '編集リストへ追加' ? @recurring_appointment.edit_requested = true : @recurring_appointment.edit_requested = false
 
       if @recurring_appointment.save
-        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.try(:name), previous_patient: @original_recurring_appointment.patient.try(:name), previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
 
       end
 
@@ -155,11 +157,11 @@ class RecurringAppointmentsController < ApplicationController
         @recurring_appointment.master = false
       end
 
-      @recurring_appointment.edit_requested = true if params[:commit] == '編集リストへ追加'
+      params[:commit] == '編集リストへ追加' ?  @recurring_appointment.edit_requested = true : @recurring_appointment.edit_requested = false
       
       if @recurring_appointment.update(recurring_appointment_params)
         @original_recurring_appointment.save
-        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.name, previous_patient: @original_recurring_appointment.patient.name, previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
+        @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @original_recurring_appointment.nurse.try(:name), previous_patient: @original_recurring_appointment.patient.try(:name), previous_start: @original_recurring_appointment.start, previous_end: @original_recurring_appointment.end, previous_anchor: @original_recurring_appointment.anchor
       end
       
     end

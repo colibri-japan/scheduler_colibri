@@ -11,23 +11,37 @@
   </div>
   <% end %>
 
-  <% unless recurring_appointment.new_record? %>
   <div id="form-options-container">
+    <% unless recurring_appointment.new_record? %>
 
-    <div class="form-group">
-      <%= form.label :edited_occurrence, 'エディットする日', class: "colibri-form-options-label" %>
-      <%= form.select(:edited_occurrence, options_for_select(@collection), id: :recurring_appointment_edited_occurrence) %>
-    </div>
-
-    <% if current_user.admin? && recurring_appointment.master %>
       <div class="form-group">
-          <%= form.check_box :master, checked:  current_user.admin? && recurring_appointment.master, data: {toggle: 'toggle'}, class: 'master-toggle' %>
+        <%= form.label :edited_occurrence, 'エディットする日', class: "colibri-form-options-label" %>
+        <%= form.select(:edited_occurrence, options_for_select(@collection), id: :recurring_appointment_edited_occurrence) %>
       </div>
+
+      <% if current_user.admin? && recurring_appointment.master %>
+        <div class="form-group">
+            <%= form.check_box :master, checked:  current_user.admin? && recurring_appointment.master, data: {toggle: 'toggle'}, class: 'master-toggle' %>
+        </div>
+      <% end %>
+
     <% end %>
-    
+
+
+    <% if recurring_appointment.new_record? %>
+      <div class="form-group">
+        <%= form.check_box :master, checked: true, data: {toggle: 'toggle'}, class: 'master-toggle' if current_user.admin? %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
+        <%= form.select(:frequency,  options_for_select([['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]], recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
+      </div>
+
+    <% end %>
   </div>
-    
-  <% end %>
+
+
 
   <div class="modal-body">
     
@@ -68,18 +82,9 @@
         <%= form.time_select :end, id: :recurring_appointment_end, class: "form-control" %>
       </div>
 
-      <% if recurring_appointment.new_record? %>
-
-        <div class="form-group">
-          <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
-          <%= form.select(:frequency,  options_for_select([['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]], recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
-        </div>
-
-      <% end %>
-
       <div class="form-group">
         <%= form.label :nurse_id, "ヘルパー名", class: "colibri-form-label" %>
-        <%= form.collection_select(:nurse_id, @nurses, :id, :name, {prompt: 'ヘルパー選択'}, {:required => true}) %>
+        <%= form.collection_select(:nurse_id, @nurses, :id, :name, {:required => true}) %>
       </div>
 
       <div class="form-group">
@@ -87,35 +92,25 @@
         <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
       </div>
 
-      <% if current_user.admin? && recurring_appointment.new_record? %>
-        <div class="form-group">
-          <%= form.label :master, "マスターとしてセーブする", class: "colibri-form-label" %>
-          <%= form.check_box :master, checked: true %>
-        </div>
-      <% end %>
-
 
 
 
       <%= hidden_field_tag(:q, 'master') if @master == true %>
 
       <div class="actions">
-        <% if recurring_appointment.new_record? %>
-          <%= form.submit 'セーブする', class: 'btn btn-info form-control' %>
-        <% else %>
-          <div class="btn btn-info text-white" id="form-save-decoy">
-            セーブする
-          </div>   
-          <div class="btn btn-secondary text-white" id="form-edit-list-decoy">
-            編集リストへ追加
-          </div>
+        <div class="btn btn-info text-white" id="form-save-decoy">
+          セーブする
+        </div>   
+        <div class="btn btn-secondary text-white" id="form-edit-list-decoy">
+          編集リストへ追加
+        </div>
+        <% unless recurring_appointment.new_record? %>
           <div class="btn btn-danger text-white" id="form-delete">
             削除する
           </div>
-
-          <%= form.submit 'セーブする', class: 'btn btn-info', id: 'form-save' %>
-          <%= form.submit '編集リストへ追加', class: 'btn btn-secondary', id: 'form-edit-list' unless recurring_appointment.new_record? %>
         <% end %>
+        <%= form.submit 'セーブする', class: 'btn btn-info', id: 'form-save' %>
+        <%= form.submit '編集リストへ追加', class: 'btn btn-secondary', id: 'form-edit-list' %>
 
       </div>
   </div>

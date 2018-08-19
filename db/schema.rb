@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180817223614) do
+ActiveRecord::Schema.define(version: 20180819133454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 20180817223614) do
     t.bigint "corporation_id"
     t.string "kana"
     t.boolean "reminderable", default: false
+    t.boolean "displayable", default: true
     t.index ["corporation_id"], name: "index_nurses_on_corporation_id"
   end
 

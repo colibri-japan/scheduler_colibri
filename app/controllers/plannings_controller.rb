@@ -2,8 +2,8 @@ class PlanningsController < ApplicationController
 
 	before_action :set_corporation
 	before_action :set_planning, only: [:show, :destroy, :master, :duplicate_from, :duplicate]
-	before_action :set_nurses, only: [:show]
-	before_action :set_patients, only: [:show]
+	before_action :set_nurses, only: [:show, :master]
+	before_action :set_patients, only: [:show, :master]
 
 	def index
 		@plannings = @corporation.plannings.all
@@ -11,7 +11,6 @@ class PlanningsController < ApplicationController
 
 	def show
 		authorize @planning, :is_employee?
-		@checked = true if @planning.recurring_appointments.where(displayable: true, edit_requested: true).count > 0
 		set_valid_range
 		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 	end
@@ -97,8 +96,6 @@ class PlanningsController < ApplicationController
 
 		set_valid_range
 		@admin = current_user.admin.to_s
-		puts "this is @admin"
-		puts @admin
 	end
 
 

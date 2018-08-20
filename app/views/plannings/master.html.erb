@@ -19,13 +19,19 @@
 </div>
 
 
-<div class="master-calendar"></div>
 
 
+<div id="main-planning-header" class="no-print">
+	<div id="activity-show-button-container">
+		<%= select_tag 'master-nurse-filter-zentai[]', options_from_collection_for_select(@nurses, 'id', 'name', 0), data: {placeholder: "全ヘルパー"}, multiple: true %>
+		<%= select_tag 'master-patient-filter-zentai[]', options_from_collection_for_select(@patients, 'id', 'name', ''), data: {placeholder: "全利用者"}, multiple: true %>
+		<div class="btn btn-success text-white" id="master-print-button"><%= image_tag('printer-24.png') %> 印刷</div>
+	</div>
+</div>
 
 
+<div id="planning-container">
+	<div class="master-calendar"></div>
 
+</div>
 
-
-
-<%= link_to 'スケジュール一覧へ', plannings_path %>

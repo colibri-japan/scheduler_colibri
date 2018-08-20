@@ -473,6 +473,38 @@ initialize_master_calendar = function() {
       eventSources: [ window.appointmentsURL + '?q=master', window.recurringAppointmentsURL + '?q=master'],
 
 
+      eventRender: function eventRender(event, element, view) {
+        var patientFilterArray = $('#master-patient-filter-zentai_').val();
+        var nurseFilterArray = $('#master-nurse-filter-zentai_').val();
+        if (patientFilterArray === null) {
+          patientFilterArray = ['']
+        };
+
+        if (nurseFilterArray === null) {
+          nurseFilterArray = ['']
+        };
+
+        var filterPatient = function(){
+          for (var i=0; i < patientFilterArray.length; i++) {
+            if (['', event.patientId.toString()].indexOf(patientFilterArray[i]) >= 0) {
+              return true
+            }
+          }
+          return false
+        }
+        var filterNurse = function() {
+          for (var i=0; i< nurseFilterArray.length; i++) {
+            if (['', event.resourceId].indexOf(nurseFilterArray[i]) >= 0) {
+              return true
+            }
+          }
+          return false
+        } 
+
+        return filterPatient() && filterNurse() ;
+      },
+
+
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.createRecurringAppointmentURL + '?q=master', function() {
           $('.master-toggle').bootstrapToggle({
@@ -1040,12 +1072,24 @@ $(document).on('turbolinks:load', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   });
 
+
+  $('#master-nurse-filter-zentai_').on('change', function(){
+    $('.master-calendar').fullCalendar('rerenderEvents');
+  }); 
+
+  $('#master-patient-filter-zentai_').on('change', function(){
+    $('.master-calendar').fullCalendar('rerenderEvents');
+  });
+
   $('#edit-request-filter').parent().on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   })
 
   $('#nurse-filter-zentai_').chosen({no_results_text: "ヘルパーが見つかりません"});
   $('#patient-filter-zentai_').chosen({no_results_text: "利用者が見つかりません"});
+
+  $('#master-nurse-filter-zentai_').chosen({no_results_text: "ヘルパーが見つかりません"});
+  $('#master-patient-filter-zentai_').chosen({no_results_text: "利用者が見つかりません"});
 
 
   $('#trigger-duplication').click(function(){
@@ -1085,6 +1129,10 @@ $(document).on('turbolinks:load', function(){
   		window.print();
   	}
     
+  });
+
+  $('#master-print-button').click(function(){
+    window.print();
   });
 
   $('.resource-list-element').click(function(){

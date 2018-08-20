@@ -26,10 +26,32 @@ body {
 	background-color: #F7F9FE;
 }
 
+#brand-container {
+	display: flex;
+}
+
+#logo {
+	margin-left: 16px;
+	margin-right: 10px;
+}
+
+#brand {
+	font-size: 1.2em;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	margin-bottom : 0px;
+}
+
 #colibri-scheduler-nav {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
 	background-color: #4f5b66;
 	display: flex;
 	justify-content: space-between;
+	z-index: 2;
 }
 
 a.colibri-nav-link {
@@ -39,6 +61,14 @@ a.colibri-nav-link {
 	padding: 14px 16px;
 	text-decoration: none;
 	font-size: 1.2em;
+}
+
+.main-page {
+	padding-top: 46px;
+}
+
+.show {
+    display: block;
 }
 
 a {
@@ -116,7 +146,9 @@ li.colibri-app-menu a.nav-url {
 }
 
 
-
+.btn-margin-top {
+	margin-top: 10px;
+}
 
 .date-hidden {
 	display: none;
@@ -146,6 +178,10 @@ li.colibri-app-menu a.nav-url {
 	font-size: 1.4em !important;
 }
 
+.fc-header-toolbar {
+	margin-bottom: 4px !important;
+}
+
 tr.clickable-row:hover {
 	cursor:pointer;
 }
@@ -167,7 +203,7 @@ tr.clickable-row:hover {
 
 
 div .fc-scroller {
-    max-height: 75vh !important;
+    max-height: 57vh !important;
 }
 
 th {

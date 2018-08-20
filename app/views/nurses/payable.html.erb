@@ -3,9 +3,6 @@
 	window.excelUrl = "<%= j nurse_payable_path(@nurse, format: :xlsx) %>"
 <% end %>
 
-
-<%= render 'layouts/nurses_menu' %>
-
 <div id="payable-container">
 	<h2><%= "#{@nurse.name}の給与管理" %></h2>
 

@@ -11,7 +11,9 @@ class NursesController < ApplicationController
   	@planning = Planning.find(params[:planning_id])
     authorize @nurse, :is_employee?
 
-    @nurses = @corporation.nurses.all.order_by_kana
+    @last_patient = @corporation.patients.last
+    @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
+    @patients = @corporation.patients.all.order_by_kana
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 
@@ -62,6 +64,8 @@ class NursesController < ApplicationController
   def payable
     authorize current_user, :is_admin?
     authorize @nurse, :is_employee?
+
+    @last_patient = @corporation.patients.last
 
     @plannings = @corporation.plannings.all
     params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p].to_i) : @planning = @plannings.last

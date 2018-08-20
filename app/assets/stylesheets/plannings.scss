@@ -3,9 +3,20 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #planning-menu-container {
-	padding-top: 5px;
-	margin-left: auto;
-	margin-right: auto;
+	height: 100%;
+	width: 50px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #354553;
+	overflow-x: hidden;
+	padding-top: 60px;
+}
+
+#planning-show-main {
+	margin-left: 55px;
+	margin-right: 5px;
 }
 
 #planning-menu-title {
@@ -18,33 +29,29 @@
 
 #planning-menu-list {
 	font-size: 2em;
-	display: table;
-	margin-left: auto;
-	margin-right: auto;
+	display: block;
 }
 
 
 li.planning-menu-items {
-	font-size: 1.4em;
+	font-size: 2em;
 	display: inline;
-	border-bottom: 0.5px solid #aaa;
-	border-top: 0.5px solid #aaa;
-	width: 13.5em;
-	padding-top: 7px;
-	padding-bottom: 7px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	color: #94979A;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
 
 }
 
 li.planning-menu-items:hover {
 	cursor: pointer;
-	background-color: #EEF1F9;
-	color: black;
-
+	color: white;
 }
 
 li.planning-menu-selected {
-	background-color: #EEF1F9;
-	color: black !important;
+	color: white;
 }
 
 #planning-container {
@@ -93,6 +100,8 @@ li.planning-menu-selected {
 
 #detail-container {
 	display: flex;
+	margin-left: 175px;
+	margin-right: 5px;
 }
 
 #detail-planning-title {
@@ -113,7 +122,7 @@ li.planning-menu-selected {
 .resource-list-element {
 	margin-bottom: 4px;
 	border-bottom: 0.5px solid #aaa;
-	padding-left: 4px;	
+	padding-left: 7px;	
 }
 
 .resource-list-element:hover {
@@ -143,4 +152,9 @@ li.planning-menu-selected {
 
 #no-duplicate-button-wrapper {
 	text-align: center;
+}
+
+#toggle-patients-nurses-wrapper {
+	margin-bottom: 7px;
+	margin-left: 7px;
 }

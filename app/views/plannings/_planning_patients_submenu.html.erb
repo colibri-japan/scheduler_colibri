@@ -1,16 +1,16 @@
 <div id="planning-menu-container" class="no-print">
-	<div id="planning-menu-title">
-		<%= @planning.title %>
-	</div>
-
 	<div id="planning-menu-list">
-		<ul class="nav nav-tabs">
-			<li class="planning-menu-items" data-url="<%= planning_path(@planning) %>">全体</li>
-			<li class="planning-menu-items planning-menu-selected" data-url="<%= planning_patients_path(@planning) %>">利用者別</li>
-			<li class="planning-menu-items" data-url="<%= planning_nurses_path(@planning) %>">ヘルパー別</li>
-			<li class="planning-menu-items" data-url="<%=  planning_master_path(@planning) %>">マスター</li>
-			<li class="planning-menu-items" data-url="<%= planning_activities_path(@planning) %>">編集履歴</li>
+		<ul class="nav nav-tabs" class="no-print">
+			<li class="planning-menu-items" data-url="<%= planning_path(@planning) %>" title="全体">全</li>
+			<li class="planning-menu-items planning-menu-selected" data-url="<%= planning_patient_path(@planning, @last_patient) %>" title="個別">個</li>
+			<li class="planning-menu-items" data-url="<%=  planning_master_path(@planning) %>" title="マスター">マ</li>
+			<li class="planning-menu-items" data-url="<%= planning_activities_path(@planning) %>" title="給与管理">給</li>
+			<li class="planning-menu-items" data-url="<%= planning_activities_path(@planning) %>" title="編集履歴">歴</li>
 		</ul>
 	</div>
 	
 </div>
+
+
+
+ 

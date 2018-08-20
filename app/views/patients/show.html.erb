@@ -12,16 +12,26 @@
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 <% end %>
 
-<%= render 'layouts/planning_menu' %>
 <%= render 'plannings/planning_patients_submenu' %>
 
-<div id="detail-container">
-	<div id="resource-list-container" class="no-print">
+<div id="resource-list-container" class="no-print">
+	<div id="toggle-patients-nurses-wrapper">
+		<input type="checkbox" checked id="toggle-patients-nurses">
+	</div>
+	<div id="patients-resource" class="no-print">
 		<% @patients.each do |patient| %>
 			<p class="resource-list-element" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
 		<% end %>
-		
 	</div>
+	<div id="nurses-resource" class="hide-resource no-print">
+		<% @nurses.each do |nurse| %>
+			<p class="resource-list-element" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+		<% end %>
+	</div>
+</div>
+
+<div id="detail-container">
+
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
 			<p class="planning-activity-module-title"><%= @patient.try(:name) %> 様</p>
@@ -50,7 +60,7 @@
 			</div>
 		</div>
 
-		<div id="recurring-appointment-details-container">
+		<div id="recurring-appointment-details-container" class="print">
 			<div class="planning-activity-module-title">サービスの詳細</div>
 			<div id="recurring-appointment-details">
 				

@@ -1,13 +1,11 @@
 <% if @planning.present? %>
-  <%= render 'layouts/planning_menu' %>
   <%= render 'plannings/planning_nurses_submenu' %>
 <% else %>
-  <%= render 'layouts/nurses_menu' %>
 <% end %>
 
 <div id="index-container">
   <% if @planning.nil? %>
-  <%= link_to '新規ヘルパー', new_nurse_path, class: 'btn btn-info text-white' %>
+  <%= link_to '+新規ヘルパー', new_nurse_path, class: 'btn btn-info text-white btn-margin-top' %>
   <% end %>
 
   <div id="index-table-container">

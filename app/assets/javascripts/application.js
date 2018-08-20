@@ -948,8 +948,6 @@ loadNurseRecurringAppointments = function(){
   return true;
 }
 
-
-
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
@@ -1143,8 +1141,18 @@ $(document).on('turbolinks:load', function(){
     window.location = $(this).data('url');
   });
 
+  $('#toggle-patients-nurses').bootstrapToggle({
+    on: '利用者',
+    off: 'ヘルパー',
+    onstyle: 'info',
+    offstyle: 'info',
+    width: 100
+  });
 
-
+  $('#toggle-patients-nurses').on('change', function(){
+    $('#patients-resource').toggleClass('hide-resource');
+    $('#nurses-resource').toggleClass('hide-resource');
+  })
 
   
 

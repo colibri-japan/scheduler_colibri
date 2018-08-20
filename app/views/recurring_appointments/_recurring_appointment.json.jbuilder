@@ -12,7 +12,7 @@ json.array! appointments do |appointment|
 	json.resourceId recurring_appointment.nurse_id
 	json.patientId recurring_appointment.patient_id
 	if recurring_appointment.master == true && recurring_appointment.displayable == false
-		json.color '#E8E8EE'
+		json.color '#C5C5D7'
 	elsif recurring_appointment.color.present?
 		json.color recurring_appointment.color
 	elsif recurring_appointment.color.blank?
@@ -25,8 +25,8 @@ json.array! appointments do |appointment|
 	else
 		json.borderColor '#69747E'
 	end
-	json.editable recurring_appointment.displayable == true ? true : false
-	json.textColor '#aaa' if recurring_appointment.displayable == false
+	json.master recurring_appointment.master
+	json.editable recurring_appointment.displayable
 	json.displayable  recurring_appointment.master == false && recurring_appointment.displayable == false ? false : true
 	json.editRequested recurring_appointment.edit_requested
 

@@ -97,7 +97,7 @@ class RecurringAppointment < ApplicationRecord
 	def cannot_overlap_existing_appointment
 		nurse = Nurse.find(self.nurse_id)
 
-		unless nurse.name == '未定'
+		unless nurse.name == '未定' || self.displayable == false
 			planning = Planning.find(self.planning_id)
 			first_day = Date.new(planning.business_year, planning.business_month, 1)
 			last_day = Date.new(planning.business_year, planning.business_month, -1)

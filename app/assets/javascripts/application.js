@@ -160,7 +160,7 @@ initialize_nurse_calendar = function(){
                 destroy_data = {
                   recurring_appointment: {
                     edited_occurrence: deletedDays,
-                    master: $('#recurring_appointment_master').val(),
+                    master: $('#recurring_appointment_master').is(":checked"),
                   }
                 }
                 $.ajax({
@@ -370,7 +370,7 @@ initialize_patient_calendar = function(){
                 destroy_data = {
                   recurring_appointment: {
                     edited_occurrence: deletedDays,
-                    master: $('#recurring_appointment_master').val(),
+                    master: $('#recurring_appointment_master').is(":checked"),
                   }
                 }
                 $.ajax({
@@ -501,7 +501,7 @@ initialize_master_calendar = function() {
           return false
         } 
 
-        return filterPatient() && filterNurse() ;
+        return filterPatient() && filterNurse() && !event.editRequested && event.master ;
       },
 
 
@@ -598,12 +598,12 @@ initialize_master_calendar = function() {
 
                 $('#form-delete').click(function(){
                   var deletedDays = $('#recurring_appointment_edited_occurrence').val();
-                  var message = confirm('選択された繰り返しが削除されます：' + deletedDays);
+                  var message = confirm('選択された繰り返しがマスターから削除されます：' + deletedDays);
                   if (message) {
                     destroy_data = {
                       recurring_appointment: {
                         edited_occurrence: deletedDays,
-                        master: $('#recurring_appointment_master').val(),
+                        master: $('#recurring_appointment_master').is(":checked"),
                       }
                     }
                     $.ajax({
@@ -788,6 +788,8 @@ initialize_calendar = function() {
               alert('サービスタイプを入力してください');
             } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
               alert('利用者を選択してください');
+            } else if ($('#recurring_appointment_master').is(":checked")) {
+              alert('編集リストへ追加されるサービスはマスターとして登録できません。')
             } else {
               var message = confirm("このサービスは編集リストへ追加されます。");
               if (message) {
@@ -857,12 +859,12 @@ initialize_calendar = function() {
 
             $('#form-delete').click(function(){
               var deletedDays = $('#recurring_appointment_edited_occurrence').val();
-              var message = confirm('選択された繰り返しが削除されます：' + deletedDays);
+              var message = $('#recurring_appointment_master').is(":checked") == true ? confirm('選択された繰り返しがマスターを含めて削除されます：' + deletedDays) : confirm('選択された繰り返しが削除されます：' + deletedDays);
               if (message) {
                 destroy_data = {
                   recurring_appointment: {
                     edited_occurrence: deletedDays,
-                    master: $('#recurring_appointment_master').val(),
+                    master: $('#recurring_appointment_master').is(":checked"),
                   }
                 }
                 $.ajax({
@@ -902,6 +904,8 @@ initialize_calendar = function() {
                 alert('サービスタイプを入力してください');
               } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
                 alert('利用者を選択してください');
+              } else if ($('#recurring_appointment_master').is(":checked")) {
+                alert('編集リストへ追加されるサービスはマスターとして登録できません。')
               } else {
                 var editRequested = $('#recurring_appointment_edited_occurrence').val();
                 var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);

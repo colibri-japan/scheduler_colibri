@@ -32,6 +32,12 @@
 				<span id="activity-hide-button" class="btn btn-secondary"><%= image_tag('literature-24.png') %> 最新編集履歴を閉じる</span>
 			</div>
 		</div>
+
+		<div class="print font-size-large">
+			住所：<%= @patient.address %><br/>
+			電話番号：<%= @patient.phone_number %>
+		</div>
+
 		<div id="planning-container">
 			<div class="patient_calendar"></div>
 			<div id="planning-activity-module" class="no-print">

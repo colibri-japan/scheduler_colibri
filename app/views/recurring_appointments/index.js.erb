@@ -1,3 +1,4 @@
+$('#recurring-appointment-details').empty();
 <% @occurrence_appointments.each do |occurrence, recurring_appointment| %>
 	$('#recurring-appointment-details').append('<%= j render partial: "recurring_appointments/recurring_appointment", locals: {occurrence: occurrence, recurring_appointment: recurring_appointment}  %>');
 <% end %>

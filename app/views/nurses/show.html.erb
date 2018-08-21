@@ -32,7 +32,7 @@
 
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
-			<p class="planning-activity-module-title"><%= @nurse.name %></p>
+			<p class="planning-activity-module-title"><%= @nurse.try(:name) %></p>
 			<div id="activity-show-button-container" class="no-print">
 				<div class="btn btn-success text-white" id="print-button"><%= image_tag('printer-24.png') %> 印刷</div>
 				<span id="activity-show-button" class="btn btn-success"><%= image_tag('literature-24.png') %> 最新編集履歴</span>

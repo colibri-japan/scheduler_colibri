@@ -22,31 +22,43 @@
 		<input type="checkbox" checked id="toggle-patients-nurses">
 	</div>
 	<div id="patients-resource" class="no-print">
-		<p class="master-list-element master-element-selected"><%= @patients.first.try(:name) %></p>
+		<p class="master-list-element master-element-selected" data-address="<%= @patients.first.try(:address) %>" data-phone="<%= @patients.first.try(:phone_number) %>"><%= @patients.first.try(:name) %></p>
 		<% @patients_firstless.each do |patient| %>
-			<p class="master-list-element" ><%= patient.try(:name) %></p>
+			<p class="master-list-element" data-address="<%= patient.try(:address) %>" data-phone="<%= patient.try(:phone_number) %>"><%= patient.try(:name) %></p>
 		<% end %>
 	</div>
 	<div id="nurses-resource" class="hide-resource no-print">
 		<% @nurses.each do |nurse| %>
-			<p class="master-list-element" ><%= nurse.try(:name) %></p>
+			<p class="master-list-element"  data-address="<%= nurse.try(:address) %>" data-phone="<%= nurse.try(:phone_number) %>"><%= nurse.try(:name) %></p>
 		<% end %>
 	</div>
 </div>
 
 <div id="detail-container">
 	<div id="detail-planning-container">
-		<div id="detail-planning-title">
-			<p class="planning-activity-module-title"> 様</p>
+		<div id="detail-planning-title" class="print-add-margin">
+			<p class="master-title"> 様</p>
 			<div id="activity-show-button-container" class="no-print">
 				<div class="btn btn-success text-white" id="print-button"><%= image_tag('printer-24.png') %> 印刷</div>
 			</div>
+		</div>
+
+		<div class="print font-size-large print-add-margin">
+			住所：<span id="master-address"></span> <br/>
+			電話番号：<span id="master-phone"></span>
 		</div>
 
 
 		<div id="planning-container">
 			<div class="master-calendar"></div>
 
+		</div>
+
+		
+		<div id="recurring-appointment-details-container" class="print">
+			<div class="planning-activity-module-title">サービスの詳細</div>
+			<div id="recurring-appointment-details"></div>
+			
 		</div>
 	</div>
 	

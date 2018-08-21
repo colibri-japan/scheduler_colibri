@@ -432,6 +432,7 @@ initialize_patient_calendar = function(){
 var initialize_master_calendar;
 initialize_master_calendar = function() {
   synchronizeMasterTitle();
+  loadMasterAppointmentDetails();
   $('.master-calendar').each(function(){
     var master_calendar = $(this);
     master_calendar.fullCalendar({
@@ -940,11 +941,33 @@ loadNurseRecurringAppointments = function(){
   return true;
 }
 
+var loadMasterAppointmentDetails;
+loadMasterAppointmentDetails = function(){
+  var targetName = $('.master-element-selected').text();
+  var targetType = $('#toggle-patients-nurses').is(':checked') ? 'patient_name=' : 'nurse_name=';
+  $.ajax({
+    url: window.recurringAppointmentsURL + '.js?' + targetType + targetName + '&print=true',
+    type: 'GET',
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+  });
+  return true
+}
+
 var synchronizeMasterTitle;
 synchronizeMasterTitle = function(){
-  $('.planning-activity-module-title').text(function(){
+  $('.master-title').text(function(){
     return $('.master-element-selected').text();
   });
+}
+
+var synchronizeMasterAddressAndPhone;
+synchronizeMasterAddressAndPhone = function(){
+  $('#master-address').text(function(){
+    return $('.master-element-selected').data('address');
+  });
+  $('#master-phone').text(function(){
+    return $('.master-element-selected').data('phone');
+  })
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 
@@ -1123,10 +1146,10 @@ $(document).on('turbolinks:load', function(){
   $('#print-button').click(function(){
   	var confirm = window.confirm('サービスのコメントを含めて印刷する。');
   	if (confirm == true) {
-  		$('#recurring-appointment-details-container').show();
+      $('#recurring-appointment-details-container').removeClass('no-print');
   		window.print();
   	} else {
-  		$('#recurring-appointment-details-container').hide();
+  		$('#recurring-appointment-details-container').addClass('no-print');
   		window.print();
   	}
     
@@ -1158,7 +1181,9 @@ $(document).on('turbolinks:load', function(){
   $('.master-list-element').click(function(){
     $('.master-list-element').removeClass('master-element-selected');
     $(this).addClass('master-element-selected');
+    loadMasterAppointmentDetails();
     synchronizeMasterTitle();
+    synchronizeMasterAddressAndPhone();
     $('.master-calendar').fullCalendar('rerenderEvents');
   })
 

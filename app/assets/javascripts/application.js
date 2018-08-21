@@ -474,10 +474,15 @@ initialize_master_calendar = function() {
 
       eventSources: [ window.appointmentsURL + '?q=master', window.recurringAppointmentsURL + '?q=master'],
 
-
       eventRender: function eventRender(event, element, view) {
+      	element.find('.fc-title').text(function(i,t){
+      		if ($('#toggle-patients-nurses').is(':checked')) {
+      			return event.nurse_name;
+      		} else {
+      			return event.patient_name;
+      		}
+      	});
         var selectedName = $('.master-element-selected').text() ;
-
         var filterName;
         filterName = function(){
           if (selectedName == event.nurse_name || selectedName == event.patient_name) {

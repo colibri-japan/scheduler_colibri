@@ -12,7 +12,8 @@ class PlanningsController < ApplicationController
 	def show
 		authorize @planning, :is_employee?
 		set_valid_range
-		@last_patient = @corporation.patients.last
+		@last_patient = @patients.last
+		@last_nurse = @nurses.last
 		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 	end
 
@@ -96,6 +97,7 @@ class PlanningsController < ApplicationController
 		authorize @planning, :is_employee?
 
 		@last_patient = @patients.last
+		@last_nurse = @nurses.last
 		@patients_firstless = @patients - [@patients.first]
 
 		set_valid_range

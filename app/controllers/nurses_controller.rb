@@ -11,9 +11,10 @@ class NursesController < ApplicationController
   	@planning = Planning.find(params[:planning_id])
     authorize @nurse, :is_employee?
 
-    @last_patient = @corporation.patients.last
     @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
     @patients = @corporation.patients.all.order_by_kana
+    @last_patient = @patients.last
+    @last_nurse = @nurses.last
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 
@@ -65,36 +66,21 @@ class NursesController < ApplicationController
     authorize current_user, :is_admin?
     authorize @nurse, :is_employee?
 
+    @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
+
     @last_patient = @corporation.patients.last
+    @last_nurse = @nurses.last
 
-    @plannings = @corporation.plannings.all
-    params[:p].present? && @plannings.ids.include?(params[:p].to_i) ? @planning = Planning.find(params[:p].to_i) : @planning = @plannings.last
+    @planning = Planning.find(params[:planning_id])
 
-    #retrieves all provided services and calculates moving fees
     @provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false, temporary: false).order(created_at: 'desc').includes(:payable, :patient)
     set_counter
     @counter.update(service_counts: @provided_services.count )
 
-    #calculate total
-    sum_provided= @provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-    @counter.total_wage.present? ? @total_wage = sum_provided + @counter.try(:total_wage) : @total_wage = sum_provided
 
-    #creates temporary provided_services for grouped services
-    already_seen = []
-    @grouped_services = []
-    @provided_services.each do |service|
-      already_seen << service.title unless already_seen.include?(service.title)
-    end
+    calculate_total_wage
 
-    already_seen.each do |service_title|
-      matching_services = @provided_services.where(title: service_title)
-      sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
-      sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: matching_services.count, total_wage: sum_total_wage, temporary: true)
-      @grouped_services << new_service
-    end
-    
-    #response
+    create_grouped_services
 
     respond_to do |format|
       format.html
@@ -135,6 +121,11 @@ class NursesController < ApplicationController
     params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail)
   end
 
+  def calculate_total_wage
+    sum_provided= @provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
+    @counter.total_wage.present? ? @total_wage = sum_provided + @counter.try(:total_wage) : @total_wage = sum_provided
+  end
+
   def set_counter
     @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true, temporary: false).take
 
@@ -143,6 +134,20 @@ class NursesController < ApplicationController
     end
   end
 
-  def update_counter
+  def create_grouped_services
+    service_types = []
+    @grouped_services = []
+    @provided_services.each do |service|
+      service_types << service.title unless service_types.include?(service.title)
+    end
+
+    service_types.each do |service_title|
+      matching_services = @provided_services.where(title: service_title)
+      sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
+      sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
+      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: matching_services.count, total_wage: sum_total_wage, temporary: true)
+      @grouped_services << new_service
+    end
   end
+
 end

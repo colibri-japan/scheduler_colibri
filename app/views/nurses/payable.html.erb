@@ -1,24 +1,24 @@
 <%= javascript_tag do  %>
-	window.nursePayableUrl = "<%= j nurse_payable_path(@nurse) %>";
-	window.excelUrl = "<%= j nurse_payable_path(@nurse, format: :xlsx) %>"
+	window.nursePayableUrl = "<%= j planning_nurse_payable_path(@planning, @nurse) %>";
+	window.excelUrl = "<%= j planning_nurse_payable_path(@planning, @nurse, format: :xlsx) %>"
 <% end %>
 
-<div id="payable-container">
-	<h2><%= "#{@nurse.name}の給与管理" %></h2>
+<%= render 'plannings/planning_payable_submenu' %>
 
-	<div class="">
-		フィルター：
-		<%= select_tag('schedule-filter', options_from_collection_for_select(@plannings, 'id', 'title', @planning.id), prompt: "スケジュール") %>
-	</div>
-
-	<div class="align-right">
-		<% if @provided_services %>
-			<div class="excel-download btn btn-success text-white">ダウンロードする</div>
-		<% elsif @hash %>
-			<%= link_to 'サービスの詳細へ戻る', nurse_payable_path(@nurse), class: 'btn btn-secondary text-white' %>
-			<%= link_to 'ダウンロードする', nurse_payable_path(@nurse, grouped: 'true', format: :xlsx), class: 'btn btn-success' %>
+<div id="resource-list-container" class="no-print">
+	<div id="nurses-resource" class="no-print">
+		<% @nurses.each do |nurse| %>
+			<p class="resource-list-element" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 		<% end %>
 	</div>
+</div>
+
+<div id="payable-container">
+	<div id="detail-planning-title">
+		<p class="planning-activity-module-title"><%= "#{@nurse.name}の給与" %></p>
+		<div class="excel-download btn btn-success text-white">ダウンロードする</div>
+	</div>
+
 	<table class="table">
 		<thead>
 			<tr>

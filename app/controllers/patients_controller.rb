@@ -11,9 +11,10 @@ class PatientsController < ApplicationController
     @planning = Planning.find(params[:planning_id])
     authorize @patient, :is_employee?
     
-    @last_patient = @corporation.patients.last
     @patients = @corporation.patients.all.order_by_kana
+    @last_patient = @corporation.patients.last
     @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
+    @last_nurse = @nurses.last
     @activities = PublicActivity::Activity.where(planning_id: @planning.id, patient_id: @patient.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
     @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
 

@@ -4,7 +4,7 @@
 			<li class="planning-menu-items planning-menu-selected" data-url="<%= planning_path(@planning) %>" title="全体">全</li>
 			<li class="planning-menu-items" data-url="<%= planning_patient_path(@planning, @last_patient) %>" title="個別">個</li>
 			<li class="planning-menu-items" data-url="<%=  planning_master_path(@planning) %>" title="マスター">マ</li>
-			<li class="planning-menu-items" data-url="<%= planning_activities_path(@planning) %>" title="給与管理">給</li>
+			<li class="planning-menu-items" data-url="<%= planning_nurse_payable_path(@planning, @last_nurse) %>" title="給与管理">給</li>
 			<li class="planning-menu-items" data-url="<%= planning_activities_path(@planning) %>" title="編集履歴">歴</li>
 		</ul>
 	</div>

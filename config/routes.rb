@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  get 'nurses/:id/payable' => 'nurses#payable', as: :nurse_payable
+  get 'plannings/:planning_id/nurses/:id/payable' => 'nurses#payable', as: :planning_nurse_payable
 
   get 'plannings/:id/duplicate_from' => 'plannings#duplicate_from', as: :planning_duplicate_from
 

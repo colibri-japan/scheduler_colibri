@@ -945,12 +945,15 @@ var loadMasterAppointmentDetails;
 loadMasterAppointmentDetails = function(){
   var targetName = $('.master-element-selected').text();
   var targetType = $('#toggle-patients-nurses').is(':checked') ? 'patient_name=' : 'nurse_name=';
-  $.ajax({
-    url: window.recurringAppointmentsURL + '.js?' + targetType + targetName + '&print=true',
-    type: 'GET',
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-  });
-  return true
+  if (window.recurringAppointmentsURL) {
+    $.ajax({
+      url: window.recurringAppointmentsURL + '.js?' + targetType + targetName + '&print=true',
+      type: 'GET',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    });
+    return true;
+  }
+
 }
 
 var synchronizeMasterTitle;

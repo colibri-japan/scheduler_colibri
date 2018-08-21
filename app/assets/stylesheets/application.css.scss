@@ -63,8 +63,25 @@ a.colibri-nav-link {
 	font-size: 1.2em;
 }
 
+p.colibri-nav-link {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 1.2em;
+	margin-bottom: 0px;
+}
+
+p.colibri-nav-link:hover {
+	cursor: pointer;
+	color: black;
+}
+
 .alert {
-	margin-top: 46px !important;
+	position: absolute !important;
+	top: 46px !important;
+	z-index: 1;
 }
 
 .main-page {
@@ -101,6 +118,51 @@ select:focus,
 textarea:focus,
 button:focus {
     outline: none;
+}
+
+#account-settings-dropdown {
+	position: absolute;
+	top: 46px;
+	right: 0px;
+	z-index: 6;
+	max-width: 120px;
+	background-color: #354553;
+
+}
+
+
+.account-settings-li {
+	padding: 7px 10px;
+}
+
+a.account-settings-a {
+	color: white;
+	display: block;
+	width: 100%;
+}
+
+#logout-li {
+	width: 100%;
+	color: white;
+	padding: 7px 10px;
+	text-align: left;
+}
+
+#logout-li:hover {
+	cursor: pointer;
+	background-color: #4f5b66;
+}
+
+li.account-settings-li {
+	width: 100%;
+	color: white;
+	text-align: left;
+}
+
+li.account-settings-li:hover {
+	cursor: pointer;
+	background-color: #4f5b66;
+	width: 100%;
 }
 
 #tab-panel {
@@ -149,6 +211,9 @@ li.colibri-app-menu a.nav-url {
 	font-color: white;
 }
 
+.hide {
+	display: none;
+}
 
 .btn-margin-top {
 	margin-top: 10px;

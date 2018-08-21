@@ -20,6 +20,15 @@
     </div>
 
     <div class="main-page">
+      <div id="account-settings-dropdown">
+          <ul id="account-settings-ul">
+              <li class="account-settings-li" data-url="<%= edit_user_registration_path(current_user) %>">アカウント設定</li>
+              <li class="account-settings-li" data-url="<%= users_path %>">事業所設定</li>
+              <li id="logout-li"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'account-settings-a' %></li>
+          </ul>
+          
+      </div>
+
       <%= yield %>
     </div>
 

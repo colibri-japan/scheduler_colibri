@@ -1185,6 +1185,16 @@ $(document).on('turbolinks:load', function(){
     synchronizeMasterTitle();
     synchronizeMasterAddressAndPhone();
     $('.master-calendar').fullCalendar('rerenderEvents');
+  });
+
+  $('#account-settings-dropdown').hide();
+
+  $('#account-settings').click(function(){
+    $('#account-settings-dropdown').toggle();
+  });
+
+  $('li.account-settings-li').click(function(){
+    window.location = $(this).data('url');
   })
 
   

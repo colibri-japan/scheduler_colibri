@@ -24,7 +24,7 @@
 			<%= select_tag 'nurse-filter-zentai[]', options_from_collection_for_select(@nurses, 'id', 'name', 0), data: {placeholder: "全ヘルパー"}, multiple: true %>
 			<%= select_tag 'patient-filter-zentai[]', options_from_collection_for_select(@patients, 'id', 'name', ''), data: {placeholder: "全利用者"}, multiple: true %>
 			<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
-			<input type="checkbox" data-toggle="toggle" data-on="編集リストのみ" data-off="全サービス" data-offstyle="success" id="edit-request-filter">
+			<input type="checkbox" data-toggle="toggle" checked data-on="全サービス" data-off="編集リストのみ" data-offstyle="success" id="edit-request-filter">
 			<span id="activity-show-button" class="btn btn-success"><%= image_tag('literature-24.png') %> 最新編集履歴</span>
 			<span id="activity-hide-button" class="btn btn-secondary"><%= image_tag('literature-24.png') %> 最新編集履歴を閉じる</span>
 		</div>

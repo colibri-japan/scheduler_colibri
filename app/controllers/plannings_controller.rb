@@ -95,7 +95,9 @@ class PlanningsController < ApplicationController
 	def master
 		authorize @planning, :is_employee?
 
-		@last_patient = @corporation.patients.last
+		@last_patient = @patients.last
+		@patients_firstless = @patients - [@patients.first]
+
 		set_valid_range
 		@admin = current_user.admin.to_s
 	end

@@ -431,6 +431,7 @@ initialize_patient_calendar = function(){
 
 var initialize_master_calendar;
 initialize_master_calendar = function() {
+  synchronizeMasterTitle();
   $('.master-calendar').each(function(){
     var master_calendar = $(this);
     master_calendar.fullCalendar({
@@ -457,7 +458,7 @@ initialize_master_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'agendaWeek,agendaThreeDay,agendaDay'
+        right: 'month,agendaWeek,agendaThreeDay,agendaDay'
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
@@ -474,34 +475,18 @@ initialize_master_calendar = function() {
 
 
       eventRender: function eventRender(event, element, view) {
-        var patientFilterArray = $('#master-patient-filter-zentai_').val();
-        var nurseFilterArray = $('#master-nurse-filter-zentai_').val();
-        if (patientFilterArray === null) {
-          patientFilterArray = ['']
-        };
+        var selectedName = $('.master-element-selected').text() ;
 
-        if (nurseFilterArray === null) {
-          nurseFilterArray = ['']
-        };
-
-        var filterPatient = function(){
-          for (var i=0; i < patientFilterArray.length; i++) {
-            if (['', event.patientId.toString()].indexOf(patientFilterArray[i]) >= 0) {
-              return true
-            }
+        var filterName;
+        filterName = function(){
+          if (selectedName == event.nurse_name || selectedName == event.patient_name) {
+            return true;
+          } else {
+            return false;
           }
-          return false
         }
-        var filterNurse = function() {
-          for (var i=0; i< nurseFilterArray.length; i++) {
-            if (['', event.resourceId].indexOf(nurseFilterArray[i]) >= 0) {
-              return true
-            }
-          }
-          return false
-        } 
 
-        return filterPatient() && filterNurse() && !event.editRequested && event.master ;
+        return filterName() && !event.editRequested && event.master ;
       },
 
 
@@ -708,6 +693,13 @@ initialize_calendar = function() {
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesUrl],
 
       eventRender: function eventRender(event, element, view) {
+        if (view.name == 'agendaDay') {
+          element.find('.fc-title').text(function(i, t){
+            return event.patient_name;
+          });
+        }
+
+
         var patientFilterArray = $('#patient-filter-zentai_').val();
         var nurseFilterArray = $('#nurse-filter-zentai_').val();
         var editRequestFilter = $('#edit-request-filter').prop('checked');
@@ -736,7 +728,7 @@ initialize_calendar = function() {
           return false
         } 
         var filterEditRequested = function(){
-          if (editRequestFilter == true) {
+          if (editRequestFilter == false) {
             return event.editRequested;
           } else {
             return true;
@@ -948,6 +940,13 @@ loadNurseRecurringAppointments = function(){
   return true;
 }
 
+var synchronizeMasterTitle;
+synchronizeMasterTitle = function(){
+  $('.planning-activity-module-title').text(function(){
+    return $('.master-element-selected').text();
+  });
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
@@ -1152,7 +1151,18 @@ $(document).on('turbolinks:load', function(){
   $('#toggle-patients-nurses').on('change', function(){
     $('#patients-resource').toggleClass('hide-resource');
     $('#nurses-resource').toggleClass('hide-resource');
+  });
+
+
+
+  $('.master-list-element').click(function(){
+    $('.master-list-element').removeClass('master-element-selected');
+    $(this).addClass('master-element-selected');
+    synchronizeMasterTitle();
+    $('.master-calendar').fullCalendar('rerenderEvents');
   })
+
+  
 
   
 

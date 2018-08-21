@@ -125,7 +125,17 @@ li.planning-menu-selected {
 	padding-left: 7px;	
 }
 
+.master-list-element {
+	margin-bottom: 4px;
+	border-bottom: 0.5px solid #aaa;
+	padding-left: 7px;	
+}
+
 .resource-list-element:hover {
+	cursor: pointer; 	
+}
+
+.master-list-element:hover {
 	cursor: pointer; 	
 }
 

@@ -13,11 +13,12 @@
 //= require rails-ujs
 //= require turbolinks
 //= require jquery
+//= require jquery-ui
+//= require bootstrap
+//= require bootstrap-toggle
 //= require moment.min
 //= require chosen.jquery
 //= require popper
-//= require bootstrap
-//= require bootstrap-toggle
 //= require fullcalendar
 //= require locale-all
 //= require scheduler
@@ -28,7 +29,7 @@ var adjustCalendar;
 adjustCalendar = function(){
   $('td.fc-head-container').css({'padding-right': '16px'});
   $('.fc-day-grid').css({'padding-right': '16px'});
-};
+}; 
 
 
 
@@ -47,6 +48,9 @@ initialize_nurse_calendar = function(){
           type: 'agenda',
           duration: {days: 3},
           buttonText: '３日'
+        },
+        day: {
+          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
         }
       },
       slotLabelFormat: 'H:mm',
@@ -244,6 +248,11 @@ initialize_patient_calendar = function(){
         start: window.validRangeStart,
         end: window.validRangeEnd,
       },
+      views: {
+        day: {
+          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        }
+      },
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -437,13 +446,16 @@ initialize_master_calendar = function() {
     var master_calendar = $(this);
     master_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      defaultView: 'agendaWeek',
+      defaultView: window.defaultView,
       views: {
       	agendaThreeDay: {
       		type: 'agenda',
       		duration: {days: 3},
       		buttonText: '３日'
-      	}
+      	},
+        day: {
+          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        }
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
@@ -667,6 +679,9 @@ initialize_calendar = function() {
       		duration: {days: 3},
       		buttonText: '３日',
       	},
+        day: {
+          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        }
       },
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
@@ -964,7 +979,12 @@ loadMasterAppointmentDetails = function(){
 var synchronizeMasterTitle;
 synchronizeMasterTitle = function(){
   $('.master-title').text(function(){
-    return $('.master-element-selected').text();
+    if ($('#toggle-patients-nurses').is(':checked')) {
+      return $('.master-element-selected').text() + ' 様';
+    } else {
+      return $('.master-element-selected').text();
+    }
+    
   });
 }
 
@@ -1152,14 +1172,26 @@ $(document).on('turbolinks:load', function(){
 
 
   $('#print-button').click(function(){
-  	var confirm = window.confirm('サービスのコメントを含めて印刷する。');
-  	if (confirm == true) {
-      $('#recurring-appointment-details-container').removeClass('no-print');
-  		window.print();
-  	} else {
-  		$('#recurring-appointment-details-container').addClass('no-print');
-  		window.print();
-  	}
+    
+    $('#print-options-confirm').dialog({
+
+      resizable: false,
+      height: 'auto',
+      width: 400,
+      modal: true,
+      buttons: {
+        '表示する':function(){
+          $(this).dialog('close');
+          $('#recurring-appointment-details-container').removeClass('no-print');
+          window.print();
+        },
+        '表示しない':function(){
+          $(this).dialog('close');
+          $('#recurring-appointment-details-container').addClass('no-print');
+          window.print();
+        }
+      }
+    });
     
   });
 
@@ -1203,10 +1235,12 @@ $(document).on('turbolinks:load', function(){
 
   $('li.account-settings-li').click(function(){
     window.location = $(this).data('url');
-  })
+  });
 
-  
+  $('#print-options-confirm').hide();
 
+  var bootstrapButton = $.fn.button.noConflict();
+  $.fn.bootstrapBtn = bootstrapButton;
   
 
 }); 

@@ -16,6 +16,9 @@
  *= require daterangepicker
  *= require chosen
  *= require bootstrap-toggle
+ *= require jquery-ui
+ *= require jquery-ui.structure
+ *= require jquery-ui.theme
  *= require_self
  */
 
@@ -250,6 +253,14 @@ li.colibri-app-menu a.nav-url {
 
 .fc-header-toolbar {
 	margin-bottom: 4px !important;
+}
+
+.fc-sat { 
+	background-color: #E9EEFA;  
+}
+
+.fc-sun { 
+	background-color: #E9EEFA;  
 }
 
 tr.clickable-row:hover {

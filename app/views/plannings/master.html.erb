@@ -10,6 +10,7 @@
 	window.userIsAdmin = "<%= j @admin %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
+	window.defaultView = "<%= j @corporation.default_view %>";
 <% end %>
 
 <div id="planning-menu-container">
@@ -61,6 +62,12 @@
 			
 		</div>
 	</div>
+	
+</div>
+
+
+<div id="print-options-confirm" title="印刷にコメントを表示する">
+	<p>印刷するページにサービスのコメントを表示しますか？</p>
 	
 </div>
 

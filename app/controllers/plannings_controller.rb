@@ -47,17 +47,15 @@ class PlanningsController < ApplicationController
 		if ids.include?(params[:template_id].to_i)
 			template_planning = Planning.find(params[:template_id]) 
 
-			original_appointments = template_planning.recurring_appointments.where(displayable: true, frequency: [0,1], edit_requested: false).all
+			original_appointments = template_planning.recurring_appointments.where(master: true, frequency: [0,1], edit_requested: false).all
 
 			original_appointments.each do |appointment|
-				#get the new anchor day in the new month
 				original_day_wday = appointment.anchor.wday
 				first_day = Date.new(@planning.business_year, @planning.business_month, 1)
 				first_day_wday = first_day.wday
 
 				first_day_wday > original_day_wday ? new_anchor_day = first_day + 7 - (first_day_wday - original_day_wday) : new_anchor_day = first_day + (original_day_wday - first_day_wday)
 
-				#create new recurring_appointment with updated anchor
 				recurring_appointment = appointment.dup 
 				recurring_appointment.planning_id = @planning.id
 				recurring_appointment.anchor = new_anchor_day
@@ -68,8 +66,7 @@ class PlanningsController < ApplicationController
 				recurring_appointment.displayable = true
 				recurring_appointment.original_id = ''
 
-				#save the duplicated recurring appointment to the new planning
-				recurring_appointment.save
+				recurring_appointment.save!(validate: false)
 			end
 
 			redirect_to @planning, notice: 'サービスのコピーが成功しました。'

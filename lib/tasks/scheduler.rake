@@ -40,3 +40,9 @@ task :send_reminders => :environment do
 	Nurse.service_reminder 
 	puts "Finished sending reminders"
 end
+
+task :add_undefined_nurse => :environment do 
+	puts "adding default nurse"
+	Corporation.add_undefined_nurse
+	puts "finished adding undefined nurses"
+end

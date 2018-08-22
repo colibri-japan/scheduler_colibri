@@ -6,6 +6,14 @@ class Corporation < ApplicationRecord
 
 	after_create :create_undefined_nurse
 
+	def self.add_undefined_nurse
+		corporations = Corporation.all
+
+		corporations.each do |corporation|
+			corporation.nurses.create(name: "未定", displayable: false, kana: "あああああ")
+		end
+	end
+
 	private
 
 	def create_undefined_nurse

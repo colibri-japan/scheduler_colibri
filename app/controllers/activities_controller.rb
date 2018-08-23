@@ -8,9 +8,10 @@ class ActivitiesController < ApplicationController
 		@nurses = @corporation.nurses.all
 		@patients = @corporation.patients.all
 		@users = @corporation.users.all
-		@last_patient = @corporation.patients.last
+		@last_patient = @patients.last
+		@last_nurse = @nurses.last
 
-		@activities = PublicActivity::Activity.where(planning_id: @planning.id).order("created_at desc").includes({trackable: :nurse}, {trackable: :patient}, :owner)
+		@activities = PublicActivity::Activity.where(planning_id: @planning.id).limit(25).order("created_at desc").includes({trackable: :nurse}, {trackable: :patient}, :owner)
 
 		if params[:n].present? && @nurses.ids.include?(params[:n].to_i)
 			@nurse_id = params[:n]

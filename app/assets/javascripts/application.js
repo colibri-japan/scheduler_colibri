@@ -1133,6 +1133,13 @@ $(document).on('turbolinks:load', function(){
     $('.master-calendar').fullCalendar('rerenderEvents');
   });
 
+  $('#edit-request-filter').bootstrapToggle({
+    on: "全サービス",
+    off: "編集リストのみ",
+    offstyle: "success",
+  });
+
+
   $('#edit-request-filter').parent().on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   })
@@ -1161,6 +1168,8 @@ $(document).on('turbolinks:load', function(){
     }
 
   });
+
+  $('.bootstrap-toggle').bootstrapToggle();
 
   $('input[type="checkbox"].bootstrap-toggle').change(function(){
     if (window.bootstrapToggleUrl === window.createRecurringAppointmentURL) {
@@ -1244,6 +1253,17 @@ $(document).on('turbolinks:load', function(){
           $(this).remove(); 
       });
   }, 4000);
+
+  $('#copy-master').click(function(){
+    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。');
+    if (message) {
+      $.ajax({
+        url: window.masterToSchedule,
+        type: 'PATCH',
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      })
+    }
+  })
 
   
 

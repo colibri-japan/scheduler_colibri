@@ -7,8 +7,8 @@ class RecurringAppointment < ApplicationRecord
 	belongs_to :patient, optional: true
 	belongs_to :planning
 	belongs_to :original, class_name: 'RecurringAppointment', optional: true
-	has_many :provided_services, as: :payable
-	has_many :deleted_occurrences
+	has_many :provided_services, as: :payable, dependent: :destroy
+	has_many :deleted_occurrences, dependent: :destroy
 
 	before_validation :calculate_duration
 	before_validation :default_frequency

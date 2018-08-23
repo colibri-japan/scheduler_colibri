@@ -37,17 +37,21 @@ class PlanningsController < ApplicationController
 	end
 
 	def master_to_schedule
-	  RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
+		authorize @planning, :is_employee?
+		authorize current_user, :is_admin?
 
-	  @master_appointments = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true)
-
-	  @master_appointments.each do |appointment|
-	    appointment_copy = appointment.dup
-	    appointment_copy.master = false
-	    appointment_copy.save!(validate: false)
-	  end
-
-	  redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'
+	    RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
+  
+	    @master_appointments = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false)
+  
+	    @master_appointments.each do |appointment|
+	      appointment_copy = appointment.dup
+	      appointment_copy.master = false
+	      appointment_copy.original_id = nil
+	      appointment_copy.save!(validate: false)
+	    end
+  
+	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'
 	end
 
 	def duplicate_from

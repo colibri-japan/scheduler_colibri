@@ -11,6 +11,7 @@
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 	window.defaultView = "<%= j @corporation.default_view %>";
+	window.masterToSchedule = "<%= j master_to_schedule_path(@planning) %>";
 <% end %>
 
 <div id="planning-menu-container">
@@ -41,6 +42,9 @@
 			<p class="master-title"> 様</p>
 			<div id="activity-show-button-container" class="no-print">
 				<div class="btn btn-success text-white" id="print-button"><%= image_tag('printer-24.png') %> 印刷</div>
+				<% if current_user.admin? %>
+					<div class="btn btn-success text-white" id="copy-master">全体へ反映する</div>
+				<% end %>
 			</div>
 		</div>
 

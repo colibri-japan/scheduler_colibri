@@ -46,3 +46,9 @@ task :add_undefined_nurse => :environment do
 	Corporation.add_undefined_nurse
 	puts "finished adding undefined nurses"
 end
+
+task :add_color_to_appointments => :environment do 
+	puts "adding default colors"
+	RecurringAppointment.add_default_color
+	puts "finished adding colors"
+end

@@ -53,6 +53,14 @@ class RecurringAppointment < ApplicationRecord
 		initial_occurrences - deleted_occurrences
 	end
 
+	def self.add_default_color
+		recurring_appointments = RecurringAppointment.where(color: ['', nil])
+
+		recurring_appointments.each do |recurring_appointment|
+			recurring_appointment.update(color: '#7AD5DE')
+		end
+	end
+
 
 	private
 
@@ -105,8 +113,9 @@ class RecurringAppointment < ApplicationRecord
 
 			overlap = []
 			self_occurrences = self.appointments(first_day, last_day)
+			master = self.master.present? ? self.master : true
 			
-			recurring_appointments = RecurringAppointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true)
+			recurring_appointments = RecurringAppointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: master)
 			recurring_appointments = recurring_appointments.where.not(id: self.original_id) if self.original_id.present?
 			recurring_appointments = recurring_appointments.where.not(id: self.id, original_id: self.id) if self.id.present?
 

@@ -11,23 +11,14 @@ json.array! appointments do |appointment|
 	json.allDay recurring_appointment.all_day_recurring_appointment? ? true : false
 	json.resourceId recurring_appointment.nurse_id
 	json.patientId recurring_appointment.patient_id
-	if recurring_appointment.master == true && recurring_appointment.displayable == false
-		json.color '#C5C5D7'
-	elsif recurring_appointment.color.present?
-		json.color recurring_appointment.color
-	elsif recurring_appointment.color.blank?
-		json.color '#7AD5DE'
-	end
+	json.color recurring_appointment.color
 	if recurring_appointment.edit_requested == true
 		json.borderColor '#F98050'
-	elsif recurring_appointment.master == true
-		json.borderColor ''
-	else
+	elsif recurring_appointment.original_id.present?
 		json.borderColor '#69747E'
 	end
 	json.master recurring_appointment.master
-	json.editable recurring_appointment.displayable
-	json.displayable  recurring_appointment.master == false && recurring_appointment.displayable == false ? false : true
+	json.displayable  recurring_appointment.displayable
 	json.editRequested recurring_appointment.edit_requested
 
 	json.base_url planning_recurring_appointment_path(@planning, recurring_appointment)

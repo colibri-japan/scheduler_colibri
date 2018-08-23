@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :duplicate_from, :duplicate]
+	before_action :set_planning, only: [:show, :destroy, :master, :master_to_schedule, :duplicate_from, :duplicate]
 	before_action :set_nurses, only: [:show, :master]
 	before_action :set_patients, only: [:show, :master]
 
@@ -34,6 +34,20 @@ class PlanningsController < ApplicationController
 				format.js
 			end
 		end
+	end
+
+	def master_to_schedule
+	  RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
+
+	  @master_appointments = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true)
+
+	  @master_appointments.each do |appointment|
+	    appointment_copy = appointment.dup
+	    appointment_copy.master = false
+	    appointment_copy.save!(validate: false)
+	  end
+
+	  redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'
 	end
 
 	def duplicate_from

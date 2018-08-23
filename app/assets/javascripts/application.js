@@ -504,7 +504,7 @@ initialize_master_calendar = function() {
           }
         }
 
-        return filterName() && !event.editRequested && event.master ;
+        return filterName() && !event.editRequested && event.master && event.displayable ;
       },
 
 

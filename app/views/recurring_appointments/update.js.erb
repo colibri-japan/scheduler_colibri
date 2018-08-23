@@ -67,12 +67,6 @@
     false
   );
 
-  $('.master-calendar').fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @original_recurring_appointment}).html_safe %>"), 
-    false
-  );
-
   $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 
   $('#recurring-appointment-details').empty();

@@ -40,6 +40,8 @@ Rails.application.routes.draw do
 
   patch 'plannings/:id/duplicate' => 'plannings#duplicate', as: :planning_duplicate
 
+  patch 'plannings/:id/master_to_schedule' => 'plannings#master_to_schedule', as: :master_to_schedule
+
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
 
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin

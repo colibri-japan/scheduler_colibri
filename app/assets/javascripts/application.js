@@ -481,8 +481,8 @@ initialize_master_calendar = function() {
 
 
       resources: {
-        url: window.corporationNursesURL,
-      }, 
+        url: window.corporationNursesURL + '?include_undefined=true',
+      },
 
       eventSources: [ window.appointmentsURL + '?q=master', window.recurringAppointmentsURL + '?q=master'],
 
@@ -708,7 +708,7 @@ initialize_calendar = function() {
 
 
       resources: {
-        url: window.corporationNursesURL,
+        url: window.corporationNursesURL + '?include_undefined=true',
       }, 
 
       eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesUrl],

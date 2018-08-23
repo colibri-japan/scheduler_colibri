@@ -3,7 +3,8 @@ class NursesController < ApplicationController
   before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable]
 
   def index
-  	@nurses = @corporation.nurses.where(displayable: true).all.order_by_kana
+  	@nurses = @corporation.nurses.all.order_by_kana
+    @nurses = @nurses.where(displayable: true) unless params[:include_undefined] == 'true'
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 
@@ -11,7 +12,7 @@ class NursesController < ApplicationController
   	@planning = Planning.find(params[:planning_id])
     authorize @nurse, :is_employee?
 
-    @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
+    @nurses = @corporation.nurses.all.order_by_kana
     @patients = @corporation.patients.all.order_by_kana
     @last_patient = @patients.last
     @last_nurse = @nurses.last

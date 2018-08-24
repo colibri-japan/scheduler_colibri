@@ -24,14 +24,14 @@
 		<input type="checkbox" checked id="toggle-patients-nurses">
 	</div>
 	<div id="patients-resource" class="no-print">
-		<p class="master-list-element master-element-selected" data-address="<%= @patients.first.try(:address) %>" data-phone="<%= @patients.first.try(:phone_number) %>"><%= @patients.first.try(:name) %></p>
+		<p class="master-list-element master-element-selected list-patient" data-address="<%= @patients.first.try(:address) %>" data-phone="<%= @patients.first.try(:phone_number) %>" data-resource-id="<%= @patients.first.id %>"><%= @patients.first.try(:name) %></p>
 		<% @patients_firstless.each do |patient| %>
-			<p class="master-list-element" data-address="<%= patient.try(:address) %>" data-phone="<%= patient.try(:phone_number) %>"><%= patient.try(:name) %></p>
+			<p class="master-list-element list-patient" data-address="<%= patient.try(:address) %>" data-phone="<%= patient.try(:phone_number) %>" data-resource-id="<%= patient.id %>"><%= patient.try(:name) %></p>
 		<% end %>
 	</div>
 	<div id="nurses-resource" class="hide-resource no-print">
 		<% @nurses.each do |nurse| %>
-			<p class="master-list-element"  data-address="<%= nurse.try(:address) %>" data-phone="<%= nurse.try(:phone_number) %>"><%= nurse.try(:name) %></p>
+			<p class="master-list-element list-nurse"  data-address="<%= nurse.try(:address) %>" data-phone="<%= nurse.try(:phone_number) %>" data-resource-id="<%= nurse.id %>"><%= nurse.try(:name) %></p>
 		<% end %>
 	</div>
 </div>
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 
-		<div class="print font-size-large print-add-margin">
+		<div class="print font-size-large print-add-margin" id="nurse-info-block-master">
 			住所：<span id="master-address"></span> <br/>
 			電話番号：<span id="master-phone"></span>
 		</div>

@@ -479,7 +479,7 @@ initialize_master_calendar = function() {
 
 
       resources: {
-        url: window.corporationNursesURL + '?include_undefined=true',
+        url: window.corporationNursesURL,
       },
 
       eventSources: [ window.appointmentsURL + '?q=master', window.recurringAppointmentsURL + '?q=master'],
@@ -569,12 +569,21 @@ initialize_master_calendar = function() {
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
+          } else {
+            var patientSelected = $('.master-element-selected').hasClass('list-patient') ? true : false;
+
+            if (patientSelected) {
+              $('#recurring_appointment_patient_id').val($('.master-element-selected').data('resource-id'));
+            } else {
+              $('#recurring_appointment_nurse_id').val($('.master-element-selected').data('resource-id'));
+            }
           }
         });
 
-        calendar.fullCalendar('unselect');
+        master_calendar.fullCalendar('unselect');
       },
 
       eventDrop: function(appointment, delta, revertFunc) {
@@ -967,7 +976,7 @@ loadNurseRecurringAppointments = function(){
 var loadMasterAppointmentDetails;
 loadMasterAppointmentDetails = function(){
   var targetName = $('.master-element-selected').text();
-  var targetType = $('#toggle-patients-nurses').is(':checked') ? 'patient_name=' : 'nurse_name=';
+  var targetType = $('.master-element-selected').hasClass('list-patient') ? 'patient_name=' : 'nurse_name=';
   if (window.recurringAppointmentsURL) {
     $.ajax({
       url: window.recurringAppointmentsURL + '.js?master=true&' + targetType + targetName + '&print=true',

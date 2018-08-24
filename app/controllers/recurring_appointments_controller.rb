@@ -219,6 +219,11 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointment.end_day = params[:appointment][:end]
       @recurring_appointment.nurse_id = params[:appointment][:nurse_id] if params[:appointment][:nurse_id].present?
 
+      if params[:appointment][:nurse_id].present?
+        @recurring_appointment.nurse_id = params[:appointment][:nurse_id]
+        nurse = Nurse.find(params[:appointment][:nurse_id])
+        @recurring_appointment.edit_requested = true if nurse.displayable == false
+      end
       @recurring_appointment.save!
     end
 

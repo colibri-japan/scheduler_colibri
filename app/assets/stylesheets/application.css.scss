@@ -321,6 +321,10 @@ th {
 		display: block;
 	}
 
+	.print-master-no-view {
+		display: none !important;
+	}
+
 	#detail-container {
 		margin-left: 5px;
 	}
@@ -335,6 +339,10 @@ th {
 
 	#recurring-appointment-details {
 		margin-left : 50px;
+	}
+
+	div .fc-scroller {
+	    max-height: none !important;
 	}
 }
 

@@ -146,7 +146,6 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-        if (event.editable === true) {
           $.getScript(event.edit_url, function() {
             $('.master-toggle').bootstrapToggle({
                on: 'マスター',
@@ -216,7 +215,7 @@ initialize_nurse_calendar = function(){
 
             });
           });
-        }
+        
 
       }
 
@@ -487,24 +486,32 @@ initialize_master_calendar = function() {
       eventSources: [ window.appointmentsURL + '?q=master', window.recurringAppointmentsURL + '?q=master'],
 
       eventRender: function eventRender(event, element, view) {
-      	element.find('.fc-title').text(function(i,t){
-      		if ($('#toggle-patients-nurses').is(':checked')) {
-      			return event.nurse_name;
-      		} else {
-      			return event.patient_name;
-      		}
-      	});
-        var selectedName = $('.master-element-selected').text() ;
-        var filterName;
-        filterName = function(){
-          if (selectedName == event.nurse_name || selectedName == event.patient_name) {
-            return true;
-          } else {
-            return false;
-          }
-        }
+        if (view.name != 'agendaDay') {
+            synchronizeMasterTitle();
+            $('#nurse-info-block-master').removeClass('.print-master-no-view');
+            element.find('.fc-title').text(function(i,t){
+              if ($('#toggle-patients-nurses').is(':checked')) {
+                return event.nurse_name;
+              } else {
+                return event.patient_name;
+              }
+            });
+            var selectedName = $('.master-element-selected').text() ;
+            var filterName;
+            filterName = function(){
+              if (selectedName == event.nurse_name || selectedName == event.patient_name) {
+                return true;
+              } else {
+                return false;
+              }
+            }
 
-        return filterName() && !event.editRequested && event.master && event.displayable ;
+            return filterName() && !event.editRequested && event.master && event.displayable ;
+          } else {
+            $('.master-title').text('全サービス');
+            $('#nurse-info-block-master').addClass('.print-master-no-view');
+            return !event.editRequested && event.master && event.displayable ;
+          }
       },
 
 
@@ -687,7 +694,6 @@ initialize_calendar = function() {
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',
       nowIndicator: true,
-      height: 'auto',
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -759,9 +765,7 @@ initialize_calendar = function() {
         return filterPatient() && filterNurse() && filterEditRequested() ;
       },
 
-      viewRender: function(view, element){
-        adjustCalendar();
-      },
+
 
 
       select: function(start, end, jsEvent, view, resource) {

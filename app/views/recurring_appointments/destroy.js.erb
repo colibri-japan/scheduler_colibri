@@ -11,6 +11,9 @@ $('.master-calendar').fullCalendar(
   false
 );
 
-$('#recurring-appointment-details').empty();
-loadPatientRecurringAppointments();
-loadNurseRecurringAppointments();
+<% if @recurring_appointment.master == true %>
+  loadMasterAppointmentDetails();
+<% else %>
+  loadPatientRecurringAppointments();
+  loadNurseRecurringAppointments();
+<% end %>

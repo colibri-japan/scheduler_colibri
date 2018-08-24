@@ -439,7 +439,6 @@ initialize_patient_calendar = function(){
 
 var initialize_master_calendar;
 initialize_master_calendar = function() {
-  synchronizeMasterTitle();
   loadMasterAppointmentDetails();
   $('.master-calendar').each(function(){
     var master_calendar = $(this);
@@ -971,7 +970,7 @@ loadMasterAppointmentDetails = function(){
   var targetType = $('#toggle-patients-nurses').is(':checked') ? 'patient_name=' : 'nurse_name=';
   if (window.recurringAppointmentsURL) {
     $.ajax({
-      url: window.recurringAppointmentsURL + '.js?' + targetType + targetName + '&print=true',
+      url: window.recurringAppointmentsURL + '.js?master=true&' + targetType + targetName + '&print=true',
       type: 'GET',
       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     });

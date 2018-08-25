@@ -3,42 +3,15 @@
 
 
 <% else %>
-  <% if @deleted_occurrence.present? %>
-    alert('サービスがその日のみアップデートされました。');
-  <% end %>
 
-  $('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
-  $('.patient_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
-  $('.nurse_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
-  $('.master-calendar').fullCalendar('removeEvents', '<%= "recurring_#{@original_recurring_appointment.id}" %>');
+  $('.calendar').fullCalendar('refetchEvents');
+  $('.nurse_calendar').fullCalendar('refetchEvents');
+  $('.patient_calendar').fullCalendar('refetchEvents');
+  $('.master-calendar').fullCalendar('refetchEvents');
 
   $('.modal').modal('hide');
 
-  $('.calendar').fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
-    false
-  );
 
-  $('.patient_calendar').fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
-    false
-  );
-
-
-  $('.nurse_calendar').fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
-    false
-  );
-
-
-  $('.master-calendar').fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
-    false
-  );
 
   $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 

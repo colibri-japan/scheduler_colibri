@@ -9,6 +9,7 @@ class RecurringAppointment < ApplicationRecord
 	belongs_to :original, class_name: 'RecurringAppointment', optional: true
 	has_many :provided_services, as: :payable, dependent: :destroy
 	has_many :deleted_occurrences, dependent: :destroy
+	has_many :appointments, dependent: :destroy
 
 	before_validation :calculate_duration
 	before_validation :default_frequency
@@ -18,9 +19,11 @@ class RecurringAppointment < ApplicationRecord
 	validates :anchor, presence: true
 	validates :frequency, presence: true
 	validates :frequency, inclusion: 0..2
-	validate :cannot_overlap_existing_appointment
+	validate :cannot_overlap_existing_appointment, on: :create
 
-	#frequencies : 0 for weekly, 1 for biweekly, 2 for one timer
+	after_create :create_individual_appointments
+	after_update :update_individual_appointments
+
 
 	def schedule
 		@schedule ||= begin
@@ -64,6 +67,32 @@ class RecurringAppointment < ApplicationRecord
 
 	private
 
+	def create_individual_appointments
+		planning = Planning.find(self.planning_id)
+		first_day = Date.new(planning.business_year, planning.business_month, 1)
+		last_day = Date.new(planning.business_year, planning.business_month, -1)
+		occurrences = self.appointments(first_day, last_day)
+
+
+		occurrences.each do |occurrence|
+			start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.start.hour, self.start.min)
+		    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.end.hour, self.end.min) + self.duration.to_i
+			appointment = Appointment.create(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, start: start_time, end: end_time, color: self.color)
+		end
+	end
+
+	def update_individual_appointments
+		appointments = Appointment.where(recurring_appointment_id: self.id, displayable: true)
+		original_recurring_appointment = RecurringAppointment.where(id: self.original_id) if self.original_id.present?
+
+		appointments.each do |appointment|
+			start_time = DateTime.new(appointment.start.year, appointment.start.month, appointment.start.day, self.start.hour, self.start.min)
+			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.end.day, self.end.hour, self.end.min)
+			appointment.update(title: self.title, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time)
+		end
+
+	end
+
 	def self.count_as_payable
 		recurring_appointments = RecurringAppointment.where(displayable: true, anchor: Time.now.beginning_of_month..Time.now.end_of_month, edit_requested: false).all
 
@@ -82,7 +111,7 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def default_frequency
-		self.frequency =0 if self.frequency.nil?
+		self.frequency =2 if self.frequency.nil?
 	end
 
 	def default_master

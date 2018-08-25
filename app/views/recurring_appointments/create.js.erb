@@ -3,29 +3,11 @@
 <% else %>
 
   $('.modal').modal('hide');
-  $('.calendar').fullCalendar(
-    'renderEvents', 
-    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    false
-  );
+  $('.calendar').fullCalendar('refetchEvents');
+  $('.patient_calendar').fullCalendar('refetchEvents');
+  $('.nurse_calendar').fullCalendar('refetchEvents');
+  $('.master-calendar').fullCalendar('refetchEvents');
 
-  $('.patient_calendar').fullCalendar(
-    'renderEvents', 
-    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    false
-  );
-
-  $('.nurse_calendar').fullCalendar(
-    'renderEvents', 
-    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    false
-  );
-
-  $('.master-calendar').fullCalendar(
-    'renderEvents', 
-    jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"),
-    false
-  );
 
   $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 

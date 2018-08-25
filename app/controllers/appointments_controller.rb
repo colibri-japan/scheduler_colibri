@@ -14,7 +14,7 @@ class AppointmentsController < ApplicationController
     elsif params[:q] == 'master'
       @appointments = @planning.appointments.where(master: true).includes(:patient)
     else
-     @appointments = @planning.appointments.where(displayable: true).includes(:patient)
+     @appointments = @planning.appointments.where(displayable: true, master: false).includes(:patient, :nurse)
    end
   end
 
@@ -32,8 +32,11 @@ class AppointmentsController < ApplicationController
 
   # GET /appointments/1/edit
   def edit
+    from_master_planning?
+    
     @nurses = @corporation.nurses.all 
     @patients = @corporation.patients.all
+    @recurring_appointment = @appointment.recurring_appointment if @appointment.recurring_appointment_id.present?
   end
 
   # POST /appointments
@@ -58,21 +61,20 @@ class AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1
   # PATCH/PUT /appointments/1.json
   def update
-    @old_appointment = Appointment.find(params[:id])
-    @appointment = @old_appointment.dup
-    @appointment.master = false
-    @appointment.displayable = true
-    @appointment.save
+    @original_appointment = Appointment.find(params[:id])
+    @appointment = @original_appointment.dup
+    @appointment.original_id = @original_appointment.id
+    @appointment.recurring_appointment_id = nil
+
+    puts appointment_params
 
     respond_to do |format|
       if @appointment.update(appointment_params)
-        @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id
-        @old_appointment.update(displayable: false)
-        format.html { redirect_to @appointment, notice: 'Appointment was successfully updated.' }
+        @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @original_appointment.nurse.try(:name), previous_patient: @original_appointment.patient.try(:name), previous_start: @original_appointment.start, previous_end: @original_appointment.end
+        @original_appointment.update(displayable: false)
         format.js
         format.json { render :show, status: :ok, location: @appointment }
       else
-        format.html { render :edit }
         format.js
         format.json { render json: @appointment.errors, status: :unprocessable_entity }
       end
@@ -82,12 +84,9 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1
   # DELETE /appointments/1.json
   def destroy
-    save_id = @appointment.id
-    @appointment.destroy
+    @appointment.update(displayable: false)
     respond_to do |format|
       @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
-      format.html { redirect_to appointments_url, notice: 'Appointment was successfully destroyed.' }
-      format.json { head :no_content }
       format.js
     end
   end
@@ -106,8 +105,12 @@ class AppointmentsController < ApplicationController
       @planning = Planning.find(params[:planning_id])
     end
 
+    def from_master_planning?
+      params[:q] == 'master' ? @master = true : @master = false
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def appointment_params
-      params.require(:appointment).permit(:title, :description, :start, :end, :nurse_id, :patient_id, :planning_id)
+      params.require(:appointment).permit(:title, :description, :start, :end, :nurse_id, :patient_id, :planning_id, :color, :edit_requested)
     end
 end

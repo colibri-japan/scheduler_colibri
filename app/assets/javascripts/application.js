@@ -725,7 +725,7 @@ initialize_calendar = function() {
         url: window.corporationNursesURL + '?include_undefined=true',
       }, 
 
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesUrl],
+      eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
 
       eventRender: function eventRender(event, element, view) {
         if (view.name == 'agendaDay') {
@@ -855,9 +855,10 @@ initialize_calendar = function() {
       },
 
       eventDrop: function(appointment, delta, revertFunc) {
+          alert(appointment.start.format());
+          alert(appointment.end.format());
            appointment_data = { 
              appointment: {
-               id: appointment.id,
                start: appointment.start.format(),
                end: appointment.end.format(),
                nurse_id: appointment.resourceId
@@ -872,78 +873,16 @@ initialize_calendar = function() {
          },
          
       eventClick: function(appointment, jsEvent, view) {
-           $.getScript(appointment.edit_url + '?view_start=' + moment(view.intervalStart).format('YYYY-MM-DD') + '&view_end=' + moment(view.intervalEnd).format('YYYY-MM-DD') , function() {
-           	$('.master-toggle').bootstrapToggle({
-              on: 'マスター',
-              off: '普通',
-              size: 'normal',
-              onstyle: 'success',
-              offstyle: 'info',
-              width: 100,
-            });
+           $.getScript(appointment.edit_url, function() {
+            masterSwitchToggle();
 
-            $('#form-delete').click(function(){
-              var deletedDays = $('#recurring_appointment_edited_occurrence').val();
-              var message = $('#recurring_appointment_master').is(":checked") == true ? confirm('選択された繰り返しがマスターを含めて削除されます：' + deletedDays) : confirm('選択された繰り返しが削除されます：' + deletedDays);
-              if (message) {
-                destroy_data = {
-                  recurring_appointment: {
-                    edited_occurrence: deletedDays,
-                    master: $('#recurring_appointment_master').is(":checked"),
-                  }
-                }
-                $.ajax({
-                  url: appointment.base_url + '.js',
-                  type: 'DELETE',
-                  data: destroy_data,
-                  beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                })
-              }
-            });
-
-            $('#form-save-decoy').click(function(){
-              if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
-                alert('ヘルパーが未定です。');
-              } else if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else {
-                if ($('#recurring_appointment_master').is(":checked")) {
-                  var message = confirm("このサービスはマスターとしてセーブされます。");
-                  if (message) {
-                    $('#form-save').click();
-                  } else {
-                    return false;
-                  }
-                } else {
-                  $('#form-save').click();
-                }
-              }
-
-            });
-
-
-            $('#form-edit-list-decoy').click(function(){
-              if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else if ($('#recurring_appointment_master').is(":checked")) {
-                alert('編集リストへ追加されるサービスはマスターとして登録できません。')
-              } else {
-                var editRequested = $('#recurring_appointment_edited_occurrence').val();
-                var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);
-                if (message) {
-                  $('#form-edit-list').click();
-                } else {
-                  return false;
-                }
-              }
-            });
-
-
-
+            $('#edit-all-occurrences').click(function(){
+              $('.modal').modal('hide');
+              $.getScript( $(this).data('edit-url') , function(){
+                  masterSwitchToggle();
+                  recurringAppointmentEditButtons();
+              })
+            })
            });
 
          }
@@ -1009,6 +948,63 @@ synchronizeMasterAddressAndPhone = function(){
     return $('.master-element-selected').data('phone');
   })
 }
+
+var masterSwitchToggle;
+masterSwitchToggle = function() {
+  $('.master-toggle').bootstrapToggle({
+   on: 'マスター',
+   off: '普通',
+   size: 'normal',
+   onstyle: 'success',
+   offstyle: 'info',
+   width: 100,
+  });
+}
+
+var recurringAppointmentEditButtons;
+recurringAppointmentEditButtons = function(){
+  $('#form-save-decoy').click(function(){
+    if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
+      alert('ヘルパーが未定です。');
+    } else if ($('#recurring_appointment_title').val() == "") {
+      alert('サービスタイプを入力してください');
+    } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
+      alert('利用者を選択してください');
+    } else {
+      if ($('#recurring_appointment_master').is(":checked")) {
+        var message = confirm("このサービスはマスターとしてセーブされます。");
+        if (message) {
+          $('#form-save').click();
+        } else {
+          return false;
+        }
+      } else {
+        $('#form-save').click();
+      }
+    }
+
+  });
+
+
+  $('#form-edit-list-decoy').click(function(){
+    if ($('#recurring_appointment_title').val() == "") {
+      alert('サービスタイプを入力してください');
+    } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
+      alert('利用者を選択してください');
+    } else if ($('#recurring_appointment_master').is(":checked")) {
+      alert('編集リストへ追加されるサービスはマスターとして登録できません。')
+    } else {
+      var editRequested = $('#recurring_appointment_edited_occurrence').val();
+      var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);
+      if (message) {
+        $('#form-edit-list').click();
+      } else {
+        return false;
+      }
+    }
+  });
+}
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 

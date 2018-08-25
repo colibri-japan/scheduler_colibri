@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180819133454) do
+ActiveRecord::Schema.define(version: 20180825122304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,10 +58,15 @@ ActiveRecord::Schema.define(version: 20180819133454) do
     t.boolean "master"
     t.boolean "displayable"
     t.bigint "original_id"
+    t.bigint "recurring_appointment_id"
+    t.decimal "duration", default: "0.0"
+    t.boolean "edit_requested", default: false
+    t.string "color"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_appointments_on_original_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
     t.index ["planning_id"], name: "index_appointments_on_planning_id"
+    t.index ["recurring_appointment_id"], name: "index_appointments_on_recurring_appointment_id"
   end
 
   create_table "corporations", force: :cascade do |t|

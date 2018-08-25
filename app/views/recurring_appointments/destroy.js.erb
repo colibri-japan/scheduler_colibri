@@ -1,15 +1,12 @@
-$('.calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
-$('.patient_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
-$('.nurse_calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
-$('.master-calendar').fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
 $('.modal').modal('hide');
+
+$('.calendar').fullCalendar('refetchEvents');
+$('.patient_calendar').fullCalendar('refetchEvents');
+$('.nurse_calendar').fullCalendar('refetchEvents');
+$('.master-calendar').fullCalendar('refetchEvents');
+
 $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 
-$('.master-calendar').fullCalendar(
-  'renderEvents', 
-  $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"), 
-  false
-);
 
 <% if @recurring_appointment.master == true %>
   loadMasterAppointmentDetails();

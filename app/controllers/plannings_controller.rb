@@ -41,14 +41,15 @@ class PlanningsController < ApplicationController
 		authorize current_user, :is_admin?
 
 	    RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
+	    Appointment.where(planning_id: @planning.id, master: false).destroy_all
   
 	    @master_appointments = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false)
   
-	    @master_appointments.each do |appointment|
-	      appointment_copy = appointment.dup
-	      appointment_copy.master = false
-	      appointment_copy.original_id = nil
-	      appointment_copy.save!(validate: false)
+	    @master_appointments.each do |master_appointment|
+	      recurring_appointment_copy = master_appointment.dup
+	      recurring_appointment_copy.master = false
+	      recurring_appointment_copy.original_id = nil
+	      recurring_appointment_copy.save!(validate: false)
 	    end
   
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'

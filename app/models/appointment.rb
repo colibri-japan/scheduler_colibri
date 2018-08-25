@@ -1,5 +1,6 @@
 class Appointment < ApplicationRecord
 	include PublicActivity::Common
+
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
 	belongs_to :planning

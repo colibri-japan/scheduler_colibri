@@ -3,7 +3,7 @@ $('.modal').modal('hide');
 $('.calendar').fullCalendar('refetchEvents');
 $('.patient_calendar').fullCalendar('refetchEvents');
 $('.nurse_calendar').fullCalendar('refetchEvents');
-$('.master-calendar').fullCalendar('refetchEvents');
+$('.master_calendar').fullCalendar('refetchEvents');
 
 $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 

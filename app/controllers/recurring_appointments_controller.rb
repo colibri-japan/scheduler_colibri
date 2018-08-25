@@ -14,7 +14,7 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false)
     elsif params[:patient_id].present?
       @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true, master: false)
-    elsif params[:q] == 'master'
+    elsif params[:master] == 'true'
       @recurring_appointments = @planning.recurring_appointments.where(master: true).includes(:patient, :nurse)
     elsif params[:patient_name].present?
       master = params[:master] == 'true' ? true : false
@@ -63,7 +63,8 @@ class RecurringAppointmentsController < ApplicationController
 
   # GET /recurring_appointments/1/edit
   def edit
-    from_master_planning?
+    @master = @recurring_appointment.master
+
     set_appointments
   end
 
@@ -154,7 +155,11 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def from_master_planning?
-      params[:q] == 'master' ? @master = true : @master = false
+      params[:master] == 'true' ? @master = true : @master = false
+    end
+
+    def add_to_master?
+      params[:master]== 'true' ? @recurring_appointment.master = true : @recurring_appointment.master = false
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -165,10 +170,6 @@ class RecurringAppointmentsController < ApplicationController
 
     def add_to_edit_requested?
       params[:commit] == '編集リストへ追加' ?  @recurring_appointment.edit_requested = true : @recurring_appointment.edit_requested = false
-    end
-
-    def add_to_master?
-      @recurring_appointment.master = false if params[:master] != 'true' 
     end
 
 

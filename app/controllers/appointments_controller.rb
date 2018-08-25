@@ -7,11 +7,13 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   # GET /appointments.json
   def index
+    authorize @planning, :is_employee?
+
     if params[:nurse_id].present?
-      @appointments = @planning.appointments.where(nurse_id: params[:nurse_id], displayable: true)
+      @appointments = @planning.appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false)
     elsif params[:patient_id].present?
-      @appointments = @planning.appointments.where(patient_id: params[:patient_id], displayable: true)
-    elsif params[:q] == 'master'
+      @appointments = @planning.appointments.where(patient_id: params[:patient_id], displayable: true, master: false)
+    elsif params[:master] == 'true'
       @appointments = @planning.appointments.where(master: true).includes(:patient)
     else
      @appointments = @planning.appointments.where(displayable: true, master: false).includes(:patient, :nurse)

@@ -77,7 +77,7 @@ class RecurringAppointment < ApplicationRecord
 		occurrences.each do |occurrence|
 			start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.start.hour, self.start.min)
 		    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.end.hour, self.end.min) + self.duration.to_i
-			appointment = Appointment.create(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, start: start_time, end: end_time, color: self.color)
+			appointment = Appointment.create(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, start: start_time, end: end_time, color: self.color, edit_requested: self.edit_requested)
 		end
 	end
 
@@ -88,7 +88,7 @@ class RecurringAppointment < ApplicationRecord
 		appointments.each do |appointment|
 			start_time = DateTime.new(appointment.start.year, appointment.start.month, appointment.start.day, self.start.hour, self.start.min)
 			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.end.day, self.end.hour, self.end.min)
-			appointment.update(title: self.title, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time)
+			appointment.update(title: self.title, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested)
 		end
 
 	end

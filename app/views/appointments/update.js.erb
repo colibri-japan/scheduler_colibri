@@ -1,5 +1,7 @@
 $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
-$('.patient-calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+$('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+$('.nurse_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+$('.master_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
 
 $('.modal').modal('hide');
 
@@ -9,7 +11,19 @@ $('.calendar').fullCalendar(
   false
 );
 
-$('.patient-calendar').fullCalendar(
+$('.patient_calendar').fullCalendar(
+  'renderEvent', 
+  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+  false
+);
+
+$('.nurse_calendar').fullCalendar(
+  'renderEvent', 
+  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+  false
+);
+
+$('.master-calendar').fullCalendar(
   'renderEvent', 
   $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
   false

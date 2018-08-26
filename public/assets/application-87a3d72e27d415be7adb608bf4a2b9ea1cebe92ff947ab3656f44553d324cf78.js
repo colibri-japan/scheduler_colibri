@@ -61865,13 +61865,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 
 
-var adjustCalendar;
-adjustCalendar = function(){
-  $('td.fc-head-container').css({'padding-right': '16px'});
-  $('.fc-day-grid').css({'padding-right': '16px'});
-}; 
-
-
 
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
@@ -61914,7 +61907,7 @@ initialize_nurse_calendar = function(){
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL + '?nurse_id=' + window.nurseId],
+      events: window.appointmentsURL,
 
 
       select: function(start, end) {
@@ -61986,77 +61979,19 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-        if (event.editable === true) {
           $.getScript(event.edit_url, function() {
-            $('.master-toggle').bootstrapToggle({
-               on: 'マスター',
-               off: '普通',
-               size: 'normal',
-               onstyle: 'success',
-               offstyle: 'info',
-               width: 100,
+            masterSwitchToggle();
+
+            $('#edit-all-occurrences').click(function(){
+              $('.modal').modal('hide');
+              $.getScript( $(this).data('edit-url') , function(){
+                  masterSwitchToggle();
+                  recurringAppointmentEditButtons();
+              })
             });
 
-            $('#form-delete').click(function(){
-              var deletedDays = $('#recurring_appointment_edited_occurrence').val();
-              var message = confirm('選択された繰り返しが削除されます：' + deletedDays);
-              if (message) {
-                destroy_data = {
-                  recurring_appointment: {
-                    edited_occurrence: deletedDays,
-                    master: $('#recurring_appointment_master').is(":checked"),
-                  }
-                }
-                $.ajax({
-                  url: appointment.base_url + '.js',
-                  type: 'DELETE',
-                  data: destroy_data,
-                  beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                })
-              }
-            });
-
-            $('#form-save-decoy').click(function(){
-              if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
-                alert('ヘルパーが未定です。');
-              } else if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else {
-                if ($('#recurring_appointment_master').is(":checked")) {
-                  var message = confirm("このサービスはマスターとしてセーブされます。");
-                  if (message) {
-                    $('#form-save').click();
-                  } else {
-                    return false;
-                  }
-                } else {
-                  $('#form-save').click();
-                }
-              }
-
-            });
-
-
-            $('#form-edit-list-decoy').click(function(){
-              if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else {
-                var editRequested = $('#recurring_appointment_edited_occurrence').val();
-                var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);
-                if (message) {
-                  $('#form-edit-list').click();
-                } else {
-                  return false;
-                }
-              }
-
-            });
           });
-        }
+        
 
       }
 
@@ -62102,7 +62037,7 @@ initialize_patient_calendar = function(){
       selectHelper: false,
       editable: true,
       eventLimit: true,
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL + '?patient_id=' + window.patientId, window.unavailabilitiesUrl + '?patient_id=' + window.patientId],
+      eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
 
 
       select: function(start, end) {
@@ -62188,7 +62123,6 @@ initialize_patient_calendar = function(){
       eventDrop: function(appointment, delta, revertFunc) {
            appointment_data = { 
              appointment: {
-               id: appointment.id,
                start: appointment.start.format(),
                end: appointment.end.format(),
              }
@@ -62203,74 +62137,17 @@ initialize_patient_calendar = function(){
          
       eventClick: function(appointment, jsEvent, view) {
            $.getScript(appointment.edit_url, function() {
-            $('.master-toggle').bootstrapToggle({
-               on: 'マスター',
-               off: '普通',
-               size: 'normal',
-               onstyle: 'success',
-               offstyle: 'info',
-               width: 100,
+            masterSwitchToggle();
+
+            $('#edit-all-occurrences').click(function(){
+              $('.modal').modal('hide');
+              $.getScript( $(this).data('edit-url') , function(){
+                  masterSwitchToggle();
+                  recurringAppointmentEditButtons();
+              })
             });
 
-            $('#form-delete').click(function(){
-              var deletedDays = $('#recurring_appointment_edited_occurrence').val();
-              var message = confirm('選択された繰り返しが削除されます：' + deletedDays);
-              if (message) {
-                destroy_data = {
-                  recurring_appointment: {
-                    edited_occurrence: deletedDays,
-                    master: $('#recurring_appointment_master').is(":checked"),
-                  }
-                }
-                $.ajax({
-                  url: appointment.base_url + '.js',
-                  type: 'DELETE',
-                  data: destroy_data,
-                  beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                })
-              }
-            });
-
-            $('#form-save-decoy').click(function(){
-              if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
-                alert('ヘルパーが未定です。');
-              } else if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else {
-                if ($('#recurring_appointment_master').is(":checked")) {
-                  var message = confirm("このサービスはマスターとしてセーブされます。");
-                  if (message) {
-                    $('#form-save').click();
-                  } else {
-                    return false;
-                  }
-                } else {
-                  $('#form-save').click();
-                }
-              }
-
-            });
-
-
-            $('#form-edit-list-decoy').click(function(){
-              if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else {
-                var editRequested = $('#recurring_appointment_edited_occurrence').val();
-                var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);
-                if (message) {
-                  $('#form-edit-list').click();
-                } else {
-                  return false;
-                }
-              }
-
-
-            });
+            
            });
          }
 
@@ -62280,9 +62157,9 @@ initialize_patient_calendar = function(){
 
 var initialize_master_calendar;
 initialize_master_calendar = function() {
-  synchronizeMasterTitle();
   loadMasterAppointmentDetails();
-  $('.master-calendar').each(function(){
+  synchronizeMasterTitle();
+  $('.master_calendar').each(function(){
     var master_calendar = $(this);
     master_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -62321,35 +62198,43 @@ initialize_master_calendar = function() {
 
 
       resources: {
-        url: window.corporationNursesURL + '?include_undefined=true',
+        url: window.corporationNursesURL,
       },
 
-      eventSources: [ window.appointmentsURL + '?q=master', window.recurringAppointmentsURL + '?q=master'],
+      events: window.appointmentsURL + '?master=true',
 
       eventRender: function eventRender(event, element, view) {
-      	element.find('.fc-title').text(function(i,t){
-      		if ($('#toggle-patients-nurses').is(':checked')) {
-      			return event.nurse_name;
-      		} else {
-      			return event.patient_name;
-      		}
-      	});
-        var selectedName = $('.master-element-selected').text() ;
-        var filterName;
-        filterName = function(){
-          if (selectedName == event.nurse_name || selectedName == event.patient_name) {
-            return true;
-          } else {
-            return false;
-          }
-        }
+        if (view.name != 'agendaDay') {
+            synchronizeMasterTitle();
+            $('#nurse-info-block-master').removeClass('.print-master-no-view');
+            element.find('.fc-title').text(function(i,t){
+              if ($('#toggle-patients-nurses').is(':checked')) {
+                return event.nurse_name;
+              } else {
+                return event.patient_name;
+              }
+            });
+            var selectedName = $('.master-element-selected').text() ;
+            var filterName;
+            filterName = function(){
+              if (selectedName == event.nurse_name || selectedName == event.patient_name) {
+                return true;
+              } else {
+                return false;
+              }
+            }
 
-        return filterName() && !event.editRequested && event.master && event.displayable ;
+            return filterName() && !event.editRequested && event.master && event.displayable ;
+          } else {
+            $('.master-title').text('全サービス');
+            $('#nurse-info-block-master').addClass('.print-master-no-view');
+            return !event.editRequested && event.master && event.displayable ;
+          }
       },
 
 
       select: function(start, end, jsEvent, view, resource) {
-        $.getScript(window.createRecurringAppointmentURL + '?q=master', function() {
+        $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
           $('.master-toggle').bootstrapToggle({
              on: 'マスター',
              off: '普通',
@@ -62403,24 +62288,32 @@ initialize_master_calendar = function() {
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
+          } else {
+            var patientSelected = $('.master-element-selected').hasClass('list-patient') ? true : false;
+
+            if (patientSelected) {
+              $('#recurring_appointment_patient_id').val($('.master-element-selected').data('resource-id'));
+            } else {
+              $('#recurring_appointment_nurse_id').val($('.master-element-selected').data('resource-id'));
+            }
           }
         });
 
-        calendar.fullCalendar('unselect');
+        master_calendar.fullCalendar('unselect');
       },
 
       eventDrop: function(appointment, delta, revertFunc) {
            appointment_data = { 
              appointment: {
-               id: appointment.id,
                start: appointment.start.format(),
                end: appointment.end.format()
              }
            };
            $.ajax({
-               url: appointment.base_url + '.js?q=master',
+               url: appointment.base_url + '.js?master=true',
                type: 'PATCH',
                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
                data: appointment_data,
@@ -62429,74 +62322,16 @@ initialize_master_calendar = function() {
          
       eventClick: function(appointment, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(appointment.edit_url + '?q=master', function() {
-                $('.master-toggle').bootstrapToggle({
-                   on: 'マスター',
-                   off: '普通',
-                   size: 'normal',
-                   onstyle: 'success',
-                   offstyle: 'info',
-                   width: 100,
-                 });
+              $.getScript(appointment.edit_url + '?master=true', function() {
+                masterSwitchToggle();
 
-                $('#form-delete').click(function(){
-                  var deletedDays = $('#recurring_appointment_edited_occurrence').val();
-                  var message = confirm('選択された繰り返しがマスターから削除されます：' + deletedDays);
-                  if (message) {
-                    destroy_data = {
-                      recurring_appointment: {
-                        edited_occurrence: deletedDays,
-                        master: $('#recurring_appointment_master').is(":checked"),
-                      }
-                    }
-                    $.ajax({
-                      url: appointment.base_url + '.js',
-                      type: 'DELETE',
-                      data: destroy_data,
-                      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                    })
-                  }
-                });
-
-                $('#form-save-decoy').click(function(){
-                  if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
-                    alert('ヘルパーが未定です。');
-                  } else if ($('#recurring_appointment_title').val() == "") {
-                    alert('サービスタイプを入力してください');
-                  } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                    alert('利用者を選択してください');
-                  } else {
-                    if ($('#recurring_appointment_master').is(":checked")) {
-                      var message = confirm("このサービスはマスターとしてセーブされます。");
-                      if (message) {
-                        $('#form-save').click();
-                      } else {
-                        return false;
-                      }
-                    } else {
-                      $('#form-save').click();
-                    }
-                  }
-
-                });
-
-
-                $('#form-edit-list-decoy').click(function(){
-                  if ($('#recurring_appointment_title').val() == "") {
-                    alert('サービスタイプを入力してください');
-                  } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                    alert('利用者を選択してください');
-                  } else {
-                    var editRequested = $('#recurring_appointment_edited_occurrence').val();
-                    var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);
-                    if (message) {
-                      $('#form-edit-list').click();
-                    } else {
-                      return false;
-                    }
-                  }
-
-                });
+                $('#edit-all-occurrences').click(function(){
+                  $('.modal').modal('hide');
+                  $.getScript( $(this).data('edit-url') , function(){
+                      masterSwitchToggle();
+                      recurringAppointmentEditButtons();
+                  })
+                })
               });
             }
             return false;
@@ -62527,7 +62362,6 @@ initialize_calendar = function() {
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',
       nowIndicator: true,
-      height: 'auto',
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -62551,7 +62385,7 @@ initialize_calendar = function() {
         url: window.corporationNursesURL + '?include_undefined=true',
       }, 
 
-      eventSources: [ window.appointmentsURL, window.recurringAppointmentsURL, window.unavailabilitiesUrl],
+      eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
 
       eventRender: function eventRender(event, element, view) {
         if (view.name == 'agendaDay') {
@@ -62599,9 +62433,7 @@ initialize_calendar = function() {
         return filterPatient() && filterNurse() && filterEditRequested() ;
       },
 
-      viewRender: function(view, element){
-        adjustCalendar();
-      },
+
 
 
       select: function(start, end, jsEvent, view, resource) {
@@ -62685,7 +62517,6 @@ initialize_calendar = function() {
       eventDrop: function(appointment, delta, revertFunc) {
            appointment_data = { 
              appointment: {
-               id: appointment.id,
                start: appointment.start.format(),
                end: appointment.end.format(),
                nurse_id: appointment.resourceId
@@ -62700,78 +62531,16 @@ initialize_calendar = function() {
          },
          
       eventClick: function(appointment, jsEvent, view) {
-           $.getScript(appointment.edit_url + '?view_start=' + moment(view.intervalStart).format('YYYY-MM-DD') + '&view_end=' + moment(view.intervalEnd).format('YYYY-MM-DD') , function() {
-           	$('.master-toggle').bootstrapToggle({
-              on: 'マスター',
-              off: '普通',
-              size: 'normal',
-              onstyle: 'success',
-              offstyle: 'info',
-              width: 100,
-            });
+           $.getScript(appointment.edit_url, function() {
+            masterSwitchToggle();
 
-            $('#form-delete').click(function(){
-              var deletedDays = $('#recurring_appointment_edited_occurrence').val();
-              var message = $('#recurring_appointment_master').is(":checked") == true ? confirm('選択された繰り返しがマスターを含めて削除されます：' + deletedDays) : confirm('選択された繰り返しが削除されます：' + deletedDays);
-              if (message) {
-                destroy_data = {
-                  recurring_appointment: {
-                    edited_occurrence: deletedDays,
-                    master: $('#recurring_appointment_master').is(":checked"),
-                  }
-                }
-                $.ajax({
-                  url: appointment.base_url + '.js',
-                  type: 'DELETE',
-                  data: destroy_data,
-                  beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                })
-              }
-            });
-
-            $('#form-save-decoy').click(function(){
-              if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
-                alert('ヘルパーが未定です。');
-              } else if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else {
-                if ($('#recurring_appointment_master').is(":checked")) {
-                  var message = confirm("このサービスはマスターとしてセーブされます。");
-                  if (message) {
-                    $('#form-save').click();
-                  } else {
-                    return false;
-                  }
-                } else {
-                  $('#form-save').click();
-                }
-              }
-
-            });
-
-
-            $('#form-edit-list-decoy').click(function(){
-              if ($('#recurring_appointment_title').val() == "") {
-                alert('サービスタイプを入力してください');
-              } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-                alert('利用者を選択してください');
-              } else if ($('#recurring_appointment_master').is(":checked")) {
-                alert('編集リストへ追加されるサービスはマスターとして登録できません。')
-              } else {
-                var editRequested = $('#recurring_appointment_edited_occurrence').val();
-                var message = confirm('選択された繰り返しが編集リストへ追加されます：' + editRequested);
-                if (message) {
-                  $('#form-edit-list').click();
-                } else {
-                  return false;
-                }
-              }
-            });
-
-
-
+            $('#edit-all-occurrences').click(function(){
+              $('.modal').modal('hide');
+              $.getScript( $(this).data('edit-url') , function(){
+                  masterSwitchToggle();
+                  recurringAppointmentEditButtons();
+              })
+            })
            });
 
          }
@@ -62804,10 +62573,10 @@ loadNurseRecurringAppointments = function(){
 var loadMasterAppointmentDetails;
 loadMasterAppointmentDetails = function(){
   var targetName = $('.master-element-selected').text();
-  var targetType = $('#toggle-patients-nurses').is(':checked') ? 'patient_name=' : 'nurse_name=';
+  var targetType = $('.master-element-selected').hasClass('list-patient') ? 'patient_name=' : 'nurse_name=';
   if (window.recurringAppointmentsURL) {
     $.ajax({
-      url: window.recurringAppointmentsURL + '.js?' + targetType + targetName + '&print=true',
+      url: window.recurringAppointmentsURL + '.js?master=true&' + targetType + targetName + '&print=true',
       type: 'GET',
       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     });
@@ -62819,12 +62588,11 @@ loadMasterAppointmentDetails = function(){
 var synchronizeMasterTitle;
 synchronizeMasterTitle = function(){
   $('.master-title').text(function(){
-    if ($('#toggle-patients-nurses').is(':checked')) {
+    if ($('.master-element-selected').hasClass('list-patient')) {
       return $('.master-element-selected').text() + ' 様';
     } else {
       return $('.master-element-selected').text();
     }
-    
   });
 }
 
@@ -62837,6 +62605,62 @@ synchronizeMasterAddressAndPhone = function(){
     return $('.master-element-selected').data('phone');
   })
 }
+
+var masterSwitchToggle;
+masterSwitchToggle = function() {
+  $('.master-toggle').bootstrapToggle({
+   on: 'マスター',
+   off: '普通',
+   size: 'normal',
+   onstyle: 'success',
+   offstyle: 'info',
+   width: 100,
+  });
+}
+
+var recurringAppointmentEditButtons;
+recurringAppointmentEditButtons = function(){
+  $('#form-save-decoy').click(function(){
+    if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
+      alert('ヘルパーが未定です。');
+    } else if ($('#recurring_appointment_title').val() == "") {
+      alert('サービスタイプを入力してください');
+    } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
+      alert('利用者を選択してください');
+    } else {
+      if ($('#recurring_appointment_master').is(":checked")) {
+        var message = confirm("このサービスはマスターとしてセーブされます。");
+        if (message) {
+          $('#form-save').click();
+        } else {
+          return false;
+        }
+      } else {
+        $('#form-save').click();
+      }
+    }
+
+  });
+
+
+  $('#form-edit-list-decoy').click(function(){
+    if ($('#recurring_appointment_title').val() == "") {
+      alert('サービスタイプを入力してください');
+    } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
+      alert('利用者を選択してください');
+    } else if ($('#recurring_appointment_master').is(":checked")) {
+      alert('編集リストへ追加されるサービスはマスターとして登録できません。')
+    } else {
+      var message = confirm('サービスが編集リストへ追加されます');
+      if (message) {
+        $('#form-edit-list').click();
+      } else {
+        return false;
+      }
+    }
+  });
+}
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
@@ -62966,11 +62790,11 @@ $(document).on('turbolinks:load', function(){
 
 
   $('#master-nurse-filter-zentai_').on('change', function(){
-    $('.master-calendar').fullCalendar('rerenderEvents');
+    $('.master_calendar').fullCalendar('rerenderEvents');
   }); 
 
   $('#master-patient-filter-zentai_').on('change', function(){
-    $('.master-calendar').fullCalendar('rerenderEvents');
+    $('.master_calendar').fullCalendar('rerenderEvents');
   });
 
   $('#edit-request-filter').bootstrapToggle({
@@ -63073,7 +62897,7 @@ $(document).on('turbolinks:load', function(){
     loadMasterAppointmentDetails();
     synchronizeMasterTitle();
     synchronizeMasterAddressAndPhone();
-    $('.master-calendar').fullCalendar('rerenderEvents');
+    $('.master_calendar').fullCalendar('rerenderEvents');
   });
 
   $('#account-settings-dropdown').hide();

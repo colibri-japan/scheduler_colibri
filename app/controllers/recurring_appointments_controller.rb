@@ -91,7 +91,7 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1.json
   def update    
     @recurring_appointment = RecurringAppointment.find(params[:id])
-    params[:commit] == '編集リストへ追加' ?  @recurring_appointment.edit_requested = true : @recurring_appointment.edit_requested = false
+    add_to_edit_requested?
     set_previous_params
       
     if @recurring_appointment.update(recurring_appointment_params)

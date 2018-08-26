@@ -1,32 +1,38 @@
-$('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
-$('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
-$('.nurse_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
-$('.master_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+<% if @appointment.errors.any? %>
+  alert("<%= j @appointment.errors.values.join('; ') %>");
+<% else %>
 
-$('.modal').modal('hide');
+  $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+  $('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+  $('.nurse_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+  $('.master_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
 
-$('.calendar').fullCalendar(
-  'renderEvent', 
-  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-  false
-);
+  $('.modal').modal('hide');
 
-$('.patient_calendar').fullCalendar(
-  'renderEvent', 
-  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-  false
-);
+  $('.calendar').fullCalendar(
+    'renderEvent', 
+    $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+    false
+  );
 
-$('.nurse_calendar').fullCalendar(
-  'renderEvent', 
-  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-  false
-);
+  $('.patient_calendar').fullCalendar(
+    'renderEvent', 
+    $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+    false
+  );
 
-$('.master-calendar').fullCalendar(
-  'renderEvent', 
-  $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-  false
-);
+  $('.nurse_calendar').fullCalendar(
+    'renderEvent', 
+    $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+    false
+  );
 
-$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  $('.master-calendar').fullCalendar(
+    'renderEvent', 
+    $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+    false
+  );
+
+  $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+
+<% end %>

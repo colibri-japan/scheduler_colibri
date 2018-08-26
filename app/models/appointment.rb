@@ -9,6 +9,7 @@ class Appointment < ApplicationRecord
 	has_many :provided_services, as: :payable
 
 	validates :title, presence: true
+	validate :do_not_overlap
 
 	before_save :default_master
 	before_save :default_displayable
@@ -32,6 +33,18 @@ class Appointment < ApplicationRecord
 			provided = ProvidedService.create!(payable: appointment, service_duration: duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, planning_id: appointment.planning_id, title: appointment.title)
 		end
 
+	end
+
+	def do_not_overlap
+		nurse = Nurse.find(self.nurse_id)
+
+		puts 'do not overlap called'
+
+		unless nurse.name == '未定' || self.displayable == false
+			appointments = Appointment.where(master: self.master, displayable: true, start: self.start..self.end, end: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id)
+
+			errors.add(:nurse_id, "選択されたヘルパーはすでにその時間帯にサービスを提供してます") if appointments.present?
+		end
 	end
 
 

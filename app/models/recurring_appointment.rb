@@ -20,7 +20,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :anchor, presence: true
 	validates :frequency, presence: true
 	validates :frequency, inclusion: 0..2
-	validate :cannot_overlap_existing_appointment, on: :create
+	validate :cannot_overlap_existing_appointment
 
 	after_create :create_individual_appointments
 	after_update :update_individual_appointments
@@ -118,43 +118,37 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def cannot_overlap_existing_appointment
+		puts 'validation called'
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
+			puts 'within validation'
 			planning = Planning.find(self.planning_id)
 			first_day = Date.new(planning.business_year, planning.business_month, 1)
 			last_day = Date.new(planning.business_year, planning.business_month, -1)
 
-
-			overlap = []
 			self_occurrences = self.appointments(first_day, last_day)
 			master = self.master.present? ? self.master : true
-			
-			recurring_appointments = RecurringAppointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: master)
-			recurring_appointments = recurring_appointments.where.not(id: self.original_id) if self.original_id.present?
-			recurring_appointments = recurring_appointments.where.not(id: self.id, original_id: self.id) if self.id.present?
+
+			puts 'self occurrences'
+			puts self_occurrences
 
 			self_occurrences.each do |self_occurrence|
 				start_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.start.hour, self.start.min)
 				end_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.end.hour, self.end.min) + self.duration.to_i
 				range = Range.new(start_of_appointment, end_of_appointment)
-				recurring_appointments.each do |recurring_appointment|
-					occurrences = recurring_appointment.appointments(first_day, last_day)
-					occurrences.each do |appointment|
-						start_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
-						end_time = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
-						occurrence_range = Range.new(start_time, end_time)
-						if range.overlaps?(occurrence_range) && range.first != occurrence_range.last && range.last != occurrence_range.first
-							overlap << recurring_appointment 
-						end
-					end
-				end
 
+				puts 'range of this occurrence'
+				puts range
+				puts  'range in  query'
+				puts start_of_appointment..end_of_appointment
+
+				overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, start: start_of_appointment..end_of_appointment, end: start_of_appointment..end_of_appointment)
+				puts 'overlaps'
+				puts overlaps
+				errors.add(:nurse_id, "#{start_of_appointment.strftime('%-m月%-d日')}にサービスがすでに提供されます。") if overlaps.present?
 			end
 		end
-
-		#does not take into acccount full day appointments, nor multi day appointments
-		errors.add(:nurse_id, "選択されたヘルパーはすでにその時間帯にサービスを提供してます。") if overlap.present?
 
 	end
 

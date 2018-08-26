@@ -283,7 +283,6 @@ initialize_patient_calendar = function(){
       eventDrop: function(appointment, delta, revertFunc) {
            appointment_data = { 
              appointment: {
-               id: appointment.id,
                start: appointment.start.format(),
                end: appointment.end.format(),
              }
@@ -469,7 +468,6 @@ initialize_master_calendar = function() {
       eventDrop: function(appointment, delta, revertFunc) {
            appointment_data = { 
              appointment: {
-               id: appointment.id,
                start: appointment.start.format(),
                end: appointment.end.format()
              }

@@ -2,6 +2,7 @@ class RecurringAppointment < ApplicationRecord
 	include PublicActivity::Common
 
 	attribute :edited_occurrence, :date
+	attribute :skip_appointments_callbacks, :boolean
 	
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
@@ -23,6 +24,9 @@ class RecurringAppointment < ApplicationRecord
 
 	after_create :create_individual_appointments
 	after_update :update_individual_appointments
+
+	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
+	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks
 
 
 	def schedule

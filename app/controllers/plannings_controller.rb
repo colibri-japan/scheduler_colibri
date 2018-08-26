@@ -42,15 +42,57 @@ class PlanningsController < ApplicationController
 
 	    RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
 	    Appointment.where(planning_id: @planning.id, master: false).destroy_all
+
+	    puts 'appointments destroyed'
   
-	    @master_appointments = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false)
+	    master_appointments = Appointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false)
+
+	    puts 'master appointments count'
+	    puts master_appointments.count
+
+	    library = {}
   
-	    @master_appointments.each do |master_appointment|
-	      recurring_appointment_copy = master_appointment.dup
-	      recurring_appointment_copy.master = false
-	      recurring_appointment_copy.original_id = nil
-	      recurring_appointment_copy.save!(validate: false)
+	    master_appointments.each do |master_appointment|
+	      appointment_copy = master_appointment.dup
+	      appointment_copy.master = false
+	      appointment_copy.original_id = nil
+	      puts 'appointment_copy dup successful'
+	      if appointment_copy.recurring_appointment_id.present?
+	      	puts 'appointment_copy recurring_appointment_id present'
+	      	if library[appointment_copy.recurring_appointment_id].present?
+	      		puts 'library already present'
+	      		puts library
+	      		appointment_copy.recurring_appointment_id = library[appointment_copy.recurring_appointment_id]
+	      	else
+	      		puts 'no library found'
+	      		puts library
+		      	original_recurring_appointment = RecurringAppointment.find(appointment_copy.recurring_appointment_id)
+		      	new_recurring_appointment = original_recurring_appointment.dup
+		      	new_recurring_appointment.master = false
+		      	new_recurring_appointment.original_id = nil
+		      	new_recurring_appointment.skip_appointments_callbacks = true
+		      	puts 'new recurring_appointment dup successful'
+		      	new_recurring_appointment.save!(validate: false)
+
+		      	puts 'new recurring_appointment save successful'
+
+		      	library[appointment_copy.recurring_appointment_id] = new_recurring_appointment.id
+		      	appointment_copy.recurring_appointment_id = new_recurring_appointment.id
+
+
+		      	puts 'library updated'
+		      	puts library
+	      	end
+	      end
+
+	      puts 'before saving appointment'
+	      appointment_copy.save!(validate: false)
+	      puts 'appointment saved'
 	    end
+
+	    puts 'all appointments saved'
+	    puts 'library:'
+	    puts library
   
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'
 	end

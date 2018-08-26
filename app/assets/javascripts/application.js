@@ -675,8 +675,6 @@ initialize_calendar = function() {
       },
 
       eventDrop: function(appointment, delta, revertFunc) {
-          alert(appointment.start.format());
-          alert(appointment.end.format());
            appointment_data = { 
              appointment: {
                start: appointment.start.format(),

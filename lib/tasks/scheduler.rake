@@ -9,7 +9,7 @@ end
 
 task :provided_services => :environment do 
 	puts "Marking today's services as provided"
-	RecurringAppointment.count_as_payable
+	Appointment.count_as_payable
 	puts "Today's services counted as payable"
 end
 

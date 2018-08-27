@@ -72,6 +72,7 @@ class RecurringAppointment < ApplicationRecord
 	private
 
 	def create_individual_appointments
+		puts 'create apppointments called'
 		planning = Planning.find(self.planning_id)
 		first_day = Date.new(planning.business_year, planning.business_month, 1)
 		last_day = Date.new(planning.business_year, planning.business_month, -1)
@@ -81,7 +82,7 @@ class RecurringAppointment < ApplicationRecord
 		occurrences.each do |occurrence|
 			start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.start.hour, self.start.min)
 		    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.end.hour, self.end.min) + self.duration.to_i
-			appointment = Appointment.create(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, start: start_time, end: end_time, color: self.color, edit_requested: self.edit_requested)
+			appointment = Appointment.create(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, start: start_time, end: end_time, color: self.color, edit_requested: self.edit_requested).validate(:false)
 		end
 	end
 
@@ -143,10 +144,12 @@ class RecurringAppointment < ApplicationRecord
 				puts  'range in  query'
 				puts start_of_appointment..end_of_appointment
 
-				overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, start: start_of_appointment..end_of_appointment, end: start_of_appointment..end_of_appointment)
+				overlaps_start = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, start: start_of_appointment..end_of_appointment).where.not(start: start_of_appointment).where.not(start: end_of_appointment)
+				overlaps_end = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, end: start_of_appointment..end_of_appointment).where.not(end: start_of_appointment).where.not(end: end_of_appointment)
 				puts 'overlaps'
-				puts overlaps
-				errors.add(:nurse_id, "#{start_of_appointment.strftime('%-m月%-d日')}にサービスがすでに提供されます。") if overlaps.present?
+				puts overlaps_start
+				puts overlaps_end
+				errors.add(:nurse_id, "#{start_of_appointment.strftime('%-m月%-d日')}にサービスがすでに提供されます。") if overlaps_start.present? || overlaps_end.present?
 			end
 		end
 

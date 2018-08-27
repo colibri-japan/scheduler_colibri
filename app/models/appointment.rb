@@ -41,9 +41,10 @@ class Appointment < ApplicationRecord
 		puts 'do not overlap called'
 
 		unless nurse.name == '未定' || self.displayable == false
-			appointments = Appointment.where(master: self.master, displayable: true, start: self.start..self.end, end: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id)
+			overlaps_start = Appointment.where(master: self.master, displayable: true, start: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id).where.not(start: self.start).where.not(start: self.end)
+			overlaps_end = Appointment.where(master: self.master, displayable: true, end: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id).where.not(end: self.start).where.not(end: self.end)
 
-			errors.add(:nurse_id, "選択されたヘルパーはすでにその時間帯にサービスを提供してます") if appointments.present?
+			errors.add(:nurse_id, "選択されたヘルパーはすでにその時間帯にサービスを提供してます") if overlaps_start.present? || overlaps_end.present?
 		end
 	end
 

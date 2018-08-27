@@ -52,3 +52,9 @@ task :add_color_to_appointments => :environment do
 	RecurringAppointment.add_default_color
 	puts "finished adding colors"
 end
+
+task :move_to_appointments => :environment do 
+	puts "moving recurring appointments to appointments"
+	RecurringAppointment.create_appointments
+	puts "finished creating appointments"
+end

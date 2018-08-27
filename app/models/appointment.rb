@@ -15,7 +15,7 @@ class Appointment < ApplicationRecord
 	before_save :default_displayable
 
 	def all_day_appointment?
-		self.start == self.start.midnight && self.end == self.end.mignight ? true : false
+		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
 	end
 
 	private

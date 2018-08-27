@@ -82,7 +82,8 @@ class RecurringAppointment < ApplicationRecord
 		occurrences.each do |occurrence|
 			start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.start.hour, self.start.min)
 		    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.end.hour, self.end.min) + self.duration.to_i
-			appointment = Appointment.create(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, start: start_time, end: end_time, color: self.color, edit_requested: self.edit_requested).validate(:false)
+			occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, start: start_time, end: end_time, color: self.color, edit_requested: self.edit_requested)
+			occurrence_appointment.save!(validate: false)
 		end
 	end
 
@@ -153,6 +154,24 @@ class RecurringAppointment < ApplicationRecord
 			end
 		end
 
+	end
+
+	def self.create_appointments 
+		@recurring_appointments = RecurringAppointment.where(displayable: true)
+
+		@recurring_appointments.each do |recurring_appointment|
+			planning = Planning.find(recurring_appointment.planning_id)
+			first_day = Date.new(planning.business_year, planning.business_month, 1)
+			last_day = Date.new(planning.business_year, planning.business_month, -1)
+			occurrences = recurring_appointment.appointments(first_day, last_day)
+
+			occurrences.each do |occurrence|
+				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.start.hour, recurring_appointment.start.min)
+			    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
+				occurrence_appointment = Appointment.new(title: recurring_appointment.title, nurse_id: recurring_appointment.nurse_id, recurring_appointment_id: recurring_appointment.id, patient_id: recurring_appointment.patient_id, planning_id: recurring_appointment.planning_id, master: recurring_appointment.master, displayable: true, start: start_time, end: end_time, color: recurring_appointment.color, edit_requested: recurring_appointment.edit_requested)
+				occurrence_appointment.save!
+			end
+		end
 	end
 
 	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }

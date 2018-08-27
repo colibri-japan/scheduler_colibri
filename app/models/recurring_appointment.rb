@@ -169,7 +169,7 @@ class RecurringAppointment < ApplicationRecord
 				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.start.hour, recurring_appointment.start.min)
 			    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
 				occurrence_appointment = Appointment.new(title: recurring_appointment.title, nurse_id: recurring_appointment.nurse_id, recurring_appointment_id: recurring_appointment.id, patient_id: recurring_appointment.patient_id, planning_id: recurring_appointment.planning_id, master: recurring_appointment.master, displayable: true, start: start_time, end: end_time, color: recurring_appointment.color, edit_requested: recurring_appointment.edit_requested)
-				occurrence_appointment.save!
+				occurrence_appointment.save!(validate: false)
 			end
 		end
 	end

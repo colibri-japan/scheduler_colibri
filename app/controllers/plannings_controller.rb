@@ -108,7 +108,7 @@ class PlanningsController < ApplicationController
 		if ids.include?(params[:template_id].to_i)
 			template_planning = Planning.find(params[:template_id]) 
 
-			original_appointments = template_planning.recurring_appointments.where(master: true, frequency: [0,1], edit_requested: false).all
+			original_appointments = template_planning.recurring_appointments.where(master: true, displayable: true, frequency: [0,1], edit_requested: false).all
 
 			original_appointments.each do |appointment|
 				original_day_wday = appointment.anchor.wday
@@ -130,7 +130,7 @@ class PlanningsController < ApplicationController
 				recurring_appointment.save!(validate: false)
 			end
 
-			redirect_to @planning, notice: 'サービスのコピーが成功しました。'
+			redirect_to planning_master_path(@planning), notice: 'サービスのコピーが成功しました。'
 
 		else
 			redirect_to planning_duplicate_from_path(@planning), notice: 'このスケジュールはコピーできません。'

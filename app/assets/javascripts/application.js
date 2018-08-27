@@ -270,7 +270,7 @@ initialize_patient_calendar = function(){
         });
 
 
-        nurse_calendar.fullCalendar('unselect');
+        patient_calendar.fullCalendar('unselect');
       },
 
       eventRender: function(appointment, element, view){

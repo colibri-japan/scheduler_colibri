@@ -695,11 +695,14 @@ initialize_calendar = function() {
             masterSwitchToggle();
 
             $('#edit-all-occurrences').click(function(){
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function(){
+                $.getScript( editUrl , function(){
+                    masterSwitchToggle();
+                    recurringAppointmentEditButtons();
+                })
+              });
               $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  masterSwitchToggle();
-                  recurringAppointmentEditButtons();
-              })
             })
            });
 

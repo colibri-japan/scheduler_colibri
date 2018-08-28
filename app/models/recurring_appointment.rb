@@ -20,7 +20,8 @@ class RecurringAppointment < ApplicationRecord
 	validates :anchor, presence: true
 	validates :frequency, presence: true
 	validates :frequency, inclusion: 0..2
-	validate :cannot_overlap_existing_appointment
+	validate :cannot_overlap_existing_appointment_create, on: :create
+	validate :cannot_overlap_existing_appointment_update, on: :update
 
 	after_create :create_individual_appointments
 	after_update :update_individual_appointments
@@ -94,7 +95,7 @@ class RecurringAppointment < ApplicationRecord
 		appointments.each do |appointment|
 			start_time = DateTime.new(appointment.start.year, appointment.start.month, appointment.start.day, self.start.hour, self.start.min)
 			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.end.day, self.end.hour, self.end.min)
-			appointment.update(title: self.title, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested)
+			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested)
 		end
 
 	end
@@ -119,7 +120,7 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
-	def cannot_overlap_existing_appointment
+	def cannot_overlap_existing_appointment_create
 		puts 'validation called'
 		nurse = Nurse.find(self.nurse_id)
 
@@ -154,6 +155,30 @@ class RecurringAppointment < ApplicationRecord
 			end
 		end
 
+	end
+
+	def cannot_overlap_existing_appointment_update
+		puts 'validation called'
+		nurse = Nurse.find(self.nurse_id)
+
+		unless nurse.name == '未定' || self.displayable == false
+			puts 'entered update validation'
+			appointments_to_be_validated = Appointment.where(recurring_appointment_id: self.id, displayable: true, master: self.master)
+
+			puts 'apppointments selected'
+			puts appointments_to_be_validated.map{|e| e.id}
+
+			appointments_to_be_validated.each do |appointment_to_be_validated|
+				overlaps_start = Appointment.where(master: appointment_to_be_validated.master, displayable: true, nurse_id: appointment_to_be_validated.nurse_id, planning_id: appointment_to_be_validated.planning_id, edit_requested: false, start: appointment_to_be_validated.start..appointment_to_be_validated.end).where.not(start: appointment_to_be_validated.start).where.not(start: appointment_to_be_validated.end).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
+				overlaps_end = Appointment.where(master: appointment_to_be_validated.master, displayable: true, nurse_id: appointment_to_be_validated.nurse_id, planning_id: appointment_to_be_validated.planning_id, edit_requested: false, end: appointment_to_be_validated.start..appointment_to_be_validated.end).where.not(end: appointment_to_be_validated.start).where.not(end: appointment_to_be_validated.end).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
+
+				puts 'overlaps'
+				puts overlaps_end
+				puts overlaps_start
+				errors.add(:nurse_id, "#{appointment_to_be_validated.start.strftime("%-m月%-d日")}にサービスがすでに提供されます。") if overlaps_start.present? || overlaps_end.present?
+			end
+
+		end
 	end
 
 	def self.create_appointments 

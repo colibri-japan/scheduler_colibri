@@ -13,6 +13,7 @@ class Appointment < ApplicationRecord
 
 	before_save :default_master
 	before_save :default_displayable
+	before_save :edit_request_from_nurse_name
 
 	def all_day_appointment?
 		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
@@ -58,6 +59,11 @@ class Appointment < ApplicationRecord
 
 	def default_displayable
 		self.displayable = true if self.displayable.nil?
+	end
+
+	def edit_request_from_nurse_name
+		nurse = Nurse.find(self.nurse_id)
+		self.edit_requested = true if nurse.name == '未定'
 	end
 
 end

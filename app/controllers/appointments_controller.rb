@@ -67,6 +67,7 @@ class AppointmentsController < ApplicationController
     @appointment = @original_appointment.dup
     @appointment.original_id = @original_appointment.id
     @appointment.recurring_appointment_id = nil
+    params[:commit] == '編集リストへ追加' ?  @appointment.edit_requested = true : @appointment.edit_requested = false
 
     puts appointment_params
 

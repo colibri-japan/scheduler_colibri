@@ -60,8 +60,13 @@
     </div>
 
     <div class="actions">
-      <%= form.submit "セーブする", class: "btn btn-info btn-block form-control" %>
-      <%= link_to '新規リピートサービス', new_planning_recurring_appointment_path(@planning), class: 'btn btn-default', remote: true if appointment.new_record? %>
+      <%= form.submit "セーブする", class: "btn btn-info" %>
+      <% unless appointment.master == true %>  
+        <div class="btn btn-secondary text-white" id="form-edit-list-decoy">
+          編集リストへ追加
+        </div>
+        <%= form.submit '編集リストへ追加', class: 'btn btn-secondary', id: 'form-edit-list' %>
+      <% end %>
       <%= link_to '削除', planning_appointment_path(@planning, appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'サービスが削除されます'}, remote: true unless appointment.new_record? %>
     </div>
   </div>

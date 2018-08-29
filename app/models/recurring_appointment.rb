@@ -158,7 +158,7 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def cannot_overlap_existing_appointment_update
-		puts 'validation called'
+		puts 'update validation called'
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
@@ -168,9 +168,12 @@ class RecurringAppointment < ApplicationRecord
 			puts 'apppointments selected'
 			puts appointments_to_be_validated.map{|e| e.id}
 
+
 			appointments_to_be_validated.each do |appointment_to_be_validated|
-				overlaps_start = Appointment.where(master: appointment_to_be_validated.master, displayable: true, nurse_id: appointment_to_be_validated.nurse_id, planning_id: appointment_to_be_validated.planning_id, edit_requested: false, start: appointment_to_be_validated.start..appointment_to_be_validated.end).where.not(start: appointment_to_be_validated.start).where.not(start: appointment_to_be_validated.end).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
-				overlaps_end = Appointment.where(master: appointment_to_be_validated.master, displayable: true, nurse_id: appointment_to_be_validated.nurse_id, planning_id: appointment_to_be_validated.planning_id, edit_requested: false, end: appointment_to_be_validated.start..appointment_to_be_validated.end).where.not(end: appointment_to_be_validated.start).where.not(end: appointment_to_be_validated.end).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
+				start_time = DateTime.new(appointment_to_be_validated.start.year, appointment_to_be_validated.start.month, appointment_to_be_validated.start.day, self.start.hour, self.start.min)
+				end_time = DateTime.new(appointment_to_be_validated.end.year, appointment_to_be_validated.end.month, appointment_to_be_validated.end.day, self.end.hour, self.end.min)
+				overlaps_start = Appointment.where(master: self.master, displayable: true, nurse_id: self.nurse_id, planning_id: self.planning_id, edit_requested: false, start: start_time..end_time).where.not(start: start_time).where.not(start: end_time).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
+				overlaps_end = Appointment.where(master: appointment_to_be_validated.master, displayable: true, nurse_id: appointment_to_be_validated.nurse_id, planning_id: appointment_to_be_validated.planning_id, edit_requested: false, end: start_time..end_time).where.not(end: start_time).where.not(end: end_time).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
 
 				puts 'overlaps'
 				puts overlaps_end

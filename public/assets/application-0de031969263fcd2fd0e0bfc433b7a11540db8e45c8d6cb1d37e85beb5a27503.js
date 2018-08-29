@@ -61981,6 +61981,7 @@ initialize_nurse_calendar = function(){
       eventClick: function(event, jsEvent, view) {
           $.getScript(event.edit_url, function() {
             masterSwitchToggle();
+            addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
               $('.modal').modal('hide');
@@ -62110,7 +62111,7 @@ initialize_patient_calendar = function(){
         });
 
 
-        nurse_calendar.fullCalendar('unselect');
+        patient_calendar.fullCalendar('unselect');
       },
 
       eventRender: function(appointment, element, view){
@@ -62138,6 +62139,7 @@ initialize_patient_calendar = function(){
       eventClick: function(appointment, jsEvent, view) {
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
+            addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
               $('.modal').modal('hide');
@@ -62515,8 +62517,6 @@ initialize_calendar = function() {
       },
 
       eventDrop: function(appointment, delta, revertFunc) {
-          alert(appointment.start.format());
-          alert(appointment.end.format());
            appointment_data = { 
              appointment: {
                start: appointment.start.format(),
@@ -62535,13 +62535,17 @@ initialize_calendar = function() {
       eventClick: function(appointment, jsEvent, view) {
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
+            addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function(){
+                $.getScript( editUrl , function(){
+                    masterSwitchToggle();
+                    recurringAppointmentEditButtons();
+                })
+              });
               $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  masterSwitchToggle();
-                  recurringAppointmentEditButtons();
-              })
             })
            });
 
@@ -62620,6 +62624,26 @@ masterSwitchToggle = function() {
   });
 }
 
+var addToEditListButton;
+addToEditListButton = function(){
+  $('#form-edit-list-decoy').click(function(){
+    if ($('#recurring_appointment_title').val() == "") {
+      alert('サービスタイプを入力してください');
+    } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
+      alert('利用者を選択してください');
+    } else if ($('#recurring_appointment_master').is(":checked")) {
+      alert('編集リストへ追加されるサービスはマスターとして登録できません。')
+    } else {
+      var message = confirm('サービスが編集リストへ追加されます');
+      if (message) {
+        $('#form-edit-list').click();
+      } else {
+        return false;
+      }
+    }
+  });
+}
+
 var recurringAppointmentEditButtons;
 recurringAppointmentEditButtons = function(){
   $('#form-save-decoy').click(function(){
@@ -62641,26 +62665,8 @@ recurringAppointmentEditButtons = function(){
         $('#form-save').click();
       }
     }
-
   });
-
-
-  $('#form-edit-list-decoy').click(function(){
-    if ($('#recurring_appointment_title').val() == "") {
-      alert('サービスタイプを入力してください');
-    } else if ($('#recurring_appointment_patient_id').find('option:selected').text() == "利用者選択") {
-      alert('利用者を選択してください');
-    } else if ($('#recurring_appointment_master').is(":checked")) {
-      alert('編集リストへ追加されるサービスはマスターとして登録できません。')
-    } else {
-      var message = confirm('サービスが編集リストへ追加されます');
-      if (message) {
-        $('#form-edit-list').click();
-      } else {
-        return false;
-      }
-    }
-  });
+  addToEditListButton();
 }
 
 

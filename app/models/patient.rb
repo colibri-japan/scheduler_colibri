@@ -20,7 +20,7 @@ class Patient < ApplicationRecord
 		corporation = self.corporation
 		plannings = corporation.plannings
 
-		appointments_to_toggle = Appointment.where(planning_id: plannings.ids, patient_id: self.id, deleted: false).where("start >= ?", Time.current)
+		appointments_to_toggle = Appointment.where(planning_id: plannings.ids, patient_id: self.id, deleted: false, master: false).where("start >= ?", Time.current)
 		puts 'appointment ids'
 		puts appointments.ids
 		appointments_to_toggle.each do |appointment_to_toggle|
@@ -37,7 +37,7 @@ class Patient < ApplicationRecord
 		corporation = self.corporation
 		plannings = corporation.plannings
 
-		recurring_appointments = RecurringAppointment.where(planning_id: plannings.ids, patient_id: self.id, displayable: true, deleted: false)
+		recurring_appointments = RecurringAppointment.where(planning_id: plannings.ids, patient_id: self.id, displayable: true, deleted: false, master: true)
 		puts 'recurring appointment ids'
 		puts recurring_appointments.ids
 

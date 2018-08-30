@@ -218,7 +218,7 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def self.deleted_nil_to_false
-		recurring_appointments = RecurringAppointment.where(deleted: [nil, ''])
+		recurring_appointments = RecurringAppointment.where(deleted: nil)
 
 		recurring_appointments.each do |recurring_appointment|
 			recurring_appointment.deleted = false

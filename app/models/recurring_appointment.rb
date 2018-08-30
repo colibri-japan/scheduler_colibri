@@ -16,6 +16,7 @@ class RecurringAppointment < ApplicationRecord
 	before_validation :default_frequency
 	before_save :default_master
 	before_save :default_displayable
+	before_save :default_deleted
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -106,6 +107,10 @@ class RecurringAppointment < ApplicationRecord
 
 	def default_master
 		self.master = true if self.master.nil?
+	end
+
+	def default_deleted
+		self.deleted = false if self.deleted.nil?
 	end
 
 	def default_displayable
@@ -209,6 +214,15 @@ class RecurringAppointment < ApplicationRecord
 			recurring_appointment_to_be_deleted.deleted = true
 			recurring_appointment_to_be_deleted.deleted_at = Time.current
 			recurring_appointment_to_be_deleted.save!(validate: false)
+		end
+	end
+
+	def self.deleted_nil_to_false
+		recurring_appointments = RecurringAppointment.where(deleted: [nil, ''])
+
+		recurring_appointments.each do |recurring_appointment|
+			recurring_appointment.deleted = false
+			recurring_appointment.save!(validate: false)
 		end
 	end
 

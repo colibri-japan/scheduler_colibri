@@ -65,3 +65,9 @@ task :mark_as_deleted => :environment do
 	RecurringAppointment.mark_recurring_appointments_as_deleted
 	puts 'finished marking appointments and recurring appointments as deleted'
 end
+
+task :default_deleted => :environment do 
+	puts 'deleted null for recurring appointments will be turned to false'
+	RecurringAppointment.deleted_nil_to_false
+	puts 'finished switching null to false for recurring appointments'
+end

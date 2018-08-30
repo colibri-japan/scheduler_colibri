@@ -58,3 +58,10 @@ task :move_to_appointments => :environment do
 	RecurringAppointment.create_appointments
 	puts "finished creating appointments"
 end
+
+task :mark_as_deleted => :environment do 
+	puts "marking appointments and recurring_appointments that are non displayable as deleted"
+	Appointment.mark_appointments_as_deleted
+	RecurringAppointment.mark_recurring_appointments_as_deleted
+	puts 'finished marking appointments and recurring appointments as deleted'
+end

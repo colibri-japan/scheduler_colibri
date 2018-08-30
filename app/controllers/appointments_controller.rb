@@ -74,7 +74,7 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       if @appointment.update(appointment_params)
         @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @original_appointment.nurse.try(:name), previous_patient: @original_appointment.patient.try(:name), previous_start: @original_appointment.start, previous_end: @original_appointment.end
-        @original_appointment.update(displayable: false)
+        @original_appointment.update(displayable: false, deleted: true, deleted_at: Time.current)
         format.js
         format.json { render :show, status: :ok, location: @appointment }
       else
@@ -87,7 +87,7 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1
   # DELETE /appointments/1.json
   def destroy
-    @appointment.update(displayable: false)
+    @appointment.update(displayable: false, deleted: true, deleted_at: Time.current)
     respond_to do |format|
       @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
       format.js

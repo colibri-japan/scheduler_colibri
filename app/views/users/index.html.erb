@@ -18,9 +18,9 @@
             <td><%= user.name %></td>
             <td><%= user.email %></td>
             <td>
-              <label class="switch" data-admin="<%= user.admin %>">
+              <label class="switch" data-boolean="<%= user.admin %>">
                 <input class="switch-input" type="checkbox" id="<%= user.id %>">
-                <span class="slider round" data-admin-toggle="<%= toggle_admin_path(user) %>" id="<%= user.id %>"></span>
+                <span class="slider round" data-toggle-url="<%= toggle_admin_path(user) %>" id="<%= user.id %>"></span>
               </label>
             </td>
           </tr>

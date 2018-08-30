@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180829162915) do
+ActiveRecord::Schema.define(version: 20180830143028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,9 @@ ActiveRecord::Schema.define(version: 20180829162915) do
     t.decimal "duration", default: "0.0"
     t.boolean "edit_requested", default: false
     t.string "color"
+    t.boolean "deactivated", default: false
+    t.boolean "deleted", default: false
+    t.datetime "deleted_at"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_appointments_on_original_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
@@ -111,6 +114,8 @@ ActiveRecord::Schema.define(version: 20180829162915) do
     t.datetime "updated_at", null: false
     t.bigint "corporation_id"
     t.string "kana"
+    t.boolean "active", default: true
+    t.datetime "toggled_active_at"
     t.index ["corporation_id"], name: "index_patients_on_corporation_id"
   end
 
@@ -166,6 +171,7 @@ ActiveRecord::Schema.define(version: 20180829162915) do
     t.date "end_day"
     t.decimal "duration"
     t.boolean "edit_requested", default: false
+    t.boolean "deactivated", default: false
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_recurring_appointments_on_original_id"
     t.index ["patient_id"], name: "index_recurring_appointments_on_patient_id"

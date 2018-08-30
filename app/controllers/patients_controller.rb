@@ -1,6 +1,6 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
-  before_action :set_patient, only: [:show, :edit, :update, :destroy]
+  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :destroy]
 
   def index
   	@patients = @corporation.patients.all.order_by_kana
@@ -22,6 +22,10 @@ class PatientsController < ApplicationController
   end
 
   def edit
+  end
+
+  def toggle_active
+    @patient.update!(active: !@patient.active, toggled_active_at: Time.now)
   end
 
   def new

@@ -95,7 +95,7 @@ class RecurringAppointment < ApplicationRecord
 		appointments.each do |appointment|
 			start_time = DateTime.new(appointment.start.year, appointment.start.month, appointment.start.day, self.start.hour, self.start.min)
 			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.end.day, self.end.hour, self.end.min)	
-			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested, color: self.color)
+			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at)
 		end
 
 	end
@@ -199,6 +199,16 @@ class RecurringAppointment < ApplicationRecord
 				occurrence_appointment = Appointment.new(title: recurring_appointment.title, nurse_id: recurring_appointment.nurse_id, recurring_appointment_id: recurring_appointment.id, patient_id: recurring_appointment.patient_id, planning_id: recurring_appointment.planning_id, master: recurring_appointment.master, displayable: true, start: start_time, end: end_time, color: recurring_appointment.color, edit_requested: recurring_appointment.edit_requested)
 				occurrence_appointment.save!(validate: false)
 			end
+		end
+	end
+
+	def self.mark_recurring_appointments_as_deleted
+		recurring_appointments_to_be_deleted = RecurringAppointment.where(displayable: false)
+
+		recurring_appointments_to_be_deleted.each do |recurring_appointment_to_be_deleted|
+			recurring_appointment_to_be_deleted.deleted = true
+			recurring_appointment_to_be_deleted.deleted_at = Time.current
+			recurring_appointment_to_be_deleted.save!(validate: false)
 		end
 	end
 

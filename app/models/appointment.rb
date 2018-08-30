@@ -27,7 +27,7 @@ class Appointment < ApplicationRecord
 		start_time = timezone.local(date.year, date.month, date.day)
 		end_time = start_time.end_of_day
 
-		appointments = Appointment.where(master: false, displayable: true, end: start_time..end_time, edit_requested: false)
+		appointments = Appointment.where(master: false, displayable: true, end: start_time..end_time, edit_requested: false, deleted: false, deactivated: false)
 
 		appointments.each do |appointment|
 			duration = appointment.end - appointment.start
@@ -64,6 +64,16 @@ class Appointment < ApplicationRecord
 	def edit_request_from_nurse_name
 		nurse = Nurse.find(self.nurse_id)
 		self.edit_requested = true if nurse.name == '未定'
+	end
+
+	def self.mark_appointments_as_deleted
+		appointments_to_be_deleted = Appointment.where(displayable: false)
+
+		appointments_to_be_deleted.each do |appointment_to_be_deleted|
+			appointment_to_be_deleted.deleted = true
+			appointment_to_be_deleted.deleted_at = Time.current
+			appointment_to_be_deleted.save!(validate: false)
+		end
 	end
 
 end

@@ -860,15 +860,14 @@ $(document).on('turbolinks:load', function(){
 
   $('.switch').each(function(){
     $this = $(this);
-    if ($this.data('admin') == true ) {
+    if ($this.data('boolean') == true ) {
       $this.find('.switch-input').prop("checked", true);
     }
-
   });
 
   $('.slider').bind('sendAjax', function(){
     $.ajax({
-      url: $(this).data('admin-toggle'),
+      url: $(this).data('toggle-url'),
       type: 'PATCH',
       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     })
@@ -876,7 +875,6 @@ $(document).on('turbolinks:load', function(){
 
   $('.slider').click(function(){
     $(this).trigger('sendAjax');
-
   });
 
   $('input.edit-hourly-wage').change(function(){

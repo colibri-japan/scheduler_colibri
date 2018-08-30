@@ -89,7 +89,7 @@ class AppointmentsController < ApplicationController
   def destroy
     @appointment.update(displayable: false, deleted: true, deleted_at: Time.current)
     respond_to do |format|
-      @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id
+      @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id
       format.js
     end
   end

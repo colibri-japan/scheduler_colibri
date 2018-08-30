@@ -40,6 +40,11 @@
     </div>
 
     <div class="form-group">
+      <%= form.label :color, "カラー", class: "colibri-form-label" %>
+      <%= form.select(:color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], appointment.color), id: :appointment_color) %>
+  　</div> 
+
+    <div class="form-group">
       <%= form.label :start_time, "スタート", class: "colibri-form-label" %>
       <%= form.datetime_select :start, id: :appointment_start_time, class: "form-control" %>
     </div>

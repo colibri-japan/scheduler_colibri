@@ -865,6 +865,12 @@ $(document).on('turbolinks:load', function(){
     }
   });
 
+  $('.switch-input').on('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  })
+
   $('.slider').bind('sendAjax', function(){
     $.ajax({
       url: $(this).data('toggle-url'),
@@ -873,9 +879,28 @@ $(document).on('turbolinks:load', function(){
     })
   })
 
-  $('.slider').click(function(){
-    $(this).trigger('sendAjax');
+  $('.slider').click(function(event){
+    var $this = $(this);
+    var patientSlider = $this.hasClass('slider-patient');
+    if (patientSlider) {
+      var isChecked =  $this.prev().is(':checked')
+      if (isChecked) {
+        var confirmPatient = confirm('選択された利用者の現時点以降のサービスがキャンセルされます。');
+        if (confirmPatient) {
+          $this.trigger('sendAjax');
+        } else {
+
+        }
+      } else {
+        var confirmPatient = confirm('選択された利用者のキャンセルされたサービスが再起動されます。');
+        if (confirmPatient) {
+          $this.trigger('sendAjax');
+        }
+      }
+    }
   });
+
+  
 
   $('input.edit-hourly-wage').change(function(){
     $.ajax({

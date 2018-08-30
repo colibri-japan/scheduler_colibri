@@ -26,6 +26,8 @@ class PatientsController < ApplicationController
 
   def toggle_active
     @patient.update!(active: !@patient.active, toggled_active_at: Time.now)
+
+    redirect_to patients_path, notice: '利用者がアップデートされました。'
   end
 
   def new

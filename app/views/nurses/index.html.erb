@@ -16,6 +16,7 @@
           <th class="table-important-fields">電話番号</th>
           <th class="table-important-fields">メール</th>
           <th class="table-important-fields">住所</th>
+          <th colspan='2'>アクション</th>
         </tr>
       </thead>
 
@@ -29,8 +30,8 @@
             <% if @planning.present? %>
               <td><%= link_to 'ヘルパーのスケジュールを変換する', planning_nurse_path(@planning, nurse) %></td>
             <% else %>
-              <td><%= link_to 'エディット', edit_nurse_path(nurse) %></td>
-              <td><%= link_to '削除', nurse_path(nurse), method: :delete, data: { confirm: 'ヘルパーが削除されます' } %></td>
+              <td><%= link_to 'エディット', edit_nurse_path(nurse), class: "btn btn-success btn-sm text-white" %></td>
+              <td><%= link_to '削除', nurse_path(nurse), method: :delete, data: { confirm: 'ヘルパーが削除されます' }, class: 'btn btn-danger btn-sm text-white' %></td>
             <% end %>
           </tr>
         <% end %>

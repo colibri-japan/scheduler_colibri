@@ -18,7 +18,13 @@ class PlanningsController < ApplicationController
 	end
 
 	def new
-		@planning = Planning.new
+		if @corporation.nurses.count < 2
+			redirect_to nurses_path, notice: 'スケジュールを作成する前にヘルパーを追加してください'
+		elsif @corporation.patients.empty?
+			redirect_to patients_path, notice: 'スケジュールを作成する前に利用者を追加してください'
+		else
+			@planning = Planning.new
+		end
 	end
 
 	def create

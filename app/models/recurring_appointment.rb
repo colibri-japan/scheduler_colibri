@@ -14,6 +14,7 @@ class RecurringAppointment < ApplicationRecord
 
 	before_validation :calculate_duration
 	before_validation :default_frequency
+	before_validation :calculate_end_day
 	before_save :default_master
 	before_save :default_displayable
 	before_save :default_deleted
@@ -95,7 +96,7 @@ class RecurringAppointment < ApplicationRecord
 
 		appointments.each do |appointment|
 			start_time = DateTime.new(appointment.start.year, appointment.start.month, appointment.start.day, self.start.hour, self.start.min)
-			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.end.day, self.end.hour, self.end.min)	
+			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.start.day, self.end.hour, self.end.min) + self.duration
 			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at)
 		end
 
@@ -118,11 +119,20 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def calculate_duration
-		if self.end_day.present? && self.anchor.present? && self.end_day != self.anchor
-			self.duration = self.end_day - self.anchor
-		else
-			self.duration = 0
+		unless self.duration.present?
+			if self.end_day.present? && self.anchor.present? && self.end_day != self.anchor
+				self.duration = (self.end_day - self.anchor).to_i
+			else
+				self.duration = 0
+			end
 		end
+
+		puts 'the duration is:'
+		puts self.duration
+	end
+
+	def calculate_end_day
+		self.end_day = self.anchor + duration
 	end
 
 	def cannot_overlap_existing_appointment_create

@@ -70,6 +70,13 @@
 
       <% end %>
 
+      <% unless recurring_appointment.new_record? %>
+        <div class="form-group">
+          <%= form.label :duration, "一回の期間", class: "colibri-form-label" %>
+          <%= form.select(:duration, options_for_select([['その日で終わる', 0], ['次の日に終わる（+1日）', 1], ['+2日',2], ['+3日', 3], ['+4日', 4]], recurring_appointment.duration), id: :recurring_appointment_duration) %>
+        </div>
+      <% end %>
+
       <div class="form-group">
         <%= form.label :start, "スタート時間", class: "colibri-form-label" %>
         <%= form.time_select :start, id: :recurring_appointment_start, class: "form-control" %>

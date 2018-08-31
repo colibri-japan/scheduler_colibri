@@ -313,6 +313,10 @@ th {
 	width: 300px !important;
 }
 
+.required-field {
+	color: red;
+}
+
 @media print {
 	.no-print {
 		display: none !important;

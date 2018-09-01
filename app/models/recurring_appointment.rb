@@ -1,7 +1,7 @@
 class RecurringAppointment < ApplicationRecord
 	include PublicActivity::Common
 
-	attribute :edited_occurrence, :date
+	attribute :editing_occurrences_after, :integer
 	attribute :skip_appointments_callbacks, :boolean
 	
 	belongs_to :nurse, optional: true
@@ -91,10 +91,26 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def update_individual_appointments
-		appointments = Appointment.where(recurring_appointment_id: self.id, displayable: true)
-		original_recurring_appointment = RecurringAppointment.where(id: self.original_id) if self.original_id.present?
 
-		appointments.each do |appointment|
+		appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
+
+		if self.editing_occurrences_after.present?
+
+			all_appointments = appointments_to_edit
+
+			editing_start_occurrence = Appointment.find(self.editing_occurrences_after.to_i)
+			edit_after_date = Date.new(editing_start_occurrence.start.year, editing_start_occurrence.start.month, editing_start_occurrence.start.day)
+			edit_after_date = edit_after_date.beginning_of_day
+			appointments_to_edit = all_appointments.where("start >= ?",edit_after_date)
+			appointments_to_detach = all_appointments - appointments_to_edit 
+
+			appointments_to_detach.each do |appointment|
+				appointment.recurring_appointment_id = nil
+				appointment.save!(validate: false)
+			end
+		end
+
+		appointments_to_edit.each do |appointment|
 			start_time = DateTime.new(appointment.start.year, appointment.start.month, appointment.start.day, self.start.hour, self.start.min)
 			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.start.day, self.end.hour, self.end.min) + self.duration
 			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at)

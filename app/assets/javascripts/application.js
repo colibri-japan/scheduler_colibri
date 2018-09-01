@@ -146,6 +146,7 @@ initialize_nurse_calendar = function(){
             $('#edit-all-occurrences').click(function(){
               $('.modal').modal('hide');
               $.getScript( $(this).data('edit-url') , function(){
+                  editAfterDate();
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
               })
@@ -304,6 +305,7 @@ initialize_patient_calendar = function(){
             $('#edit-all-occurrences').click(function(){
               $('.modal').modal('hide');
               $.getScript( $(this).data('edit-url') , function(){
+                  editAfterDate();
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
               })
@@ -491,6 +493,7 @@ initialize_master_calendar = function() {
                   $('.modal').modal('hide');
                   $.getScript( $(this).data('edit-url') , function(){
                       masterSwitchToggle();
+                      editAfterDate();
                       recurringAppointmentEditButtons();
                   })
                 })
@@ -703,6 +706,8 @@ initialize_calendar = function() {
                 $.getScript( editUrl , function(){
                     masterSwitchToggle();
                     recurringAppointmentEditButtons();
+                    editAfterDate();
+                    deleteRecurringAppointment();
                 })
               });
               $('.modal').modal('hide');
@@ -827,6 +832,53 @@ recurringAppointmentEditButtons = function(){
     }
   });
   addToEditListButton();
+}
+
+var editAfterDate;
+editAfterDate = function(){
+  $('#delete-recurring-appointment').hide();
+  $('#recurring_appointment_editing_occurrences_after option').each(function () {
+    var $this = $(this);
+    if ($this.val()) {
+      var date = moment($(this).text(), 'YYYY-MM-DD');
+      $this.text(date.format('M月D日以降'));
+    }
+  });
+}
+
+var deleteRecurringAppointment;
+deleteRecurringAppointment = function(){
+  $('#delete-recurring-appointment-decoy').click(function(){
+    var idSelected = $('#recurring_appointment_editing_occurrences_after').find(':selected').val();
+    if (idSelected) {
+      var textSelected = $('#recurring_appointment_editing_occurrences_after').find(':selected').text();
+      var message = confirm(textSelected + "の繰り返しが削除されます。");
+      if (message) {
+        var allAppointmentIds = JSON.parse(window.appointmentIds);
+        var index = allAppointmentIds.indexOf(parseInt(idSelected));
+        var slicedArray = allAppointmentIds.slice(index);
+
+        slicedArray.forEach(id => {
+          $.ajax({
+            url: window.planningPath + '/appointments/' + id + '.js',
+            type: 'DELETE',
+            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+          })
+        });
+
+        $('.modal').modal('hide');
+      }
+    } else {
+      var message = confirm('全繰り返しが削除されます');
+      if (message) {
+        $.ajax({
+          url: $('#delete-recurring-appointment').prop('href') + '.js',
+          type: 'DELETE',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
+    }
+  })
 }
 
 

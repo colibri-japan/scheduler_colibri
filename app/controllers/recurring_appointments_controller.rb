@@ -64,8 +64,8 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments/1/edit
   def edit
     @master = @recurring_appointment.master
-
-    set_appointments
+    @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(start: 'asc')
+    @appointments_after_first = @appointments.drop(1)
   end
 
   # POST /recurring_appointments
@@ -148,12 +148,6 @@ class RecurringAppointmentsController < ApplicationController
       @end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
     end
 
-    def set_appointments
-      appointments = @recurring_appointment.appointments(@start_valid, @end_valid)
-      appointments.map! {|appointment| appointment.strftime('%Jf')}
-      @appointments = ["全繰り返し"] + appointments
-    end
-
     def from_master_planning?
       params[:master] == 'true' ? @master = true : @master = false
     end
@@ -164,7 +158,7 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :edited_occurrence, :duration)
+      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after)
     end
 
 

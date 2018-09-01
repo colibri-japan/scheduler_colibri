@@ -1,3 +1,9 @@
+<%= javascript_tag do %>
+	window.appointmentIds = "<%= j @appointments.map{|appointment| appointment.id}.to_s %>";
+	window.planningPath = "<%= j planning_path(@planning) %>"
+<% end %>
+
+
 <div id="edit_recurring_appointment" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">

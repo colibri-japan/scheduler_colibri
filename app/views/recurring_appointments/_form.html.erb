@@ -19,6 +19,16 @@
           <%= form.check_box :master, checked:  current_user.admin? && @master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
       </div>
 
+      <div class="form-group">
+        <span class="colibri-form-label">繰り返し：</span>
+        <%= @appointments.map{|appointment| appointment.start.strftime("%-m月%-d日") }.to_sentence(words_connector: ' // ', last_word_connector: ' // ') %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :editing_occurrences_after, '変更する日', class: "colibri-form-label" %>
+        <%= form.collection_select(:editing_occurrences_after, @appointments_after_first, :id, :start, {prompt: '全繰り返し'},) %>
+      </div>
+
     <% end %>
 
 
@@ -114,7 +124,10 @@
           <%= form.submit '編集リストへ追加', class: 'btn btn-secondary', id: 'form-edit-list' %>
         <% end %>
         <% unless recurring_appointment.new_record? %>
-          <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, remote: true, data: {confirm: 'サービスの全繰り返しが削除されます'}, class: 'btn btn-danger' %>
+          <div class="btn btn-danger text-white" id='delete-recurring-appointment-decoy'>
+            削除する
+          </div>
+          <%= link_to '削除', planning_recurring_appointment_path(@planning, recurring_appointment), method: :delete, remote: true, data: {confirm: 'サービスの全繰り返しが削除されます'}, class: 'btn btn-danger', id: 'delete-recurring-appointment' %>
         <% end %>
 
       </div>

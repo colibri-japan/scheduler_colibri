@@ -72,8 +72,8 @@ class NursesController < ApplicationController
 
     @provided_services = ProvidedService.where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
 
-    @services_till_now = ProvidedService.joins(:appointment).where('appointments.end < ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
-    @services_from_now = ProvidedService.joins(:appointment).where('appointments.end >= ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
+    @services_till_now = ProvidedService.joins(:appointment).where('appointments.end < ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false).order('appointments.start desc')
+    @services_from_now = ProvidedService.joins(:appointment).where('appointments.end >= ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false).order('appointments.start desc')
 
     mark_services_as_provided
 

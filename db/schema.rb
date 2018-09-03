@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180831202316) do
+ActiveRecord::Schema.define(version: 20180903171814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,8 @@ ActiveRecord::Schema.define(version: 20180831202316) do
     t.boolean "countable"
     t.string "title"
     t.boolean "temporary", default: false, null: false
+    t.boolean "provided", default: false
+    t.boolean "deactivated", default: false
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
     t.index ["patient_id"], name: "index_provided_services_on_patient_id"
     t.index ["payable_type", "payable_id"], name: "index_provided_services_on_payable_type_and_payable_id"

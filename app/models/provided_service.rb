@@ -54,4 +54,5 @@ class ProvidedService < ApplicationRecord
 		provided_services.delete_all
 	end
 
+
 end

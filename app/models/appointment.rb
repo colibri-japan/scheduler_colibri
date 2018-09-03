@@ -89,7 +89,7 @@ class Appointment < ApplicationRecord
 		provided_service = ProvidedService.where(appointment_id: self.id)
 		provided_duration = self.end - self.start
 		is_provided = Time.current + 9.hours > self.start
-		deactivate_provided = true if self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true
+		deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true
 		provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided)
 	end
 
@@ -99,8 +99,8 @@ class Appointment < ApplicationRecord
 		appointments.each do |appointment|
 			provided_duration = appointment.end - appointment.start 
 			is_provided = Time.current + 9.hours > appointment.start 
-			deactivate_provided = true if appointment.displayable == false || appointment.deleted == true || appointment.deactivated == true || appointment.edit_requested == true
-			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided)
+			deactivate_provided = appointment.displayable == false || appointment.deleted == true || appointment.deactivated == true || appointment.edit_requested == true
+			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided, duration: provided_duration)
 		end
 	end
 

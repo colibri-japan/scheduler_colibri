@@ -67,6 +67,8 @@ class NursesController < ApplicationController
     authorize current_user, :is_admin?
     authorize @nurse, :is_employee?
 
+    delete_previous_temporary_services
+
     @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
 
     @last_patient = @corporation.patients.last
@@ -133,6 +135,11 @@ class NursesController < ApplicationController
     unless @counter.present?
       @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true)
     end
+  end
+
+  def delete_previous_temporary_services
+    services_to_delete = ProvidedService.where(temporary: true, nurse_id: @nurse.id)
+    services_to_delete.delete_all
   end
 
   def create_grouped_services

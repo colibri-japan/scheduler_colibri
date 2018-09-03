@@ -31,6 +31,7 @@
 				<th class="table-important-fields">時給/単価</th>
 				<th class="table-important-fields">回数</th>
 				<th class="table-important-fields">計</th>
+				<th class="table-important-fields">削除</th>
 			</tr>
 			
 		</thead>
@@ -51,6 +52,7 @@
 				</td>
 				<td></td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
+				<td><%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この実績一行が削除されます'}, class: 'btn btn-secondary text-white btn-sm' %></td>
 
 			</tr>
 			<% end %>

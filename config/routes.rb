@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     resources :deleted_occurrences, only: [:new, :create]
   end
 
-  resources :provided_services, only: [:update, :show]
+  resources :provided_services
 
   resources :patients
 

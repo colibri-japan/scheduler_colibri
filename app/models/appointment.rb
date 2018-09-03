@@ -15,6 +15,9 @@ class Appointment < ApplicationRecord
 	before_save :default_displayable
 	before_save :edit_request_from_nurse_name
 
+	after_create :create_provided_service
+	after_update :update_provided_service
+
 	def all_day_appointment?
 		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
 	end
@@ -74,6 +77,20 @@ class Appointment < ApplicationRecord
 			appointment_to_be_deleted.deleted_at = Time.current
 			appointment_to_be_deleted.save!(validate: false)
 		end
+	end
+
+	def create_provided_service
+		provided_duration = self.end - self.start
+		is_provided =  Time.now.in_time_zone('Tokyo') > self.start
+		provided_service = ProvidedService.create!(appointment_id: self.id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title)
+	end
+
+	def update_provided_service
+		provided_service = ProvidedService.where(appointment_id: self.id)
+		provided_duration = self.end - self.start
+		is_provided = Time.now.in_time_zone('Tokyo') > self.start
+		deactivate_provided = true if self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true
+		provided_service.update(service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided)
 	end
 
 end

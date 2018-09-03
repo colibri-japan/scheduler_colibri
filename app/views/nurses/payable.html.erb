@@ -39,7 +39,7 @@
 		<tbody>
 			<% @provided_services.each do |provided_service| %>
 			<tr>
-				<td><%= provided_service.created_at.strftime("%-m月%-d日") %></td>
+				<td><%= provided_service.created_at.in_time_zone('Tokyo').strftime("%-m月%-d日") %></td>
 				<td><%= provided_service.payable.try(:title) %></td>
 				<td><%= provided_service.patient.try(:name) %> </td>
 				<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>

@@ -23,6 +23,8 @@
 //= require locale-all
 //= require scheduler
 //= require daterangepicker
+//= require Chart.bundle
+//= require chartkick
 //= require_tree .
 
 

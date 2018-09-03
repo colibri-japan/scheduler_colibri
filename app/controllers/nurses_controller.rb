@@ -66,23 +66,25 @@ class NursesController < ApplicationController
   def payable
     authorize current_user, :is_admin?
     authorize @nurse, :is_employee?
+    @planning = Planning.find(params[:planning_id])
 
     delete_previous_temporary_services
 
-    @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
+    @provided_services = ProvidedService.where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
 
+    @services_till_now = ProvidedService.joins(:appointment).where('appointments.end < ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
+    @services_from_now = ProvidedService.joins(:appointment).where('appointments.end >= ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
+
+    mark_services_as_provided
+
+    @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
     @last_patient = @corporation.patients.last
     @last_nurse = @nurses.last
 
-    @planning = Planning.find(params[:planning_id])
-
-    @provided_services = @nurse.provided_services.where(planning_id: @planning.id, countable: false, temporary: false).order(created_at: 'desc').includes(:payable, :patient)
     set_counter
-    @counter.update(service_counts: @provided_services.count )
-
+    @counter.update(service_counts: @services_till_now.count )
 
     calculate_total_wage
-
     create_grouped_services
 
     respond_to do |format|
@@ -125,15 +127,20 @@ class NursesController < ApplicationController
   end
 
   def calculate_total_wage
-    sum_provided= @provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-    @counter.total_wage.present? ? @total_wage = sum_provided + @counter.try(:total_wage) : @total_wage = sum_provided
+    #sum_provided= @provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
+    #@counter.total_wage.present? ? @total_wage = sum_provided + @counter.try(:total_wage) : @total_wage = sum_provided
+
+    @total_till_now = @services_till_now.sum{|service| service.total_wage.present? ? service.total_wage : 0 }
+    @total_till_now = @total_till_now + @counter.try(:total_wage) if @counter.total_wage.present?
+
+    @total_from_now = @services_from_now.sum{|service| service.total_wage.present? ? service.total_wage : 0 }
   end
 
   def set_counter
     @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true, temporary: false).take
 
     unless @counter.present?
-      @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true)
+      @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true, provided: true)
     end
   end
 
@@ -142,15 +149,25 @@ class NursesController < ApplicationController
     services_to_delete.delete_all
   end
 
+  def mark_services_as_provided
+    unprovided_services = @services_till_now.where(provided: false)
+
+    if unprovided_services.present?
+      unprovided_services.each do |provided_service|
+        provided_service.update(provided: true)
+      end
+    end
+  end
+
   def create_grouped_services
     service_types = []
     @grouped_services = []
-    @provided_services.each do |service|
+    @services_till_now.each do |service|
       service_types << service.title unless service_types.include?(service.title)
     end
 
     service_types.each do |service_title|
-      matching_services = @provided_services.where(title: service_title)
+      matching_services = @services_till_now.where(title: service_title)
       sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
       sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
       new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: matching_services.count, total_wage: sum_total_wage, temporary: true)

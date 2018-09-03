@@ -81,16 +81,16 @@ class Appointment < ApplicationRecord
 
 	def create_provided_service
 		provided_duration = self.end - self.start
-		is_provided =  Time.now.in_time_zone('Tokyo') > self.start
-		provided_service = ProvidedService.create!(appointment_id: self.id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title)
+		is_provided =  Time.current + 9.hours > self.start
+		provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title)
 	end
 
 	def update_provided_service
 		provided_service = ProvidedService.where(appointment_id: self.id)
 		provided_duration = self.end - self.start
-		is_provided = Time.now.in_time_zone('Tokyo') > self.start
+		is_provided = Time.current + 9.hours > self.start
 		deactivate_provided = true if self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true
-		provided_service.update(service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided)
+		provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided)
 	end
 
 end

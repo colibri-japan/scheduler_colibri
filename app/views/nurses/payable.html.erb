@@ -15,8 +15,11 @@
 
 <div id="payable-container">
 	<div id="detail-planning-title">
-		<p class="planning-activity-module-title"><%= "#{@nurse.name}の給与" %></p>
-		<div class="excel-download btn btn-success text-white">ダウンロードする</div>
+		<p class="planning-activity-module-title" id="payable-title"><%= "#{@nurse.name}の給与 #{@planning.business_month}月" %></p>
+	</div>
+
+	<div id='payable-table-commands'>
+		<div class="excel-download btn btn-success btn-sm text-white" id="payable-download-button">ダウンロードする</div>
 	</div>
 
 	<table class="table">
@@ -37,14 +40,14 @@
 		</thead>
 
 		<tbody>
-			<% @provided_services.each do |provided_service| %>
+			<% @services_till_now.each do |provided_service| %>
 			<tr>
 				<td><%= provided_service.created_at.in_time_zone('Tokyo').strftime("%-m月%-d日") %></td>
-				<td><%= provided_service.payable.try(:title) %></td>
+				<td><%= provided_service.try(:title) %></td>
 				<td><%= provided_service.patient.try(:name) %> </td>
 				<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
-				<td><%= provided_service.payable.start.strftime("%H:%M") %></td>
-				<td><%= provided_service.payable.end.strftime("%H:%M") %></td>
+				<td><%= provided_service.appointment.start.strftime("%H:%M") %></td>
+				<td><%= provided_service.appointment.end.strftime("%H:%M") %></td>
 				<td>
 					<%= form_for provided_service, url: {action: 'update'}, remote: true do |f| %>
 						<%= f.text_field :hourly_wage, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
@@ -86,7 +89,7 @@
 				<td></td>
 				<td></td>
 				<td id="total-salary-label">合計：</td>
-				<td id="total-salary"><%= @total_wage %>¥</td>
+				<td id="total-salary"><%= @total_till_now %>¥</td>
 			</tr>
 		</tbody>
 		
@@ -131,7 +134,7 @@
 				<td></td>
 				<td></td>
 				<td id="total-salary-label">合計：</td>
-				<td id="total-salary"><%= @total_wage %>¥</td>
+				<td id="total-salary"><%= @total_till_now %>¥</td>
 			</tr>
 		</tbody>
 	</table>

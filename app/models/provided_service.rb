@@ -48,4 +48,10 @@ class ProvidedService < ApplicationRecord
 		self.countable = false unless self.countable.present?
 	end
 
+	def self.master_delete
+		provided_services = ProvidedService.all
+
+		provided_services.delete_all
+	end
+
 end

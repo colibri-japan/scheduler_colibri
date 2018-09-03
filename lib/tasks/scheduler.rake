@@ -71,3 +71,10 @@ task :default_deleted => :environment do
 	RecurringAppointment.deleted_nil_to_false
 	puts 'finished switching null to false for recurring appointments'
 end
+
+task :reset_provided_services => :environment do 
+	puts 'delete existing provided services and create one for each appointment'
+	ProvidedService.master_delete
+	Appointment.create_individual_provided_service
+	puts 'finished reseting provided services'
+end

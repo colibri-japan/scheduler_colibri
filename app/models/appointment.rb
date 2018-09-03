@@ -93,4 +93,15 @@ class Appointment < ApplicationRecord
 		provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided)
 	end
 
+	def self.create_individual_provided_service
+		appointments = Appointment.all 
+
+		appointments.each do |appointment|
+			provided_duration = appointment.end - appointment.start 
+			is_provided = Time.current + 9.hours > appointment.start 
+			deactivate_provided = true if appointment.displayable == false || appointment.deleted == true || appointment.deactivated == true || appointment.edit_requested == true
+			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided)
+		end
+	end
+
 end

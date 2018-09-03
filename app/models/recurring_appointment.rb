@@ -102,12 +102,21 @@ class RecurringAppointment < ApplicationRecord
 			edit_after_date = Date.new(editing_start_occurrence.start.year, editing_start_occurrence.start.month, editing_start_occurrence.start.day)
 			edit_after_date = edit_after_date.beginning_of_day
 			appointments_to_edit = all_appointments.where("start >= ?",edit_after_date)
-			appointments_to_detach = all_appointments - appointments_to_edit 
+			appointments_before_edit_date = all_appointments - appointments_to_edit 
 
-			appointments_to_detach.each do |appointment|
-				appointment.recurring_appointment_id = nil
+			first_appointment = appointments_before_edit_date.first
+
+			puts 'before create recurring appointment for occurrences after'
+			recurring_anchor = Date.new(first_appointment.start.year, first_appointment.start.month, first_appointment.start.day)
+			recurring_end_day = Date.new(first_appointment.end.year, first_appointment.end.month, first_appointment.end.day)
+			recurring_appointment_before_edit_date = RecurringAppointment.create(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, deactivated: first_appointment.deactivated, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, start: first_appointment.start, end: first_appointment.end, skip_appointments_callbacks: true, frequency: self.frequency)
+
+			puts 'after creating recurring appointment, should have skipped create callback'
+			appointments_before_edit_date.each do |appointment|
+				appointment.recurring_appointment_id = recurring_appointment_before_edit_date.id
 				appointment.save!(validate: false)
 			end
+			puts 'has saved appointments before under new recurring appointment'
 		end
 
 		appointments_to_edit.each do |appointment|

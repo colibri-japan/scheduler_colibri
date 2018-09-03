@@ -38,7 +38,7 @@ class AppointmentsController < ApplicationController
     
     @nurses = @corporation.nurses.all 
     @patients = @corporation.patients.all
-    @recurring_appointment = @appointment.recurring_appointment if @appointment.recurring_appointment_id.present?
+    @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end
 
   # POST /appointments

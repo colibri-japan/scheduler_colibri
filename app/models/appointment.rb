@@ -6,7 +6,7 @@ class Appointment < ApplicationRecord
 	belongs_to :planning
 	belongs_to :original, class_name: 'Appointment', optional: true
 	belongs_to :recurring_appointment, optional: true
-	has_many :provided_services, as: :payable
+	has_one :provided_service
 
 	validates :title, presence: true
 	validate :do_not_overlap

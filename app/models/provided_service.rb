@@ -1,5 +1,5 @@
 class ProvidedService < ApplicationRecord
-	belongs_to :payable, polymorphic: true, optional: true
+	belongs_to :appointment, optional: true
 	belongs_to :nurse
 	belongs_to :patient, optional: true
 	belongs_to :planning

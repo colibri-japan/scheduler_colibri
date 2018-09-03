@@ -94,7 +94,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def self.create_individual_provided_service
-		appointments = Appointment.all 
+		appointments = Appointment.where(master: false).all
 
 		appointments.each do |appointment|
 			provided_duration = appointment.end - appointment.start 

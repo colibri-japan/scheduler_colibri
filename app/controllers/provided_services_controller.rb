@@ -1,5 +1,25 @@
 class ProvidedServicesController < ApplicationController
-	before_action :set_provided_service
+	before_action :set_provided_service, only: [:update, :destroy]
+
+	def new
+		@nurse = Nurse.find(params[:nurse_id])
+		@provided_service = ProvidedService.new
+		@planning = Planning.find(params[:planning_id].to_i)
+	end
+
+	def create
+		@nurse = Nurse.find(params[:nurse_id])
+		@provided_service = ProvidedService.new(provided_service_params)
+		@planning = Planning.find(provided_service_params[:planning_id])
+
+		@provided_service.provided = true
+		@provided_service.nurse_id = params[:nurse_id]
+
+		if @provided_service.save
+		  redirect_to planning_nurse_payable_path(@planning, @nurse), notice: "新規手当がセーブされました"
+		end
+
+	end
 
 	def update
 		@provided_service.total_wage ? @old_salary = @provided_service.total_wage : @old_salary=0
@@ -30,7 +50,7 @@ class ProvidedServicesController < ApplicationController
 	end
 
 	def provided_service_params
-		params.require(:provided_service).permit(:hourly_wage, :service_counts)
+		params.require(:provided_service).permit(:unit_cost, :service_counts, :title, :planning_id, :service_date, :hour_based_wage, :service_duration, :nurse_id)
 	end
 
 

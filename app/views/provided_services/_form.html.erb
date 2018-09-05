@@ -1,0 +1,69 @@
+<%= form_for [@nurse, provided_service], local: true do |form| %>
+  <% if provided_service.errors.any? %>
+  <div id="error_explanation">
+    <h2>エラーが発生しました：</h2>
+
+    <ul>
+      <% provided_service.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div id="form-options-container">
+    <% if provided_service.new_record? %>
+
+
+      <div class="form-group">
+          <%= form.check_box :hour_based_wage, checked: current_user.corporation.hour_based_payroll , id: 'hour-based-wage-toggle' %>
+      </div>
+
+    <% end %>
+  </div>
+
+  <div class="modal-body">
+
+      <div class="form-group">
+        <%= form.label :title, "手当タイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.text_field :title, id: :provided_service_title, required: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :unit_cost, "時給", class: "colibri-form-label" %>
+        <%= form.number_field :unit_cost, id: :provided_service_unit_cost, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :service_date, "日付", class: "colibri-form-label" %>
+        <%= form.date_select :service_date, id: :provided_service_service_date, class: "form-control" %>
+      </div>
+
+      <% if provided_service.new_record? || provided_service.hour_based_wage == true  %>
+        <div class="form-group"  id="pay-by-hour-field">
+          <%= form.label :service_duration, "提供時間", class: "colibri-form-label" %>
+          <%= form.select(:service_duration, options_for_select([['30分', 1800], ['一時間', 3600], ['一時間半', 5400], ['二時間', 7200]]))  %>
+        </div>
+      <% end %>
+
+      <% if provided_service.new_record? || provided_service.hour_based_wage == false %>
+
+        <div class="form-group" id="pay-by-count-field">
+          <%= form.label :service_counts, "回数", class: "colibri-form-label" %>
+          <%= form.number_field :service_counts, id: :provided_service_service_counts, class: "form-control" %>
+        </div>
+
+      <% end %>
+
+      <%= form.hidden_field :planning_id, value: @planning.id %>
+
+
+      <div class="actions">
+
+        <%= form.submit 'セーブする', class: 'btn btn-info' %>
+
+      </div>
+  </div>
+
+
+<% end %>

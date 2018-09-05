@@ -5,10 +5,10 @@ wb.add_worksheet(name: "給与詳細") do |sheet|
 	sheet.add_row
 	sheet.add_row ['日付', 'サービスタイプ', '利用者名', '提供時間', 'スタート', '終了', '時給/単価', '回数', '計']
 	@services_till_now.each do |service|
-		sheet.add_row [service.appointment.start.strftime("%-m月%-d日"), service.payable.try(:title), service.patient.try(:name), Time.at(service.service_duration).utc.strftime("%H:%M"), service.payable.start.strftime("%H:%M"), service.payable.end.strftime("%H:%M"), service.try(:hourly_wage), '', service.try(:total_wage) ]
+		sheet.add_row [service.appointment.start.strftime("%-m月%-d日"), service.payable.try(:title), service.patient.try(:name), Time.at(service.service_duration).utc.strftime("%H:%M"), service.payable.start.strftime("%H:%M"), service.payable.end.strftime("%H:%M"), service.try(:unit_cost), '', service.try(:total_wage) ]
 	end
 	if @counter.present?
-		sheet.add_row ['', '移動手当', '', '', '', '', @counter.try(:hourly_wage), @counter.try(:service_counts), @counter.try(:total_wage)]
+		sheet.add_row ['', '移動手当', '', '', '', '', @counter.try(:unit_cost), @counter.try(:service_counts), @counter.try(:total_wage)]
 	end
 	sheet.add_row ['','','','','','','','合計：',@total_till_now]
 
@@ -18,10 +18,10 @@ wb.add_worksheet(name: "給与詳細") do |sheet|
 
 	sheet.add_row ['サービスタイプ', '提供時間', '時給/単価', '回数', '計']
 	@grouped_services.each do |service|
-		sheet.add_row [service.try(:title), Time.at(service.service_duration).utc.strftime("%H:%M"), service.try(:hourly_wage), service.try(:service_counts), service.try(:total_wage) ]
+		sheet.add_row [service.try(:title), Time.at(service.service_duration).utc.strftime("%H:%M"), service.try(:unit_cost), service.try(:service_counts), service.try(:total_wage) ]
 	end
 	if @counter.present?
-		sheet.add_row ['移動手当', '', @counter.try(:hourly_wage), @counter.try(:service_counts), @counter.try(:total_wage)]
+		sheet.add_row ['移動手当', '', @counter.try(:unit_cost), @counter.try(:service_counts), @counter.try(:total_wage)]
 	end
 	sheet.add_row ['','','','合計：',@total_wage]
 end

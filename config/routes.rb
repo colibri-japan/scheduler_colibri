@@ -21,11 +21,13 @@ Rails.application.routes.draw do
     resources :deleted_occurrences, only: [:new, :create]
   end
 
-  resources :provided_services
+  resources :provided_services, only: [:update, :destroy]
 
   resources :patients
 
-  resources :nurses
+  resources :nurses do
+    resources :provided_services
+  end
 
   resources :corporations do
   	resources :nurses, only: :index

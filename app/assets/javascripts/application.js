@@ -883,6 +883,36 @@ deleteRecurringAppointment = function(){
   })
 }
 
+var toggleProvidedServiceForm;
+toggleProvidedServiceForm = function(){
+  if ($('#hour-based-wage-toggle').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('時給');
+    $('#pay-by-hour-field').show();
+    $('#pay-by-count-field').hide();
+  } else {
+    $("label[for='provided_service_unit_cost']").text('単価');
+    $('#pay-by-hour-field').hide();
+    $('#pay-by-count-field').show();
+  }
+}
+
+var addProvidedServiceToggle;
+addProvidedServiceToggle = function(){
+  $('#hour-based-wage-toggle').bootstrapToggle({
+    on: '時給計算',
+    off: '単価計算',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 100
+  });
+
+  toggleProvidedServiceForm();
+
+  $('#hour-based-wage-toggle').change(function(){
+    toggleProvidedServiceForm();
+  })
+}
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 

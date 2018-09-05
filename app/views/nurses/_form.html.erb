@@ -22,6 +22,10 @@
   </div>
 
   <div class="form-group">
+    <%= form.check_box :full_timer, id: 'full-timer-toggle' %>
+  </div>
+
+  <div class="form-group">
     <%= form.label :phone_number, "電話番号", class: "colibri-form-label" %>
     <%= form.text_field :phone_number, id: :nurse_phone_number, class: "form-control" %>
   </div>

@@ -1172,6 +1172,14 @@ $(document).on('turbolinks:load', function(){
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
       })
     }
+  });
+
+  $('#full-timer-toggle').bootstrapToggle({
+    on: '正社員',
+    off: '非正社員',
+    size: 'normal',
+    onstyle: 'success',
+    offstyle: 'secondary'
   })
 
   

@@ -57,7 +57,7 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
     @nurse.destroy
     respond_to do |format|
-      format.html { redirect_to nurses_url, notice: '利用者が削除されました' }
+      format.html { redirect_to nurses_url, notice: 'ヘルパーが削除されました' }
       format.json { head :no_content }
       format.js
     end

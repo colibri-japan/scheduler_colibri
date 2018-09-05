@@ -4,7 +4,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :patient, optional: true
 	belongs_to :planning
 
-	before_save :lookup_hourly_wage
+	before_save :lookup_unit_cost
 	before_save :calculate_total_wage
 	before_save :set_countable
 
@@ -29,18 +29,22 @@ class ProvidedService < ApplicationRecord
 		end
 	end
 
-	def lookup_hourly_wage
-		if self.hourly_wage.nil? && self.title.present?
+	def lookup_unit_cost
+		if self.unit_cost.nil? && self.title.present?
 			last_similar = ProvidedService.where(nurse_id: self.nurse_id, title: self.title).last 
-			self.hourly_wage = last_similar.hourly_wage if last_similar.present?
+			self.unit_cost = last_similar.unit_cost if last_similar.present?
 		end
 	end
 
 	def calculate_total_wage
-		if self.hourly_wage.present? && self.service_duration.present?
-			self.total_wage = ( self.hourly_wage.to_f / 60 ) * ( self.service_duration / 60 )
-		elsif self.service_counts.present? && self.hourly_wage.present?
-			self.total_wage = self.service_counts.to_i * self.hourly_wage.to_i
+		if self.hour_based_wage = true
+		  if self.unit_cost.present? && self.service_duration.present?
+			  self.total_wage = ( self.unit_cost.to_f / 60 ) * ( self.service_duration / 60 )
+		  elsif self.service_counts.present? && self.unit_cost.present?
+			  self.total_wage = self.service_counts.to_i * self.unit_cost.to_i
+		  end
+		else
+			self.total_wage = self.unit_cost
 		end
 	end
 

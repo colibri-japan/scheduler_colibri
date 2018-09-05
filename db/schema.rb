@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180905072401) do
+ActiveRecord::Schema.define(version: 20180905114253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20180905072401) do
     t.string "default_view", default: "agendaWeek"
     t.string "business_start_hour", default: "07:00:00"
     t.string "business_end_hour", default: "24:00:00"
+    t.boolean "hour_based_payroll", default: true
   end
 
   create_table "deleted_occurrences", force: :cascade do |t|
@@ -133,7 +134,7 @@ ActiveRecord::Schema.define(version: 20180905072401) do
   create_table "provided_services", force: :cascade do |t|
     t.string "payable_type"
     t.bigint "payable_id"
-    t.integer "hourly_wage"
+    t.integer "unit_cost"
     t.integer "service_duration"
     t.integer "total_wage"
     t.datetime "created_at", null: false
@@ -148,6 +149,7 @@ ActiveRecord::Schema.define(version: 20180905072401) do
     t.boolean "provided", default: false
     t.boolean "deactivated", default: false
     t.bigint "appointment_id"
+    t.boolean "hour_based_wage", default: true
     t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
     t.index ["patient_id"], name: "index_provided_services_on_patient_id"

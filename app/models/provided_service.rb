@@ -47,8 +47,8 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def default_duration
-		if self.duration.nil?
-			self.duration = 0
+		if self.service_duration.nil?
+			self.service_duration = 0
 		end
 	end
 

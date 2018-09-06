@@ -89,11 +89,19 @@ class Appointment < ApplicationRecord
 
 	def update_provided_service
 		if self.master != true
-		  provided_service = ProvidedService.where(appointment_id: self.id)
-		  provided_duration = self.end - self.start
-		  is_provided = Time.current + 9.hours > self.start
-		  deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true
-		  provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided, service_date: self.end, appointment_start: self.start, appointment_end: self.end)
+			@provided_service = ProvidedService.where(appointment_id: self.id)
+			puts 'found provided'
+			puts @provided_service
+			if self.deleted == true 
+				puts 'validated if'
+				@provided_service.update(deactivated: true)
+			else
+				puts 'when to else'
+		      provided_duration = self.end - self.start
+		      is_provided = Time.current + 9.hours > self.start
+		      deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true
+			  @provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided, service_date: self.end, appointment_start: self.start, appointment_end: self.end)
+			end
 		end
 	end
 

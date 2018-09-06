@@ -131,8 +131,8 @@
 
 /* line 15, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
 #payable-container {
-  margin-top: 10px;
-  margin-left: 180px;
+  margin-top: 15px;
+  margin-left: 185px;
   margin-right: 5px;
 }
 
@@ -150,6 +150,19 @@
 #toggle-patients-nurses {
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 7px;
+}
+
+/* line 35, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+#payable-download-button {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* line 40, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+#payable-table-commands {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 7px;
 }
 /* line 5, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/patients.scss */
@@ -16638,34 +16651,49 @@ th {
   width: 300px !important;
 }
 
+/* line 317, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+.required-field {
+  color: red;
+}
+
 @media print {
-  /* line 318, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 322, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .no-print {
     display: none !important;
   }
 
-  /* line 321, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 325, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print {
     display: block;
   }
 
-  /* line 325, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 329, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  .print-master-no-view {
+    display: none !important;
+  }
+
+  /* line 333, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #detail-container {
     margin-left: 5px;
   }
 
-  /* line 329, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 337, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #planning-show-main {
     margin-left: 5px;
   }
 
-  /* line 333, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 341, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print-add-margin {
     margin-left: 40px;
   }
 
-  /* line 337, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 345, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #recurring-appointment-details {
     margin-left: 50px;
+  }
+
+  /* line 349, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  div .fc-scroller {
+    max-height: none !important;
   }
 }

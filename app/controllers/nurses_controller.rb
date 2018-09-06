@@ -72,8 +72,9 @@ class NursesController < ApplicationController
 
     @provided_services = ProvidedService.where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
 
-    @services_till_now = ProvidedService.joins(:appointment).where('appointments.end < ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false).order('appointments.start desc')
-    @services_from_now = ProvidedService.joins(:appointment).where('appointments.end >= ?', Time.current + 9.hours).where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false).order('appointments.start desc')
+    now_in_Japan = Time.current + 9.hours
+    @services_till_now = @provided_services.where('service_date < ?', now_in_Japan).order(service_date: 'desc')
+    @services_from_now = @provided_services.where('service_date >= ?', now_in_Japan).order(service_date: 'desc')
 
     mark_services_as_provided
 
@@ -167,10 +168,19 @@ class NursesController < ApplicationController
     end
 
     service_types.each do |service_title|
-      matching_services = @services_till_now.where(title: service_title)
+      matching_services = @services_till_now.where(title: service_title).all
+
+      puts 'matching first hour based ?'
+      puts matching_services.first.hour_based_wage
+      puts 'total wage'
+      puts matching_services.sum{|e| e.total_wage}
+      
       sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
       sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: matching_services.count, total_wage: sum_total_wage, temporary: true)
+      sum_counts = matching_services.sum{|e| e.service_counts.present? ? e.service_counts : 1 }
+      hour_based = matching_services.first.hour_based_wage
+
+      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
       @grouped_services << new_service
     end
   end

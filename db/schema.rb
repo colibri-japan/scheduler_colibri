@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180905191526) do
+ActiveRecord::Schema.define(version: 20180906085614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,6 +151,8 @@ ActiveRecord::Schema.define(version: 20180905191526) do
     t.bigint "appointment_id"
     t.boolean "hour_based_wage", default: true
     t.datetime "service_date"
+    t.datetime "appointment_start"
+    t.datetime "appointment_end"
     t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
     t.index ["patient_id"], name: "index_provided_services_on_patient_id"

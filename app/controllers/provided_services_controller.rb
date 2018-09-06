@@ -12,8 +12,11 @@ class ProvidedServicesController < ApplicationController
 		@provided_service = ProvidedService.new(provided_service_params)
 		@planning = Planning.find(provided_service_params[:planning_id])
 
-		@provided_service.provided = true
+		@provided_service.provided = @provided_service.service_date < Time.current + 9.hours
 		@provided_service.nurse_id = params[:nurse_id]
+
+		puts 'hour based ?'
+		puts @provided_service.hour_based_wage
 
 		if @provided_service.save
 		  redirect_to planning_nurse_payable_path(@planning, @nurse), notice: "新規手当がセーブされました"

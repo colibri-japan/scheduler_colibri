@@ -32,7 +32,13 @@
 	margin-bottom: 7px;
 }
 
-#payable-download-button{
+#payable-download-button {
 	margin-left: auto;
 	margin-right: 0;
+}
+
+#payable-table-commands {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 7px;
 }

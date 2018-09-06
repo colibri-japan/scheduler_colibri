@@ -27,7 +27,7 @@
 		<thead>
 			<tr>
 				<th class="table-important-fields">日付</th>
-				<th class="table-important-fields">サービスタイプ</th>
+				<th class="table-important-fields">タイプ</th>
 				<th class="table-important-fields">利用者名</th>
 				<th class="table-important-fields">提供時間</th>
 				<th class="table-important-fields">スタート</th>
@@ -43,18 +43,20 @@
 		<tbody>
 			<% @services_till_now.each do |provided_service| %>
 			<tr>
-				<td><%= provided_service.appointment.start.strftime("%-m月%-d日") %></td>
+				<td><%= provided_service.service_date.strftime("%-m月%-d日") %></td>
 				<td><%= provided_service.try(:title) %></td>
 				<td><%= provided_service.patient.try(:name) %> </td>
-				<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") %></td>
-				<td><%= provided_service.appointment.start.strftime("%H:%M") %></td>
-				<td><%= provided_service.appointment.end.strftime("%H:%M") %></td>
+				<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") if provided_service.service_duration.present? %></td>
+				<td><%= provided_service.appointment_start.strftime("%H:%M") if provided_service.appointment_start.present? %></td>
+				<td><%= provided_service.appointment_end.strftime("%H:%M") if provided_service.appointment_end.present? %></td>
 				<td>
 					<%= form_for provided_service, url: {action: 'update'}, remote: true do |f| %>
 						<%= f.text_field :unit_cost, data: {service_url: provided_service_path(provided_service)}, class: 'edit-hourly-wage' %>
 					<% end %>
 				</td>
-				<td></td>
+				<td>
+					<%= provided_service.service_counts if provided_service.service_counts.present? %>
+				</td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
 				<td><%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この実績一行が削除されます'}, class: 'btn btn-secondary text-white btn-sm' %></td>
 
@@ -100,7 +102,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th class="table-important-fields">サービスタイプ</th>
+				<th class="table-important-fields">タイプ</th>
 				<th class="table-important-fields">提供時間</th>
 				<th class="table-important-fields">時給/単価</th>
 				<th class="table-important-fields">回数</th>
@@ -111,7 +113,7 @@
 			<% @grouped_services.each do |service| %>
 				<tr>
 					<th><%= service.title %></th>
-					<th><%= Time.at(service.service_duration).utc.strftime("%H:%M") %></th>
+					<th><%= Time.at(service.service_duration).utc.strftime("%H:%M") if service.service_duration > 0 %></th>
 					<th><%= service.unit_cost %></th>
 					<th><%= service.service_counts %></th>
 					<th><%= service.total_wage %></th>

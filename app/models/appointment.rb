@@ -83,7 +83,7 @@ class Appointment < ApplicationRecord
 		if self.master != true
 		  provided_duration = self.end - self.start
 		  is_provided =  Time.current + 9.hours > self.start
-		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll)
+		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.end, appointment_start: self.start, appointment_end: self.end)
 		end
 	end
 
@@ -93,7 +93,7 @@ class Appointment < ApplicationRecord
 		  provided_duration = self.end - self.start
 		  is_provided = Time.current + 9.hours > self.start
 		  deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true
-		  provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided)
+		  provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided, service_date: self.end, appointment_start: self.start, appointment_end: self.end)
 		end
 	end
 
@@ -104,7 +104,7 @@ class Appointment < ApplicationRecord
 			provided_duration = appointment.end - appointment.start 
 			is_provided = Time.current + 9.hours > appointment.start 
 			deactivate_provided = appointment.displayable == false || appointment.deleted == true || appointment.deactivated == true || appointment.edit_requested == true
-			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided, service_duration: provided_duration, hour_based_wage: self.planning.corporation.hour_based_payroll)
+			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided, service_duration: provided_duration, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.end, appointment_start: self.start, appointment_end: self.end)
 		end
 	end
 

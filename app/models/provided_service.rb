@@ -70,10 +70,15 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def self.add_service_date
-		provided_services = ProvidedService.where(service_date: nil).where.not(appointment_id: nil)
+		provided_services = ProvidedService.where(service_date: nil, temporary: false, countable: false).where.not(appointment_id: nil)
 
 		provided_services.each do |service|
-			if service.appointment.present?
+			appointment = Appointment.find(service.appointment_id)
+			puts 'appointment loaded'
+			puts appointment
+
+			if appointment.present?
+				puts 'within appointment present'
 			  service.service_date = service.appointment.end
 			  service.appointment_start = service.appointment.start 
 			  service.appointment_end = service.appointment.end

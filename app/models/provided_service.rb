@@ -5,6 +5,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :planning
 
 	before_save :lookup_unit_cost
+	before_save :default_service_counts
 	before_save :calculate_total_wage
 	before_save :set_countable
 
@@ -33,6 +34,12 @@ class ProvidedService < ApplicationRecord
 		if self.unit_cost.nil? && self.title.present?
 			last_similar = ProvidedService.where(nurse_id: self.nurse_id, title: self.title).last 
 			self.unit_cost = last_similar.unit_cost if last_similar.present?
+		end
+	end
+
+	def default_service_counts
+		if self.hour_based_wage == false && self.service_counts.nil?
+			self.service_counts = 1
 		end
 	end
 

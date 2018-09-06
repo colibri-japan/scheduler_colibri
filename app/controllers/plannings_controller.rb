@@ -114,7 +114,7 @@ class PlanningsController < ApplicationController
 		if ids.include?(params[:template_id].to_i)
 			template_planning = Planning.find(params[:template_id]) 
 
-			original_appointments = template_planning.recurring_appointments.where(master: true, displayable: true, frequency: [0,1], edit_requested: false, deactivated: false, deleted: false).all
+			original_appointments = template_planning.recurring_appointments.where(master: true, displayable: true, frequency: [0,1], edit_requested: false, deactivated: false, deleted: [nil, false]).all
 
 			original_appointments.each do |appointment|
 				original_day_wday = appointment.anchor.wday

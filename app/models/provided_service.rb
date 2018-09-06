@@ -97,5 +97,13 @@ class ProvidedService < ApplicationRecord
 		end
 	end
 
+	def self.set_default_duration_to_zero
+		provided_services = ProvidedService.where(service_duration: nil, temporary: false)
+
+		provided_services.each do |provided_service|
+			provided_service.update(service_duration: 0)
+		end
+	end
+
 
 end

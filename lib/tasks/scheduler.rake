@@ -84,3 +84,9 @@ task :update_provided_services => :environment do
 	ProvidedService.add_service_date
 	puts 'finished adding service dates'
 end
+
+task :default_duration_is_zero => :environment do 
+	puts 'default service duration equals zero'
+	ProvidedService.set_default_duration_to_zero
+	puts 'finished task'
+end

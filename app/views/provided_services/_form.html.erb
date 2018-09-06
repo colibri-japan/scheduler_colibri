@@ -59,8 +59,9 @@
       <div class="actions">
 
         <%= form.submit 'セーブする', class: 'btn btn-info' %>
-        <%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この実績が削除されます'}, class: 'btn btn-danger' %>
-
+        <% unless provided_service.new_record? %>
+          <%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この実績が削除されます'}, class: 'btn btn-danger' %>
+        <% end %>
       </div>
   </div>
 

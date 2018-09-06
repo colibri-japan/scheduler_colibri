@@ -6,6 +6,7 @@ class ProvidedService < ApplicationRecord
 
 	before_save :lookup_unit_cost
 	before_save :default_service_counts
+	before_save :default_duration
 	before_save :calculate_total_wage
 	before_save :set_countable
 
@@ -37,9 +38,17 @@ class ProvidedService < ApplicationRecord
 		end
 	end
 
+
+
 	def default_service_counts
 		if self.hour_based_wage == false && self.service_counts.nil?
 			self.service_counts = 1
+		end
+	end
+
+	def default_duration
+		if self.duration.nil?
+			self.duration = 0
 		end
 	end
 

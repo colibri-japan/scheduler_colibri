@@ -11,16 +11,14 @@
   </div>
   <% end %>
 
-  <div id="form-options-container">
-    <% if provided_service.new_record? %>
+  <% if provided_service.new_record? %>
 
-
+    <div id="form-options-container">
       <div class="form-group">
           <%= form.check_box :hour_based_wage, checked: current_user.corporation.hour_based_payroll , id: 'hour-based-wage-toggle' %>
       </div>
-
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
   <div class="modal-body">
 
@@ -42,7 +40,7 @@
       <% if provided_service.new_record? || provided_service.hour_based_wage == true  %>
         <div class="form-group"  id="pay-by-hour-field"><span class='required-field'>*</span>
           <%= form.label :service_duration, "提供時間", class: "colibri-form-label" %>
-          <%= form.select(:service_duration, options_for_select([['30分', 1800], ['一時間', 3600], ['一時間半', 5400], ['二時間', 7200]]), prompt: '選択する')  %>
+          <%= form.select(:service_duration, options_for_select([['30分', 1800],['45分', 2700], ['1時間', 3600],['1時間15分', 4500], ['1時間半', 5400],['1時間45分', 6300], ['2時間', 7200]], provided_service.service_duration), prompt: '選択する')  %>
         </div>
       <% end %>
 
@@ -61,6 +59,7 @@
       <div class="actions">
 
         <%= form.submit 'セーブする', class: 'btn btn-info' %>
+        <%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この実績が削除されます'}, class: 'btn btn-danger' %>
 
       </div>
   </div>

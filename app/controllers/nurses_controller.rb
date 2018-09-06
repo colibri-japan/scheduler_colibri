@@ -141,7 +141,7 @@ class NursesController < ApplicationController
     @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true, temporary: false).take
 
     unless @counter.present?
-      @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true, provided: true)
+      @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true, provided: true, hour_based_wage: false)
     end
   end
 

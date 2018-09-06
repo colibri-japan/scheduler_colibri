@@ -1,22 +1,19 @@
 class ProvidedServicesController < ApplicationController
-	before_action :set_provided_service, only: [:update, :destroy]
+	before_action :set_provided_service, only: [:update, :destroy, :edit, :destroy]
+	before_action :set_nurse, except: [:destroy]
+	before_action :set_planning, only: [:new, :edit]
 
 	def new
-		@nurse = Nurse.find(params[:nurse_id])
 		@provided_service = ProvidedService.new
-		@planning = Planning.find(params[:planning_id].to_i)
 	end
 
 	def create
-		@nurse = Nurse.find(params[:nurse_id])
 		@provided_service = ProvidedService.new(provided_service_params)
 		@planning = Planning.find(provided_service_params[:planning_id])
 
 		@provided_service.provided = @provided_service.service_date < Time.current + 9.hours
 		@provided_service.nurse_id = params[:nurse_id]
 
-		puts 'hour based ?'
-		puts @provided_service.hour_based_wage
 
 		if @provided_service.save
 		  redirect_to planning_nurse_payable_path(@planning, @nurse), notice: "新規手当がセーブされました"
@@ -24,14 +21,17 @@ class ProvidedServicesController < ApplicationController
 
 	end
 
+	def edit
+	end
+
 	def update
-		@provided_service.total_wage ? @old_salary = @provided_service.total_wage : @old_salary=0
+		@planning = Planning.find(provided_service_params[:planning_id])
 
 		respond_to do |format|
 			if @provided_service.update(provided_service_params)
-				format.js
+				format.html {redirect_to planning_nurse_payable_path(@planning, @nurse), notice: '実績がアップデートされました' }
 			else
-				format.js
+				format.html {redirect_to planning_nurse_payable_path(@planning, @nurse), notice: '実績のアップデートが失敗しました' }
 			end
 		end
 	end
@@ -47,6 +47,14 @@ class ProvidedServicesController < ApplicationController
 
 
 	private
+
+	def set_planning
+		@planning = Planning.find(params[:planning_id].to_i)
+	end
+
+	def set_nurse
+		@nurse = Nurse.find(params[:nurse_id])
+	end
 
 	def set_provided_service
 		@provided_service = ProvidedService.find(params[:id])

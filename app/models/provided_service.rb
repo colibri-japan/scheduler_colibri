@@ -51,7 +51,7 @@ class ProvidedService < ApplicationRecord
 			  self.total_wage = self.service_counts.to_i * self.unit_cost.to_i
 		  end
 		else
-			if self.service_counts.present?
+			if self.service_counts.present? && self.unit_cost.present?
 				self.total_wage = self.unit_cost * self.service_counts
 			else 
 				self.total_wage = self.unit_cost

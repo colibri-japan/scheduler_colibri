@@ -169,11 +169,6 @@ class NursesController < ApplicationController
 
     service_types.each do |service_title|
       matching_services = @services_till_now.where(title: service_title).all
-
-      puts 'matching first hour based ?'
-      puts matching_services.first.hour_based_wage
-      puts 'total wage'
-      puts matching_services.sum{|e| e.total_wage}
       
       sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
       sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }

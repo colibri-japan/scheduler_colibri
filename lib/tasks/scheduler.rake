@@ -78,3 +78,9 @@ task :reset_provided_services => :environment do
 	Appointment.create_individual_provided_service
 	puts 'finished reseting provided services'
 end
+
+task :update_provided_services => :environment do 
+	puts 'adding service date, appointment start and end to provided services'
+	ProvidedService.add_service_date
+	puts 'finished adding service dates'
+end

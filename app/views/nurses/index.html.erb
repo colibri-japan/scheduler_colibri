@@ -15,7 +15,7 @@
           <th class="table-important-fields">名前</th>
           <th class="table-important-fields">電話番号</th>
           <th class="table-important-fields">メール</th>
-          <th class="table-important-fields">住所</th>
+          <th class="table-important-fields">正社員</th>
           <th colspan='2'>アクション</th>
         </tr>
       </thead>
@@ -26,7 +26,11 @@
             <td><%= nurse.name %></td>
             <td><%= nurse.phone_number %></td>
             <td><%= nurse.phone_mail %></td>
-            <td><%= nurse.address %></td>
+            <td>
+              <% if nurse.full_timer == true %>
+                <span class="glyphicon glyphicon-ok" style="color:green"></span>
+              <% end %> 
+            </td>
             <% if @planning.present? %>
               <td><%= link_to 'ヘルパーのスケジュールを変換する', planning_nurse_path(@planning, nurse) %></td>
             <% else %>

@@ -63,6 +63,9 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    bootstrap-glyphicons (0.0.1)
+      railties (>= 3.0)
+      sass (>= 3.2)
     builder (3.2.3)
     byebug (10.0.2)
     capybara (2.18.0)
@@ -147,6 +150,8 @@ GEM
       mini_portile2 (~> 2.3.0)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
+    perfect-scrollbar-rails (0.6.15)
+      railties (>= 3.2, < 6.0)
     pg (1.0.0-x86-mingw32)
     popper_js (1.12.9)
     public_activity (1.5.0)
@@ -258,6 +263,7 @@ DEPENDENCIES
   axlsx!
   axlsx_rails
   bootstrap
+  bootstrap-glyphicons (~> 0.0.1)
   byebug
   capybara (~> 2.13)
   chartkick
@@ -269,6 +275,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   miyabi
+  perfect-scrollbar-rails
   pg (>= 0.18, < 2.0)
   public_activity
   puma (~> 3.7)

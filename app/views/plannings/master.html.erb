@@ -23,17 +23,25 @@
 	<div id="toggle-patients-nurses-wrapper">
 		<input type="checkbox" checked id="toggle-patients-nurses">
 	</div>
-	<div id="patients-resource" class="no-print">
+	<div id="resource-container"  class="scrollbar-custom">
+	  <div id="patients-resource" class="no-print">
 		<p class="master-list-element master-element-selected list-patient" data-address="<%= @patients.first.try(:address) %>" data-phone="<%= @patients.first.try(:phone_number) %>" data-resource-id="<%= @patients.first.id %>"><%= @patients.first.try(:name) %></p>
 		<% @patients_firstless.each do |patient| %>
 			<p class="master-list-element list-patient" data-address="<%= patient.try(:address) %>" data-phone="<%= patient.try(:phone_number) %>" data-resource-id="<%= patient.id %>"><%= patient.try(:name) %></p>
 		<% end %>
+	  </div>
+      <div id="nurses-resource" class="hide-resource no-print">
+	  		<div class="nurses-resource-subsection-title">正社員</div>
+			<% @full_timers.each do |nurse| %>
+				<p class="master-list-element list-nurse"   data-address="<%= nurse.try(:address) %>" data-phone="<%= nurse.try(:phone_number) %>" data-resource-id="<%= nurse.id %>"><%= nurse.try(:name) %></p>
+			<% end %>
+			<div class="nurses-resource-subsection-title">非正社員</div>
+			<% @part_timers.each do |nurse| %>
+				<p class="master-list-element list-nurse"   data-address="<%= nurse.try(:address) %>" data-phone="<%= nurse.try(:phone_number) %>" data-resource-id="<%= nurse.id %>" %><%= nurse.try(:name) %></p>
+			<% end %>
+	  </div>
 	</div>
-	<div id="nurses-resource" class="hide-resource no-print">
-		<% @nurses.each do |nurse| %>
-			<p class="master-list-element list-nurse"  data-address="<%= nurse.try(:address) %>" data-phone="<%= nurse.try(:phone_number) %>" data-resource-id="<%= nurse.id %>"><%= nurse.try(:name) %></p>
-		<% end %>
-	</div>
+
 </div>
 
 <div id="detail-container">
@@ -41,9 +49,9 @@
 		<div id="detail-planning-title" class="print-add-margin">
 			<p class="master-title"> 様</p>
 			<div id="activity-show-button-container" class="no-print">
-				<div class="btn btn-success text-white" id="print-button"><%= image_tag('printer-24.png') %> 印刷</div>
+				<div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
 				<% if current_user.admin? %>
-					<div class="btn btn-success text-white" id="copy-master">全体へ反映する</div>
+					<div class="btn btn-success text-white" id="copy-master"><i class="glyphicon glyphicon-export" style="color:white"></i> 全体へ反映する</div>
 				<% end %>
 			</div>
 		</div>

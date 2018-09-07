@@ -124,28 +124,67 @@ li.planning-menu-selected {
 }
 
 #resource-list-container {
-	background-color: #EEF1F9;
-	border: 0.5px solid #aaa;
+	background-color: #606E7C;
+	border: 0.5px solid #606E7C;
+	display: flex;
+	flex-direction: column;
+	overflow:hidden;
 }
+
+#resource-container {
+	overflow-y: auto;
+}
+
+#nurses-resource, #patients-resource {
+	padding-bottom: 30px;
+}
+
+.nurses-resource-subsection-title {
+	margin-top: 8px;
+	margin-left: 3px;
+	margin-right: 3px;
+	border-bottom: 0.5px solid #D6D9DC;
+	color: white;
+	font-size: 0.95em;
+}
+
 
 .resource-list-element {
-	margin-bottom: 4px;
-	border-bottom: 0.5px solid #aaa;
-	padding-left: 7px;	
-}
-
-.master-list-element {
-	margin-bottom: 4px;
-	border-bottom: 0.5px solid #aaa;
-	padding-left: 7px;	
+	padding-bottom: 3px;
+	padding-top: 3px;
+	margin-bottom: 0;
+	padding-left: 10px;	
+	font-size: 0.9em;
+	color: #D6D9DC;
 }
 
 .resource-list-element:hover {
-	cursor: pointer; 	
+	color: white;
+	cursor: pointer;
+}
+
+.resource-list-element.resource-selected {
+	background-color: #39ACCD;
+	color: white;
+}
+
+.master-list-element.master-element-selected {
+	background-color: #39ACCD;
+	color: white;
+}
+
+.master-list-element {
+	padding-bottom: 3px;
+	padding-top: 3px;
+	margin-bottom: 0;
+	padding-left: 10px;	
+	font-size: 0.9em;
+	color: #D6D9DC;	
 }
 
 .master-list-element:hover {
-	cursor: pointer; 	
+	cursor: pointer; 
+	color: white;	
 }
 
 #nurse-filter-zentai_ {

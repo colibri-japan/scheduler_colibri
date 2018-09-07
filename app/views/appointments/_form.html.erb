@@ -20,7 +20,7 @@
 
       <% if @recurring_appointment.present? && @recurring_appointment.frequency != 2 %>
         <div class="btn btn-info" id="edit-all-occurrences" data-edit-url="<%= edit_planning_recurring_appointment_path(@planning, @recurring_appointment) %>">
-          全繰り返しのエディットはこちら
+          繰り返しのエディットはこちら
         </div>
       <% end %>
 

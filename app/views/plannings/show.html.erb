@@ -25,8 +25,8 @@
 			<%= select_tag 'patient-filter-zentai[]', options_from_collection_for_select(@patients, 'id', 'name', ''), data: {placeholder: "全利用者"}, multiple: true %>
 			<input type="checkbox" checked  class="bootstrap-toggle">
 			<input type="checkbox" checked  id="edit-request-filter">
-			<span id="activity-show-button" class="btn btn-success"><%= image_tag('literature-24.png') %> 最新編集履歴</span>
-			<span id="activity-hide-button" class="btn btn-secondary"><%= image_tag('literature-24.png') %> 最新編集履歴を閉じる</span>
+			<span id="activity-show-button" class="btn btn-success"><span class="glyphicon glyphicon-time" style="color:white"></span> 最新編集履歴</span>
+			<span id="activity-hide-button" class="btn btn-secondary"><span class="glyphicon glyphicon-time" style="color:white"></span> 最新編集履歴を閉じる</span>
 		</div>
 	</div>
 

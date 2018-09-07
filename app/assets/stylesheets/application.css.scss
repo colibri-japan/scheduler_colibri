@@ -20,13 +20,20 @@
  *= require jquery-ui.structure
  *= require jquery-ui.theme
  *= require_self
+ *= require perfect-scrollbar
  */
 
  @import "bootstrap";
+ @import 'bootstrap/glyphicons';
 
 
 body {
 	background-color: #F7F9FE;
+}
+
+.glyphicon {
+	font-size: 20px;
+	vertical-align: middle;
 }
 
 #brand-container {
@@ -316,6 +323,20 @@ th {
 .required-field {
 	color: red;
 }
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #606E7C;
+  border-radius: 10px; }
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+  background-color: #606E7C; }
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  border-radius: 7px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #b1b1b1; }
 
 @media print {
 	.no-print {

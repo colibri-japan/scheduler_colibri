@@ -2,7 +2,7 @@ class PlanningsController < ApplicationController
 
 	before_action :set_corporation
 	before_action :set_planning, only: [:show, :destroy, :master, :master_to_schedule, :duplicate_from, :duplicate]
-	before_action :set_nurses, only: [:show, :master]
+	before_action :set_nurses, only: [:show]
 	before_action :set_patients, only: [:show, :master]
 
 	def index
@@ -160,8 +160,11 @@ class PlanningsController < ApplicationController
 	def master
 		authorize @planning, :is_employee?
 
+		@full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
+    	@part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+
 		@last_patient = @patients.last
-		@last_nurse = @nurses.last
+    	@last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 		@patients_firstless = @patients - [@patients.first]
 
 		set_valid_range

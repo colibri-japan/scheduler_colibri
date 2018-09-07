@@ -3,8 +3,13 @@ class NursesController < ApplicationController
   before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable]
 
   def index
-  	@nurses = @corporation.nurses.all.order_by_kana
-    @nurses = @nurses.where(displayable: true) unless params[:include_undefined] == 'true'
+    full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
+    part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    @nurses = full_timers + part_timers
+    if  params[:include_undefined] == 'true'
+      undisplayable = @corporation.nurses.where(displayable: false)
+      @nurses = @nurses + undisplayable 
+    end
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 
@@ -12,10 +17,11 @@ class NursesController < ApplicationController
   	@planning = Planning.find(params[:planning_id])
     authorize @nurse, :is_employee?
 
-    @nurses = @corporation.nurses.all.order_by_kana
+    @full_timers = @corporation.nurses.where(full_timer: true).order_by_kana
+    @part_timers = @corporation.nurses.where(full_timer: false).order_by_kana
     @patients = @corporation.patients.all.order_by_kana
     @last_patient = @patients.last
-    @last_nurse = @nurses.last
+    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 
@@ -78,9 +84,10 @@ class NursesController < ApplicationController
 
     mark_services_as_provided
 
-    @nurses = @corporation.nurses.where.not(name: '未定').order_by_kana
+    @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
+    @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
     @last_patient = @corporation.patients.last
-    @last_nurse = @nurses.last
+    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 
     set_counter
     @counter.update(service_counts: @services_till_now.count )

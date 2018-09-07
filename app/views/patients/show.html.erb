@@ -18,16 +18,24 @@
 	<div id="toggle-patients-nurses-wrapper">
 		<input type="checkbox" checked id="toggle-patients-nurses">
 	</div>
-	<div id="patients-resource" class="no-print">
-		<% @patients.each do |patient| %>
-			<p class="resource-list-element" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
-		<% end %>
+	<div id="resource-container" class="scrollbar-custom">
+		<div id="patients-resource" class="no-print">
+			<% @patients.each do |patient| %>
+				<p class="resource-list-element <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+			<% end %>
+		</div>
+		<div id="nurses-resource" class="hide-resource no-print">
+			<div class="nurses-resource-subsection-title">正社員</div>
+			<% @full_timers.each do |nurse| %>
+				<p class="resource-list-element" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+			<% end %>
+			<div class="nurses-resource-subsection-title">非正社員</div>
+			<% @part_timers.each do |nurse| %>
+				<p class="resource-list-element" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+			<% end %>
+		</div>
 	</div>
-	<div id="nurses-resource" class="hide-resource no-print">
-		<% @nurses.each do |nurse| %>
-			<p class="resource-list-element" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
-		<% end %>
-	</div>
+
 </div>
 
 <div id="detail-container">
@@ -37,9 +45,9 @@
 			<p class="planning-activity-module-title"><%= @patient.try(:name) %> 様</p>
 			<div id="activity-show-button-container" class="no-print">
 				<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
-				<div class="btn btn-success text-white" id="print-button"><%= image_tag('printer-24.png') %> 印刷</div>
-				<span id="activity-show-button" class="btn btn-success"><%= image_tag('literature-24.png') %> 最新編集履歴</span>
-				<span id="activity-hide-button" class="btn btn-secondary"><%= image_tag('literature-24.png') %> 最新編集履歴を閉じる</span>
+				<div class="btn btn-success text-white" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
+				<span id="activity-show-button" class="btn btn-success"><span class="glyphicon glyphicon-time"></span> 最新編集履歴</span>
+				<span id="activity-hide-button" class="btn btn-secondary"><span class="glyphicon glyphicon-time"></span> 最新編集履歴を閉じる</span>
 			</div>
 		</div>
 

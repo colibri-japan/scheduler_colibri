@@ -1193,7 +1193,8 @@ $(document).on('turbolinks:load', function(){
     size: 'normal',
     onstyle: 'success',
     offstyle: 'secondary'
-  })
+  });
+
 
   
 

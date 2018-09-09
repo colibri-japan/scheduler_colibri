@@ -1,4 +1,6 @@
-date_format = appointment.all_day_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
+json.allDay appointment.all_day_appointment?
+
+date_format = json.allDay ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
 json.id "appointment_#{appointment.id}"
 json.title "#{appointment.patient.try(:name)} - #{appointment.nurse.try(:name)}"
@@ -16,7 +18,7 @@ elsif appointment.original_id.present?
 	json.borderColor '#69747E'
 end
 
-json.allDay appointment.all_day_appointment?
+
 
 json.base_url planning_appointment_url(@planning, appointment)
 json.edit_url edit_planning_appointment_url(@planning, appointment)

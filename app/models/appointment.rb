@@ -19,6 +19,7 @@ class Appointment < ApplicationRecord
 	after_update :update_provided_service
 
 	def all_day_appointment?
+		puts 'checking if all day appointments'
 		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
 	end
 
@@ -42,29 +43,29 @@ class Appointment < ApplicationRecord
 	def do_not_overlap
 		nurse = Nurse.find(self.nurse_id)
 
-		puts 'do not overlap appointment called'
+		puts 'overlap validation on appointment'
 
 		unless nurse.name == '未定' || self.displayable == false
 			overlaps_start = Appointment.where(master: self.master, displayable: true, start: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id).where.not(start: self.start).where.not(start: self.end).where.not(id: [self.id, self.original_id])
 			overlaps_end = Appointment.where(master: self.master, displayable: true, end: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id).where.not(end: self.start).where.not(end: self.end).where.not(id: [self.id,self.original_id])
 
-			puts 'overlapping it'
-			puts overlaps_start.map {|e| e.id}
-			puts overlaps_end.map{|e| e.id}
 			errors.add(:nurse_id, "選択されたヘルパーはすでにその時間帯にサービスを提供してます") if overlaps_start.present? || overlaps_end.present?
 		end
 	end
 
 
 	def default_master
+		puts 'setting default master'
 		self.master = true if self.master.nil?
 	end
 
 	def default_displayable
+		puts 'setting default displayable'
 		self.displayable = true if self.displayable.nil?
 	end
 
 	def edit_request_from_nurse_name
+		puts 'edit requested mitei'
 		nurse = Nurse.find(self.nurse_id)
 		self.edit_requested = true if nurse.name == '未定'
 	end
@@ -80,6 +81,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def create_provided_service
+		puts 'adding provided service'
 		if self.master != true
 		  provided_duration = self.end - self.start
 		  is_provided =  Time.current + 9.hours > self.start
@@ -88,15 +90,12 @@ class Appointment < ApplicationRecord
 	end
 
 	def update_provided_service
+		puts 'updating provided service'
 		if self.master != true
 			@provided_service = ProvidedService.where(appointment_id: self.id)
-			puts 'found provided'
-			puts @provided_service
 			if self.deleted == true 
-				puts 'validated if'
 				@provided_service.update(deactivated: true)
 			else
-				puts 'when to else'
 		      provided_duration = self.end - self.start
 		      is_provided = Time.current + 9.hours > self.start
 		      deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true || self.edit_requested == true

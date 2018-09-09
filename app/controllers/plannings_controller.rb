@@ -49,12 +49,7 @@ class PlanningsController < ApplicationController
 	    RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
 	    Appointment.where(planning_id: @planning.id, master: false).destroy_all
 
-	    puts 'appointments destroyed'
-  
 	    master_appointments = Appointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false)
-
-	    puts 'master appointments count'
-	    puts master_appointments.count
 
 	    library = {}
   
@@ -62,43 +57,23 @@ class PlanningsController < ApplicationController
 	      appointment_copy = master_appointment.dup
 	      appointment_copy.master = false
 	      appointment_copy.original_id = nil
-	      puts 'appointment_copy dup successful'
 	      if appointment_copy.recurring_appointment_id.present?
-	      	puts 'appointment_copy recurring_appointment_id present'
 	      	if library[appointment_copy.recurring_appointment_id].present?
-	      		puts 'library already present'
-	      		puts library
 	      		appointment_copy.recurring_appointment_id = library[appointment_copy.recurring_appointment_id]
 	      	else
-	      		puts 'no library found'
-	      		puts library
 		      	original_recurring_appointment = RecurringAppointment.find(appointment_copy.recurring_appointment_id)
 		      	new_recurring_appointment = original_recurring_appointment.dup
 		      	new_recurring_appointment.master = false
 		      	new_recurring_appointment.original_id = nil
 		      	new_recurring_appointment.skip_appointments_callbacks = true
-		      	puts 'new recurring_appointment dup successful'
 		      	new_recurring_appointment.save!(validate: false)
-
-		      	puts 'new recurring_appointment save successful'
 
 		      	library[appointment_copy.recurring_appointment_id] = new_recurring_appointment.id
 		      	appointment_copy.recurring_appointment_id = new_recurring_appointment.id
-
-
-		      	puts 'library updated'
-		      	puts library
 	      	end
 	      end
-
-	      puts 'before saving appointment'
 	      appointment_copy.save!(validate: false)
-	      puts 'appointment saved'
 	    end
-
-	    puts 'all appointments saved'
-	    puts 'library:'
-	    puts library
   
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'
 	end
@@ -115,11 +90,11 @@ class PlanningsController < ApplicationController
 			template_planning = Planning.find(params[:template_id]) 
 
 			original_appointments = template_planning.recurring_appointments.where(master: true, displayable: true, frequency: [0,1], edit_requested: false, deactivated: false, deleted: [nil, false]).all
+			first_day = Date.new(@planning.business_year, @planning.business_month, 1)
+			first_day_wday = first_day.wday
 
 			original_appointments.each do |appointment|
 				original_day_wday = appointment.anchor.wday
-				first_day = Date.new(@planning.business_year, @planning.business_month, 1)
-				first_day_wday = first_day.wday
 
 				first_day_wday > original_day_wday ? new_anchor_day = first_day + 7 - (first_day_wday - original_day_wday) : new_anchor_day = first_day + (original_day_wday - first_day_wday)
 
@@ -135,7 +110,6 @@ class PlanningsController < ApplicationController
 
 				recurring_appointment.save!(validate: false)
 			end
-
 			redirect_to planning_master_path(@planning), notice: 'サービスのコピーが成功しました。'
 
 		else

@@ -83858,6 +83858,36 @@ deleteRecurringAppointment = function(){
   })
 }
 
+var toggleProvidedServiceForm;
+toggleProvidedServiceForm = function(){
+  if ($('#hour-based-wage-toggle').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('時給');
+    $('#pay-by-hour-field').show();
+    $('#pay-by-count-field').hide();
+  } else {
+    $("label[for='provided_service_unit_cost']").text('単価');
+    $('#pay-by-hour-field').hide();
+    $('#pay-by-count-field').show();
+  }
+}
+
+var addProvidedServiceToggle;
+addProvidedServiceToggle = function(){
+  $('#hour-based-wage-toggle').bootstrapToggle({
+    on: '時給計算',
+    off: '単価計算',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 100
+  });
+
+  toggleProvidedServiceForm();
+
+  $('#hour-based-wage-toggle').change(function(){
+    toggleProvidedServiceForm();
+  })
+}
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
@@ -83931,23 +83961,6 @@ $(document).on('turbolinks:load', function(){
 
   
 
-  $('input.edit-hourly-wage').change(function(){
-    $.ajax({
-      url: $(this).data('service-url') + '.js',
-      type: 'PATCH',
-      data:  { 'provided_service': { 'hourly_wage': $(this).val() }  },
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    })
-  });
-
-  $('input.edit-service-counts').change(function(){
-    $.ajax({
-      url: $(this).data('service-url') + '.js',
-      type: 'PATCH',
-      data: {'provided_service': {'service_counts': $(this).val()}},
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))}
-    })
-  });
 
   $('#schedule-filter').change(function(){
     window.location = nursePayableUrl + '?p=' + $(this).val();
@@ -84139,15 +84152,27 @@ $(document).on('turbolinks:load', function(){
   }, 4000);
 
   $('#copy-master').click(function(){
-    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。');
+    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。数十秒かかる可能性があります。');
     if (message) {
+      
       $.ajax({
         url: window.masterToSchedule,
         type: 'PATCH',
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
       })
     }
-  })
+  });
+
+  $('#full-timer-toggle').bootstrapToggle({
+    on: '正社員',
+    off: '非正社員',
+    size: 'normal',
+    onstyle: 'success',
+    offstyle: 'secondary'
+  });
+
+  $('#loader-container').hide();
+
 
   
 

@@ -1177,12 +1177,13 @@ $(document).on('turbolinks:load', function(){
   }, 4000);
 
   $('#copy-master').click(function(){
-    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。');
+    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。数十秒かかる可能性があります。');
     if (message) {
+      
       $.ajax({
         url: window.masterToSchedule,
         type: 'PATCH',
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
       })
     }
   });
@@ -1194,6 +1195,8 @@ $(document).on('turbolinks:load', function(){
     onstyle: 'success',
     offstyle: 'secondary'
   });
+
+  $('#loader-container').hide();
 
 
   

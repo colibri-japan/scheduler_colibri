@@ -10,11 +10,11 @@
 	<div id="nurses-resource" class="no-print">
 			<div class="nurses-resource-subsection-title">正社員</div>
 			<% @full_timers.each do |nurse| %>
-				<p class="resource-list-element  <%= 'resource-selected' if nurse.id == @nurse.id %>" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+				<p class="resource-list-element  <%= 'resource-selected' if nurse.id == @nurse.id %>" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 			<% end %>
 			<div class="nurses-resource-subsection-title">非正社員</div>
 			<% @part_timers.each do |nurse| %>
-				<p class="resource-list-element   <%= 'resource-selected' if nurse.id == @nurse.id %>" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+				<p class="resource-list-element   <%= 'resource-selected' if nurse.id == @nurse.id %>" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 			<% end %>
 	</div>
   </div>

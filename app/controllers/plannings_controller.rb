@@ -49,31 +49,34 @@ class PlanningsController < ApplicationController
 	    RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
 	    Appointment.where(planning_id: @planning.id, master: false).destroy_all
 
-	    master_appointments = Appointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false)
-
-	    library = {}
+	    master_appointments = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false)
   
-	    master_appointments.each do |master_appointment|
-	      appointment_copy = master_appointment.dup
-	      appointment_copy.master = false
-	      appointment_copy.original_id = nil
-	      if appointment_copy.recurring_appointment_id.present?
-	      	if library[appointment_copy.recurring_appointment_id].present?
-	      		appointment_copy.recurring_appointment_id = library[appointment_copy.recurring_appointment_id]
-	      	else
-		      	original_recurring_appointment = RecurringAppointment.find(appointment_copy.recurring_appointment_id)
-		      	new_recurring_appointment = original_recurring_appointment.dup
-		      	new_recurring_appointment.master = false
-		      	new_recurring_appointment.original_id = nil
-		      	new_recurring_appointment.skip_appointments_callbacks = true
-		      	new_recurring_appointment.save!(validate: false)
+		master_appointments.each do |recurring_appointment|
+			related_appointments = Appointment.where(recurring_appointment_id: recurring_appointment.id)
 
-		      	library[appointment_copy.recurring_appointment_id] = new_recurring_appointment.id
-		      	appointment_copy.recurring_appointment_id = new_recurring_appointment.id
-	      	end
-	      end
-	      appointment_copy.save!(validate: false)
-	    end
+			new_recurring_appointment = recurring_appointment.dup 
+			new_recurring_appointment.master = false 
+			new_recurring_appointment.original_id = nil 
+			new_recurring_appointment.skip_appointments_callbacks = true 
+			new_recurring_appointment.save!(validate: false) 
+
+			related_appointments.each do |appointment|
+				new_appointment = appointment.dup 
+				new_appointment.master = false 
+				new_appointment.original_id = nil 
+				new_appointment.recurring_appointment_id = new_recurring_appointment.id 
+				new_appointment.save!(validate: false)
+			end
+		end
+
+		standalone_appointments = Appointment.where(planning_id: @planning.id, master: true, recurring_appointment_id: nil, edit_requested: false, displayable: true, deleted: false, deactivated: false)
+
+		standalone_appointments.each do |appointment|
+			new_appointment = appointment.dup 
+			new_appointment.master = false 
+			new_appointment.original_id = nil 
+			new_appointment.save!(validate: false)
+		end
   
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'
 	end

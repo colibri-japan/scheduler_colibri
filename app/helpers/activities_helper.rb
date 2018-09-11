@@ -1,7 +1,7 @@
 module ActivitiesHelper
 
 	def activity_creation_date(activity)
-		if activity.created_at.day == Date.today.day
+		if activity.created_at.in_time_zone('Tokyo').day == Time.current.in_time_zone('Tokyo').day
 			activity.created_at.in_time_zone('Tokyo').strftime("今日 %H:%M")
 		else
 			activity.created_at.in_time_zone('Tokyo').strftime("%d日 %H:%M")

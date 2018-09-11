@@ -27,8 +27,10 @@
         <%= form.text_field :title, id: :provided_service_title, required: true, class: "form-control" %>
       </div>
 
+      <% unit_cost_title = provided_service.new_record? || provided_service.hour_based_wage == true ? "時給" : "単価" %>
+
       <div class="form-group">
-        <%= form.label :unit_cost, "時給", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :unit_cost, unit_cost_title, class: "colibri-form-label" %><span class='required-field'>*</span>
         <%= form.number_field :unit_cost, id: :provided_service_unit_cost, class: "form-control" %>
       </div>
 

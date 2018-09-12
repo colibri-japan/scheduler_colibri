@@ -146,12 +146,16 @@ initialize_nurse_calendar = function(){
             addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
-              $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  editAfterDate();
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function () {
+                $.getScript(editUrl, function () {
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
-              })
+                  editAfterDate();
+                  deleteRecurringAppointment();
+                })
+              });
+              $('.modal').modal('hide');
             });
 
           });
@@ -305,12 +309,16 @@ initialize_patient_calendar = function(){
             addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
-              $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  editAfterDate();
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function () {
+                $.getScript(editUrl, function () {
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
-              })
+                  editAfterDate();
+                  deleteRecurringAppointment();
+                })
+              });
+              $('.modal').modal('hide');
             });
 
             
@@ -492,12 +500,16 @@ initialize_master_calendar = function() {
                 masterSwitchToggle();
 
                 $('#edit-all-occurrences').click(function(){
-                  $('.modal').modal('hide');
-                  $.getScript( $(this).data('edit-url') , function(){
+                  var editUrl = $(this).data('edit-url');
+                  $('.modal').on('hidden.bs.modal', function () {
+                    $.getScript(editUrl, function () {
                       masterSwitchToggle();
-                      editAfterDate();
                       recurringAppointmentEditButtons();
-                  })
+                      editAfterDate();
+                      deleteRecurringAppointment();
+                    })
+                  });
+                  $('.modal').modal('hide');
                 })
               });
             }

@@ -83121,12 +83121,16 @@ initialize_nurse_calendar = function(){
             addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
-              $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  editAfterDate();
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function () {
+                $.getScript(editUrl, function () {
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
-              })
+                  editAfterDate();
+                  deleteRecurringAppointment();
+                })
+              });
+              $('.modal').modal('hide');
             });
 
           });
@@ -83280,12 +83284,16 @@ initialize_patient_calendar = function(){
             addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
-              $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  editAfterDate();
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function () {
+                $.getScript(editUrl, function () {
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
-              })
+                  editAfterDate();
+                  deleteRecurringAppointment();
+                })
+              });
+              $('.modal').modal('hide');
             });
 
             
@@ -83467,12 +83475,16 @@ initialize_master_calendar = function() {
                 masterSwitchToggle();
 
                 $('#edit-all-occurrences').click(function(){
-                  $('.modal').modal('hide');
-                  $.getScript( $(this).data('edit-url') , function(){
+                  var editUrl = $(this).data('edit-url');
+                  $('.modal').on('hidden.bs.modal', function () {
+                    $.getScript(editUrl, function () {
                       masterSwitchToggle();
-                      editAfterDate();
                       recurringAppointmentEditButtons();
-                  })
+                      editAfterDate();
+                      deleteRecurringAppointment();
+                    })
+                  });
+                  $('.modal').modal('hide');
                 })
               });
             }
@@ -83961,23 +83973,6 @@ $(document).on('turbolinks:load', function(){
 
   
 
-  $('input.edit-hourly-wage').change(function(){
-    $.ajax({
-      url: $(this).data('service-url') + '.js',
-      type: 'PATCH',
-      data:  { 'provided_service': { 'hourly_wage': $(this).val() }  },
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    })
-  });
-
-  $('input.edit-service-counts').change(function(){
-    $.ajax({
-      url: $(this).data('service-url') + '.js',
-      type: 'PATCH',
-      data: {'provided_service': {'service_counts': $(this).val()}},
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))}
-    })
-  });
 
   $('#schedule-filter').change(function(){
     window.location = nursePayableUrl + '?p=' + $(this).val();
@@ -84169,12 +84164,13 @@ $(document).on('turbolinks:load', function(){
   }, 4000);
 
   $('#copy-master').click(function(){
-    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。');
+    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。数十秒かかる可能性があります。');
     if (message) {
+      
       $.ajax({
         url: window.masterToSchedule,
         type: 'PATCH',
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
       })
     }
   });
@@ -84185,7 +84181,10 @@ $(document).on('turbolinks:load', function(){
     size: 'normal',
     onstyle: 'success',
     offstyle: 'secondary'
-  })
+  });
+
+  $('#loader-container').hide();
+
 
   
 

@@ -50,5 +50,7 @@ Rails.application.routes.draw do
 
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
 
+  patch 'plannings/:planning_id/recurring_appointment/:id/from_master_to_general' => 'recurring_appointments#from_master_to_general', as: :from_master_to_general
+
   root 'plannings#index'
 end

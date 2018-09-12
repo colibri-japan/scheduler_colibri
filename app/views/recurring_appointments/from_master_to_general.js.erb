@@ -1,0 +1,6 @@
+<% if @new_appointment.errors.any? %>
+    alert("<%= j @new_appointment.errors.values.join('; ') %>");
+<% else %>
+    $('.modal').modal('hide');
+    alert("サービスが全体スケジュールへ反映されました")
+<% end %>

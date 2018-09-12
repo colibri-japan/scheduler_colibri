@@ -1,5 +1,5 @@
 class RecurringAppointmentsController < ApplicationController
-  before_action :set_recurring_appointment, only: [:show, :edit, :destroy]
+  before_action :set_recurring_appointment, only: [:show, :edit, :destroy, :from_master_to_general]
   before_action :set_planning
   before_action :set_valid_range, only: [:new, :edit, :index, :update]
   before_action :set_corporation
@@ -25,8 +25,6 @@ class RecurringAppointmentsController < ApplicationController
     else
      @recurring_appointments = @planning.recurring_appointments.where(displayable: true, master: false).includes(:patient, :nurse)
     end
-
-
 
     if params[:print] == 'true'
       @occurrence_appointments = {}
@@ -105,6 +103,27 @@ class RecurringAppointmentsController < ApplicationController
   def destroy
     if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current)
       @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+    end
+  end
+
+  # PATCH /recurring_appointments/1/from_master_to_general
+  def from_master_to_general 
+    @new_appointment = @recurring_appointment.dup
+    @new_appointment.master = false 
+    @new_appointment.original_id = false 
+
+    @nurse= Nurse.find(@recurring_appointment.nurse_id)
+
+    respond_to do |format|
+      if @new_appointment.save 
+        @activity = @new_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @new_appointment.nurse_id, patient_id: @new_appointment.patient_id 
+
+        format.js
+        format.html{ redirect_to planning_nurse_path(@planning, Nurse.find(@new_appointment.nurse_id)), notice: 'サービスがマスターから全体へ反映されました'}
+      else 
+        format.js
+        format.html {redirect_to planning_master_path(@planning), notice: '反映にエラーが発生しました。'}
+      end
     end
   end
 

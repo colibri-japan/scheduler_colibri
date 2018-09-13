@@ -48,14 +48,14 @@ class ProvidedService < ApplicationRecord
 			if self.hour_based_wage == true 
 				sum_hours = 0
 				services.each do |service|
-					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id)
+					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id, deactivated: false)
 					sum_hours = sum_hours + provided_services.sum{|provided_service| provided_service.service_duration.present? ? provided_service.service_duration : 0 }
 				end
 				self.service_duration = sum_hours
 			else
 				sum_count = 0
 				services.each do |service|
-					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id)
+					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id, deactivated: false)
 					sum_count = sum_count + provided_services.sum{|provided_service| provided_service.service_counts.present? ? provided_service.service_counts : 1 }
 				end
 				self.service_counts = sum_count 

@@ -182,7 +182,7 @@ class RecurringAppointment < ApplicationRecord
 				overlaps_start = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, start: start_of_appointment..end_of_appointment).where.not(start: end_of_appointment).where.not(id: [self.original_id, self.id])
 				overlaps_end = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, end: start_of_appointment..end_of_appointment).where.not(end: start_of_appointment).where.not(id: [self.original_id, self.id])
 
-				errors.add(:nurse_id, "#{start_of_appointment.strftime('%-m月%-d日')}にサービスがすでに提供されます。") if overlaps_start.present? || overlaps_end.present?
+				errors.add(:nurse_id, "#{start_of_appointment.strftime('%-m月%-d日')}のヘルパーが重複しています。") if overlaps_start.present? || overlaps_end.present?
 			end
 		end
 
@@ -202,7 +202,7 @@ class RecurringAppointment < ApplicationRecord
 				overlaps_start = Appointment.where(master: self.master, displayable: true, nurse_id: self.nurse_id, planning_id: self.planning_id, edit_requested: false, start: start_time..end_time).where.not(start: start_time).where.not(start: end_time).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
 				overlaps_end = Appointment.where(master: appointment_to_be_validated.master, displayable: true, nurse_id: appointment_to_be_validated.nurse_id, planning_id: appointment_to_be_validated.planning_id, edit_requested: false, end: start_time..end_time).where.not(end: start_time).where.not(end: end_time).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id])
 
-				errors.add(:nurse_id, "#{appointment_to_be_validated.start.strftime("%-m月%-d日")}にサービスがすでに提供されます。") if overlaps_start.present? || overlaps_end.present?
+				errors.add(:nurse_id, "#{appointment_to_be_validated.start.strftime("%-m月%-d日")}のヘルパーが重複しています。") if overlaps_start.present? || overlaps_end.present?
 			end
 
 		end

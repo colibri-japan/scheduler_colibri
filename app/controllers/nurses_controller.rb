@@ -79,8 +79,8 @@ class NursesController < ApplicationController
     @provided_services = ProvidedService.where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
 
     now_in_Japan = Time.current + 9.hours
-    @services_till_now = @provided_services.where('service_date < ?', now_in_Japan).order(service_date: 'desc')
-    @services_from_now = @provided_services.where('service_date >= ?', now_in_Japan).order(service_date: 'desc')
+    @services_till_now = @provided_services.where('service_date < ?', now_in_Japan).order(service_date: 'asc')
+    @services_from_now = @provided_services.where('service_date >= ?', now_in_Japan).order(service_date: 'asc')
 
     mark_services_as_provided
 

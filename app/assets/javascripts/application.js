@@ -932,7 +932,7 @@ individualMasterToGeneral = function(){
   $('#individual-from-master-to-general').click(function () {
     var target_url = $(this).data('master-to-general-url');
     if (copyState !== 1) {
-      var message = confirm('サービスの全繰り返しが全体スケジュールへ反映されます。サービスの変更はセーブされません。');
+      var message = confirm('選択中の繰り返しサービスが全体スケジュールへ反映されます。現在の全体スケジュールは削除されません。');
       if (message) {
         copyState = 1;
         $.ajax({

@@ -23,7 +23,7 @@
   <div class="modal-body">
 
       <div class="form-group">
-        <%= form.label :title, "手当タイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :title, "手当タイトル", class: "colibri-form-label" %><span class='required-field'>*</span>
         <%= form.text_field :title, id: :provided_service_title, required: true, class: "form-control" %>
       </div>
 
@@ -54,6 +54,11 @@
         </div>
 
       <% end %>
+
+      <div class="form-group">
+        <%= form.label :target_service_ids, "対象サービス", class: 'colibri-form-label' %>
+        <%= form.collection_select(:target_service_ids, @services, :id, :title) %>
+      </div>
 
       <%= form.hidden_field :planning_id, value: @planning.id %>
 

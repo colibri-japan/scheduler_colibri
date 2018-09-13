@@ -90,3 +90,9 @@ task :default_duration_is_zero => :environment do
 	ProvidedService.set_default_duration_to_zero
 	puts 'finished task'
 end
+
+task :add_services_to_corporation => :environment do 
+	puts 'adding services to corporation'
+	Corporation.add_services 
+	puts 'finished adding services'
+end

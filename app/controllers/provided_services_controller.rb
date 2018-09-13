@@ -5,6 +5,7 @@ class ProvidedServicesController < ApplicationController
 
 	def new
 		@provided_service = ProvidedService.new
+		@services = Corporation.services.all
 	end
 
 	def create

@@ -56,7 +56,7 @@ class ProvidedService < ApplicationRecord
 				sum_count = 0
 				services.each do |service|
 					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id)
-					sum_count = provided_services.sum{|provided_service| provided_service.service_counts.present? ? provided_service.service_counts : 0 }
+					sum_count = provided_services.sum{|provided_service| provided_service.service_counts.present? ? provided_service.service_counts : 1 }
 				end
 				self.service_counts = sum_count 
 			end
@@ -64,9 +64,7 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def default_service_counts
-		if self.hour_based_wage == false && self.service_counts.nil?
-			self.service_counts = 1
-		end
+	    self.service_counts = 1 if self.service_counts.nil?
 	end
 
 	def default_duration

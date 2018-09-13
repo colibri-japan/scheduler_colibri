@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180906085614) do
+ActiveRecord::Schema.define(version: 20180913175611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,6 +204,14 @@ ActiveRecord::Schema.define(version: 20180906085614) do
     t.index ["planning_id"], name: "index_recurring_unavailabilities_on_planning_id"
   end
 
+  create_table "services", force: :cascade do |t|
+    t.string "title"
+    t.bigint "corporation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corporation_id"], name: "index_services_on_corporation_id"
+  end
+
   create_table "unavailabilities", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -257,4 +265,5 @@ ActiveRecord::Schema.define(version: 20180906085614) do
   add_foreign_key "appointments", "plannings"
   add_foreign_key "deleted_occurrences", "recurring_appointments"
   add_foreign_key "recurring_appointments", "plannings"
+  add_foreign_key "services", "corporations"
 end

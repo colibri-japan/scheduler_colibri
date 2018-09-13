@@ -5,7 +5,7 @@ class ProvidedServicesController < ApplicationController
 
 	def new
 		@provided_service = ProvidedService.new
-		@services = Corporation.services.all
+		@services = current_user.corporation.services.all
 	end
 
 	def create
@@ -62,7 +62,7 @@ class ProvidedServicesController < ApplicationController
 	end
 
 	def provided_service_params
-		params.require(:provided_service).permit(:unit_cost, :service_counts, :title, :planning_id, :service_date, :hour_based_wage, :service_duration, :nurse_id)
+		params.require(:provided_service).permit(:unit_cost, :service_counts, :title, :planning_id, :service_date, :hour_based_wage, :service_duration, :nurse_id, target_service_ids: [])
 	end
 
 	def self.add_service_date

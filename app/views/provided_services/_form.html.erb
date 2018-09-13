@@ -39,14 +39,14 @@
         <%= form.date_select :service_date, id: :provided_service_service_date, class: "form-control" %>
       </div>
 
-      <% if provided_service.new_record? || provided_service.hour_based_wage == true  %>
+      <% if  provided_service.hour_based_wage == true && !provided_service.new_record?  %>
         <div class="form-group"  id="pay-by-hour-field"><span class='required-field'>*</span>
           <%= form.label :service_duration, "提供時間", class: "colibri-form-label" %>
           <%= form.select(:service_duration, options_for_select([['30分', 1800],['45分', 2700], ['1時間', 3600],['1時間15分', 4500], ['1時間半', 5400],['1時間45分', 6300], ['2時間', 7200]], provided_service.service_duration), prompt: '選択する')  %>
         </div>
       <% end %>
 
-      <% if provided_service.new_record? || provided_service.hour_based_wage == false %>
+      <% if  provided_service.hour_based_wage == false && !provided_service.new_record? %>
 
         <div class="form-group" id="pay-by-count-field">
           <%= form.label :service_counts, "回数", class: "colibri-form-label" %><span class='required-field'>*</span>
@@ -56,8 +56,8 @@
       <% end %>
 
       <div class="form-group">
-        <%= form.label :target_service_ids, "対象サービス", class: 'colibri-form-label' %>
-        <%= form.collection_select(:target_service_ids, @services, :id, :title) %>
+        <%= form.label :target_service_ids, "対象サービスタイプ", class: 'colibri-form-label' %>
+        <%= form.collection_select(:target_service_ids, @services, :id, :title, {},multiple: true, id: 'chosen-target-services')  %>
       </div>
 
       <%= form.hidden_field :planning_id, value: @planning.id %>

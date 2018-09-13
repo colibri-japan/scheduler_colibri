@@ -923,7 +923,12 @@ addProvidedServiceToggle = function(){
 
   $('#hour-based-wage-toggle').change(function(){
     toggleProvidedServiceForm();
-  })
+  });
+
+  $('#chosen-target-services').chosen({
+    no_results_text: 'サービスが見つかりません',
+    placeholder_text_multiple: 'サービスを選択してください'
+  });
 }
 
 var individualMasterToGeneral;

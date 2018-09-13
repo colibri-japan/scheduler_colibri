@@ -83121,12 +83121,16 @@ initialize_nurse_calendar = function(){
             addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
-              $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  editAfterDate();
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function () {
+                $.getScript(editUrl, function () {
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
-              })
+                  editAfterDate();
+                  deleteRecurringAppointment();
+                })
+              });
+              $('.modal').modal('hide');
             });
 
           });
@@ -83280,12 +83284,16 @@ initialize_patient_calendar = function(){
             addToEditListButton();
 
             $('#edit-all-occurrences').click(function(){
-              $('.modal').modal('hide');
-              $.getScript( $(this).data('edit-url') , function(){
-                  editAfterDate();
+              var editUrl = $(this).data('edit-url');
+              $('.modal').on('hidden.bs.modal', function () {
+                $.getScript(editUrl, function () {
                   masterSwitchToggle();
                   recurringAppointmentEditButtons();
-              })
+                  editAfterDate();
+                  deleteRecurringAppointment();
+                })
+              });
+              $('.modal').modal('hide');
             });
 
             
@@ -83467,12 +83475,17 @@ initialize_master_calendar = function() {
                 masterSwitchToggle();
 
                 $('#edit-all-occurrences').click(function(){
-                  $('.modal').modal('hide');
-                  $.getScript( $(this).data('edit-url') , function(){
+                  var editUrl = $(this).data('edit-url');
+                  $('.modal').on('hidden.bs.modal', function () {
+                    $.getScript(editUrl, function () {
                       masterSwitchToggle();
-                      editAfterDate();
                       recurringAppointmentEditButtons();
-                  })
+                      editAfterDate();
+                      deleteRecurringAppointment();
+                      individualMasterToGeneral();
+                    })
+                  });
+                  $('.modal').modal('hide');
                 })
               });
             }
@@ -83885,6 +83898,33 @@ addProvidedServiceToggle = function(){
 
   $('#hour-based-wage-toggle').change(function(){
     toggleProvidedServiceForm();
+  });
+
+  $('#chosen-target-services').chosen({
+    no_results_text: 'サービスが見つかりません',
+    placeholder_text_multiple: 'サービスを選択してください'
+  });
+}
+
+var individualMasterToGeneral;
+individualMasterToGeneral = function(){
+  var copyState;
+  $('#individual-from-master-to-general').click(function () {
+    var target_url = $(this).data('master-to-general-url');
+    if (copyState !== 1) {
+      var message = confirm('選択中の繰り返しサービスが全体スケジュールへ反映されます。現在の全体スケジュールは削除されません。');
+      if (message) {
+        copyState = 1;
+        $.ajax({
+          url: target_url,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        });
+      }
+    } else {
+      alert('サービスがコピーされてます、少々お待ちください');
+    }
+
   })
 }
 
@@ -84151,14 +84191,21 @@ $(document).on('turbolinks:load', function(){
       });
   }, 4000);
 
+  var copyMasterState;
+
   $('#copy-master').click(function(){
-    var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。');
-    if (message) {
-      $.ajax({
-        url: window.masterToSchedule,
-        type: 'PATCH',
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      })
+    if (copyMasterState == 1) {
+      alert('マスターを全体へコピーしてます、少々お待ちください');
+    } else {
+      var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。数十秒かかる可能性があります。');
+      if (message && copyMasterState != 1) {
+        copyMasterState = 1;
+        $.ajax({
+          url: window.masterToSchedule,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
     }
   });
 
@@ -84169,6 +84216,10 @@ $(document).on('turbolinks:load', function(){
     onstyle: 'success',
     offstyle: 'secondary'
   });
+
+  $('#loader-container').hide();
+
+
 
 
   

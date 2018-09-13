@@ -26,6 +26,7 @@ class RecurringAppointment < ApplicationRecord
 
 	after_create :create_individual_appointments
 	after_update :update_individual_appointments
+	after_save :add_to_services
 
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
 	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks
@@ -242,6 +243,15 @@ class RecurringAppointment < ApplicationRecord
 		recurring_appointments.each do |recurring_appointment|
 			recurring_appointment.deleted = false
 			recurring_appointment.save!(validate: false)
+		end
+	end
+
+	def add_to_services
+		puts 'add to services'
+		services = Service.where(corporation_id: self.planning.corporation.id, title: self.title)
+
+		if services.blank? 
+			self.planning.corporation.services.create(title: self.title)
 		end
 	end
 

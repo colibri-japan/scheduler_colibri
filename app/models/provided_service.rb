@@ -7,6 +7,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :planning
 
 	before_save :lookup_unit_cost
+	before_save :counts_or_duration_from_target_service_ids
 	before_save :default_service_counts
 	before_save :default_duration
 	before_save :calculate_total_wage
@@ -40,7 +41,27 @@ class ProvidedService < ApplicationRecord
 		end
 	end
 
-
+	def counts_or_duration_from_target_service_ids
+		if self.target_service_ids.present? 
+			puts 'entered validation for target service_ids'
+			services = target_service_ids.map{|id| Service.find(id) if id.present?}.compact
+			if self.hour_based_wage == true 
+				sum_hours = 0
+				services.each do |service|
+					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id)
+					sum_hours = sum_hours + provided_services.sum{|provided_service| provided_service.service_duration.present? ? provided_service.service_duration : 0 }
+				end
+				self.service_duration = sum_hours
+			else
+				sum_count = 0
+				services.each do |service|
+					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id)
+					sum_count = provided_services.sum{|provided_service| provided_service.service_counts.present? ? provided_service.service_counts : 0 }
+				end
+				self.service_counts = sum_count 
+			end
+		end
+	end
 
 	def default_service_counts
 		if self.hour_based_wage == false && self.service_counts.nil?
@@ -55,20 +76,17 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def calculate_total_wage
-		if target_service_ids.present? 
+		if self.hour_based_wage == true
+		  if self.unit_cost.present? && self.service_duration.present?
+			  self.total_wage = ( self.unit_cost.to_f / 60 ) * ( self.service_duration / 60 )
+		  elsif self.service_counts.present? && self.unit_cost.present?
+			  self.total_wage = self.service_counts.to_i * self.unit_cost.to_i
+		  end
 		else
-			if self.hour_based_wage == true
-			if self.unit_cost.present? && self.service_duration.present?
-				self.total_wage = ( self.unit_cost.to_f / 60 ) * ( self.service_duration / 60 )
-			elsif self.service_counts.present? && self.unit_cost.present?
-				self.total_wage = self.service_counts.to_i * self.unit_cost.to_i
-			end
-			else
-				if self.service_counts.present? && self.unit_cost.present?
-					self.total_wage = self.unit_cost * self.service_counts
-				else 
-					self.total_wage = self.unit_cost
-				end
+			if self.service_counts.present? && self.unit_cost.present?
+				self.total_wage = self.unit_cost * self.service_counts
+			else 
+				self.total_wage = self.unit_cost
 			end
 		end
 	end
@@ -103,6 +121,7 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def self.set_default_duration_to_zero
+		puts 'add to services'
 		provided_services = ProvidedService.where(service_duration: nil, temporary: false)
 
 		provided_services.each do |provided_service|

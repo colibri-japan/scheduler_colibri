@@ -17,6 +17,7 @@ class Appointment < ApplicationRecord
 
 	after_create :create_provided_service
 	after_update :update_provided_service
+	after_save :add_to_services
 
 	def all_day_appointment?
 		puts 'checking if all day appointments'
@@ -112,6 +113,14 @@ class Appointment < ApplicationRecord
 			is_provided = Time.current + 9.hours > appointment.start 
 			deactivate_provided = appointment.displayable == false || appointment.deleted == true || appointment.deactivated == true || appointment.edit_requested == true
 			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided, service_duration: provided_duration, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.end, appointment_start: self.start, appointment_end: self.end)
+		end
+	end
+
+	def add_to_services
+		services = Service.where(corporation_id: self.planning.corporation.id, title: self.title)
+
+		if services.blank? 
+			self.planning.corporation.services.create(title: self.title)
 		end
 	end
 

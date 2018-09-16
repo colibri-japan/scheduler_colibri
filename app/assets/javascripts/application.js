@@ -374,7 +374,7 @@ initialize_master_calendar = function() {
         url: window.corporationNursesURL,
       },
 
-      events: window.appointmentsURL + '?master=true',
+      events: window.appointmentsURL + '&master=true',
 
       eventRender: function eventRender(event, element, view) {
         if (view.name != 'agendaDay') {
@@ -461,18 +461,13 @@ initialize_master_calendar = function() {
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-
-          if (view.name == 'agendaDay') {
-            $('#recurring_appointment_nurse_id').val(resource.id);
-          } else {
-            var patientSelected = $('.master-element-selected').hasClass('list-patient') ? true : false;
-
-            if (patientSelected) {
-              $('#recurring_appointment_patient_id').val($('.master-element-selected').data('resource-id'));
-            } else {
-              $('#recurring_appointment_nurse_id').val($('.master-element-selected').data('resource-id'));
-            }
+          if (window.nurseId) {
+            $('#recurring_appointment_nurse_id').val(window.nurseId);
           }
+          if (window.patientId) {
+            $('#recurring_appointment_patient_id').val(window.patientId);
+          }
+
         });
 
         master_calendar.fullCalendar('unselect');

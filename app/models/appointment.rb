@@ -112,7 +112,7 @@ class Appointment < ApplicationRecord
 			provided_duration = appointment.end - appointment.start 
 			is_provided = Time.current + 9.hours > appointment.start 
 			deactivate_provided = appointment.displayable == false || appointment.deleted == true || appointment.deactivated == true || appointment.edit_requested == true
-			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided, service_duration: provided_duration, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.end, appointment_start: self.start, appointment_end: self.end)
+			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided, service_duration: provided_duration, hour_based_wage: appointment.planning.corporation.hour_based_payroll, service_date: appointment.end, appointment_start: appointment.start, appointment_end: appointment.end)
 		end
 	end
 

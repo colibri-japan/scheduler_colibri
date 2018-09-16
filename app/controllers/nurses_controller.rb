@@ -1,6 +1,7 @@
 class NursesController < ApplicationController
   before_action :set_corporation
-  before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable]
+  before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable, :master]
+  before_action :set_planning, only: [:show, :master, :payable]
 
   def index
     full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
@@ -14,7 +15,6 @@ class NursesController < ApplicationController
   end
 
   def show
-  	@planning = Planning.find(params[:planning_id])
     authorize @nurse, :is_employee?
 
     @full_timers = @corporation.nurses.where(full_timer: true).order_by_kana
@@ -26,6 +26,19 @@ class NursesController < ApplicationController
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 
     set_valid_range
+  end
+
+  def master 
+    authorize @planning, :is_employee? 
+
+    @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
+    @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    @patients = @corporation.patients.all.order_by_kana
+    @last_patient = @patients.last
+    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
+
+    set_valid_range
+		@admin = current_user.admin.to_s
   end
 
   def edit
@@ -72,7 +85,6 @@ class NursesController < ApplicationController
   def payable
     authorize current_user, :is_admin?
     authorize @nurse, :is_employee?
-    @planning = Planning.find(params[:planning_id])
 
     delete_previous_temporary_services
 
@@ -106,6 +118,10 @@ class NursesController < ApplicationController
 
   def set_nurse
     @nurse = Nurse.find(params[:id])
+  end
+
+  def set_planning
+    @planning = Planning.find(params[:planning_id])
   end
 
   def set_valid_range

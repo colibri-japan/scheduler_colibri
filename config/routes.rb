@@ -48,6 +48,10 @@ Rails.application.routes.draw do
 
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
 
+  get 'plannings/:planning_id/nurses/:id/master' => 'nurses#master', as: :planning_nurse_master
+ 
+  get 'plannings/:planning_id/patients/:id/master' => 'patients#master', as: :planning_patient_master
+
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
 
   patch 'plannings/:planning_id/recurring_appointment/:id/from_master_to_general' => 'recurring_appointments#from_master_to_general', as: :from_master_to_general

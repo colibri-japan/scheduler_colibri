@@ -1,0 +1,76 @@
+<%= javascript_tag do %>
+	window.appointmentsURL = "<%= j planning_appointments_url(@planning) %>";
+	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
+	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
+	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
+	window.validRangeStart = "<%= j @start_valid %>";
+	window.validRangeEnd = "<%= j @end_valid %>"
+	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning) %>";
+	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning) %>";
+	window.userIsAdmin = "<%= j @admin %>";
+	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
+	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
+	window.defaultView = "<%= j @corporation.default_view %>";
+	window.masterToSchedule = "<%= j master_to_schedule_path(@planning) %>";
+<% end %>
+
+
+<div id="planning-menu-container">
+	<%= render 'plannings/planning_master_submenu' %>
+</div>
+
+<div id="resource-list-container" class="no-print">
+	<div id="toggle-patients-nurses-wrapper">
+		<input type="checkbox" checked id="toggle-patients-nurses">
+	</div>
+	<div id="resource-container"  class="scrollbar-custom">
+	  <div id="patients-resource" class="no-print">
+		<% @patients.each do |patient| %>
+			<p class="master-list-element list-patient  <%= 'master-element-selected' if patient == @patient %>" data-url="<%= planning_patient_master_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+		<% end %>
+	  </div>
+      <div id="nurses-resource" class="hide-resource no-print">
+	  		<div class="nurses-resource-subsection-title">正社員</div>
+			<% @full_timers.each do |nurse| %>
+				<p class="master-list-element list-nurse" data-url="<%= planning_nurse_master_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+			<% end %>
+			<div class="nurses-resource-subsection-title">非正社員</div>
+			<% @part_timers.each do |nurse| %>
+				<p class="master-list-element list-nurse" data-url="<%= planning_nurse_master_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+			<% end %>
+	  </div>
+	</div>
+
+</div>
+
+<div id="detail-container">
+	<div id="detail-planning-container">
+		<div id="detail-planning-title" class="print-add-margin">
+			<p class="master-title"><%= @patient.try(:name) %></p>
+			<div id="activity-show-button-container" class="no-print">
+				<div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
+				<% if current_user.admin? %>
+					<div class="btn btn-success text-white" id="copy-master"><i class="glyphicon glyphicon-export" style="color:white"></i> 全体へ反映する</div>
+				<% end %>
+			</div>
+		</div>
+
+		<div class="print font-size-large print-add-margin" id="nurse-info-block-master">
+			住所：<span id="master-address"><%= @patient.try(:address) %></span> <br/>
+			電話番号：<span id="master-phone"><%= @patient.try(:phone_number) %></span>
+		</div>
+
+		<div id="planning-container">
+			<div class="master_calendar"></div>
+		</div>
+		
+		<div id="recurring-appointment-details-container" class="print">
+			<div class="planning-activity-module-title">サービスの詳細</div>
+			<div id="recurring-appointment-details"></div>
+		</div>
+	</div>
+</div>
+
+<div id="print-options-confirm" title="印刷にコメントを表示する">
+	<p>印刷するページにサービスのコメントを表示しますか？</p>
+</div>

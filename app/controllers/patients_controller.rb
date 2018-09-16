@@ -1,6 +1,7 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
-  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :destroy]
+  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :master, :destroy]
+  before_action :set_planning, only: [:show, :master]
 
   def index
   	@patients = @corporation.patients.all.order_by_kana
@@ -8,7 +9,6 @@ class PatientsController < ApplicationController
   end
 
   def show
-    @planning = Planning.find(params[:planning_id])
     authorize @patient, :is_employee?
     
     @patients = @corporation.patients.all.order_by_kana
@@ -20,6 +20,19 @@ class PatientsController < ApplicationController
     @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
 
     set_valid_range
+  end
+
+  def master
+    authorize @planning, :is_employee?
+
+    @patients = @corporation.patients.all.order_by_kana
+    @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
+    @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    @last_patient = @patients.last
+    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
+      
+    set_valid_range
+		@admin = current_user.admin.to_s
   end
 
   def edit
@@ -73,6 +86,10 @@ class PatientsController < ApplicationController
 
   def set_patient
     @patient = Patient.find(params[:id])
+  end
+
+  def set_planning 
+    @planning = Planning.find(params[:planning_id])
   end
 
   def set_valid_range

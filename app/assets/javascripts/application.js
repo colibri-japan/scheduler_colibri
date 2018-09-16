@@ -332,7 +332,6 @@ initialize_patient_calendar = function(){
 var initialize_master_calendar;
 initialize_master_calendar = function() {
   loadMasterAppointmentDetails();
-  synchronizeMasterTitle();
   $('.master_calendar').each(function(){
     var master_calendar = $(this);
     master_calendar.fullCalendar({
@@ -1190,12 +1189,7 @@ $(document).on('turbolinks:load', function(){
 
 
   $('.master-list-element').click(function(){
-    $('.master-list-element').removeClass('master-element-selected');
-    $(this).addClass('master-element-selected');
-    loadMasterAppointmentDetails();
-    synchronizeMasterTitle();
-    synchronizeMasterAddressAndPhone();
-    $('.master_calendar').fullCalendar('rerenderEvents');
+    window.location = $(this).data('url');
   });
 
   $('#account-settings-dropdown').hide();

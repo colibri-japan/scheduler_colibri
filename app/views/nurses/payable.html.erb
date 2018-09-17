@@ -25,6 +25,22 @@
 		<p class="planning-activity-module-title" id="payable-title"><%= "#{@nurse.name}の給与 #{@planning.business_month}月" %></p>
 	</div>
 
+
+	<div id="payable-charts">
+		<%# pie_chart [["現在の合計給料", @chart_wage_data[true]], ["将来の合計給料", @chart_wage_data[false]]], donut: true, colors: ['#ffc107', '#dc3545'], suffix: '¥', thousands: ',', width: '200px', height: '200px' %>
+		<% if @total_time_worked > 0 && @total_time_pending > 0 %>
+			<div id="hours-worked-pied-container">
+				<%= pie_chart [['現在の提供時間', @total_time_worked], ['残りの提供時間', @total_time_pending]], donut: true,  width: '160px', height: '160px', legend: false, colors: ['#ffc107', '#dc3545'], library: {showTooltips: false} %>
+			</div>
+		<% end %>
+		<div id="payable-dashboard">
+			<div class="payable-dashboard-text-container">
+				<p class="payable-dashboard-line">現在の提供時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_worked) %></span></p>
+				<p class="payable-dashboard-line">残りの提供時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_pending) %></span></p>
+			</div>
+		</div>
+	</div>
+
 	<div id='payable-table-commands'>
 	    <div id="add-provided-service-line"><%= link_to '+手当を追加する', new_nurse_provided_service_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true %></div>
 		<div class="excel-download btn btn-success text-white" id="payable-download-button"><span class="glyphicon glyphicon-download" style="color:white"></span> ダウンロードする</div>

@@ -18,6 +18,35 @@
 	margin-right: 5px;
 }
 
+#ts {
+	display: flex;
+	margin-bottom: 20px;
+}
+
+#payable-dashboard {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+p.payable-dashboard-line {
+	margin-bottom: 5px;
+}
+
+.payable-dashboard-important {
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+.payable-dashboard-text-container {
+	margin-left: 10px;
+}
+
+#payable-charts {
+	display: flex;
+	margin-bottom: 20px;
+}
+
 #total-salary {
 	font-weight: bold;
 }

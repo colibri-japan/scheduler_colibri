@@ -105,7 +105,11 @@ class NursesController < ApplicationController
     @counter.update(service_counts: @services_till_now.count )
 
     calculate_total_wage
+    @total_time_worked = @services_till_now.sum{|e|   e.service_duration.present? ? e.service_duration : 0 } 
+    @total_time_pending =  @services_from_now.sum{|e|  e.service_duration.present? ? e.service_duration : 0 } 
     create_grouped_services
+
+    @chart_wage_data = @provided_services.group(:provided).sum(:total_wage)
 
     respond_to do |format|
       format.html
@@ -151,9 +155,6 @@ class NursesController < ApplicationController
   end
 
   def calculate_total_wage
-    #sum_provided= @provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-    #@counter.total_wage.present? ? @total_wage = sum_provided + @counter.try(:total_wage) : @total_wage = sum_provided
-
     @total_till_now = @services_till_now.sum{|service| service.total_wage.present? ? service.total_wage : 0 }
     @total_till_now = @total_till_now + @counter.try(:total_wage) if @counter.total_wage.present?
 

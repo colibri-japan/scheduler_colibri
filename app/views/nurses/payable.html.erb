@@ -30,7 +30,7 @@
 		<%# pie_chart [["現在の合計給料", @chart_wage_data[true]], ["将来の合計給料", @chart_wage_data[false]]], donut: true, colors: ['#ffc107', '#dc3545'], suffix: '¥', thousands: ',', width: '200px', height: '200px' %>
 		<% if @total_time_worked > 0 && @total_time_pending > 0 %>
 			<div id="hours-worked-pied-container">
-				<%= pie_chart [['現在の提供時間', @total_time_worked], ['残りの提供時間', @total_time_pending]], donut: true,  width: '160px', height: '160px', legend: false, colors: ['#ffc107', '#dc3545'], library: {showTooltips: false} %>
+				<%= pie_chart [['現在の提供時間', @total_time_worked], ['残りの提供時間', @total_time_pending]], donut: true,  width: '130px', height: '130px', legend: false, colors: ['#ffc107', '#dc3545'], library: {showTooltips: false} %>
 			</div>
 		<% end %>
 		<div id="payable-dashboard">
@@ -69,7 +69,7 @@
 				<td><%= provided_service.service_date.strftime("%-m月%-d日") %></td>
 				<td><%= provided_service.try(:title) %></td>
 				<td><%= provided_service.patient.try(:name) %> </td>
-				<td><%= Time.at(provided_service.service_duration).utc.strftime("%H:%M") if provided_service.service_duration.present? %></td>
+				<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.service_duration.present? %></td>
 				<td><%= provided_service.appointment_start.strftime("%H:%M") if provided_service.appointment_start.present? %></td>
 				<td><%= provided_service.appointment_end.strftime("%H:%M") if provided_service.appointment_end.present? %></td>
 				<td>
@@ -135,7 +135,7 @@
 			<% @grouped_services.each do |service| %>
 				<tr>
 					<th><%= service.title %></th>
-					<th><%= Time.at(service.service_duration).utc.strftime("%H:%M") if service.service_duration > 0 %></th>
+					<th><%= from_seconds_to_hours_minutes(service.service_duration) if service.service_duration > 0 %></th>
 					<th><%= service.unit_cost %></th>
 					<th><%= service.service_counts %></th>
 					<th><%= service.total_wage %></th>

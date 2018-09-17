@@ -106,6 +106,7 @@ class NursesController < ApplicationController
 
     calculate_total_wage
     @total_time_worked = @services_till_now.sum{|e|   e.service_duration.present? ? e.service_duration : 0 } 
+    
     @total_time_pending =  @services_from_now.sum{|e|  e.service_duration.present? ? e.service_duration : 0 } 
     create_grouped_services
 

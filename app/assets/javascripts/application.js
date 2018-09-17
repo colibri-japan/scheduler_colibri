@@ -331,6 +331,12 @@ initialize_patient_calendar = function(){
 
 var initialize_master_calendar;
 initialize_master_calendar = function() {
+  if (window.patientId) {
+    loadPatientRecurringAppointments();
+  }
+  if (window.nurseId) {
+    loadNurseRecurringAppointments();
+  }
   loadMasterAppointmentDetails();
   $('.master_calendar').each(function(){
     var master_calendar = $(this);

@@ -48,7 +48,6 @@
 		<div id="detail-planning-title" class="print-add-margin">
 			<p class="master-title"> 様</p>
 			<div id="activity-show-button-container" class="no-print">
-				<div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
 				<% if current_user.admin? %>
 					<div class="btn btn-success text-white" id="copy-master"><i class="glyphicon glyphicon-export" style="color:white"></i> 全体へ反映する</div>
 				<% end %>
@@ -65,22 +64,10 @@
 			<div class="master_calendar"></div>
 
 		</div>
-
-		
-		<div id="recurring-appointment-details-container" class="print">
-			<div class="planning-activity-module-title">サービスの詳細</div>
-			<div id="recurring-appointment-details"></div>
-			
-		</div>
 	</div>
 	
 </div>
 
-
-<div id="print-options-confirm" title="印刷にコメントを表示する">
-	<p>印刷するページにサービスのコメントを表示しますか？</p>
-	
-</div>
 
 
 

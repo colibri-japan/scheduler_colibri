@@ -11,11 +11,4 @@
 
   $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
 
-  <% if @recurring_appointment.master == true %>
-    loadMasterAppointmentDetails();
-  <% else %>
-    loadPatientRecurringAppointments();
-    loadNurseRecurringAppointments();
-  <% end %>
-
 <% end %>

@@ -75,6 +75,8 @@ gem "chartkick"
 #glyphicons
 gem 'bootstrap-glyphicons', '~> 0.0.1'
 
+#japanese holidays dataset
+gem 'holiday_jp'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

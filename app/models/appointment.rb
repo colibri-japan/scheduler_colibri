@@ -24,6 +24,10 @@ class Appointment < ApplicationRecord
 		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
 	end
 
+	def weekend_holiday_appointment?
+		!self.start.on_weekday? || !self.end.on_weekday? || HolidayJp.between(self.start, self.end).present? ? true : false
+	end
+
 	private
 
 	def self.count_as_payable

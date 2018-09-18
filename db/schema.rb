@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180913175611) do
+ActiveRecord::Schema.define(version: 20180918150944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,39 @@ ActiveRecord::Schema.define(version: 20180913175611) do
     t.index ["recurring_appointment_id"], name: "index_deleted_occurrences_on_recurring_appointment_id"
   end
 
+  create_table "invoice_setting_nurses", force: :cascade do |t|
+    t.bigint "invoice_setting_id"
+    t.bigint "nurse_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_setting_id"], name: "index_invoice_setting_nurses_on_invoice_setting_id"
+    t.index ["nurse_id"], name: "index_invoice_setting_nurses_on_nurse_id"
+  end
+
+  create_table "invoice_setting_services", force: :cascade do |t|
+    t.bigint "invoice_setting_id"
+    t.bigint "service_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_setting_id"], name: "index_invoice_setting_services_on_invoice_setting_id"
+    t.index ["service_id"], name: "index_invoice_setting_services_on_service_id"
+  end
+
+  create_table "invoice_settings", force: :cascade do |t|
+    t.bigint "corporation_id"
+    t.string "title"
+    t.integer "target_services_by_1"
+    t.integer "target_services_by_2"
+    t.integer "target_services_by_3"
+    t.integer "invoice_line_option"
+    t.integer "operator"
+    t.decimal "argument"
+    t.boolean "hour_based"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corporation_id"], name: "index_invoice_settings_on_corporation_id"
+  end
+
   create_table "nurses", force: :cascade do |t|
     t.string "name"
     t.string "phone_number"
@@ -153,7 +186,9 @@ ActiveRecord::Schema.define(version: 20180913175611) do
     t.datetime "service_date"
     t.datetime "appointment_start"
     t.datetime "appointment_end"
+    t.bigint "invoice_setting_id"
     t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
+    t.index ["invoice_setting_id"], name: "index_provided_services_on_invoice_setting_id"
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
     t.index ["patient_id"], name: "index_provided_services_on_patient_id"
     t.index ["payable_type", "payable_id"], name: "index_provided_services_on_payable_type_and_payable_id"
@@ -264,6 +299,11 @@ ActiveRecord::Schema.define(version: 20180913175611) do
 
   add_foreign_key "appointments", "plannings"
   add_foreign_key "deleted_occurrences", "recurring_appointments"
+  add_foreign_key "invoice_setting_nurses", "invoice_settings"
+  add_foreign_key "invoice_setting_nurses", "nurses"
+  add_foreign_key "invoice_setting_services", "invoice_settings"
+  add_foreign_key "invoice_setting_services", "services"
+  add_foreign_key "invoice_settings", "corporations"
   add_foreign_key "recurring_appointments", "plannings"
   add_foreign_key "services", "corporations"
 end

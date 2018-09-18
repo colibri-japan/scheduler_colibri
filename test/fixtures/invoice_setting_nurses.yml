@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  invoice_setting: one
+  nurse: one
+
+two:
+  invoice_setting: two
+  nurse: two

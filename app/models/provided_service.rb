@@ -5,6 +5,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :nurse
 	belongs_to :patient, optional: true
 	belongs_to :planning
+	belongs_to :invoice_setting, optional: true
 
 	before_save :lookup_unit_cost
 	before_save :counts_or_duration_from_target_service_ids

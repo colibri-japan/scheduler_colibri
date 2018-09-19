@@ -96,3 +96,9 @@ task :add_services_to_corporation => :environment do
 	Corporation.add_services 
 	puts 'finished adding services'
 end
+
+task :add_invoice_setting_for_weekend_holidays => :environment do 
+	puts 'creating invoice setting for each corporation'
+	Corporation.create_weekend_holiday_invoice_setting
+	puts 'finished creating invoice setting'
+end

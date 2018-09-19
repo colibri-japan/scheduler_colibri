@@ -14,25 +14,24 @@ class Nurse < ApplicationRecord
 	def self.service_reminder
 		nurses = Nurse.where(reminderable: true)
 
-		start_time = DateTime.now.beginning_of_day
-		end_time = DateTime.now.end_of_day
+		start_time = Time.current.in_time_zone('Tokyo').beginning_of_day
+		end_time = Time.current.in_time_zone('Tokyo').end_of_day
 
 		valid_plannings = Planning.where(business_month: start_time.month)
 
 		nurses.each do |nurse|
-			# find all relevant appointments
-			nurse_appointments = RecurringAppointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true).order("to_char(start, 'HH24:MM:SS') ASC")
+			if [1,2,3,4].include?(start_time.wday)
+				next_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true, edit_requested: false).where(start: (start_time + 1.day)..(end_time + 1.day)).order(start: 'asc')
 
-			# select the appointments that occur today
-			todays_appointments = []
-			nurse_appointments.each do |appointment|
-				occurrences = appointment.appointments(start_time, end_time)
-				todays_appointments << appointment if occurrences.present?
-			end
+				if next_day_appointments.present? && nurse.phone_mail.present?
+					NurseMailer.reminder_email(nurse, next_day_appointments).deliver_now
+				end
+			elsif start_time.wday == 5 
+				next_three_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true, edit_requested: false).where(start: (start_time + 1.day)..(end_time + 3.days)).order(start: 'asc')
 
-			#send an email to the nurse with all the information
-			if todays_appointments.present? && nurse.phone_mail.present?
-				NurseMailer.reminder_email(nurse, todays_appointments).deliver_now
+				if next_three_day_appointments.present? && nurse.phone_mail.present?
+					NurseMailer.reminder_email(nurse, next_three_day_appointments).deliver_now 
+				end
 			end
 		end
 	end

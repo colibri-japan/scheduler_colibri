@@ -1,6 +1,10 @@
-<%= @nurse.name %>様、本日の<%= @corporation.name %>のサービススケジュールです。
+<%= @nurse.name %>様、<%= @corporation.name %>のサービスのスケジュールです。
 
 <% @appointments.each do |appointment| %>
 	<%= appointment.patient.try(:name) %>様: <%= appointment.start.strftime("%-H:%M") %>~<%= appointment.end.strftime("%-H:%M") %>
-	住所：<%= appointment.patient.try(:address) %>
+	<% if appointment.description.present? %>
+		コメント：<%= appointment.description %>
+	<% end %>
 <% end %>
+
+以上、宜しくお願い致します。

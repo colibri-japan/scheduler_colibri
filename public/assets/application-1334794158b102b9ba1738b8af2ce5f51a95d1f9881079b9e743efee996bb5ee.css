@@ -137,33 +137,73 @@
 }
 
 /* line 21, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+#ts {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+/* line 26, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+#payable-dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* line 32, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+p.payable-dashboard-line {
+  margin-bottom: 5px;
+}
+
+/* line 36, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+.payable-dashboard-important {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+/* line 41, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+.payable-dashboard-text-container {
+  margin-left: 10px;
+}
+
+/* line 45, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+#payable-charts {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+/* line 50, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
 #total-salary {
   font-weight: bold;
 }
 
-/* line 25, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+/* line 54, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
 #resource-list-container {
   min-width: 10%;
 }
 
-/* line 29, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+/* line 58, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
 #toggle-patients-nurses {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 7px;
 }
 
-/* line 35, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+/* line 64, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
 #payable-download-button {
   margin-left: auto;
   margin-right: 0;
 }
 
-/* line 40, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+/* line 69, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
 #payable-table-commands {
   display: flex;
   justify-content: space-between;
   margin-bottom: 7px;
+}
+
+/* line 75, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+.weekend-holiday-provided-service {
+  background-color: #E9EEFA;
 }
 /* line 5, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/patients.scss */
 .hide-resource {
@@ -319,69 +359,119 @@ li.planning-menu-selected {
 
 /* line 126, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #resource-list-container {
-  background-color: #EEF1F9;
-  border: 0.5px solid #aaa;
+  background-color: #606E7C;
+  border: 0.5px solid #606E7C;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-/* line 131, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 134, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+#resource-container {
+  overflow-y: auto;
+}
+
+/* line 138, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+#nurses-resource, #patients-resource {
+  padding-bottom: 30px;
+}
+
+/* line 142, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+.nurses-resource-subsection-title {
+  margin-top: 8px;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-bottom: 0.5px solid #D6D9DC;
+  color: white;
+  font-size: 0.95em;
+}
+
+/* line 152, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .resource-list-element {
-  margin-bottom: 4px;
-  border-bottom: 0.5px solid #aaa;
-  padding-left: 7px;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  margin-bottom: 0;
+  padding-left: 10px;
+  font-size: 0.9em;
+  color: #D6D9DC;
 }
 
-/* line 137, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
-.master-list-element {
-  margin-bottom: 4px;
-  border-bottom: 0.5px solid #aaa;
-  padding-left: 7px;
-}
-
-/* line 143, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 161, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .resource-list-element:hover {
+  color: white;
   cursor: pointer;
 }
 
-/* line 147, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 166, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+.resource-list-element.resource-selected {
+  background-color: #39ACCD;
+  color: white;
+}
+
+/* line 171, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+.master-list-element.master-element-selected {
+  background-color: #39ACCD;
+  color: white;
+}
+
+/* line 176, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+.master-list-element {
+  padding-bottom: 3px;
+  padding-top: 3px;
+  margin-bottom: 0;
+  padding-left: 10px;
+  font-size: 0.9em;
+  color: #D6D9DC;
+}
+
+/* line 185, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .master-list-element:hover {
   cursor: pointer;
+  color: white;
 }
 
-/* line 151, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 190, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #nurse-filter-zentai_ {
   width: 400px;
 }
 
-/* line 155, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 194, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #patient-filter-zentai_ {
   width: 400px;
 }
 
-/* line 159, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 198, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #master-nurse-filter-zentai_ {
   width: 400px;
 }
 
-/* line 163, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 202, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #master-patient-filter-zentai_ {
   width: 400px;
 }
 
-/* line 167, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 206, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #duplicate-button-wrapper {
   margin-top: 10px;
   margin-bottom: 5px;
 }
 
-/* line 172, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 211, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #no-duplicate-button-wrapper {
   text-align: center;
 }
 
-/* line 176, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 215, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #toggle-patients-nurses-wrapper {
   margin-bottom: 7px;
   margin-left: 7px;
+}
+
+/* line 220, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+.appointment-comment {
+  margin-bottom: 4px;
+  font-size: 1.1em;
+  margin-left: 50px;
 }
 /* line 5, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/recurring_appointments.scss */
 .appointment-occurrence {
@@ -16316,23 +16406,843 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
-/* line 29, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url(/assets/bootstrap/glyphiconshalflings-regular-fdf01160e744e3ffb9cb1a71b97eec3a5564f590258f17e0caa2d1d7735841cb.eot);
+  src: url(/assets/bootstrap/glyphiconshalflings-regular-fdf01160e744e3ffb9cb1a71b97eec3a5564f590258f17e0caa2d1d7735841cb.eot?#iefix) format("embedded-opentype"), url(/assets/bootstrap/glyphiconshalflings-regular-964ed0e1a845d8335aca2c7e0b6f007bdbd00acf1f8a19935c4a3a0cf55c08cf.woff) format("woff"), url(/assets/bootstrap/glyphiconshalflings-regular-9ffb2c62ba9a65f5f9588dc20982205649f3318b75eea919390d31a03380246e.ttf) format("truetype"), url(/assets/bootstrap/glyphiconshalflings-regular-3f9d496045d4e1cc937fac96667dad0adb62002cba30effddaee9a2a0093b235.svg#glyphicons_halflingsregular) format("svg");
+}
+/* line 34, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon:before {
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* line 43, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-glass:before {
+  content: "\e001";
+}
+
+/* line 44, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-music:before {
+  content: "\e002";
+}
+
+/* line 45, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-search:before {
+  content: "\e003";
+}
+
+/* line 46, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-envelope:before {
+  content: "\2709";
+}
+
+/* line 47, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-heart:before {
+  content: "\e005";
+}
+
+/* line 48, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-star:before {
+  content: "\e006";
+}
+
+/* line 49, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-star-empty:before {
+  content: "\e007";
+}
+
+/* line 50, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-user:before {
+  content: "\e008";
+}
+
+/* line 51, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-film:before {
+  content: "\e009";
+}
+
+/* line 52, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-th-large:before {
+  content: "\e010";
+}
+
+/* line 53, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-th:before {
+  content: "\e011";
+}
+
+/* line 54, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-th-list:before {
+  content: "\e012";
+}
+
+/* line 55, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-ok:before {
+  content: "\e013";
+}
+
+/* line 56, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-remove:before {
+  content: "\e014";
+}
+
+/* line 57, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-zoom-in:before {
+  content: "\e015";
+}
+
+/* line 58, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-zoom-out:before {
+  content: "\e016";
+}
+
+/* line 59, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-off:before {
+  content: "\e017";
+}
+
+/* line 60, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-signal:before {
+  content: "\e018";
+}
+
+/* line 61, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-cog:before {
+  content: "\e019";
+}
+
+/* line 62, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-trash:before {
+  content: "\e020";
+}
+
+/* line 63, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-home:before {
+  content: "\e021";
+}
+
+/* line 64, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-file:before {
+  content: "\e022";
+}
+
+/* line 65, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-time:before {
+  content: "\e023";
+}
+
+/* line 66, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-road:before {
+  content: "\e024";
+}
+
+/* line 67, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-download-alt:before {
+  content: "\e025";
+}
+
+/* line 68, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-download:before {
+  content: "\e026";
+}
+
+/* line 69, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-upload:before {
+  content: "\e027";
+}
+
+/* line 70, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-inbox:before {
+  content: "\e028";
+}
+
+/* line 71, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-play-circle:before {
+  content: "\e029";
+}
+
+/* line 72, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-repeat:before {
+  content: "\e030";
+}
+
+/* line 73, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-refresh:before {
+  content: "\e031";
+}
+
+/* line 74, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-list-alt:before {
+  content: "\e032";
+}
+
+/* line 75, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-lock:before {
+  content: "\e033";
+}
+
+/* line 76, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-flag:before {
+  content: "\e034";
+}
+
+/* line 77, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-headphones:before {
+  content: "\e035";
+}
+
+/* line 78, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-volume-off:before {
+  content: "\e036";
+}
+
+/* line 79, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-volume-down:before {
+  content: "\e037";
+}
+
+/* line 80, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-volume-up:before {
+  content: "\e038";
+}
+
+/* line 81, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-qrcode:before {
+  content: "\e039";
+}
+
+/* line 82, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-barcode:before {
+  content: "\e040";
+}
+
+/* line 83, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-tag:before {
+  content: "\e041";
+}
+
+/* line 84, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-tags:before {
+  content: "\e042";
+}
+
+/* line 85, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-book:before {
+  content: "\e043";
+}
+
+/* line 86, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-bookmark:before {
+  content: "\e044";
+}
+
+/* line 87, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-print:before {
+  content: "\e045";
+}
+
+/* line 88, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-camera:before {
+  content: "\e046";
+}
+
+/* line 89, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-font:before {
+  content: "\e047";
+}
+
+/* line 90, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-bold:before {
+  content: "\e048";
+}
+
+/* line 91, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-italic:before {
+  content: "\e049";
+}
+
+/* line 92, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-text-height:before {
+  content: "\e050";
+}
+
+/* line 93, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-text-width:before {
+  content: "\e051";
+}
+
+/* line 94, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-align-left:before {
+  content: "\e052";
+}
+
+/* line 95, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-align-center:before {
+  content: "\e053";
+}
+
+/* line 96, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-align-right:before {
+  content: "\e054";
+}
+
+/* line 97, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-align-justify:before {
+  content: "\e055";
+}
+
+/* line 98, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-list:before {
+  content: "\e056";
+}
+
+/* line 99, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-indent-left:before {
+  content: "\e057";
+}
+
+/* line 100, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-indent-right:before {
+  content: "\e058";
+}
+
+/* line 101, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-facetime-video:before {
+  content: "\e059";
+}
+
+/* line 102, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-picture:before {
+  content: "\e060";
+}
+
+/* line 103, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-pencil:before {
+  content: "\270f";
+}
+
+/* line 104, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-map-marker:before {
+  content: "\e062";
+}
+
+/* line 105, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-adjust:before {
+  content: "\e063";
+}
+
+/* line 106, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-tint:before {
+  content: "\e064";
+}
+
+/* line 107, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-edit:before {
+  content: "\e065";
+}
+
+/* line 108, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-share:before {
+  content: "\e066";
+}
+
+/* line 109, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-check:before {
+  content: "\e067";
+}
+
+/* line 110, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-move:before {
+  content: "\e068";
+}
+
+/* line 111, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-step-backward:before {
+  content: "\e069";
+}
+
+/* line 112, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-fast-backward:before {
+  content: "\e070";
+}
+
+/* line 113, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-backward:before {
+  content: "\e071";
+}
+
+/* line 114, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-play:before {
+  content: "\e072";
+}
+
+/* line 115, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-pause:before {
+  content: "\e073";
+}
+
+/* line 116, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-stop:before {
+  content: "\e074";
+}
+
+/* line 117, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-forward:before {
+  content: "\e075";
+}
+
+/* line 118, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-fast-forward:before {
+  content: "\e076";
+}
+
+/* line 119, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-step-forward:before {
+  content: "\e077";
+}
+
+/* line 120, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-eject:before {
+  content: "\e078";
+}
+
+/* line 121, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-chevron-left:before {
+  content: "\e079";
+}
+
+/* line 122, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-chevron-right:before {
+  content: "\e080";
+}
+
+/* line 123, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-plus-sign:before {
+  content: "\e081";
+}
+
+/* line 124, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-minus-sign:before {
+  content: "\e082";
+}
+
+/* line 125, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-remove-sign:before {
+  content: "\e083";
+}
+
+/* line 126, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-ok-sign:before {
+  content: "\e084";
+}
+
+/* line 127, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-question-sign:before {
+  content: "\e085";
+}
+
+/* line 128, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-info-sign:before {
+  content: "\e086";
+}
+
+/* line 129, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-screenshot:before {
+  content: "\e087";
+}
+
+/* line 130, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-remove-circle:before {
+  content: "\e088";
+}
+
+/* line 131, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-ok-circle:before {
+  content: "\e089";
+}
+
+/* line 132, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-ban-circle:before {
+  content: "\e090";
+}
+
+/* line 133, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-arrow-left:before {
+  content: "\e091";
+}
+
+/* line 134, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-arrow-right:before {
+  content: "\e092";
+}
+
+/* line 135, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-arrow-up:before {
+  content: "\e093";
+}
+
+/* line 136, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-arrow-down:before {
+  content: "\e094";
+}
+
+/* line 137, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-share-alt:before {
+  content: "\e095";
+}
+
+/* line 138, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-resize-full:before {
+  content: "\e096";
+}
+
+/* line 139, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-resize-small:before {
+  content: "\e097";
+}
+
+/* line 140, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-plus:before {
+  content: "\002b";
+}
+
+/* line 141, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-minus:before {
+  content: "\2212";
+}
+
+/* line 142, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-asterisk:before {
+  content: "\002a";
+}
+
+/* line 143, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-exclamation-sign:before {
+  content: "\e101";
+}
+
+/* line 144, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-gift:before {
+  content: "\e102";
+}
+
+/* line 145, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-leaf:before {
+  content: "\e103";
+}
+
+/* line 146, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-fire:before {
+  content: "\e104";
+}
+
+/* line 147, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-eye-open:before {
+  content: "\e105";
+}
+
+/* line 148, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-eye-close:before {
+  content: "\e106";
+}
+
+/* line 149, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-warning-sign:before {
+  content: "\e107";
+}
+
+/* line 150, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-plane:before {
+  content: "\e108";
+}
+
+/* line 151, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-calendar:before {
+  content: "\e109";
+}
+
+/* line 152, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-random:before {
+  content: "\e110";
+}
+
+/* line 153, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-comment:before {
+  content: "\e111";
+}
+
+/* line 154, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-magnet:before {
+  content: "\e112";
+}
+
+/* line 155, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-chevron-up:before {
+  content: "\e113";
+}
+
+/* line 156, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-chevron-down:before {
+  content: "\e114";
+}
+
+/* line 157, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-retweet:before {
+  content: "\e115";
+}
+
+/* line 158, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-shopping-cart:before {
+  content: "\e116";
+}
+
+/* line 159, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-folder-close:before {
+  content: "\e117";
+}
+
+/* line 160, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-folder-open:before {
+  content: "\e118";
+}
+
+/* line 161, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-resize-vertical:before {
+  content: "\e119";
+}
+
+/* line 162, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-resize-horizontal:before {
+  content: "\e120";
+}
+
+/* line 163, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-hdd:before {
+  content: "\e121";
+}
+
+/* line 164, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-bullhorn:before {
+  content: "\e122";
+}
+
+/* line 165, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-bell:before {
+  content: "\e123";
+}
+
+/* line 166, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-certificate:before {
+  content: "\e124";
+}
+
+/* line 167, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-thumbs-up:before {
+  content: "\e125";
+}
+
+/* line 168, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-thumbs-down:before {
+  content: "\e126";
+}
+
+/* line 169, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-hand-right:before {
+  content: "\e127";
+}
+
+/* line 170, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-hand-left:before {
+  content: "\e128";
+}
+
+/* line 171, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-hand-up:before {
+  content: "\e129";
+}
+
+/* line 172, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-hand-down:before {
+  content: "\e130";
+}
+
+/* line 173, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-circle-arrow-right:before {
+  content: "\e131";
+}
+
+/* line 174, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-circle-arrow-left:before {
+  content: "\e132";
+}
+
+/* line 175, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-circle-arrow-up:before {
+  content: "\e133";
+}
+
+/* line 176, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-circle-arrow-down:before {
+  content: "\e134";
+}
+
+/* line 177, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-globe:before {
+  content: "\e135";
+}
+
+/* line 178, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-wrench:before {
+  content: "\e136";
+}
+
+/* line 179, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-tasks:before {
+  content: "\e137";
+}
+
+/* line 180, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-filter:before {
+  content: "\e138";
+}
+
+/* line 181, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-briefcase:before {
+  content: "\e139";
+}
+
+/* line 182, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-fullscreen:before {
+  content: "\e140";
+}
+
+/* line 183, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-dashboard:before {
+  content: "\e141";
+}
+
+/* line 184, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-paperclip:before {
+  content: "\e142";
+}
+
+/* line 185, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-heart-empty:before {
+  content: "\e143";
+}
+
+/* line 186, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-link:before {
+  content: "\e144";
+}
+
+/* line 187, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-phone:before {
+  content: "\e145";
+}
+
+/* line 188, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-pushpin:before {
+  content: "\e146";
+}
+
+/* line 189, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-euro:before {
+  content: "\20ac";
+}
+
+/* line 190, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-usd:before {
+  content: "\e148";
+}
+
+/* line 191, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-gbp:before {
+  content: "\e149";
+}
+
+/* line 192, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-sort:before {
+  content: "\e150";
+}
+
+/* line 193, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-sort-by-alphabet:before {
+  content: "\e151";
+}
+
+/* line 194, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-sort-by-alphabet-alt:before {
+  content: "\e152";
+}
+
+/* line 195, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-sort-by-order:before {
+  content: "\e153";
+}
+
+/* line 196, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-sort-by-order-alt:before {
+  content: "\e154";
+}
+
+/* line 197, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-sort-by-attributes:before {
+  content: "\e155";
+}
+
+/* line 198, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-sort-by-attributes-alt:before {
+  content: "\e156";
+}
+
+/* line 199, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-unchecked:before {
+  content: "\e157";
+}
+
+/* line 200, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-expand:before {
+  content: "\e158";
+}
+
+/* line 201, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-collapse:before {
+  content: "\e159";
+}
+
+/* line 202, C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-glyphicons-0.0.1/app/assets/stylesheets/bootstrap/glyphicons.scss */
+.glyphicon-collapse-top:before {
+  content: "\e160";
+}
+
+/* line 30, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 body {
   background-color: #F7F9FE;
 }
 
-/* line 33, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 34, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+.glyphicon {
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+/* line 39, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #brand-container {
   display: flex;
 }
 
-/* line 37, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 43, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #logo {
   margin-left: 16px;
   margin-right: 10px;
 }
 
-/* line 42, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 48, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #brand {
   font-size: 1.2em;
   color: white;
@@ -16341,7 +17251,7 @@ body {
   margin-bottom: 0px;
 }
 
-/* line 50, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 56, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #colibri-scheduler-nav {
   position: absolute;
   top: 0;
@@ -16353,7 +17263,7 @@ body {
   z-index: 2;
 }
 
-/* line 61, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 67, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 a.colibri-nav-link {
   display: block;
   color: white;
@@ -16363,7 +17273,7 @@ a.colibri-nav-link {
   font-size: 1.2em;
 }
 
-/* line 70, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 76, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 p.colibri-nav-link {
   display: block;
   color: white;
@@ -16374,13 +17284,13 @@ p.colibri-nav-link {
   margin-bottom: 0px;
 }
 
-/* line 80, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 86, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 p.colibri-nav-link:hover {
   cursor: pointer;
   color: black;
 }
 
-/* line 85, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 91, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .alert {
   position: absolute !important;
   top: 46px !important;
@@ -16389,29 +17299,29 @@ p.colibri-nav-link:hover {
   text-align: center;
 }
 
-/* line 93, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 99, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .main-page {
   padding-top: 46px;
 }
 
-/* line 97, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 103, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .show {
   display: block;
 }
 
-/* line 101, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 107, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 a {
   color: inherit;
 }
 
-/* line 105, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 111, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 a:hover {
   background-color: transparent;
   color: inherit;
   text-decoration: none;
 }
 
-/* line 111, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 117, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 ul {
   list-style-type: none;
   margin: 0;
@@ -16419,12 +17329,12 @@ ul {
   overflow: hidden;
 }
 
-/* line 118, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 124, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 li {
   float: right;
 }
 
-/* line 122, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 128, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 input:focus,
 select:focus,
 textarea:focus,
@@ -16432,7 +17342,7 @@ button:focus {
   outline: none;
 }
 
-/* line 129, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 135, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #account-settings-dropdown {
   position: absolute;
   top: 46px;
@@ -16442,19 +17352,19 @@ button:focus {
   background-color: #354553;
 }
 
-/* line 140, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 146, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .account-settings-li {
   padding: 7px 10px;
 }
 
-/* line 144, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 150, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 a.account-settings-a {
   color: white;
   display: block;
   width: 100%;
 }
 
-/* line 150, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 156, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #logout-li {
   width: 100%;
   color: white;
@@ -16462,27 +17372,27 @@ a.account-settings-a {
   text-align: left;
 }
 
-/* line 157, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 163, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #logout-li:hover {
   cursor: pointer;
   background-color: #4f5b66;
 }
 
-/* line 162, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 168, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 li.account-settings-li {
   width: 100%;
   color: white;
   text-align: left;
 }
 
-/* line 168, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 174, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 li.account-settings-li:hover {
   cursor: pointer;
   background-color: #4f5b66;
   width: 100%;
 }
 
-/* line 174, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 180, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #tab-panel {
   padding-top: 20px;
   margin-left: auto;
@@ -16492,7 +17402,7 @@ li.account-settings-li:hover {
   display: table;
 }
 
-/* line 183, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 189, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 ul.nav.nav-tabs {
   list-style: none;
   text-align: center;
@@ -16500,7 +17410,7 @@ ul.nav.nav-tabs {
   padding-top: 5px;
 }
 
-/* line 190, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 196, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .colibri-app-menu {
   font-size: 1.6em;
   display: inline;
@@ -16512,188 +17422,208 @@ ul.nav.nav-tabs {
   padding-bottom: 8px;
 }
 
-/* line 201, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 207, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 li.colibri-app-menu a.nav-url {
   font-color: #4f5b66;
 }
 
-/* line 205, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 211, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .colibri-app-menu:hover {
   cursor: pointer;
   background-color: transparent;
   border-bottom: 4px solid #ddd;
 }
 
-/* line 211, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 217, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .nav-selected {
   border-bottom: 4px solid #5bc0de;
   font-color: #000;
 }
 
-/* line 216, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 222, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .text-white {
   font-color: white;
 }
 
-/* line 220, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 226, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .hide {
   display: none;
 }
 
-/* line 224, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 230, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .btn-margin-top {
   margin-top: 10px;
 }
 
-/* line 228, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 234, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .date-hidden {
   display: none;
 }
 
-/* line 232, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 238, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #planning-container {
   color: #4F4F4F;
 }
 
-/* line 236, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 242, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-bgevent {
   background-color: #D46A6A !important;
 }
 
-/* line 240, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 246, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-today {
   background-color: white !important;
 }
 
-/* line 244, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 250, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-resource-cell {
   font-weight: normal !important;
 }
 
-/* line 248, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 254, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-time {
   font-size: 0.9em !important;
 }
 
-/* line 252, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 258, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-title {
   font-size: 1.4em !important;
 }
 
-/* line 256, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 262, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-header-toolbar {
   margin-bottom: 4px !important;
 }
 
-/* line 260, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 266, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-sat {
   background-color: #E9EEFA;
 }
 
-/* line 264, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 270, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-sun {
   background-color: #FFE8E8;
 }
 
-/* line 268, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 274, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 tr.clickable-row:hover {
   cursor: pointer;
 }
 
-/* line 273, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 279, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .appointment-occurrence {
   margin-bottom: 5px !important;
   display: flex !important;
 }
 
-/* line 278, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 284, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .appointment-occurrence-date {
   font-weight: bold;
 }
 
-/* line 282, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 288, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 #planning-container .fc-view {
   overflow-x: scroll;
 }
 
-/* line 288, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 294, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 div .fc-scroller {
   max-height: 57vh !important;
 }
 
-/* line 292, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 298, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 th {
   font-weight: normal;
 }
 
-/* line 296, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 302, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .table-important-fields {
   font-weight: bold;
 }
 
-/* line 300, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 306, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .print {
   display: none;
 }
 
-/* line 304, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 310, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .font-size-large {
   font-size: 1.4em;
 }
 
-/* line 308, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 314, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .colibri-small-title {
   font-size: 1.8em;
   color: #4f5b66;
 }
 
-/* line 313, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 319, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .chosen-container {
   width: 300px !important;
 }
 
-/* line 317, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 323, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .required-field {
   color: red;
 }
 
+/* line 327, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+.scrollbar-custom::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #606E7C;
+  border-radius: 10px;
+}
+
+/* line 332, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+  background-color: #606E7C;
+}
+
+/* line 336, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  border-radius: 7px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #b1b1b1;
+}
+
 @media print {
-  /* line 322, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 342, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .no-print {
     display: none !important;
   }
 
-  /* line 325, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 345, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print {
     display: block;
   }
 
-  /* line 329, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 349, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print-master-no-view {
     display: none !important;
   }
 
-  /* line 333, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 353, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #detail-container {
     margin-left: 5px;
   }
 
-  /* line 337, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 357, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #planning-show-main {
     margin-left: 5px;
   }
 
-  /* line 341, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 361, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print-add-margin {
     margin-left: 40px;
   }
 
-  /* line 345, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 365, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #recurring-appointment-details {
     margin-left: 50px;
   }
 
-  /* line 349, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 369, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   div .fc-scroller {
     max-height: none !important;
   }

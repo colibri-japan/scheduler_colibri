@@ -41,4 +41,16 @@ class Corporation < ApplicationRecord
 		end
 	end
 
+	def self.create_weekend_holiday_invoice_setting
+		corporations=Corporation.all 
+
+		corporations.each do |corporation|
+			existing_rule = InvoiceSetting.where(corporation_id: corporation.id, target_services_by_1: 1)
+
+			unless existing_rule.present?
+				corporation.invoice_settings.create(title: '土日祝日手当', target_services_by_1: 1, invoice_line_option: 0, operator: 1, argument: 1, hour_based: false)
+			end
+		end
+	end
+
 end

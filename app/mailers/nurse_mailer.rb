@@ -1,12 +1,19 @@
 class NurseMailer < ApplicationMailer
 
 
-	def reminder_email(nurse, recurring_appointments)
+	def reminder_email(nurse, appointments)
 		@nurse = nurse
 		@corporation = @nurse.corporation
-		@appointments = recurring_appointments
+		@appointments = appointments
+		@today = Time.current.in_time_zone('Tokyo')
 
-		mail to: @nurse.phone_mail, subject: "#{@corporation.name}：本日のスケジュール"
+		if [1,2,3,4].include?(@today.wday)
+			subject = "#{@corporation.name}：#{@today.day + 1}日のスケジュール"
+			mail to: @nurse.phone_mail, bcc: @corporation.email, from: @corporation.email, subject: subject
+		elsif @today.wday == 5 
+			subject = "#{@corporation.name}：#{@today.day + 1}、#{@today.day + 2}、#{@today.day + 3}日のスケジュール"
+			mail to: @nurse.phone_mail, bcc: @corporation.email, from: @corporation.email, subject: subject
+		end
 	end
 
 

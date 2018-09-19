@@ -28,9 +28,9 @@
 
 	<div id="payable-charts">
 		<%# pie_chart [["現在の合計給料", @chart_wage_data[true]], ["将来の合計給料", @chart_wage_data[false]]], donut: true, colors: ['#ffc107', '#dc3545'], suffix: '¥', thousands: ',', width: '200px', height: '200px' %>
-		<% if @total_time_worked > 0 && @total_time_pending > 0 %>
+		<% if  @total_time_pending > 0 %>
 			<div id="hours-worked-pied-container">
-				<%= pie_chart [['現在の提供時間', @total_time_worked], ['残りの提供時間', @total_time_pending]], donut: true,  width: '130px', height: '130px', legend: false, colors: ['#ffc107', '#dc3545'], library: {showTooltips: false} %>
+				<%= pie_chart [['現在の提供時間', @total_time_worked], ['残りの提供時間', @total_time_pending]], donut: true,  width: '130px', height: '130px', legend: false, colors: ['#ffc107', '#e4e4e4'], library: {tooltips: {enabled: false}} %>
 			</div>
 		<% end %>
 		<div id="payable-dashboard">
@@ -58,15 +58,15 @@
 				<th class="table-important-fields">時給/単価</th>
 				<th class="table-important-fields">回数</th>
 				<th class="table-important-fields">計</th>
-				<th class="table-important-fields" colspan="2">アクション</th>
+				<th class="table-important-fields">アクション</th>
 			</tr>
 			
 		</thead>
 
 		<tbody>
 			<% @services_till_now.each do |provided_service| %>
-			<tr>
-				<td><%= provided_service.service_date.strftime("%-m月%-d日") %></td>
+			<tr class="<%= 'weekend-holiday-provided-service' if provided_service.weekend_holiday_provided_service? %>">
+				<td><%= provided_service.service_date.strftime("%-m月%-d日") + ' ' + weekday(provided_service.service_date) %></td>
 				<td><%= provided_service.try(:title) %></td>
 				<td><%= provided_service.patient.try(:name) %> </td>
 				<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.service_duration.present? %></td>
@@ -79,8 +79,7 @@
 					<%= provided_service.service_counts if provided_service.service_counts.present? %>
 				</td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
-				<td><%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
-				<td><%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この実績一行が削除されます'}, class: 'btn btn-secondary text-white btn-sm' %></td>
+				<td><%= link_to 'エディット.削除', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
 
 			</tr>
 			<% end %>
@@ -100,8 +99,6 @@
 					</td>
 					<td id="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
 					<td><%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, @counter, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
-					<td><%= link_to '削除', @counter, method: :delete, data: {confirm: 'この実績一行が削除されます'}, class: 'btn btn-secondary text-white btn-sm' %></td>
-					
 				</tr>
 			<% end %>
 			<tr>

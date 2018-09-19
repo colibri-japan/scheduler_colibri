@@ -102,7 +102,7 @@ class NursesController < ApplicationController
     @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 
     set_counter
-    @counter.update(service_counts: @services_till_now.count )
+    @counter.update(service_counts: @services_till_now.where.not(appointment_id: nil).count )
 
     calculate_total_wage
     @total_time_worked = @services_till_now.sum{|e|   e.service_duration.present? ? e.service_duration : 0 } 

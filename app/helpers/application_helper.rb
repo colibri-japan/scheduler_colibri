@@ -25,7 +25,7 @@ module ApplicationHelper
 				"(金)"
 			when 6
 				"(土)"
-			when 7
+			when 0
 				"(日)"
 			else
 				""

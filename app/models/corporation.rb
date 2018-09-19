@@ -4,6 +4,7 @@ class Corporation < ApplicationRecord
 	has_many :nurses
 	has_many :patients
 	has_many :services
+	has_many :invoice_settings
 
 	after_create :create_undefined_nurse
 

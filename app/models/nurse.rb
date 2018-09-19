@@ -21,13 +21,13 @@ class Nurse < ApplicationRecord
 
 		nurses.each do |nurse|
 			if [1,2,3,4].include?(start_time.wday)
-				next_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true, edit_requested: false).where(start: (start_time + 1.day)..(end_time + 1.day)).order(start: 'asc')
+				next_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true, edit_requested: false, master: false).where(start: (start_time + 1.day)..(end_time + 1.day)).order(start: 'asc')
 
 				if next_day_appointments.present? && nurse.phone_mail.present?
 					NurseMailer.reminder_email(nurse, next_day_appointments).deliver_now
 				end
 			elsif start_time.wday == 5 
-				next_three_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true, edit_requested: false).where(start: (start_time + 1.day)..(end_time + 3.days)).order(start: 'asc')
+				next_three_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true, edit_requested: false, master: false).where(start: (start_time + 1.day)..(end_time + 3.days)).order(start: 'asc')
 
 				if next_three_day_appointments.present? && nurse.phone_mail.present?
 					NurseMailer.reminder_email(nurse, next_three_day_appointments).deliver_now 

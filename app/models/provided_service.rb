@@ -119,7 +119,7 @@ class ProvidedService < ApplicationRecord
 	def reflect_unit_cost_to_similar_services
 		if self.unit_cost.present? 
 			puts 'reflecting unit cost to all other services from planning'
-			similar_services = ProvidedService.where(planning_id: self.planning_id, nurse_id: self.nurse_id, unit_cost: nil).where.not(id: self.id)
+			similar_services = ProvidedService.where(planning_id: self.planning_id, nurse_id: self.nurse_id, title: self.title).where.not(id: self.id)
 
 			similar_services.each do |service|
 				service.update(unit_cost: self.unit_cost, skip_reflect_unit_cost: true)

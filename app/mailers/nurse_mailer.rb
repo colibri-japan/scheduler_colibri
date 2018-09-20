@@ -6,7 +6,7 @@ class NurseMailer < ApplicationMailer
 		@nurse = nurse
 		@corporation = @nurse.corporation
 		@appointments = appointments
-		@today = Time.current.in_time_zone('Tokyo')
+		@today = Time.current
 
 		if [1,2,3,4].include?(@today.wday)
 			subject = "#{@corporation.name}：#{@today.day + 1}日のスケジュール"

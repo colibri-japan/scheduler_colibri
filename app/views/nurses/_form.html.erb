@@ -26,6 +26,10 @@
   </div>
 
   <div class="form-group">
+    <%= form.check_box :reminderable, id: 'reminderable-toggle' %>
+  </div>
+
+  <div class="form-group">
     <%= form.label :phone_number, "電話番号", class: "colibri-form-label" %>
     <%= form.text_field :phone_number, id: :nurse_phone_number, class: "form-control" %>
   </div>
@@ -43,6 +47,6 @@
 
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info' %>
-    <%= link_to '削除', nurse, method: :delete, data: {confirm: 'このヘルパーが削除されます。'}, class: 'btn btn-danger' unless nurse.new_record? %>
+    <%= link_to '削除', nurse, method: :delete, data: {confirm: 'このヘルパーが削除されます。'}, class: 'btn btn-danger text-white' unless nurse.new_record? %>
   </div>
 <% end %>

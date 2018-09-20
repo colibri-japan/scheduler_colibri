@@ -938,8 +938,33 @@ toggleFulltimeEmployee = function(){
     size: 'normal',
     onstyle: 'success',
     offstyle: 'secondary',
-    width: 100
+    width: 170
   });
+}
+
+var toggleReminderable;
+toggleReminderable = function(){
+  $('#reminderable-toggle').bootstrapToggle({
+    on: 'リマインダー送信',
+    off: 'リマインダーなし',
+    onstyle: 'success',
+    offstyle: 'secondary',
+    width: 170
+  })
+}
+
+var phoneMailRequirement;
+phoneMailRequirement = function(){
+  if ($('#reminderable-toggle').is(':checked')) {
+    $('#nurse_phone_mail').prop('required', true);
+  }
+  $('#reminderable-toggle').change(function(){
+    if ($(this).is(':checked')) {
+      $('#nurse_phone_mail').prop('required', true);
+    } else {
+      $('#nurse_phone_mail').prop('required', false);
+    }
+  })
 }
 
 
@@ -957,9 +982,7 @@ $(document).on('turbolinks:load', function(){
 
   $('tr.clickable-row').click(function(){
     window.location = $(this).data('link');
-  })
-
-
+  });
 
   $('#account-edit').click(function(){
     $('#account-delete-body').hide();

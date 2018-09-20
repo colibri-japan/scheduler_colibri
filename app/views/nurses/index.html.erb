@@ -9,7 +9,7 @@
           <th class="table-important-fields">電話番号</th>
           <th class="table-important-fields">メール</th>
           <th class="table-important-fields">正社員</th>
-          <th class="table-important-fields">メール送信</th>
+          <th class="table-important-fields">リマインダーを送る</th>
         </tr>
       </thead>
 
@@ -21,12 +21,12 @@
             <td><%= nurse.phone_mail %></td>
             <td>
               <% if nurse.full_timer == true %>
-                <span class="glyphicon glyphicon-ok" style="color:green"></span>
+                <span class="glyphicon glyphicon-ok" style="color: #42B97C"></span>
               <% end %> 
             </td>
             <td>
               <% if nurse.reminderable == true %>
-                <span class="glyphicon glyphicon-envelope" style="color: #c19a6b"></span>
+                <span class="glyphicon glyphicon-envelope" style="color: #FFAA00"></span>
               <% end %> 
             </td>
           </tr>

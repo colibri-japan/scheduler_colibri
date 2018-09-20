@@ -42,6 +42,7 @@
 
 
   <div class="actions">
-    <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
+    <%= form.submit 'セーブする', class: 'btn btn-info' %>
+    <%= link_to '削除', nurse, method: :delete, data: {confirm: 'このヘルパーが削除されます。'}, class: 'btn btn-danger' unless nurse.new_record? %>
   </div>
 <% end %>

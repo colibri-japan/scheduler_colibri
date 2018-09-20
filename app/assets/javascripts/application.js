@@ -930,6 +930,18 @@ individualMasterToGeneral = function(){
   })
 }
 
+var toggleFulltimeEmployee;
+toggleFulltimeEmployee = function(){
+  $('#full-timer-toggle').bootstrapToggle({
+    on: '正社員',
+    off: '非正社員',
+    size: 'normal',
+    onstyle: 'success',
+    offstyle: 'secondary',
+    width: 100
+  });
+}
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
@@ -937,11 +949,17 @@ $(document).on('turbolinks:load', initialize_patient_calendar);
 $(document).on('turbolinks:load', initialize_master_calendar);
 
 $(document).on('turbolinks:load', function(){
-  $("table > tbody > tr[data-link]").not('thead').click(function(){
-    if (this.dataset.link != '') {
-      window.location = this.dataset.link
-    } 
+
+
+  $('tr.nurse-clickable-row').click(function(){
+    $.getScript($(this).data('link'));
   });
+
+  $('tr.clickable-row').click(function(){
+    window.location = $(this).data('link');
+  })
+
+
 
   $('#account-edit').click(function(){
     $('#account-delete-body').hide();
@@ -1204,14 +1222,6 @@ $(document).on('turbolinks:load', function(){
         })
       }
     }
-  });
-
-  $('#full-timer-toggle').bootstrapToggle({
-    on: '正社員',
-    off: '非正社員',
-    size: 'normal',
-    onstyle: 'success',
-    offstyle: 'secondary'
   });
 
   $('#loader-container').hide();

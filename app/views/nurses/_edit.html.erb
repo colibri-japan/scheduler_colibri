@@ -1,0 +1,15 @@
+<div id="edit_nurse" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title"><%= @nurse.name %>をエディットする</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+				<%= render 'form', nurse: @nurse %>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -5,17 +5,19 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th class="table-important-fields">スケジュール</th>
-            <th class="table-important-fields" style="width: '15%'" colspan="2">アクション</th>
+            <th class="table-important-fields" colspan='2'>スケジュール</th>
           </tr>
         </thead>
 
         <tbody>
           <% @plannings.each do |planning| %>
             <tr class="clickable-row" data-link="<%= planning_path(planning) %>">
-              <td><%= planning.title %></td>
-              <td><%= link_to '詳細', planning %></td>
-              <td><%= link_to '削除', planning, method: :delete, data: { confirm: 'サービス、提供されたサービス（給与管理）などを含めてスケジュールが削除されます。' } if current_user.admin? %></td>
+              <td class="col-md-10"><%= planning.title %></td>
+              <td class="col-md-2">
+                <% if current_user.admin? %>
+                  <%= link_to '削除', planning, method: :delete, class: 'btn btn-secondary btn-sm text-white', data: { confirm: 'サービス、提供されたサービス（給与管理）などを含めてスケジュールが削除されます。' } if current_user.admin? %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>

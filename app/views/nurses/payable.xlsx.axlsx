@@ -7,9 +7,9 @@ wb.add_worksheet(name: "給与支払明細書") do |sheet|
 	sheet.add_row ['日付', 'サービスタイプ', '利用者名', '提供時間', 'スタート', '終了', '時給/単価', '回数', '計']
 	@services_till_now.each do |service|
 		
-		start_time = service.appointment_start? ? service.appointment_start : ''
-		end_time = service.appointment_start? ? service.appointment_end : ''
-		sheet.add_row [service.service_date.strftime("%-m月%-d日"), service.try(:title), service.patient.try(:name), Time.at(service.service_duration).utc.strftime("%H:%M") , start_time, end_time,  service.try(:unit_cost), service.try(:service_counts), service.try(:total_wage) ]
+		start_time = service.appointment_start? ? service.appointment_start.strftime("%H:%M") : ''
+		end_time = service.appointment_start? ? service.appointment_end.strftime("%H:%M") : ''
+		sheet.add_row [service.service_date.strftime("%-m月%-d日"), service.try(:title), service.patient.try(:name), from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:unit_cost), service.try(:service_counts), service.try(:total_wage) ]
 	end
 	if @counter.present?
 		sheet.add_row ['', '移動手当', '', '',  @counter.try(:unit_cost), @counter.try(:service_counts), @counter.try(:total_wage)]

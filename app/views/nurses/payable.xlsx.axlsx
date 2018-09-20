@@ -1,7 +1,8 @@
 wb = xlsx_package.workbook
 
-wb.add_worksheet(name: "給与詳細") do |sheet|
-	sheet.add_row ['ヘルパー', @nurse.try(:name)]
+wb.add_worksheet(name: "給与支払明細書") do |sheet|
+	sheet.add_row ['給与支払明細書']
+	sheet.add_row ['ヘルパー氏名', @nurse.try(:name), '', "#{@planning.business_month}月", current_user.corporation.name]
 	sheet.add_row
 	sheet.add_row ['日付', 'サービスタイプ', '利用者名', '提供時間', 'スタート', '終了', '時給/単価', '回数', '計']
 	@services_till_now.each do |service|

@@ -1,4 +1,5 @@
 class NurseMailer < ApplicationMailer
+	add_template_helper(ApplicationHelper)
 
 
 	def reminder_email(nurse, appointments)

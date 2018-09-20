@@ -14,14 +14,17 @@ class Nurse < ApplicationRecord
 	def self.service_reminder
 		nurses = Nurse.where(reminderable: true)
 
-		start_time = Time.current.in_time_zone('Tokyo').beginning_of_day
-		end_time = Time.current.in_time_zone('Tokyo').end_of_day
+		start_time = Time.current.beginning_of_day
+		end_time = Time.current.end_of_day
 
 		valid_plannings = Planning.where(business_month: start_time.month)
 
 		nurses.each do |nurse|
 			if [1,2,3,4].include?(start_time.wday)
 				next_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: nurse.id, displayable: true, edit_requested: false, master: false).where(start: (start_time + 1.day)..(end_time + 1.day)).order(start: 'asc')
+
+				puts 'next day appointments'
+				puts next_day_appointments.map{|e| e.title + ' ' + e.patient_id}
 
 				if next_day_appointments.present? && nurse.phone_mail.present?
 					NurseMailer.reminder_email(nurse, next_day_appointments).deliver_now

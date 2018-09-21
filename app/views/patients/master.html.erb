@@ -48,7 +48,7 @@
 			<div id="activity-show-button-container" class="no-print">
 				<div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
 				<% if current_user.admin? %>
-					<div class="btn btn-success text-white" id="copy-master"><i class="glyphicon glyphicon-export" style="color:white"></i> 全体へ反映する</div>
+					<div class="btn btn-success text-white" id="master-options"><i class="glyphicon glyphicon-cog" style="color:white"></i> オプション</div>
 				<% end %>
 			</div>
 		</div>
@@ -71,4 +71,26 @@
 
 <div id="print-options-confirm" title="印刷にコメントを表示する">
 	<p>印刷するページにサービスのコメントを表示しますか？</p>
+</div>
+
+<div id="modal-master-options" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">マスターオプション</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+				<table class="table">
+                    <tbody>
+                        <tr>
+                            <th>このスケジュールの全体に登録されたすべての利用者.ヘルパーのサービスを削除し、マスターのすべての利用者.ヘルパーのサービスを全体へ反映する。</th>
+                            <th><button class="btn btn-warning" id="copy-master">マスターを全体へ反映する</button></th>
+                        </tr>
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</div>
 </div>

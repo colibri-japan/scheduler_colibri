@@ -869,17 +869,11 @@ appointmentComments = function() {
     var calendar = $('.nurse_calendar');
   }
 
-  console.log(calendar);
-
   var clientEvents = calendar.fullCalendar('clientEvents');
-
-  console.log(clientEvents);
 
   clientEvents.forEach(event => {
     if (event.description) {
-      console.log('inside clientEvents loop');
       var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse_name + ' 利用者：' + event.patient_name + ' ' + event.description;
-      console.log(stringToAppend);
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }
   })
@@ -1231,23 +1225,30 @@ $(document).on('turbolinks:load', function(){
 
   var copyMasterState;
 
-  $('#copy-master').click(function(){
-    if (copyMasterState == 1) {
-      alert('マスターを全体へコピーしてます、少々お待ちください');
-    } else {
-      var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。数十秒かかる可能性があります。');
-      if (message && copyMasterState != 1) {
-        copyMasterState = 1;
-        $.ajax({
-          url: window.masterToSchedule,
-          type: 'PATCH',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-        })
-      }
-    }
-  });
-
   $('#loader-container').hide();
+
+  $('#master-options').click(function(){
+    $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+    $('#remote_container').html($('#modal-master-options'));
+    $('#modal-master-options').modal('show');
+    $('#copy-master').click(function(){
+      if (copyMasterState == 1) {
+        alert('マスターを全体へコピーしてます、少々お待ちください');
+      } else {
+        var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
+        if (message && copyMasterState != 1) {
+          copyMasterState = 1;
+          $.ajax({
+            url: window.masterToSchedule,
+            type: 'PATCH',
+            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+          })
+        }
+      }
+    })
+
+  })
 
 
 

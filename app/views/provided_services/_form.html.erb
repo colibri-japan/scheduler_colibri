@@ -58,8 +58,10 @@
       <% if provided_service.new_record? %>
 
         <div class="form-group">
-          <%= form.label :target_service_ids, "対象サービスタイプ", class: 'colibri-form-label' %>
-          <%= form.collection_select(:target_service_ids, @services, :id, :title, {},multiple: true, id: 'chosen-target-services')  %>
+            <%= form.label :target_service_ids, "対象サービスタイプ", class: 'colibri-form-label' %><br/>
+            <%= form.collection_select(:target_service_ids, @services, :id, :title, {},multiple: true, id: 'chosen-target-services')  %>
+            <span id="select-all-services" class="btn btn-mid-light btn-sm">すべて選択</span>
+            <span id="unselect-all-services" class="btn btn-mid-light btn-sm">すべて消す</span>
         </div>
       
       <% end %>

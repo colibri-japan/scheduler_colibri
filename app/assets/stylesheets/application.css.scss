@@ -321,11 +321,19 @@ th {
 }
 
 .chosen-container {
-	width: 300px !important;
+	width: 250px !important;
 }
 
 .required-field {
 	color: red;
+}
+
+.btn-mid-light {
+	background-color: #e4e4e4;
+}
+
+.btn-mid-light:hover {
+	background-color: #C5C5C5;
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {

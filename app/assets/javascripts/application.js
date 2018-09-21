@@ -900,7 +900,7 @@ addProvidedServiceToggle = function(){
     no_results_text: 'サービスが見つかりません',
     placeholder_text_multiple: 'サービスを選択してください'
   });
-}
+};
 
 var individualMasterToGeneral;
 individualMasterToGeneral = function(){
@@ -961,6 +961,18 @@ phoneMailRequirement = function(){
   })
 }
 
+var providedServicesChosenOptions;
+providedServicesChosenOptions = function(){
+  $('#select-all-services').click(function(){
+    $('#chosen-target-services > option').prop('selected', true);
+    $('#chosen-target-services').trigger('chosen:updated');
+  });
+
+  $('#unselect-all-services').click(function(){
+    $('#chosen-target-services > option').prop('selected', false);
+    $('#chosen-target-services').trigger('chosen:updated');
+  })
+}
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 

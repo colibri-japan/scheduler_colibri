@@ -40,7 +40,19 @@
 
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
-			<p class="planning-activity-module-title"><%= @nurse.try(:name) %></p>
+			<div id="planning-nurse-information">
+				<div class="planning-nurse-module-title">
+					<%= @nurse.try(:name) %>
+				</div>
+				<div id="address-phone-container">
+					<% if @nurse.address.present? %>
+						<span class="glyphicon glyphicon-home"></span><%= " #{@nurse.address}  " %>
+					<% end %>
+					<% if @nurse.phone_number.present? %>
+						<span class="glyphicon glyphicon-phone"></span><%= " #{@nurse.phone_number}" %>
+					<% end %>
+				</div>
+			</div>
 			<div id="activity-show-button-container" class="no-print">
 				<div class="btn btn-success text-white" id="print-button"><span class="glyphicon glyphicon-print" style="color:white"></span> 印刷</div>
 				<span id="activity-show-button" class="btn btn-success"><span class="glyphicon glyphicon-time" style="color:white"></span> 最新編集履歴</span>
@@ -48,10 +60,7 @@
 			</div>
 		</div>
 
-		<div class="print font-size-large">
-			住所：<%= @nurse.address %><br/>
-			電話番号：<%= @nurse.phone_number %>
-		</div>
+
 
 		<div id="planning-container">
 			<div class="nurse_calendar"></div>

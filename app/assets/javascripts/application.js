@@ -45,6 +45,9 @@ initialize_nurse_calendar = function(){
         },
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       slotLabelFormat: 'H:mm',
@@ -193,6 +196,9 @@ initialize_patient_calendar = function(){
       views: {
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       header: {
@@ -347,6 +353,9 @@ initialize_master_calendar = function() {
       	},
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       slotLabelFormat: 'H:mm',
@@ -535,6 +544,9 @@ initialize_calendar = function() {
       	},
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       slotLabelFormat: 'H:mm',

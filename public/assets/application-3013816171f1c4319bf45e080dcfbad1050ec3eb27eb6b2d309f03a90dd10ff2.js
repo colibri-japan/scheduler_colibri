@@ -83007,7 +83007,6 @@ var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
   
   $('.nurse_calendar').each(function(){
-    loadNurseRecurringAppointments();
     var nurse_calendar = $(this);
     nurse_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -83021,6 +83020,9 @@ initialize_nurse_calendar = function(){
         },
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       slotLabelFormat: 'H:mm',
@@ -83132,10 +83134,11 @@ initialize_nurse_calendar = function(){
               });
               $('.modal').modal('hide');
             });
-
           });
-        
+      },
 
+      eventAfterAllRender: function (view) {
+        appointmentComments();
       }
 
 
@@ -83149,7 +83152,6 @@ var initialize_patient_calendar;
 initialize_patient_calendar = function(){
   
   $('.patient_calendar').each(function(){
-    loadPatientRecurringAppointments();
     var patient_calendar = $(this);
     patient_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -83169,6 +83171,9 @@ initialize_patient_calendar = function(){
       views: {
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       header: {
@@ -83298,7 +83303,11 @@ initialize_patient_calendar = function(){
 
             
            });
-         }
+         },
+
+      eventAfterAllRender: function (view) {
+        appointmentComments();
+      }
 
     });
   })
@@ -83306,8 +83315,6 @@ initialize_patient_calendar = function(){
 
 var initialize_master_calendar;
 initialize_master_calendar = function() {
-  loadMasterAppointmentDetails();
-  synchronizeMasterTitle();
   $('.master_calendar').each(function(){
     var master_calendar = $(this);
     master_calendar.fullCalendar({
@@ -83321,6 +83328,9 @@ initialize_master_calendar = function() {
       	},
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       slotLabelFormat: 'H:mm',
@@ -83350,11 +83360,10 @@ initialize_master_calendar = function() {
         url: window.corporationNursesURL,
       },
 
-      events: window.appointmentsURL + '?master=true',
+      events: window.appointmentsURL + '&master=true',
 
       eventRender: function eventRender(event, element, view) {
         if (view.name != 'agendaDay') {
-            synchronizeMasterTitle();
             $('#nurse-info-block-master').removeClass('.print-master-no-view');
             element.find('.fc-title').text(function(i,t){
               if ($('#toggle-patients-nurses').is(':checked')) {
@@ -83437,18 +83446,13 @@ initialize_master_calendar = function() {
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-
-          if (view.name == 'agendaDay') {
-            $('#recurring_appointment_nurse_id').val(resource.id);
-          } else {
-            var patientSelected = $('.master-element-selected').hasClass('list-patient') ? true : false;
-
-            if (patientSelected) {
-              $('#recurring_appointment_patient_id').val($('.master-element-selected').data('resource-id'));
-            } else {
-              $('#recurring_appointment_nurse_id').val($('.master-element-selected').data('resource-id'));
-            }
+          if (window.nurseId) {
+            $('#recurring_appointment_nurse_id').val(window.nurseId);
           }
+          if (window.patientId) {
+            $('#recurring_appointment_patient_id').val(window.patientId);
+          }
+
         });
 
         master_calendar.fullCalendar('unselect');
@@ -83490,7 +83494,11 @@ initialize_master_calendar = function() {
               });
             }
             return false;
-         }
+         },
+      
+      eventAfterAllRender: function(view) {
+        appointmentComments();
+      }
     })
     
   });
@@ -83511,6 +83519,9 @@ initialize_calendar = function() {
       	},
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
+        month: {
+          displayEventEnd: true,
         }
       },
       slotLabelFormat: 'H:mm',
@@ -83704,68 +83715,16 @@ initialize_calendar = function() {
             })
            });
 
-         }
+         },
 
-
+      eventAfterAllRender: function (view) {
+        appointmentComments();
+      }
     });
   });
 };
 
-var loadPatientRecurringAppointments;
-loadPatientRecurringAppointments = function(){
-  $.ajax({
-    url: window.recurringAppointmentsURL + '.js?patient_id=' + window.patientId + '&print=true',
-    type: 'GET',
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-  });
-  return true;
-};
 
-var loadNurseRecurringAppointments;
-loadNurseRecurringAppointments = function(){
-  $.ajax({
-    url: window.recurringAppointmentsURL + '.js?nurse_id=' + window.nurseId + '&print=true',
-    type: 'GET',
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-  });
-  return true;
-}
-
-var loadMasterAppointmentDetails;
-loadMasterAppointmentDetails = function(){
-  var targetName = $('.master-element-selected').text();
-  var targetType = $('.master-element-selected').hasClass('list-patient') ? 'patient_name=' : 'nurse_name=';
-  if (window.recurringAppointmentsURL) {
-    $.ajax({
-      url: window.recurringAppointmentsURL + '.js?master=true&' + targetType + targetName + '&print=true',
-      type: 'GET',
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    });
-    return true;
-  }
-
-}
-
-var synchronizeMasterTitle;
-synchronizeMasterTitle = function(){
-  $('.master-title').text(function(){
-    if ($('.master-element-selected').hasClass('list-patient')) {
-      return $('.master-element-selected').text() + ' 様';
-    } else {
-      return $('.master-element-selected').text();
-    }
-  });
-}
-
-var synchronizeMasterAddressAndPhone;
-synchronizeMasterAddressAndPhone = function(){
-  $('#master-address').text(function(){
-    return $('.master-element-selected').data('address');
-  });
-  $('#master-phone').text(function(){
-    return $('.master-element-selected').data('phone');
-  })
-}
 
 var masterSwitchToggle;
 masterSwitchToggle = function() {
@@ -83884,6 +83843,30 @@ toggleProvidedServiceForm = function(){
   }
 }
 
+var appointmentComments;
+appointmentComments = function() {
+  $('#appointment-comments').empty();
+  if ($('.master_calendar').length) {
+    var calendar = $('.master_calendar');
+  } else if ($('.calendar').length) {
+    var calendar = $('.calendar');
+  } else if ($('.patient_calendar').length) {
+    var calendar = $('.patient_calendar');
+  } else if ($('.nurse_calendar').length) {
+    var calendar = $('.nurse_calendar');
+  }
+
+  var clientEvents = calendar.fullCalendar('clientEvents');
+
+  clientEvents.forEach(event => {
+    if (event.description) {
+      var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse_name + ' 利用者：' + event.patient_name + ' ' + event.description;
+      $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
+    }
+  })
+  
+}
+
 var addProvidedServiceToggle;
 addProvidedServiceToggle = function(){
   $('#hour-based-wage-toggle').bootstrapToggle({
@@ -83904,7 +83887,7 @@ addProvidedServiceToggle = function(){
     no_results_text: 'サービスが見つかりません',
     placeholder_text_multiple: 'サービスを選択してください'
   });
-}
+};
 
 var individualMasterToGeneral;
 individualMasterToGeneral = function(){
@@ -83928,6 +83911,55 @@ individualMasterToGeneral = function(){
   })
 }
 
+var toggleFulltimeEmployee;
+toggleFulltimeEmployee = function(){
+  $('#full-timer-toggle').bootstrapToggle({
+    on: '正社員',
+    off: '非正社員',
+    size: 'normal',
+    onstyle: 'success',
+    offstyle: 'secondary',
+    width: 170
+  });
+}
+
+var toggleReminderable;
+toggleReminderable = function(){
+  $('#reminderable-toggle').bootstrapToggle({
+    on: 'リマインダー送信',
+    off: 'リマインダーなし',
+    onstyle: 'success',
+    offstyle: 'secondary',
+    width: 170
+  })
+}
+
+var phoneMailRequirement;
+phoneMailRequirement = function(){
+  if ($('#reminderable-toggle').is(':checked')) {
+    $('#nurse_phone_mail').prop('required', true);
+  }
+  $('#reminderable-toggle').change(function(){
+    if ($(this).is(':checked')) {
+      $('#nurse_phone_mail').prop('required', true);
+    } else {
+      $('#nurse_phone_mail').prop('required', false);
+    }
+  })
+}
+
+var providedServicesChosenOptions;
+providedServicesChosenOptions = function(){
+  $('#select-all-services').click(function(){
+    $('#chosen-target-services > option').prop('selected', true);
+    $('#chosen-target-services').trigger('chosen:updated');
+  });
+
+  $('#unselect-all-services').click(function(){
+    $('#chosen-target-services > option').prop('selected', false);
+    $('#chosen-target-services').trigger('chosen:updated');
+  })
+}
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
@@ -83935,10 +83967,14 @@ $(document).on('turbolinks:load', initialize_patient_calendar);
 $(document).on('turbolinks:load', initialize_master_calendar);
 
 $(document).on('turbolinks:load', function(){
-  $("table > tbody > tr[data-link]").not('thead').click(function(){
-    if (this.dataset.link != '') {
-      window.location = this.dataset.link
-    } 
+
+
+  $('tr.nurse-clickable-row').click(function(){
+    $.getScript($(this).data('link'));
+  });
+
+  $('tr.clickable-row').click(function(){
+    window.location = $(this).data('link');
   });
 
   $('#account-edit').click(function(){
@@ -84165,12 +84201,7 @@ $(document).on('turbolinks:load', function(){
 
 
   $('.master-list-element').click(function(){
-    $('.master-list-element').removeClass('master-element-selected');
-    $(this).addClass('master-element-selected');
-    loadMasterAppointmentDetails();
-    synchronizeMasterTitle();
-    synchronizeMasterAddressAndPhone();
-    $('.master_calendar').fullCalendar('rerenderEvents');
+    window.location = $(this).data('url');
   });
 
   $('#account-settings-dropdown').hide();
@@ -84193,31 +84224,30 @@ $(document).on('turbolinks:load', function(){
 
   var copyMasterState;
 
-  $('#copy-master').click(function(){
-    if (copyMasterState == 1) {
-      alert('マスターを全体へコピーしてます、少々お待ちください');
-    } else {
-      var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます。数十秒かかる可能性があります。');
-      if (message && copyMasterState != 1) {
-        copyMasterState = 1;
-        $.ajax({
-          url: window.masterToSchedule,
-          type: 'PATCH',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-        })
-      }
-    }
-  });
-
-  $('#full-timer-toggle').bootstrapToggle({
-    on: '正社員',
-    off: '非正社員',
-    size: 'normal',
-    onstyle: 'success',
-    offstyle: 'secondary'
-  });
-
   $('#loader-container').hide();
+
+  $('#master-options').click(function(){
+    $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+    $('#remote_container').html($('#modal-master-options'));
+    $('#modal-master-options').modal('show');
+    $('#copy-master').click(function(){
+      if (copyMasterState == 1) {
+        alert('マスターを全体へコピーしてます、少々お待ちください');
+      } else {
+        var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
+        if (message && copyMasterState != 1) {
+          copyMasterState = 1;
+          $.ajax({
+            url: window.masterToSchedule,
+            type: 'PATCH',
+            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+          })
+        }
+      }
+    })
+
+  })
 
 
 

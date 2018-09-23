@@ -76,14 +76,9 @@ initialize_nurse_calendar = function(){
 
       select: function(start, end) {
         $.getScript(window.createRecurringAppointmentURL, function() {
-          $('.master-toggle').bootstrapToggle({
-             on: 'マスター',
-             off: '普通',
-             size: 'normal',
-             onstyle: 'success',
-             offstyle: 'info',
-             width: 100,
-          });
+          
+          masterSwitchToggle();
+
           $('#form-save-decoy').click(function(){
             if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
               alert('ヘルパーが未定です。');
@@ -129,7 +124,9 @@ initialize_nurse_calendar = function(){
         	$('#recurring_appointment_start_5i').val(moment(start).format('mm'));
         	$('#recurring_appointment_end_4i').val(moment(end).format('HH'));
         	$('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-        	$("#recurring_appointment_nurse_id").val(window.nurseId);
+          $("#recurring_appointment_nurse_id").val(window.nurseId);
+          
+          recurringAppointmentFormChosen();
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -146,12 +143,14 @@ initialize_nurse_calendar = function(){
           $.getScript(event.edit_url, function() {
             masterSwitchToggle();
             addToEditListButton();
+            appointmentFormChosen();
 
             $('#edit-all-occurrences').click(function(){
               var editUrl = $(this).data('edit-url');
               $('.modal').on('hidden.bs.modal', function () {
                 $.getScript(editUrl, function () {
                   masterSwitchToggle();
+                  recurringAppointmentFormChosen();
                   recurringAppointmentEditButtons();
                   editAfterDate();
                   deleteRecurringAppointment();
@@ -215,14 +214,9 @@ initialize_patient_calendar = function(){
 
       select: function(start, end) {
         $.getScript(window.bootstrapToggleUrl, function() {
-          $('.master-toggle').bootstrapToggle({
-             on: 'マスター',
-             off: '普通',
-             size: 'normal',
-             onstyle: 'success',
-             offstyle: 'info',
-             width: 100,
-          });
+          
+          masterSwitchToggle();
+
           $('#form-save-decoy').click(function(){
             if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
               alert('ヘルパーが未定です。');
@@ -280,6 +274,8 @@ initialize_patient_calendar = function(){
           $('#unavailability_end_4i').val(moment(end).format('HH'));
           $('#unavailability_end_5i').val(moment(end).format('mm'));
           $("#unavailability_patient_id").val(window.patientId);
+
+          recurringAppointmentFormChosen();
         });
 
 
@@ -312,12 +308,14 @@ initialize_patient_calendar = function(){
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
             addToEditListButton();
+            appointmentFormChosen();
 
             $('#edit-all-occurrences').click(function(){
               var editUrl = $(this).data('edit-url');
               $('.modal').on('hidden.bs.modal', function () {
                 $.getScript(editUrl, function () {
                   masterSwitchToggle();
+                  recurringAppointmentFormChosen();
                   recurringAppointmentEditButtons();
                   editAfterDate();
                   deleteRecurringAppointment();
@@ -418,14 +416,9 @@ initialize_master_calendar = function() {
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
-          $('.master-toggle').bootstrapToggle({
-             on: 'マスター',
-             off: '普通',
-             size: 'normal',
-             onstyle: 'success',
-             offstyle: 'info',
-             width: 100,
-          });
+          
+          masterSwitchToggle();
+
           $('#form-save-decoy').click(function(){
             if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
               alert('ヘルパーが未定です。');
@@ -477,6 +470,7 @@ initialize_master_calendar = function() {
           if (window.patientId) {
             $('#recurring_appointment_patient_id').val(window.patientId);
           }
+          recurringAppointmentFormChosen();
 
         });
 
@@ -502,6 +496,7 @@ initialize_master_calendar = function() {
             if (window.userIsAdmin == 'true') {
               $.getScript(appointment.edit_url + '?master=true', function() {
                 masterSwitchToggle();
+                appointmentFormChosen();
 
                 $('#edit-all-occurrences').click(function(){
                   var editUrl = $(this).data('edit-url');
@@ -509,6 +504,7 @@ initialize_master_calendar = function() {
                     $.getScript(editUrl, function () {
                       masterSwitchToggle();
                       recurringAppointmentEditButtons();
+                      recurringAppointmentFormChosen();
                       editAfterDate();
                       deleteRecurringAppointment();
                       individualMasterToGeneral();
@@ -629,14 +625,9 @@ initialize_calendar = function() {
 
       select: function(start, end, jsEvent, view, resource) {
       	$.getScript(window.bootstrapToggleUrl, function() {
-          $('.master-toggle').bootstrapToggle({
-             on: 'マスター',
-             off: '普通',
-             size: 'normal',
-             onstyle: 'success',
-             offstyle: 'info',
-             width: 100,
-          });
+          
+          masterSwitchToggle();
+
           $('#form-save-decoy').click(function(){
             if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
               alert('ヘルパーが未定です。');
@@ -699,6 +690,7 @@ initialize_calendar = function() {
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
           }
+          recurringAppointmentFormChosen();
 
         });
 
@@ -725,12 +717,14 @@ initialize_calendar = function() {
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
             addToEditListButton();
+            appointmentFormChosen();
 
             $('#edit-all-occurrences').click(function(){
               var editUrl = $(this).data('edit-url');
               $('.modal').on('hidden.bs.modal', function(){
                 $.getScript( editUrl , function(){
                     masterSwitchToggle();
+                    recurringAppointmentFormChosen();
                     recurringAppointmentEditButtons();
                     editAfterDate();
                     deleteRecurringAppointment();
@@ -750,6 +744,25 @@ initialize_calendar = function() {
 };
 
 
+var appointmentFormChosen;
+appointmentFormChosen = function(){
+  $('#appointment_nurse_id').chosen({
+    no_results_text: 'ヘルパーが見つかりません',
+  });
+  $('#appointment_patient_id').chosen({
+    no_results_text: '利用者が見つかりません',
+  })
+}
+
+var recurringAppointmentFormChosen;
+recurringAppointmentFormChosen = function(){
+  $('#recurring_appointment_nurse_id').chosen({
+    no_results_text: 'ヘルパーが見つかりません',
+  });
+  $('#recurring_appointment_patient_id').chosen({
+    no_results_text: '利用者が見つかりません',
+  })
+}
 
 var masterSwitchToggle;
 masterSwitchToggle = function() {

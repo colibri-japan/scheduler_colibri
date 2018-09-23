@@ -1,3 +1,8 @@
 // Place all the styles related to the Appointments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#appointment_nurse_id_chosen, #appointment_patient_id_chosen {
+    width: 130px !important;
+}

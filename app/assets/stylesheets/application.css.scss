@@ -320,9 +320,6 @@ th {
 	color: #4f5b66;
 }
 
-.chosen-container {
-	width: 250px !important;
-}
 
 .required-field {
 	color: red;
@@ -348,7 +345,9 @@ th {
 .scrollbar-custom::-webkit-scrollbar-thumb {
   border-radius: 7px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-  background-color: #b1b1b1; }
+  background-color: #b1b1b1; 
+}
+
 
 @media print {
 	.no-print {

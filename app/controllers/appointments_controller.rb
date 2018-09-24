@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: [:show, :edit, :destroy]
+  before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_edit_requested]
   before_action :set_planning
   before_action :set_corporation
 
@@ -73,18 +73,13 @@ class AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1
   # PATCH/PUT /appointments/1.json
   def update
-    @original_appointment = Appointment.find(params[:id])
-    @appointment = @original_appointment.dup
-    @appointment.original_id = @original_appointment.id
+    @appointment = Appointment.find(params[:id])
+    store_original_params
     @appointment.recurring_appointment_id = nil
-    params[:commit] == '編集リストへ追加' ?  @appointment.edit_requested = true : @appointment.edit_requested = false
-
-    puts appointment_params
 
     respond_to do |format|
       if @appointment.update(appointment_params)
-        @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @original_appointment.nurse.try(:name), previous_patient: @original_appointment.patient.try(:name), previous_start: @original_appointment.start, previous_end: @original_appointment.end
-        @original_appointment.update(displayable: false, deleted: true, deleted_at: Time.current)
+        @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end
         format.js
         format.json { render :show, status: :ok, location: @appointment }
       else
@@ -94,20 +89,40 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  # DELETE /appointments/1
-  # DELETE /appointments/1.json
-  def destroy
+  def archive
     @appointment.update(displayable: false, deleted: true, deleted_at: Time.current, recurring_appointment_id: nil)
-    respond_to do |format|
-      @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id
-      format.js
+    @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id
+  end
+
+  def toggle_edit_requested
+    puts @appointment.edit_requested
+    @appointment.edit_requested = !@appointment.edit_requested
+
+    puts @appointment.edit_requested
+
+    if @appointment.save
+      @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@appointment.edit_requested
     end
   end
 
+  # DELETE /appointments/1
+  # DELETE /appointments/1.json
+  def destroy
+    @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id
+    @appointment.delete
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Use methods to share common setup or constraints between actions.
     def set_appointment
       @appointment = Appointment.find(params[:id])
+    end
+
+    def store_original_params
+      @previous_patient = @appointment.patient.try(:name)
+      @previous_start = @appointment.start
+      @previous_end = @appointment.end
+      @previous_nurse = @appointment.nurse.try(:name)
     end
 
     def set_corporation

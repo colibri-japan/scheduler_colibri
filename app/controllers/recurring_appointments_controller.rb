@@ -64,6 +64,8 @@ class RecurringAppointmentsController < ApplicationController
     @master = @recurring_appointment.master
     @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(start: 'asc')
     @appointments_after_first = @appointments.drop(1)
+
+    @activities = PublicActivity::Activity.where(recurring_appointment_id: @recurring_appointment.id)
   end
 
   # POST /recurring_appointments
@@ -89,7 +91,6 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1.json
   def update    
     @recurring_appointment = RecurringAppointment.find(params[:id])
-    add_to_edit_requested?
     set_previous_params
       
     if @recurring_appointment.update(recurring_appointment_params)
@@ -97,13 +98,26 @@ class RecurringAppointmentsController < ApplicationController
     end
   end
 
+  def toggle_edit_requested
+    @recurring_appointment = RecurringAppointment.find(params[:id])
+
+    !@recurring_appointment.edit_requested
+    if @recurring_appointment.save
+      @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@recurring_appointment.edit_requested
+    end
+  end
+
+  def archive
+    @recurring_appointment.udpate(displayable: false, deleted: true, deleted_at: Time.current)
+    @activity = @recurring_appointment.create_activity :delete, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id                    
+  end
+
 
   # DELETE /recurring_appointments/1
   # DELETE /recurring_appointments/1.json
   def destroy
-    if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current)
-      @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
-    end
+    @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+    @recurring_appointment.delete
   end
 
   # PATCH /recurring_appointments/1/from_master_to_general

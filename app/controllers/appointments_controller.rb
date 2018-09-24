@@ -91,7 +91,7 @@ class AppointmentsController < ApplicationController
 
   def archive
     @appointment.update(displayable: false, deleted: true, deleted_at: Time.current, recurring_appointment_id: nil)
-    @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id
+    @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id
   end
 
   def toggle_edit_requested
@@ -101,7 +101,7 @@ class AppointmentsController < ApplicationController
     puts @appointment.edit_requested
 
     if @appointment.save
-      @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@appointment.edit_requested
+      @activity = @appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@appointment.edit_requested
     end
   end
 

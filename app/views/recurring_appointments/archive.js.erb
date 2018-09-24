@@ -1,0 +1,17 @@
+<% if @recurring_appointment.errors.any?  %>
+  alert("<%= j @recurring_appointment.errors.values.join('; ') %>");
+
+<% else %>
+  $('.modal').modal('hide');
+  
+  <% @appointments.each do |appointment| %>
+    $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
+    $('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
+    $('.nurse_calendar').fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
+    $('.master_calendar').fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
+  <% end %>
+
+  $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+
+<% end %>
+

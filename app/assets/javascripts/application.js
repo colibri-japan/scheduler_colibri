@@ -129,7 +129,6 @@ initialize_nurse_calendar = function(){
       eventClick: function(event, jsEvent, view) {
           $.getScript(event.edit_url, function() {
             masterSwitchToggle();
-            addToEditListButton();
             appointmentFormChosen();
 
             $('#edit-all-occurrences').click(function(){
@@ -140,7 +139,6 @@ initialize_nurse_calendar = function(){
                   recurringAppointmentFormChosen();
                   recurringAppointmentEditButtons();
                   editAfterDate();
-                  deleteRecurringAppointment();
                 })
               });
               $('.modal').modal('hide');
@@ -281,7 +279,6 @@ initialize_patient_calendar = function(){
       eventClick: function(appointment, jsEvent, view) {
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
-            addToEditListButton();
             appointmentFormChosen();
 
             $('#edit-all-occurrences').click(function(){
@@ -292,7 +289,6 @@ initialize_patient_calendar = function(){
                   recurringAppointmentFormChosen();
                   recurringAppointmentEditButtons();
                   editAfterDate();
-                  deleteRecurringAppointment();
                 })
               });
               $('.modal').modal('hide');
@@ -467,7 +463,6 @@ initialize_master_calendar = function() {
                       recurringAppointmentEditButtons();
                       recurringAppointmentFormChosen();
                       editAfterDate();
-                      deleteRecurringAppointment();
                       individualMasterToGeneral();
                     })
                   });
@@ -663,7 +658,6 @@ initialize_calendar = function() {
       eventClick: function(appointment, jsEvent, view) {
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
-            addToEditListButton();
             appointmentFormChosen();
 
             $('#edit-all-occurrences').click(function(){
@@ -674,7 +668,6 @@ initialize_calendar = function() {
                     recurringAppointmentFormChosen();
                     recurringAppointmentEditButtons();
                     editAfterDate();
-                    deleteRecurringAppointment();
                 })
               });
               $('.modal').modal('hide');
@@ -746,7 +739,6 @@ recurringAppointmentEditButtons = function(){
       }
     }
   });
-  addToEditListButton();
 }
 
 var editAfterDate;
@@ -761,40 +753,6 @@ editAfterDate = function(){
   });
 }
 
-var deleteRecurringAppointment;
-deleteRecurringAppointment = function(){
-  $('#delete-recurring-appointment-decoy').click(function(){
-    var idSelected = $('#recurring_appointment_editing_occurrences_after').find(':selected').val();
-    if (idSelected) {
-      var textSelected = $('#recurring_appointment_editing_occurrences_after').find(':selected').text();
-      var message = confirm(textSelected + "の繰り返しが削除されます。");
-      if (message) {
-        var allAppointmentIds = JSON.parse(window.appointmentIds);
-        var index = allAppointmentIds.indexOf(parseInt(idSelected));
-        var slicedArray = allAppointmentIds.slice(index);
-
-        slicedArray.forEach(id => {
-          $.ajax({
-            url: window.planningPath + '/appointments/' + id + '.js',
-            type: 'DELETE',
-            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-          })
-        });
-
-        $('.modal').modal('hide');
-      }
-    } else {
-      var message = confirm('全繰り返しが削除されます');
-      if (message) {
-        $.ajax({
-          url: $('#delete-recurring-appointment').prop('href') + '.js',
-          type: 'DELETE',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-        })
-      }
-    }
-  })
-}
 
 var toggleProvidedServiceForm;
 toggleProvidedServiceForm = function(){

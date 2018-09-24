@@ -76,7 +76,7 @@
       <% unless appointment.new_record? || appointment.master == true %>  
         <%= link_to '編集リストへ追加', planning_appointment_toggle_edit_requested_path(@planning, appointment), method: :patch, remote: true, class: 'btn btn-secondary', id: 'add-appointment-to-edit-list' %>
       <% end %>
-      <%= link_to '削除', planning_appointment_path(@planning, appointment), method: :delete, class: 'btn btn-danger', data: {confirm: 'サービスが削除されます'}, remote: true unless appointment.new_record? %>
+      <%= link_to '削除する', planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-danger', data: {confirm: 'サービスが削除されます'}, remote: true unless appointment.new_record? %>
     </div>
   </div>
 

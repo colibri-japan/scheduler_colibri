@@ -43,11 +43,10 @@ class AppointmentsController < ApplicationController
   end
 
   # GET /appointments/1/edit
-  def edit
-    from_master_planning?
-    
+  def edit  
     @nurses = @corporation.nurses.all 
     @patients = @corporation.patients.all
+    @master = @appointment.master
     @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end
 

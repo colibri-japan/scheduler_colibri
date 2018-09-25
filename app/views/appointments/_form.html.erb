@@ -64,18 +64,16 @@
       <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
     </div>
 
-    <% if appointment.new_record? %>    
+    <% unless @master%>
       <div class="form-group">
-        <%= form.label :edit_requested, "編集リストへ追加する", class: "colibri-form-label" %>
-        <%= form.check_box :edit_requested, class: "edit-requested-toggle" %>
+        <%= form.label :edit_requested, "編集リスト", class: "colibri-form-label" %>
+        <%= form.check_box :edit_requested, class: "edit-requested-toggle", data: {requested: appointment.edit_requested} %>
       </div>
     <% end %>
 
+
     <div class="actions">
       <%= form.submit "セーブする", class: "btn btn-info" %>
-      <% unless appointment.new_record? || appointment.master == true %>  
-        <%= link_to '編集リストへ追加', planning_appointment_toggle_edit_requested_path(@planning, appointment), method: :patch, remote: true, class: 'btn btn-secondary', id: 'add-appointment-to-edit-list' %>
-      <% end %>
       <%= link_to '削除する', planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-danger', data: {confirm: 'サービスが削除されます'}, remote: true unless appointment.new_record? %>
     </div>
   </div>

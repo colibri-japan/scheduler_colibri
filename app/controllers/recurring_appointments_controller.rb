@@ -113,7 +113,7 @@ class RecurringAppointmentsController < ApplicationController
   end
 
   def archive
-    if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current)
+    if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current, editing_occurrences_after: recurring_appointment_params[:editing_occurrences_after])
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id  
       puts 'saved recurring appointment and activity, now fetching appointments'
       @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id)
@@ -200,7 +200,7 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after)
+      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after, :edit_requested)
     end
 
 

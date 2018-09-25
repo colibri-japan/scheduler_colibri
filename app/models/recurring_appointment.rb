@@ -23,6 +23,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :frequency, inclusion: 0..2
 	validate :cannot_overlap_existing_appointment_create, on: :create
 	validate :cannot_overlap_existing_appointment_update, on: :update
+	validate :edit_requested_and_undefined_nurse
 
 	after_create :create_individual_appointments
 	after_update :update_individual_appointments
@@ -157,6 +158,13 @@ class RecurringAppointment < ApplicationRecord
 			end
 		end
 	end
+
+	def edit_requested_and_undefined_nurse
+		puts 'edit request and undefined nurse'
+		nurse = Nurse.find(self.nurse_id)
+		errors.add(:nurse_id, "ヘルパーを選択、または編集リストへ追加オプションを選択してください。") if nurse.name == '未定' && self.edit_requested.blank?
+	end
+
 
 	def calculate_end_day
 		puts 'calculating end day'

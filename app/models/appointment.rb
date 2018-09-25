@@ -10,10 +10,10 @@ class Appointment < ApplicationRecord
 
 	validates :title, presence: true
 	validate :do_not_overlap
+	validate :edit_requested_and_undefined_nurse
 
 	before_save :default_master
 	before_save :default_displayable
-	before_save :edit_request_from_nurse_name
 
 	after_create :create_provided_service
 	after_update :update_provided_service
@@ -69,10 +69,10 @@ class Appointment < ApplicationRecord
 		self.displayable = true if self.displayable.nil?
 	end
 
-	def edit_request_from_nurse_name
-		puts 'edit requested mitei'
+	def edit_requested_and_undefined_nurse
+		puts 'edit request and undefined nurse'
 		nurse = Nurse.find(self.nurse_id)
-		self.edit_requested = true if nurse.name == '未定'
+		errors.add(:nurse_id, "ヘルパーを選択、または編集リストへ追加オプションを選択してください。") if nurse.name == '未定' && self.edit_requested.blank?
 	end
 
 	def self.mark_appointments_as_deleted

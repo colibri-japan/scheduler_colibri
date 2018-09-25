@@ -104,12 +104,13 @@
         <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
       </div>
 
-      <% if recurring_appointment.new_record? %>    
+      <% unless @master %>
         <div class="form-group">
-          <%= form.label :edit_requested, "編集リストへ追加する", class: "colibri-form-label" %>
-          <%= form.check_box :edit_requested, class: "edit-requested-toggle" %>
+          <%= form.label :edit_requested, "編集リスト", class: "colibri-form-label" %>
+          <%= form.check_box :edit_requested, class: "edit-requested-toggle", data: {requested: recurring_appointment.edit_requested} %>
         </div>
       <% end %>
+
 
 
 
@@ -118,14 +119,11 @@
 
       <div class="actions">
         <%= form.submit 'セーブする', class: 'btn btn-info', id: 'save-recurring-appointment' %>
-        <% unless recurring_appointment.new_record? || recurring_appointment.master == true %>  
-          <%= link_to '編集リストへ追加', planning_recurring_appointment_toggle_edit_requested_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary', id: 'add-recurring-appointment-to-edit-list' %>
-        <% end %>
         <% if recurring_appointment.master == true && !recurring_appointment.new_record? %>
           <div class='btn btn-success text-white' id='individual-from-master-to-general' data-master-to-general-url='<%= from_master_to_general_path(@planning, recurring_appointment, format: :js) %>'>全体へ反映する</div>
         <% end %>
         <% unless recurring_appointment.new_record? %>
-          <%= link_to '削除', planning_recurring_appointment_archive_path(@planning, recurring_appointment), method: :patch, remote: true, data: {confirm: 'サービスの全繰り返しが削除されます'}, class: 'btn btn-danger', id: 'archive-recurring-appointment' %>
+          <div class='btn btn-danger text-white' id='recurring-appointment-archive' data-archive-url="<%= planning_recurring_appointment_archive_path(@planning, recurring_appointment) %>">削除する</div>
         <% end %>
 
 

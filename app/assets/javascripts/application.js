@@ -78,6 +78,7 @@ initialize_nurse_calendar = function(){
         $.getScript(window.createRecurringAppointmentURL, function() {
           
           masterSwitchToggle();
+          toggleEditRequested();
 
           $('#form-save-decoy').click(function(){
             if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
@@ -130,6 +131,7 @@ initialize_nurse_calendar = function(){
           $.getScript(event.edit_url, function() {
             masterSwitchToggle();
             appointmentFormChosen();
+            toggleEditRequested();
 
             $('#edit-all-occurrences').click(function(){
               var editUrl = $(this).data('edit-url');
@@ -139,6 +141,8 @@ initialize_nurse_calendar = function(){
                   recurringAppointmentFormChosen();
                   recurringAppointmentEditButtons();
                   editAfterDate();
+                  toggleEditRequested();
+                  recurringAppointmentArchive();
                 })
               });
               $('.modal').modal('hide');
@@ -201,6 +205,7 @@ initialize_patient_calendar = function(){
         $.getScript(window.bootstrapToggleUrl, function() {
           
           masterSwitchToggle();
+          toggleEditRequested();
 
           $('#form-save-decoy').click(function(){
             if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
@@ -280,6 +285,7 @@ initialize_patient_calendar = function(){
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
             appointmentFormChosen();
+            toggleEditRequested();
 
             $('#edit-all-occurrences').click(function(){
               var editUrl = $(this).data('edit-url');
@@ -289,6 +295,8 @@ initialize_patient_calendar = function(){
                   recurringAppointmentFormChosen();
                   recurringAppointmentEditButtons();
                   editAfterDate();
+                  toggleEditRequested();
+                  recurringAppointmentArchive();
                 })
               });
               $('.modal').modal('hide');
@@ -388,6 +396,7 @@ initialize_master_calendar = function() {
         $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
           
           masterSwitchToggle();
+          toggleEditRequested();
 
           $('#form-save-decoy').click(function(){
             if ($('#recurring_appointment_nurse_id').find('option:selected').text() == '未定') {
@@ -454,6 +463,7 @@ initialize_master_calendar = function() {
               $.getScript(appointment.edit_url + '?master=true', function() {
                 masterSwitchToggle();
                 appointmentFormChosen();
+                toggleEditRequested();
 
                 $('#edit-all-occurrences').click(function(){
                   var editUrl = $(this).data('edit-url');
@@ -464,6 +474,8 @@ initialize_master_calendar = function() {
                       recurringAppointmentFormChosen();
                       editAfterDate();
                       individualMasterToGeneral();
+                      toggleEditRequested();
+                      recurringAppointmentArchive();
                     })
                   });
                   $('.modal').modal('hide');
@@ -659,6 +671,7 @@ initialize_calendar = function() {
            $.getScript(appointment.edit_url, function() {
             masterSwitchToggle();
             appointmentFormChosen();
+            toggleEditRequested();
 
             $('#edit-all-occurrences').click(function(){
               var editUrl = $(this).data('edit-url');
@@ -668,6 +681,8 @@ initialize_calendar = function() {
                     recurringAppointmentFormChosen();
                     recurringAppointmentEditButtons();
                     editAfterDate();
+                    toggleEditRequested();
+                    recurringAppointmentArchive();
                 })
               });
               $('.modal').modal('hide');
@@ -886,12 +901,36 @@ providedServicesChosenOptions = function(){
 }
 
 let toggleEditRequested = () => {
-  $('.edit-requested-toggle').bootstrapToggle({
-    on: '追加する',
-    off: '追加しない',
+  let $this  = $('.edit-requested-toggle')
+  let requested = $this.data('requested')
+  let onText = requested ? '残す' : '追加する';
+  let offText = requested ? '消す' : '追加しない';
+  $this.bootstrapToggle({
+    on: onText,
+    off: offText,
     onstyle: 'success',
     offstyle: 'secondary',
     width: 120
+  })
+}
+
+let recurringAppointmentArchive = () => {
+  $('#recurring-appointment-archive').click(function(){
+    let archiveUrl = $(this).data('archive-url');
+    let val = $('select#recurring_appointment_editing_occurrences_after').val();
+    let message = confirm('選択された繰り返しが削除されます。');
+    if (message) {
+      $.ajax({
+        url: archiveUrl,
+        type: 'PATCH',
+        data: {
+          recurring_appointment: {
+            editing_occurrences_after: val,
+          }
+        },
+        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+      })
+    }
   })
 }
 

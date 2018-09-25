@@ -1,31 +1,37 @@
 wb = xlsx_package.workbook
 
-wb.add_worksheet(name: "給与支払明細書") do |sheet|
-	sheet.add_row ['給与支払明細書']
-	sheet.add_row ['ヘルパー氏名', @nurse.try(:name), '', "#{@planning.business_month}月", current_user.corporation.name]
-	sheet.add_row
-	sheet.add_row ['日付', 'サービスタイプ', '利用者名', '提供時間', 'スタート', '終了', '時給/単価', '回数', '計']
-	@services_till_now.each do |service|
-		
-		start_time = service.appointment_start? ? service.appointment_start.strftime("%H:%M") : ''
-		end_time = service.appointment_start? ? service.appointment_end.strftime("%H:%M") : ''
-		sheet.add_row [service.service_date.strftime("%-m月%-d日"), service.try(:title), service.patient.try(:name), from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:unit_cost), service.try(:service_counts), service.try(:total_wage) ]
-	end
-	if @counter.present?
-		sheet.add_row ['', '移動手当', '', '',  @counter.try(:unit_cost), @counter.try(:service_counts), @counter.try(:total_wage)]
-	end
-	sheet.add_row ['','','','','','','','合計：',@total_till_now]
+wb.styles do |s|
+	title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+	thick_border = s.add_style border: { style: :thick, color: 'FF000000'  }, sz: 12, alignment: {horizontal: :center, vertical: :center }
+	align_right = s.add_style alignment: {horizontal: :right}
+	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+	final_wage_title = s.add_style sz: 12, b: true
+	final_wage = s.add_style sz: 12, b: true, border: { style: :thick, color: 'FF000000'  }, alignment: {horizontal: :center, vertical: :center }
 
-	sheet.add_row
-	sheet.add_row
-	sheet.add_row
+	wb.add_worksheet(name: "給与支払明細書") do |sheet|
+		sheet.add_row ['給与支払明細書'], style: title_style
+		sheet.merge_cells "A1:I1"
+		sheet.add_row [current_user.corporation.name], style: align_right
+		sheet.merge_cells "A2:I2"
+		sheet.add_row
+		sheet.add_row ["#{@planning.business_year}年#{@planning.business_month}月", '','','', '', 'ヘルパー氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,nil,nil,align_right,align_right, thick_border, thick_border]
+		sheet.merge_cells "A4:B4"
+		sheet.merge_cells "F4:G4"
+		sheet.merge_cells "H4:I4"
+		sheet.add_row
+		sheet.add_row ['日付', 'サービスタイプ', '利用者名', '提供時間', 'スタート', '終了', '時給/単価', '回数', '計'], style: table_header
+		@services_till_now.each do |service|
+			start_time = service.appointment_start? ? service.appointment_start.strftime("%H:%M") : ''
+			end_time = service.appointment_start? ? service.appointment_end.strftime("%H:%M") : ''
+			date = service.service_date.strftime("%-m月%-d日") + weekday(service.service_date)
+			sheet.add_row [date, service.try(:title), service.patient.try(:name), from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:unit_cost), service.try(:service_counts), service.try(:total_wage) ], style: table_cells
+		end
+		if @counter.present?
+			sheet.add_row ['', '移動手当', '', '','','',  @counter.try(:unit_cost), @counter.try(:service_counts), @counter.try(:total_wage)], style: table_cells
+		end
+		sheet.add_row ['','','','','','','','合計：',@total_till_now], style: [nil, nil, nil, nil, nil,nil,nil, final_wage_title, final_wage]
 
-	sheet.add_row ['サービスタイプ', '提供時間', '時給/単価', '回数', '計']
-	@grouped_services.each do |service|
-		sheet.add_row [service.try(:title), Time.at(service.service_duration).utc.strftime("%H:%M"), service.try(:unit_cost), service.try(:service_counts), service.try(:total_wage) ]
+		sheet.column_widths 12, nil, nil, nil, nil, nil, nil, nil, nil
 	end
-	if @counter.present?
-		sheet.add_row ['移動手当', '', @counter.try(:unit_cost), @counter.try(:service_counts), @counter.try(:total_wage)]
-	end
-	sheet.add_row ['','','','合計：',@total_wage]
 end

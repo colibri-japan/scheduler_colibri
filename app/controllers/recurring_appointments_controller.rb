@@ -65,7 +65,9 @@ class RecurringAppointmentsController < ApplicationController
     @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(start: 'asc')
     @appointments_after_first = @appointments.drop(1)
 
-    @activities = PublicActivity::Activity.where(recurring_appointment_id: @recurring_appointment.id)
+    @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
+    puts 'activities present'
+    puts @activities.present?
   end
 
   # POST /recurring_appointments

@@ -2,10 +2,10 @@
   alert("<%= j @appointment.errors.values.join('; ') %>");
 <% else %>
 
-  $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
-  $('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
-  $('.nurse_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
-  $('.master_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@original_appointment.id}" %>' );
+  $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+  $('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+  $('.nurse_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+  $('.master_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
 
   $('.modal').modal('hide');
 

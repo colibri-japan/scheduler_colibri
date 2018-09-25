@@ -9,6 +9,15 @@
 			<div>
 				<%= render 'form', appointment: @appointment %>
 			</div>
+
+			<% unless @activities.empty? %>
+				<div class="modal-body light-blue-background">
+					<div class="appointment-section-title">編集履歴</div>
+					<% @activities.each do |activity| %>
+						<%= render partial: 'activities/activity', locals: {activity: activity}  %>
+					<% end %>
+				</div>
+			<% end %>
 		</div>
 	</div>
 

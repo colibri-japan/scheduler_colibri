@@ -904,7 +904,7 @@ let toggleEditRequested = () => {
   let $this  = $('.edit-requested-toggle')
   let requested = $this.data('requested')
   let onText = requested ? '残す' : '追加する';
-  let offText = requested ? '消す' : '追加しない';
+  let offText = requested ? '出す' : '追加しない';
   $this.bootstrapToggle({
     on: onText,
     off: offText,
@@ -1081,7 +1081,7 @@ $(document).on('turbolinks:load', function(){
 
   $('#edit-request-filter').bootstrapToggle({
     on: "全サービス",
-    off: "編集リストのみ",
+    off: "調整中リスト",
     offstyle: "success",
   });
 

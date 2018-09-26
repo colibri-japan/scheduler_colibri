@@ -106,7 +106,7 @@
 
       <% unless @master %>
         <div class="form-group">
-          <%= form.label :edit_requested, "編集リスト", class: "colibri-form-label" %>
+          <%= form.label :edit_requested, "調整中リスト", class: "colibri-form-label" %>
           <%= form.check_box :edit_requested, class: "edit-requested-toggle", data: {requested: recurring_appointment.edit_requested} %>
         </div>
       <% end %>

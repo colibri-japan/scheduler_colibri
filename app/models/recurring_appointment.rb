@@ -263,6 +263,54 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
+	def self.create_activities
+		create_activities = PublicActivity::Activity.where(key: 'recurring_appointment.create', new_anchor: nil, new_start: nil)
+
+		create_activities.each do |activity|
+			if activity.trackable.present?
+				activity.new_anchor = activity.trackable.anchor
+				activity.new_start = activity.trackable.start
+				activity.new_end = activity.trackable.end 
+				activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
+				activity.new_patient = activity.trackable.patient.name if activity.trackable.patient.present?
+
+				activity.save! 
+			end
+		end
+	end
+
+	def self.update_activities 
+		update_activities = PublicActivity::Activity.where(key: 'recurring_appointment.update', new_start: nil)
+
+		update_activities.each do |activity|
+			if activity.trackable.present?
+				activity.new_anchor = activity.trackable.anchor
+				activity.new_start = activity.trackable.start
+				activity.new_end = activity.trackable.end 
+				activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
+				activity.new_patient = activity.trackable.patient.name if activity.trackable.patient.present?
+
+				activity.save! 
+			end
+		end
+	end
+
+	def self.archive_activities
+		archive_activities = PublicActivity::Activity.where(key: 'recurring_appointment.archive', previous_start: nil)
+
+		archive_activities.each do |activity|
+			if activity.trackable.present?
+				activity.previous_anchor = activity.trackable.anchor
+				activity.previous_start = activity.trackable.start
+				activity.previous_end = activity.trackable.end 
+				activity.previous_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
+				activity.previous_patient = activity.trackable.patient.name if activity.trackable.patient.present?
+
+				activity.save! 
+			end
+		end
+	end
+
 	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
 	scope :exclude_self, -> id { where.not(id: id) }
 end

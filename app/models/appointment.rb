@@ -109,6 +109,14 @@ class Appointment < ApplicationRecord
 		end
 	end
 
+	def add_to_services
+		services = Service.where(corporation_id: self.planning.corporation.id, title: self.title)
+
+		if services.blank? 
+			self.planning.corporation.services.create(title: self.title)
+		end
+	end
+
 	def self.create_individual_provided_service
 		appointments = Appointment.where(master: false).all
 
@@ -120,12 +128,28 @@ class Appointment < ApplicationRecord
 		end
 	end
 
-	def add_to_services
-		services = Service.where(corporation_id: self.planning.corporation.id, title: self.title)
+	def self.update_activities
+		update_activities = PublicActivity::Activity.where(key: 'appointment.update', new_start: nil, new_end: nil)
 
-		if services.blank? 
-			self.planning.corporation.services.create(title: self.title)
+		update_activities.each do |activity|
+			if activity.trackable.present?
+			  activity.new_start = activity.trackable.start
+			  activity.new_end = activity.trackable.end 
+			  activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present? 
+			  activity.new_patient = activity.trackable.patient.name  if activity.trackable.patient.present?
+			  activity.new_edit_requested = activity.trackable.edit_requested
+
+			  activity.save! 
+			end
 		end
 	end
+
+	def self.archive_activities
+	end
+
+	def self.delete_activities
+	end
+
+
 
 end

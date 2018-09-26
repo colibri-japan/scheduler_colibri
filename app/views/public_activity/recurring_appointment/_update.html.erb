@@ -1,13 +1,15 @@
 <% if activity.trackable %>
-	が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のサービスをアップデートしました。<br/>
+	が<span class="activity-important-fields"><%= "#{activity.new_patient}様" if activity.new_patient %></span>のサービスをアップデートしました。<br/>
 	<span class="activity-before-update-state">
-		<%= "#{activity.try(:previous_nurse)   }" %>
+		<%= "#{activity.try(:previous_nurse)}" %>
 		<%= weekday(activity.try(:previous_anchor)) %><%= activity.previous_start.strftime("%H:%M") if activity.previous_start.present? %><%= "~" if activity.previous_start.present? && activity.previous_end.present? %> <%= activity.previous_end.strftime("%H:%M") if activity.previous_end.present? %> 
-		<%= ">>" if activity.previous_nurse.present? %>
 			
 	</span><br/>
-	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
-	<%= weekday(activity.trackable.anchor) %><%= activity.trackable.start.strftime("%H:%M") %> ~ <%= activity.trackable.end.strftime("%H:%M") %>
+	<span class="activity-important-fields"><%= "#{activity.try(:new_nurse)}"  %></span>
+	<%= weekday(activity.try(:new_anchor)) %><%= activity.try(:new_start).strftime("%H:%M") %> ~ <%= activity.try(:new_end).strftime("%H:%M") %>
+    <% if activity.try(:previous_edit_requested) != activity.try(:new_edit_requested) %>
+		<%= activity.previous_edit_requested == true ? ">> 調整中リストから出す" :  ">> 調整中リストへ追加"  %> 
+	<% end %>
 <% else %>
 	がその後削除されたサービスをアップデートしました。
 <% end %>

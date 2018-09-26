@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180923164801) do
+ActiveRecord::Schema.define(version: 20180926182716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,14 @@ ActiveRecord::Schema.define(version: 20180923164801) do
     t.string "previous_title"
     t.boolean "previous_edit_requested"
     t.integer "previous_duration"
+    t.datetime "new_start"
+    t.datetime "new_end"
+    t.date "new_anchor"
+    t.string "new_nurse"
+    t.string "new_patient"
+    t.string "new_title"
+    t.string "new_color"
+    t.boolean "new_edit_requested"
     t.index ["nurse_id"], name: "index_activities_on_nurse_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"

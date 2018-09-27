@@ -7,7 +7,7 @@
 	</span><br/>
 	<span class="activity-important-fields"><%= "#{activity.try(:new_nurse)}"  %></span>
 	<%= weekday(activity.try(:new_anchor)) %><%= activity.try(:new_start).strftime("%H:%M") %> ~ <%= activity.try(:new_end).strftime("%H:%M") %>
-    <% if activity.try(:previous_edit_requested) != activity.try(:new_edit_requested) %>
+    <% if activity.previous_edit_requested.present? && activity.new_edit_requested.present? && activity.try(:previous_edit_requested) != activity.try(:new_edit_requested) %>
 		<%= activity.previous_edit_requested == true ? ">> 調整中リストから出す" :  ">> 調整中リストへ追加"  %> 
 	<% end %>
 <% else %>

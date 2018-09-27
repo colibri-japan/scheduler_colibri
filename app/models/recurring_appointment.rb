@@ -273,7 +273,7 @@ class RecurringAppointment < ApplicationRecord
 				activity.new_end = activity.trackable.end 
 				activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
 				activity.new_patient = activity.trackable.patient.name if activity.trackable.patient.present?
-
+				activity.new_edit_requested = activity.trackable.edit_requested
 				activity.save! 
 			end
 		end
@@ -289,7 +289,7 @@ class RecurringAppointment < ApplicationRecord
 				activity.new_end = activity.trackable.end 
 				activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
 				activity.new_patient = activity.trackable.patient.name if activity.trackable.patient.present?
-
+				activity.new_edit_requested = activity.trackable.edit_requested
 				activity.save! 
 			end
 		end

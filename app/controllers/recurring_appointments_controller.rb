@@ -141,7 +141,7 @@ class RecurringAppointmentsController < ApplicationController
 
     respond_to do |format|
       if @new_appointment.save 
-        @activity = @new_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @new_appointment.nurse_id, patient_id: @new_appointment.patient_id 
+        @activity = @new_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @new_appointment.nurse_id, patient_id: @new_appointment.patient_id , new_nurse: @new_appointment.nurse.try(:name), new_patient: @new_appointment.patient.try(:name), new_anchor: @new_appointment.anchor, new_start: @new_appointment.start, new_end: @new_appointment.end
 
         format.js
         format.html{ redirect_to planning_nurse_path(@planning, Nurse.find(@new_appointment.nurse_id)), notice: 'サービスがマスターから全体へ反映されました'}

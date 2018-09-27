@@ -255,7 +255,7 @@ li.colibri-app-menu a.nav-url {
 }
 
 .fc-title {
-	font-size: 1.4em !important;
+	font-size: 1.5em !important;
 }
 
 .fc-header-toolbar {
@@ -289,9 +289,6 @@ tr.nurse-clickable-row:hover {
 	font-weight: bold;
 }
 
-#planning-container .fc-view {
-	overflow-x: scroll;
-}
 
 
 
@@ -388,9 +385,56 @@ th {
 		margin-left : 50px;
 	}
 
-	div .fc-scroller {
-	    max-height: none !important;
+
+
+	@page {size: auto}
+
+	/* Fullcalendar-related styles */
+
+	
+	/* Global Event Restyling
+	--------------------------------------------------------------------------------------------------*/
+	.fc-event {
+	background: #fff !important;
+	color: #000 !important;
+	page-break-inside: avoid; }
+
+	.fc-event .fc-resizer {
+	display: none; }
+
+	span.fc-time {
+		font-size: 0.8em !important;
 	}
+
+	/* Table & Day-Row Restyling
+--------------------------------------------------------------------------------------------------*/
+	.fc th,
+	.fc td,
+	.fc hr,
+	.fc thead,
+	.fc tbody,
+	.fc-row {
+	border-color: #ccc !important;
+	background: #fff !important; }
+
+	/* don't display any button-related controls */ 
+	.fc-button-group,.fc button {
+		  display: none;
+	}
+
+	/* kill the scrollbars and allow natural height */
+	.fc-scroller,
+	.fc-day-grid-container,
+	.fc-time-grid-container {
+	overflow: visible !important;
+	height: auto !important; }
+
+	/* kill the horizontal border/padding used to compensate for scrollbars */
+	.fc-row {
+	border: 0 !important;
+	margin: 0 !important; }
+
+  
 }
 
 

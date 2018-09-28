@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180926182716) do
+ActiveRecord::Schema.define(version: 20180928093808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20180926182716) do
     t.string "business_end_hour", default: "24:00:00"
     t.boolean "hour_based_payroll", default: true
     t.string "email"
+    t.boolean "equal_salary"
   end
 
   create_table "deleted_occurrences", force: :cascade do |t|
@@ -259,7 +260,11 @@ ActiveRecord::Schema.define(version: 20180926182716) do
     t.bigint "corporation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "unit_wage"
+    t.decimal "weekend_unit_wage"
+    t.bigint "nurse_id"
     t.index ["corporation_id"], name: "index_services_on_corporation_id"
+    t.index ["nurse_id"], name: "index_services_on_nurse_id"
   end
 
   create_table "unavailabilities", force: :cascade do |t|

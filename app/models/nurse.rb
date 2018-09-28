@@ -5,6 +5,7 @@ class Nurse < ApplicationRecord
 	has_many :provided_services, dependent: :destroy
 	has_many :invoice_setting_nurses
 	has_many :nurses, through: :invoice_setting_nurses
+	has_many :services
 
 	validates :name, presence: true
 

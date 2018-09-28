@@ -71,7 +71,7 @@ class Corporation < ApplicationRecord
 						unit_wage =  provided_services.first.unit_cost
 						rule = InvoiceSetting.where(corporation_id: provided_services.first.planning.corporation.id, target_services_by_1: 1).take
 						weekend_unit_wage = unit_wage * rule.argument if rule.present?
-						service.update(unit_wage: unit_wage, weekend_unit_wage)
+						service.update(unit_wage: unit_wage, weekend_unit_wage: weekend_unit_wage)
 					end
 				end
 			else

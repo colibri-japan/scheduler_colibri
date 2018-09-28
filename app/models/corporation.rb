@@ -58,4 +58,47 @@ class Corporation < ApplicationRecord
 		end
 	end
 
+	def self.organize_services
+		corporations = Corporation.all 
+		corporations.each do |corporation|
+			if corporation.equal_salary == true
+				services = corporation.services.all 
+
+				services.each do |service|
+					provided_services = ProvidedService.where(title: service.title).where.not(unit_cost: nil)
+
+					if provided_services.present? 
+						unit_wage =  provided_services.first.unit_cost
+						rule = InvoiceSetting.where(corporation_id: provided_services.first.planning.corporation.id, target_services_by_1: 1).take
+						weekend_unit_wage = unit_wage * rule.argument if rule.present?
+						service.update(unit_wage: unit_wage, weekend_unit_wage)
+					end
+				end
+			else
+				@services = corporation.services.all 
+				@nurses = corporation.nurses.where(displayable: true).all
+				
+				@services.each do |service|
+					
+
+					@nurses.each do |nurse|
+						new_service = service.dup
+						new_service.nurse_id = nurse.id 
+
+						provided_services = ProvidedService.where(title: service.title, nurse_id: nurse.id).where.not(unit_cost: nil)
+						if provided_services.present? 
+							unit_wage =  provided_services.first.unit_cost
+							rule = InvoiceSetting.where(corporation_id: provided_services.first.planning.corporation.id, target_services_by_1: 1).take
+							weekend_unit_wage = unit_wage * rule.argument if rule.present?
+							new_service.unit_wage = unit_wage 
+							new_service.weekend_unit_wage = weekend_unit_wage
+						end
+						new_service.save!
+					end
+				end
+
+			end
+		end
+	end
+
 end

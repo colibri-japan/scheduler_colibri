@@ -1,0 +1,34 @@
+<%= form_for [@nurse, service], remote: true do |form| %>
+  <% if service.errors.any? %>
+  <div id="error_explanation">
+    <h2>エラーが発生しました：</h2>
+
+    <ul>
+      <% service.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
+    <%= form.text_field :title, id: :service_title, required: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :unit_wage, "時給.単価", class: "colibri-form-label" %>
+    <%= form.number_field :unit_wage, id: :service_unit_wage, class: "form-control" %>
+  </div>
+  
+  <div class="form-group">
+    <%= form.label :weekend_unit_wage, "土日.祝日の時給.単価", class: "colibri-form-label" %>
+    <%= form.number_field :weekend_unit_wage, id: :service_weekend_unit_wage, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "セーブする", class: 'btn btn-info' %>
+  </div>
+
+
+<% end %>

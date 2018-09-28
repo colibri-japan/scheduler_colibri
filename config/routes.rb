@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   resources :nurses do
     resources :provided_services
+    resources :services
   end
 
   resources :corporations do

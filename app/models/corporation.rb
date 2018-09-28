@@ -6,6 +6,7 @@ class Corporation < ApplicationRecord
 	has_many :services
 	has_many :invoice_settings
 
+	before_save :set_default_equal_salary
 	after_create :create_undefined_nurse
 
 	def self.add_undefined_nurse
@@ -17,6 +18,10 @@ class Corporation < ApplicationRecord
 	end
 
 	private
+
+	def set_default_equal_salary
+		self.equal_salary ||= false
+	end
 
 	def create_undefined_nurse
 		self.nurses.create(name: "未定", displayable: false, kana: "あああああ")

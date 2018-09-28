@@ -934,6 +934,12 @@ let recurringAppointmentArchive = () => {
   })
 }
 
+let serviceLinkClick = () => {
+  $('tr.clickable-row.service-clickable').click(function(){
+    $.getScript($(this).data('service-link'));
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

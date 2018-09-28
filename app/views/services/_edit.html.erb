@@ -1,0 +1,15 @@
+<div id="edit_services" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title"><%= @corporation.equal_salary = true ? '事業所のサービス給与設定' : '#{@nurse.name}のサービス給与設定' %></h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+            <div class="modal-body">
+                <%= render 'form', service: @service %>
+            </div>
+		</div>
+	</div>
+
+</div>

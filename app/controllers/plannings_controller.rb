@@ -1,16 +1,18 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :master_to_schedule, :duplicate_from, :duplicate]
+	before_action :set_planning, only: [:show, :destroy, :master, :archive, :master_to_schedule, :duplicate_from, :duplicate]
 	before_action :set_nurses, only: [:show]
 	before_action :set_patients, only: [:show, :master]
 
 	def index
-		@plannings = @corporation.plannings.all
+		@plannings = @corporation.plannings.where(archived: false)
 	end
 
 	def show
 		authorize @planning, :is_employee?
+		authorize @planning, :is_not_archived?
+
 		set_valid_range
 		@last_patient = @patients.last
 		@last_nurse = @nurses.last
@@ -82,7 +84,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def duplicate_from
-		@plannings = @corporation.plannings.all - [@planning]
+		@plannings = @corporation.plannings.where(archived: false) - [@planning]
 	end
 
 	def duplicate
@@ -132,6 +134,12 @@ class PlanningsController < ApplicationController
 	    format.json { head :no_content }
 	    format.js
 	  end
+	end
+
+	def archive
+		if @planning.update(archived: true)
+			redirect_to plannings_url, notice: 'サービスが削除されました。'
+		end
 	end
 
 	def master

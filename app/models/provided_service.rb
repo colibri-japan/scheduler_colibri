@@ -1,6 +1,6 @@
 class ProvidedService < ApplicationRecord
 	attribute :target_service_ids
-	attribute :skip_reflect_unit_cost, :boolean
+	attribute :skip_callbacks_except_calculate_total_wage, :boolean
 
 	belongs_to :appointment, optional: true
 	belongs_to :nurse
@@ -9,19 +9,12 @@ class ProvidedService < ApplicationRecord
 	belongs_to :invoice_setting, optional: true
 
 
-	before_save :set_countable
-	before_save :lookup_unit_cost_from_similar_services
-	before_save :counts_or_duration_from_target_service_ids
-	before_save :default_service_counts
-	before_save :default_duration
-	before_save :apply_weekend_and_holiday_rates
+	before_save :set_default_countable, unless: :skip_callbacks_except_calculate_total_wage
+	before_save :lookup_unit_cost, unless: :skip_callbacks_except_calculate_total_wage
+	before_save :service_counts_or_duration_from_target_services, :skip_callbacks_except_calculate_total_wage
+	before_save :set_default_service_counts, :skip_callbacks_except_calculate_total_wage
+	before_save :set_default_duration, :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage
-
-	after_update :reflect_unit_cost_to_similar_services
-
-	skip_callback :update, :after, :reflect_unit_cost_to_similar_services, if: :skip_reflect_unit_cost
-
-
 
 	def self.to_csv(options = {})
 		CSV.generate(options) do |csv|
@@ -39,25 +32,30 @@ class ProvidedService < ApplicationRecord
 
 	private
 
-	def self.add_title
-		@provided_services = ProvidedService.all 
-
-		@provided_services.each do |provided_service|
-			payable = provided_service.payable
-			provided_service.update(title: payable.title) if payable.present?
-		end
+	def set_default_countable
+		self.countable ||= false 
 	end
 
-	def lookup_unit_cost_from_similar_services
-		if self.unit_cost.nil? && self.title.present?
-			last_similar = ProvidedService.where(nurse_id: self.nurse_id, title: self.title).last 
-			self.unit_cost = last_similar.unit_cost if last_similar.present?
+	def lookup_unit_cost
+		if self.service_date.present? && self.temporary == false
+			if self.planning.corporation.equal_salary == true 
+				@pricing_policy = Service.where(title: self.title, corporation_id: self.planning.corporation.id).first
+			else
+				@pricing_policy = Service.where(title: self.title, corporation_id: self.planning.corporation.id, nurse_id: self.nurse_id).first
+				puts 'policy found'
+				puts @pricing_policy.title
+				puts @pricing_policy.unit_wage
+			end
+
+			if @pricing_policy.present?
+				self.unit_cost = self.weekend_holiday_provided_service? ? @pricing_policy.weekend_unit_wage : @pricing_policy.unit_wage
+			end
 		end
+
 	end
 
-	def counts_or_duration_from_target_service_ids
+	def service_counts_or_duration_from_target_services
 		if self.target_service_ids.present? 
-			puts 'entered validation for target service_ids'
 			services = target_service_ids.map{|id| Service.find(id) if id.present?}.compact
 			if self.hour_based_wage == true 
 				sum_hours = 0
@@ -77,24 +75,14 @@ class ProvidedService < ApplicationRecord
 		end
 	end
 
-	def default_service_counts
-	    self.service_counts = 1 if self.service_counts.nil?
+	def set_default_service_counts
+	    self.service_counts ||= 1 
 	end
 
-	def default_duration
-		if self.service_duration.nil?
-			self.service_duration = 0
-		end
+	def set_default_duration
+		self.service_duration ||= 0
 	end
 
-	def apply_weekend_and_holiday_rates
-		puts 'applying weekend and holiday rates'
-
-		if self.appointment_id.present? && self.temporary == false && self.weekend_holiday_provided_service? == true && self.unit_cost.present?
-			rule = InvoiceSetting.where(corporation_id: self.planning.corporation.id, target_services_by_1: 1).take
-			self.unit_cost = self.unit_cost * rule.argument
-		end
-	end
 
 	def calculate_total_wage
 		if self.hour_based_wage == true
@@ -109,53 +97,6 @@ class ProvidedService < ApplicationRecord
 			else 
 				self.total_wage = self.unit_cost
 			end
-		end
-	end
-
-	def set_countable
-		self.countable = false unless self.countable.present?
-	end
-
-	def reflect_unit_cost_to_similar_services
-		if self.unit_cost.present? 
-			puts 'reflecting unit cost to all other services from planning'
-			similar_services = ProvidedService.where(planning_id: self.planning_id, nurse_id: self.nurse_id, title: self.title).where.not(id: self.id)
-
-			similar_services.each do |service|
-				service.update(unit_cost: self.unit_cost, skip_reflect_unit_cost: true)
-			end
-		end
-	end
-
-
-	def self.master_delete
-		provided_services = ProvidedService.all
-
-		provided_services.delete_all
-	end
-
-	def self.add_service_date
-		provided_services = ProvidedService.where(service_date: nil, temporary: false, countable: false).where.not(appointment_id: nil)
-
-		provided_services.each do |service|
-			appointment = Appointment.find(service.appointment_id)
-
-			if appointment.present?
-			  service.service_date = service.appointment.end
-			  service.appointment_start = service.appointment.start 
-			  service.appointment_end = service.appointment.end
-
-			  service.save
-			end
-		end
-	end
-
-	def self.set_default_duration_to_zero
-		puts 'add to services'
-		provided_services = ProvidedService.where(service_duration: nil, temporary: false)
-
-		provided_services.each do |provided_service|
-			provided_service.update(service_duration: 0)
 		end
 	end
 

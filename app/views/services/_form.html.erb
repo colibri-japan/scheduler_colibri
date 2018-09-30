@@ -26,6 +26,11 @@
     <%= form.number_field :weekend_unit_wage, id: :service_weekend_unit_wage, class: "form-control" %>
   </div>
 
+  <div class="form-group">
+    <%= form.label :recalculate_previous_wages, "過去の実績に反映する", class:"colibri-form-label" %>
+    <%= form.check_box :recalculate_previous_wages, id: :service_recalculate_previous_wages, data: {toggle: 'toggle'} %>
+  </div>
+
   <div class="actions">
     <%= form.submit "セーブする", class: 'btn btn-info' %>
   </div>

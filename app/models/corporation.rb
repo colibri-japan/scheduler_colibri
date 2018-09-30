@@ -27,25 +27,6 @@ class Corporation < ApplicationRecord
 		self.nurses.create(name: "未定", displayable: false, kana: "あああああ")
 	end
 
-	def self.add_services
-		corporations = Corporation.all 
-
-		corporations.each do |corporation|
-			plannings = corporation.plannings
-
-			appointments = Appointment.where(planning_id: plannings.ids, master: true)
-
-			appointments.each do |appointment|
-				existing_service = corporation.services.where(title: appointment.title)
-
-				unless existing_service.present?
-					new_service = corporation.services.create(title: appointment.title)
-				end
-			end
-
-		end
-	end
-
 	def self.create_weekend_holiday_invoice_setting
 		corporations=Corporation.all 
 
@@ -97,6 +78,27 @@ class Corporation < ApplicationRecord
 					end
 				end
 
+			end
+		end
+	end
+
+	def self.create_nurse_services
+		corporations = Corporation.all 
+
+		corporations.each do |corporation|
+			if corporation.equal_salary == false 
+				nurses= corporation.nurses.where(displayable: true).all 
+				services = corporation.services.all 
+
+				nurses.each do |nurse|
+					services.each do |service|
+						new_service = service.dup 
+						new_service.nurse_id = nurse.id 
+						new_service.skip_create_nurses_callback = true
+
+						new_service.save!
+					end
+				end
 			end
 		end
 	end

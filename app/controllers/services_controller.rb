@@ -45,6 +45,6 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage)
+        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages)
     end
 end

@@ -936,7 +936,15 @@ let recurringAppointmentArchive = () => {
 
 let serviceLinkClick = () => {
   $('tr.clickable-row.service-clickable').click(function(){
-    $.getScript($(this).data('service-link'));
+    $.getScript($(this).data('service-link'), function(){
+      $('#service_recalculate_previous_wages').bootstrapToggle({
+        on: '反映する',
+        off: '反映しない',
+        onstyle: 'success',
+        offstyle: 'secondary',
+        width: 130
+      })
+    });
   })
 }
 

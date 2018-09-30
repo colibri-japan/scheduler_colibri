@@ -83,7 +83,7 @@
 					<%= provided_service.service_counts if provided_service.service_counts.present? %>
 				</td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
-				<td><%= link_to 'エディット.削除', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
+				<td><%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
 
 			</tr>
 			<% end %>

@@ -27,6 +27,7 @@ class ProvidedServicesController < ApplicationController
 
 	def update
 		@planning = Planning.find(provided_service_params[:planning_id])
+		@provided_service.skip_callbacks_except_calculate_total_wage = true
 
 		respond_to do |format|
 			if @provided_service.update(provided_service_params)

@@ -42,9 +42,6 @@ class ProvidedService < ApplicationRecord
 				@pricing_policy = Service.where(title: self.title, corporation_id: self.planning.corporation.id).first
 			else
 				@pricing_policy = Service.where(title: self.title, corporation_id: self.planning.corporation.id, nurse_id: self.nurse_id).first
-				puts 'policy found'
-				puts @pricing_policy.title
-				puts @pricing_policy.unit_wage
 			end
 
 			if @pricing_policy.present?

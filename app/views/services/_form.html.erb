@@ -33,6 +33,7 @@
 
   <div class="actions">
     <%= form.submit "セーブする", class: 'btn btn-info' %>
+    <%= link_to '削除する', nurse_service_path(@nurse, service), method: :delete, class: 'btn btn-danger text-white', data: {confirm: "#{service.title}のサービスタイプと給与設定が削除されます。"}, remote: true unless service.new_record? %>
   </div>
 
 

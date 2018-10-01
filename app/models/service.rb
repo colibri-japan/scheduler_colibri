@@ -10,6 +10,8 @@ class Service < ApplicationRecord
   after_save :recalculate_wages, if: :recalculate_previous_wages
   after_create :create_nurse_services, unless: :skip_create_nurses_callback
 
+  before_destroy :destroy_services_for_other_nurses
+
   private 
 
   def recalculate_wages
@@ -54,6 +56,14 @@ class Service < ApplicationRecord
 
     nurses.each do |nurse|
       nurse_service = Service.create(corporation_id: self.corporation_id, title: self.title, nurse_id: nurse.id, unit_wage: self.unit_wage, weekend_unit_wage: self.weekend_unit_wage, skip_create_nurses_callback: true)
+    end
+  end
+
+  def destroy_services_for_other_nurses
+    if self.nurse_id.present? 
+      other_services = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(nurse_id: self.nurse_id)
+
+      other_services.delete_all
     end
   end
 

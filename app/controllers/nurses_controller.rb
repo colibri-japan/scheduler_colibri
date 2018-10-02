@@ -193,14 +193,16 @@ class NursesController < ApplicationController
     end
 
     service_types.each do |service_title|
-      matching_services = @services_till_now.where(title: service_title).all
+      matching_provided_services = @services_till_now.where(title: service_title).all
       
-      sum_duration = matching_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
-      sum_total_wage = matching_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-      sum_counts = matching_services.sum{|e| e.service_counts.present? ? e.service_counts : 1 }
-      hour_based = matching_services.first.hour_based_wage
+      sum_duration = matching_provided_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
+      sum_total_wage = matching_provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
+      sum_counts = matching_provided_services.sum{|e| e.service_counts.present? ? e.service_counts : 1 }
+      hour_based = matching_provided_services.first.hour_based_wage
 
-      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
+      matching_service = @corporation.equal_salary == true ? Service.where(corporation_id: @corporation.id, title: service_title).first : Service.where(corporation_id: @corporation.id, title: service_title, nurse_id: @nurse.id).first
+      unit_cost = matching_service.unit_wage if matching_service.present?
+      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, unit_cost: unit_cost, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
       @grouped_services << new_service
     end
   end

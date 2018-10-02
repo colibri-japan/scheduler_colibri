@@ -138,7 +138,7 @@ class RecurringAppointment < ApplicationRecord
 
 	def default_master
 		puts 'setting default master'
-		self.master ||= true
+		self.master ||= false
 	end
 
 	def default_deleted

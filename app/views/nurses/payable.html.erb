@@ -30,13 +30,13 @@
 		<%# pie_chart [["現在の合計給料", @chart_wage_data[true]], ["将来の合計給料", @chart_wage_data[false]]], donut: true, colors: ['#ffc107', '#dc3545'], suffix: '¥', thousands: ',', width: '200px', height: '200px' %>
 		<% if  @total_time_pending > 0 %>
 			<div id="hours-worked-pied-container">
-				<%= pie_chart [['現在の提供時間', @total_time_worked], ['残りの提供時間', @total_time_pending]], donut: true,  width: '130px', height: '130px', legend: false, colors: ['#ffc107', '#e4e4e4'], library: {tooltips: {enabled: false}} %>
+				<%= pie_chart [['稼働時間', @total_time_worked], ['稼働予定時間', @total_time_pending]], donut: true,  width: '130px', height: '130px', legend: false, colors: ['#ffc107', '#e4e4e4'], library: {tooltips: {enabled: false}} %>
 			</div>
 		<% end %>
 		<div id="payable-dashboard">
 			<div class="payable-dashboard-text-container">
-				<p class="payable-dashboard-line">現在の提供時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_worked) %></span></p>
-				<p class="payable-dashboard-line">残りの提供時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_pending) %></span></p>
+				<p class="payable-dashboard-line">稼働時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_worked) %></span></p>
+				<p class="payable-dashboard-line">稼働予定時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_pending) %></span></p>
 			</div>
 		</div>
 	</div>
@@ -44,7 +44,7 @@
 	<div id='payable-table-commands'>
 	    <div id="add-provided-service-line">
 			<%= link_to '+手当を追加する', new_nurse_provided_service_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true %>
-			<% services_path_title =  @corporation.equal_salary == true ? 'サービス給与設定' : 'ヘルパー給与設定'  %>
+			<% services_path_title =  @corporation.equal_salary == true ? '給与テーブル' : 'ヘルパーの給与テーブル'  %>
 			<%= link_to services_path_title, nurse_services_path(@nurse), class: 'btn btn-info text-white', remote: true %>
 		</div>
 		<div class="excel-download btn btn-success text-white" id="payable-download-button"><span class="glyphicon glyphicon-download" style="color:white"></span> ダウンロードする</div>
@@ -57,7 +57,7 @@
 				<th class="table-important-fields">タイプ</th>
 				<th class="table-important-fields">利用者名</th>
 				<th class="table-important-fields">提供時間</th>
-				<th class="table-important-fields">スタート</th>
+				<th class="table-important-fields">開始</th>
 				<th class="table-important-fields">終了</th>
 				<th class="table-important-fields">時給/単価</th>
 				<th class="table-important-fields">回数</th>

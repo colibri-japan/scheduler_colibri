@@ -19,7 +19,7 @@ class NursesController < ApplicationController
 
     @full_timers = @corporation.nurses.where(full_timer: true).order_by_kana
     @part_timers = @corporation.nurses.where(full_timer: false).order_by_kana
-    @patients = @corporation.patients.all.order_by_kana
+    @patients = @corporation.patients.where(active: true).order_by_kana
     @last_patient = @patients.last
     @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 
@@ -33,7 +33,7 @@ class NursesController < ApplicationController
 
     @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
     @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
-    @patients = @corporation.patients.all.order_by_kana
+    @patients = @corporation.patients.where(active: true).order_by_kana
     @last_patient = @patients.last
     @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 

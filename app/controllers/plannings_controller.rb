@@ -179,7 +179,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def set_patients
-		@patients = @corporation.patients.order_by_kana
+		@patients = @corporation.patients.where(active: true).order_by_kana
 	end
 
 	def planning_params

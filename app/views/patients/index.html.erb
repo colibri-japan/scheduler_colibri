@@ -35,16 +35,10 @@
             <% if @planning.present? %>
               <td><%= link_to '利用者のサービスを変換する', planning_patient_path(@planning, patient) %></td>
             <% else %>
-              <% if current_user.admin? %>
-                <td>
-                  <label class="switch" data-boolean="<%= patient.active %>">
-                    <input class="switch-input" type="checkbox" id="<%= patient.id %>">
-                    <span class="slider round  slider-patient" data-toggle-url="<%= toggle_active_path(patient, format: :html) %>" id="<%= patient.id %>"></span>
-                  </label>
-                </td>
-              <% end %>
               <td><%= link_to 'エディット', edit_patient_path(patient), class: 'btn btn-success btn-sm text-white' %></td>
-              <td><%= link_to '削除', patient_path(patient), method: :delete, data: {confirm: '利用者が削除されます'}, class: 'btn btn-danger btn-sm text-white' %></td>
+              <td>
+                <%= link_to 'サービス停止', toggle_active_path(patient), method: :patch, data: {confirm: '将来のサービスがキャンセルされ、利用者一覧から外されます。'}, class: 'btn btn-danger btn-sm text-white' %>
+              </td>
             <% end %>
           </tr>
         <% end %>

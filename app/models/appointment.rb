@@ -12,8 +12,8 @@ class Appointment < ApplicationRecord
 	validate :do_not_overlap
 	validate :edit_requested_and_undefined_nurse
 
-	before_save :default_master
-	before_save :default_displayable
+	before_create :default_master
+	before_create :default_displayable
 
 	after_create :create_provided_service
 	after_update :update_provided_service
@@ -29,21 +29,6 @@ class Appointment < ApplicationRecord
 	end
 
 	private
-
-	def self.count_as_payable
-		date = Date.today
-		timezone = ActiveSupport::TimeZone['Asia/Tokyo']
-		start_time = timezone.local(date.year, date.month, date.day)
-		end_time = start_time.end_of_day
-
-		appointments = Appointment.where(master: false, displayable: true, end: start_time..end_time, edit_requested: false, deleted: false, deactivated: false)
-
-		appointments.each do |appointment|
-			duration = appointment.end - appointment.start
-			provided = ProvidedService.create!(payable: appointment, service_duration: duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, planning_id: appointment.planning_id, title: appointment.title)
-		end
-
-	end
 
 	def do_not_overlap
 		nurse = Nurse.find(self.nurse_id)
@@ -61,7 +46,7 @@ class Appointment < ApplicationRecord
 
 	def default_master
 		puts 'setting default master'
-		self.master = true if self.master.nil?
+		self.master ||= false
 	end
 
 	def default_displayable
@@ -73,16 +58,6 @@ class Appointment < ApplicationRecord
 		puts 'edit request and undefined nurse'
 		nurse = Nurse.find(self.nurse_id)
 		errors.add(:nurse_id, "ヘルパーを選択、または編集リストへ追加オプションを選択してください。") if nurse.name == '未定' && self.edit_requested.blank?
-	end
-
-	def self.mark_appointments_as_deleted
-		appointments_to_be_deleted = Appointment.where(displayable: false)
-
-		appointments_to_be_deleted.each do |appointment_to_be_deleted|
-			appointment_to_be_deleted.deleted = true
-			appointment_to_be_deleted.deleted_at = Time.current
-			appointment_to_be_deleted.save!(validate: false)
-		end
 	end
 
 	def create_provided_service
@@ -117,17 +92,6 @@ class Appointment < ApplicationRecord
 		end
 	end
 
-	def self.create_individual_provided_service
-		appointments = Appointment.where(master: false).all
-
-		appointments.each do |appointment|
-			provided_duration = appointment.end - appointment.start 
-			is_provided = Time.current + 9.hours > appointment.start 
-			deactivate_provided = appointment.displayable == false || appointment.deleted == true || appointment.deactivated == true 
-			provided_service = ProvidedService.create(appointment_id: appointment.id, planning_id: appointment.planning_id, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, title: appointment.title, deactivated:deactivate_provided, provided: is_provided, service_duration: provided_duration, hour_based_wage: appointment.planning.corporation.hour_based_payroll, service_date: appointment.end, appointment_start: appointment.start, appointment_end: appointment.end)
-		end
-	end
-
 	def self.update_activities
 		update_activities = PublicActivity::Activity.where(key: 'appointment.update', new_start: nil, new_end: nil)
 
@@ -142,12 +106,6 @@ class Appointment < ApplicationRecord
 			  activity.save! 
 			end
 		end
-	end
-
-	def self.archive_activities
-	end
-
-	def self.delete_activities
 	end
 
 

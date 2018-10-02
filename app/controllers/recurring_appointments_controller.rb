@@ -11,34 +11,19 @@ class RecurringAppointmentsController < ApplicationController
   def index
     if params[:nurse_id].present?
       @nurse = Nurse.find(params[:nurse_id])
-      @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false)
+      @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false).where.not(deactivated: true)
     elsif params[:patient_id].present?
-      @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true, master: false)
+      @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true, master: false).where.not(deactivated: true)
     elsif params[:master] == 'true'
-      @recurring_appointments = @planning.recurring_appointments.where(master: true).includes(:patient, :nurse)
+      @recurring_appointments = @planning.recurring_appointments.where(master: true).where.not(deactivated: true).includes(:patient, :nurse)
     elsif params[:patient_name].present?
       master = params[:master] == 'true' ? true : false
-      @recurring_appointments = @planning.recurring_appointments.joins(:patient).where(patients: {name: params[:patient_name]}).where(displayable: true, master: master)
+      @recurring_appointments = @planning.recurring_appointments.joins(:patient).where(patients: {name: params[:patient_name]}).where(displayable: true, master: master).where.not(deactivated: true)
     elsif params[:nurse_name].present?
       master = params[:master] == 'true' ? true : false
-      @recurring_appointments = @planning.recurring_appointments.joins(:nurse).where(nurses: {name: params[:nurse_name]}).where(displayable: true, master: master)
+      @recurring_appointments = @planning.recurring_appointments.joins(:nurse).where(nurses: {name: params[:nurse_name]}).where(displayable: true, master: master).where.not(deactivated: true)
     else
-     @recurring_appointments = @planning.recurring_appointments.where(displayable: true, master: false).includes(:patient, :nurse)
-    end
-
-    if params[:print] == 'true'
-      @occurrence_appointments = {}
-      @recurring_appointments = @recurring_appointments.where.not(description: [nil, ''])
-
-      @recurring_appointments.each do |recurring_appointment|
-        appointments = recurring_appointment.appointments(@start_valid, @end_valid)
-        appointments.each do |appointment|
-          date = DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.start.hour, recurring_appointment.start.min)
-          @occurrence_appointments[date] = recurring_appointment
-        end
-      end
-
-      @occurrence_appointments = @occurrence_appointments.sort.to_h
+     @recurring_appointments = @planning.recurring_appointments.where(displayable: true, master: false).where.not(deactivated: true).includes(:patient, :nurse)
     end
 
     respond_to do |format|
@@ -179,7 +164,7 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def set_patients
-      @patients = @corporation.patients.all.order_by_kana
+      @patients = @corporation.patients.where(active: true).order_by_kana
     end
 
 

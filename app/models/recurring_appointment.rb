@@ -12,11 +12,12 @@ class RecurringAppointment < ApplicationRecord
 	has_many :appointments, dependent: :destroy
 
 	before_validation :calculate_duration
-	before_validation :default_frequency
 	before_validation :calculate_end_day
-	before_save :default_master
-	before_save :default_displayable
-	before_save :default_deleted
+
+	before_create :default_frequency
+	before_create :default_master
+	before_create :default_displayable
+	before_create :default_deleted
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -26,7 +27,8 @@ class RecurringAppointment < ApplicationRecord
 	validate :edit_requested_and_undefined_nurse
 
 	after_create :create_individual_appointments
-	after_update :update_individual_appointments
+	after_update :update_individual_appointments, unless: :saved_change_to_deactivated?
+	after_update :toggle_deactivated_on_individual_appointments, if: :saved_change_to_deactivated?
 	after_save :add_to_services
 
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
@@ -65,14 +67,6 @@ class RecurringAppointment < ApplicationRecord
 		initial_occurrences - deleted_occurrences
 	end
 
-	def self.add_default_color
-		puts 'adding default color'
-		recurring_appointments = RecurringAppointment.where(color: ['', nil])
-
-		recurring_appointments.each do |recurring_appointment|
-			recurring_appointment.update(color: '#7AD5DE')
-		end
-	end
 
 
 	private
@@ -123,24 +117,33 @@ class RecurringAppointment < ApplicationRecord
 		appointments_to_edit.each do |appointment|
 			start_time = DateTime.new(appointment.start.year, appointment.start.month, appointment.start.day, self.start.hour, self.start.min)
 			end_time = DateTime.new(appointment.end.year, appointment.end.month, appointment.start.day, self.end.hour, self.end.min) + self.duration
-			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at)
+			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, start: start_time, end: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at, deactivated: self.deactivated)
 		end
 
 	end
 
+	def toggle_deactivated_on_individual_appointments
+		puts 'toggle deactivated on individual appointments from recurring appointment model'
+		appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
+
+		appointments_to_edit.each do |appointment|
+			appointment.update_attribute(:deactivated, self.deactivated)
+		end
+	end
+
 	def default_frequency
 		puts 'adding default frequency'
-		self.frequency =2 if self.frequency.nil?
+		self.frequency ||= 2
 	end
 
 	def default_master
 		puts 'setting default master'
-		self.master = true if self.master.nil?
+		self.master ||= true
 	end
 
 	def default_deleted
 		puts 'setting default deleted'
-		self.deleted = false if self.deleted.nil?
+		self.deleted ||= false
 	end
 
 	def default_displayable

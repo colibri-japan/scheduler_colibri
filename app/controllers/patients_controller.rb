@@ -4,14 +4,14 @@ class PatientsController < ApplicationController
   before_action :set_planning, only: [:show, :master]
 
   def index
-  	@patients = @corporation.patients.all.order_by_kana
+  	@patients = @corporation.patients.where(active: true).order_by_kana
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
   end
 
   def show
     authorize @patient, :is_employee?
     
-    @patients = @corporation.patients.all.order_by_kana
+    @patients = @corporation.patients.where(active: true).order_by_kana
     @last_patient = @corporation.patients.last
     @full_timers = @corporation.nurses.where(full_timer: true).order_by_kana
     @part_timers = @corporation.nurses.where(full_timer: false).order_by_kana
@@ -25,7 +25,7 @@ class PatientsController < ApplicationController
   def master
     authorize @planning, :is_employee?
 
-    @patients = @corporation.patients.all.order_by_kana
+    @patients = @corporation.patients.where(active: true).all.order_by_kana
     @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
     @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
     @last_patient = @patients.last
@@ -41,7 +41,7 @@ class PatientsController < ApplicationController
   def toggle_active
     @patient.update!(active: !@patient.active, toggled_active_at: Time.now)
 
-    redirect_to patients_path, notice: '利用者がアップデートされました。'
+    redirect_to patients_path, notice: '利用者のサービスが停止されました。'
   end
 
   def new

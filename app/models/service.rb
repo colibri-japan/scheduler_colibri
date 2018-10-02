@@ -18,12 +18,8 @@ class Service < ApplicationRecord
     puts 'recalculating wages'
     if self.corporation.equal_salary == true 
       plannings_ids = self.corporation.plannings.ids
-      puts 'planning ids'
-      puts plannings_ids
-      @provided_services = ProvidedService.where(title: self.title, planning_id: plannings_ids, deactivated: false, temporary: false)
 
-      puts 'provided service counts'
-      puts @provided_services.count
+      @provided_services = ProvidedService.where(title: self.title, planning_id: plannings_ids, deactivated: false, temporary: false)
 
     else
       if self.nurse_id.present?

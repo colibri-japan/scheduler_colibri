@@ -53,6 +53,10 @@ Rails.application.routes.draw do
  
   get 'plannings/:planning_id/patients/:id/master' => 'patients#master', as: :planning_patient_master
 
+  get 'nurses/:id/new_reminder_email' => 'nurses#new_reminder_email', as: :nurse_new_reminder_email
+
+  patch 'nurses/:id/send_reminder_email' => 'nurses#send_reminder_email', as: :nurse_send_reminder_email
+
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
 
   patch 'plannings/:planning_id/appointments/:id/toggle_edit_requested' => 'appointments#toggle_edit_requested', as: :planning_appointment_toggle_edit_requested

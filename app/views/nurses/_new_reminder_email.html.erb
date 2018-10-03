@@ -1,0 +1,22 @@
+<div id="new-reminder-email" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">リマインダーを送る</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+				<%= form_for @nurse do |form| %>
+                    <div class="form-group">
+                        <%= form.label :custom_email_message, 'メッセージを追加する', class: 'colibri-form-label' %>
+                        <%= form.text_area :custom_email_message, id: :nurse_custom_email_message, class: 'form-control' %>
+                    </div>
+                <% end %>
+
+                <div id="send-email-reminder" id="send-email-reminder" class="btn btn-info text-white btn-block" data-send-reminder-url="<%= nurse_send_reminder_email_path(@nurse) %>">リマインダーメールを送る</div>
+			</div>
+		</div>
+	</div>
+
+</div>

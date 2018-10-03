@@ -2,11 +2,12 @@ class NurseMailer < ApplicationMailer
 	add_template_helper(ApplicationHelper)
 
 
-	def reminder_email(nurse, appointments)
+	def reminder_email(nurse, appointments, custom_message)
 		@nurse = nurse
 		@corporation = @nurse.corporation
 		@appointments = appointments
 		@today = Time.current
+		@custom_message = custom_message
 
 		if [1,2,3,4].include?(@today.wday)
 			subject = "#{@corporation.name}：#{@today.day + 1}日のスケジュール"

@@ -1143,6 +1143,11 @@ $(document).on('turbolinks:load', function(){
     window.print();
   });
 
+  $('#new-email-reminder').click(function(){
+    let targetPath =  $(this).data('reminder-url');
+    $.getScript(targetPath)
+  })
+
   $('.resource-list-element').click(function(){
     window.location = $(this).data('url');
   });

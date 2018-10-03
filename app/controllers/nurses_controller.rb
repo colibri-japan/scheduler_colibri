@@ -1,6 +1,6 @@
 class NursesController < ApplicationController
   before_action :set_corporation
-  before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable, :master]
+  before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable, :master, :new_reminder_email]
   before_action :set_planning, only: [:show, :master, :payable]
 
   def index
@@ -82,6 +82,15 @@ class NursesController < ApplicationController
     end
   end
 
+  def new_reminder_email
+  end
+
+  def send_reminder_email
+    custom_email_message = nurse_params[:custom_email_message]
+
+    NurseMailer.reminder_email(nurse, next_day_appointments)
+  end
+
   def payable
     authorize current_user, :is_admin?
     authorize @nurse, :is_employee?
@@ -152,7 +161,7 @@ class NursesController < ApplicationController
   end
 
   def nurse_params
-    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :full_timer, :reminderable)
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :full_timer, :reminderable, :custom_email_message)
   end
 
   def calculate_total_wage

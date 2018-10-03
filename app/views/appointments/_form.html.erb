@@ -18,12 +18,6 @@
           <%= form.check_box :master, checked:  current_user.admin? && @master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
       </div>
 
-      <% if @recurring_appointment.present? && @recurring_appointment.frequency != 2 %>
-        <div class="btn btn-info" id="edit-all-occurrences" data-edit-url="<%= edit_planning_recurring_appointment_path(@planning, @recurring_appointment) %>">
-          繰り返しのエディット.削除はこちら
-        </div>
-      <% end %>
-
     <% end %>
 
   </div>

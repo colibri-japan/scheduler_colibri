@@ -6,18 +6,28 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
-			<div>
-				<%= render 'form', appointment: @appointment %>
+			<div id='edit-options'>
+				<div class="modal-body">
+					<div class='btn btn-info text-white btn-block' id='one-day-edit'>この日のみエディットする</div>
+					<div class='btn btn-info text-white btn-block' id='recurring-edit' data-recurring-url='<%= "/plannings/#{@planning.id}/recurring_appointments/#{@appointment.try(:recurring_appointment_id)}/edit" %>'>繰り返しをエディットする</div>
+				</div>
 			</div>
 
-			<% unless @activities.empty? %>
-				<div class="modal-body light-blue-background">
-					<div class="appointment-section-title">編集履歴</div>
-					<% @activities.each do |activity| %>
-						<%= render partial: 'activities/activity', locals: {activity: activity}  %>
-					<% end %>
+			<div id='edit-appointment-body'>
+				<div>
+					<%= render 'form', appointment: @appointment %>
 				</div>
-			<% end %>
+
+				<% unless @activities.empty? %>
+					<div class="modal-body light-blue-background">
+						<div class="appointment-section-title">編集履歴</div>
+						<% @activities.each do |activity| %>
+							<%= render partial: 'activities/activity', locals: {activity: activity}  %>
+						<% end %>
+					</div>
+				<% end %>
+			</div>
+
 		</div>
 	</div>
 

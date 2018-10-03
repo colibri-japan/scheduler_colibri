@@ -83107,21 +83107,8 @@ initialize_nurse_calendar = function(){
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
+            appointmentEdit(appointment.recurring_appointment_path);
 
-            $('#edit-all-occurrences').click(function(){
-              var editUrl = $(this).data('edit-url');
-              $('.modal').on('hidden.bs.modal', function () {
-                $.getScript(editUrl, function () {
-                  masterSwitchToggle();
-                  recurringAppointmentFormChosen();
-                  recurringAppointmentEditButtons();
-                  editAfterDate();
-                  toggleEditRequested();
-                  recurringAppointmentArchive();
-                })
-              });
-              $('.modal').modal('hide');
-            });
           });
       },
 
@@ -83256,26 +83243,13 @@ initialize_patient_calendar = function(){
            });
          },
          
-      eventClick: function(appointment, jsEvent, view) {
-           $.getScript(appointment.edit_url, function() {
+      eventClick: function(event, jsEvent, view) {
+           $.getScript(event.edit_url, function() {
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
-
-            $('#edit-all-occurrences').click(function(){
-              var editUrl = $(this).data('edit-url');
-              $('.modal').on('hidden.bs.modal', function () {
-                $.getScript(editUrl, function () {
-                  masterSwitchToggle();
-                  recurringAppointmentFormChosen();
-                  recurringAppointmentEditButtons();
-                  editAfterDate();
-                  toggleEditRequested();
-                  recurringAppointmentArchive();
-                })
-              });
-              $('.modal').modal('hide');
-            });
+            console.log(event.recurring_appointment_path)
+            appointmentEdit(event.recurring_appointment_path);
 
             
            });
@@ -83435,26 +83409,15 @@ initialize_master_calendar = function() {
          
       eventClick: function(appointment, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(appointment.edit_url + '?master=true', function() {
-                masterSwitchToggle();
-                appointmentFormChosen();
-                toggleEditRequested();
+              $.getScript(appointment.recurring_appointment_path + '?master=true', function() {
 
-                $('#edit-all-occurrences').click(function(){
-                  var editUrl = $(this).data('edit-url');
-                  $('.modal').on('hidden.bs.modal', function () {
-                    $.getScript(editUrl, function () {
-                      masterSwitchToggle();
-                      recurringAppointmentEditButtons();
-                      recurringAppointmentFormChosen();
-                      editAfterDate();
-                      individualMasterToGeneral();
-                      toggleEditRequested();
-                      recurringAppointmentArchive();
-                    })
-                  });
-                  $('.modal').modal('hide');
-                })
+                masterSwitchToggle();
+                recurringAppointmentEditButtons();
+                recurringAppointmentFormChosen();
+                editAfterDate();
+                individualMasterToGeneral();
+                toggleEditRequested();
+                recurringAppointmentArchive();
               });
             }
             return false;
@@ -83647,21 +83610,7 @@ initialize_calendar = function() {
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
-
-            $('#edit-all-occurrences').click(function(){
-              var editUrl = $(this).data('edit-url');
-              $('.modal').on('hidden.bs.modal', function(){
-                $.getScript( editUrl , function(){
-                    masterSwitchToggle();
-                    recurringAppointmentFormChosen();
-                    recurringAppointmentEditButtons();
-                    editAfterDate();
-                    toggleEditRequested();
-                    recurringAppointmentArchive();
-                })
-              });
-              $('.modal').modal('hide');
-            })
+            appointmentEdit(appointment.recurring_appointment_path);
            });
 
          },
@@ -83879,7 +83828,7 @@ let toggleEditRequested = () => {
   let $this  = $('.edit-requested-toggle')
   let requested = $this.data('requested')
   let onText = requested ? '残す' : '追加する';
-  let offText = requested ? '消す' : '追加しない';
+  let offText = requested ? '出す' : '追加しない';
   $this.bootstrapToggle({
     on: onText,
     off: offText,
@@ -83907,6 +83856,46 @@ let recurringAppointmentArchive = () => {
       })
     }
   })
+}
+
+let serviceLinkClick = () => {
+  $('tr.clickable-row.service-clickable').click(function(){
+    $.getScript($(this).data('service-link'), function(){
+      $('#service_recalculate_previous_wages').bootstrapToggle({
+        on: '反映する',
+        off: '反映しない',
+        onstyle: 'success',
+        offstyle: 'secondary',
+        width: 130
+      })
+    });
+  })
+}
+
+let appointmentEdit = (url) => {
+  if (url) {
+    $('#edit-appointment-body').hide();
+    $('#one-day-edit').click(function () {
+      $('#edit-options').hide();
+      $('#edit-appointment-body').show();
+    });
+    $('#recurring-edit').click(function () {
+      $('.modal').modal('hide');
+      $('.modal-backdrop').remove();
+      let targetUrl = $(this).data('recurring-url');
+      $.getScript(targetUrl, function () {
+        masterSwitchToggle();
+        recurringAppointmentFormChosen();
+        recurringAppointmentEditButtons();
+        editAfterDate();
+        toggleEditRequested();
+        recurringAppointmentArchive();
+      })
+    })
+  } else {
+    $('#edit-options').hide();
+  }
+
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 
@@ -84056,7 +84045,7 @@ $(document).on('turbolinks:load', function(){
 
   $('#edit-request-filter').bootstrapToggle({
     on: "全サービス",
-    off: "編集リストのみ",
+    off: "調整中リスト",
     offstyle: "success",
   });
 

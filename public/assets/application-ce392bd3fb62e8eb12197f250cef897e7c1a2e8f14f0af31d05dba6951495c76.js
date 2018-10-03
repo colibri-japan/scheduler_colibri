@@ -83107,21 +83107,8 @@ initialize_nurse_calendar = function(){
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
+            appointmentEdit(event.recurring_appointment_path);
 
-            $('#edit-all-occurrences').click(function(){
-              var editUrl = $(this).data('edit-url');
-              $('.modal').on('hidden.bs.modal', function () {
-                $.getScript(editUrl, function () {
-                  masterSwitchToggle();
-                  recurringAppointmentFormChosen();
-                  recurringAppointmentEditButtons();
-                  editAfterDate();
-                  toggleEditRequested();
-                  recurringAppointmentArchive();
-                })
-              });
-              $('.modal').modal('hide');
-            });
           });
       },
 
@@ -83256,26 +83243,13 @@ initialize_patient_calendar = function(){
            });
          },
          
-      eventClick: function(appointment, jsEvent, view) {
-           $.getScript(appointment.edit_url, function() {
+      eventClick: function(event, jsEvent, view) {
+           $.getScript(event.edit_url, function() {
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
-
-            $('#edit-all-occurrences').click(function(){
-              var editUrl = $(this).data('edit-url');
-              $('.modal').on('hidden.bs.modal', function () {
-                $.getScript(editUrl, function () {
-                  masterSwitchToggle();
-                  recurringAppointmentFormChosen();
-                  recurringAppointmentEditButtons();
-                  editAfterDate();
-                  toggleEditRequested();
-                  recurringAppointmentArchive();
-                })
-              });
-              $('.modal').modal('hide');
-            });
+            console.log(event.recurring_appointment_path)
+            appointmentEdit(event.recurring_appointment_path);
 
             
            });
@@ -83435,26 +83409,15 @@ initialize_master_calendar = function() {
          
       eventClick: function(appointment, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(appointment.edit_url + '?master=true', function() {
-                masterSwitchToggle();
-                appointmentFormChosen();
-                toggleEditRequested();
+              $.getScript(appointment.recurring_appointment_path + '?master=true', function() {
 
-                $('#edit-all-occurrences').click(function(){
-                  var editUrl = $(this).data('edit-url');
-                  $('.modal').on('hidden.bs.modal', function () {
-                    $.getScript(editUrl, function () {
-                      masterSwitchToggle();
-                      recurringAppointmentEditButtons();
-                      recurringAppointmentFormChosen();
-                      editAfterDate();
-                      individualMasterToGeneral();
-                      toggleEditRequested();
-                      recurringAppointmentArchive();
-                    })
-                  });
-                  $('.modal').modal('hide');
-                })
+                masterSwitchToggle();
+                recurringAppointmentEditButtons();
+                recurringAppointmentFormChosen();
+                editAfterDate();
+                individualMasterToGeneral();
+                toggleEditRequested();
+                recurringAppointmentArchive();
               });
             }
             return false;
@@ -83647,21 +83610,7 @@ initialize_calendar = function() {
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
-
-            $('#edit-all-occurrences').click(function(){
-              var editUrl = $(this).data('edit-url');
-              $('.modal').on('hidden.bs.modal', function(){
-                $.getScript( editUrl , function(){
-                    masterSwitchToggle();
-                    recurringAppointmentFormChosen();
-                    recurringAppointmentEditButtons();
-                    editAfterDate();
-                    toggleEditRequested();
-                    recurringAppointmentArchive();
-                })
-              });
-              $('.modal').modal('hide');
-            })
+            appointmentEdit(appointment.recurring_appointment_path);
            });
 
          },
@@ -83909,6 +83858,46 @@ let recurringAppointmentArchive = () => {
   })
 }
 
+let serviceLinkClick = () => {
+  $('tr.clickable-row.service-clickable').click(function(){
+    $.getScript($(this).data('service-link'), function(){
+      $('#service_recalculate_previous_wages').bootstrapToggle({
+        on: '反映する',
+        off: '反映しない',
+        onstyle: 'success',
+        offstyle: 'secondary',
+        width: 130
+      })
+    });
+  })
+}
+
+let appointmentEdit = (url) => {
+  if (url) {
+    $('#edit-appointment-body').hide();
+    $('#one-day-edit').click(function () {
+      $('#edit-options').hide();
+      $('#edit-appointment-body').show();
+    });
+    $('#recurring-edit').click(function () {
+      $('.modal').modal('hide');
+      $('.modal-backdrop').remove();
+      let targetUrl = $(this).data('recurring-url');
+      $.getScript(targetUrl, function () {
+        masterSwitchToggle();
+        recurringAppointmentFormChosen();
+        recurringAppointmentEditButtons();
+        editAfterDate();
+        toggleEditRequested();
+        recurringAppointmentArchive();
+      })
+    })
+  } else {
+    $('#edit-options').hide();
+  }
+
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
@@ -84128,6 +84117,11 @@ $(document).on('turbolinks:load', function(){
   $('#master-print-button').click(function(){
     window.print();
   });
+
+  $('#new-email-reminder').click(function(){
+    let targetPath =  $(this).data('reminder-url');
+    $.getScript(targetPath)
+  })
 
   $('.resource-list-element').click(function(){
     window.location = $(this).data('url');

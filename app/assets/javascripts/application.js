@@ -132,7 +132,7 @@ initialize_nurse_calendar = function(){
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
-            appointmentEdit(appointment.recurring_appointment_path);
+            appointmentEdit(event.recurring_appointment_path);
 
           });
       },

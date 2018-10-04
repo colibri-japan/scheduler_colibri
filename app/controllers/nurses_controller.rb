@@ -1,6 +1,6 @@
 class NursesController < ApplicationController
   before_action :set_corporation
-  before_action :set_nurse, only: [:edit, :show, :update, :destroy, :payable, :master, :new_reminder_email]
+  before_action :set_nurse, except: [:index, :new, :create]
   before_action :set_planning, only: [:show, :master, :payable]
 
   def index
@@ -86,9 +86,9 @@ class NursesController < ApplicationController
   end
 
   def send_reminder_email
-    custom_email_message = nurse_params[:custom_email_message]
+    message = nurse_params[:custom_email_message]
 
-    NurseMailer.reminder_email(nurse, next_day_appointments)
+    @nurse.send_service_reminder(custom_email_message: message)
   end
 
   def payable

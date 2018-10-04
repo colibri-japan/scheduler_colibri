@@ -919,8 +919,29 @@ let appointmentEdit = (url) => {
     })
   } else {
     $('#edit-options').hide();
+
   }
 
+}
+
+let sendReminder = () => {
+  $('#send-email-reminder').click(function () {
+    console.log('inside click action')
+    let customMessage = $('#nurse_custom_email_message').val();
+    let ajaxUrl = $(this).data('send-reminder-url');
+    console.log(customMessage);
+    console.log(ajaxUrl);
+    $.ajax({
+      url: ajaxUrl,
+      type: 'PATCH',
+      data: {
+        nurse: {
+          custom_email_message: customMessage, 
+        }
+      },
+      beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+    })
+  })
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 
@@ -1145,7 +1166,9 @@ $(document).on('turbolinks:load', function(){
 
   $('#new-email-reminder').click(function(){
     let targetPath =  $(this).data('reminder-url');
-    $.getScript(targetPath)
+    $.getScript(targetPath, function(){
+      sendReminder();
+    })
   })
 
   $('.resource-list-element').click(function(){

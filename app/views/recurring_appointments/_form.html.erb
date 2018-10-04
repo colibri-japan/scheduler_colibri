@@ -37,9 +37,11 @@
         <%= form.check_box :master, checked: @master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' if current_user.admin? %>
       </div>
 
+      <% frequency_options = @master == true ? [['毎週',0], ['2週間に一回', 1]] : [['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]] %>
+
       <div class="form-group">
         <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
-        <%= form.select(:frequency,  options_for_select([['毎週',0], ['2週間に一回', 1], ['その日のみ', 2]], recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
+        <%= form.select(:frequency,  options_for_select(frequency_options, recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
       </div>
 
     <% end %>

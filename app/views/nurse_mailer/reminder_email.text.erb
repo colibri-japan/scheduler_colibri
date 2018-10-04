@@ -1,6 +1,6 @@
 <%= @nurse.name %>様、<%= @corporation.name %>のサービスのスケジュールです。
 
-<%= @custom_message %>
+<%= @custom_message if @custom_message.present? %>
 
 <% @appointments.each do |appointment| %>
 	<%= appointment.patient.try(:name) %>様: <%= appointment.start.strftime("%-d日")  %><%= weekday(appointment.start) %> <%= appointment.start.strftime("%-H:%M") %>~<%= appointment.end.strftime("%-H:%M") %>

@@ -1,7 +1,15 @@
-<%= @nurse.name %>様、<%= @corporation.name %>のサービスのスケジュールです。<br/><br/>
-
-<%= @custom_message %><br/>
+<div>
+	<%= @nurse.name %>様、<%= @corporation.name %>のサービスのスケジュールです。
+</div>
 <br/>
+
+
+<% if @custom_message.present? %>
+	<div>
+		<%= @custom_message %>
+	</div>
+	<br/>
+<% end %>
 
 <% @appointments.each do |appointment| %>
 	<div>

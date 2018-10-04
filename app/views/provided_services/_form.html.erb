@@ -39,17 +39,24 @@
         <%= form.date_select :service_date, id: :provided_service_service_date, class: "form-control" %>
       </div>
 
-      <% if  provided_service.hour_based_wage == true && !provided_service.new_record?  %>
+      <% if  provided_service.hour_based_wage == true || provided_service.new_record?  %>
+
+        
+
         <div class="form-group"  id="pay-by-hour-field"><span class='required-field'>*</span>
           <%= form.label :service_duration, "提供時間", class: "colibri-form-label" %>
-          <%= form.select(:service_duration, options_for_select([['15分', 900],['30分', 1800],['45分', 2700], ['1時間', 3600],['1時間15分', 4500], ['1時間半', 5400],['1時間45分', 6300], ['2時間', 7200], ['2時間15分', 8100], ['2時間半', 9000], ['2時間45分', 9900], ['3時間', 10800], ['3時間15分', 11700], ['3時間半', 12600],['3時間45分', 13500], ['4時間', 14400]], provided_service.service_duration), prompt: '選択する')  %>
+
+          <%= check_box_tag('hour-input-method', 1, checked = !provided_service.new_record?, class: 'form-control') if provided_service.new_record? %>
+
+          <%= form.select(:service_duration, options_for_select([['15分', 900],['30分', 1800],['45分', 2700], ['1時間', 3600],['1時間15分', 4500], ['1時間半', 5400],['1時間45分', 6300], ['2時間', 7200], ['2時間15分', 8100], ['2時間半', 9000], ['2時間45分', 9900], ['3時間', 10800], ['3時間15分', 11700], ['3時間半', 12600],['3時間45分', 13500], ['4時間', 14400]], provided_service.service_duration), prompt: '提供時間を選択する', class: 'form-control')  %>
         </div>
       <% end %>
 
-      <% if  provided_service.hour_based_wage == false && !provided_service.new_record? %>
+      <% if  provided_service.hour_based_wage == false || provided_service.new_record? %>
 
         <div class="form-group" id="pay-by-count-field">
           <%= form.label :service_counts, "回数", class: "colibri-form-label" %><span class='required-field'>*</span>
+          <%= check_box_tag('count-input-method', 1, checked = !provided_service.new_record?) if provided_service.new_record? %>
           <%= form.number_field :service_counts, id: :provided_service_service_counts, class: "form-control" %>
         </div>
 
@@ -57,7 +64,7 @@
 
       <% if provided_service.new_record? %>
 
-        <div class="form-group">
+        <div class="form-group" id="target-service-from-ids">
             <%= form.label :target_service_ids, "対象サービスタイプ", class: 'colibri-form-label' %><br/>
             <%= form.collection_select(:target_service_ids, @services, :id, :title, {},multiple: true, id: 'chosen-target-services')  %>
             <span id="select-all-services" class="btn btn-mid-light btn-sm">すべて選択</span>

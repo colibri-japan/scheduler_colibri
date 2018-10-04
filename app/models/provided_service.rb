@@ -11,9 +11,9 @@ class ProvidedService < ApplicationRecord
 
 	before_save :set_default_countable, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :lookup_unit_cost, unless: :skip_callbacks_except_calculate_total_wage
-	before_save :service_counts_or_duration_from_target_services, :skip_callbacks_except_calculate_total_wage
-	before_save :set_default_service_counts, :skip_callbacks_except_calculate_total_wage
-	before_save :set_default_duration, :skip_callbacks_except_calculate_total_wage
+	before_save :service_counts_or_duration_from_target_services,　unless: :skip_callbacks_except_calculate_total_wage
+	before_save :set_default_service_counts, unless: :skip_callbacks_except_calculate_total_wage
+	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage
 
 	def self.to_csv(options = {})
@@ -52,7 +52,8 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def service_counts_or_duration_from_target_services
-		if self.target_service_ids.present? 
+		if  self.target_service_ids.present? && self.service_counts.nil?
+			puts 'inside service_counts'
 			services = target_service_ids.map{|id| Service.find(id) if id.present?}.compact
 			if self.hour_based_wage == true 
 				sum_hours = 0
@@ -69,6 +70,7 @@ class ProvidedService < ApplicationRecord
 				end
 				self.service_counts = sum_count 
 			end
+		else
 		end
 	end
 

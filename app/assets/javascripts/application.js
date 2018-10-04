@@ -180,6 +180,9 @@ initialize_nurse_calendar = function(){
             }
           }
         })
+        $('.ui-dialog-titlebar-close').click(function(){
+          revertFunc();
+        })
       },
 
 
@@ -333,6 +336,9 @@ initialize_patient_calendar = function(){
               revertFunc()
             }
           }
+        })
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
         })    
       },
          
@@ -705,6 +711,9 @@ initialize_calendar = function() {
             }
           }
         })
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
+        })
       },
          
       eventClick: function(appointment, jsEvent, view) {
@@ -797,14 +806,30 @@ editAfterDate = function(){
 
 var toggleProvidedServiceForm;
 toggleProvidedServiceForm = function(){
-  if ($('#hour-based-wage-toggle').is(':checked')) {
+  if ($('#hour-based-wage-toggle').is(':checked') && $('#hour-input-method').is(':checked')) {
     $("label[for='provided_service_unit_cost']").text('時給');
     $('#pay-by-hour-field').show();
     $('#pay-by-count-field').hide();
-  } else {
+    $('#provided_service_service_duration').hide();
+    $('#target-service-from-ids').show();
+  } else if ($('#hour-based-wage-toggle').is(':checked') && !$('#hour-input-method').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('時給');
+    $('#pay-by-hour-field').show();
+    $('#pay-by-count-field').hide();
+    $('#provided_service_service_duration').show();
+    $('#target-service-from-ids').hide();
+  } else if (!$('#hour-based-wage-toggle').is(':checked') && $('#count-input-method').is(':checked')) {
     $("label[for='provided_service_unit_cost']").text('単価');
     $('#pay-by-hour-field').hide();
     $('#pay-by-count-field').show();
+    $('#target-service-from-ids').show();
+    $('#provided_service_service_counts').hide();
+  } else if (!$('#hour-based-wage-toggle').is(':checked') && !$('#count-input-method').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('単価');
+    $('#pay-by-hour-field').hide();
+    $('#pay-by-count-field').show();
+    $('#target-service-from-ids').hide();
+    $('#provided_service_service_counts').show();
   }
 }
 
@@ -847,6 +872,14 @@ addProvidedServiceToggle = function(){
   $('#hour-based-wage-toggle').change(function(){
     toggleProvidedServiceForm();
   });
+
+  $('#hour-input-method').change(function(){
+    toggleProvidedServiceForm();
+  });
+
+  $('#count-input-method').change(function(){
+    toggleProvidedServiceForm();
+  })
 
   $('#chosen-target-services').chosen({
     no_results_text: 'サービスが見つかりません',
@@ -1020,6 +1053,25 @@ let sendReminder = () => {
     })
   })
 }
+
+let toggleCountFromServices = () => {
+  $('#hour-input-method').bootstrapToggle({
+    on: '自動',
+    off: '手動',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  });
+  $('#count-input-method').bootstrapToggle({
+    on: '自動',
+    off: '手動',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  })
+}
+
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 

@@ -52,7 +52,7 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def service_counts_or_duration_from_target_services
-		if  self.target_service_ids.present? && self.service_counts.nil?
+		if  self.target_service_ids.present? && self.service_counts.nil? && self.service_duration.nil?
 			puts 'inside service_counts'
 			services = target_service_ids.map{|id| Service.find(id) if id.present?}.compact
 			if self.hour_based_wage == true 

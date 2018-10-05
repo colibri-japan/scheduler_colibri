@@ -21,7 +21,7 @@ class RecurringAppointment < ApplicationRecord
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
-	validates :frequency, inclusion: 0..2
+	validates :frequency, inclusion: 0..5
 	validate :cannot_overlap_existing_appointment_create, on: :create
 	validate :cannot_overlap_existing_appointment_update, on: :update
 	validate :edit_requested_and_undefined_nurse
@@ -37,13 +37,31 @@ class RecurringAppointment < ApplicationRecord
 
 	def schedule
 		@schedule ||= begin
+
+		puts 'anchor weekday'
+		puts anchor.wday
+		puts anchor.strftime("%A")
+		day_of_week = anchor.wday
 			
 		schedule = IceCube::Schedule.new(now = anchor)
 			case frequency
 			when 0
+				# weekly
 				schedule.add_recurrence_rule IceCube::Rule.weekly(1)
 			when 1
+				# bi weekly starting first week
 				schedule.add_recurrence_rule IceCube::Rule.weekly(2)
+			when 2
+				#only that day == no rule
+			when 3
+				# bi weekly starting second week
+				schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week => [2,4])
+			when 4
+				#only the first week
+				schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week =>[1])
+			when 5
+				#only the last week
+				schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week => [-1])
 			else
 			end
 			schedule

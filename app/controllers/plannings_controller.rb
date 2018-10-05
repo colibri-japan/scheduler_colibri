@@ -89,12 +89,13 @@ class PlanningsController < ApplicationController
 
 	def duplicate
 		ids = @corporation.plannings.ids
+		@nurse = @corporation.nurses.where(displayable: true).first
 
 
 		if ids.include?(params[:template_id].to_i)
 			template_planning = Planning.find(params[:template_id]) 
 
-			original_appointments = template_planning.recurring_appointments.where(master: true, displayable: true, frequency: [0,1], edit_requested: false, deactivated: false, deleted: [nil, false]).all
+			original_appointments = template_planning.recurring_appointments.where(master: true, displayable: true, edit_requested: false, deactivated: false, deleted: [nil, false]).where.not(frequency: 2).all
 			first_day = Date.new(@planning.business_year, @planning.business_month, 1)
 			first_day_wday = first_day.wday
 
@@ -115,7 +116,7 @@ class PlanningsController < ApplicationController
 
 				recurring_appointment.save!(validate: false)
 			end
-			redirect_to planning_master_path(@planning), notice: 'サービスのコピーが成功しました。'
+			redirect_to planning_nurse_master_path(@planning, @nurse), notice: 'サービスのコピーが成功しました。'
 
 		else
 			redirect_to planning_duplicate_from_path(@planning), notice: 'このスケジュールはコピーできません。'

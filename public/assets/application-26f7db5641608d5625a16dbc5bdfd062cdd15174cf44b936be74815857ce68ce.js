@@ -83042,7 +83042,6 @@ initialize_nurse_calendar = function(){
       },
       selectable: true,
       selectHelper: false,
-      eventStartEditable: false,
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
@@ -83114,7 +83113,52 @@ initialize_nurse_calendar = function(){
 
       eventAfterAllRender: function (view) {
         appointmentComments();
-      }
+      },
+
+      eventDrop: function (appointment, delta, revertFunc) {
+        let minutes = moment.duration(delta).asMinutes();
+        let start_time = appointment.start
+        let end_time = appointment.end
+        let previous_start = moment(start_time).subtract(minutes, "minutes");
+        let previous_end = moment(end_time).subtract(minutes, "minutes");
+        let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
+        let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+
+        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-confirm').data('appointment', appointment)
+        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-confirm').dialog({
+          height: 'auto',
+          width: 400,
+          modal: true,
+          buttons: {
+            'セーブする': function () {
+              let appointment = $(this).data('appointment');
+              let delta = $(this).data('delta');
+              appointment_data = {
+                appointment: {
+                  start: appointment.start.format(),
+                  end: appointment.end.format(),
+                }
+              };
+              $.ajax({
+                url: appointment.base_url + '.js?delta=' + delta,
+                type: 'PATCH',
+                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+                data: appointment_data,
+              });
+              $(this).dialog("close")
+            },
+            "キャンセル": function () {
+              $(this).dialog("close");
+              revertFunc()
+            }
+          }
+        })
+        $('.ui-dialog-titlebar-close').click(function(){
+          revertFunc();
+        })
+      },
 
 
 
@@ -83229,19 +83273,49 @@ initialize_patient_calendar = function(){
       },
 
       eventDrop: function(appointment, delta, revertFunc) {
-           appointment_data = { 
-             appointment: {
-               start: appointment.start.format(),
-               end: appointment.end.format(),
-             }
-           };
-           $.ajax({
-               url: appointment.base_url + '.js?delta=' + delta,
-               type: 'PATCH',
-               beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-               data: appointment_data,
-           });
-         },
+        let minutes = moment.duration(delta).asMinutes();
+        let start_time = appointment.start 
+        let end_time = appointment.end 
+        let previous_start = moment(start_time).subtract(minutes, "minutes");
+        let previous_end = moment(end_time).subtract(minutes, "minutes");
+        let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
+        let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+
+        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
+        $('#drag-drop-confirm').data('appointment', appointment)
+        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-confirm').dialog({
+          height: 'auto',
+          width: 400,
+          modal: true,
+          buttons: {
+            'セーブする': function(){
+              let appointment = $(this).data('appointment');
+              let delta = $(this).data('delta');
+              appointment_data = {
+                appointment: {
+                  start: appointment.start.format(),
+                  end: appointment.end.format(),
+                }
+              };
+              $.ajax({
+                url: appointment.base_url + '.js?delta=' + delta,
+                type: 'PATCH',
+                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+                data: appointment_data,
+              });
+              $(this).dialog("close")
+            },
+            "キャンセル": function() {
+              $(this).dialog("close");
+              revertFunc()
+            }
+          }
+        })
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
+        })    
+      },
          
       eventClick: function(event, jsEvent, view) {
            $.getScript(event.edit_url, function() {
@@ -83250,8 +83324,6 @@ initialize_patient_calendar = function(){
             toggleEditRequested();
             console.log(event.recurring_appointment_path)
             appointmentEdit(event.recurring_appointment_path);
-
-            
            });
          },
 
@@ -83301,7 +83373,7 @@ initialize_master_calendar = function() {
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
-      editable: (window.userIsAdmin == 'true') ? true : false,
+      editable: false,
       eventLimit: true,
       eventColor: '#7AD5DE',
 
@@ -83391,21 +83463,6 @@ initialize_master_calendar = function() {
 
         master_calendar.fullCalendar('unselect');
       },
-
-      eventDrop: function(appointment, delta, revertFunc) {
-           appointment_data = { 
-             appointment: {
-               start: appointment.start.format(),
-               end: appointment.end.format()
-             }
-           };
-           $.ajax({
-               url: appointment.base_url + '.js?master=true',
-               type: 'PATCH',
-               beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-               data: appointment_data,
-           });
-         },
          
       eventClick: function(appointment, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
@@ -83589,21 +83646,50 @@ initialize_calendar = function() {
         calendar.fullCalendar('unselect');
       },
 
-      eventDrop: function(appointment, delta, revertFunc) {
-           appointment_data = { 
-             appointment: {
-               start: appointment.start.format(),
-               end: appointment.end.format(),
-               nurse_id: appointment.resourceId
-             }
-           };
-           $.ajax({
-               url: appointment.base_url + '.js',
-               type: 'PATCH',
-               beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-               data: appointment_data,
-           });
-         },
+      eventDrop: function (appointment, delta, revertFunc) {
+        let minutes = moment.duration(delta).asMinutes();
+        let start_time = appointment.start
+        let end_time = appointment.end
+        let previous_start = moment(start_time).subtract(minutes, "minutes");
+        let previous_end = moment(end_time).subtract(minutes, "minutes");
+        let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
+        let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+
+        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-confirm').data('appointment', appointment)
+        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-confirm').dialog({
+          height: 'auto',
+          width: 400,
+          modal: true,
+          buttons: {
+            'セーブする': function () {
+              let appointment = $(this).data('appointment');
+              let delta = $(this).data('delta');
+              appointment_data = {
+                appointment: {
+                  start: appointment.start.format(),
+                  end: appointment.end.format(),
+                }
+              };
+              $.ajax({
+                url: appointment.base_url + '.js?delta=' + delta,
+                type: 'PATCH',
+                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+                data: appointment_data,
+              });
+              $(this).dialog("close")
+            },
+            "キャンセル": function () {
+              $(this).dialog("close");
+              revertFunc()
+            }
+          }
+        })
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
+        })
+      },
          
       eventClick: function(appointment, jsEvent, view) {
            $.getScript(appointment.edit_url, function() {
@@ -83695,14 +83781,30 @@ editAfterDate = function(){
 
 var toggleProvidedServiceForm;
 toggleProvidedServiceForm = function(){
-  if ($('#hour-based-wage-toggle').is(':checked')) {
+  if ($('#hour-based-wage-toggle').is(':checked') && $('#hour-input-method').is(':checked')) {
     $("label[for='provided_service_unit_cost']").text('時給');
     $('#pay-by-hour-field').show();
     $('#pay-by-count-field').hide();
-  } else {
+    $('#provided_service_service_duration').hide();
+    $('#target-service-from-ids').show();
+  } else if ($('#hour-based-wage-toggle').is(':checked') && !$('#hour-input-method').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('時給');
+    $('#pay-by-hour-field').show();
+    $('#pay-by-count-field').hide();
+    $('#provided_service_service_duration').show();
+    $('#target-service-from-ids').hide();
+  } else if (!$('#hour-based-wage-toggle').is(':checked') && $('#count-input-method').is(':checked')) {
     $("label[for='provided_service_unit_cost']").text('単価');
     $('#pay-by-hour-field').hide();
     $('#pay-by-count-field').show();
+    $('#target-service-from-ids').show();
+    $('#provided_service_service_counts').hide();
+  } else if (!$('#hour-based-wage-toggle').is(':checked') && !$('#count-input-method').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('単価');
+    $('#pay-by-hour-field').hide();
+    $('#pay-by-count-field').show();
+    $('#target-service-from-ids').hide();
+    $('#provided_service_service_counts').show();
   }
 }
 
@@ -83745,6 +83847,14 @@ addProvidedServiceToggle = function(){
   $('#hour-based-wage-toggle').change(function(){
     toggleProvidedServiceForm();
   });
+
+  $('#hour-input-method').change(function(){
+    toggleProvidedServiceForm();
+  });
+
+  $('#count-input-method').change(function(){
+    toggleProvidedServiceForm();
+  })
 
   $('#chosen-target-services').chosen({
     no_results_text: 'サービスが見つかりません',
@@ -83894,9 +84004,49 @@ let appointmentEdit = (url) => {
     })
   } else {
     $('#edit-options').hide();
+
   }
 
 }
+
+let sendReminder = () => {
+  $('#send-email-reminder').click(function () {
+    console.log('inside click action')
+    let customMessage = $('#nurse_custom_email_message').val();
+    let ajaxUrl = $(this).data('send-reminder-url');
+    console.log(customMessage);
+    console.log(ajaxUrl);
+    $.ajax({
+      url: ajaxUrl,
+      type: 'PATCH',
+      data: {
+        nurse: {
+          custom_email_message: customMessage, 
+        }
+      },
+      beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+    })
+  })
+}
+
+let toggleCountFromServices = () => {
+  $('#hour-input-method').bootstrapToggle({
+    on: '自動',
+    off: '手動',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  });
+  $('#count-input-method').bootstrapToggle({
+    on: '自動',
+    off: '手動',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  })
+}
+
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
@@ -84120,7 +84270,9 @@ $(document).on('turbolinks:load', function(){
 
   $('#new-email-reminder').click(function(){
     let targetPath =  $(this).data('reminder-url');
-    $.getScript(targetPath)
+    $.getScript(targetPath, function(){
+      sendReminder();
+    })
   })
 
   $('.resource-list-element').click(function(){
@@ -84158,6 +84310,10 @@ $(document).on('turbolinks:load', function(){
 
   $('#print-options-confirm').hide();
 
+  $('#drag-drop-confirm').hide();
+
+
+
   window.setTimeout(function() {
       $(".alert").fadeTo(500, 0).slideUp(500, function(){
           $(this).remove(); 
@@ -84190,6 +84346,7 @@ $(document).on('turbolinks:load', function(){
     })
 
   })
+
 
 
 

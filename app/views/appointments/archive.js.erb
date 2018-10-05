@@ -2,13 +2,25 @@
   alert("<%= j @appointment.errors.values.join('; ') %>");
 <% else %>
 
-  $('.calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
-  $('.patient_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
-  $('.nurse_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
-  $('.master_calendar').fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+  if (typeof calendar === 'undefined') {
+    let calendar;
+  }
+  if ($('.calendar').length > 0) {
+    calendar = $('.calendar');
+  } else if ($('.patient_calendar').length > 0) {
+    calendar = $('.patient_calendar');
+  } else if ($('.nurse_calendar').length > 0) {
+    calendar = $('.nurse_calendar');
+  } else if ($('.master_calendar').length > 0) {
+    calendar = $('.master_calendar');
+  }
+
+  calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
 
   $('.modal').modal('hide');
 
-  $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  if ($('#planning-activities').length > 0) {
+    $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  }
 
 <% end %>

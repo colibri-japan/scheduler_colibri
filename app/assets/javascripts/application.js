@@ -1335,6 +1335,10 @@ $(document).on('turbolinks:load', function(){
 
   $('#print-options-confirm').hide();
 
+  $('#drag-drop-confirm').hide();
+
+
+
   window.setTimeout(function() {
       $(".alert").fadeTo(500, 0).slideUp(500, function(){
           $(this).remove(); 
@@ -1367,6 +1371,7 @@ $(document).on('turbolinks:load', function(){
     })
 
   })
+
 
 
 

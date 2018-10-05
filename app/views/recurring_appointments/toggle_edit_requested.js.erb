@@ -5,40 +5,30 @@
 
   $('.modal').modal('hide');
 
+  let calendar;
+  if ($('.calendar').length > 0) {
+    calendar = $('.calendar');
+  } else if ($('.patient_calendar').length > 0) {
+    calendar = $('.patient_calendar');
+  } else if ($('.nurse_calendar').length > 0) {
+    calendar = $('.nurse_calendar');
+  } else if ($('.master_calendar').length > 0) {
+    calendar = $('.master_calendar');
+  }
+
   <% @appointments.each do |appointment| %>
-    $('.calendar').fullCalendar('removeEvents' , '<%= "appointment_#{appointment.id}" %>');
-    $('.nurse_calendar').fullCalendar('removeEvents' , '<%= "appointment_#{appointment.id}" %>');
-    $('.patient_calendar').fullCalendar('removeEvents' , '<%= "appointment_#{appointment.id}" %>');
-    $('.master_calendar').fullCalendar('removeEvents' , '<%= "appointment_#{appointment.id}" %>');
-
+    calendar.fullCalendar('removeEvents' , '<%= "appointment_#{appointment.id}" %>');
     
-    $('.calendar').fullCalendar(
+    calendar.fullCalendar(
       'renderEvent', 
       $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
       false
     );
 
-    
-    $('.patient_calendar').fullCalendar(
-      'renderEvent', 
-      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
-      false
-    );
-
-    $('.nurse_calendar').fullCalendar(
-      'renderEvent', 
-      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
-      false
-    );
-
-    $('.master_calendar').fullCalendar(
-      'renderEvent', 
-      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
-      false
-    );
   <% end %>
 
-
-  $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  if ($('#planning-activities').lenth > 0) {
+    $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  }
 
 <% end %>

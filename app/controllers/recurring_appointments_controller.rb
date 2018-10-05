@@ -85,6 +85,7 @@ class RecurringAppointmentsController < ApplicationController
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.start, new_end: @recurring_appointment.end, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
       puts 'saved recurring appointment and activity, now fetching appointments'
       @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
+      puts @appointments.count
     end
   end
 

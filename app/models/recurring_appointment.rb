@@ -57,14 +57,10 @@ class RecurringAppointment < ApplicationRecord
 
 	def appointments(start_date, end_date)
 		puts 'appointments method called'
-		start_frequency = start_date ? start_date.to_date : Date.today - 1.year
-		end_frequency = end_date ? end_date.to_date : Date.today + 1.year
+		start_frequency = start_date ? start_date.to_date : Date.today.beginning_of_month
+		end_frequency = end_date ? end_date.to_date : Date.today.end_of_month
 
-		deleted_occurrences = self.deleted_occurrences.map { |d| d.deleted_day }
-		initial_occurrences = schedule.occurrences_between(start_frequency, end_frequency)
-		initial_occurrences.map! {|occurrence| occurrence.to_date }
-
-		initial_occurrences - deleted_occurrences
+		occurrences = schedule.occurrences_between(start_frequency, end_frequency)
 	end
 
 

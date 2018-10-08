@@ -50,10 +50,8 @@ class PlanningsController < ApplicationController
 
 	    RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
 	    Appointment.where(planning_id: @planning.id, master: false).destroy_all
-
-	    master_appointments = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false)
   
-		master_appointments.each do |recurring_appointment|
+		RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).find_each do |recurring_appointment|
 			related_appointments = Appointment.where(recurring_appointment_id: recurring_appointment.id)
 
 			new_recurring_appointment = recurring_appointment.dup 

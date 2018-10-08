@@ -1149,6 +1149,43 @@ let humanizeFrequency = (frequency) => {
     default:
   }
 }
+let allMasterToSchedule = () => {
+  $('#copy-master').click(function () {
+    if (copyMasterState == 1) {
+      alert('マスターを全体へコピーしてます、少々お待ちください');
+    } else {
+      var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
+      if (message && copyMasterState != 1) {
+        copyMasterState = 1;
+        $.ajax({
+          url: window.masterToSchedule,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
+    }
+  });
+}
+
+
+let patientMasterToSchedule = () => {
+  let copyPatientMasterState;
+  $('#copy-master-patient').click(function(){
+    if (copyPatientMasterState == 1) {
+      alert('利用者のサービスを全体へコピーしてます、少々お待ちください');
+    } else {
+      var message = confirm('利用者の「全体」のサービスが削除され、マスターのサービスがすべて全体へ反映されます！');
+      if (message && copyPatientMasterState != 1) {
+        copyPatientMasterState = 1;
+        $.ajax({
+          url: window.patientMasterToSchedule,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
+    }
+  })
+}
 
 
 
@@ -1436,21 +1473,8 @@ $(document).on('turbolinks:load', function(){
     $('.modal-backdrop').remove();
     $('#remote_container').html($('#modal-master-options'));
     $('#modal-master-options').modal('show');
-    $('#copy-master').click(function(){
-      if (copyMasterState == 1) {
-        alert('マスターを全体へコピーしてます、少々お待ちください');
-      } else {
-        var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
-        if (message && copyMasterState != 1) {
-          copyMasterState = 1;
-          $.ajax({
-            url: window.masterToSchedule,
-            type: 'PATCH',
-            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-          })
-        }
-      }
-    });
+    allMasterToSchedule();
+    patientMasterToSchedule();
   });
 
   $('#drag-drop-master').hide()

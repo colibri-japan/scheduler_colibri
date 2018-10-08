@@ -1,7 +1,7 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
-  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :master, :destroy]
-  before_action :set_planning, only: [:show, :master]
+  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :master, :destroy, :master_to_schedule]
+  before_action :set_planning, only: [:show, :master, :master_to_schedule]
 
   def index
   	@patients = @corporation.patients.where(active: true).order_by_kana
@@ -78,6 +78,33 @@ class PatientsController < ApplicationController
       format.json { head :no_content }
       format.js
     end
+  end
+
+  def master_to_schedule
+    authorize current_user, :is_admin?
+    @planning 
+    @patient 
+
+    @patient.recurring_appointments.where(planning_id: @planning.id, master: false).destroy_all 
+
+    @patient.recurring_appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).find_each do |recurring_appointment|
+      new_recurring_appointment = recurring_appointment.dup 
+			new_recurring_appointment.master = false 
+			new_recurring_appointment.original_id = nil 
+			new_recurring_appointment.skip_appointments_callbacks = true 
+      new_recurring_appointment.save!(validate: false) 
+      
+      Appointment.where(recurring_appointment_id: recurring_appointment.id).find_each do |appointment|
+      	new_appointment = appointment.dup 
+				new_appointment.master = false 
+				new_appointment.original_id = nil 
+				new_appointment.recurring_appointment_id = new_recurring_appointment.id 
+				new_appointment.save!(validate: false)
+      end
+    end
+
+    redirect_to @planning, notice: "#{@patient.name}様のサービスが全体へ反映されました"
+
   end
 
 

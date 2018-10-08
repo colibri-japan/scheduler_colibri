@@ -9,6 +9,9 @@ json.resourceId appointment.nurse_id
 json.patientId appointment.patient_id
 json.nurse_name appointment.nurse.try(:name)
 json.patient_name appointment.patient.try(:name)
+json.service_type appointment.title
+
+json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 
 json.editRequested appointment.edit_requested
 json.borderColor '#F98050' if appointment.edit_requested == true

@@ -4,7 +4,7 @@ json.array! appointments do |appointment|
 	json.allDay recurring_appointment.all_day_recurring_appointment? ? true : false
 	date_format = json.allDay ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 	json.id "recurring_#{recurring_appointment.id}"
-	json.extract! recurring_appointment, :description, :color, :master, :displayable
+	json.extract! recurring_appointment, :description, :color, :master, :displayable, :frequency
 	json.title "#{recurring_appointment.patient.try(:name)} - #{recurring_appointment.nurse.try(:name)}"
 	json.nurse_name recurring_appointment.nurse.try(:name)
 	json.patient_name recurring_appointment.patient.try(:name)

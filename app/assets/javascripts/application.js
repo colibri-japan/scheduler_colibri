@@ -398,7 +398,7 @@ initialize_master_calendar = function() {
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
-      editable: false,
+      editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
 
@@ -435,6 +435,61 @@ initialize_master_calendar = function() {
             $('#nurse-info-block-master').addClass('.print-master-no-view');
             return !event.editRequested && event.master && event.displayable ;
           }
+      },
+
+      eventDrop: function(appointment, delta, revertFunc) {
+        let minutes = moment.duration(delta).asMinutes();
+        let start_time = appointment.start;
+        let end_time = appointment.end;
+        let previous_start = moment(start_time).subtract(minutes, "minutes");
+        let previous_end = moment(end_time).subtract(minutes, "minutes");
+        let frequency = humanizeFrequency(appointment.frequency);
+        let newAppointment =  '(' + start_time.format('dddd').charAt(0) + ') ' + frequency + ' ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+        
+        console.log("nurse and patient id");
+        console.log(appointment.resourceId)
+        console.log(appointment.patientId)
+
+        $('#drag-drop-master-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p><p>"  + newAppointment + "</p>")
+
+        $('#drag-drop-master').dialog({
+          height: 'auto',
+          width: 400,
+          modal: true,
+          buttons: {
+            'コピーする': function(){
+              $(this).dialog("close");
+              $.ajax({
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js",
+                type: 'POST',
+                data: {
+                  recurring_appointment: {
+                    nurse_id: appointment.resourceId,
+                    patient_id: appointment.patientId,
+                    frequency: appointment.frequency,
+                    title: appointment.service_type,
+                    color: appointment.color,
+                    anchor: appointment.start.format('YYYY-MM-DD'),
+                    end_day: appointment.end.format('YYYY-MM-DD'),
+                    start: appointment.start.format(),
+                    end: appointment.end.format()
+                  },
+                  master: true
+                },
+                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+              });
+              revertFunc();
+            },
+            'キャンセル': function(){
+              $(this).dialog("close");
+              revertFunc();
+            }
+          }
+        });
+
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
+        })  
       },
 
 
@@ -1072,6 +1127,31 @@ let toggleCountFromServices = () => {
   })
 }
 
+let humanizeFrequency = (frequency) => {
+  console.log(frequency)
+  switch(frequency) {
+    case 0:
+      return '毎週';
+      break;
+    case 1:
+      return '第一、三、五週目';
+      break;
+    case 2:
+      return 'その日のみ'
+      break;
+    case 3:
+      return '第二、四週目';
+      break;
+    case 4:
+      return '第一週目';
+      break;
+    case 5:
+      return '最後の週';
+      break;
+    default:
+  }
+}
+
 
 
 $(document).on('turbolinks:load', initialize_calendar); 
@@ -1372,13 +1452,10 @@ $(document).on('turbolinks:load', function(){
           })
         }
       }
-    })
+    });
+  });
 
-  })
-
-
-
-
+  $('#drag-drop-master').hide()
 
   
 

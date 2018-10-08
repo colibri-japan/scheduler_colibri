@@ -83155,6 +83155,9 @@ initialize_nurse_calendar = function(){
             }
           }
         })
+        $('.ui-dialog-titlebar-close').click(function(){
+          revertFunc();
+        })
       },
 
 
@@ -83308,6 +83311,9 @@ initialize_patient_calendar = function(){
               revertFunc()
             }
           }
+        })
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
         })    
       },
          
@@ -83367,7 +83373,7 @@ initialize_master_calendar = function() {
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
-      editable: false,
+      editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
 
@@ -83404,6 +83410,61 @@ initialize_master_calendar = function() {
             $('#nurse-info-block-master').addClass('.print-master-no-view');
             return !event.editRequested && event.master && event.displayable ;
           }
+      },
+
+      eventDrop: function(appointment, delta, revertFunc) {
+        let minutes = moment.duration(delta).asMinutes();
+        let start_time = appointment.start;
+        let end_time = appointment.end;
+        let previous_start = moment(start_time).subtract(minutes, "minutes");
+        let previous_end = moment(end_time).subtract(minutes, "minutes");
+        let frequency = humanizeFrequency(appointment.frequency);
+        let newAppointment =  '(' + start_time.format('dddd').charAt(0) + ') ' + frequency + ' ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+        
+        console.log("nurse and patient id");
+        console.log(appointment.resourceId)
+        console.log(appointment.patientId)
+
+        $('#drag-drop-master-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p><p>"  + newAppointment + "</p>")
+
+        $('#drag-drop-master').dialog({
+          height: 'auto',
+          width: 400,
+          modal: true,
+          buttons: {
+            'コピーする': function(){
+              $(this).dialog("close");
+              $.ajax({
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js",
+                type: 'POST',
+                data: {
+                  recurring_appointment: {
+                    nurse_id: appointment.resourceId,
+                    patient_id: appointment.patientId,
+                    frequency: appointment.frequency,
+                    title: appointment.service_type,
+                    color: appointment.color,
+                    anchor: appointment.start.format('YYYY-MM-DD'),
+                    end_day: appointment.end.format('YYYY-MM-DD'),
+                    start: appointment.start.format(),
+                    end: appointment.end.format()
+                  },
+                  master: true
+                },
+                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+              });
+              revertFunc();
+            },
+            'キャンセル': function(){
+              $(this).dialog("close");
+              revertFunc();
+            }
+          }
+        });
+
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
+        })  
       },
 
 
@@ -83680,6 +83741,9 @@ initialize_calendar = function() {
             }
           }
         })
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
+        })
       },
          
       eventClick: function(appointment, jsEvent, view) {
@@ -83772,14 +83836,30 @@ editAfterDate = function(){
 
 var toggleProvidedServiceForm;
 toggleProvidedServiceForm = function(){
-  if ($('#hour-based-wage-toggle').is(':checked')) {
+  if ($('#hour-based-wage-toggle').is(':checked') && $('#hour-input-method').is(':checked')) {
     $("label[for='provided_service_unit_cost']").text('時給');
     $('#pay-by-hour-field').show();
     $('#pay-by-count-field').hide();
-  } else {
+    $('#provided_service_service_duration').hide();
+    $('#target-service-from-ids').show();
+  } else if ($('#hour-based-wage-toggle').is(':checked') && !$('#hour-input-method').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('時給');
+    $('#pay-by-hour-field').show();
+    $('#pay-by-count-field').hide();
+    $('#provided_service_service_duration').show();
+    $('#target-service-from-ids').hide();
+  } else if (!$('#hour-based-wage-toggle').is(':checked') && $('#count-input-method').is(':checked')) {
     $("label[for='provided_service_unit_cost']").text('単価');
     $('#pay-by-hour-field').hide();
     $('#pay-by-count-field').show();
+    $('#target-service-from-ids').show();
+    $('#provided_service_service_counts').hide();
+  } else if (!$('#hour-based-wage-toggle').is(':checked') && !$('#count-input-method').is(':checked')) {
+    $("label[for='provided_service_unit_cost']").text('単価');
+    $('#pay-by-hour-field').hide();
+    $('#pay-by-count-field').show();
+    $('#target-service-from-ids').hide();
+    $('#provided_service_service_counts').show();
   }
 }
 
@@ -83822,6 +83902,14 @@ addProvidedServiceToggle = function(){
   $('#hour-based-wage-toggle').change(function(){
     toggleProvidedServiceForm();
   });
+
+  $('#hour-input-method').change(function(){
+    toggleProvidedServiceForm();
+  });
+
+  $('#count-input-method').change(function(){
+    toggleProvidedServiceForm();
+  })
 
   $('#chosen-target-services').chosen({
     no_results_text: 'サービスが見つかりません',
@@ -83978,23 +84066,68 @@ let appointmentEdit = (url) => {
 
 let sendReminder = () => {
   $('#send-email-reminder').click(function () {
-    console.log('inside click action')
+
     let customMessage = $('#nurse_custom_email_message').val();
+    let customDays = $('#chosen-custom-email-days').val();
     let ajaxUrl = $(this).data('send-reminder-url');
-    console.log(customMessage);
-    console.log(ajaxUrl);
+
     $.ajax({
       url: ajaxUrl,
       type: 'PATCH',
       data: {
         nurse: {
           custom_email_message: customMessage, 
+          custom_email_days: customDays
         }
       },
       beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
     })
   })
 }
+
+let toggleCountFromServices = () => {
+  $('#hour-input-method').bootstrapToggle({
+    on: '自動',
+    off: '手動',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  });
+  $('#count-input-method').bootstrapToggle({
+    on: '自動',
+    off: '手動',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  })
+}
+
+let humanizeFrequency = (frequency) => {
+  console.log(frequency)
+  switch(frequency) {
+    case 0:
+      return '毎週';
+      break;
+    case 1:
+      return '第一、三、五週目';
+      break;
+    case 2:
+      return 'その日のみ'
+      break;
+    case 3:
+      return '第二、四週目';
+      break;
+    case 4:
+      return '第一週目';
+      break;
+    case 5:
+      return '最後の週';
+      break;
+    default:
+  }
+}
+
+
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
@@ -84219,6 +84352,9 @@ $(document).on('turbolinks:load', function(){
   $('#new-email-reminder').click(function(){
     let targetPath =  $(this).data('reminder-url');
     $.getScript(targetPath, function(){
+      $('#chosen-custom-email-days').chosen({
+        disable_search_threshold: 8
+      })
       sendReminder();
     })
   })
@@ -84258,6 +84394,10 @@ $(document).on('turbolinks:load', function(){
 
   $('#print-options-confirm').hide();
 
+  $('#drag-drop-confirm').hide();
+
+
+
   window.setTimeout(function() {
       $(".alert").fadeTo(500, 0).slideUp(500, function(){
           $(this).remove(); 
@@ -84289,7 +84429,10 @@ $(document).on('turbolinks:load', function(){
       }
     })
 
+    $('#drag-drop-master').hide()
+
   })
+
 
 
 

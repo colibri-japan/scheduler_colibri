@@ -1297,6 +1297,9 @@ $(document).on('turbolinks:load', function(){
   $('#new-email-reminder').click(function(){
     let targetPath =  $(this).data('reminder-url');
     $.getScript(targetPath, function(){
+      $('#chosen-custom-email-days').chosen({
+        disable_search_threshold: 8
+      })
       sendReminder();
     })
   })

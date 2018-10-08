@@ -83373,13 +83373,14 @@ initialize_master_calendar = function() {
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
-      editable: false,
+      editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
+      refetchResourcesOnNavigate: true,
 
 
       resources: {
-        url: window.corporationNursesURL,
+        url: window.corporationNursesURL　+ '?include_undefined=true&master=true',
       },
 
       events: window.appointmentsURL + '&master=true',
@@ -83406,10 +83407,61 @@ initialize_master_calendar = function() {
 
             return filterName() && !event.editRequested && event.master && event.displayable ;
           } else {
-            $('.master-title').text('全サービス');
             $('#nurse-info-block-master').addClass('.print-master-no-view');
             return !event.editRequested && event.master && event.displayable ;
           }
+      },
+
+      eventDrop: function(appointment, delta, revertFunc) {
+        let minutes = moment.duration(delta).asMinutes();
+        let start_time = appointment.start;
+        let end_time = appointment.end;
+        let previous_start = moment(start_time).subtract(minutes, "minutes");
+        let previous_end = moment(end_time).subtract(minutes, "minutes");
+        let frequency = humanizeFrequency(appointment.frequency);
+        let newAppointment =  '(' + start_time.format('dddd').charAt(0) + ') ' + frequency + ' ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+        
+
+        $('#drag-drop-master-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p><p>"  + newAppointment + "</p>")
+
+        $('#drag-drop-master').dialog({
+          height: 'auto',
+          width: 400,
+          modal: true,
+          buttons: {
+            'コピーする': function(){
+              $(this).dialog("close");
+              $.ajax({
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js",
+                type: 'POST',
+                data: {
+                  recurring_appointment: {
+                    nurse_id: appointment.resourceId,
+                    patient_id: appointment.patientId,
+                    frequency: appointment.frequency,
+                    title: appointment.service_type,
+                    color: appointment.color,
+                    anchor: appointment.start.format('YYYY-MM-DD'),
+                    end_day: appointment.end.format('YYYY-MM-DD'),
+                    start: appointment.start.format(),
+                    end: appointment.end.format()
+                  },
+                  master: true
+                },
+                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+              });
+              revertFunc();
+            },
+            'キャンセル': function(){
+              $(this).dialog("close");
+              revertFunc();
+            }
+          }
+        });
+
+        $('.ui-dialog-titlebar-close').click(function () {
+          revertFunc();
+        })  
       },
 
 
@@ -83529,10 +83581,11 @@ initialize_calendar = function() {
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
+      refetchResourcesOnNavigate: true,
 
 
       resources: {
-        url: window.corporationNursesURL + '?include_undefined=true',
+        url: window.corporationNursesURL + '?include_undefined=true&master=false',
       }, 
 
       eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
@@ -84011,17 +84064,18 @@ let appointmentEdit = (url) => {
 
 let sendReminder = () => {
   $('#send-email-reminder').click(function () {
-    console.log('inside click action')
+
     let customMessage = $('#nurse_custom_email_message').val();
+    let customDays = $('#chosen-custom-email-days').val();
     let ajaxUrl = $(this).data('send-reminder-url');
-    console.log(customMessage);
-    console.log(ajaxUrl);
+
     $.ajax({
       url: ajaxUrl,
       type: 'PATCH',
       data: {
         nurse: {
           custom_email_message: customMessage, 
+          custom_email_days: customDays
         }
       },
       beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
@@ -84044,6 +84098,31 @@ let toggleCountFromServices = () => {
     offstyle: 'info',
     width: 130
   })
+}
+
+let humanizeFrequency = (frequency) => {
+  console.log(frequency)
+  switch(frequency) {
+    case 0:
+      return '毎週';
+      break;
+    case 1:
+      return '第一、三、五週目';
+      break;
+    case 2:
+      return 'その日のみ'
+      break;
+    case 3:
+      return '第二、四週目';
+      break;
+    case 4:
+      return '第一週目';
+      break;
+    case 5:
+      return '最後の週';
+      break;
+    default:
+  }
 }
 
 
@@ -84271,6 +84350,9 @@ $(document).on('turbolinks:load', function(){
   $('#new-email-reminder').click(function(){
     let targetPath =  $(this).data('reminder-url');
     $.getScript(targetPath, function(){
+      $('#chosen-custom-email-days').chosen({
+        disable_search_threshold: 8
+      })
       sendReminder();
     })
   })
@@ -84343,13 +84425,10 @@ $(document).on('turbolinks:load', function(){
           })
         }
       }
-    })
+    });
+  });
 
-  })
-
-
-
-
+  $('#drag-drop-master').hide()
 
   
 

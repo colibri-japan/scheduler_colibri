@@ -401,10 +401,11 @@ initialize_master_calendar = function() {
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
+      refetchResourcesOnNavigate: true,
 
 
       resources: {
-        url: window.corporationNursesURL,
+        url: window.corporationNursesURL　+ '?include_undefined=true&master=true',
       },
 
       events: window.appointmentsURL + '&master=true',
@@ -431,7 +432,6 @@ initialize_master_calendar = function() {
 
             return filterName() && !event.editRequested && event.master && event.displayable ;
           } else {
-            $('.master-title').text('全サービス');
             $('#nurse-info-block-master').addClass('.print-master-no-view');
             return !event.editRequested && event.master && event.displayable ;
           }
@@ -446,9 +446,6 @@ initialize_master_calendar = function() {
         let frequency = humanizeFrequency(appointment.frequency);
         let newAppointment =  '(' + start_time.format('dddd').charAt(0) + ') ' + frequency + ' ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
         
-        console.log("nurse and patient id");
-        console.log(appointment.resourceId)
-        console.log(appointment.patientId)
 
         $('#drag-drop-master-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p><p>"  + newAppointment + "</p>")
 
@@ -609,10 +606,11 @@ initialize_calendar = function() {
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
+      refetchResourcesOnNavigate: true,
 
 
       resources: {
-        url: window.corporationNursesURL + '?include_undefined=true',
+        url: window.corporationNursesURL + '?include_undefined=true&master=false',
       }, 
 
       eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],

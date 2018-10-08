@@ -1036,17 +1036,18 @@ let appointmentEdit = (url) => {
 
 let sendReminder = () => {
   $('#send-email-reminder').click(function () {
-    console.log('inside click action')
+
     let customMessage = $('#nurse_custom_email_message').val();
+    let customDays = $('#chosen-custom-email-days').val();
     let ajaxUrl = $(this).data('send-reminder-url');
-    console.log(customMessage);
-    console.log(ajaxUrl);
+
     $.ajax({
       url: ajaxUrl,
       type: 'PATCH',
       data: {
         nurse: {
           custom_email_message: customMessage, 
+          custom_email_days: customDays
         }
       },
       beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }

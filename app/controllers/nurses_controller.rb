@@ -87,8 +87,12 @@ class NursesController < ApplicationController
 
   def send_reminder_email
     message = nurse_params[:custom_email_message]
+    custom_email_days = nurse_params[:custom_email_days]
 
-    @nurse.send_service_reminder(custom_email_message: message)
+    puts 'custom email days'
+    puts custom_email_days
+
+    @nurse.send_service_reminder(custom_email_days, {custom_email_message: message})
   end
 
   def payable
@@ -161,7 +165,7 @@ class NursesController < ApplicationController
   end
 
   def nurse_params
-    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :full_timer, :reminderable, :custom_email_message)
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :full_timer, :reminderable, :custom_email_message, custom_email_days: [])
   end
 
   def calculate_total_wage

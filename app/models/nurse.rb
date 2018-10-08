@@ -1,5 +1,6 @@
 class Nurse < ApplicationRecord
 	attribute :custom_email_message
+	attribute :custom_email_days
 
 	belongs_to :corporation
 	has_many :appointments, dependent: :destroy
@@ -20,30 +21,29 @@ class Nurse < ApplicationRecord
 		}
 	end
 
-	def send_service_reminder(options={})
-
+	def send_service_reminder(custom_email_days, options={})
 		@custom_email_message = options[:custom_email_message] || ' '
+		@custom_email_days = custom_email_days
 
-		start_time = Time.current.beginning_of_day
-		end_time = Time.current.end_of_day
+		@custom_email_days.map! {|e| e.to_date }
 
-		valid_plannings = Planning.where(business_month: start_time.month, corporation_id: self.corporation_id)
+		valid_plannings = Planning.where(business_month: Time.current.month, corporation_id: self.corporation_id)
 
-		if [1,2,3,4].include?(start_time.wday)
-			next_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: self.id, displayable: true, deactivated: false, edit_requested: false, master: false).where(start: (start_time + 1.day)..(end_time + 1.day)).all.order(start: 'asc')
-			next_day_appointments = next_day_appointments.to_a
+		selected_appointments = []
 
-			if next_day_appointments.present? && self.phone_mail.present?
-				NurseMailer.reminder_email(self, next_day_appointments, @custom_email_message).deliver_now
-			end
-		elsif start_time.wday == 5 
-			next_three_day_appointments = Appointment.where(planning_id: valid_plannings.ids, nurse_id: self.id, displayable: true, deactivated: false, edit_requested: false, master: false).where(start: (start_time + 1.day)..(end_time + 3.days)).all.order(start: 'asc')
-			next_three_day_appointments = next_three_day_appointments.to_a 
-
-			if next_three_day_appointments.present? && self.phone_mail.present?
-				NurseMailer.reminder_email(self, next_three_day_appointments, @custom_email_message).deliver_now
-			end
+		@custom_email_days.each do |custom_day|
+			custom_day_start = custom_day.beginning_of_day
+			custom_day_end = custom_day.end_of_day
+			custom_day_appointments =  Appointment.where(planning_id: valid_plannings.ids, nurse_id: self.id, displayable: true, deactivated: false, edit_requested: false, master: false).where(start: custom_day_start..custom_day_end).all.order(start: 'asc')
+			selected_appointments << custom_day_appointments.to_a
 		end
+
+		selected_appointments = selected_appointments.flatten
+
+		if selected_appointments.present? && self.phone_mail.present?
+			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: @custom_email_message}).deliver_now 
+		end
+
 	end
 	
 	private 
@@ -52,7 +52,11 @@ class Nurse < ApplicationRecord
 
 	def self.service_reminder
 		Nurse.where(reminderable: true).find_each do |nurse|
-			nurse.send_service_reminder
+			date = Date.today
+
+			selected_days = [1,2,3,4].include?(date.wday) ? [date + 1.day] : [date + 1.day, date + 2.days, date + 3.days]
+
+			nurse.send_service_reminder(selected_days)
 		end
 	end
 

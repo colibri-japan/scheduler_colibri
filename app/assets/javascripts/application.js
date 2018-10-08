@@ -1150,6 +1150,7 @@ let humanizeFrequency = (frequency) => {
   }
 }
 let allMasterToSchedule = () => {
+  var copyMasterState;
   $('#copy-master').click(function () {
     if (copyMasterState == 1) {
       alert('マスターを全体へコピーしてます、少々お待ちください');
@@ -1464,7 +1465,7 @@ $(document).on('turbolinks:load', function(){
       });
   }, 4000);
 
-  var copyMasterState;
+  
 
   $('#loader-container').hide();
 

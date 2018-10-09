@@ -1,7 +1,9 @@
 <%= javascript_tag do %>
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning) %>";
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
-	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
+	window.corporationNursesUrl = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
+	window.corporationPatientsUrl = "<%= j corporation_patients_url(@corporation, format: :json) %>";
+	window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>"
 	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning) %>"
@@ -23,6 +25,7 @@
 		<div id="activity-show-button-container">
 			<%= select_tag 'nurse-filter-zentai[]', options_from_collection_for_select(@nurses, 'id', 'name', 0), data: {placeholder: "全ヘルパー"}, multiple: true %>
 			<%= select_tag 'patient-filter-zentai[]', options_from_collection_for_select(@patients, 'id', 'name', ''), data: {placeholder: "全利用者"}, multiple: true %>
+			<span id="day-view-options"><input type="checkbox" id="day-view-options-input" checked  data-toggle="toggle" data-on="ヘルパー軸" data-off="利用者軸" data-offstyle="success" onchange="toggleDayResources()"></span>
 			<input type="checkbox" checked  class="bootstrap-toggle">
 			<input type="checkbox" checked  id="edit-request-filter">
 			<span id="activity-show-button" class="btn btn-success"><span class="glyphicon glyphicon-time" style="color:white"></span> 最新編集履歴</span>

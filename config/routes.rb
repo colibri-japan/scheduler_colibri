@@ -31,7 +31,8 @@ Rails.application.routes.draw do
   end
 
   resources :corporations do
-  	resources :nurses, only: :index
+    resources :nurses, only: :index
+    resources :patients, only: :index
   end
 
 

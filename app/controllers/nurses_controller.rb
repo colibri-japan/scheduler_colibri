@@ -4,17 +4,9 @@ class NursesController < ApplicationController
   before_action :set_planning, only: [:show, :master, :payable, :master_to_schedule]
 
   def index
-
-    if params[:start].present? && params[:end].present? 
-      start_time = params[:start].to_date.beginning_of_day
-      end_time = params[:end].to_date.beginning_of_day
-      @nurses = @corporation.nurses.joins(:appointments).where(appointments: {displayable: true, master: params[:master], start: start_time..end_time})
-      @nurses = @nurses.where(displayable: true)
-    else
-      full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
-      part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
-      @nurses = full_timers + part_timers
-    end
+    full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
+    part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    @nurses = full_timers + part_timers
 
     if  params[:include_undefined] == 'true'
       undisplayable = @corporation.nurses.where(displayable: false)

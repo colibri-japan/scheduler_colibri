@@ -69,7 +69,9 @@ Rails.application.routes.draw do
 
   patch 'plannings/:planning_id/recurring_appointment/:id/from_master_to_general' => 'recurring_appointments#from_master_to_general', as: :from_master_to_general
 
-  patch 'plannings/:planning_id/patients/:id/from_master_to_schedule' => 'patients#master_to_schedule', as: :patient_master_to_schedule
+  patch 'plannings/:planning_id/patients/:id/master_to_schedule' => 'patients#master_to_schedule', as: :patient_master_to_schedule
+
+  patch 'plannings/:planning_id/nurses/:id/master_to_schedule' => 'nurses#master_to_schedule', as: :nurse_master_to_schedule
 
   patch 'plannings/:id/archive' => 'plannings#archive', as: :planning_archive
 

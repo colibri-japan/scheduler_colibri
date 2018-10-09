@@ -1192,6 +1192,25 @@ let patientMasterToSchedule = () => {
   })
 }
 
+let nurseMasterToSchedule = () => {
+  let copyNurseMasterState;
+  $('#copy-master-nurse').click(function () {
+    if (copyNurseMasterState == 1) {
+      alert('ヘルパーのサービスを全体へコピーしてます、少々お待ちください');
+    } else {
+      var message = confirm('ヘルパーの「全体」のサービスが削除され、マスターのサービスがすべて全体へ反映されます！');
+      if (message && copyNurseMasterState != 1) {
+        copyNurseMasterState = 1;
+        $.ajax({
+          url: window.nurseMasterToSchedule,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
+    }
+  })
+}
+
 
 
 $(document).on('turbolinks:load', initialize_calendar); 
@@ -1480,6 +1499,7 @@ $(document).on('turbolinks:load', function(){
     $('#modal-master-options').modal('show');
     allMasterToSchedule();
     patientMasterToSchedule();
+    nurseMasterToSchedule();
   });
 
   $('#drag-drop-master').hide()

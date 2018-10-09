@@ -82,8 +82,6 @@ class PatientsController < ApplicationController
 
   def master_to_schedule
     authorize current_user, :is_admin?
-    @planning 
-    @patient 
 
     @patient.recurring_appointments.where(planning_id: @planning.id, master: false).destroy_all 
 
@@ -103,7 +101,7 @@ class PatientsController < ApplicationController
       end
     end
 
-    redirect_to @planning, notice: "#{@patient.name}様のサービスが全体へ反映されました"
+    redirect_to planning_patient_path(@planning, @patient), notice: "#{@patient.name}様のサービスが全体へ反映されました"
 
   end
 

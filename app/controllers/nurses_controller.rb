@@ -1,7 +1,7 @@
 class NursesController < ApplicationController
   before_action :set_corporation
   before_action :set_nurse, except: [:index, :new, :create]
-  before_action :set_planning, only: [:show, :master, :payable]
+  before_action :set_planning, only: [:show, :master, :payable, :master_to_schedule]
 
   def index
 
@@ -138,6 +138,31 @@ class NursesController < ApplicationController
       format.html
       format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="ヘルパー給与.xlsx"'}
     end
+  end
+
+  def master_to_schedule
+    authorize current_user, :is_admin?
+
+    @nurse.recurring_appointments.where(planning_id: @planning.id, master: false).destroy_all 
+
+    @nurse.recurring_appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).find_each do |recurring_appointment|
+      new_recurring_appointment = recurring_appointment.dup 
+			new_recurring_appointment.master = false 
+			new_recurring_appointment.original_id = nil 
+			new_recurring_appointment.skip_appointments_callbacks = true 
+      new_recurring_appointment.save!(validate: false) 
+      
+      Appointment.where(recurring_appointment_id: recurring_appointment.id).find_each do |appointment|
+      	new_appointment = appointment.dup 
+				new_appointment.master = false 
+				new_appointment.original_id = nil 
+				new_appointment.recurring_appointment_id = new_recurring_appointment.id 
+				new_appointment.save!(validate: false)
+      end
+    end
+
+    redirect_to planning_nurse_path(@planning, @nurse), notice: "#{@nurse.name}のサービスが全体へ反映されました"
+
   end
 
 

@@ -83025,6 +83025,7 @@ initialize_nurse_calendar = function(){
           displayEventEnd: true,
         }
       },
+      firstDay: 1,
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',
@@ -83182,6 +83183,7 @@ initialize_patient_calendar = function(){
       timeFormat: 'H:mm',
       nowIndicator: true,
       locale: 'ja',
+      firstDay: 1,
       eventColor: '#7AD5DE',
       validRange: {
         start: window.validRangeStart,
@@ -83245,7 +83247,7 @@ initialize_patient_calendar = function(){
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-          $("#recurring_appointment_patient_id").val(window.patientId);
+          $("#recurring_appointment_patient_id").val(window.patient_id);
           $('#unavailability_start_1i').val(moment(start).format('YYYY'));
           $('#unavailability_start_2i').val(moment(start).format('M'));
           $('#unavailability_start_3i').val(moment(start).format('D'));
@@ -83256,7 +83258,7 @@ initialize_patient_calendar = function(){
           $('#unavailability_end_3i').val(moment(end).format('D'));
           $('#unavailability_end_4i').val(moment(end).format('HH'));
           $('#unavailability_end_5i').val(moment(end).format('mm'));
-          $("#unavailability_patient_id").val(window.patientId);
+          $("#unavailability_patient_id").val(window.patient_id);
 
           recurringAppointmentFormChosen();
         });
@@ -83358,6 +83360,7 @@ initialize_master_calendar = function() {
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',
+      firstDay: 1,
       nowIndicator: true,
       locale: 'ja',
       validRange: {
@@ -83436,8 +83439,8 @@ initialize_master_calendar = function() {
                 type: 'POST',
                 data: {
                   recurring_appointment: {
-                    nurse_id: appointment.resourceId,
-                    patient_id: appointment.patientId,
+                    nurse_id: appointment.nurse_id,
+                    patient_id: appointment.patient_id,
                     frequency: appointment.frequency,
                     title: appointment.service_type,
                     color: appointment.color,
@@ -83506,8 +83509,8 @@ initialize_master_calendar = function() {
           if (window.nurseId) {
             $('#recurring_appointment_nurse_id').val(window.nurseId);
           }
-          if (window.patientId) {
-            $('#recurring_appointment_patient_id').val(window.patientId);
+          if (window.patient_id) {
+            $('#recurring_appointment_patient_id').val(window.patient_id);
           }
           recurringAppointmentFormChosen();
 
@@ -83564,6 +83567,7 @@ initialize_calendar = function() {
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',
       nowIndicator: true,
+      firstDay: 1,
       locale: 'ja',
       validRange: {
         start: window.validRangeStart,
@@ -83583,9 +83587,8 @@ initialize_calendar = function() {
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
 
-
       resources: {
-        url: window.corporationNursesURL + '?include_undefined=true&master=false',
+        url: window.resourceUrl + '?include_undefined=true&master=false',
       }, 
 
       eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
@@ -83611,7 +83614,7 @@ initialize_calendar = function() {
 
         var filterPatient = function(){
           for (var i=0; i < patientFilterArray.length; i++) {
-            if (['', event.patientId.toString()].indexOf(patientFilterArray[i]) >= 0) {
+            if (['', event.patient_id.toString()].indexOf(patientFilterArray[i]) >= 0) {
               return true
             }
           }
@@ -83619,7 +83622,7 @@ initialize_calendar = function() {
         }
         var filterNurse = function() {
           for (var i=0; i< nurseFilterArray.length; i++) {
-            if (['', event.resourceId].indexOf(nurseFilterArray[i]) >= 0) {
+            if (['', event.nurse_id.toString()].indexOf(nurseFilterArray[i]) >= 0) {
               return true
             }
           }
@@ -83756,6 +83759,17 @@ initialize_calendar = function() {
 
       eventAfterAllRender: function (view) {
         appointmentComments();
+      },
+
+      viewRender: function(){
+        $('.fc-button').click(function () {
+          if ($(this).hasClass('fc-agendaDay-button')) {
+            $('span#day-view-options').show();
+          } else {
+            $('span#day-view-options').hide();
+          }
+          return false;
+        })
       }
     });
   });
@@ -84124,6 +84138,83 @@ let humanizeFrequency = (frequency) => {
     default:
   }
 }
+let allMasterToSchedule = () => {
+  var copyMasterState;
+  $('#copy-master').click(function () {
+    if (copyMasterState == 1) {
+      alert('マスターを全体へコピーしてます、少々お待ちください');
+    } else {
+      var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
+      if (message && copyMasterState != 1) {
+        copyMasterState = 1;
+        $.ajax({
+          url: window.masterToSchedule,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
+    }
+  });
+}
+
+
+let patientMasterToSchedule = () => {
+  let copyPatientMasterState;
+  $('#copy-master-patient').click(function(){
+    if (copyPatientMasterState == 1) {
+      alert('利用者のサービスを全体へコピーしてます、少々お待ちください');
+    } else {
+      var message = confirm('利用者の「全体」のサービスが削除され、マスターのサービスがすべて全体へ反映されます！');
+      if (message && copyPatientMasterState != 1) {
+        copyPatientMasterState = 1;
+        $.ajax({
+          url: window.patientMasterToSchedule,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
+    }
+  })
+}
+
+let nurseMasterToSchedule = () => {
+  let copyNurseMasterState;
+  $('#copy-master-nurse').click(function () {
+    if (copyNurseMasterState == 1) {
+      alert('ヘルパーのサービスを全体へコピーしてます、少々お待ちください');
+    } else {
+      var message = confirm('ヘルパーの「全体」のサービスが削除され、マスターのサービスがすべて全体へ反映されます！');
+      if (message && copyNurseMasterState != 1) {
+        copyNurseMasterState = 1;
+        $.ajax({
+          url: window.nurseMasterToSchedule,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        })
+      }
+    }
+  })
+}
+
+let toggleDayResources = () => {
+  if ($('#day-view-options-input').is(':checked')) {
+    window.resourceUrl = window.corporationNursesUrl;
+    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false');
+    $('.calendar').fullCalendar('refetchResources');
+    $('.calendar').fullCalendar('clientEvents').forEach(function (event) {
+      event.resourceId = event.nurse_id;
+      $('.calendar').fullCalendar('updateEvent', event);
+    })
+  } else {
+    window.resourceUrl = window.corporationPatientsUrl;
+    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false');
+    $('.calendar').fullCalendar('refetchResources');
+    $('.calendar').fullCalendar('clientEvents').forEach(function(event){
+      event.resourceId = event.patient_id;
+      $('.calendar').fullCalendar('updateEvent', event);
+    })
+  }
+}
 
 
 
@@ -84402,7 +84493,7 @@ $(document).on('turbolinks:load', function(){
       });
   }, 4000);
 
-  var copyMasterState;
+  
 
   $('#loader-container').hide();
 
@@ -84411,24 +84502,20 @@ $(document).on('turbolinks:load', function(){
     $('.modal-backdrop').remove();
     $('#remote_container').html($('#modal-master-options'));
     $('#modal-master-options').modal('show');
-    $('#copy-master').click(function(){
-      if (copyMasterState == 1) {
-        alert('マスターを全体へコピーしてます、少々お待ちください');
-      } else {
-        var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
-        if (message && copyMasterState != 1) {
-          copyMasterState = 1;
-          $.ajax({
-            url: window.masterToSchedule,
-            type: 'PATCH',
-            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-          })
-        }
-      }
-    });
+    allMasterToSchedule();
+    patientMasterToSchedule();
+    nurseMasterToSchedule();
   });
 
-  $('#drag-drop-master').hide()
+  $('#drag-drop-master').hide();
+
+  $('#day-view-options').hide();
+
+
+
+
+
+
 
   
 

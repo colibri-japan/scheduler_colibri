@@ -647,7 +647,7 @@ initialize_calendar = function() {
         }
         var filterNurse = function() {
           for (var i=0; i< nurseFilterArray.length; i++) {
-            if (['', event.nurse_id].indexOf(nurseFilterArray[i]) >= 0) {
+            if (['', event.nurse_id.toString()].indexOf(nurseFilterArray[i]) >= 0) {
               return true
             }
           }
@@ -785,6 +785,17 @@ initialize_calendar = function() {
       eventAfterAllRender: function (view) {
         appointmentComments();
       },
+
+      viewRender: function(){
+        $('.fc-button').click(function () {
+          if ($(this).hasClass('fc-agendaDay-button')) {
+            $('span#day-view-options').show();
+          } else {
+            $('span#day-view-options').hide();
+          }
+          return false;
+        })
+      }
     });
   });
 };
@@ -1525,13 +1536,7 @@ $(document).on('turbolinks:load', function(){
 
   $('#day-view-options').hide();
 
-  $('.fc-button').click(function(){
-    if ($('.fc-agendaDay-button').hasClass('fc-state-active')) {
-      $('#day-view-options').show();
-    } else {
-      $('#day-view-options').hide();
-    }
-  })
+
 
 
 

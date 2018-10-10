@@ -621,7 +621,11 @@ initialize_calendar = function() {
       eventRender: function eventRender(event, element, view) {
         if (view.name == 'agendaDay') {
           element.find('.fc-title').text(function(i, t){
-            return event.patient_name;
+            if ($('#day-view-options-input').is(':checked')) {
+              return event.patient_name;
+            } else {
+              return event.nurse_name;
+            }
           });
         }
 

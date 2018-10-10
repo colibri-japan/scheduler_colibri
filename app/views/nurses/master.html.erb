@@ -93,12 +93,12 @@
 				<table class="table">
                     <tbody>
 					    <tr>
-                            <th><%= @nurse.name %>のこの月の「全体」スケジュールでこれまでに編集されたスケジュール内容が全て削除され、マスターのサービス登録情報に置き換わります。</th>
-                            <th><button class="btn btn-warning" id="copy-master-nurse"><%= @nurse.name %>のマスターを全体へ反映する</button></th>
+                            <th>「全体スケジュール」内の<%= @nurse.name %>に関するこれまで編集情報は全て削除され、<%= @nurse.name %>のマスタースケジュールが上書きされます。</th>
+                            <th><button class="btn btn-warning" id="copy-master-nurse"><%= @nurse.name %>のマスターを反映</button></th>
                         </tr>
                         <tr>
-                            <th>この月の全体スケジュール内で、これまでに編集されたスケジュール内容が全て削除され、マスターのサービス登録情報に置き換わります。全体スケジュールの内容を維持しながら、マスターを反映したい場合には、マスター内の反映したいサービスを選択し、全体へ反映するをクリックしてください。</th>
-                            <th><button class="btn btn-warning" id="copy-master">マスターを全体へ反映する</button></th>
+                            <th>「全体スケジュール」のこれまで編集情報は全て削除され、マスタースケジュールが上書きされます。</th>
+                            <th><button class="btn btn-warning" id="copy-master">マスターを反映</button></th>
                         </tr>
                     </tbody>
                 </table>

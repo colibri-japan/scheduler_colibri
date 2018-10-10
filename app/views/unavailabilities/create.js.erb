@@ -1,15 +1,23 @@
 $('.modal').modal('hide');
 
-$('.patient_calendar').fullCalendar(
-  'renderEvent', 
-  jQuery.parseJSON("<%= j render(partial: 'unavailabilities/unavailability.json', locals: {unavailability: @unavailability}).html_safe %>"),
-  false
-);
+  if (typeof calendar === 'undefined') {
+    let calendar;
+  }
 
-$('.calendar').fullCalendar(
-  'renderEvent', 
-  jQuery.parseJSON("<%= j render(partial: 'unavailabilities/unavailability.json', locals: {unavailability: @unavailability}).html_safe %>"),
-  false
-);
 
-$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  if ($('.calendar').length > 0) {
+    calendar = $('.calendar');
+  } else if ($('.patient_calendar').length > 0) {
+    calendar = $('.patient_calendar');
+  }
+
+  calendar.fullCalendar(
+    'renderEvent', 
+    jQuery.parseJSON("<%= j render(partial: 'unavailabilities/unavailability.json', locals: {unavailability: @unavailability}).html_safe %>"),
+    false
+  );
+
+
+  if($('#planning-activities').length > 0) {
+    $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  }

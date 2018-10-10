@@ -3,11 +3,11 @@ date_format = unavailability.all_day_unavailability? ? '%Y-%m-%d' : '%Y-%m-%dT%H
 json.id "unavailability_#{unavailability.id}"
 json.title "#{unavailability.patient.try(:name)}: #{unavailability.title}" 
 
-json.extract! unavailability, :description, :start, :end
+json.extract! unavailability, :description, :start, :end, :patient_id, :edit_requested
 
 json.allDay unavailability.all_day_unavailability? ? true : false
-json.patientId unavailability.patient_id
-json.editRequested unavailability.edit_requested
+
+json.unavailability true
 
 json.color '#D46A6A'
 

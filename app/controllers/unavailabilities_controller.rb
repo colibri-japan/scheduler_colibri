@@ -25,13 +25,13 @@ class UnavailabilitiesController < ApplicationController
 	def new
 	  @unavailability = Unavailability.new
 	  @nurses = @corporation.nurses.all 
-	  @patients = @corporation.patients.all
+	  @patients = @corporation.patients.where(active: true).all
 	end
 
 	# GET /unavailabilities/1/edit
 	def edit
 	  @nurses= @corporation.nurses.all
-	  @patients = @corporation.patients.all
+	  @patients = @corporation.patients.where(active: true).all
 	end
 
 	# POST /unavailabilities

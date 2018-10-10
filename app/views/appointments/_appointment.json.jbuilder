@@ -4,15 +4,16 @@ date_format = json.allDay ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
 json.id "appointment_#{appointment.id}"
 json.title "#{appointment.patient.try(:name)} - #{appointment.nurse.try(:name)}"
-json.extract! appointment, :description, :start, :end, :color, :master, :displayable, :nurse_id, :patient_id
+json.extract! appointment, :description, :start, :end, :color, :master, :displayable, :nurse_id, :patient_id, :edit_requested
 json.resourceId appointment.nurse_id
 json.nurse_name appointment.nurse.try(:name)
 json.patient_name appointment.patient.try(:name)
 json.service_type appointment.title
 
+json.unavailability false
+
 json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 
-json.editRequested appointment.edit_requested
 json.borderColor '#F98050' if appointment.edit_requested == true
 
 json.base_url planning_appointment_path(@planning, appointment)

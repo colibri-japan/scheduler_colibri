@@ -272,7 +272,7 @@ initialize_patient_calendar = function(){
           $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
           $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
           $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-          $("#recurring_appointment_patient_id").val(window.patient_id);
+          $("#recurring_appointment_patient_id").val(window.patientId);
           $('#unavailability_start_1i').val(moment(start).format('YYYY'));
           $('#unavailability_start_2i').val(moment(start).format('M'));
           $('#unavailability_start_3i').val(moment(start).format('D'));
@@ -283,7 +283,7 @@ initialize_patient_calendar = function(){
           $('#unavailability_end_3i').val(moment(end).format('D'));
           $('#unavailability_end_4i').val(moment(end).format('HH'));
           $('#unavailability_end_5i').val(moment(end).format('mm'));
-          $("#unavailability_patient_id").val(window.patient_id);
+          $("#unavailability_patient_id").val(window.patientId);
 
           recurringAppointmentFormChosen();
         });
@@ -423,20 +423,12 @@ initialize_master_calendar = function() {
                 return event.patient_name;
               }
             });
-            var selectedName = $('.master-element-selected').text() ;
-            var filterName;
-            filterName = function(){
-              if (selectedName == event.nurse_name || selectedName == event.patient_name) {
-                return true;
-              } else {
-                return false;
-              }
-            }
 
-            return filterName() && !event.editRequested && event.master && event.displayable ;
+
+            return  !event.edit_requested && event.master && event.displayable ;
           } else {
             $('#nurse-info-block-master').addClass('.print-master-no-view');
-            return !event.editRequested && event.master && event.displayable ;
+            return !event.edit_requested && event.master && event.displayable ;
           }
       },
 
@@ -534,8 +526,8 @@ initialize_master_calendar = function() {
           if (window.nurseId) {
             $('#recurring_appointment_nurse_id').val(window.nurseId);
           }
-          if (window.patient_id) {
-            $('#recurring_appointment_patient_id').val(window.patient_id);
+          if (window.patientId) {
+            $('#recurring_appointment_patient_id').val(window.patientId);
           }
           recurringAppointmentFormChosen();
 
@@ -643,23 +635,31 @@ initialize_calendar = function() {
 
         var filterPatient = function(){
           for (var i=0; i < patientFilterArray.length; i++) {
-            if (['', event.patient_id.toString()].indexOf(patientFilterArray[i]) >= 0) {
-              return true
-            }
+            if (event.patient_id) {
+              if (['', event.patient_id.toString()].indexOf(patientFilterArray[i]) >= 0) {
+                return true
+              }
+            } 
           }
           return false
         }
         var filterNurse = function() {
           for (var i=0; i< nurseFilterArray.length; i++) {
-            if (['', event.nurse_id.toString()].indexOf(nurseFilterArray[i]) >= 0) {
-              return true
+            if (event.nurse_id) {
+              if (['', event.nurse_id.toString()].indexOf(nurseFilterArray[i]) >= 0) {
+                return true
+              }
+            } else {
+              if (event.unavailability) {
+                return true
+              }
             }
           }
           return false
         } 
         var filterEditRequested = function(){
           if (editRequestFilter == false) {
-            return event.editRequested;
+            return event.edit_requested;
           } else {
             return true;
           }

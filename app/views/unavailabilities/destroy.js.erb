@@ -1,5 +1,16 @@
-$('.patient_calendar').fullCalendar('removeEvents', '<%= "unavailability_#{@unavailability.id}" %>');
-$('.calendar').fullCalendar('removeEvents', '<%= "unavailability_#{@unavailability.id}" %>');
+  if (typeof calendar === 'undefined') {
+    let calendar;
+  }
+
+  if ($('.calendar').length > 0) {
+    calendar = $('.calendar');
+  } else if ($('.patient_calendar').length > 0) {
+    calendar = $('.patient_calendar');
+  }
+
+calendar.fullCalendar('removeEvents', '<%= "unavailability_#{@unavailability.id}" %>');
 $('.modal').modal('hide');
 
-$('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  if($('#planning-activities').length > 0) {
+    $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+  }

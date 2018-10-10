@@ -12,7 +12,7 @@ class NurseMailer < ApplicationMailer
 		day_text = @days.count > 1 ? @days.map{|e| e.day}.join(',') : @days.first.day
 
 		subject = "#{@corporation.name}：#{day_text}日のスケジュール"
-		mail to: @nurse.phone_mail, from: @corporation.email, bcc: @corporation.email, subject: subject
+		mail to: @nurse.phone_mail, from: "#{@corporation.name} <info@colibri.jp>", bcc: @corporation.email, reply_to: @corporation.email, subject: subject
 	end
 
 

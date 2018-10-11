@@ -790,17 +790,15 @@ initialize_calendar = function() {
         appointmentComments();
       },
 
-      viewRender: function(){
-        $('.fc-button').click(function () {
-          if ($(this).hasClass('fc-agendaDay-button')) {
-            $('span#day-view-options').show();
-          } else {
-            $('span#day-view-options').hide();
-          }
-          return false;
-        })
+      viewRender: function(view){
+        if (view.name == 'agendaDay') {
+          $('span#day-view-options').show();
+        } else {
+          $('span#day-view-options').hide();
+        }
       }
     });
+
   });
 };
 

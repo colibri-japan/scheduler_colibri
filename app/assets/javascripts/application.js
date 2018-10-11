@@ -14,6 +14,7 @@
 //= require turbolinks
 //= require jquery
 //= require jquery-ui
+//= require popper
 //= require bootstrap
 //= require bootstrap-toggle
 //= require moment.min
@@ -121,6 +122,13 @@ initialize_nurse_calendar = function(){
       },
 
       eventRender: function(event, element, view){
+        element.popover({
+          title: event.service_type,
+          content: event.description,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        });
         element.find('.fc-title').text(function(i, t){
           return event.patient_name;
         });
@@ -293,6 +301,13 @@ initialize_patient_calendar = function(){
       },
 
       eventRender: function(appointment, element, view){
+        element.popover({
+          title: event.service_type,
+          content: event.description,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        });
         element.find('.fc-title').text(function(i, t){
           return appointment.nurse_name;
         });
@@ -414,6 +429,14 @@ initialize_master_calendar = function() {
       events: window.appointmentsURL + '&master=true',
 
       eventRender: function eventRender(event, element, view) {
+        element.popover({
+          title: event.service_type,
+          content: event.description,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        })
+
         if (view.name != 'agendaDay') {
             $('#nurse-info-block-master').removeClass('.print-master-no-view');
             element.find('.fc-title').text(function(i,t){
@@ -612,6 +635,14 @@ initialize_calendar = function() {
       eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
 
       eventRender: function eventRender(event, element, view) {
+        element.popover({
+          title: event.service_type,
+          content: event.description,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        })
+
         if (view.name == 'agendaDay') {
           element.find('.fc-title').text(function(i, t){
             if ($('#day-view-options-input').is(':checked')) {

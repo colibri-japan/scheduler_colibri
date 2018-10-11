@@ -9,7 +9,7 @@ class PatientsController < ApplicationController
       end_time = params[:end].to_date.beginning_of_day
 
       @patients = @corporation.patients.joins(:appointments).where(appointments: {displayable: true, master: params[:master], start: start_time..end_time})
-      @patients = @patients.where(active: true)
+      @patients = @patients.where(active: true  )
     else 
       @patients = @corporation.patients.where(active: true).order_by_kana
     end

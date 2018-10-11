@@ -28,6 +28,18 @@
   if ($('#planning-activities').length > 0) {
     $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
   }
+  <% puts 'patient has changed' %>
+  <% puts Patient.find(@activity.patient_id).name != @activity.previous_patient %>
+  <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
+    if ($('.calendar').length > 0) {
+      let view = $('.calendar').fullCalendar('getView');
+      if (!$('#day-view-options-input').is(':checked') && view.name === 'agendaDay') {
+        calendar.fullCalendar('refetchResources');
+        let event = $('.calendar').fullCalendar('clientEvents', '<%= "appointment_#{@appointment.id}" %>')[0];
+        event.resourceId = event.patient_id;
+        $('.calendar').fullCalendar('updateEvent', event);
+      }
+    }
+  <% end %>
 
-
-<% end %>
+<% end %> 

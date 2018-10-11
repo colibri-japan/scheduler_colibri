@@ -562,6 +562,7 @@ initialize_master_calendar = function() {
 
 var initialize_calendar;
 initialize_calendar = function() {
+  let myResource;
   $('.calendar').each(function(){
     var calendar = $(this);
     calendar.fullCalendar({
@@ -731,6 +732,10 @@ initialize_calendar = function() {
         calendar.fullCalendar('unselect');
       },
 
+      eventDragStart: function (event) {
+        myResource = $('.calendar').fullCalendar('getResourceById', event.resourceId);
+      },
+
       eventDrop: function (appointment, delta, revertFunc) {
         let minutes = moment.duration(delta).asMinutes();
         let start_time = appointment.start
@@ -739,12 +744,39 @@ initialize_calendar = function() {
         let previous_end = moment(end_time).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+        let newResource = $('.calendar').fullCalendar('getResourceById', appointment.resourceId)
+        let resourceChange = '';
+        let newPatientId;
+        let newNurseId;
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        if (newResource !== myResource) {
+          if (newResource.is_nurse_resource) {
+            resourceChange = '新規ヘルパー：' + newResource.title  + '</p><p>' ;
+            newNurseId = newResource.id;
+            newPatientId = appointment.patient_id;
+          } else {
+            resourceChange = '新規利用者：' + newResource.title  + '</p><p>' ;
+            newPatientId = newResource.id;
+            newNurseId = appointment.nurse_id;
+          }
+        } else {
+          if (newResource.is_nurse_resource) {
+            newNurseId = appointment.nurse_id;
+            newPatientId = appointment.patient_id
+          } else {
+            newNurseId = appointment.nurse_id;
+            newPatientId = appointment.patient_id
+          }
+        }
+
+
+
+
+        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').data('appointment', appointment)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
-          height: 'auto',
+          height: 'auto',  
           width: 400,
           modal: true,
           buttons: {
@@ -755,6 +787,8 @@ initialize_calendar = function() {
                 appointment: {
                   start: appointment.start.format(),
                   end: appointment.end.format(),
+                  patient_id: newPatientId,
+                  nurse_id: newNurseId,
                 }
               };
               $.ajax({
@@ -763,6 +797,8 @@ initialize_calendar = function() {
                 beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
               });
+
+              $('.calendar').fullCalendar('')
               $(this).dialog("close")
             },
             "キャンセル": function () {

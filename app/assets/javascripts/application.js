@@ -121,7 +121,18 @@ initialize_nurse_calendar = function(){
         nurse_calendar.fullCalendar('unselect');
       },
 
+      eventDragStart: function (event, jsEvent, ui, view) {
+        window.eventDragging = true;
+      },
+
+      eventDragStop: function (event, jsEvent, ui, view) {
+        window.eventDragging = false;
+      },
+
       eventRender: function(event, element, view){
+        if (window.eventDragging) {
+          return
+        }
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -149,17 +160,19 @@ initialize_nurse_calendar = function(){
         appointmentComments();
       },
 
-      eventDrop: function (appointment, delta, revertFunc) {
+
+      eventDrop: function (event, delta, revertFunc) {
+        $(".popover").remove()
         let minutes = moment.duration(delta).asMinutes();
-        let start_time = appointment.start
-        let end_time = appointment.end
+        let start_time = event.start
+        let end_time = event.end
         let previous_start = moment(start_time).subtract(minutes, "minutes");
         let previous_end = moment(end_time).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').data('appointment', appointment)
+        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-confirm').data('event', event)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
           height: 'auto',
@@ -167,7 +180,7 @@ initialize_nurse_calendar = function(){
           modal: true,
           buttons: {
             'セーブする': function () {
-              let appointment = $(this).data('appointment');
+              let appointment = $(this).data('event');
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
@@ -176,7 +189,7 @@ initialize_nurse_calendar = function(){
                 }
               };
               $.ajax({
-                url: appointment.base_url + '.js?delta=' + delta,
+                url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
                 beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
@@ -300,7 +313,19 @@ initialize_patient_calendar = function(){
         patient_calendar.fullCalendar('unselect');
       },
 
-      eventRender: function(appointment, element, view){
+
+      eventDragStart: function (event, jsEvent, ui, view) {
+        window.eventDragging = true;
+      },
+
+      eventDragStop: function (event, jsEvent, ui, view) {
+        window.eventDragging = false;
+      },
+
+      eventRender: function (event, element, view){
+        if (window.eventDragging) {
+          return
+        }
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -309,22 +334,24 @@ initialize_patient_calendar = function(){
           container: 'body'
         });
         element.find('.fc-title').text(function(i, t){
-          return appointment.nurse_name;
+          return event.nurse_name;
         });
-        return appointment.displayable;
+        return event.displayable;
       },
 
-      eventDrop: function(appointment, delta, revertFunc) {
+
+      eventDrop: function (event, delta, revertFunc) {
+        $(".popover").remove()
         let minutes = moment.duration(delta).asMinutes();
-        let start_time = appointment.start 
-        let end_time = appointment.end 
+        let start_time = event.start 
+        let end_time = event.end 
         let previous_start = moment(start_time).subtract(minutes, "minutes");
         let previous_end = moment(end_time).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
-        $('#drag-drop-confirm').data('appointment', appointment)
+        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
+        $('#drag-drop-confirm').data('event', event)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
           height: 'auto',
@@ -332,7 +359,7 @@ initialize_patient_calendar = function(){
           modal: true,
           buttons: {
             'セーブする': function(){
-              let appointment = $(this).data('appointment');
+              let appointment = $(this).data('event');
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
@@ -341,7 +368,7 @@ initialize_patient_calendar = function(){
                 }
               };
               $.ajax({
-                url: appointment.base_url + '.js?delta=' + delta,
+                url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
                 beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
@@ -428,7 +455,20 @@ initialize_master_calendar = function() {
 
       events: window.appointmentsURL + '&master=true',
 
+
+      eventDragStart: function (event, jsEvent, ui, view) {
+        window.eventDragging = true;
+      },
+
+      eventDragStop: function (event, jsEvent, ui, view) {
+        window.eventDragging = false;
+      },
+
+
       eventRender: function eventRender(event, element, view) {
+        if (window.eventDragging) {
+          return
+        }
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -455,17 +495,18 @@ initialize_master_calendar = function() {
           }
       },
 
-      eventDrop: function(appointment, delta, revertFunc) {
+      eventDrop: function (event, delta, revertFunc) {
+        $('.popover').remove()
         let minutes = moment.duration(delta).asMinutes();
-        let start_time = appointment.start;
-        let end_time = appointment.end;
+        let start_time = event.start;
+        let end_time = event.end;
         let previous_start = moment(start_time).subtract(minutes, "minutes");
         let previous_end = moment(end_time).subtract(minutes, "minutes");
-        let frequency = humanizeFrequency(appointment.frequency);
+        let frequency = humanizeFrequency(event.frequency);
         let newAppointment =  '(' + start_time.format('dddd').charAt(0) + ') ' + frequency + ' ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
         
 
-        $('#drag-drop-master-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p><p>"  + newAppointment + "</p>")
+        $('#drag-drop-master-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name + "</p><p>"  + newAppointment + "</p>")
 
         $('#drag-drop-master').dialog({
           height: 'auto',
@@ -479,15 +520,15 @@ initialize_master_calendar = function() {
                 type: 'POST',
                 data: {
                   recurring_appointment: {
-                    nurse_id: appointment.nurse_id,
-                    patient_id: appointment.patient_id,
-                    frequency: appointment.frequency,
-                    title: appointment.service_type,
-                    color: appointment.color,
-                    anchor: appointment.start.format('YYYY-MM-DD'),
-                    end_day: appointment.end.format('YYYY-MM-DD'),
-                    start: appointment.start.format(),
-                    end: appointment.end.format()
+                    nurse_id: event.nurse_id,
+                    patient_id: event.patient_id,
+                    frequency: event.frequency,
+                    title: event.service_type,
+                    color: event.color,
+                    anchor: event.start.format('YYYY-MM-DD'),
+                    end_day: event.end.format('YYYY-MM-DD'),
+                    start: event.start.format(),
+                    end: event.end.format()
                   },
                   master: true
                 },
@@ -559,9 +600,9 @@ initialize_master_calendar = function() {
         master_calendar.fullCalendar('unselect');
       },
          
-      eventClick: function(appointment, jsEvent, view) {
+      eventClick: function (event, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(appointment.recurring_appointment_path + '?master=true', function() {
+              $.getScript(event.recurring_appointment_path + '?master=true', function() {
 
                 masterSwitchToggle();
                 recurringAppointmentEditButtons();
@@ -634,7 +675,21 @@ initialize_calendar = function() {
 
       eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
 
+
+      eventDragStart: function (event, jsEvent, ui, view) {
+        window.eventDragging = true;
+        myResource = $('.calendar').fullCalendar('getResourceById', event.resourceId);
+      },
+
+      eventDragStop: function (event, jsEvent, ui, view) {
+        window.eventDragging = false;
+      },
+
+
       eventRender: function eventRender(event, element, view) {
+        if (window.eventDragging) {
+          return
+        }
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -763,19 +818,16 @@ initialize_calendar = function() {
         calendar.fullCalendar('unselect');
       },
 
-      eventDragStart: function (event) {
-        myResource = $('.calendar').fullCalendar('getResourceById', event.resourceId);
-      },
-
-      eventDrop: function (appointment, delta, revertFunc) {
+      eventDrop: function (event, delta, revertFunc) {
+        $('.popover').remove()
         let minutes = moment.duration(delta).asMinutes();
-        let start_time = appointment.start
-        let end_time = appointment.end
+        let start_time = event.start
+        let end_time = event.end
         let previous_start = moment(start_time).subtract(minutes, "minutes");
         let previous_end = moment(end_time).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
-        let newResource = $('.calendar').fullCalendar('getResourceById', appointment.resourceId)
+        let newResource = $('.calendar').fullCalendar('getResourceById', event.resourceId)
         let resourceChange = '';
         let newPatientId;
         let newNurseId;
@@ -784,27 +836,24 @@ initialize_calendar = function() {
           if (newResource.is_nurse_resource) {
             resourceChange = '新規ヘルパー：' + newResource.title  + '</p><p>' ;
             newNurseId = newResource.id;
-            newPatientId = appointment.patient_id;
+            newPatientId = event.patient_id;
           } else {
             resourceChange = '新規利用者：' + newResource.title  + '</p><p>' ;
             newPatientId = newResource.id;
-            newNurseId = appointment.nurse_id;
+            newNurseId = event.nurse_id;
           }
         } else {
           if (newResource.is_nurse_resource) {
-            newNurseId = appointment.nurse_id;
-            newPatientId = appointment.patient_id
+            newNurseId = event.nurse_id;
+            newPatientId = event.patient_id
           } else {
-            newNurseId = appointment.nurse_id;
-            newPatientId = appointment.patient_id
+            newNurseId = event.nurse_id;
+            newPatientId = event.patient_id
           }
         }
 
-
-
-
-        $('#drag-drop-content').html("<p>ヘルパー： " + appointment.nurse_name + '  / 利用者名： ' + appointment.patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').data('appointment', appointment)
+        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-confirm').data('event', event)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
           height: 'auto',  
@@ -812,7 +861,7 @@ initialize_calendar = function() {
           modal: true,
           buttons: {
             'セーブする': function () {
-              let appointment = $(this).data('appointment');
+              let appointment = $(this).data('event');
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
@@ -823,7 +872,7 @@ initialize_calendar = function() {
                 }
               };
               $.ajax({
-                url: appointment.base_url + '.js?delta=' + delta,
+                url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
                 beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
@@ -843,12 +892,12 @@ initialize_calendar = function() {
         })
       },
          
-      eventClick: function(appointment, jsEvent, view) {
-           $.getScript(appointment.edit_url, function() {
+      eventClick: function(event, jsEvent, view) {
+           $.getScript(event.edit_url, function() {
             masterSwitchToggle();
             appointmentFormChosen();
             toggleEditRequested();
-            appointmentEdit(appointment.recurring_appointment_path);
+            appointmentEdit(event.recurring_appointment_path);
            });
 
          },

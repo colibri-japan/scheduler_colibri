@@ -9,7 +9,7 @@ json.description appointment.description ? appointment.description : ''
 json.resourceId appointment.nurse_id
 json.nurse_name appointment.nurse.try(:name)
 json.patient_name appointment.patient.try(:name)
-json.service_type appointment.title
+json.service_type appointment.title ? appointment.title : ''
 
 json.unavailability false
 

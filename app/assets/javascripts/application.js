@@ -193,6 +193,12 @@ initialize_nurse_calendar = function(){
                 type: 'PATCH',
                 beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
+                success: function (data) {
+                  $(".popover").remove();
+                  if (data.includes("その日のヘルパーが重複しています")) {
+                    revertFunc();
+                  }
+                }
               });
               $(this).dialog("close")
             },
@@ -372,6 +378,12 @@ initialize_patient_calendar = function(){
                 type: 'PATCH',
                 beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
+                success: function(data) {
+                  $(".popover").remove();
+                  if(data.includes("その日のヘルパーが重複しています")) {
+                    revertFunc();
+                  } 
+                }
               });
               $(this).dialog("close")
             },
@@ -532,7 +544,13 @@ initialize_master_calendar = function() {
                   },
                   master: true
                 },
-                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+                success: function (data) {
+                  $(".popover").remove();
+                  if (data.includes("のヘルパーが重複しています")) {
+                    revertFunc();
+                  }
+                }
               });
               revertFunc();
             },
@@ -876,6 +894,12 @@ initialize_calendar = function() {
                 type: 'PATCH',
                 beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
+                success: function (data) {
+                  $(".popover").remove();
+                  if (data.includes("その日のヘルパーが重複しています")) {
+                    revertFunc();
+                  }
+                }
               });
 
               $('.calendar').fullCalendar('')

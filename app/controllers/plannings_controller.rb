@@ -57,7 +57,7 @@ class PlanningsController < ApplicationController
 		new_provided_services = []
 
 		initial_recurring_appointments_count = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).count
-		initial_appointments_count = Appointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).count
+		initial_appointments_count = Appointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).where.not(recurring_appointment_id: nil).count
 
 		RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).find_each do |recurring_appointment|
 			new_recurring_appointment = recurring_appointment.dup 
@@ -72,7 +72,7 @@ class PlanningsController < ApplicationController
 		end
 
 		new_recurring_appointments.each do |recurring_appointment|
-			Appointment.where(recurring_appointment_id: recurring_appointment.original_id).find_each do |appointment|
+			Appointment.where(recurring_appointment_id: recurring_appointment.original_id, displayable: true, deleted: false, deactivated: false).find_each do |appointment|
 				new_appointment = appointment.dup 
 				new_appointment.master = false 
 				new_appointment.recurring_appointment_id = recurring_appointment.id 

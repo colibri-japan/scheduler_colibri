@@ -48,35 +48,51 @@ class PlanningsController < ApplicationController
 		authorize @planning, :is_employee?
 		authorize current_user, :is_admin?
 
-	    RecurringAppointment.where(planning_id: @planning.id, master: false).destroy_all
-	    Appointment.where(planning_id: @planning.id, master: false).destroy_all
-  
-		RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).find_each do |recurring_appointment|
-			related_appointments = Appointment.where(recurring_appointment_id: recurring_appointment.id)
+	    RecurringAppointment.where(planning_id: @planning.id, master: false).delete_all
+		Appointment.where(planning_id: @planning.id, master: false).delete_all
+		ProvidedService.where(planning_id: @planning.id).delete_all
 
+		new_recurring_appointments = []
+		new_appointments = []
+		new_provided_services = []
+
+		initial_recurring_appointments_count = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).count
+		initial_appointments_count = Appointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).count
+
+		RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).find_each do |recurring_appointment|
 			new_recurring_appointment = recurring_appointment.dup 
 			new_recurring_appointment.master = false 
-			new_recurring_appointment.original_id = nil 
+			new_recurring_appointment.original_id = recurring_appointment.id
 			new_recurring_appointment.skip_appointments_callbacks = true 
-			new_recurring_appointment.save!(validate: false) 
+			new_recurring_appointments << new_recurring_appointment
+		end
 
-			related_appointments.each do |appointment|
+		if initial_recurring_appointments_count == new_recurring_appointments.count 
+			RecurringAppointment.import(new_recurring_appointments)
+		end
+
+		new_recurring_appointments.each do |recurring_appointment|
+			Appointment.where(recurring_appointment_id: recurring_appointment.original_id).find_each do |appointment|
 				new_appointment = appointment.dup 
 				new_appointment.master = false 
-				new_appointment.original_id = nil 
-				new_appointment.recurring_appointment_id = new_recurring_appointment.id 
-				new_appointment.save!(validate: false)
+				new_appointment.recurring_appointment_id = recurring_appointment.id 
+				new_appointments << new_appointment
 			end
 		end
 
-		standalone_appointments = Appointment.where(planning_id: @planning.id, master: true, recurring_appointment_id: nil, edit_requested: false, displayable: true, deleted: false, deactivated: false)
-
-		standalone_appointments.each do |appointment|
-			new_appointment = appointment.dup 
-			new_appointment.master = false 
-			new_appointment.original_id = nil 
-			new_appointment.save!(validate: false)
+		if initial_appointments_count == new_appointments.count 
+			Appointment.import(new_appointments)
 		end
+
+		new_appointments.each do |appointment|
+			provided_duration = appointment.end - appointment.start
+		  	is_provided =  Time.current + 9.hours > appointment.start
+      		new_provided_service = ProvidedService.new(appointment_id: appointment.id, planning_id: appointment.planning_id, service_duration: provided_duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, deactivated: appointment.deactivated, provided: is_provided, temporary: false, title: appointment.title, hour_based_wage: @corporation.hour_based_payroll, service_date: appointment.start, appointment_start: appointment.start, appointment_end: appointment.end)
+      		new_provided_service.run_callbacks(:save) { false }
+      		new_provided_services << new_provided_service
+		end
+
+		ProvidedService.import(new_provided_services)
   
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されました！'
 	end
@@ -86,42 +102,33 @@ class PlanningsController < ApplicationController
 	end
 
 	def duplicate
-		ids = @corporation.plannings.ids
-		@nurse = @corporation.nurses.where(displayable: true).first
+		template_planning = Planning.find(params[:template_id])
+		authorize template_planning, :is_employee?
 
+		first_day = Date.new(@planning.business_year, @planning.business_month, 1)
 
-		if ids.include?(params[:template_id].to_i)
-			template_planning = Planning.find(params[:template_id]) 
+		template_planning.recurring_appointments.where(master: true, displayable: true, edit_requested: false, deactivated: false, deleted: [nil, false]).where.not(frequency: 2).find_each do |appointment|
 
-			original_appointments = template_planning.recurring_appointments.where(master: true, displayable: true, edit_requested: false, deactivated: false, deleted: [nil, false]).where.not(frequency: 2).all
-			first_day = Date.new(@planning.business_year, @planning.business_month, 1)
-			first_day_wday = first_day.wday
+			puts 'first day passed:'
+			puts first_day
+			puts first_day.wday
 
-			original_appointments.each do |appointment|
-				original_day_wday = appointment.anchor.wday
+			first_day.wday > appointment.anchor.wday ? new_anchor_day = first_day + 7 - (first_day.wday - appointment.anchor.wday) : new_anchor_day = first_day + (appointment.anchor.wday - first_day.wday)
 
-				first_day_wday > original_day_wday ? new_anchor_day = first_day + 7 - (first_day_wday - original_day_wday) : new_anchor_day = first_day + (original_day_wday - first_day_wday)
+			recurring_appointment = appointment.dup 
+			recurring_appointment.planning_id = @planning.id
+			recurring_appointment.anchor = new_anchor_day
+			recurring_appointment.end_day = new_anchor_day + appointment.duration
+			recurring_appointment.start = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.start.hour, appointment.start.min)
+			recurring_appointment.end = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.end.hour, appointment.end.min)
+			recurring_appointment.master = true
+			recurring_appointment.displayable = true
+			recurring_appointment.original_id = ''
 
-				recurring_appointment = appointment.dup 
-				recurring_appointment.planning_id = @planning.id
-				recurring_appointment.anchor = new_anchor_day
-				recurring_appointment.end_day = new_anchor_day + appointment.duration
-				recurring_appointment.start = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.start.hour, appointment.start.min)
-				recurring_appointment.end = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, appointment.end.hour, appointment.end.min)
-				recurring_appointment.master = true
-				recurring_appointment.displayable = true
-				recurring_appointment.original_id = ''
-
-				recurring_appointment.save!(validate: false)
-			end
-			redirect_to planning_nurse_master_path(@planning, @nurse), notice: 'サービスのコピーが成功しました。'
-
-		else
-			redirect_to planning_duplicate_from_path(@planning), notice: 'このスケジュールはコピーできません。'
+			recurring_appointment.save!(validate: false)
 		end
 
-
-
+		redirect_to planning_nurse_master_path(@planning, @nurse), notice: 'サービスのコピーが成功しました。'
 	end
 
 	def destroy

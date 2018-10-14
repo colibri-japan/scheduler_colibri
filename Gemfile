@@ -78,6 +78,9 @@ gem 'bootstrap-glyphicons', '~> 0.0.1'
 #japanese holidays dataset
 gem 'holiday_jp'
 
+#bulk insertion of data into active record
+gem 'activerecord-import'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -65,6 +65,8 @@ class Appointment < ApplicationRecord
 		if self.master != true
 		  provided_duration = self.end - self.start
 		  is_provided =  Time.current + 9.hours > self.start
+		  puts 'just before saving provided service'
+		  puts self.nurse_id
 		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.start, appointment_start: self.start, appointment_end: self.end)
 		end
 	end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181015140906) do
+ActiveRecord::Schema.define(version: 20181015204200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(version: 20181015140906) do
     t.boolean "hour_based_payroll", default: true
     t.string "email"
     t.boolean "equal_salary"
+    t.text "custom_email_intro_text"
+    t.text "custom_email_outro_text"
   end
 
   create_table "deleted_occurrences", force: :cascade do |t|

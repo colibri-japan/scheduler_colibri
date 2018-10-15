@@ -30,7 +30,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def self.overlapping(range)
-		where('(starts_at BETWEEN ? AND ? OR ends_at BETWEEN ? AND ?) OR (starts_at <= ? AND ends_at >= ?)', range.first, range.last, range.first, range.last, range.first, range.last)
+		where('((starts_at >= ? AND starts_at < ?) OR (ends_at > ? AND ends_at <= ?)) OR (starts_at < ? AND ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
 	end
 
 	private
@@ -41,10 +41,9 @@ class Appointment < ApplicationRecord
 		puts 'overlap validation on appointment'
 
 		unless nurse.name == '未定' || self.displayable == false
-			overlaps_start = Appointment.where(master: self.master, displayable: true, starts_at: self.starts_at..self.ends_at, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id).where.not(starts_at: self.starts_at).where.not(starts_at: self.ends_at).where.not(id: [self.id, self.original_id])
-			overlaps_end = Appointment.where(master: self.master, displayable: true, ends_at: self.starts_at..self.ends_at, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id).where.not(ends_at: self.starts_at).where.not(ends_at: self.ends_at).where.not(id: [self.id,self.original_id])
+			overlaps = Appointment.where(master: self.master, displayable: true, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).exists?
 
-			errors.add(:nurse_id, "その日のヘルパーが重複しています。") if overlaps_start.present? || overlaps_end.present?
+			errors.add(:nurse_id, "その日のヘルパーが重複しています。") if overlaps
 		end
 	end
 

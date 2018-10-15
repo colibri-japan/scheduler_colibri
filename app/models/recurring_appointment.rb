@@ -211,10 +211,9 @@ class RecurringAppointment < ApplicationRecord
 				end_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
 				range = Range.new(start_of_appointment, end_of_appointment)
 
-				overlaps_start = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, starts_at: start_of_appointment..end_of_appointment).where.not(starts_at: end_of_appointment).where.not(id: [self.original_id, self.id])
-				overlaps_end = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, ends_at: start_of_appointment..end_of_appointment).where.not(ends_at: start_of_appointment).where.not(id: [self.original_id, self.id])
+				overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false).where.not(id: self.id).overlapping(range).exists?
 
-				errors.add(:nurse_id, "#{start_of_appointment.strftime('%-m月%-d日')}のヘルパーが重複しています。") if overlaps_start.present? || overlaps_end.present?
+				errors.add(:nurse_id, "#{start_of_appointment.strftime('%-m月%-d日')}") if overlaps
 			end
 		end
 

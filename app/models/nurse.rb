@@ -56,7 +56,7 @@ class Nurse < ApplicationRecord
 
 			selected_days = [1,2,3,4].include?(date.wday) ? [date + 1.day] : [date + 1.day, date + 2.days, date + 3.days]
 
-			nurse.send_service_reminder(selected_days)
+			nurse.send_service_reminder(selected_days) unless [0,6].include?(date.wday)
 		end
 	end
 

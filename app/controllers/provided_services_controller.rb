@@ -70,9 +70,9 @@ class ProvidedServicesController < ApplicationController
 		provided_services = ProvidedService.where(service_date: nil).where.not(appointment_id: nil)
 
 		provided_services.each do |service|
-			service.service_date = service.appointment.end
-			service.appointment_start = service.appointment.start 
-			service.appointment_end = service.appointment.end
+			service.service_date = service.appointment.starts_at
+			service.appointment_start = service.appointment.starts_at 
+			service.appointment_end = service.appointment.ends_at
 
 			service.save
 		end

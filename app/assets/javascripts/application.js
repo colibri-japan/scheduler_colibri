@@ -184,8 +184,8 @@ initialize_nurse_calendar = function(){
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
-                  start: appointment.start.format(),
-                  end: appointment.end.format(),
+                  starts_at: appointment.start.format(),
+                  ends_at: appointment.end.format(),
                 }
               };
               $.ajax({
@@ -369,8 +369,8 @@ initialize_patient_calendar = function(){
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
-                  start: appointment.start.format(),
-                  end: appointment.end.format(),
+                  starts_at: appointment.start.format(),
+                  ends_at: appointment.end.format(),
                 }
               };
               $.ajax({
@@ -539,8 +539,8 @@ initialize_master_calendar = function() {
                     color: event.color,
                     anchor: event.start.format('YYYY-MM-DD'),
                     end_day: event.end.format('YYYY-MM-DD'),
-                    start: event.start.format(),
-                    end: event.end.format()
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format()
                   },
                   master: true
                 },
@@ -883,8 +883,8 @@ initialize_calendar = function() {
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
-                  start: appointment.start.format(),
-                  end: appointment.end.format(),
+                  starts_at: appointment.start.format(),
+                  ends_at: appointment.end.format(),
                   patient_id: newPatientId,
                   nurse_id: newNurseId,
                 }

@@ -2,7 +2,9 @@ date_format = unavailability.all_day_unavailability? ? '%Y-%m-%d' : '%Y-%m-%dT%H
 
 json.id "unavailability_#{unavailability.id}"
 
-json.extract! unavailability, :start, :end, :patient_id, :edit_requested
+json.extract! unavailability, :patient_id, :edit_requested
+json.start unavailability.starts_at
+json.end unavailability.ends_at
 json.description unavailability.description ? unavailability.description : ''
 json.service_type unavailability.title ? unavailability.title : ''
 json.title "#{unavailability.patient.try(:name)}: #{unavailability.title}" 

@@ -47,7 +47,7 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments/1/edit
   def edit
     @master = @recurring_appointment.master
-    @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(start: 'asc')
+    @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(starts_at: 'asc')
     @appointments_after_first = @appointments.drop(1)
 
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
@@ -63,7 +63,7 @@ class RecurringAppointmentsController < ApplicationController
 
     respond_to do |format|
       if @recurring_appointment.save
-        @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name), new_anchor: @recurring_appointment.anchor, new_start: @recurring_appointment.start, new_end: @recurring_appointment.end
+        @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name), new_anchor: @recurring_appointment.anchor, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at
         puts 'saved recurring appointment and activity, now fetching appointments'
         @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id)
         format.js
@@ -82,7 +82,7 @@ class RecurringAppointmentsController < ApplicationController
     set_previous_params
       
     if @recurring_appointment.update(recurring_appointment_params)
-      @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.start, new_end: @recurring_appointment.end, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
+      @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
       puts 'saved recurring appointment and activity, now fetching appointments'
       @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
       puts @appointments.count
@@ -102,7 +102,7 @@ class RecurringAppointmentsController < ApplicationController
 
   def archive
     if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current, editing_occurrences_after: recurring_appointment_params[:editing_occurrences_after])
-      @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.start, previous_end: @recurring_appointment.end, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
+      @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
       puts 'saved recurring appointment and activity, now fetching appointments'
       @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id)
     end                  
@@ -127,7 +127,7 @@ class RecurringAppointmentsController < ApplicationController
 
     respond_to do |format|
       if @new_appointment.save 
-        @activity = @new_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @new_appointment.nurse_id, patient_id: @new_appointment.patient_id , new_nurse: @new_appointment.nurse.try(:name), new_patient: @new_appointment.patient.try(:name), new_anchor: @new_appointment.anchor, new_start: @new_appointment.start, new_end: @new_appointment.end
+        @activity = @new_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @new_appointment.nurse_id, patient_id: @new_appointment.patient_id , new_nurse: @new_appointment.nurse.try(:name), new_patient: @new_appointment.patient.try(:name), new_anchor: @new_appointment.anchor, new_start: @new_appointment.starts_at, new_end: @new_appointment.ends_at
 
         format.js
         format.html{ redirect_to planning_nurse_path(@planning, Nurse.find(@new_appointment.nurse_id)), notice: 'サービスがマスターから全体へ反映されました'}
@@ -145,8 +145,8 @@ class RecurringAppointmentsController < ApplicationController
     def set_previous_params
       @previous_nurse = @recurring_appointment.nurse.try(:name)
       @previous_patient = @recurring_appointment.patient.try(:name)
-      @previous_start = @recurring_appointment.start
-      @previous_end = @recurring_appointment.end
+      @previous_start = @recurring_appointment.starts_at
+      @previous_end = @recurring_appointment.ends_at
       @previous_anchor = @recurring_appointment.anchor
       @previous_edit_requested = @recurring_appointment.edit_requested
       @previous_title = @recurring_appointment.title
@@ -190,7 +190,7 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after, :edit_requested)
+      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after, :edit_requested)
     end
 
 

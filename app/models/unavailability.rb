@@ -10,7 +10,7 @@ class Unavailability < ApplicationRecord
 
 
 	def all_day_unavailability?
-		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
+		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
 	end
 
 	private

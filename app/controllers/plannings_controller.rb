@@ -85,9 +85,9 @@ class PlanningsController < ApplicationController
 		end
 
 		new_appointments.each do |appointment|
-			provided_duration = appointment.end - appointment.start
-		  	is_provided =  Time.current + 9.hours > appointment.start
-      		new_provided_service = ProvidedService.new(appointment_id: appointment.id, planning_id: appointment.planning_id, service_duration: provided_duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, deactivated: appointment.deactivated, provided: is_provided, temporary: false, title: appointment.title, hour_based_wage: @corporation.hour_based_payroll, service_date: appointment.start, appointment_start: appointment.start, appointment_end: appointment.end)
+			provided_duration = appointment.ends_at - appointment.starts_at
+		  	is_provided =  Time.current + 9.hours > appointment.starts_at
+      		new_provided_service = ProvidedService.new(appointment_id: appointment.id, planning_id: appointment.planning_id, service_duration: provided_duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, deactivated: appointment.deactivated, provided: is_provided, temporary: false, title: appointment.title, hour_based_wage: @corporation.hour_based_payroll, service_date: appointment.starts_at, appointment_start: appointment.starts_at, appointment_end: appointment.ends_at)
       		new_provided_service.run_callbacks(:save) { false }
       		new_provided_services << new_provided_service
 		end
@@ -121,8 +121,8 @@ class PlanningsController < ApplicationController
 			new_recurring_appointment.planning_id = @planning.id
 			new_recurring_appointment.anchor = new_anchor_day
 			new_recurring_appointment.end_day = new_anchor_day + recurring_appointment.duration
-			new_recurring_appointment.start = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, recurring_appointment.start.hour, recurring_appointment.start.min)
-			new_recurring_appointment.end = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, recurring_appointment.end.hour, recurring_appointment.end.min)
+			new_recurring_appointment.starts_at = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
+			new_recurring_appointment.ends_at = DateTime.new(new_anchor_day.year, new_anchor_day.month, new_anchor_day.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min)
 			new_recurring_appointment.master = true
 			new_recurring_appointment.displayable = true
 			new_recurring_appointment.original_id = ''
@@ -138,9 +138,9 @@ class PlanningsController < ApplicationController
 			recurring_appointment_occurrences = recurring_appointment.appointments(first_day, last_day)
 
 			recurring_appointment_occurrences.each do |occurrence|
-				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.start.hour, recurring_appointment.start.min)
-		    	end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.end.hour, recurring_appointment.end.min) + recurring_appointment.duration.to_i
-				new_appointment = Appointment.new(title: recurring_appointment.title, nurse_id: recurring_appointment.nurse_id, recurring_appointment_id: recurring_appointment.id, patient_id: recurring_appointment.patient_id, planning_id: recurring_appointment.planning_id, master: recurring_appointment.master, displayable: true, start: start_time, end: end_time, color: recurring_appointment.color, edit_requested: recurring_appointment.edit_requested, description: recurring_appointment.description)
+				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
+		    	end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i
+				new_appointment = Appointment.new(title: recurring_appointment.title, nurse_id: recurring_appointment.nurse_id, recurring_appointment_id: recurring_appointment.id, patient_id: recurring_appointment.patient_id, planning_id: recurring_appointment.planning_id, master: recurring_appointment.master, displayable: true, starts_at: start_time, ends_at: end_time, color: recurring_appointment.color, edit_requested: recurring_appointment.edit_requested, description: recurring_appointment.description)
 				new_appointments << new_appointment
 			end
 		end

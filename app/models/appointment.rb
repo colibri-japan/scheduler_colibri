@@ -19,13 +19,18 @@ class Appointment < ApplicationRecord
 	after_update :update_provided_service
 	after_save :add_to_services
 
+
 	def all_day_appointment?
 		puts 'checking if all day appointments'
-		self.start == self.start.midnight && self.end == self.end.midnight ? true : false
+		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
 	end
 
 	def weekend_holiday_appointment?
-		!self.start.on_weekday? || !self.end.on_weekday? || HolidayJp.between(self.start, self.end).present? ? true : false
+		!self.starts_at.on_weekday? || !self.ends_at.on_weekday? || HolidayJp.between(self.starts_at, self.ends_at).present? ? true : false
+	end
+
+	def self.overlapping(range)
+		where('(starts_at BETWEEN ? AND ? OR ends_at BETWEEN ? AND ?) OR (starts_at <= ? AND ends_at >= ?)', range.first, range.last, range.first, range.last, range.first, range.last)
 	end
 
 	private
@@ -36,8 +41,8 @@ class Appointment < ApplicationRecord
 		puts 'overlap validation on appointment'
 
 		unless nurse.name == '未定' || self.displayable == false
-			overlaps_start = Appointment.where(master: self.master, displayable: true, start: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id).where.not(start: self.start).where.not(start: self.end).where.not(id: [self.id, self.original_id])
-			overlaps_end = Appointment.where(master: self.master, displayable: true, end: self.start..self.end, edit_requested: false, nurse_id: self.nurse_id).where.not(end: self.start).where.not(end: self.end).where.not(id: [self.id,self.original_id])
+			overlaps_start = Appointment.where(master: self.master, displayable: true, starts_at: self.starts_at..self.ends_at, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id).where.not(starts_at: self.starts_at).where.not(starts_at: self.ends_at).where.not(id: [self.id, self.original_id])
+			overlaps_end = Appointment.where(master: self.master, displayable: true, ends_at: self.starts_at..self.ends_at, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id).where.not(ends_at: self.starts_at).where.not(ends_at: self.ends_at).where.not(id: [self.id,self.original_id])
 
 			errors.add(:nurse_id, "その日のヘルパーが重複しています。") if overlaps_start.present? || overlaps_end.present?
 		end
@@ -63,11 +68,11 @@ class Appointment < ApplicationRecord
 	def create_provided_service
 		puts 'adding provided service'
 		if self.master != true
-		  provided_duration = self.end - self.start
-		  is_provided =  Time.current + 9.hours > self.start
+		  provided_duration = self.ends_at - self.starts_at
+		  is_provided =  Time.current + 9.hours > self.starts_at
 		  puts 'just before saving provided service'
 		  puts self.nurse_id
-		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.start, appointment_start: self.start, appointment_end: self.end)
+		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at)
 		end
 	end
 
@@ -78,10 +83,10 @@ class Appointment < ApplicationRecord
 			if self.deleted == true 
 				@provided_service.update(deactivated: true)
 			else
-		      provided_duration = self.end - self.start
-		      is_provided = Time.current + 9.hours > self.start
+		      provided_duration = self.ends_at - self.starts_at
+		      is_provided = Time.current + 9.hours > self.starts_at
 		      deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true
-			  @provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided, service_date: self.start, appointment_start: self.start, appointment_end: self.end)
+			  @provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at)
 			end
 		end
 	end
@@ -99,8 +104,8 @@ class Appointment < ApplicationRecord
 
 		update_activities.each do |activity|
 			if activity.trackable.present?
-			  activity.new_start = activity.trackable.start
-			  activity.new_end = activity.trackable.end 
+			  activity.new_start = activity.trackable.starts_at
+			  activity.new_end = activity.trackable.ends_at 
 			  activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present? 
 			  activity.new_patient = activity.trackable.patient.name  if activity.trackable.patient.present?
 			  activity.new_edit_requested = activity.trackable.edit_requested

@@ -13,7 +13,7 @@
 
 <% @appointments.each do |appointment| %>
 	<div>
-		<%= appointment.patient.try(:name) %>様: <%= appointment.start.strftime("%-d日") %><%= weekday(appointment.start) %>  <%= appointment.start.strftime("%-H:%M") %>~<%= appointment.end.strftime("%-H:%M") %>
+		<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日") %><%= weekday(appointment.start) %>  <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
 		<% if appointment.description.present? %>
 			コメント：<%= appointment.description %>
 		<% end %>

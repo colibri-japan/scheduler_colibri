@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180928160831) do
+ActiveRecord::Schema.define(version: 20181015140906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,8 +62,8 @@ ActiveRecord::Schema.define(version: 20180928160831) do
   create_table "appointments", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.datetime "start"
-    t.datetime "end"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "nurse_id"
@@ -220,8 +220,8 @@ ActiveRecord::Schema.define(version: 20180928160831) do
     t.datetime "updated_at", null: false
     t.bigint "nurse_id"
     t.bigint "patient_id"
-    t.datetime "start"
-    t.datetime "end"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
     t.bigint "planning_id"
     t.boolean "master"
     t.boolean "displayable"
@@ -244,8 +244,8 @@ ActiveRecord::Schema.define(version: 20180928160831) do
     t.string "title"
     t.date "anchor"
     t.integer "frequency"
-    t.datetime "start"
-    t.datetime "end"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
     t.bigint "planning_id"
     t.bigint "nurse_id"
     t.datetime "created_at", null: false
@@ -271,8 +271,8 @@ ActiveRecord::Schema.define(version: 20180928160831) do
   create_table "unavailabilities", force: :cascade do |t|
     t.string "title"
     t.string "description"
-    t.datetime "start"
-    t.datetime "end"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
     t.bigint "nurse_id"
     t.bigint "planning_id"
     t.datetime "created_at", null: false

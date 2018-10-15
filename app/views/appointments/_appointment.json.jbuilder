@@ -4,7 +4,9 @@ date_format = json.allDay ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
 json.id "appointment_#{appointment.id}"
 json.title "#{appointment.patient.try(:name)} - #{appointment.nurse.try(:name)}"
-json.extract! appointment,  :start, :end, :color, :master, :displayable, :nurse_id, :patient_id, :edit_requested
+json.extract! appointment, :color, :master, :displayable, :nurse_id, :patient_id, :edit_requested
+json.start appointment.starts_at
+json.end appointment.ends_at
 json.description appointment.description ? appointment.description : ''
 json.resourceId appointment.nurse_id
 json.nurse_name appointment.nurse.try(:name)

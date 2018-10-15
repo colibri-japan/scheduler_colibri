@@ -21,12 +21,12 @@
 
       <div class="form-group">
         <span class="colibri-form-label">繰り返し：</span>
-        <%= @appointments.map{|appointment| appointment.start.strftime("%-m月%-d日") }.to_sentence(words_connector: ' // ', last_word_connector: ' // ', two_words_connector: ' // ') %>
+        <%= @appointments.map{|appointment| appointment.starts_at.strftime("%-m月%-d日") }.to_sentence(words_connector: ' // ', last_word_connector: ' // ', two_words_connector: ' // ') %>
       </div>
 
       <div class="form-group">
         <%= form.label :editing_occurrences_after, '変更する日', class: "colibri-form-label" %>
-        <%= form.collection_select(:editing_occurrences_after, @appointments_after_first, :id, :start, {prompt: '全繰り返し'},) %>
+        <%= form.collection_select(:editing_occurrences_after, @appointments_after_first, :id, :starts_at, {prompt: '全繰り返し'},) %>
       </div>
 
     <% end %>
@@ -85,13 +85,13 @@
       <% if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
 
       <div class="form-group">
-        <%= form.label :start, "スタート時間", class: "colibri-form-label" %>
-        <%= form.time_select :start, id: :recurring_appointment_start, class: "form-control" %>
+        <%= form.label :starts_at, "スタート時間", class: "colibri-form-label" %>
+        <%= form.time_select :starts_at, id: :recurring_appointment_start, class: "form-control" %>
       </div>
 
       <div class="form-group">
-        <%= form.label :end, "終了時間", class: "colibri-form-label" %>
-        <%= form.time_select :end, id: :recurring_appointment_end, class: "form-control" %>
+        <%= form.label :ends_at, "終了時間", class: "colibri-form-label" %>
+        <%= form.time_select :ends_at, id: :recurring_appointment_end, class: "form-control" %>
       </div>
 
       <% end %>

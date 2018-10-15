@@ -34,7 +34,7 @@ class RecurringUnavailability < ApplicationRecord
   end
 
   def all_day_recurring_unavailability?
-  	self.start == self.start.midnight && self.end == self.end.mignight ? true : false
+  	self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.mignight ? true : false
   end
 
   def unavailabilities(start_date, end_date)

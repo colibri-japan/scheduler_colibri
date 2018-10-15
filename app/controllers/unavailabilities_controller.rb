@@ -100,6 +100,6 @@ class UnavailabilitiesController < ApplicationController
 
 	  # Never trust parameters from the scary internet, only allow the white list through.
 	  def unavailability_params
-	    params.require(:unavailability).permit(:title, :description, :start, :end, :nurse_id, :patient_id, :planning_id)
+	    params.require(:unavailability).permit(:title, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id)
 	  end
 end

@@ -1,7 +1,7 @@
 <% if activity.trackable %>
 	がサービスが不可能な時間をアップデートしました。<br/>
 	<span class="activity-important-fields"><%= activity.trackable.nurse.present? ? "#{activity.trackable.nurse.try(:name)  }" : "#{activity.trackable.patient.try(:name)}様"  %></span>
-	<%= weekday(activity.trackable.start) %><%= activity.trackable.start.strftime("%H:%M") %> ~ <%= weekday(activity.trackable.end) %><%= activity.trackable.end.strftime("%H:%M") %>
+	<%= weekday(activity.trackable.starts_at) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= weekday(activity.trackable.ends_at) %><%= activity.trackable.ends_at.strftime("%H:%M") %>
 <% else %>
 	がその後削除されたサービスが不可能な時間をアップデートしました。
 <% end %>

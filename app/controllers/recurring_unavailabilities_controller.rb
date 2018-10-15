@@ -56,7 +56,7 @@ class RecurringUnavailabilitiesController < ApplicationController
 	# PATCH/PUT /recurring_unavailabilities/1.json
 	def update
 	  if params[:unavailability]
-	    @recurring_unavailability.update(anchor: params[:unavailability][:start])
+	    @recurring_unavailability.update(anchor: params[:unavailability][:starts_at])
 	  else
 	  	@nurse = Nurse.find(recurring_unavailability_params[:nurse_id])
 	    @recurring_unavailability.update(recurring_unavailability_params)
@@ -91,6 +91,6 @@ class RecurringUnavailabilitiesController < ApplicationController
 
 	  # Never trust parameters from the scary internet, only allow the white list through.
 	  def recurring_unavailability_params
-	    params.require(:recurring_unavailability).permit(:title, :anchor, :start, :end, :frequency, :nurse_id, :patient_id, :planning_id)
+	    params.require(:recurring_unavailability).permit(:title, :anchor, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id)
 	  end
 end

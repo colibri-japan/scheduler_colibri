@@ -17,13 +17,13 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :start, "スタート時間", class: "colibri-form-label" %>
-    <%= form.time_select :start, id: :recurring_unavailability_start %>
+    <%= form.label :starts_at, "スタート時間", class: "colibri-form-label" %>
+    <%= form.time_select :starts_at, id: :recurring_unavailability_start %>
   </div>
 
   <div class="form-group">
-    <%= form.label :end, "修了時間", class: "colibri-form-label" %>
-    <%= form.time_select :end, id: :recurring_unavailability_end %>
+    <%= form.label :ends_at, "修了時間", class: "colibri-form-label" %>
+    <%= form.time_select :ends_at, id: :recurring_unavailability_end %>
   </div>
 
   <div class="form-group">

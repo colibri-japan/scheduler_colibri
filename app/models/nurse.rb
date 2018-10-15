@@ -34,7 +34,7 @@ class Nurse < ApplicationRecord
 		@custom_email_days.each do |custom_day|
 			custom_day_start = custom_day.beginning_of_day
 			custom_day_end = custom_day.end_of_day
-			custom_day_appointments =  Appointment.where(planning_id: valid_plannings.ids, nurse_id: self.id, displayable: true, deactivated: false, edit_requested: false, master: false).where(start: custom_day_start..custom_day_end).all.order(start: 'asc')
+			custom_day_appointments =  Appointment.where(planning_id: valid_plannings.ids, nurse_id: self.id, displayable: true, deactivated: false, edit_requested: false, master: false).where(starts_at: custom_day_start..custom_day_end).all.order(starts_at: 'asc')
 			selected_appointments << custom_day_appointments.to_a
 		end
 

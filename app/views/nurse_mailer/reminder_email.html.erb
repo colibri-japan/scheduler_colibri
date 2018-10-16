@@ -1,5 +1,10 @@
 <div>
-	<%= @nurse.name %>様、<%= @corporation.name %>のサービスのスケジュールです。
+	お疲れ様です。
+</div>
+<br/>
+
+<div>
+	<%= @nurse.name %>様、<%= @corporation.name %>シフト確認になります。ご確認お願い致します。
 </div>
 <br/>
 
@@ -28,13 +33,18 @@
 <% end %>
 <br/>
 
+以上になります。
+<br/>
+
 <% if @corporation.custom_email_outro_text.present? %>
 	<div>
-		<%= @corporation.custom_email_outro_text %>
+		<%= simple_format(@corporation.custom_email_outro_text) %>
 	</div>
 	<br/>
 <% end %>
 
+<div>
+	<%= @corporation.name %>
+</div>
 
-以上、宜しくお願い致します。
 

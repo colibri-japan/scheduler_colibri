@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'nurses/index'
 
   devise_for :users, controllers: {
     invitations: "invitations"
@@ -34,6 +33,8 @@ Rails.application.routes.draw do
     resources :nurses, only: :index
     resources :patients, only: :index
   end
+
+  resources :dashboard, only: :index
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -76,5 +77,5 @@ Rails.application.routes.draw do
 
   patch 'plannings/:id/archive' => 'plannings#archive', as: :planning_archive
 
-  root 'plannings#index'
+  root 'dashboard#index'
 end

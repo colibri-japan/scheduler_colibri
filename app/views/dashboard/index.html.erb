@@ -1,0 +1,56 @@
+<div id="index-container">
+    <%= link_to '+新規スケジュール', new_planning_path, class: 'btn btn-info text-white btn-margin-top' %><br/>
+
+    <div id="index-table-container">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="table-important-fields" colspan='2'>スケジュール</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @plannings.each do |planning| %>
+            <tr class="clickable-row" data-link="<%= planning_path(planning) %>">
+              <td class="col-md-10"><%= planning.title %></td>
+              <td class="col-md-2">
+                <% if current_user.admin? %>
+                  <%= link_to '削除', planning_archive_path(planning), method: :patch, class: 'btn btn-secondary btn-sm text-white', data: { confirm: 'サービス、提供されたサービス（給与管理）などを含めてスケジュールが削除されます。' } if current_user.admin? %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="dashboard-container">
+      <h1 class="colibri-small-title">本日のサービス</h1>
+      <table class='table'>
+        <thead>
+          <tr>
+            <th class="table-important-fields">利用者名</th>
+            <th class="table-important-fields">性別</th>
+            <th class="table-important-fields">訪問時間</th>
+            <th class="table-important-fields">ヘルパー</th>
+            <th class="table-important-fields">サービスタイプ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @appointments.each do |nurse_id, appointments_array| %>
+            <% appointments_array.each do |appointment| %>
+              <tr>
+                <th><%= appointment.patient.try(:name) %></th>
+                <th><%= patient_gender(appointment.patient) %></th>
+                <th><%= "#{appointment.starts_at.strftime('%H:%M')} ~ #{appointment.ends_at.strftime('%H:%M')}" %></th>
+                <th><%= appointment.nurse.try(:name) %></th>
+                <th><%= appointment.title %></th>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+
+</div>

@@ -8,7 +8,7 @@
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
-	window.defaultView = "<%= j @corporation.default_view %>";
+	window.defaultView = "<%= j @corporation.default_master_view %>";
 	window.masterToSchedule = "<%= j master_to_schedule_path(@planning) %>";
 	window.patientMasterToSchedule = "<%= j patient_master_to_schedule_path(@planning, @patient) %>";
 	window.planningId = "<%= j @planning.id.to_s %>"

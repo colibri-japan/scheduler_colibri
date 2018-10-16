@@ -9,7 +9,7 @@
 	window.userIsAdmin = "<%= j @admin %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
-	window.defaultView = "<%= j @corporation.default_view %>";
+	window.defaultView = "<%= j @corporation.default_master_view %>";
 	window.masterToSchedule = "<%= j master_to_schedule_path(@planning) %>";
 <% end %>
 

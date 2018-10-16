@@ -11,10 +11,6 @@ class NurseMailer < ApplicationMailer
 		day_text = @days.count > 1 ? @days.map{|e| e.day}.join(',') : @days.first.day
 		custom_subject = options[:custom_subject] || "#{@corporation.name}：#{day_text}日のスケジュール"
 
-		puts 'inside mailer custom subject'
-		puts options[:custom_subject]
-		puts custom_subject
-
 		mail to: @nurse.phone_mail, from: "#{@corporation.name} <info@colibri.jp>", bcc: @corporation.email, reply_to: @corporation.email, subject: custom_subject
 	end
 

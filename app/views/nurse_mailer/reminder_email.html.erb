@@ -11,7 +11,7 @@
 
 <% if @custom_message.present? %>
 	<div>
-		<%= @custom_message %>
+		<%= simple_format(@custom_message) %>
 	</div>
 	<br/>
 <% end %>

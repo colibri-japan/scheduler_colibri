@@ -2,7 +2,7 @@
 
 <%= @nurse.name %>様、<%= @corporation.name %>シフト確認になります。ご確認お願い致します。
 
-<%= @custom_message if @custom_message.present? %>
+<%= simple_format(@custom_message) if @custom_message.present? %>
 
 <%= @corporation.custom_email_intro_text if @corporation.custom_email_intro_text.present? %>
 

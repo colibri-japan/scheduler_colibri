@@ -27,9 +27,6 @@ class Nurse < ApplicationRecord
 		custom_email_subject = options[:custom_email_subject]
 		@custom_email_days = custom_email_days
 
-		puts 'inside model method subject'
-		puts custom_email_subject
-
 		@custom_email_days.map! {|e| e.to_date }
 
 		valid_plannings = Planning.where(business_month: Time.current.month, corporation_id: self.corporation_id)
@@ -46,7 +43,7 @@ class Nurse < ApplicationRecord
 		selected_appointments = selected_appointments.flatten
 
 		if selected_appointments.present? && self.phone_mail.present?
-			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: custom_email_message, custom_subject: custom_email_subject}).deliver_now 
+			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: custom_email_message, custom_subject: 	custom_email_subject}).deliver_now 
 		end
 
 	end

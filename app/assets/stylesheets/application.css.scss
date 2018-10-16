@@ -279,6 +279,10 @@ tr.nurse-clickable-row:hover {
 	min-height: 35px;
 }
 
+tr.patient-clickable-row:hover {
+	cursor:pointer;
+}
+
 
 .appointment-occurrence {
 	margin-bottom: 5px !important;

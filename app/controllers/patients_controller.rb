@@ -168,6 +168,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address)
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender)
   end
 end

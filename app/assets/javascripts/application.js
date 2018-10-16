@@ -1399,6 +1399,10 @@ $(document).on('turbolinks:load', function(){
     $.getScript($(this).data('link'));
   });
 
+  $('tr.patient-clickable-row').click(function () {
+    $.getScript($(this).data('link'));
+  });
+
   $('tr.clickable-row').click(function(){
     window.location = $(this).data('link');
   });

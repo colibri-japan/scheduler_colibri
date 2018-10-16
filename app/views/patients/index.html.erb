@@ -6,7 +6,7 @@
 <div id="index-container">
 
   <% if @planning.nil? %>
-  <%= link_to '+新規利用者', new_patient_path, class: 'btn btn-info text-white btn-margin-top' %>
+  <%= link_to '+新規利用者', new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
   <% end %>
 
   <div id="index-table-container">
@@ -17,29 +17,16 @@
           <th class="table-important-fields">電話番号</th>
           <th class="table-important-fields">メール</th>
           <th class="table-important-fields">住所</th>
-          <% if current_user.admin? %>
-          <th>サービス実行中</th>
-          <% end %>
-          <th colspan="2">アクション</th>
-          <th></th>
         </tr>
       </thead>
 
       <tbody>
         <% @patients.each do |patient| %>
-          <tr class="<%= 'clickable-row' if @planning %>" data-link="<%= planning_patient_path(@planning, patient) if @planning %>">
+          <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>">
             <td><%= patient.name %></td>
             <td><%= patient.phone_number %></td>
             <td><%= patient.phone_mail %></td>
             <td><%= patient.address %></td>
-            <% if @planning.present? %>
-              <td><%= link_to '利用者のサービスを変換する', planning_patient_path(@planning, patient) %></td>
-            <% else %>
-              <td><%= link_to 'エディット', edit_patient_path(patient), class: 'btn btn-success btn-sm text-white' %></td>
-              <td>
-                <%= link_to 'サービス停止', toggle_active_path(patient), method: :patch, data: {confirm: '将来のサービスがキャンセルされ、利用者一覧から外されます。'}, class: 'btn btn-danger btn-sm text-white' %>
-              </td>
-            <% end %>
           </tr>
         <% end %>
       </tbody>

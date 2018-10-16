@@ -1,6 +1,7 @@
 class Nurse < ApplicationRecord
 	attribute :custom_email_message
 	attribute :custom_email_days
+	attribute :custom_email_subject, :string
 
 	belongs_to :corporation
 	has_many :appointments, dependent: :destroy
@@ -22,8 +23,12 @@ class Nurse < ApplicationRecord
 	end
 
 	def send_service_reminder(custom_email_days, options={})
-		@custom_email_message = options[:custom_email_message] || ' '
+		custom_email_message = options[:custom_email_message] || ' '
+		custom_email_subject = options[:custom_email_subject]
 		@custom_email_days = custom_email_days
+
+		puts 'inside model method subject'
+		puts custom_email_subject
 
 		@custom_email_days.map! {|e| e.to_date }
 
@@ -41,7 +46,7 @@ class Nurse < ApplicationRecord
 		selected_appointments = selected_appointments.flatten
 
 		if selected_appointments.present? && self.phone_mail.present?
-			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: @custom_email_message}).deliver_now 
+			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: custom_email_message, custom_subject: custom_email_subject}).deliver_now 
 		end
 
 	end

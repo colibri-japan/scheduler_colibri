@@ -1246,6 +1246,7 @@ let appointmentEdit = (url) => {
 let sendReminder = () => {
   $('#send-email-reminder').click(function () {
 
+    let customSubject = $('#nurse_custom_email_subject').val();
     let customMessage = $('#nurse_custom_email_message').val();
     let customDays = $('#chosen-custom-email-days').val();
     let ajaxUrl = $(this).data('send-reminder-url');
@@ -1255,6 +1256,7 @@ let sendReminder = () => {
       type: 'PATCH',
       data: {
         nurse: {
+          custom_email_subject: customSubject,
           custom_email_message: customMessage, 
           custom_email_days: customDays
         }

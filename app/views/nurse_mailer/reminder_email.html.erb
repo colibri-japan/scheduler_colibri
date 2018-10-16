@@ -11,15 +11,30 @@
 	<br/>
 <% end %>
 
+<% if @corporation.custom_email_intro_text.present? %>
+	<div>
+		<%= @corporation.custom_email_intro_text %>
+	</div>
+	<br/>
+<% end %>
+
 <% @appointments.each do |appointment| %>
 	<div>
-		<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日") %><%= weekday(appointment.start) %>  <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
+		<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日") %><%= weekday(appointment.starts_at) %>  <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
 		<% if appointment.description.present? %>
 			コメント：<%= appointment.description %>
 		<% end %>
 	</div>
 <% end %>
-
 <br/>
+
+<% if @corporation.custom_email_outro_text.present? %>
+	<div>
+		<%= @corporation.custom_email_outro_text %>
+	</div>
+	<br/>
+<% end %>
+
+
 以上、宜しくお願い致します。
 

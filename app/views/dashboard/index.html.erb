@@ -1,56 +1,65 @@
-<div id="index-container">
-    <%= link_to '+新規スケジュール', new_planning_path, class: 'btn btn-info text-white btn-margin-top' %><br/>
+<div id='dashboard-plannings-container'>
+  <div id='new-planning-container'>
+    <%= link_to '+新規スケジュール', new_planning_path, class: 'btn btn-info btn-sm text-white btn-margin-top' %>
+  </div>
+  <div id='dashboard-plannings-list'>
+    <% @plannings.each do |planning| %>
+      <div class="resource-list-element" data-url="<%= planning_path(planning) %>"><%= planning.title %></div>
+    <% end %>
+  </div>
+</div>
 
-    <div id="index-table-container">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th class="table-important-fields" colspan='2'>スケジュール</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @plannings.each do |planning| %>
-            <tr class="clickable-row" data-link="<%= planning_path(planning) %>">
-              <td class="col-md-10"><%= planning.title %></td>
-              <td class="col-md-2">
-                <% if current_user.admin? %>
-                  <%= link_to '削除', planning_archive_path(planning), method: :patch, class: 'btn btn-secondary btn-sm text-white', data: { confirm: 'サービス、提供されたサービス（給与管理）などを含めてスケジュールが削除されます。' } if current_user.admin? %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+<div id='colibri-dashboard-container'>
+  <div id='colibri-dashboard-upper-container'>
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>利用状況</span>
+      </div>
+      <div class='colibri-subcontainer-body'>
+      </div>
     </div>
-
-    <div id="dashboard-container">
-      <h1 class="colibri-small-title">本日のサービス</h1>
-      <table class='table'>
-        <thead>
-          <tr>
-            <th class="table-important-fields">利用者名</th>
-            <th class="table-important-fields">性別</th>
-            <th class="table-important-fields">訪問時間</th>
-            <th class="table-important-fields">ヘルパー</th>
-            <th class="table-important-fields">サービスタイプ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @appointments.each do |nurse_id, appointments_array| %>
-            <% appointments_array.each do |appointment| %>
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ラストログイン以降：#{@unseen_activity_count}" %></span>
+      </div>
+      <div class='colibri-subcontainer-body'>
+      	<% @activities.each do |activity| %>
+					<%= render partial: 'activities/activity', locals: {activity: activity} %>
+				<% end %>
+      </div>
+    </div>
+  </div>
+  <div id='colibri-dashboard-lower-container'>
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>本日のサービス</span>
+      </div>
+        <div class='colibri-subcontainer-body'>
+          <table class='table'>
+            <thead>
               <tr>
-                <th><%= appointment.patient.try(:name) %></th>
-                <th><%= patient_gender(appointment.patient) %></th>
-                <th><%= "#{appointment.starts_at.strftime('%H:%M')} ~ #{appointment.ends_at.strftime('%H:%M')}" %></th>
-                <th><%= appointment.nurse.try(:name) %></th>
-                <th><%= appointment.title %></th>
+                <th class="table-important-fields">利用者名</th>
+                <th class="table-important-fields">性別</th>
+                <th class="table-important-fields">訪問時間</th>
+                <th class="table-important-fields">ヘルパー</th>
+                <th class="table-important-fields">サービスタイプ</th>
               </tr>
-            <% end %>
-          <% end %>
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              <% @appointments.each do |nurse_id, appointments_array| %>
+                <% appointments_array.each do |appointment| %>
+                  <tr>
+                    <th><%= appointment.patient.try(:name) %></th>
+                    <th><%= patient_gender(appointment.patient) %></th>
+                    <th><%= "#{appointment.starts_at.strftime('%H:%M')} ~ #{appointment.ends_at.strftime('%H:%M')}" %></th>
+                    <th><%= appointment.nurse.try(:name) %></th>
+                    <th><%= appointment.title %></th>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
     </div>
-
-
+  </div>
 </div>

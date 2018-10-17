@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181016143710) do
+ActiveRecord::Schema.define(version: 20181017200809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,11 +79,13 @@ ActiveRecord::Schema.define(version: 20181016143710) do
     t.boolean "deactivated", default: false
     t.boolean "deleted", default: false
     t.datetime "deleted_at"
+    t.bigint "service_id"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_appointments_on_original_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
     t.index ["planning_id"], name: "index_appointments_on_planning_id"
     t.index ["recurring_appointment_id"], name: "index_appointments_on_recurring_appointment_id"
+    t.index ["service_id"], name: "index_appointments_on_service_id"
   end
 
   create_table "corporations", force: :cascade do |t|
@@ -208,12 +210,14 @@ ActiveRecord::Schema.define(version: 20181016143710) do
     t.datetime "appointment_start"
     t.datetime "appointment_end"
     t.bigint "invoice_setting_id"
+    t.bigint "service_salary_id"
     t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
     t.index ["invoice_setting_id"], name: "index_provided_services_on_invoice_setting_id"
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
     t.index ["patient_id"], name: "index_provided_services_on_patient_id"
     t.index ["payable_type", "payable_id"], name: "index_provided_services_on_payable_type_and_payable_id"
     t.index ["planning_id"], name: "index_provided_services_on_planning_id"
+    t.index ["service_salary_id"], name: "index_provided_services_on_service_salary_id"
   end
 
   create_table "recurring_appointments", force: :cascade do |t|
@@ -238,10 +242,12 @@ ActiveRecord::Schema.define(version: 20181016143710) do
     t.integer "duration"
     t.boolean "edit_requested", default: false
     t.boolean "deactivated", default: false
+    t.bigint "service_id"
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_recurring_appointments_on_original_id"
     t.index ["patient_id"], name: "index_recurring_appointments_on_patient_id"
     t.index ["planning_id"], name: "index_recurring_appointments_on_planning_id"
+    t.index ["service_id"], name: "index_recurring_appointments_on_service_id"
   end
 
   create_table "recurring_unavailabilities", force: :cascade do |t|

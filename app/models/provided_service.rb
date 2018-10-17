@@ -7,7 +7,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :patient, optional: true
 	belongs_to :planning
 	belongs_to :invoice_setting, optional: true
-
+	belongs_to :service_salary, class_name: 'Service', optional: true
 
 	before_save :set_default_countable, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :lookup_unit_cost, unless: :skip_callbacks_except_calculate_total_wage

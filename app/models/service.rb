@@ -5,6 +5,9 @@ class Service < ApplicationRecord
   belongs_to :corporation
   has_many :invoice_setting_services
   has_many :invoice_settings, through: :invoice_setting_services
+  has_many :appointments
+  has_many :recurring_appointments
+  has_many :provided_services
   belongs_to :nurse, optional: true
 
   after_save :recalculate_wages, if: :recalculate_previous_wages
@@ -49,10 +52,14 @@ class Service < ApplicationRecord
 
   def create_nurse_services 
     nurses = self.corporation.nurses.where(displayable: true)
+    new_services = []
 
     nurses.each do |nurse|
-      nurse_service = Service.create(corporation_id: self.corporation_id, title: self.title, nurse_id: nurse.id, unit_wage: self.unit_wage, weekend_unit_wage: self.weekend_unit_wage, skip_create_nurses_callback: true)
+      nurse_service = Service.new(corporation_id: self.corporation_id, title: self.title, nurse_id: nurse.id, unit_wage: self.unit_wage, weekend_unit_wage: self.weekend_unit_wage, skip_create_nurses_callback: true)
+      new_services << nurse_service
     end
+
+    Service.import new_services
   end
 
   def destroy_services_for_other_nurses

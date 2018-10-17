@@ -8,6 +8,7 @@ class RecurringAppointment < ApplicationRecord
 	belongs_to :patient, optional: true
 	belongs_to :planning
 	belongs_to :original, class_name: 'RecurringAppointment', optional: true
+	belongs_to :service, optional: true
 	has_many :deleted_occurrences, dependent: :destroy
 	has_many :appointments, dependent: :destroy
 
@@ -18,6 +19,8 @@ class RecurringAppointment < ApplicationRecord
 	before_create :default_master
 	before_create :default_displayable
 	before_create :default_deleted
+	
+	before_save :add_to_services
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -29,7 +32,6 @@ class RecurringAppointment < ApplicationRecord
 	after_create :create_individual_appointments
 	after_update :update_individual_appointments, unless: :saved_change_to_deactivated?
 	after_update :toggle_deactivated_on_individual_appointments, if: :saved_change_to_deactivated?
-	after_save :add_to_services
 
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
 	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks
@@ -102,7 +104,7 @@ class RecurringAppointment < ApplicationRecord
 		occurrences.each do |occurrence|
 			start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min)
 		    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
-			occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description)
+			occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
 			occurrence_appointment.save!(validate: false)
 		end
 	end
@@ -137,7 +139,7 @@ class RecurringAppointment < ApplicationRecord
 		appointments_to_edit.each do |appointment|
 			start_time = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, self.starts_at.hour, self.starts_at.min)
 			end_time = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.starts_at.day, self.ends_at.hour, self.ends_at.min) + self.duration
-			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, starts_at: start_time, ends_at: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at, deactivated: self.deactivated)
+			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, starts_at: start_time, ends_at: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at, deactivated: self.deactivated, service_id: self.service_id)
 		end
 
 	end
@@ -278,10 +280,15 @@ class RecurringAppointment < ApplicationRecord
 
 	def add_to_services
 		puts 'add to services'
-		services = Service.where(corporation_id: self.planning.corporation.id, title: self.title)
+		unless self.service_id.present?
+			services = Service.where(corporation_id: self.planning.corporation.id, title: self.title, nurse_id: nil)
 
-		if services.blank? 
-			self.planning.corporation.services.create(title: self.title)
+			if services.blank? 
+				new_service = self.planning.corporation.services.create(title: self.title)
+				self.service_id = new_service.id
+			else
+				self.service_id = services.first.id
+			end
 		end
 	end
 
@@ -329,6 +336,19 @@ class RecurringAppointment < ApplicationRecord
 				activity.previous_patient = activity.trackable.patient.name if activity.trackable.patient.present?
 
 				activity.save! 
+			end
+		end
+	end
+
+	def self.add_or_create_service
+		appointments = RecurringAppointment.where(service_id: nil) 
+
+		appointments.find_each do |appointment|
+			service = Service.where(corporation_id: appointment.planning.corporation.id, nurse_id: nil, title: appointment.title).first
+			if service.present?
+				appointment.service_id = service.id
+				appointment.skip_appointments_callbacks = true
+				appointment.save(validate: false)
 			end
 		end
 	end

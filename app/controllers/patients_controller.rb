@@ -4,11 +4,11 @@ class PatientsController < ApplicationController
   before_action :set_planning, only: [:show, :master, :master_to_schedule]
 
   def index
-    if params[:start].present? && params[:end].present? && params[:master].present?
+    if params[:start].present? && params[:end].present? && params[:master].present? && @corporation.plannings.ids.include?(params[:planning_id].to_i)
       start_time = params[:start].to_date.beginning_of_day
       end_time = params[:end].to_date.beginning_of_day
 
-      @patients = @corporation.patients.joins(:appointments).where(appointments: {displayable: true, master: params[:master], starts_at: start_time..end_time})
+      @patients = @corporation.patients.joins(:appointments).where(appointments: {displayable: true, master: params[:master], planning_id: params[:planning_id], starts_at: start_time..end_time})
       @patients = @patients.where(active: true).order_by_kana
     else 
       @patients = @corporation.patients.where(active: true).order_by_kana

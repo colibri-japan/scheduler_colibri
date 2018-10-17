@@ -15,6 +15,7 @@
 	window.defaultView = "<%= j @corporation.default_view %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
+	window.planningId = "<%= j @planning.id.to_s %>"
 <% end %>
 
 

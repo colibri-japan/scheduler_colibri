@@ -688,7 +688,7 @@ initialize_calendar = function() {
       refetchResourcesOnNavigate: true,
 
       resources: {
-        url: window.resourceUrl + '?include_undefined=true&master=false',
+        url: window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId,
       }, 
 
       eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
@@ -1376,7 +1376,7 @@ let toggleDayResources = () => {
     })
   } else {
     window.resourceUrl = window.corporationPatientsUrl;
-    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false');
+    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId);
     $('.calendar').fullCalendar('refetchResources');
     $('.calendar').fullCalendar('clientEvents').forEach(function(event){
       event.resourceId = event.patient_id;

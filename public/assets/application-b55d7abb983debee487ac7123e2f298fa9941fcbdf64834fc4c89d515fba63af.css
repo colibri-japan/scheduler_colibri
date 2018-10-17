@@ -30,6 +30,72 @@
 #appointment_nurse_id_chosen, #appointment_patient_id_chosen {
   width: 130px !important;
 }
+/* line 6, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+#dashboard-plannings-container {
+  background-color: #606E7C;
+  border: 0.5px solid #606E7C;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 180px;
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 60px;
+}
+
+/* line 21, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+#new-planning-container {
+  margin-bottom: 7px;
+  margin-left: 7px;
+}
+
+/* line 26, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+#dashboard-plannings-list {
+  overflow-y: auto;
+}
+
+/* line 30, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+#colibri-dashboard-container {
+  margin-left: 200px;
+  margin-top: 10px;
+}
+
+/* line 35, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+.colibri-dashboard-container-row {
+  width: 100%;
+  height: 45vh;
+  display: flex;
+}
+
+/* line 41, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+.colibri-dashboard-subcontainer {
+  background-color: white;
+  margin: 5px;
+  padding: 4px;
+  border: 0.5px solid #ccc;
+  flex: 1;
+}
+
+/* line 49, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+.colibri-subcontainer-body {
+  height: 90%;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* line 55, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+.colibri-subcontainer-header {
+  border-bottom: 0.5px solid #ccc;
+}
+
+/* line 59, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/dashboard.scss */
+.unseen-activity-count {
+  font-size: 0.9em;
+  color: #4F4F4F;
+}
 /* line 7, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/devise.scss */
 .colibri-devise-form {
   width: 470px;
@@ -209,6 +275,11 @@ p.payable-dashboard-line {
 .weekend-holiday-provided-service {
   background-color: #E9EEFA;
 }
+
+/* line 79, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/nurses.scss */
+#chosen_custom_email_days_chosen {
+  width: 120px !important;
+}
 /* line 5, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/patients.scss */
 .hide-resource {
   display: none;
@@ -225,7 +296,7 @@ p.payable-dashboard-line {
   overflow-x: hidden;
   padding-top: 60px;
 }
-/* line 5, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 7, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #planning-menu-container {
   height: 100%;
   width: 50px;
@@ -237,13 +308,13 @@ p.payable-dashboard-line {
   padding-top: 60px;
 }
 
-/* line 16, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 20, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #planning-show-main {
   margin-left: 55px;
   margin-right: 5px;
 }
 
-/* line 21, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 25, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #planning-menu-title {
   font-size: 1.8em;
   font-weight: bold;
@@ -252,20 +323,20 @@ p.payable-dashboard-line {
   color: #4F4F4F;
 }
 
-/* line 29, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 33, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #planning-menu-list {
   font-size: 2em;
   display: block;
 }
 
-/* line 34, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 38, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #address-phone-container {
   color: #4F4F4F;
   margin-top: 3px;
   font-size: 0.9em;
 }
 
-/* line 41, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 45, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 li.planning-menu-items {
   font-size: 2em;
   display: inline;
@@ -277,44 +348,44 @@ li.planning-menu-items {
   margin-right: auto;
 }
 
-/* line 53, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 57, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 li.planning-menu-items:hover {
   cursor: pointer;
   color: white;
 }
 
-/* line 58, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 62, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 li.planning-menu-selected {
   color: white;
 }
 
-/* line 62, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 66, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #planning-container {
   display: flex;
 }
 
-/* line 66, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 70, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .calendar {
   max-width: 100%;
 }
 
-/* line 70, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 74, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .nurse_calendar {
-  max-widht: 100%;
+  max-width: 100%;
 }
 
-/* line 74, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 78, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #main-planning-header {
   margin-top: 7px;
 }
 
-/* line 79, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 83, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #planning-activity-module {
   padding-top: 10px;
   padding-left: 10px;
 }
 
-/* line 85, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 89, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .planning-activity-module-title {
   font-weight: bold;
   font-size: 1.5em;
@@ -322,13 +393,13 @@ li.planning-menu-selected {
   display: block;
 }
 
-/* line 92, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 96, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .planning-nurse-module-title {
   font-weight: bold;
   font-size: 1.5em;
 }
 
-/* line 97, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 101, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .master-title {
   font-weight: bold;
   font-size: 1.5em;
@@ -336,44 +407,44 @@ li.planning-menu-selected {
   display: block;
 }
 
-/* line 105, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 109, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #index-container {
   max-width: 80%;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 111, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 115, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #index-table-container {
   margin-top: 18px;
 }
 
-/* line 115, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 119, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #activity-show-button-container {
   text-align: right;
   margin-bottom: 10px;
 }
 
-/* line 120, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 124, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #detail-container {
   display: flex;
   margin-left: 175px;
   margin-right: 5px;
 }
 
-/* line 126, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 130, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #detail-planning-title {
   display: flex;
   justify-content: space-between;
 }
 
-/* line 131, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 135, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #detail-planning-container {
   margin-top: 10px;
   margin-left: 7px;
 }
 
-/* line 136, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 140, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #resource-list-container {
   background-color: #606E7C;
   border: 0.5px solid #606E7C;
@@ -382,17 +453,17 @@ li.planning-menu-selected {
   overflow: hidden;
 }
 
-/* line 144, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 148, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #resource-container {
   overflow-y: auto;
 }
 
-/* line 148, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 152, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #nurses-resource, #patients-resource {
   padding-bottom: 30px;
 }
 
-/* line 152, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 156, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .nurses-resource-subsection-title {
   margin-top: 8px;
   margin-left: 3px;
@@ -402,7 +473,7 @@ li.planning-menu-selected {
   font-size: 0.95em;
 }
 
-/* line 162, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 166, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .resource-list-element {
   padding-bottom: 3px;
   padding-top: 3px;
@@ -412,25 +483,25 @@ li.planning-menu-selected {
   color: #D6D9DC;
 }
 
-/* line 171, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 175, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .resource-list-element:hover {
   color: white;
   cursor: pointer;
 }
 
-/* line 176, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 180, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .resource-list-element.resource-selected {
   background-color: #39ACCD;
   color: white;
 }
 
-/* line 181, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 185, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .master-list-element.master-element-selected {
   background-color: #39ACCD;
   color: white;
 }
 
-/* line 186, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 190, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .master-list-element {
   padding-bottom: 3px;
   padding-top: 3px;
@@ -440,67 +511,67 @@ li.planning-menu-selected {
   color: #D6D9DC;
 }
 
-/* line 195, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 199, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .master-list-element:hover {
   cursor: pointer;
   color: white;
 }
 
-/* line 200, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 204, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #nurse-filter-zentai_ {
   width: 400px;
 }
 
-/* line 204, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 208, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #patient-filter-zentai_ {
   width: 400px;
 }
 
-/* line 208, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 212, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #master-nurse-filter-zentai_ {
   width: 400px;
 }
 
-/* line 212, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 216, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #master-patient-filter-zentai_ {
   width: 400px;
 }
 
-/* line 216, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 220, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #duplicate-button-wrapper {
   margin-top: 10px;
   margin-bottom: 5px;
 }
 
-/* line 221, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 225, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #no-duplicate-button-wrapper {
   text-align: center;
 }
 
-/* line 225, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 229, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #toggle-patients-nurses-wrapper {
   margin-bottom: 7px;
   margin-left: 7px;
 }
 
-/* line 230, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 234, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .appointment-comment {
   margin-bottom: 4px;
   font-size: 1.1em;
   margin-left: 50px;
 }
 
-/* line 237, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 241, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 #patient_filter_zentai__chosen, #nurse_filter_zentai__chosen {
   width: 250px !important;
 }
 
-/* line 241, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 245, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 .chosen-container {
   font-size: 1em !important;
 }
 
-/* line 245, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
+/* line 249, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/plannings.scss */
 ul.chosen-results {
   font-size: 1em !important;
 }
@@ -17561,55 +17632,61 @@ tr.nurse-clickable-row:hover {
   min-height: 35px;
 }
 
-/* line 284, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 283, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+tr.patient-clickable-row:hover {
+  cursor: pointer;
+}
+
+/* line 288, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .appointment-occurrence {
   margin-bottom: 5px !important;
   display: flex !important;
 }
 
-/* line 289, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 293, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .appointment-occurrence-date {
   font-weight: bold;
 }
 
-/* line 296, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 300, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 div .fc-scroller {
+  min-height: 57vh !important;
   max-height: 57vh !important;
 }
 
-/* line 300, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 305, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 th {
   font-weight: normal;
 }
 
-/* line 304, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 309, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .table-important-fields {
   font-weight: bold;
 }
 
-/* line 308, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 313, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .print {
   display: none;
 }
 
-/* line 312, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 317, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .font-size-large {
   font-size: 1.4em;
 }
 
-/* line 316, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 321, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .colibri-small-title {
   font-size: 1.8em;
   color: #4f5b66;
 }
 
-/* line 321, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 326, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .appointment-section-title {
   font-size: 1.5em;
   color: #4f5b66;
 }
 
-/* line 326, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 331, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .light-blue-background {
   background: #F7F9FE;
   margin: 1px;
@@ -17617,78 +17694,78 @@ th {
   border-bottom-right-radius: 2px;
 }
 
-/* line 333, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 338, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .required-field {
   color: red;
 }
 
-/* line 337, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 342, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .btn-mid-light {
   background-color: #e4e4e4;
 }
 
-/* line 341, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 346, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .btn-mid-light:hover {
   background-color: #C5C5C5;
 }
 
-/* line 345, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 350, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
   background-color: #606E7C;
   border-radius: 10px;
 }
 
-/* line 350, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 355, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar {
   width: 8px;
   background-color: #606E7C;
 }
 
-/* line 354, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 359, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar-thumb {
   border-radius: 7px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
   background-color: #b1b1b1;
 }
 
-/* line 360, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+/* line 365, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
 .fc-event {
   cursor: pointer;
 }
 
 @media print {
-  /* line 366, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 371, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .no-print {
     display: none !important;
   }
 
-  /* line 369, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 374, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print {
     display: block;
   }
 
-  /* line 373, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 378, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print-master-no-view {
     display: none !important;
   }
 
-  /* line 377, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 382, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #detail-container {
     margin-left: 5px;
   }
 
-  /* line 381, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 386, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #planning-show-main {
     margin-left: 5px;
   }
 
-  /* line 385, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 390, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .print-add-margin {
     margin-left: 40px;
   }
 
-  /* line 389, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 394, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   #recurring-appointment-details {
     margin-left: 50px;
   }
@@ -17699,26 +17776,26 @@ th {
   /* Fullcalendar-related styles */
   /* Global Event Restyling
   --------------------------------------------------------------------------------------------------*/
-  /* line 402, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 407, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .fc-event {
     background: #fff !important;
     color: #000 !important;
     page-break-inside: avoid;
   }
 
-  /* line 407, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 412, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .fc-event .fc-resizer {
     display: none;
   }
 
-  /* line 410, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 415, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   span.fc-time {
     font-size: 0.8em !important;
   }
 
   	/* Table & Day-Row Restyling
   --------------------------------------------------------------------------------------------------*/
-  /* line 416, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 421, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .fc th,
   .fc td,
   .fc hr,
@@ -17730,13 +17807,13 @@ th {
   }
 
   /* don't display any button-related controls */
-  /* line 426, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 431, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .fc-button-group, .fc button {
     display: none;
   }
 
   /* kill the scrollbars and allow natural height */
-  /* line 431, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 436, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .fc-scroller,
   .fc-day-grid-container,
   .fc-time-grid-container {
@@ -17745,7 +17822,7 @@ th {
   }
 
   /* kill the horizontal border/padding used to compensate for scrollbars */
-  /* line 438, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
+  /* line 443, C:/Users/remid/Documents/GitHub/Scheduler/app/assets/stylesheets/application.css.scss */
   .fc-row {
     border: 0 !important;
     margin: 0 !important;

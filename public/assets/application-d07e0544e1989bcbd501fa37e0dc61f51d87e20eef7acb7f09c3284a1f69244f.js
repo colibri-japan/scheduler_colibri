@@ -83070,6 +83070,10 @@ module.exports = function(Chart) {
 
 
 }).call(this);
+(function() {
+
+
+}).call(this);
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -83181,10 +83185,10 @@ initialize_nurse_calendar = function(){
           $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
           $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
           $('#recurring_appointment_end_day_3i').val(moment(end).format('D')); 
-        	$('#recurring_appointment_start_4i').val(moment(start).format('HH'));
-        	$('#recurring_appointment_start_5i').val(moment(start).format('mm'));
-        	$('#recurring_appointment_end_4i').val(moment(end).format('HH'));
-        	$('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+        	$('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
+        	$('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
+        	$('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+        	$('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
           $("#recurring_appointment_nurse_id").val(window.nurseId);
           
           recurringAppointmentFormChosen();
@@ -83256,8 +83260,8 @@ initialize_nurse_calendar = function(){
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
-                  start: appointment.start.format(),
-                  end: appointment.end.format(),
+                  starts_at: appointment.start.format(),
+                  ends_at: appointment.end.format(),
                 }
               };
               $.ajax({
@@ -83367,21 +83371,21 @@ initialize_patient_calendar = function(){
           $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
           $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
           $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));          
-          $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
-          $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
-          $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
-          $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
+          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
+          $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+          $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
           $("#recurring_appointment_patient_id").val(window.patientId);
-          $('#unavailability_start_1i').val(moment(start).format('YYYY'));
-          $('#unavailability_start_2i').val(moment(start).format('M'));
-          $('#unavailability_start_3i').val(moment(start).format('D'));
-          $('#unavailability_start_4i').val(moment(start).format('HH'));
-          $('#unavailability_start_5i').val(moment(start).format('mm'));
-          $('#unavailability_end_1i').val(moment(end).format('YYYY'));
-          $('#unavailability_end_2i').val(moment(end).format('M'));
-          $('#unavailability_end_3i').val(moment(end).format('D'));
-          $('#unavailability_end_4i').val(moment(end).format('HH'));
-          $('#unavailability_end_5i').val(moment(end).format('mm'));
+          $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
+          $('#unavailability_starts_at_2i').val(moment(start).format('M'));
+          $('#unavailability_starts_at_3i').val(moment(start).format('D'));
+          $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
+          $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
+          $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
+          $('#unavailability_ends_at_2i').val(moment(end).format('M'));
+          $('#unavailability_ends_at_3i').val(moment(end).format('D'));
+          $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
+          $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
           $("#unavailability_patient_id").val(window.patientId);
 
           recurringAppointmentFormChosen();
@@ -83441,8 +83445,8 @@ initialize_patient_calendar = function(){
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
-                  start: appointment.start.format(),
-                  end: appointment.end.format(),
+                  starts_at: appointment.start.format(),
+                  ends_at: appointment.end.format(),
                 }
               };
               $.ajax({
@@ -83611,8 +83615,8 @@ initialize_master_calendar = function() {
                     color: event.color,
                     anchor: event.start.format('YYYY-MM-DD'),
                     end_day: event.end.format('YYYY-MM-DD'),
-                    start: event.start.format(),
-                    end: event.end.format()
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format()
                   },
                   master: true
                 },
@@ -83673,10 +83677,10 @@ initialize_master_calendar = function() {
           $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
           $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
           $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
-          $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
-          $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
-          $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
-          $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
+          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
+          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
+          $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+          $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
           if (window.nurseId) {
             $('#recurring_appointment_nurse_id').val(window.nurseId);
           }
@@ -83760,7 +83764,7 @@ initialize_calendar = function() {
       refetchResourcesOnNavigate: true,
 
       resources: {
-        url: window.resourceUrl + '?include_undefined=true&master=false',
+        url: window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId,
       }, 
 
       eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
@@ -83884,20 +83888,20 @@ initialize_calendar = function() {
           $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
           $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
           $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
-          $('#recurring_appointment_start_4i').val(moment(start).format('HH'));
-          $('#recurring_appointment_start_5i').val(moment(start).format('mm'));
-          $('#recurring_appointment_end_4i').val(moment(end).format('HH'));
-          $('#recurring_appointment_end_5i').val(moment(end).format('mm'));
-          $('#unavailability_start_1i').val(moment(start).format('YYYY'));
-          $('#unavailability_start_2i').val(moment(start).format('M'));
-          $('#unavailability_start_3i').val(moment(start).format('D'));
-          $('#unavailability_start_4i').val(moment(start).format('HH'));
-          $('#unavailability_start_5i').val(moment(start).format('mm'));
-          $('#unavailability_end_1i').val(moment(end).format('YYYY'));
-          $('#unavailability_end_2i').val(moment(end).format('M'));
-          $('#unavailability_end_3i').val(moment(end).format('D'));
-          $('#unavailability_end_4i').val(moment(end).format('HH'));
-          $('#unavailability_end_5i').val(moment(end).format('mm'));
+          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
+          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
+          $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+          $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
+          $('#unavailability_starts_at_2i').val(moment(start).format('M'));
+          $('#unavailability_starts_at_3i').val(moment(start).format('D'));
+          $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
+          $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
+          $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
+          $('#unavailability_ends_at_2i').val(moment(end).format('M'));
+          $('#unavailability_ends_at_3i').val(moment(end).format('D'));
+          $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
+          $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
           }
@@ -83955,8 +83959,8 @@ initialize_calendar = function() {
               let delta = $(this).data('delta');
               appointment_data = {
                 appointment: {
-                  start: appointment.start.format(),
-                  end: appointment.end.format(),
+                  starts_at: appointment.start.format(),
+                  ends_at: appointment.end.format(),
                   patient_id: newPatientId,
                   nurse_id: newNurseId,
                 }
@@ -84318,6 +84322,7 @@ let appointmentEdit = (url) => {
 let sendReminder = () => {
   $('#send-email-reminder').click(function () {
 
+    let customSubject = $('#nurse_custom_email_subject').val();
     let customMessage = $('#nurse_custom_email_message').val();
     let customDays = $('#chosen-custom-email-days').val();
     let ajaxUrl = $(this).data('send-reminder-url');
@@ -84327,6 +84332,7 @@ let sendReminder = () => {
       type: 'PATCH',
       data: {
         nurse: {
+          custom_email_subject: customSubject,
           custom_email_message: customMessage, 
           custom_email_days: customDays
         }
@@ -84446,7 +84452,7 @@ let toggleDayResources = () => {
     })
   } else {
     window.resourceUrl = window.corporationPatientsUrl;
-    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false');
+    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId);
     $('.calendar').fullCalendar('refetchResources');
     $('.calendar').fullCalendar('clientEvents').forEach(function(event){
       event.resourceId = event.patient_id;
@@ -84466,6 +84472,10 @@ $(document).on('turbolinks:load', function(){
 
 
   $('tr.nurse-clickable-row').click(function(){
+    $.getScript($(this).data('link'));
+  });
+
+  $('tr.patient-clickable-row').click(function () {
     $.getScript($(this).data('link'));
   });
 

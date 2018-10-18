@@ -22,7 +22,7 @@ class NursesController < ApplicationController
     @part_timers = @corporation.nurses.where(full_timer: false).order_by_kana
     @patients = @corporation.patients.where(active: true).order_by_kana
     @last_patient = @patients.last
-    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
+    @last_nurse = @nurse
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 

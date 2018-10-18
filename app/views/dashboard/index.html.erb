@@ -11,6 +11,7 @@
 
 <div id='colibri-dashboard-container'>
   <div class='colibri-dashboard-container-row'>
+    <% if current_user.admin %>
       <div class='colibri-dashboard-subcontainer'>
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>給与推移</span>
@@ -19,10 +20,20 @@
           <%= area_chart @provided_service_data, height: '95%', width: '500px', colors: ['#17a2b8'], suffix: '￥' %>
         </div>
       </div>
+    <% else %>
+      <div class='colibri-dashboard-subcontainer'>
+        <div class='colibri-subcontainer-header'>
+          <span class='colibri-subcontainer-title'>稼働時間推移</span>
+        </div>
+        <div class='colibri-subcontainer-body'>
+          <%= area_chart @provided_service_duration_sums, height: '95%', width: '500px', colors: ['#17a2b8'] %>
+        </div>
+      </div>
+    <% end %>
 
     <div class='colibri-dashboard-subcontainer'>
       <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ラストログイン以降：#{@unseen_activity_count}" %></span>
+        <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ログアウト以降：#{@unseen_activity_count}" %></span>
       </div>
       <div class='colibri-subcontainer-body'>
       	<% @activities.each do |activity| %>
@@ -30,8 +41,75 @@
 				<% end %>
       </div>
     </div>
+
   </div>
+
+  <% if current_user.admin %>
+
   <div class='colibri-dashboard-container-row'>
+
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>利用状況(本日)</span>
+      </div>
+        <div class='colibri-subcontainer-body'>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th class="table-important-fields">サービス</th>
+                <th class="table-important-fields">女</th>
+                <th class="table-important-fields">男</th>
+                <th class="table-important-fields">計</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%  @appointments_grouped_by_title.each do |service_name, appointments| %>
+                <tr>
+                  <th><%= service_name %></th>
+                  <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
+                  <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
+                  <th><%= appointments.count %></th>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>利用状況(今月)</span>
+      </div>
+        <div class='colibri-subcontainer-body'>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th class="table-important-fields">サービス</th>
+                <th class="table-important-fields">女</th>
+                <th class="table-important-fields">男</th>
+                <th class="table-important-fields">計</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%  @monthly_appointments_grouped_by_title.each do |service_name, appointments| %>
+                <tr>
+                  <th><%= service_name %></th>
+                  <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
+                  <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
+                  <th><%= appointments.count %></th>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+  </div>
+
+  <% end %>
+
+  <div class='colibri-dashboard-container-row'>
+
     <div class='colibri-dashboard-subcontainer'>
       <div class='colibri-subcontainer-header'>
         <span class='colibri-subcontainer-title'>本日のサービス</span>

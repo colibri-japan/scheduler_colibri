@@ -10,6 +10,9 @@
 </div>
 
 <div id='colibri-dashboard-container'>
+  <div id='colibri-dashboard-commands'>
+    <%= link_to '日報をダウンロード', dashboard_index_path(format: :xlsx), class: 'btn btn-success btn-sm text-white' %>
+  </div>
   <div class='colibri-dashboard-container-row'>
     <% if current_user.admin %>
       <div class='colibri-dashboard-subcontainer'>

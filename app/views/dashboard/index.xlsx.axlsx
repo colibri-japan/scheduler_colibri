@@ -1,0 +1,45 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+    title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+    table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+
+    wb.add_worksheet(name: 'サービス日報') do |sheet|
+        sheet.add_row ['業務日報'], style: title_style
+        sheet.merge_cells "A1:I1"
+        sheet.add_row 
+        sheet.add_row ['',  '本日訪問数', '', '', '', '今月訪問数', '', '', ''], style: [nil, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
+        sheet.merge_cells "B3:E3"
+        sheet.merge_cells "F3:I3"   
+        sheet.add_row ['', '', '男', '女', '計', '', '男', '女', '計'], style: [nil, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
+        @monthly_appointments_grouped_by_title.each do |title, appointments|
+            if @appointments_grouped_by_title[title].present?
+                daily_total = @appointments_grouped_by_title[title].count
+                daily_male_total = @appointments_grouped_by_title[title].select{|a| @male_patients_ids.include?(a.patient_id)}.count
+                daily_female_total = @appointments_grouped_by_title[title].select{|a| @female_patients_ids.include?(a.patient_id)}.count
+            else
+                daily_total = 0
+                daily_male_total = 0
+                daily_female_total = 0
+            end
+
+            sheet.add_row ['', title, daily_male_total, daily_female_total, daily_total, title, appointments.select{|a| @male_patients_ids.include?(a.patient_id)}.count , appointments.select{|a| @female_patients_ids.include?(a.patient_id)}.count, appointments.count], style: [nil, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
+
+        end
+        sheet.add_row
+
+        sheet.add_row ['利用者名', '性別', '訪問時間', '', '', '訪問者名', '業務内容', '', ''], style: table_cells
+        sheet.merge_cells sheet.rows.last.cells[(2..4)]
+        sheet.merge_cells sheet.rows.last.cells[(6..8)]
+
+        @appointments.each do |nurse_id, appointments_array|
+            appointments_array.each do |appointment|
+                gender = appointment.patient.gender ? 'F' : 'M'
+                sheet.add_row [appointment.patient.try(:name), gender,  "#{appointment.starts_at.strftime('%H:%M')} ~ #{appointment.ends_at.strftime('%H:%M')}", '', '', appointment.nurse.try(:name), appointment.title, '', ''], style: table_cells
+                sheet.merge_cells sheet.rows.last.cells[(2..4)]
+                sheet.merge_cells sheet.rows.last.cells[(6..8)]
+            end
+        end
+
+    end
+end

@@ -1476,7 +1476,7 @@ $(document).on('turbolinks:load', function(){
     window.location = planningActivitiesUrl + '?n=' + $('#nurse-filter').val() + '&pat=' + $('#patient-filter').val() + '&us=' + $('#user-filter').val();
   });
 
-  $('.excel-download').click(function(){
+  $('#payable-download-button').click(function(){
     window.location = window.excelUrl + '?p=' + $('#schedule-filter').val();
   });
 

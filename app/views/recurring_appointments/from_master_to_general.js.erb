@@ -1,5 +1,5 @@
 <% if @new_appointment.errors.any? %>
-    alert("<%= j @new_appointment.errors.values.join('; ') %>");
+    alert("<%= j @new_appointment.errors.values.join('; ') + "のヘルパーが重複してます。" %>");
 <% else %>
     $('.modal').modal('hide');
     alert("サービスが全体スケジュールへ反映されました")

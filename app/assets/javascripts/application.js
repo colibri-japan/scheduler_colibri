@@ -213,6 +213,20 @@ initialize_nurse_calendar = function(){
         })
       },
 
+      dayRender: function(date, cell) {
+        let holidays = JSON.parse(window.holidays);
+        if (holidays.length > 0) {
+          let dates = [];
+          holidays.forEach(function(holidayObject){
+            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
+          });
+          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
+            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
+            day_cells.css('background-color', '#FFE8E8')
+          }
+        }
+      }
+
 
 
     })
@@ -410,6 +424,20 @@ initialize_patient_calendar = function(){
 
       eventAfterAllRender: function (view) {
         appointmentComments();
+      },
+
+      dayRender: function (date, cell) {
+        let holidays = JSON.parse(window.holidays);
+        if (holidays.length > 0) {
+          let dates = [];
+          holidays.forEach(function (holidayObject) {
+            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
+          });
+          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
+            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
+            day_cells.css('background-color', '#FFE8E8')
+          }
+        }
       }
 
     });
@@ -636,6 +664,20 @@ initialize_master_calendar = function() {
       
       eventAfterAllRender: function(view) {
         appointmentComments();
+      },
+
+      dayRender: function (date, cell) {
+        let holidays = JSON.parse(window.holidays);
+        if (holidays.length > 0) {
+          let dates = [];
+          holidays.forEach(function (holidayObject) {
+            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
+          });
+          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
+            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
+            day_cells.css('background-color', '#FFE8E8')
+          }
+        }
       }
     })
     
@@ -935,6 +977,20 @@ initialize_calendar = function() {
           $('span#day-view-options').show();
         } else {
           $('span#day-view-options').hide();
+        }
+      },
+
+      dayRender: function (date, cell) {
+        let holidays = JSON.parse(window.holidays);
+        if (holidays.length > 0) {
+          let dates = [];
+          holidays.forEach(function (holidayObject) {
+            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
+          });
+          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
+            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
+            day_cells.css('background-color', '#FFE8E8')
+          }
         }
       }
     });

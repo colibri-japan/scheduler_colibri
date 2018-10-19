@@ -12,6 +12,7 @@
 	window.masterToSchedule = "<%= j master_to_schedule_path(@planning) %>";
 	window.nurseMasterToSchedule = "<%= j nurse_master_to_schedule_path(@planning, @nurse) %>";
 	window.planningId = "<%= j @planning.id.to_s %>"
+	window.holidays = "<%= j HolidayJp.between(Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day, Date.new(@planning.business_year, @planning.business_month, -1).end_of_day).to_json.html_safe %>"
 <% end %>
 
 <div id="planning-menu-container">

@@ -7,6 +7,7 @@ wb.styles do |s|
 	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
 	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
 	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+	weekend_table_cells = s.add_style border: {style: :thin, color: 'FF000000'}, bg_color: 'FFFDF498'
 	final_wage_title = s.add_style sz: 12, b: true, border: {style: :thin, color: 'FF000000'}
 	final_wage = s.add_style sz: 12, b: true, border: { style: :thick, color: 'FF000000'  }, alignment: {horizontal: :center, vertical: :center }
 
@@ -26,7 +27,8 @@ wb.styles do |s|
 			start_time = service.appointment_start? ? service.appointment_start.strftime("%H:%M") : ''
 			end_time = service.appointment_start? ? service.appointment_end.strftime("%H:%M") : ''
 			date = service.service_date.strftime("%-d日") + weekday(service.service_date)
-			sheet.add_row [date, "#{service.patient.try(:name)}様", service.try(:title),  from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:total_wage) ], style: table_cells
+			row_style = service.weekend_holiday_provided_service? ? weekend_table_cells : table_cells
+			sheet.add_row [date, "#{service.patient.try(:name)}様", service.try(:title),  from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:total_wage) ], style: row_style
 		end
 		sheet.add_row ['','','','','','合計：',@total_till_now], style: [nil, nil, nil, nil, nil, final_wage_title, final_wage]
 		days_worked = @services_till_now.map {|s| s.service_date.strftime("%-d日")}

@@ -10,11 +10,13 @@
 </div>
 
 <div id='colibri-dashboard-container'>
-  <div id='colibri-dashboard-commands'>
-    <%= link_to '日報をダウンロード', dashboard_index_path(format: :xlsx), class: 'btn btn-success btn-sm text-white' %>
-  </div>
+  <% if false %>
+    <div id='colibri-dashboard-commands'>
+      <%= link_to '日報をダウンロード', dashboard_index_path(format: :xlsx), class: 'btn btn-success btn-sm text-white' %>
+    </div>
+  <% end %>
   <div class='colibri-dashboard-container-row'>
-    <% if current_user.admin %>
+    <% if false %>
       <div class='colibri-dashboard-subcontainer'>
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>給与推移</span>
@@ -23,7 +25,6 @@
           <%= area_chart @provided_service_data, height: '95%', width: '500px', colors: ['#17a2b8'], suffix: '￥' %>
         </div>
       </div>
-    <% else %>
       <div class='colibri-dashboard-subcontainer'>
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>稼働時間推移</span>

@@ -128,7 +128,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def self.add_or_create_service
-		appointments = Appointment.where(service_id: nil) 
+		appointments = Appointment.where(service_id: nil).where('starts_at > ?', Date.new(2018,10,1)) 
 
 		appointments.find_each do |appointment|
 			service = Service.where(corporation_id: appointment.planning.corporation.id, nurse_id: nil, title: appointment.title).first 

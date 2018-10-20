@@ -86,12 +86,12 @@ class Appointment < ApplicationRecord
 			else
 		      provided_duration = self.ends_at - self.starts_at
 			  is_provided = Time.current + 9.hours > self.starts_at
-			  nurse_service_id =  Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first.id
-			    if self.planning.corporation.equal_salary == true 
-				  service_salary_id = self.service_id
-			    else 
-			      service_salary_id =  nurse_service_id.present? ? nurse_service_id : self.service_id
-			    end
+			  if self.planning.corporation.equal_salary == true 
+				service_salary_id = self.service_id
+			  else 
+				nurse_service =  Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first
+				service_salary_id =  nurse_service.present? ? nurse_service.id : self.service_id
+			  end
 			   deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true
 			  @provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
 			end

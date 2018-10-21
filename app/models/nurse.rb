@@ -29,7 +29,7 @@ class Nurse < ApplicationRecord
 
 		@custom_email_days.map! {|e| e.to_date }
 
-		valid_plannings = Planning.where(business_month: Time.current.month, corporation_id: self.corporation_id)
+		valid_plannings = Planning.where(business_month: Time.current.month, corporation_id: self.corporation_id, archived: false)
 
 		selected_appointments = []
 

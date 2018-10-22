@@ -1,4 +1,6 @@
 class Nurse < ApplicationRecord
+	acts_as_taggable
+	acts_as_taggable_on :skills
 	attribute :custom_email_message
 	attribute :custom_email_days
 	attribute :custom_email_subject, :string

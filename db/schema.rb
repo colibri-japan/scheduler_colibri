@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181017200809) do
+ActiveRecord::Schema.define(version: 20181022170829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 20181017200809) do
     t.boolean "reminderable", default: false
     t.boolean "displayable", default: true
     t.boolean "full_timer", default: false
+    t.text "description"
     t.index ["corporation_id"], name: "index_nurses_on_corporation_id"
   end
 

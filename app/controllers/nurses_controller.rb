@@ -146,7 +146,7 @@ class NursesController < ApplicationController
     initial_appointments_count =   @nurse.appointments.from_master.valid.edit_not_requested.where(planning_id: @planning.id).count
 
 
-    @nurse.recurring_appointments.active.edit_not_requested.from_master.where(planning_id: @planning.id).find_each do |recurring_appointment|
+    @nurse.recurring_appointments.valid.edit_not_requested.from_master.where(planning_id: @planning.id).find_each do |recurring_appointment|
       new_recurring_appointment = recurring_appointment.dup 
 			new_recurring_appointment.master = false 
 			new_recurring_appointment.original_id = recurring_appointment.id

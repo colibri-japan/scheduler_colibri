@@ -21,7 +21,7 @@ class Patient < ApplicationRecord
 
 		Appointment.valid.where(patient_id: self.id).where('starts_at > ?', Time.current).update_all(deactivated: true)
 		ProvidedService.where('service_date > ?', Time.current).where(patient_id: self.id).update_all(deactivated: true)
-		RecurringAppointment.valid.where(planning_id: valid_plannings.ids, master: true).update_all(deactivated: true)
+		RecurringAppointment.valid.from_master.where(planning_id: valid_plannings.ids, patient_id: self.id).update_all(deactivated: true)
 
 	end
 

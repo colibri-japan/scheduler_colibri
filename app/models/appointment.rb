@@ -20,6 +20,10 @@ class Appointment < ApplicationRecord
 	after_create :create_provided_service
 	after_update :update_provided_service
 
+	scope :valid, -> { where(deactivated: false, displayable: true, deleted: [false,nil]) }
+	scope :edit_not_requested, -> { where(edit_requested: false) }
+	scope :from_master, -> { where(master: true) }
+
 
 	def all_day_appointment?
 		puts 'checking if all day appointments'

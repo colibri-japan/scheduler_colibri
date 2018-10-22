@@ -100,7 +100,7 @@ class NursesController < ApplicationController
 
     delete_previous_temporary_services
 
-    @provided_services = ProvidedService.where(nurse_id: @nurse.id, planning_id: @planning.id, deactivated: false, temporary: false, countable: false)
+    @provided_services = ProvidedService.active.where(nurse_id: @nurse.id, planning_id: @planning.id, temporary: false, countable: false)
 
     now_in_Japan = Time.current + 9.hours
     @services_till_now = @provided_services.where('service_date < ?', now_in_Japan).order(service_date: 'asc')
@@ -141,12 +141,12 @@ class NursesController < ApplicationController
     new_appointments = []
     new_provided_services = []
 
-    initial_recurring_appointments_count = @nurse.recurring_appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).count 
+    initial_recurring_appointments_count = @nurse.recurring_appointments.from_master.valid.edit_not_requested.where(planning_id: @planning.id).count 
 
-    initial_appointments_count =   @nurse.appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).count
+    initial_appointments_count =   @nurse.appointments.from_master.valid.edit_not_requested.where(planning_id: @planning.id).count
 
 
-    @nurse.recurring_appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).find_each do |recurring_appointment|
+    @nurse.recurring_appointments.active.edit_not_requested.from_master.where(planning_id: @planning.id).find_each do |recurring_appointment|
       new_recurring_appointment = recurring_appointment.dup 
 			new_recurring_appointment.master = false 
 			new_recurring_appointment.original_id = recurring_appointment.id
@@ -247,11 +247,7 @@ class NursesController < ApplicationController
   def mark_services_as_provided
     unprovided_services = @services_till_now.where(provided: false)
 
-    if unprovided_services.present?
-      unprovided_services.each do |provided_service|
-        provided_service.update(provided: true)
-      end
-    end
+    unprovided_services.update_all(provided: true) if unprovided_services.present?
   end
 
   def create_grouped_services

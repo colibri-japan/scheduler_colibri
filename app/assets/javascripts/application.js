@@ -72,7 +72,7 @@ initialize_nurse_calendar = function(){
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
-      events: window.appointmentsURL,
+      events: window.appointmentsURL + '&master=false',
 
 
       select: function(start, end) {
@@ -272,7 +272,7 @@ initialize_patient_calendar = function(){
       selectHelper: false,
       editable: true,
       eventLimit: true,
-      eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
+      eventSources: [window.appointmentsURL + '&master=false', window.unavailabilitiesUrl + '&master=false'],
 
 
       select: function(start, end) {

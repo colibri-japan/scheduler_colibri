@@ -100,10 +100,10 @@ class PatientsController < ApplicationController
     new_appointments = []
     new_provided_services = []
 
-    initial_recurring_appointments_count = @patient.recurring_appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).count
-    initial_appointments_count = @patient.appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).count
+    initial_recurring_appointments_count = @patient.recurring_appointments.valid.edit_not_requested.from_master.where(planning_id: @planning.id).count
+    initial_appointments_count = @patient.appointments.from_master.valid.edit_not_requested.where(planning_id: @planning.id).count
 
-    @patient.recurring_appointments.where(planning_id: @planning.id, master: true, displayable: true, deactivated: false, deleted: false, edit_requested: false).find_each do |recurring_appointment|
+    @patient.recurring_appointments.valid.edit_not_requested.from_master.where(planning_id: @planning.id).find_each do |recurring_appointment|
       new_recurring_appointment = recurring_appointment.dup 
 			new_recurring_appointment.master = false 
 			new_recurring_appointment.original_id = recurring_appointment.id

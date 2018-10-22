@@ -16,6 +16,9 @@ class ProvidedService < ApplicationRecord
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage
 
+	scope :active, -> { where(deactivated: false) }
+	scope :provided, -> { where(provided: true) }
+
 	def self.to_csv(options = {})
 		CSV.generate(options) do |csv|
 			csv << column_names

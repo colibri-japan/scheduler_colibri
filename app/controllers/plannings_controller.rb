@@ -57,9 +57,9 @@ class PlanningsController < ApplicationController
 		new_provided_services = []
 
 		initial_recurring_appointments_count = RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).count
-		initial_appointments_count = Appointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).where.not(recurring_appointment_id: nil).count
+		initial_appointments_count = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: true).where.not(recurring_appointment_id: nil).count
 
-		RecurringAppointment.where(planning_id: @planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).find_each do |recurring_appointment|
+		RecurringAppointment.valid.edit_not_requested.where(planning_id: @planning.id, master: true).find_each do |recurring_appointment|
 			new_recurring_appointment = recurring_appointment.dup 
 			new_recurring_appointment.master = false 
 			new_recurring_appointment.original_id = recurring_appointment.id
@@ -72,7 +72,7 @@ class PlanningsController < ApplicationController
 		end
 
 		new_recurring_appointments.each do |recurring_appointment|
-			Appointment.where(recurring_appointment_id: recurring_appointment.original_id, displayable: true, deleted: false, deactivated: false).find_each do |appointment|
+			Appointment.valid.where(recurring_appointment_id: recurring_appointment.original_id).find_each do |appointment|
 				new_appointment = appointment.dup 
 				new_appointment.master = false 
 				new_appointment.recurring_appointment_id = recurring_appointment.id 
@@ -111,9 +111,9 @@ class PlanningsController < ApplicationController
 		new_recurring_appointments = []
 		new_appointments = []
 
-		initial_recurring_appointments_count = template_planning.recurring_appointments.where(master: true, displayable: true, edit_requested: false, deactivated: false, deleted: [nil, false]).where.not(frequency: 2).count
+		initial_recurring_appointments_count = template_planning.recurring_appointments.where(master: true).valid.edit_not_requested.where.not(frequency: 2).count
 
-		template_planning.recurring_appointments.where(master: true, displayable: true, edit_requested: false, deactivated: false, deleted: [nil, false]).where.not(frequency: 2).find_each do |recurring_appointment|
+		template_planning.recurring_appointments.valid.edit_not_requested.where(master: true).where.not(frequency: 2).find_each do |recurring_appointment|
 
 			new_anchor_day = first_day.wday > recurring_appointment.anchor.wday ?  first_day + 7 - (first_day.wday - recurring_appointment.anchor.wday) :  first_day + (recurring_appointment.anchor.wday - first_day.wday)
 

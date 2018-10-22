@@ -36,6 +36,12 @@ class RecurringAppointment < ApplicationRecord
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
 	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks
 
+	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
+	scope :exclude_self, -> id { where.not(id: id) }
+	scope :valid, -> { where(deactivated: false, displayable: true, deleted: [nil, false]) }
+	scope :edit_not_requested, -> { where(edit_requested: false) }
+	scope :from_master, -> { where(master: true) }
+
 
 	def schedule
 		@schedule ||= begin
@@ -353,6 +359,5 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
-	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
-	scope :exclude_self, -> id { where.not(id: id) }
+
 end

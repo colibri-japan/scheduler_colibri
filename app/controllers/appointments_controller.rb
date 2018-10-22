@@ -9,24 +9,14 @@ class AppointmentsController < ApplicationController
   def index
     authorize @planning, :is_employee?
 
-    if params[:nurse_id].present? && params[:master] != 'true'
-      puts 'nurse not master'
-      @appointments = @planning.appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false).where.not(deactivated: true)
-    elsif params[:nurse_id].present? && params[:master] == 'true'
-      puts 'nurse master'
-      @appointments = @planning.appointments.where(nurse_id: params[:nurse_id], displayable: true, master: true).where.not(deactivated: true)
-    elsif params[:patient_id].present? && params[:master] != 'true'
-      puts 'patient not master'
-      @appointments = @planning.appointments.where(patient_id: params[:patient_id], displayable: true, master: false).where.not(deactivated: true)
-    elsif params[:patient_id].present? && params[:master] == 'true'
-      puts 'patient master'
-      @appointments = @planning.appointments.where(patient_id: params[:patient_id], displayable: true, master: true).where.not(deactivated: true)
+    if params[:nurse_id].present? && params[:master].present?
+      @appointments = @planning.appointments.valid.where(nurse_id: params[:nurse_id], master: params[:master])
+    elsif params[:patient_id].present? && params[:master].present?
+      @appointments = @planning.appointments.valid.where(patient_id: params[:patient_id], master: params[:master])
     elsif params[:master] == 'true' && params[:nurse_id].blank? && params[:patient_id].blank?
-      puts 'master'
       @appointments = @planning.appointments.where(master: true).where.not(deactivated: true).includes(:patient)
     else
-      puts 'general'
-     @appointments = @planning.appointments.where(displayable: true, master: false).where.not(deactivated: true).includes(:patient, :nurse)
+     @appointments = @planning.appointments.valid.where(master: false).includes(:patient, :nurse)
     end
   end
 

@@ -17,7 +17,7 @@ json.unavailability false
 
 json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 
-json.borderColor '#F98050' if appointment.edit_requested == true
+json.borderColor '#FFBBA0' if appointment.edit_requested == true
 
 json.base_url planning_appointment_path(@planning, appointment)
 json.edit_url edit_planning_appointment_path(@planning, appointment)

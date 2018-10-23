@@ -11,11 +11,7 @@ json.array! appointments do |appointment|
 	json.start DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
 	json.end DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i
 	json.resourceId recurring_appointment.nurse_id
-	if recurring_appointment.edit_requested == true
-		json.borderColor '#F98050'
-	elsif recurring_appointment.original_id.present?
-		json.borderColor '#69747E'
-	end
+	json.borderColor '#FFBBA0' if recurring_appointment.edit_requested == true
 
 	json.base_url planning_recurring_appointment_path(@planning, recurring_appointment)
 	json.update_url planning_recurring_appointment_path(@planning, recurring_appointment, method: :patch)

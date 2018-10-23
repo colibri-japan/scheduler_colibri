@@ -134,6 +134,9 @@ initialize_nurse_calendar = function(){
         if (window.eventDragging) {
           return
         }
+        if (event.edit_requested) {
+          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
+        }
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -347,6 +350,9 @@ initialize_patient_calendar = function(){
         if (window.eventDragging) {
           return
         }
+        if (event.edit_requested) {
+          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
+        }
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -509,6 +515,9 @@ initialize_master_calendar = function() {
       eventRender: function eventRender(event, element, view) {
         if (window.eventDragging) {
           return
+        }
+        if (event.edit_requested) {
+          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
         }
         element.popover({
           title: event.service_type,
@@ -750,6 +759,9 @@ initialize_calendar = function() {
       eventRender: function eventRender(event, element, view) {
         if (window.eventDragging) {
           return
+        }
+        if (event.edit_requested) {
+          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
         }
         element.popover({
           title: event.service_type,

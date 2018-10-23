@@ -4,7 +4,7 @@ module ActivitiesHelper
 		if activity.created_at.in_time_zone('Tokyo').day == Time.current.in_time_zone('Tokyo').day
 			activity.created_at.in_time_zone('Tokyo').strftime("今日 %H:%M")
 		else
-			activity.created_at.in_time_zone('Tokyo').strftime("%d日 %H:%M")
+			activity.created_at.in_time_zone('Tokyo').strftime("%m月%d日 %H:%M")
 		end
 	end
 

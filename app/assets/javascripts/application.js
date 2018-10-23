@@ -1503,6 +1503,18 @@ let tagForm = () => {
   });
 }
 
+let recurringAppointmentsSelect =  () => {
+  $('#recurring_appointment_title').select2({
+    tags: true,
+  });
+};
+
+let appointmentsSelect = () => {
+  $('#appointment_title').select2({
+    tags: true,
+  })
+}
+
 
 
 $(document).on('turbolinks:load', initialize_calendar); 

@@ -20,7 +20,7 @@ class RecurringAppointment < ApplicationRecord
 	before_create :default_displayable
 	before_create :default_deleted
 	
-	before_save :add_to_services
+	before_save :match_title_to_service
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -284,17 +284,15 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
-	def add_to_services
-		puts 'add to services'
-		unless self.service_id.present?
-			services = Service.where(corporation_id: self.planning.corporation.id, title: self.title, nurse_id: nil)
-
-			if services.blank? 
-				new_service = self.planning.corporation.services.create(title: self.title)
-				self.service_id = new_service.id
-			else
-				self.service_id = services.first.id
-			end
+	def match_title_to_service
+		puts 'match title to services'
+		first_service = Service.where(corporation_id: self.planning.corporation.id, title: self.title, nurse_id: nil).first
+		
+		if first_service.present? 
+			self.service_id = first_service.id
+		else
+			new_service = self.planning.corporation.services.create(title: self.title)
+			self.service_id = new_service.id
 		end
 	end
 

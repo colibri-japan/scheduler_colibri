@@ -55,7 +55,7 @@
 
       <div class="form-group">
         <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
-        <%= form.text_field :title, id: :recurring_appointment_title, required: true, class: "form-control" %>
+        <%= form.select :title, options_from_collection_for_select(@corporation.services.where(nurse_id: nil), 'title', 'title', recurring_appointment.title), id: :recurring_appointment_title, required: true, class: "form-control" %>
       </div>
 
       <div class="form-group">

@@ -1442,67 +1442,6 @@ let toggleDayResources = () => {
   }
 }
 
-let tagLookup = () => {
-  $("*[data-taggable='true']").each(function () {
-    console.log("Taggable: " + $(this).attr('id') + "; initializing select2");
-    $(this).select2({
-      tags: true,
-      theme: "bootstrap",
-      width: "100%",
-      tokenSeparators: [','],
-      minimumInputLength: 2,
-      ajax: {
-        url: "/tags",
-        dataType: 'json',
-        delay: 100,
-        data: function (params) {
-          console.log("Using AJAX to get tags...");
-          console.log("Tag name: " + params.term);
-          console.log("Existing tags: " + $(this).val());
-          console.log("Taggable type: " + $(this).data("taggable-type"));
-          console.log("Tag context: " + $(this).data("context"));
-          return {
-            name: params.term,
-            tags_chosen: $(this).val(),
-            taggable_type: $(this).data("taggable-type"),
-            context: $(this).data("context"),
-            page: params.page
-          }
-        },
-        processResults: function (data, params) {
-          console.log("Got tags from AJAX: " + JSON.stringify(data, null, '\t'));
-          params.page = params.page || 1;
-
-          return {
-            results: $.map(data, function (item) {
-              return {
-                text: item.name,
-                // id has to be the tag name, because acts_as_taggable expects it!
-                id: item.name
-              }
-            })
-          };
-        },
-        cache: true
-      }
-    });
-  });
-}
-
-let tagForm = () => {
-  $(document).on('select2:select select2:unselect', "*[data-taggable='true']", function () {
-
-    var taggable_id = $(this).attr('id')
-    // genre_list_select2 --> genre_list
-    var hidden_id = taggable_id.replace("_select2", "");
-    // film_*genre_list* ($= jQuery selectors ends with)
-    var hidden = $("[id$=" + hidden_id + "]")
-    // Select2 either has elements selected or it doesn't, in which case use []
-    var joined = ($(this).val() || []).join(",");
-    hidden.val(joined);
-  });
-}
-
 let recurringAppointmentsSelect =  () => {
   $('#recurring_appointment_title').select2({
     tags: true,
@@ -1512,6 +1451,13 @@ let recurringAppointmentsSelect =  () => {
 let appointmentsSelect = () => {
   $('#appointment_title').select2({
     tags: true,
+  })
+}
+
+let skillsSelect = () => {
+  $('#nurse_skill_list').select2({
+    tags: true,
+    width: '100%'
   })
 }
 

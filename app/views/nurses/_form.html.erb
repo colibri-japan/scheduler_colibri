@@ -31,9 +31,7 @@
 
   <div class="form-group">
     <%= form.label :skill_list, "スキル.特徴", class: "colibri-form-label" %>
-    <%= form.hidden_field :skill_list, value: nurse.skill_list.to_s %>
-    <%= form.text_field :skill_list, input_html: {id: "skill_list_select2", name: "skill_list_select2", multiple: true, data: {taggable: true, taggable_type: "Nurse", context: "skills"}}, collection: nurse.skill_list %>
-
+    <%= form.select :skill_list, options_from_collection_for_select(ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: {taggable_type: 'Nurse', context: 'skills'}), 'name', 'name', nurse.skill_list), {}, {multiple: true, id: "nurse_skill_list", class: 'form-control'} %>
   </div>
 
   <div class="form-group">

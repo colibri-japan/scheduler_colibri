@@ -1,5 +1,5 @@
 <% if activity.trackable %>
-	が<span class="activity-important-fields"><%= "#{activity.new_patient}様" if activity.new_patient %></span>のサービスをアップデートしました。<br/>
+	が<span class="activity-important-fields"><%= "#{activity.new_patient}様" if activity.new_patient %></span>のサービスをアップデートしました（繰り返し）。<br/>
 	<span class="activity-before-update-state">
 		<%= "#{activity.try(:previous_nurse)}" %>
 		<%= weekday(activity.try(:previous_anchor)) %><%= activity.previous_start.strftime("%H:%M") if activity.previous_start.present? %><%= "~" if activity.previous_start.present? && activity.previous_end.present? %> <%= activity.previous_end.strftime("%H:%M") if activity.previous_end.present? %> 
@@ -11,5 +11,5 @@
 		<%= activity.previous_edit_requested == true ? ">> 調整中リストから出す" :  ">> 調整中リストへ追加"  %> 
 	<% end %>
 <% else %>
-	がその後削除されたサービスをアップデートしました。
+	がその後削除されたサービスをアップデートしました（繰り返し）。
 <% end %>

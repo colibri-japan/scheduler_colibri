@@ -25,6 +25,7 @@
 //= require scheduler
 //= require daterangepicker
 //= require select2-full
+//= require select2_locale_ja
 //= require Chart.bundle
 //= require chartkick
 //= require_tree .
@@ -762,7 +763,7 @@ initialize_calendar = function() {
         }
         if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
-        }
+        } 
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -1457,19 +1458,26 @@ let toggleDayResources = () => {
 let recurringAppointmentsSelect =  () => {
   $('#recurring_appointment_title').select2({
     tags: true,
+    theme: 'bootstrap',
+    language: 'ja',
   });
 };
 
 let appointmentsSelect = () => {
+  let parent;
   $('#appointment_title').select2({
     tags: true,
+    theme: 'bootstrap',
+    language: 'ja',
   })
 }
 
 let skillsSelect = () => {
   $('#nurse_skill_list').select2({
     tags: true,
-    width: '100%'
+    width: '100%',
+    theme: 'bootstrap',
+    language: 'ja',
   })
 }
 
@@ -1481,7 +1489,6 @@ $(document).on('turbolinks:load', initialize_patient_calendar);
 $(document).on('turbolinks:load', initialize_master_calendar);
 
 $(document).on('turbolinks:load', function(){
-
 
   $('tr.nurse-clickable-row').click(function(){
     $.getScript($(this).data('link'));

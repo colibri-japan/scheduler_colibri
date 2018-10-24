@@ -8,6 +8,9 @@
 			<% end %>
 			<li class="planning-menu-items planning-menu-selected" data-url="<%= planning_activities_path(@planning) %>" title="編集履歴">歴</li>
 			<li class="planning-menu-items" data-url="<%=  planning_patient_master_path(@planning, @last_patient) %>" title="マスター">マ</li>
+			<% if current_user.admin? %>
+				<li class="planning-menu-items"  data-url="<%=  planning_settings_path(@planning) %>" title="設定"><span class='glyphicon glyphicon-cog' style='color:#94979A'></span></li>
+			<% end %>
 		</ul>
 	</div>
 	

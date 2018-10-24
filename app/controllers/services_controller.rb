@@ -28,7 +28,12 @@ class ServicesController < ApplicationController
     end
 
     def destroy
-        @service.destroy
+        respond_to do |format|
+            if @service.destroy 
+                format.js
+                format.html { redirect_back(fallback_location: root_path)  }
+            end
+        end
     end
 
     private

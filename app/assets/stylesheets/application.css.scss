@@ -37,6 +37,14 @@ body {
 	vertical-align: middle;
 }
 
+.glyphicon.glyphicon-cog {
+	font-size: 25px;
+}
+
+.glyphicon.glyphicon-cog:hover {
+	color: white !important;
+}
+
 #brand-container {
 	display: flex;
 }

@@ -145,6 +145,22 @@ li.planning-menu-selected {
 	overflow:hidden;
 }
 
+#settings-menu-container {
+	height: 100%;
+	width: 230px;
+	position: fixed;
+	z-index: 0;
+	top: 0;
+	left: 50px;
+	padding-top: 60px;
+	background-color: #606E7C;
+	border: 0.5px solid #606E7C;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	overflow:hidden;
+}
+
 #resource-container {
 	overflow-y: auto;
 }
@@ -249,3 +265,51 @@ li.planning-menu-selected {
 ul.chosen-results {
 	font-size: 1em !important;
 }
+
+#delete-planning-action {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.settings-list-element {
+	font-size: 1.2em;
+	color: #ccc;
+	margin-bottom: 8px;
+	padding-bottom: 3px;
+}
+
+.settings-list-element:hover {
+	font-size: 1.2em;
+	color: white;
+	cursor: pointer;
+}
+
+.settings-list-element-selected {
+	color: white;
+}
+
+#settings-list {
+	margin-right: 20px;
+	margin-left: 20px;
+}
+
+.settings-list-element {
+	width: 100%;
+	border-bottom: solid #ccc 0.5px;
+}
+
+#settings-menu-list {
+	text-align: right;
+	margin-top: 15px;
+}
+
+#settings-container {
+	margin-left: 305px;
+	margin-top: 20px;
+	margin-right: 160px;
+}
+
+#planning-options {
+	margin-bottom: 30px;
+}
+

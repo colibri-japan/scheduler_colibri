@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :archive, :master_to_schedule, :duplicate_from, :duplicate]
+	before_action :set_planning, only: [:show, :destroy, :master, :archive, :master_to_schedule, :duplicate_from, :duplicate, :settings]
 	before_action :set_nurses, only: [:show]
 	before_action :set_patients, only: [:show, :master]
 
@@ -179,6 +179,11 @@ class PlanningsController < ApplicationController
 
 		set_valid_range
 		@admin = current_user.admin.to_s
+	end
+
+	def settings 
+		@services = @corporation.services.where(nurse_id: nil)
+		@last_nurse = @corporation.nurses.where(displayable: true).last
 	end
 
 

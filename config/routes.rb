@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :activities
   end
 
+  resources :services, only: [:destroy]
+
   resources :recurring_appointments do
     resources :deleted_occurrences, only: [:new, :create]
   end
@@ -80,6 +82,8 @@ Rails.application.routes.draw do
   patch 'plannings/:planning_id/nurses/:id/master_to_schedule' => 'nurses#master_to_schedule', as: :nurse_master_to_schedule
 
   patch 'plannings/:id/archive' => 'plannings#archive', as: :planning_archive
+
+  get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
 
   root 'dashboard#index'
 end

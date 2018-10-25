@@ -45,7 +45,7 @@
 			<div id="planning-nurse-information">
 				<div class="planning-nurse-module-title">
 					<span id="nurse-name-wrapper"><%= @nurse.try(:name) %></span>
-					<button id="nurse-details-button" class="btn btn-sm btn-light">詳細</button>
+					<button id="nurse-details-button" class="btn btn-sm">詳細</button>
 				</div>
 				<div id="address-phone-container">
 					<% if @nurse.address.present? %>
@@ -83,26 +83,29 @@
 		<div id="resource-details-panel">
 
 			<div id="resource-details-block">
-				<h1 class="colibri-xs-title"><%= @nurse.name %>の詳細</h1>
+				<div id="resource-detail-header">
+					<h1 class="colibri-xs-title"><%= @nurse.name %>の詳細</h1>
+					<span class="close-button-span" value="閉じる" onclick="$('#resource-details-panel').toggle()">x</span>
+				</div>
 				<table>
 					<tr>
-						<th class="details-table-head">メール</th>
+						<td class="details-table-head">メール</td>
 						<td><%= @nurse.phone_mail %></td>
 					</tr>
 					<tr>
-						<th class="details-table-head">電話</th>
+						<td class="details-table-head">電話</td>
 						<td><%= @nurse.phone_number %></td>
 					</tr>
 					<tr>
-						<th class="details-table-head">週所</th>
+						<td class="details-table-head">週所</td>
 						<td><%= @nurse.address %></td>
 					</tr>
 					<tr>
-						<th class="details-table-head">スキル</th>
+						<td class="details-table-head">スキル</td>
 						<td><%= @nurse.skill_list %></td>
 					</tr>
 					<tr>
-						<th class="details-table-head">備考</th>
+						<td class="details-table-head">備考</td>
 						<td><%= @nurse.description %></td>
 					</tr>
 				</table>

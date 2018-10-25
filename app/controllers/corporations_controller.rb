@@ -4,7 +4,7 @@ class CorporationsController < ApplicationController
         @corporation = Corporation.find(params[:id])
 
         if @corporation.update(corporation_params)
-            redirect_back(fallback_location: root_path)
+            redirect_back(fallback_location: root_path, notice: '情報がセーブされました。')
         end
     end
 

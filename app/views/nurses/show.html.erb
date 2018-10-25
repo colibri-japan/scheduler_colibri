@@ -43,7 +43,8 @@
 		<div id="detail-planning-title">
 			<div id="planning-nurse-information">
 				<div class="planning-nurse-module-title">
-					<%= @nurse.try(:name) %>
+					<span id="nurse-name-wrapper"><%= @nurse.try(:name) %></span>
+					<button id="nurse-details-button" class="btn btn-sm btn-light">詳細</button>
 				</div>
 				<div id="address-phone-container">
 					<% if @nurse.address.present? %>
@@ -78,6 +79,66 @@
 			</div>
 		</div>
 
+		<div id="resource-details-panel">
+
+			<div id="resource-details-block">
+				<h1 class="colibri-xs-title"><%= @nurse.name %>の詳細</h1>
+				<table>
+					<tr>
+						<th class="details-table-head">メール</th>
+						<td><%= @nurse.phone_mail %></td>
+					</tr>
+					<tr>
+						<th class="details-table-head">電話</th>
+						<td><%= @nurse.phone_number %></td>
+					</tr>
+					<tr>
+						<th class="details-table-head">週所</th>
+						<td><%= @nurse.address %></td>
+					</tr>
+					<tr>
+						<th class="details-table-head">スキル</th>
+						<td><%= @nurse.skill_list %></td>
+					</tr>
+					<tr>
+						<th class="details-table-head">備考</th>
+						<td><%= @nurse.description %></td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="service-history-block">
+				<div class='resource-details-block-title'>過去の利用者</div>
+				<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
+					<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_service_duration) %></div>
+				<% end %>
+				<div class="resource-history">
+					<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
+					<div id="more-resource-history">
+						<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
+					</div>
+				</div>
+			</div>
+
+			<div id="service-balance-block">
+				<div class='resource-details-block-title'>身体VS生活</div>
+				<div id="chart-and-details-container">
+					<div id="chart-wrapper">
+						<%= pie_chart [['身体', @provided_services_shintai], ['生活', @provided_services_seikatsu]], donut: true, width: '100px', height: '100px', legend: false, colors: ['#ffc107', '#FF2E07'] %>
+					</div>
+					<div id="service-balance-details">
+						<div class="service-balance-line">身体：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_shintai) %></span></div>
+						<div class="service-balance-line">生活：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_seikatsu) %> </span></div>
+					</div>
+				</div>
+
+			</div>
+
+			<div id="resource-action-block">
+				<%= link_to 'エディット', edit_nurse_path(@nurse), remote: true, class: 'btn btn-info btn-block' %>
+			</div>
+		</div>
+
 		<div id="recurring-appointment-details-container" class="print">
 			<div class="planning-activity-module-title">サービスの詳細</div>
 			<div id="appointment-comments"></div>
@@ -85,6 +146,8 @@
 
 	</div>
 </div>
+
+
 
 
 <div id="print-options-confirm" title="印刷にコメントを表示する">

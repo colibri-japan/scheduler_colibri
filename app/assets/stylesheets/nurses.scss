@@ -79,3 +79,48 @@ p.payable-dashboard-line {
 #chosen_custom_email_days_chosen {
     width: 120px !important;
 }
+
+#nurse-details-button {
+	margin-left: 10px;
+}
+
+.planning-nurse-module-title {
+	min-width: 100px;
+}
+
+.planning-nurse-module-title:hover {
+	cursor: pointer;
+}
+
+#resource-details-panel {
+	background-color: white;
+	position: absolute;
+	right: 0px;
+	top: 46px;
+	width: 400px;
+	height: calc(100% - 46px);
+	z-index: 4;
+	padding: 15px;
+	border-left: 0.5px solid #ddd;
+}
+
+.resource-details-block-title {
+	margin-top: 15px;
+	padding-bottom: 5px;
+	border-bottom: 0.5px solid #ddd;
+	margin-bottom: 4px;
+	color: #4F4F4F;
+}
+
+#chart-and-details-container {
+	display: flex;
+}
+
+.details-table-head {
+	width: 55px;
+}
+
+#resource-action-block {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}

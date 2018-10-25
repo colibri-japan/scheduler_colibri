@@ -21,8 +21,15 @@ class NursesController < ApplicationController
     @full_timers = @corporation.nurses.where(full_timer: true).order_by_kana
     @part_timers = @corporation.nurses.where(full_timer: false).order_by_kana
     @patients = @corporation.patients.where(active: true).order_by_kana
+    @patients_with_services = Patient.joins(:provided_services).select("patients.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {nurse_id: @nurse.id}).where(active: true).group('patients.id').order('sum_service_duration DESC')
     @last_patient = @patients.last
     @last_nurse = @nurse
+
+    @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身体%").sum(:service_duration)
+    @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生活%").sum(:service_duration)
+
+    puts @provided_services_seikatsu
+    puts @provided_services_shintai
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 

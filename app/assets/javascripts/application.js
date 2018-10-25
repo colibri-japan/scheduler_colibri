@@ -38,7 +38,7 @@ initialize_nurse_calendar = function(){
     var nurse_calendar = $(this);
     nurse_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      defaultView: 'agendaWeek',
+      defaultView: window.defaultView,
       locale: 'ja',
       views: {
         agendaThreeDay: {
@@ -246,7 +246,7 @@ initialize_patient_calendar = function(){
     var patient_calendar = $(this);
     patient_calendar.fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      defaultView: 'agendaWeek',
+      defaultView: window.defaultView,
       minTime: window.minTime,
       maxTime: window.maxTime, 
       slotLabelFormat: 'H:mm',

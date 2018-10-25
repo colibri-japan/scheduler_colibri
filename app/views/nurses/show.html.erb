@@ -5,6 +5,7 @@
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.validRangeStart = "<%= j @start_valid %>";
 	window.validRangeEnd = "<%= j @end_valid %>";
+	window.defaultView = "<%= j @corporation.default_individual_view %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
@@ -112,12 +113,14 @@
 				<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
 					<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_service_duration) %></div>
 				<% end %>
-				<div class="resource-history">
-					<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
-					<div id="more-resource-history">
-						<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
+				<% if @patients_with_services.all[2..-1].present? %>
+					<div class="resource-history">
+						<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
+						<div id="more-resource-history">
+							<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
+						</div>
 					</div>
-				</div>
+				<% end %>
 			</div>
 
 			<div id="service-balance-block">

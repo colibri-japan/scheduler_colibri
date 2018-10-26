@@ -73,7 +73,7 @@ class PatientsController < ApplicationController
   def update
     respond_to do |format|
       if @patient.update(patient_params)
-        format.html {redirect_to patients_path, notice: '利用者の情報がアップデートされました' }
+        format.html { redirect_back fallback_location: root_path, notice: '利用者の情報がアップデートされました' }
       else
         format.html {render :edit}
       end
@@ -168,6 +168,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender)
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, caveat_list:[])
   end
 end

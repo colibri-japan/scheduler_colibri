@@ -1481,6 +1481,15 @@ let skillsSelect = () => {
   })
 }
 
+let patientSelect2 = () => {
+  $('#patient_caveat_list').select2({
+    tags: true,
+    width: '100%',
+    theme: 'bootstrap',
+    language: 'ja'
+  });
+};
+
 
 
 $(document).on('turbolinks:load', initialize_calendar); 

@@ -44,7 +44,10 @@
 
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
-			<p class="planning-activity-module-title"><%= @patient.try(:name) %> 様</p>
+			<div class="planning-resource-module-title">
+				<span id="resource-name-wrapper"><%= @patient.try(:name) %>様</span>
+				<button id="resource-details-button" class="btn btn-sm">詳細</button>
+			</div>
 			<div id="activity-show-button-container" class="no-print">
 				<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
 				<div class="btn btn-success text-white" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
@@ -67,6 +70,57 @@
 						<%= render partial: 'activities/activity', locals: {activity: activity} %>
 					<% end %>
 				</div>
+			</div>
+		</div>
+
+		<div id="resource-details-panel">
+
+			<div id="resource-details-block">
+				<div id="resource-detail-header">
+					<h1 class="colibri-xs-title"><%= @patient.name %>の詳細</h1>
+					<span class="close-button-span" value="閉じる" onclick="$('#resource-details-panel').toggle()">x</span>
+				</div>
+				<table>
+					<tr>
+						<td class="details-table-head">メール</td>
+						<td><%= @patient.phone_mail %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">電話</td>
+						<td><%= @patient.phone_number %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">週所</td>
+						<td><%= @patient.address %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">特徴</td>
+						<td><%= @patient.caveat_list %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">備考</td>
+						<td><%= @patient.description %></td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="service-history-block">
+				<div class='resource-details-block-title'>過去のヘルパー</div>
+				<% @nurses_with_services.limit(3).each_with_index do |nurse, index| %>
+					<div class="resource-history"><%= index + 1 %><%= " - #{nurse.name}様：" %><%= from_seconds_to_hours_minutes(nurse.sum_service_duration) %></div>
+				<% end %>
+				<% if @nurses_with_services.all[2..-1].present? %>
+					<div class="resource-history">
+						<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
+						<div id="more-resource-history">
+							<%= @nurses_with_services.all[2..-1].map{|nurse| nurse.name }.join(', ') %>
+						</div>
+					</div>
+				<% end %>
+			</div>
+
+			<div id="resource-action-block">
+				<%= link_to 'エディット', edit_patient_path(@patient), remote: true, class: 'btn btn-info btn-block' %>
 			</div>
 		</div>
 

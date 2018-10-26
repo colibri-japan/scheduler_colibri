@@ -6,11 +6,11 @@ $(document).on 'turbolinks:load', ->
   $('#resource-details-panel').hide()
   $('#more-resource-history').hide()
 
-  $('#nurse-name-wrapper').hover ->
+  $('#resource-name-wrapper').hover ->
     $('#resource-details-panel').toggle()
     return
 
-  $('#nurse-details-button').click ->
+  $('#resource-details-button').click ->
     $('#resource-details-panel').toggle()
     return
 

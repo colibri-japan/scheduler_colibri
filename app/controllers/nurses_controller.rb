@@ -25,8 +25,8 @@ class NursesController < ApplicationController
     @last_patient = @patients.last
     @last_nurse = @nurse
 
-    @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身体%").sum(:service_duration)
-    @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生活%").sum(:service_duration)
+    @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
+    @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生%").sum(:service_duration)
 
     puts @provided_services_seikatsu
     puts @provided_services_shintai

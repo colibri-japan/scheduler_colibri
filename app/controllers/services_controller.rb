@@ -5,7 +5,7 @@ class ServicesController < ApplicationController
     before_action :set_service, only: [:edit, :update, :destroy]
 
     def index
-        @services = @corporation.equal_salary == true ? @corporation.services.where(nurse_id: nil).all : @nurse.services.all
+        @services = @corporation.equal_salary == true ? @corporation.services.without_nurse_id.order_by_title.all : @nurse.services.without_nurse_id.order_by_title.all
     end
 
     def new

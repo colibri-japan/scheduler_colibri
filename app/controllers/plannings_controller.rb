@@ -182,7 +182,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def settings 
-		@services = @corporation.services.where(nurse_id: nil)
+		@services = @corporation.services.without_nurse_id.order_by_title
 		@last_nurse = @corporation.nurses.where(displayable: true).last
 	end
 

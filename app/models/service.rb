@@ -15,6 +15,9 @@ class Service < ApplicationRecord
 
   before_destroy :destroy_services_for_other_nurses
 
+  scope :order_by_title, -> { order(:title) }
+  scope :without_nurse_id, -> { where(nurse_id: nil) }
+
   private 
 
   def recalculate_wages

@@ -5,7 +5,7 @@ class ProvidedServicesController < ApplicationController
 
 	def new
 		@provided_service = ProvidedService.new
-		@services = current_user.corporation.services.where(nurse_id: nil).all
+		@services = current_user.corporation.services.without_nurse_id.order_by_title.all
 	end
 
 	def create

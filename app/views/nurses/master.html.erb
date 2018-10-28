@@ -3,7 +3,6 @@
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.validRangeStart = "<%= j @start_valid %>";
-	window.validRangeEnd = "<%= j @end_valid %>"
 	window.userIsAdmin = "<%= j @admin %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";

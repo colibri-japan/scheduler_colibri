@@ -159,10 +159,7 @@ class PatientsController < ApplicationController
   end
 
   def set_valid_range
-    valid_month = @planning.business_month
-    valid_year = @planning.business_year
-    @start_valid = Date.new(valid_year, valid_month, 1).strftime("%Y-%m-%d")
-    @end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
+    @start_valid = Date.new(@planning.business_year, @planning.business_month, 1).strftime("%Y-%m-%d")
   end
 
   def set_corporation

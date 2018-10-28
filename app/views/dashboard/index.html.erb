@@ -115,6 +115,64 @@
   <% end %>
 
   <div class='colibri-dashboard-container-row'>
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>コメント付きサービス（先２週間）</span>
+      </div>
+      <div class='colibri-subcontainer-body'>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th style="width:20%">利用者</th>
+              <th style="width:20%">ヘルパー</th>
+              <th style="width:20%">開始時間</th>
+              <th style="width:40%">コメント</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @commented_appointments.each do |appointment| %>
+            <tr>
+              <th style="width:15%"><%= "#{appointment.patient.name }様"%></th>
+              <th style="width:15%"><%= "#{appointment.nurse.name }"%></th>
+              <th style="width:15%"><%= appointment.starts_at.strftime("%-m月%-d日") %></th>
+              <th style="width:55%"><%= appointment.description %></th>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>編集リスト（先２週間）</span>
+      </div>
+      <div class='colibri-subcontainer-body'>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>サービス</th>
+              <th>利用者名</th>
+              <th>開始時間</th>
+              <th>稼働時間</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @edit_requested_appointments.each do |appointment| %>
+            <tr>
+              <th><%= appointment.title %></th>
+              <th><%= appointment.patient.name %></th>
+              <th><%= appointment.starts_at.strftime("%-m月%-d日") %></th>
+              <th><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></th>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class='colibri-dashboard-container-row'>
 
     <div class='colibri-dashboard-subcontainer'>
       <div class='colibri-subcontainer-header'>

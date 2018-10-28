@@ -20,6 +20,13 @@ class DashboardController < ApplicationController
     @female_patients_ids = @corporation.patients.where(gender: true).ids 
     @male_patients_ids = @corporation.patients.where(gender: false).ids
     @provided_service_data = weekly_provided_services.group_by_day(:service_date).sum(:total_wage)
+
+    #edit requested appointments for next two weeks
+    today = Date.today.beginning_of_day
+    @edit_requested_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today..(today + 15.days), edit_requested: true)
+
+    #appointments with comments for the next two weeks
+    @commented_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today..(today + 15.days)).where.not(description: [nil, ''])
     
     @provided_service_duration_sums = weekly_provided_services.group_by_day(:service_date).sum(:service_duration)
     @provided_service_duration_sums.each do |service_date, total_duration|

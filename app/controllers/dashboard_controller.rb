@@ -28,6 +28,9 @@ class DashboardController < ApplicationController
     #appointments with comments for the next two weeks
     @commented_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today..(today + 15.days)).where.not(description: [nil, ''])
     
+    #posts
+    @posts = @corporation.posts.last(10)
+    
     @provided_service_duration_sums = weekly_provided_services.group_by_day(:service_date).sum(:service_duration)
     @provided_service_duration_sums.each do |service_date, total_duration|
       total_duration = total_duration / 60

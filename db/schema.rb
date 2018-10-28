@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181026104755) do
+ActiveRecord::Schema.define(version: 20181028190554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -190,6 +190,16 @@ ActiveRecord::Schema.define(version: 20181026104755) do
     t.index ["corporation_id"], name: "index_plannings_on_corporation_id"
   end
 
+  create_table "posts", force: :cascade do |t|
+    t.text "body"
+    t.bigint "corporation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "author_id"
+    t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["corporation_id"], name: "index_posts_on_corporation_id"
+  end
+
   create_table "provided_services", force: :cascade do |t|
     t.string "payable_type"
     t.bigint "payable_id"
@@ -363,6 +373,8 @@ ActiveRecord::Schema.define(version: 20181026104755) do
   add_foreign_key "invoice_setting_services", "invoice_settings"
   add_foreign_key "invoice_setting_services", "services"
   add_foreign_key "invoice_settings", "corporations"
+  add_foreign_key "posts", "corporations"
+  add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "recurring_appointments", "plannings"
   add_foreign_key "services", "corporations"
 end

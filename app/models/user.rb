@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :corporation
+  has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
   before_validation :set_default_corporation
   before_create :invited_corporation

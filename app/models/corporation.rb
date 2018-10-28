@@ -5,6 +5,7 @@ class Corporation < ApplicationRecord
 	has_many :patients
 	has_many :services
 	has_many :invoice_settings
+	has_many :posts
 
 	before_save :set_default_equal_salary
 	after_create :create_undefined_nurse

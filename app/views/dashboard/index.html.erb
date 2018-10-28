@@ -15,8 +15,72 @@
       <%= link_to '日報をダウンロード', dashboard_index_path(format: :xlsx), class: 'btn btn-success btn-sm text-white' %>
     </div>
   <% end %>
+
+  <div class='colibri-dashboard-big-container'>
+    <div class='colibri-dashboard-container-column'>
+
+      <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
+        <div class='colibri-subcontainer-header'>
+          <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ログアウト以降：#{@unseen_activity_count}" %></span>
+        </div>
+        <div class='colibri-subcontainer-body'>
+          <% @activities.each do |activity| %>
+            <%= render partial: 'activities/activity', locals: {activity: activity} %>
+          <% end %>
+        </div>
+      </div>
+
+
+      <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
+        <div class='colibri-subcontainer-header'>
+          <span class='colibri-subcontainer-title'>利用状況(本日)</span>
+        </div>
+          <div class='colibri-subcontainer-body'>
+            <table class='table'>
+              <thead>
+                <tr>
+                  <th class="table-important-fields">サービス</th>
+                  <th class="table-important-fields">女</th>
+                  <th class="table-important-fields">男</th>
+                  <th class="table-important-fields">計</th>
+                </tr>
+              </thead>
+              <tbody>
+                <%  @appointments_grouped_by_title.each do |service_name, appointments| %>
+                  <tr>
+                    <th><%= service_name %></th>
+                    <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
+                    <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
+                    <th><%= appointments.count %></th>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
+
+    </div>
+
+    <div class='colibri-dashboard-container-column'>
+      <div class='colibri-dashboard-subcontainer subcontainer-column-full-height'>
+        <div class='colibri-subcontainer-header'>
+          <span class='colibri-subcontainer-title'>掲示板</span>
+        </div>
+        <div class='colibri-subcontainer-body'>
+          <% @posts.each do |post| %>
+            <%= render partial: 'posts/post', locals: {post: post} %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <% if false %>
   <div class='colibri-dashboard-container-row'>
-    <% if false %>
+
       <div class='colibri-dashboard-subcontainer'>
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>給与推移</span>
@@ -33,48 +97,8 @@
           <%= area_chart @provided_service_duration_sums, height: '95%', width: '500px', colors: ['#17a2b8'] %>
         </div>
       </div>
-    <% end %>
-
-    <div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ログアウト以降：#{@unseen_activity_count}" %></span>
-      </div>
-      <div class='colibri-subcontainer-body'>
-      	<% @activities.each do |activity| %>
-					<%= render partial: 'activities/activity', locals: {activity: activity} %>
-				<% end %>
-      </div>
-    </div>
-
-    <div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>利用状況(本日)</span>
-      </div>
-        <div class='colibri-subcontainer-body'>
-          <table class='table'>
-            <thead>
-              <tr>
-                <th class="table-important-fields">サービス</th>
-                <th class="table-important-fields">女</th>
-                <th class="table-important-fields">男</th>
-                <th class="table-important-fields">計</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%  @appointments_grouped_by_title.each do |service_name, appointments| %>
-                <tr>
-                  <th><%= service_name %></th>
-                  <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
-                  <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
-                  <th><%= appointments.count %></th>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-    </div>
-
   </div>
+  <% end %>
 
   <% if false %>
 

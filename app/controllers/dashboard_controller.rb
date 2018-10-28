@@ -23,10 +23,10 @@ class DashboardController < ApplicationController
 
     #edit requested appointments for next two weeks
     today = Date.today.beginning_of_day
-    @edit_requested_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today..(today + 15.days), edit_requested: true)
+    @edit_requested_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today..(today + 15.days), edit_requested: true).order(starts_at: :asc)
 
     #appointments with comments for the next two weeks
-    @commented_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today..(today + 15.days)).where.not(description: [nil, ''])
+    @commented_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today..(today + 15.days)).where.not(description: [nil, '']).order(starts_at: :asc)
     
     #posts
     @posts = @corporation.posts.order(created_at: :desc).first(10)

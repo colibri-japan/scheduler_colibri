@@ -67,10 +67,13 @@
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>掲示板</span>
         </div>
-        <div class='colibri-subcontainer-body'>
+        <div class='colibri-subcontainer-body-with-footer' id='posts-container'>
           <% @posts.each do |post| %>
             <%= render partial: 'posts/post', locals: {post: post} %>
           <% end %>
+        </div>
+        <div class='colibri-subcontainer-footer'>
+          <%= link_to '新規メッセージ', new_post_path, remote: true, class: 'btn btn-info text-white form-control btn-block' %>
         </div>
       </div>
     </div>

@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   resources :patients
 
+  resources :posts, only: [:new, :create, :destroy]
+
   resources :nurses do
     resources :provided_services
     resources :services

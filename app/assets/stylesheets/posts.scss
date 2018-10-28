@@ -1,0 +1,23 @@
+.post-container {
+    padding: 5px;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-author-wrapper {
+    font-size: 0.85em;
+}
+
+.post-timestamps-wrapper {
+    color: grey;
+    font-size: 0.85em;
+}
+
+.post-body {
+    background-color: #DCFCED;
+    border-radius: 6px;
+    padding: 3px 7px 5px 7px;
+}

@@ -1,0 +1,12 @@
+<%= form_for post, remote: true do |form| %>
+
+  <div class="form-group">
+    <%= form.label :body, "メッセージ", class: "colibri-form-label" %><span class='required-field'>*</span>
+    <%= form.text_area :body, id: :nurse_name, required: true, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit '共有する', class: 'btn btn-info form-control btn-block' %>
+  </div>
+
+<% end %>

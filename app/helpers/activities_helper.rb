@@ -1,13 +1,5 @@
 module ActivitiesHelper
 
-	def activity_creation_date(activity)
-		if activity.created_at.in_time_zone('Tokyo').day == Time.current.in_time_zone('Tokyo').day
-			activity.created_at.in_time_zone('Tokyo').strftime("今日 %H:%M")
-		else
-			activity.created_at.in_time_zone('Tokyo').strftime("%m月%d日 %H:%M")
-		end
-	end
-
 	def activity_icon(activity)
 		if activity.key.include? "create"
 			'create_32px.png'

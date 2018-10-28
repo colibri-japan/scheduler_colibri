@@ -73,9 +73,23 @@
 	overflow-x: auto;
 }
 
+.colibri-subcontainer-body-with-footer {
+	height: 80%;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+
+.colibri-subcontainer-footer {
+	height: 10%;
+	position: absolute;
+	bottom: 0;
+}
+
 .colibri-subcontainer-header {
 	border-bottom: 0.5px solid #ccc;
 }
+
+
 
 .unseen-activity-count {
 	font-size: 0.9em;

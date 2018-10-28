@@ -33,30 +33,30 @@
 
       <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
         <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'>利用状況(本日)</span>
+          <span class='colibri-subcontainer-title'>編集リスト（先２週間）</span>
         </div>
-          <div class='colibri-subcontainer-body'>
-            <table class='table'>
-              <thead>
-                <tr>
-                  <th class="table-important-fields">サービス</th>
-                  <th class="table-important-fields">女</th>
-                  <th class="table-important-fields">男</th>
-                  <th class="table-important-fields">計</th>
-                </tr>
-              </thead>
-              <tbody>
-                <%  @appointments_grouped_by_title.each do |service_name, appointments| %>
-                  <tr>
-                    <th><%= service_name %></th>
-                    <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
-                    <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
-                    <th><%= appointments.count %></th>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+        <div class='colibri-subcontainer-body'>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>サービス</th>
+                <th>利用者名</th>
+                <th>開始時間</th>
+                <th>稼働時間</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @edit_requested_appointments.each do |appointment| %>
+              <tr>
+                <th><%= appointment.title %></th>
+                <th><%= appointment.patient.name %></th>
+                <th><%= appointment.starts_at.strftime("%-m月%-d日") %></th>
+                <th><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></th>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
 
 
@@ -171,31 +171,31 @@
     </div>
 
     <div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>編集リスト（先２週間）</span>
-      </div>
-      <div class='colibri-subcontainer-body'>
-        <table class='table'>
-          <thead>
-            <tr>
-              <th>サービス</th>
-              <th>利用者名</th>
-              <th>開始時間</th>
-              <th>稼働時間</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @edit_requested_appointments.each do |appointment| %>
-            <tr>
-              <th><%= appointment.title %></th>
-              <th><%= appointment.patient.name %></th>
-              <th><%= appointment.starts_at.strftime("%-m月%-d日") %></th>
-              <th><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></th>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+        <div class='colibri-subcontainer-header'>
+          <span class='colibri-subcontainer-title'>利用状況(本日)</span>
+        </div>
+          <div class='colibri-subcontainer-body'>
+            <table class='table'>
+              <thead>
+                <tr>
+                  <th class="table-important-fields">サービス</th>
+                  <th class="table-important-fields">女</th>
+                  <th class="table-important-fields">男</th>
+                  <th class="table-important-fields">計</th>
+                </tr>
+              </thead>
+              <tbody>
+                <%  @appointments_grouped_by_title.each do |service_name, appointments| %>
+                  <tr>
+                    <th><%= service_name %></th>
+                    <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
+                    <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
+                    <th><%= appointments.count %></th>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
     </div>
   </div>
 

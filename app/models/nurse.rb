@@ -45,7 +45,7 @@ class Nurse < ApplicationRecord
 		selected_appointments = selected_appointments.flatten
 
 		if selected_appointments.present? && self.phone_mail.present?
-			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: custom_email_message, custom_subject: custom_email_subject}).deliver_now 
+			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: custom_email_message, custom_subject: custom_email_subject}).deliver_later
 		end
 
 	end

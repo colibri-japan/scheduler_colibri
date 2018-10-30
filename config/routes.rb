@@ -6,6 +6,9 @@ Rails.application.routes.draw do
     invitations: "invitations"
   }
 
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+
   resources :users, only: [:index, :edit, :update]
 
   resources :plannings do

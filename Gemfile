@@ -93,6 +93,12 @@ gem 'acts-as-taggable-on'
 #sidekiq for background tasks
 gem 'sidekiq'
 
+#OJ backend for faster json rendering
+gem 'oj'
+
+#multi json to always pick the fastest json backend 
+gem 'multi_json'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

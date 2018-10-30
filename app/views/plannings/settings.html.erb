@@ -45,6 +45,11 @@
             </div>
 
             <div class="form-group">
+                <%= form.label :default_first_day, "カレンダー開始曜日", class: "colibri-form-label" %>
+                <%= form.select :default_first_day, options_for_select([['月曜', 1], ['日曜', 0]], @corporation.default_first_day), class: "form-control" %>
+            </div>
+
+            <div class="form-group">
                 <%= form.label :email, "リマインダーメール送信元.返信先", class: "colibri-form-label" %><span class='required-field'>*</span>
                 <%= form.text_field :email, required: true, class: "form-control" %>
             </div>

@@ -11,6 +11,6 @@ class CorporationsController < ApplicationController
     private
 
     def corporation_params
-        params.require(:corporation).permit(:default_view, :default_individual_view, :default_master_view, :email, :business_start_hour, :business_end_hour, :custom_email_intro_text, :custom_email_outro_text)
+        params.require(:corporation).permit(:default_view, :default_individual_view, :default_master_view, :email, :business_start_hour, :business_end_hour, :custom_email_intro_text, :custom_email_outro_text, :default_first_day)
     end
 end

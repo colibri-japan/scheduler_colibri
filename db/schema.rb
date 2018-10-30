@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181028190554) do
+ActiveRecord::Schema.define(version: 20181030101533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20181028190554) do
     t.text "custom_email_outro_text"
     t.string "default_master_view", default: "agendaWeek"
     t.string "default_individual_view", default: "agendaWeek"
+    t.integer "default_first_day", default: 1
   end
 
   create_table "deleted_occurrences", force: :cascade do |t|

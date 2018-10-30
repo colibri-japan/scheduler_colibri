@@ -77,7 +77,7 @@ initialize_nurse_calendar = function(){
       events: window.appointmentsURL + '&master=false',
 
 
-      select: function(start, end) {
+      select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.createRecurringAppointmentURL, function() {
           
           masterSwitchToggle();
@@ -107,14 +107,24 @@ initialize_nurse_calendar = function(){
 
         	$('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
         	$('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
-        	$('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
-          $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-          $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-          $('#recurring_appointment_end_day_3i').val(moment(end).format('D')); 
-        	$('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
-        	$('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-        	$('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-        	$('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
+          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
+          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
+
+          if (view.name == 'month') {
+            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
+            $('#recurring_appointment_ends_at_4i').val(23);
+            $('#recurring_appointment_ends_at_5i').val(59);
+          } else {
+            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(end).format('D')); 
+            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          }
+
           $("#recurring_appointment_nurse_id").val(window.nurseId);
           
           recurringAppointmentFormChosen();
@@ -280,7 +290,7 @@ initialize_patient_calendar = function(){
       eventSources: [window.appointmentsURL + '&master=false', window.unavailabilitiesUrl + '&master=false'],
 
 
-      select: function(start, end) {
+      select: function (start, end, jsEvent, view, resource) {
         $.getScript(window.bootstrapToggleUrl, function() {
           
           masterSwitchToggle();
@@ -310,15 +320,25 @@ initialize_patient_calendar = function(){
 
           $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
           $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
-          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));        	
-          $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-          $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-          $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));          
+          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));        	         
           $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
           $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-          $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-          $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          if (view.name == 'month') {
+            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
+            $('#recurring_appointment_ends_at_4i').val(23);
+            $('#recurring_appointment_ends_at_5i').val(59);
+          } else {
+            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
+            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          }
+
           $("#recurring_appointment_patient_id").val(window.patientId);
+
           $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
           $('#unavailability_starts_at_2i').val(moment(start).format('M'));
           $('#unavailability_starts_at_3i').val(moment(start).format('D'));
@@ -637,13 +657,21 @@ initialize_master_calendar = function() {
           $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
           $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
           $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
-          $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-          $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-          $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
           $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
           $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-          $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-          $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          if (view.name == 'month') {
+            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
+            $('#recurring_appointment_ends_at_4i').val(23);
+            $('#recurring_appointment_ends_at_5i').val(59);
+          } else {
+            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
+            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          }
           if (window.nurseId) {
             $('#recurring_appointment_nurse_id').val(window.nurseId);
           }
@@ -865,13 +893,23 @@ initialize_calendar = function() {
           $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
           $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
           $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
-          $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-          $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-          $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
           $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
           $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-          $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-          $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          if (view.name == 'month') {
+            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
+            $('#recurring_appointment_ends_at_4i').val(23);
+            $('#recurring_appointment_ends_at_5i').val(59);
+          } else {
+            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
+            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
+            $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
+            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+          }
+
+
           $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
           $('#unavailability_starts_at_2i').val(moment(start).format('M'));
           $('#unavailability_starts_at_3i').val(moment(start).format('D'));

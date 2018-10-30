@@ -72,7 +72,6 @@ initialize_nurse_calendar = function(){
       selectable: true,
       selectHelper: false,
       editable: true,
-      eventLimit: true,
       eventColor: '#7AD5DE',
       events: window.appointmentsURL + '&master=false',
 
@@ -286,7 +285,6 @@ initialize_patient_calendar = function(){
       selectable: true,
       selectHelper: false,
       editable: true,
-      eventLimit: true,
       eventSources: [window.appointmentsURL + '&master=false', window.unavailabilitiesUrl + '&master=false'],
 
 
@@ -512,7 +510,6 @@ initialize_master_calendar = function() {
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
       editable: true,
-      eventLimit: true,
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
 

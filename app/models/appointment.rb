@@ -26,7 +26,6 @@ class Appointment < ApplicationRecord
 
 
 	def all_day_appointment?
-		puts 'checking if all day appointments'
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
 	end
 

@@ -15,6 +15,8 @@ class Nurse < ApplicationRecord
 
 	validates :name, presence: true
 
+	after_create :create_nurse_services
+
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 
 	def self.group_full_timer_for_select
@@ -53,6 +55,18 @@ class Nurse < ApplicationRecord
 	end
 	
 	private 
+
+	def create_nurse_services 
+		if Service.where(corporation_id: self.corporation_id, nurse_id: nil).exists?
+			services_array = []
+			Service.where(corporation_id: self.corporation_id, nurse_id: nil).each do |service|
+				new_service = service.dup 
+				new_service.nurse_id = self.id 
+				services_array << new_service
+			end
+			Service.import services_array
+		end
+	end
 
 
 

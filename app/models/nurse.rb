@@ -18,6 +18,9 @@ class Nurse < ApplicationRecord
 	after_create :create_nurse_services
 
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
+	scope :displayable, -> { where(displayable: true) }
+	scope :full_timers, -> { where(full_timer: true) }
+	scope :part_timers, -> { where(full_timer: false) }
 
 	def self.group_full_timer_for_select
 		{

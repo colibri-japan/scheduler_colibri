@@ -115,8 +115,8 @@ class NursesController < ApplicationController
 
     mark_services_as_provided
 
-    @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
-    @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    @full_timers = @corporation.nurses.displayable.full_timers.order_by_kana
+    @part_timers = @corporation.nurses.displayable.part_timers.order_by_kana
     @last_patient = @corporation.patients.last
     @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 

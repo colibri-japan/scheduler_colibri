@@ -90,5 +90,7 @@ Rails.application.routes.draw do
 
   get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
 
+  get 'plannings/:id/payable' => 'plannings#payable', as: :planning_payable
+
   root 'dashboard#index'
 end

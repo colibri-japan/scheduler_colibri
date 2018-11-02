@@ -14,6 +14,7 @@ class Patient < ApplicationRecord
 	before_save :toggle_deactivate_recurring_appointments, if: :will_save_change_to_active?
 
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
+	scope :active, -> { where(active: true) }
 
 	private
 

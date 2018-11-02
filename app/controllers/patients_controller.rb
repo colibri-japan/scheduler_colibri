@@ -9,9 +9,9 @@ class PatientsController < ApplicationController
       end_time = params[:end].to_date.beginning_of_day
 
       @patients = @corporation.patients.joins(:appointments).where(appointments: {displayable: true, master: params[:master], planning_id: params[:planning_id], starts_at: start_time..end_time})
-      @patients = @patients.where(active: true).order_by_kana
+      @patients = @patients.active.order_by_kana
     else 
-      @patients = @corporation.patients.where(active: true).order_by_kana
+      @patients = @corporation.patients.active.order_by_kana
     end
 
   	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
@@ -20,10 +20,10 @@ class PatientsController < ApplicationController
   def show
     authorize @patient, :is_employee?
     
-    @patients = @corporation.patients.where(active: true).order_by_kana
+    @patients = @corporation.patients.active.order_by_kana
     @last_patient = @corporation.patients.last
-    @full_timers = @corporation.nurses.where(full_timer: true).order_by_kana
-    @part_timers = @corporation.nurses.where(full_timer: false).order_by_kana
+    @full_timers = @corporation.nurses.displayable.full_timers.order_by_kana
+    @part_timers = @corporation.nurses.displayable.part_timers.order_by_kana
     @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
     @activities = PublicActivity::Activity.where(planning_id: @planning.id, patient_id: @patient.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
     @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
@@ -36,9 +36,9 @@ class PatientsController < ApplicationController
   def master
     authorize @planning, :is_employee?
 
-    @patients = @corporation.patients.where(active: true).all.order_by_kana
-    @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
-    @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    @patients = @corporation.patients.active.all.order_by_kana
+    @full_timers = @corporation.nurses.displayable.full_timers.order_by_kana
+    @part_timers = @corporation.nurses.displayable.part_timers.order_by_kana
     @last_patient = @patients.last
     @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
       

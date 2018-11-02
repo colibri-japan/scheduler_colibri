@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :archive, :master_to_schedule, :duplicate_from, :duplicate, :settings]
+	before_action :set_planning, only: [:show, :destroy, :master, :archive, :master_to_schedule, :duplicate_from, :duplicate, :settings, :payable]
 	before_action :set_nurses, only: [:show]
 	before_action :set_patients, only: [:show, :master]
 
@@ -77,6 +77,16 @@ class PlanningsController < ApplicationController
 	  end
 	end
 
+	def payable
+		@nurse = @corporation.nurse.displayable.order_by_kana.first 
+
+		@full_timers = @corporation.patients.displayable.full_timers
+		@part_timers = @corporation.nurses.displayable.part_timers
+
+		#data needed to show mashup of this month's salary
+		#what has been accomplished service wise, and counts/hours provided for each nurse
+	end
+
 	def archive
 		if @planning.update(archived: true)
 			redirect_to root_path, notice: 'スケジュールが削除されました。'
@@ -122,7 +132,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def set_patients
-		@patients = @corporation.patients.where(active: true).order_by_kana
+		@patients = @corporation.patients.active.order_by_kana
 	end
 
 	def planning_params

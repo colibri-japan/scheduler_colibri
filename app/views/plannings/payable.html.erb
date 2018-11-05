@@ -15,3 +15,36 @@
 	</div>
   </div>
 </div>
+
+<div id="colibri-dashboard-container">
+	<div class='colibri-dashboard-container-row'>
+		<div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>給与推移</span>
+      </div>
+      <div class='colibri-subcontainer-body'>
+        <%= area_chart @provided_services_till_today.group_by_day(:service_date).sum(:total_wage), height: '95%', width: '500px', colors: ['#17a2b8'], suffix: '￥' %>
+      </div>
+		</div>
+		<div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>サービスタイプ割合</span>
+      </div>
+			<div class='colibri-subcontainer-body'>
+				<%= pie_chart @provided_services_till_today.group(:title).sum(:total_wage), donut: true, height: '95%', suffix: '￥', colors: ['#34F0E0', '#3D9BF3','#EA5D25', '#F07891', '#F9AE1B', '#EDB3F5', '#71C47A', '#ED655F', '#A3D4F5', '#A587F6', '#BBE5CE',  '#8E8CBC', '#DF788C', '#F475E1', '#ABBDC5', '#EADA6E', '#6BBEA6', '#58F4C7', '#CE73A5', '#F4B2A3', '#53A042', '#C6CBF5', '#EE7513', '#E47774', '#8BAADC', '#57B2E6', '#ED8C4C'] %>
+			</div>
+		</div>
+	</div>
+
+	<div class='colibri-dashboard-container-row'>
+		<div class='colibri-dashboard-subcontainer'>
+	    <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>ヘルパー一覧</span>
+      </div>
+			<div class='colibri-subcontainer-body'>
+				<%= bar_chart @provided_services_till_today.group('nurses.name').sum(:total_wage), width: '95%' %>
+			</div>
+		</div>
+
+	</div>
+</div>

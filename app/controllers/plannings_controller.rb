@@ -83,6 +83,8 @@ class PlanningsController < ApplicationController
 		@full_timers = @corporation.nurses.displayable.full_timers
 		@part_timers = @corporation.nurses.displayable.part_timers
 
+		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, service_date: Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day..Date.today.end_of_day)
+
 		#data needed to show mashup of this month's salary
 		#what has been accomplished service wise, and counts/hours provided for each nurse
 	end

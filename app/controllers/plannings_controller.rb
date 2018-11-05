@@ -78,9 +78,9 @@ class PlanningsController < ApplicationController
 	end
 
 	def payable
-		@nurse = @corporation.nurse.displayable.order_by_kana.first 
+		@nurse = @corporation.nurses.displayable.order_by_kana.first 
 
-		@full_timers = @corporation.patients.displayable.full_timers
+		@full_timers = @corporation.nurses.displayable.full_timers
 		@part_timers = @corporation.nurses.displayable.part_timers
 
 		#data needed to show mashup of this month's salary

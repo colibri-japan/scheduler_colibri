@@ -19,4 +19,8 @@ $(document).on 'turbolinks:load', ->
     $('#settings-services').addClass('settings-list-element-selected')
     return
   
+  $('.resource-title-selectable').click ->
+    window.location = $(this).data('url')
+    return
+  
   return

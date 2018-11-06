@@ -26,9 +26,6 @@
 <% @appointments.each do |appointment| %>
 	<div>
 		<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日") %><%= weekday(appointment.starts_at) %>  <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
-		<% if appointment.description.present? %>
-			コメント：<%= appointment.description %>
-		<% end %>
 	</div>
 <% end %>
 <br/>

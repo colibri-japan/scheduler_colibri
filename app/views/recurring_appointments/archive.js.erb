@@ -19,6 +19,12 @@
   
   <% @appointments.each do |appointment| %>
     calendar.fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
+
+    calendar.fullCalendar(
+      'renderEvent', 
+      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
+      false
+    );
   <% end %>
 
   if ($('#planning-activities').length > 0) {

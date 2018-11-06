@@ -49,10 +49,10 @@ class RecurringAppointmentsController < ApplicationController
     @master = @recurring_appointment.master
     @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(starts_at: 'asc')
     @appointments_after_first = @appointments.drop(1)
+    puts 'counting appointments'
+    puts @appointments.count
 
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
-    puts 'activities present'
-    puts @activities.present?
   end
 
   # POST /recurring_appointments
@@ -80,12 +80,11 @@ class RecurringAppointmentsController < ApplicationController
   def update    
     @recurring_appointment = RecurringAppointment.find(params[:id])
     set_previous_params
+    appointment_ids = Appointment.valid.where(recurring_appointment_id: @recurring_appointment.id).ids
       
     if @recurring_appointment.update(recurring_appointment_params)
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
-      puts 'saved recurring appointment and activity, now fetching appointments'
-      @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
-      puts @appointments.count
+      @appointments = Appointment.find(appointment_ids)
     end
   end
 
@@ -95,16 +94,15 @@ class RecurringAppointmentsController < ApplicationController
 
     if @recurring_appointment.save
       @activity = @recurring_appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_edit_requested: !@recurring_appointment.edit_requested
-      puts 'saved recurring appointment and activity, now fetching appointments'
       @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
     end
   end
 
   def archive
+    appointment_ids = Appointment.valid.where(recurring_appointment_id: @recurring_appointment.id).ids
     if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current, editing_occurrences_after: recurring_appointment_params[:editing_occurrences_after])
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
-      puts 'saved recurring appointment and activity, now fetching appointments'
-      @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id)
+      @appointments = Appointment.find(appointment_ids)
     end                  
   end
 

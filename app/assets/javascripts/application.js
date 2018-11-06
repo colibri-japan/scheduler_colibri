@@ -786,6 +786,9 @@ initialize_calendar = function() {
         if (window.eventDragging) {
           return
         }
+        if (!event.displayable) {
+          return false;
+        }
         if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
         } 

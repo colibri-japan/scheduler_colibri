@@ -122,6 +122,8 @@ class RecurringAppointment < ApplicationRecord
 
 		if self.editing_occurrences_after.present?
 
+			puts 'inside editing occurrences'
+
 			all_appointments = appointments_to_edit
 
 			editing_start_occurrence = Appointment.find(self.editing_occurrences_after.to_i)
@@ -134,7 +136,10 @@ class RecurringAppointment < ApplicationRecord
 
 			recurring_anchor = Date.new(first_appointment.starts_at.year, first_appointment.starts_at.month, first_appointment.starts_at.day)
 			recurring_end_day = Date.new(first_appointment.ends_at.year, first_appointment.ends_at.month, first_appointment.ends_at.day)
-			recurring_appointment_before_edit_date = RecurringAppointment.create(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, deactivated: first_appointment.deactivated, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, starts_at: first_appointment.starts_at, ends_at: first_appointment.ends_at, skip_appointments_callbacks: true, frequency: self.frequency)
+			puts 'just before saving recurring appointment'
+			recurring_appointment_before_edit_date = RecurringAppointment.new(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, deactivated: first_appointment.deactivated, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, starts_at: first_appointment.starts_at, ends_at: first_appointment.ends_at, skip_appointments_callbacks: true, frequency: self.frequency, original_id: self.id)
+			recurring_appointment_before_edit_date.save(validate: false)
+			puts 'just after saving'
 
 			appointments_before_edit_date.each do |appointment|
 				appointment.recurring_appointment_id = recurring_appointment_before_edit_date.id

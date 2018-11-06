@@ -20,6 +20,7 @@ class RecurringAppointment < ApplicationRecord
 	before_create :default_displayable
 	before_create :default_deleted
 	
+	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
 
 	validates :anchor, presence: true
@@ -27,7 +28,6 @@ class RecurringAppointment < ApplicationRecord
 	validates :frequency, inclusion: 0..6
 	validate :cannot_overlap_existing_appointment_create, on: :create
 	validate :cannot_overlap_existing_appointment_update, on: :update
-	validate :edit_requested_and_undefined_nurse
 
 	after_create :create_individual_appointments
 	after_update :update_individual_appointments, unless: :saved_change_to_deactivated?
@@ -190,10 +190,10 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
-	def edit_requested_and_undefined_nurse
-		puts 'edit request and undefined nurse'
+	def request_edit_if_undefined_nurse
+		puts 'request edit if undefined nurse'
 		nurse = Nurse.find(self.nurse_id)
-		errors.add(:nurse_id, "ヘルパーを選択、または編集リストへ追加オプションを選択してください。") if nurse.name == '未定' && self.edit_requested.blank?
+		self.edit_requested = true if nurse.name === '未定'
 	end
 
 

@@ -1,6 +1,6 @@
 class ProvidedServicesController < ApplicationController
 	before_action :set_provided_service, only: [:update, :destroy, :edit, :destroy, :verify]
-	before_action :set_nurse, except: [:destroy]
+	before_action :set_nurse, except: [:destroy, :verify]
 	before_action :set_planning, only: [:new, :edit]
 
 	def new

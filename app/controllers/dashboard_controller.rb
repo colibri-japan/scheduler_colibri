@@ -9,13 +9,15 @@ class DashboardController < ApplicationController
     if @unseen_activity_count == 0
       @activities = PublicActivity::Activity.where(planning_id: @plannings.ids).last(5)
     end
+
     today = Date.today 
 
-    monthly_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today.beginning_of_month..today.end_of_day, master: false, displayable: true, deactivated: false).includes(:patient, :nurse)
+    monthly_appointments = Appointment.where(planning_id: @plannings.ids, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day, master: false, displayable: true, deactivated: false).includes(:patient, :nurse)
     appointments = monthly_appointments.where(starts_at: today.beginning_of_day..today.end_of_day)
     
-    monthly_provided_services = ProvidedService.where(planning_id: @plannings.ids, service_date: today.beginning_of_month..today, provided: true, temporary: false, deactivated: false).includes(:patient, :nurse)
-    weekly_provided_services = monthly_provided_services.where(service_date: (today - 7.days)..today)
+    monthly_provided_services = ProvidedService.where(planning_id: @plannings.ids, service_date: today.beginning_of_month.beginning_of_day..today.end_of_day, provided: true, temporary: false, deactivated: false).includes(:patient, :nurse)
+    weekly_provided_services = monthly_provided_services.where(service_date: (today - 7.days).beginning_of_day..today.end_of_day)
+    daily_provided_services = weekly_provided_services.where(service_date: today.beginning_of_day..today.end_of_day)
    
     @monthly_appointments_grouped_by_title = monthly_appointments.group_by {|e| e.title}
     @appointments_grouped_by_title = appointments.group_by {|e| e.title}
@@ -39,7 +41,9 @@ class DashboardController < ApplicationController
     @provided_service_duration_sums.each do |service_date, total_duration|
       total_duration = total_duration / 60
     end
-    @appointments = appointments.order(starts_at: :asc).group_by {|appointment| appointment.nurse_id}
+
+    #daily provided_services to be verified
+    @daily_provided_services = daily_provided_services.order(service_date: :asc).group_by {|service| service.nurse_id }
   end
 
   private

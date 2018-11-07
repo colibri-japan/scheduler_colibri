@@ -245,17 +245,25 @@
                 <th class="table-important-fields">訪問時間</th>
                 <th class="table-important-fields">ヘルパー</th>
                 <th class="table-important-fields">サービスタイプ</th>
+                <th class="table-important-fields">確認する</th>
               </tr>
             </thead>
             <tbody>
-              <% @appointments.each do |nurse_id, appointments_array| %>
-                <% appointments_array.each do |appointment| %>
+              <% @daily_provided_services.each do |nurse_id, provided_services_array| %>
+                <% provided_services_array.each do |provided_service| %>
                   <tr>
-                    <th><%= appointment.patient.try(:name) %></th>
-                    <th><%= patient_gender(appointment.patient) %></th>
-                    <th><%= "#{appointment.starts_at.strftime('%H:%M')} ~ #{appointment.ends_at.strftime('%H:%M')}" %></th>
-                    <th><%= appointment.nurse.try(:name) %></th>
-                    <th><%= appointment.title %></th>
+                    <th><%= provided_service.patient.try(:name) %></th>
+                    <th><%= patient_gender(provided_service.patient) %></th>
+                    <th><%= "#{provided_service.appointment_start.strftime('%H:%M')} ~ #{provided_service.appointment_end.strftime('%H:%M')}" %></th>
+                    <th><%= provided_service.nurse.try(:name) %></th>
+                    <th><%= provided_service.title %></th>
+                    <th class='verify-provided-service' id='provided-service-<%= provided_service.id %>'>
+                      <% if provided_service.verified? %>
+                        <div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
+                      <% else %>
+                        <%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-small' if !provided_service.verified? %>
+                      <% end %>
+                    </th>
                   </tr>
                 <% end %>
               <% end %>

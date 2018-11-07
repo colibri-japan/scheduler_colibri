@@ -18,6 +18,7 @@ class ProvidedService < ApplicationRecord
 
 	scope :active, -> { where(deactivated: false) }
 	scope :provided, -> { where(provided: true) }
+	scope :is_verified, -> { where.not(verified: [nil, '']) }
 
 	def self.to_csv(options = {})
 		CSV.generate(options) do |csv|
@@ -30,6 +31,14 @@ class ProvidedService < ApplicationRecord
 
 	def weekend_holiday_provided_service?
 		!self.service_date.on_weekday? || HolidayJp.between(self.service_date.beginning_of_day, self.service_date.end_of_day).present? ? true : false
+	end
+
+	def verified?
+		self.verified_at.present?
+	end
+
+	def verify!
+		self.verified_at = Time.current
 	end
 
 

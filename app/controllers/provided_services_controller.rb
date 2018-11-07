@@ -1,5 +1,5 @@
 class ProvidedServicesController < ApplicationController
-	before_action :set_provided_service, only: [:update, :destroy, :edit, :destroy]
+	before_action :set_provided_service, only: [:update, :destroy, :edit, :destroy, :verify]
 	before_action :set_nurse, except: [:destroy]
 	before_action :set_planning, only: [:new, :edit]
 
@@ -45,6 +45,10 @@ class ProvidedServicesController < ApplicationController
 		if @provided_service.delete
 			redirect_to planning_nurse_payable_path(@planning, @nurse), notice: '実績が削除されました'
 		end
+	end
+
+	def verify
+		@provided_service.verify! 
 	end
 
 

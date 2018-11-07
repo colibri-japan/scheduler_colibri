@@ -92,5 +92,7 @@ Rails.application.routes.draw do
 
   get 'plannings/:id/payable' => 'plannings#payable', as: :planning_payable
 
+  patch 'provided_services/:id/verify' => 'provided_services#verify', as: :verify_provided_service
+
   root 'dashboard#index'
 end

@@ -37,9 +37,14 @@ class ProvidedService < ApplicationRecord
 		self.verified_at.present?
 	end
 
-	def verify!
+	def verify
 		self.verified_at = Time.current
 	end
+
+	def verify!
+		self.update_column(:verified_at, Time.current)
+	end
+
 
 
 	private

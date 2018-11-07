@@ -15,7 +15,7 @@ class Appointment < ApplicationRecord
 	before_create :default_master
 	before_create :default_displayable
 	before_save :request_edit_if_undefined_nurse
-	before_save :add_to_services
+	before_save :match_title_to_service
 
 	after_create :create_provided_service
 	after_update :update_provided_service
@@ -101,16 +101,13 @@ class Appointment < ApplicationRecord
 		end
 	end
 
-	def add_to_services
-		unless self.service_id.present?
-			services = Service.where(corporation_id: self.planning.corporation.id, title: self.title, nurse_id: nil)
-
-			if services.blank? 
-				new_service = self.planning.corporation.services.create(title: self.title)
-				self.service_id = new_service.id
-			else
-				self.service_id = services.first.id
-			end
+	def match_title_to_service
+		first_service = Service.where(title: self.title, corporation_id: self.planning.corporation.id, nurse_id: nil).first
+		if first_service.present?
+			self.service_id = first_service.id
+		else
+			new_service = self.planning.corporation.services.create(title: self.title)
+			self.service_id = new_service.id
 		end
 	end
 

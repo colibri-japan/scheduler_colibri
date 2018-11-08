@@ -48,10 +48,10 @@
             <tbody>
               <% @edit_requested_appointments.each do |appointment| %>
               <tr>
-                <th><%= appointment.title %></th>
-                <th><%= appointment.patient.name %></th>
-                <th><%= appointment.starts_at.strftime("%-m月%-d日") %></th>
-                <th><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></th>
+                <td><%= appointment.title %></td>
+                <td><%= appointment.patient.name %></td>
+                <td><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
+                <td><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></td>
               </tr>
               <% end %>
             </tbody>
@@ -126,10 +126,10 @@
             <tbody>
               <%  @monthly_appointments_grouped_by_title.each do |service_name, appointments| %>
                 <tr>
-                  <th><%= service_name %></th>
-                  <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
-                  <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
-                  <th><%= appointments.count %></th>
+                  <td><%= service_name %></td>
+                  <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
+                  <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
+                  <td><%= appointments.count %></td>
                 </tr>
               <% end %>
             </tbody>
@@ -159,10 +159,10 @@
           <tbody>
             <% @commented_appointments.each do |appointment| %>
             <tr>
-              <th style="width:15%"><%= "#{appointment.patient.name }様"%></th>
-              <th style="width:15%"><%= "#{appointment.nurse.name }"%></th>
-              <th style="width:15%"><%= appointment.starts_at.strftime("%-m月%-d日") %></th>
-              <th style="width:55%"><%= appointment.description %></th>
+              <td style="width:15%"><%= "#{appointment.patient.name }様"%></td>
+              <td style="width:15%"><%= "#{appointment.nurse.name }"%></td>
+              <td style="width:15%"><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
+              <td style="width:55%"><%= appointment.description %></td>
             </tr>
             <% end %>
           </tbody>
@@ -190,10 +190,10 @@
               <tbody>
                 <%  @appointments_grouped_by_title.each do |service_name, appointments| %>
                   <tr>
-                    <th><%= service_name %></th>
-                    <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
-                    <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
-                    <th><%= appointments.count %></th>
+                    <td><%= service_name %></td>
+                    <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
+                    <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
+                    <td><%= appointments.count %></td>
                   </tr>
                 <% end %>
               </tbody>
@@ -218,10 +218,10 @@
           <tbody>
             <%  @weekly_appointments_grouped_by_title.each do |service_name, appointments| %>
               <tr>
-                <th><%= service_name %></th>
-                <th><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></th>
-                <th><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></th>
-                <th><%= appointments.count %></th>
+                <td><%= service_name %></td>
+                <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
+                <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
+                <td><%= appointments.count %></td>
               </tr>
             <% end %>
           </tbody>
@@ -252,18 +252,18 @@
               <% @daily_provided_services.each do |nurse_id, provided_services_array| %>
                 <% provided_services_array.each do |provided_service| %>
                   <tr>
-                    <th><%= provided_service.patient.try(:name) %></th>
-                    <th><%= patient_gender(provided_service.patient) %></th>
-                    <th><%= "#{provided_service.appointment_start.strftime('%H:%M')} ~ #{provided_service.appointment_end.strftime('%H:%M')}" %></th>
-                    <th><%= provided_service.nurse.try(:name) %></th>
-                    <th><%= provided_service.title %></th>
-                    <th class='verify-provided-service' id='provided-service-<%= provided_service.id %>'>
+                    <td><%= provided_service.patient.try(:name) %></td>
+                    <td><%= patient_gender(provided_service.patient) %></td>
+                    <td><%= "#{provided_service.appointment_start.strftime('%H:%M')} ~ #{provided_service.appointment_end.strftime('%H:%M')}" %></td>
+                    <td><%= provided_service.nurse.try(:name) %></td>
+                    <td><%= provided_service.title %></td>
+                    <td class='verify-provided-service' id='provided-service-<%= provided_service.id %>'>
                       <% if provided_service.verified? %>
                         <div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
                       <% else %>
-                        <%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-small' if !provided_service.verified? %>
+                        <%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
                       <% end %>
-                    </th>
+                    </td>
                   </tr>
                 <% end %>
               <% end %>

@@ -58,11 +58,11 @@
 				<th class="table-important-fields">タイプ</th>
 				<th class="table-important-fields">利用者名</th>
 				<th class="table-important-fields">提供時間</th>
-				<th class="table-important-fields">開始</th>
-				<th class="table-important-fields">終了</th>
+				<th class="table-important-fields">開始~終了</th>
 				<th class="table-important-fields">時給/単価</th>
 				<th class="table-important-fields">回数</th>
 				<th class="table-important-fields">計</th>
+				<th class="table-important-fields">確認</th>
 				<th class="table-important-fields">アクション</th>
 			</tr>
 			
@@ -75,8 +75,7 @@
 				<td><%= provided_service.try(:title) %></td>
 				<td><%= provided_service.patient.try(:name) %> </td>
 				<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.service_duration.present? %></td>
-				<td><%= provided_service.appointment_start.strftime("%H:%M") if provided_service.appointment_start.present? %></td>
-				<td><%= provided_service.appointment_end.strftime("%H:%M") if provided_service.appointment_end.present? %></td>
+				<td><%= "#{provided_service.appointment_start.strftime('%H:%M')}~#{provided_service.appointment_end.strftime('%H:%M')}"  if provided_service.appointment_start.present? && provided_service.appointment_end.present? %></td>
 				<td>
 					<%= provided_service.unit_cost %>¥
 				</td>
@@ -84,6 +83,13 @@
 					<%= provided_service.service_counts if provided_service.service_counts.present? %>
 				</td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
+                <td class='verify-provided-service' id='provided-service-<%= provided_service.id %>'>
+                    <% if provided_service.verified? %>
+                    	<div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
+                    <% else %>
+                        <%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
+                    <% end %>
+                </td>
 				<td><%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
 
 			</tr>

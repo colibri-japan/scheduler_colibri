@@ -1,7 +1,7 @@
 <% if activity.trackable %>
-	がサービスが不可能な時間を追加しました。<br/>
+	が自社サービス以外の予定を追加しました。<br/>
 	<span class="activity-important-fields"><%= activity.trackable.nurse.present? ? "#{activity.trackable.nurse.try(:name)   }" : "#{activity.trackable.patient.try(:name)}様"  %></span>
 	<%= weekday(activity.trackable.starts_at) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= weekday(activity.trackable.ends_at) %><%= activity.trackable.ends_at.strftime("%H:%M") %>
 <% else %>
-	がその後削除されたサービスが不可能な時間を追加しました。
+	がその後削除された自社サービス以外の予定を追加しました。
 <% end %>

@@ -8,7 +8,7 @@ json.array! @unavailabilities.each do |unavailability|
     json.end unavailability.ends_at
     json.description unavailability.description ? unavailability.description : ''
     json.service_type unavailability.title ? unavailability.title : ''
-    json.title "#{unavailability.patient.try(:name)}: #{unavailability.title}" 
+    json.title "#{unavailability.patient.try(:name)} #{unavailability.nurse.try(:name)}: #{unavailability.title}" 
 
     json.allDay unavailability.all_day_unavailability? ? true : false
 

@@ -24,8 +24,8 @@ class UnavailabilitiesController < ApplicationController
 	# GET /unavailabilities/new
 	def new
 	  @unavailability = Unavailability.new
-	  @nurses = @corporation.nurses.all 
-	  @patients = @corporation.patients.where(active: true).all
+	  @nurses = @corporation.nurses.displayable.order_by_kana
+	  @patients = @corporation.patients.active.all
 	end
 
 	# GET /unavailabilities/1/edit

@@ -73,11 +73,10 @@ initialize_nurse_calendar = function(){
       selectHelper: false,
       editable: true,
       eventColor: '#7AD5DE',
-      events: window.appointmentsURL + '&master=false',
-
+      eventSources: [window.appointmentsURL + '&master=false', window.unavailabilitiesUrl + '&master=false'],
 
       select: function(start, end, jsEvent, view, resource) {
-        $.getScript(window.createRecurringAppointmentURL, function() {
+        $.getScript(window.bootstrapToggleUrl, function() {
           
           masterSwitchToggle();
           toggleEditRequested();
@@ -125,6 +124,18 @@ initialize_nurse_calendar = function(){
           }
 
           $("#recurring_appointment_nurse_id").val(window.nurseId);
+
+          $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
+          $('#unavailability_starts_at_2i').val(moment(start).format('M'));
+          $('#unavailability_starts_at_3i').val(moment(start).format('D'));
+          $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
+          $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
+          $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
+          $('#unavailability_ends_at_2i').val(moment(end).format('M'));
+          $('#unavailability_ends_at_3i').val(moment(end).format('D'));
+          $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
+          $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
+          $("#unavailability_nurse_id").val(window.nurseId);
           
           recurringAppointmentFormChosen();
         });
@@ -147,6 +158,7 @@ initialize_nurse_calendar = function(){
         if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
         }
+
         element.popover({
           title: event.service_type,
           content: event.description,

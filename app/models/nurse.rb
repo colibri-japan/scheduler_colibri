@@ -53,6 +53,9 @@ class Nurse < ApplicationRecord
 
 		if selected_appointments.present? && self.phone_mail.present?
 			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: custom_email_message, custom_subject: custom_email_subject}).deliver_now
+			# nurse_id = self.id 
+			# selected_appointments_ids = selected_appointments.map {|e| e.id}
+			# SendNurseReminderWorker.perform_async(nurse_id, selected_appointments_ids, custom_email_days, custom_email_message, custom_email_subject)
 		end
 
 	end

@@ -141,6 +141,8 @@ class RecurringAppointment < ApplicationRecord
 			recurring_appointment_before_edit_date.save(validate: false)
 			puts 'just after saving'
 
+			#this recurring appointment should not be reflected to next month's planning
+
 			appointments_before_edit_date.each do |appointment|
 				appointment.recurring_appointment_id = recurring_appointment_before_edit_date.id
 				appointment.save!(validate: false)

@@ -55,11 +55,16 @@ class Service < ApplicationRecord
 
   def create_nurse_services 
     nurses = self.corporation.nurses.where(displayable: true)
+    nurse_services = Service.where(title: self.title, nurse_id: nurses.ids).all
     new_services = []
 
     nurses.each do |nurse|
-      nurse_service = Service.new(corporation_id: self.corporation_id, title: self.title, nurse_id: nurse.id, unit_wage: self.unit_wage, weekend_unit_wage: self.weekend_unit_wage, skip_create_nurses_callback: true)
-      new_services << nurse_service
+      nurse_service = nurse_services.where(nurse_id: nurse.id).first 
+
+      unless nurse_service.present?
+        new_service = Service.new(corporation_id: self.corporation_id, title: self.title, nurse_id: nurse.id, unit_wage: self.unit_wage, weekend_unit_wage: self.weekend_unit_wage, skip_create_nurses_callback: true)
+        new_services << new_service
+      end
     end
 
     Service.import new_services

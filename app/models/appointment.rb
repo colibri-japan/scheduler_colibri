@@ -73,9 +73,15 @@ class Appointment < ApplicationRecord
 		if self.master != true
 		  provided_duration = self.ends_at - self.starts_at
 		  is_provided =  Time.current + 9.hours > self.starts_at
-		  service_salary_id = self.planning.corporation.equal_salary ? self.service_id : Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first.id
-		  puts 'just before saving provided service'
-		  puts self.nurse_id
+		  if self.planning.corporation.equal_salary
+			service_salary_id = self.service_id
+		  else
+			nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first
+			if nurse_service.nil? 
+				nurse_service = Service.create(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id)
+			end
+			service_salary_id = nurse_service.id
+		  end
 		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
 		end
 	end

@@ -34,14 +34,16 @@
         <%= form.number_field :unit_cost, id: :provided_service_unit_cost, class: "form-control" %>
       </div>
 
+      <% if provided_service.new_record? %>
+
       <div class="form-group">
         <%= form.label :service_date, "日付", class: "colibri-form-label" %><span class='required-field'>*</span>
         <%= form.date_select :service_date, id: :provided_service_service_date, class: "form-control" %>
       </div>
 
-      <% if  provided_service.hour_based_wage == true || provided_service.new_record?  %>
+      <% end %>
 
-        
+      <% if  provided_service.hour_based_wage == true || provided_service.new_record?  %>
 
         <div class="form-group"  id="pay-by-hour-field"><span class='required-field'>*</span>
           <%= form.label :service_duration, "提供時間", class: "colibri-form-label" %>

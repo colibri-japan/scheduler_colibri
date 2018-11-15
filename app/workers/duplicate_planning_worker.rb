@@ -15,7 +15,7 @@ class DuplicatePlanningWorker
 
 		initial_recurring_appointments_count = template_planning.recurring_appointments.where(master: true).valid.edit_not_requested.where.not(frequency: 2).count
 
-		template_planning.recurring_appointments.valid.edit_not_requested.where(master: true).where.not(frequency: 2).find_each do |recurring_appointment|
+		template_planning.recurring_appointments.valid.duplicatable.edit_not_requested.where(master: true).where.not(frequency: 2).find_each do |recurring_appointment|
 
 			new_anchor_day = first_day.wday > recurring_appointment.anchor.wday ?  first_day + 7 - (first_day.wday - recurring_appointment.anchor.wday) :  first_day + (recurring_appointment.anchor.wday - first_day.wday)
 

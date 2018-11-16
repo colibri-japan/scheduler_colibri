@@ -51,7 +51,7 @@
 
             <div class="form-group">
                 <%= form.label :weekend_reminder_option, "リマインダーメール週末送信オプション", class: "colibri-form-label" %>
-                <%= form.select :weekend_reminder_option, options_for_select([['土.日.月をまとめて金曜日に送る', 0], ['日.月をまとめて土曜日に送る', 1], ['週末も毎日送る', 2]], @corporation.weekend_reminder_option), class: "form-control" %>
+                <%= form.select :weekend_reminder_option, options_for_select([['土.日.月の予定をまとめて金曜日に送る', 0], ['日.月の予定をまとめて土曜日に送る', 1], ['週末も毎日送る', 2]], @corporation.weekend_reminder_option), class: "form-control" %>
             </div>
 
             <div class="form-group">

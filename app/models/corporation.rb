@@ -7,6 +7,8 @@ class Corporation < ApplicationRecord
 	has_many :invoice_settings
 	has_many :posts
 
+	validates :weekend_reminder_option, inclusion: 0..2
+
 	before_save :set_default_equal_salary
 	after_create :create_undefined_nurse
 
@@ -15,6 +17,26 @@ class Corporation < ApplicationRecord
 
 		corporations.each do |corporation|
 			corporation.nurses.create(name: "未定", displayable: false, kana: "あああああ")
+		end
+	end
+
+	def reminder_email_days(date)
+		if self.weekend_reminder_option == 0
+			[1,2,3,4].include?(date.wday) ? [date + 1.day] : [date + 1.day, date + 2.days, date + 3.days]
+		elsif self.weekend_reminder_option == 1
+			[1,2,3,4,5].include?(date.wday) ? [date + 1.day] : [date + 1.day, date + 2.days]
+		elsif self.weekend_reminder_option == 2
+			date + 1.day
+		end
+	end
+
+	def can_send_reminder_today?(date)
+		if self.weekend_reminder_option == 0
+			[1,2,3,4,5].include?(date.wday)
+		elsif self.weekend_reminder_option == 1
+			[1,2,3,4,5,6].include?(date.wday)
+		elsif self.weekend_reminder_option == 2
+			true
 		end
 	end
 

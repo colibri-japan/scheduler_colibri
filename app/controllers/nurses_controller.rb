@@ -95,10 +95,10 @@ class NursesController < ApplicationController
 
   def send_reminder_email
     message = nurse_params[:custom_email_message]
-    custom_email_days = nurse_params[:custom_email_days]
     subject = nurse_params[:custom_email_subject]
+    custom_email_days = nurse_params[:custom_email_days]
 
-    @nurse.send_service_reminder(custom_email_days, {custom_email_message: message, custom_email_subject: subject})
+    SendNurseReminderWorker.perform_async(@nurse.id, custom_email_days, {custom_email_message: message, custom_email_subject: subject})
   end
 
   def payable

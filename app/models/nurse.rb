@@ -29,36 +29,6 @@ class Nurse < ApplicationRecord
 		}
 	end
 
-	def send_service_reminder(custom_email_days, options={})
-		custom_email_message = options[:custom_email_message] || ' '
-		custom_email_subject = options[:custom_email_subject]
-		@custom_email_days = custom_email_days
-
-		@custom_email_days.map! {|e| e.to_date }
-
-		valid_plannings = Planning.where(business_month: [Time.current.month, Time.current.month + 1], corporation_id: self.corporation_id, archived: false)
-
-		selected_appointments = []
-
-		@custom_email_days.each do |custom_day|
-			custom_day_start = custom_day.beginning_of_day
-			custom_day_end = custom_day.end_of_day
-			custom_day_appointments =  Appointment.valid.edit_not_requested.where(planning_id: valid_plannings.ids, nurse_id: self.id, starts_at: custom_day_start..custom_day_end, master: false).all.order(starts_at: 'asc')
-			selected_appointments << custom_day_appointments.to_a
-		end
-
-
-		selected_appointments = selected_appointments.flatten
-
-
-		if selected_appointments.present? && self.phone_mail.present?
-			NurseMailer.reminder_email(self, selected_appointments, @custom_email_days, {custom_email_message: custom_email_message, custom_subject: custom_email_subject}).deliver_now
-			# nurse_id = self.id 
-			# selected_appointments_ids = selected_appointments.map {|e| e.id}
-			# SendNurseReminderWorker.perform_async(nurse_id, selected_appointments_ids, custom_email_days, custom_email_message, custom_email_subject)
-		end
-
-	end
 	
 	private 
 
@@ -77,12 +47,9 @@ class Nurse < ApplicationRecord
 
 
 	def self.service_reminder
-		Nurse.where(reminderable: true).find_each do |nurse|
-			date = Date.today
-
-			selected_days = [1,2,3,4].include?(date.wday) ? [date + 1.day] : [date + 1.day, date + 2.days, date + 3.days]
-
-			nurse.send_service_reminder(selected_days) unless [0,6].include?(date.wday)
+		Nurse.where(reminderable: true, displayable: true).find_each do |nurse|
+			selected_days = nurse.corporation.reminder_email_days(Date.today)
+			SendNurseReminderWorker.perform_async(nurse.id, selected_days) if nurse.corporation.can_send_reminder_today?(Date.today)
 		end
 	end
 

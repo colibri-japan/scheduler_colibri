@@ -12,7 +12,7 @@ json.resourceId appointment.nurse_id
 json.nurse_name appointment.nurse.try(:name)
 json.patient_name appointment.patient.try(:name)
 json.service_type appointment.title ? appointment.title : ''
-
+json.patient_address appointment.patient.try(:address)
 json.unavailability false
 
 json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?

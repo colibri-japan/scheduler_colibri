@@ -14,6 +14,7 @@ json.array! @appointments.each do |appointment|
         json.nurse_name appointment.nurse.try(:name)
         json.patient_name appointment.patient.try(:name)
         json.service_type appointment.title ? appointment.title : ''
+        json.patient_address appointment.patient.try(:address)
 
         json.unavailability false
 

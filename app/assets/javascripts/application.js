@@ -159,9 +159,23 @@ initialize_nurse_calendar = function(){
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
         }
 
+        let popover_content;
+        if (event.patient_address) {
+          console.log('patient address present')
+          console.log(event.description)
+          console.log(event.patient_address)
+          popover_content = event.patient_address + '<br/>' + event.description;
+        } else {
+          console.log('no patient address')
+          console.log(event.description)
+          console.log(event.patient_address)
+          popover_content = event.description;
+        }
+
         element.popover({
+          html: true,
           title: event.service_type,
-          content: event.description,
+          content: popover_content,
           trigger: 'hover',
           placement: 'top',
           container: 'body'

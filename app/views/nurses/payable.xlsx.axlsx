@@ -17,7 +17,7 @@ wb.styles do |s|
 		sheet.add_row [current_user.corporation.name], style: align_right
 		sheet.merge_cells "A2:G2"
 		sheet.add_row
-		sheet.add_row ["#{@planning.business_year}年#{@planning.business_month}月", '','', 'ヘルパー氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,align_right,align_right, thick_border, thick_border]
+		sheet.add_row ["#{@planning.business_year}年#{@planning.business_month}月", '','', '従業員氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,align_right,align_right, thick_border, thick_border]
 		sheet.merge_cells "A4:B4"
 		sheet.merge_cells "D4:E4"
 		sheet.merge_cells "F4:G4"

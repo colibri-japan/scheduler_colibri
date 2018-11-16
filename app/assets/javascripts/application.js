@@ -1795,7 +1795,7 @@ $(document).on('turbolinks:load', function(){
 
   $('#toggle-patients-nurses').bootstrapToggle({
     on: '利用者',
-    off: 'ヘルパー',
+    off: '従業員',
     onstyle: 'info',
     offstyle: 'info',
     width: 100

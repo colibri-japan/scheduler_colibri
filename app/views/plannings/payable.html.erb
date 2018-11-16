@@ -39,7 +39,7 @@
 	<div class='colibri-dashboard-container-row'>
 		<div class='colibri-dashboard-subcontainer'>
 	    <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>ヘルパー一覧</span>
+        <span class='colibri-subcontainer-title'>従業員一覧</span>
       </div>
 			<div class='colibri-subcontainer-body'>
 				<%= bar_chart @provided_services_till_today.group('nurses.name').sum(:total_wage), width: '95%', suffix: '￥' %>

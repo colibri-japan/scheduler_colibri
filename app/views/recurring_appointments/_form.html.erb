@@ -97,7 +97,7 @@
       <% end %>
 
       <div class="form-group">
-        <%= form.label :nurse_id, "ヘルパー名", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %><span class='required-field'>*</span>
         <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, recurring_appointment.nurse_id), required: true %>
       </div>
 

@@ -9,10 +9,17 @@ json.start appointment.starts_at
 json.end appointment.ends_at
 json.description appointment.description ? appointment.description : ''
 json.resourceId appointment.nurse_id
-json.nurse_name appointment.nurse.try(:name)
-json.patient_name appointment.patient.try(:name)
+#json.nurse_name appointment.nurse.try(:name)
+json.nurse do 
+    json.name appointment.nurse.name 
+end
+#json.patient_name appointment.patient.try(:name)
+json.patient do 
+    json.name appointment.patient.name 
+    json.address appointment.patient.address 
+end
 json.service_type appointment.title ? appointment.title : ''
-json.patient_address appointment.patient.try(:address)
+#json.patient_address appointment.patient.try(:address)
 json.unavailability false
 
 json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?

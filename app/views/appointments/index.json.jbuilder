@@ -10,11 +10,21 @@ json.array! @appointments.each do |appointment|
         json.start appointment.starts_at
         json.end appointment.ends_at
         json.description appointment.description ? appointment.description : ''
+        
         json.resourceId appointment.nurse_id
-        json.nurse_name appointment.nurse.try(:name)
-        json.patient_name appointment.patient.try(:name)
+        #json.nurse_name appointment.nurse.try(:name)
+        #json.patient_name appointment.patient.try(:name)
         json.service_type appointment.title ? appointment.title : ''
-        json.patient_address appointment.patient.try(:address)
+        #json.patient_address appointment.patient.try(:address)
+
+        json.patient do 
+            json.name appointment.patient.name 
+            json.address appointment.patient.try(:address) 
+        end
+
+        json.nurse do 
+            json.name appointment.nurse.name
+        end
 
         json.unavailability false
 

@@ -160,15 +160,17 @@ initialize_nurse_calendar = function(){
         }
 
         let popover_content;
-        if (event.patient_address) {
+        console.log(event)
+        console.log(event.patient)
+        if (event.patient.address) {
           console.log('patient address present')
           console.log(event.description)
-          console.log(event.patient_address)
-          popover_content = event.patient_address + '<br/>' + event.description;
+          console.log(event.patient.address)
+          popover_content = event.patient.address + '<br/>' + event.description;
         } else {
           console.log('no patient address')
           console.log(event.description)
-          console.log(event.patient_address)
+          console.log(event.patient.address)
           popover_content = event.description;
         }
 
@@ -181,7 +183,7 @@ initialize_nurse_calendar = function(){
           container: 'body'
         });
         element.find('.fc-title').text(function(i, t){
-          return event.patient_name;
+          return event.patient.name;
         });
         return event.displayable;
       },
@@ -211,7 +213,7 @@ initialize_nurse_calendar = function(){
         let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').data('event', event)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
@@ -406,7 +408,7 @@ initialize_patient_calendar = function(){
           container: 'body'
         });
         element.find('.fc-title').text(function(i, t){
-          return event.nurse_name;
+          return event.nurse.name;
         });
         return event.displayable;
       },
@@ -422,7 +424,7 @@ initialize_patient_calendar = function(){
         let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
+        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
         $('#drag-drop-confirm').data('event', event)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
@@ -575,9 +577,9 @@ initialize_master_calendar = function() {
             $('#nurse-info-block-master').removeClass('.print-master-no-view');
             element.find('.fc-title').text(function(i,t){
               if ($('#toggle-patients-nurses').is(':checked')) {
-                return event.nurse_name;
+                return event.nurse.name;
               } else {
-                return event.patient_name;
+                return event.patient.name;
               }
             });
 
@@ -600,7 +602,7 @@ initialize_master_calendar = function() {
         let newAppointment =  '(' + start_time.format('dddd').charAt(0) + ') ' + frequency + ' ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
         
 
-        $('#drag-drop-master-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name + "</p><p>"  + newAppointment + "</p>")
+        $('#drag-drop-master-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
 
         $('#drag-drop-master').dialog({
           height: 'auto',
@@ -829,9 +831,9 @@ initialize_calendar = function() {
         if (view.name == 'agendaDay') {
           element.find('.fc-title').text(function(i, t){
             if ($('#day-view-options-input').is(':checked')) {
-              return event.patient_name;
+              return event.patient.name;
             } else {
-              return event.nurse_name;
+              return event.nurse.name;
             }
           });
         }
@@ -990,7 +992,7 @@ initialize_calendar = function() {
           }
         }
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse_name + '  / 利用者名： ' + event.patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').data('event', event)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
@@ -1193,7 +1195,7 @@ appointmentComments = function() {
 
   clientEvents.forEach(event => {
     if (event.description) {
-      var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse_name + ' 利用者：' + event.patient_name + ' ' + event.description;
+      var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse.name + ' 利用者：' + event.patient.name + ' ' + event.description;
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }
   })

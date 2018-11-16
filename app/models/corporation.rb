@@ -40,6 +40,12 @@ class Corporation < ApplicationRecord
 		end
 	end
 
+	def can_send_reminder_now?(datetime)
+		date_corporation_as_string = Date.today.to_s + ' ' + self.reminder_email_hour + ' JST'
+		date_corporation = DateTime.strptime(date_corporation_as_string, '%Y-%m-%d %H:%M %Z')
+		datetime.between?((date_corporation - 15.minutes), (date_corporation + 15.minutes))
+	end
+
 	private
 
 	def set_default_equal_salary

@@ -1,5 +1,4 @@
 json.array! @appointments.each do |appointment|
-    json.cache! ['v1', appointment], expires_in: 10.minutes do
         json.allDay appointment.all_day_appointment?
 
         date_format = json.allDay ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
@@ -12,16 +11,11 @@ json.array! @appointments.each do |appointment|
         json.description appointment.description ? appointment.description : ''
         
         json.resourceId appointment.nurse_id
-        #json.nurse_name appointment.nurse.try(:name)
-        #json.patient_name appointment.patient.try(:name)
         json.service_type appointment.title ? appointment.title : ''
-        #json.patient_address appointment.patient.try(:address)
 
-        json.cache! ['v1', appointment.patient], expires_in: 10.minutes do 
-            json.patient do 
-                json.name appointment.patient.name 
-                json.address appointment.patient.try(:address) 
-            end
+        json.patient do 
+            json.name appointment.patient.name 
+            json.address appointment.patient.try(:address) 
         end
 
         json.nurse do 
@@ -37,5 +31,4 @@ json.array! @appointments.each do |appointment|
         json.base_url planning_appointment_path(@planning, appointment)
         json.edit_url edit_planning_appointment_path(@planning, appointment)
         json.recurring_appointment_path "/plannings/#{@planning.id}/recurring_appointments/#{appointment.recurring_appointment_id}/edit" if appointment.recurring_appointment_id.present?
-    end
 end

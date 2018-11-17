@@ -49,9 +49,6 @@ class RecurringAppointmentsController < ApplicationController
     @master = @recurring_appointment.master
     @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(starts_at: 'asc')
     @appointments_after_first = @appointments.drop(1)
-    puts 'counting appointments'
-    puts @appointments.count
-
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
   end
 
@@ -163,7 +160,7 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def set_patients
-      @patients = @corporation.patients.where(active: true).order_by_kana
+      @patients = @corporation.patients.active.order_by_kana
     end
 
 

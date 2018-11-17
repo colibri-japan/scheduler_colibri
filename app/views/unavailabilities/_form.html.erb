@@ -39,7 +39,7 @@
 
   <div class="form-group">
     <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %>
-    <%= form.collection_select(:nurse_id, @nurses, :id, :name, {prompt: '従業員選択'}) %>
+    <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, unavailability.nurse_id, {prompt: '従業員選択'}) %>
   </div>
 
 

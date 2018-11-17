@@ -2,6 +2,8 @@ class UnavailabilitiesController < ApplicationController
 	before_action :set_unavailability, only: [:show, :edit, :update, :destroy]
 	before_action :set_planning
 	before_action :set_corporation
+	before_action :set_nurses, only: [:new, :edit]
+	before_action :set_patients, only: [:new, :edit]
 
 	# GET /unavailabilities
 	# GET /unavailabilities.json
@@ -24,14 +26,10 @@ class UnavailabilitiesController < ApplicationController
 	# GET /unavailabilities/new
 	def new
 	  @unavailability = Unavailability.new
-	  @nurses = @corporation.nurses.displayable.order_by_kana
-	  @patients = @corporation.patients.active.all
 	end
 
 	# GET /unavailabilities/1/edit
 	def edit
-	  @nurses= @corporation.nurses.all
-	  @patients = @corporation.patients.where(active: true).all
 	end
 
 	# POST /unavailabilities
@@ -96,7 +94,15 @@ class UnavailabilitiesController < ApplicationController
 
 	  def set_planning
 	    @planning = Planning.find(params[:planning_id])
-	  end
+		end
+		
+		def set_nurses
+			@nurses = @corporation.nurses.displayable.order_by_kana
+		end
+				
+		def set_patients
+			@patients = @corporation.patients.active.order_by_kana
+		end
 
 	  # Never trust parameters from the scary internet, only allow the white list through.
 	  def unavailability_params

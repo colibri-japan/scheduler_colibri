@@ -17,9 +17,11 @@ json.array! @appointments.each do |appointment|
         json.service_type appointment.title ? appointment.title : ''
         #json.patient_address appointment.patient.try(:address)
 
-        json.patient do 
-            json.name appointment.patient.name 
-            json.address appointment.patient.try(:address) 
+        json.cache! ['v1', appointment.patient], expires_in: 10.minutes do 
+            json.patient do 
+                json.name appointment.patient.name 
+                json.address appointment.patient.try(:address) 
+            end
         end
 
         json.nurse do 

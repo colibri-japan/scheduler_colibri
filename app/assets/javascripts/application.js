@@ -1854,6 +1854,12 @@ $(document).on('turbolinks:load', function(){
 
   $('#day-view-options').hide();
 
+  $('.colibri-nav-username').hover(function(){
+    $('#account-dropdown-icon').css({'color':'black', 'cursor':'pointer'})
+  }, function(){
+    $('#account-dropdown-icon').css({'color': 'white'})
+  })
+
 
 
 

@@ -82,6 +82,10 @@ a.colibri-nav-link {
 	font-size: 1.2em;
 }
 
+.colibri-nav-username {
+	margin-left: 10px;
+}
+
 p.colibri-nav-link {
 	display: block;
 	color: white;
@@ -92,9 +96,13 @@ p.colibri-nav-link {
 	margin-bottom: 0px;
 }
 
-p.colibri-nav-link:hover {
+.colibri-nav-link:hover {
 	cursor: pointer;
-	color: black;
+	color: black !important;
+}
+
+#account-dropdown-icon {
+	margin-left: 3px;
 }
 
 .alert {

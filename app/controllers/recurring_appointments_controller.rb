@@ -87,9 +87,7 @@ class RecurringAppointmentsController < ApplicationController
 
   def toggle_edit_requested
     @recurring_appointment = RecurringAppointment.find(params[:id])
-    @recurring_appointment.edit_requested = !@recurring_appointment.edit_requested
-
-    if @recurring_appointment.save
+    if @recurring_appointment.update_attribute(edit_requested: !@recurring_appointment.edit_requested)
       @activity = @recurring_appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_edit_requested: !@recurring_appointment.edit_requested
       @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
     end

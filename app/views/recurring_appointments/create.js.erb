@@ -1,5 +1,20 @@
 <% if @recurring_appointment.errors.any? %>
-  alert("<%= j @recurring_appointment.errors[:base].join('、') + "のヘルパーが重複してます。" %>");
+  $('#nurse-conflict-days').text("<%= j @recurring_appointment.errors[:base].join('、') + 'のヘルパーが重複してます。' %>")
+  $('.modal').modal('hide');
+  $('#nurse-conflict-confirm').dialog({
+    resizable: false,
+    height: 'auto',
+    width: 400,
+    modal: true,
+    buttons: {
+      '登録する':function(){
+        $(this).dialog('close');
+      },
+      'キャンセル':function(){
+        $(this).dialog('close');
+      }
+    }
+  })
 <% else %>
 
   $('.modal').modal('hide');

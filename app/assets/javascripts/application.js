@@ -160,17 +160,9 @@ initialize_nurse_calendar = function(){
         }
 
         let popover_content;
-        console.log(event)
-        console.log(event.patient)
         if (event.patient.address) {
-          console.log('patient address present')
-          console.log(event.description)
-          console.log(event.patient.address)
           popover_content = event.patient.address + '<br/>' + event.description;
         } else {
-          console.log('no patient address')
-          console.log(event.description)
-          console.log(event.patient.address)
           popover_content = event.description;
         }
 
@@ -1555,6 +1547,12 @@ let patientSelect2 = () => {
     language: 'ja'
   });
 };
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+  }
+});
 
 
 

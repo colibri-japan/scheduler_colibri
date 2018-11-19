@@ -228,7 +228,7 @@ class RecurringAppointment < ApplicationRecord
 				overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false).overlapping(range).select(:id)
 				overlapping_ids = overlaps.map{|e| e.id}
 
-				errors.add(:nurse_id, overlapping_ids) if overlaps.present?
+				errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present?
 				errors[:base] << "#{start_of_appointment.strftime('%-m月%-d日')}" if overlaps.present?
 			end
 		end
@@ -252,7 +252,7 @@ class RecurringAppointment < ApplicationRecord
 				overlapping_ids = overlaps.map{|e| e.id} 
 				
 				errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present?
-				errors[:base] << "#{start_time.strftime('%-m月%-d日')}"
+				errors[:base] << "#{start_time.strftime('%-m月%-d日')}" if overlaps.present?
 			end
 
 		end

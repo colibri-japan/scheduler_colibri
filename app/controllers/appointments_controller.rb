@@ -67,15 +67,8 @@ class AppointmentsController < ApplicationController
     store_original_params
     @appointment.recurring_appointment_id = nil
 
-    respond_to do |format|
-      if @appointment.update(appointment_params)
-        @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_start: @appointment.starts_at, new_end: @appointment.ends_at, new_edit_requested: @appointment.edit_requested, new_nurse: @appointment.nurse.try(:name), new_patient: @appointment.patient.try(:name), new_title: @appointment.title, new_color: @appointment.color
-        format.js
-        format.json { render :show, status: :ok, location: @appointment }
-      else
-        format.js
-        format.json { render json: @appointment.errors, status: :unprocessable_entity }
-      end
+    if @appointment.update(appointment_params)
+      @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_start: @appointment.starts_at, new_end: @appointment.ends_at, new_edit_requested: @appointment.edit_requested, new_nurse: @appointment.nurse.try(:name), new_patient: @appointment.patient.try(:name), new_title: @appointment.title, new_color: @appointment.color
     end
   end
 
@@ -85,12 +78,9 @@ class AppointmentsController < ApplicationController
   end
 
   def toggle_edit_requested
-    puts @appointment.edit_requested
-    @appointment.edit_requested = !@appointment.edit_requested
+    edit_requested = !@appointment.edit_requested
 
-    puts @appointment.edit_requested
-
-    if @appointment.save
+    if @appointment.update_attribute(:edit_requested, edit_requested)
       @activity = @appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@appointment.edit_requested
     end
   end

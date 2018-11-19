@@ -1,7 +1,57 @@
 <% if @appointment.errors.any? %>
-  alert("<%= j @appointment.errors.values.join('; ') %>");
-<% else %>
+  $('#nurse-conflict-days').text("<%= j @appointment.errors[:base].first %>");
+  $('.modal').modal('hide');
+  $('#nurse-conflict-confirm').dialog({
+    resizable: false,
+    height: 'auto',
+    width: 400,
+    modal: true,
+    buttons: {
+      '登録する':function(){
+        $(this).dialog('close');
+        let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
+        let indexCount =  0;
+        appointment_ids.forEach(function(appointment_id, index, array){
+          let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+          indexCount++;
 
+          $.ajax({
+            url: request_edit_url,
+            type: 'PATCH',
+            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+            success: function(data) {
+              if (indexCount == appointment_ids.length) {
+                let appointment_data;
+                appointment_data = {
+                  appointment: {
+                    starts_at: "<%= @appointment.starts_at %>",
+                    ends_at: "<%= @appointment.ends_at %>",
+                    nurse_id: "<%= @appointment.nurse_id %>",
+                    patient_id: "<%= @appointment.patient_id %>",
+                    color: "<%= @appointment.color %>",
+                    title: "<%= @appointment.title %>",
+                    description: "<%= @appointment.description %>"
+                  }
+                };
+                let appointment_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + <%= @appointment.id %>;
+                console.log(appointment_url)
+
+                $.ajax({
+                  url: appointment_url,
+                  type: 'PATCH',
+                  data: appointment_data
+                })
+              }
+            }
+          })
+        })
+      },
+      'キャンセル':function(){
+        $(this).dialog('close');
+      }
+    }
+  })
+<% else %>
   if (typeof calendar === 'undefined') {
     let calendar;
   }
@@ -28,8 +78,6 @@
   if ($('#planning-activities').length > 0) {
     $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
   }
-  <% puts 'patient has changed' %>
-  <% puts Patient.find(@activity.patient_id).name != @activity.previous_patient %>
   <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
     if ($('.calendar').length > 0) {
       let view = $('.calendar').fullCalendar('getView');

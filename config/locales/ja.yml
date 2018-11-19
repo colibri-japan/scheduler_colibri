@@ -1,4 +1,12 @@
 ja: 
+ activerecord:
+  errors:
+   models:
+    recurring_appointment:
+     attributes:
+      frequency:
+       blank: '頻度を入力してください。'
+       inclusion: '選択された頻度が不明です。'
  pundit:
   default: 'このページにはアクセスできません。'
   planning_policy:

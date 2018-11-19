@@ -1,7 +1,5 @@
 <% if @recurring_appointment.errors.any?  %>
-  alert("<%= j @recurring_appointment.errors.values.join('; ') + "のヘルパーが重複してます。" %>");
-
-
+  alert("<%= j @recurring_appointment.errors[:base].join('、') + "のヘルパーが重複してます。" %>");
 <% else %>
   $('.modal').modal('hide');
 

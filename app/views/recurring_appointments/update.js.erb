@@ -9,15 +9,11 @@
     buttons: {
       '登録する':function(){
         $(this).dialog('close');
-        console.log("<%=  @recurring_appointment.errors[:nurse_id].flatten %>");
         let appointment_ids = <%=  @recurring_appointment.errors[:nurse_id].flatten %>;
-        console.log(appointment_ids)
         let indexCount =  0;
         appointment_ids.forEach(function(appointment_id, index, array){
           let request_edit_url = '/plannings/' + <%= @recurring_appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-          console.log(request_edit_url)
           indexCount++;
-          console.log(indexCount)
 
           $.ajax({
             url: request_edit_url,
@@ -25,7 +21,6 @@
             beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
             success: function(data) {
               if (indexCount == appointment_ids.length) {
-                console.log('made it in the loop')
                 $('input#save-recurring-appointment').click()
               }
             }

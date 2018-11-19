@@ -9,6 +9,23 @@
     buttons: {
       '登録する':function(){
         $(this).dialog('close');
+        let appointment_ids = <%=  @recurring_appointment.errors[:nurse_id].flatten %>;
+        let indexCount =  0;
+        appointment_ids.forEach(function(appointment_id, index, array){
+          let request_edit_url = '/plannings/' + <%= @recurring_appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+          indexCount++;
+
+          $.ajax({
+            url: request_edit_url,
+            type: 'PATCH',
+            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+            success: function(data) {
+              if (indexCount == appointment_ids.length) {
+                $('input#save-recurring-appointment').click()
+              }
+            }
+          })
+        })
       },
       'キャンセル':function(){
         $(this).dialog('close');

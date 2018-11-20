@@ -81,7 +81,6 @@ initialize_nurse_calendar = function(){
           masterSwitchToggle();
           toggleEditRequested();
 
-
         	$('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
         	$('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
           $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
@@ -779,7 +778,11 @@ initialize_calendar = function() {
               if (['', event.patient_id.toString()].indexOf(patientFilterArray[i]) >= 0) {
                 return true
               }
-            } 
+            } else {
+              if (event.unavailability) {
+                return true
+              }
+            }
           }
           return false
         }

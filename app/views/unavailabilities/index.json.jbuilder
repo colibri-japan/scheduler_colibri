@@ -19,8 +19,10 @@ json.array! @unavailabilities.each do |unavailability|
         json.address unavailability.patient.try(:address)
     end
 
-    json.nurse do 
-        json.name unavailability.nurse.try(:name)
+    if unavailability.nurse_id.present?
+        json.nurse do 
+            json.name unavailability.nurse.try(:name)
+        end
     end
 
     json.color '#D46A6A'

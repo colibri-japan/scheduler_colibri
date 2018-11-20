@@ -7,7 +7,7 @@ json.start unavailability.starts_at
 json.end unavailability.ends_at
 json.description unavailability.description ? unavailability.description : ''
 json.service_type unavailability.title ? unavailability.title : ''
-json.title "#{unavailability.patient.try(:name)}: #{unavailability.title}" 
+json.title "#{unavailability.patient.try(:name)} #{unavailability.nurse.try(:name)}: #{unavailability.title}" 
 
 json.allDay unavailability.all_day_unavailability? ? true : false
 
@@ -19,8 +19,10 @@ end
 
 json.displayable true
 
-json.nurse do 
-    json.name unavailability.nurse.try(:name)
+if unavailability.nurse_id.present?
+    json.nurse do 
+        json.name unavailability.nurse.try(:name)
+    end
 end
 
 json.color '#D46A6A'

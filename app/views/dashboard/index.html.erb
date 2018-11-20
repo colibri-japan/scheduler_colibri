@@ -10,11 +10,6 @@
 </div>
 
 <div id='colibri-dashboard-container'>
-  <% if false %>
-    <div id='colibri-dashboard-commands'>
-      <%= link_to '日報をダウンロード', dashboard_index_path(format: :xlsx), class: 'btn btn-success btn-sm text-white' %>
-    </div>
-  <% end %>
 
   <div class='colibri-dashboard-big-container'>
     <div class='colibri-dashboard-container-column'>
@@ -80,66 +75,6 @@
 
   </div>
 
-
-  <% if false %>
-  <div class='colibri-dashboard-container-row'>
-
-      <div class='colibri-dashboard-subcontainer'>
-        <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'>給与推移</span>
-        </div>
-        <div class='colibri-subcontainer-body'>
-          <%= area_chart @provided_service_data, height: '95%', width: '500px', colors: ['#17a2b8'], suffix: '￥' %>
-        </div>
-      </div>
-      <div class='colibri-dashboard-subcontainer'>
-        <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'>稼働時間推移</span>
-        </div>
-        <div class='colibri-subcontainer-body'>
-          <%= area_chart @provided_service_duration_sums, height: '95%', width: '500px', colors: ['#17a2b8'] %>
-        </div>
-      </div>
-  </div>
-  <% end %>
-
-  <% if false %>
-
-  <div class='colibri-dashboard-container-row'>
-
-
-
-    <div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>利用状況(今月)</span>
-      </div>
-        <div class='colibri-subcontainer-body'>
-          <table class='table'>
-            <thead>
-              <tr>
-                <th class="table-important-fields">サービス</th>
-                <th class="table-important-fields">女</th>
-                <th class="table-important-fields">男</th>
-                <th class="table-important-fields">計</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%  @monthly_appointments_grouped_by_title.each do |service_name, appointments| %>
-                <tr>
-                  <td><%= service_name %></td>
-                  <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
-                  <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
-                  <td><%= appointments.count %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-    </div>
-
-  </div>
-
-  <% end %>
 
   <div class='colibri-dashboard-container-row'>
     <div class='colibri-dashboard-subcontainer'>

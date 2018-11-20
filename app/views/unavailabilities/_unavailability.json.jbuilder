@@ -12,6 +12,16 @@ json.title "#{unavailability.patient.try(:name)}: #{unavailability.title}"
 json.allDay unavailability.all_day_unavailability? ? true : false
 
 json.unavailability true
+json.patient do 
+    json.name unavailability.patient.try(:name)
+    json.address unavailability.patient.try(:address)
+end
+
+json.displayable true
+
+json.nurse do 
+    json.name unavailability.nurse.try(:name)
+end
 
 json.color '#D46A6A'
 

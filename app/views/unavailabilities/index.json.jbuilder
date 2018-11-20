@@ -13,6 +13,15 @@ json.array! @unavailabilities.each do |unavailability|
     json.allDay unavailability.all_day_unavailability? ? true : false
 
     json.unavailability true
+    json.displayable true
+    json.patient do 
+        json.name unavailability.patient.try(:name)
+        json.address unavailability.patient.try(:address)
+    end
+
+    json.nurse do 
+        json.name unavailability.nurse.try(:name)
+    end
 
     json.color '#D46A6A'
 

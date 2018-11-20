@@ -5,11 +5,10 @@
 	window.corporationPatientsUrl = "<%= j corporation_patients_url(@corporation, format: :json) %>";
 	window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>"
-	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning) %>"
-	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>"
+	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>";
+	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning) %>";
+	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.validRangeStart = "<%= j @start_valid %>";
-	window.unavailabilitiesURL = "<%= j planning_unavailabilities_url(@planning) %>";
 	window.recurringUnavailabilitiesURL = "<%= j planning_recurring_unavailabilities_url(@planning) %>";
 	window.defaultView = "<%= j @corporation.default_view %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";

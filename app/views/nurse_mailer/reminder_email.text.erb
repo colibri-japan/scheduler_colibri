@@ -2,16 +2,17 @@
 
 <%= @nurse.name %>様、<%= @corporation.name %>シフト確認になります。ご確認お願い致します。
 
-<%= simple_format(@custom_message) if @custom_message.present? %>
-
+<%= @custom_message if @custom_message.present? %>
 <%= @corporation.custom_email_intro_text if @corporation.custom_email_intro_text.present? %>
 
-<% @appointments.each do |appointment| %>
-	<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日")  %><%= weekday(appointment.starts_at) %> <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
+<% @appointments.each do |day, appointment_array| %>
+<% appointment_array.each do |appointment| %>
+<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日")  %><%= weekday(appointment.starts_at) %> <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
+<% end %>
 <% end %>
 
 以上になります。
 
-<%= simple_format(@corporation.custom_email_outro_text) if @corporation.custom_email_outro_text.present? %>
+<%= @corporation.custom_email_outro_text if @corporation.custom_email_outro_text.present? %>
 
 <%= @corporation.name %>

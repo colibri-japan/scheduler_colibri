@@ -23,11 +23,17 @@
 	<br/>
 <% end %>
 
-<% @appointments.each do |appointment| %>
-	<div>
-		<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日") %><%= weekday(appointment.starts_at) %>  <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
+<div id="appointment-container">
+  <% @appointments.each do |day, appointment_array| %>
+	<div class="day-group" style="margin-bottom:10px">
+	  <% appointment_array.each do |appointment| %>
+	    <div class="appointment-line">
+		  <%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日") %><%= weekday(appointment.starts_at) %>  <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
+	    </div>
+	  <% end %>
 	</div>
-<% end %>
+  <% end %>
+</div>
 <br/>
 
 以上になります。

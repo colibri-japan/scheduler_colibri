@@ -43,7 +43,7 @@ class DashboardController < ApplicationController
     end
 
     #daily provided_services to be verified
-    @daily_provided_services = daily_provided_services.order(service_date: :asc).group_by {|service| service.nurse_id }
+    @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, deactivated: false, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
   end
 
   private

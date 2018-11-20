@@ -249,8 +249,8 @@
               </tr>
             </thead>
             <tbody>
-              <% @daily_provided_services.each do |nurse_id, provided_services_array| %>
-                <% provided_services_array.each do |provided_service| %>
+              <% @daily_provided_services.each do |nurse_id, provided_service_array| %>
+                <% provided_service_array.each do |provided_service| %>
                   <tr>
                     <td><%= provided_service.patient.try(:name) %></td>
                     <td><%= patient_gender(provided_service.patient) %></td>

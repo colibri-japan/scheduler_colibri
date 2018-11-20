@@ -1,43 +1,45 @@
 <% if @recurring_appointment.errors.any?  %>
-  $('#nurse-conflict-days').text("<%= j @recurring_appointment.errors[:base].join('、') + 'のヘルパーが重複してます。' %>")
-  $('.modal').modal('hide');
-  $('#nurse-conflict-confirm').dialog({
-    resizable: false,
-    height: 'auto',
-    width: 400,
-    modal: true,
-    buttons: {
-      '登録する':function(){
-        $(this).dialog('close');
-        let appointment_ids = <%=  @recurring_appointment.errors[:nurse_id].flatten %>;
-        let indexCount =  0;
-        appointment_ids.forEach(function(appointment_id, index, array){
-          let request_edit_url = '/plannings/' + <%= @recurring_appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-          indexCount++;
+  console.log('errors detected')
+  <% if @recurring_appointment.master == true %>
+    console.log('master true')
+    alert("<%= j @recurring_appointment.errors[:base].join('、') + 'のヘルパーが重複してます。' %>")
+  <% else %>
+    console.log('master false')
+    $('#nurse-conflict-days').text("<%= j @recurring_appointment.errors[:base].join('、') + 'のヘルパーが重複してます。' %>")
+    $('.modal').modal('hide');
+    $('#nurse-conflict-confirm').dialog({
+      resizable: false,
+      height: 'auto',
+      width: 400,
+      modal: true,
+      buttons: {
+        '登録する':function(){
+          $(this).dialog('close');
+          let appointment_ids = <%=  @recurring_appointment.errors[:nurse_id].flatten %>;
+          console.log(appointment_ids)
+          let indexCount =  0;
+          appointment_ids.forEach(function(appointment_id, index, array){
+            let request_edit_url = '/plannings/' + <%= @recurring_appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+            indexCount++;
 
-          $.ajax({
-            url: request_edit_url,
-            type: 'PATCH',
-            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-            success: function(data) {
-              if (indexCount == appointment_ids.length) {
-                $('input#save-recurring-appointment').click()
+            $.ajax({
+              url: request_edit_url,
+              type: 'PATCH',
+              beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+              success: function(data) {
+                if (indexCount == appointment_ids.length) {
+                  $('input#save-recurring-appointment').click();
+                }
               }
-            }
+            })
           })
-        })
-      },
-      'キャンセル':function(){
-        let edit_url = "<%= j edit_planning_recurring_appointment_path(@recurring_appointment.planning, @recurring_appointment) %>";
-        $.getScript(edit_url, function(){
-          masterSwitchToggle();
-          toggleEditRequested();
-          recurringAppointmentFormChosen();
-        });
-        $(this).dialog('close');
+        },
+        'キャンセル':function(){
+          $(this).dialog('close');
+        }
       }
-    }
-  })
+    })
+  <% end %>
 <% else %>
   $('.modal').modal('hide');
 

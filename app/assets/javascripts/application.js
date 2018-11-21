@@ -754,7 +754,7 @@ initialize_calendar = function() {
           container: 'body'
         })
 
-        if (view.name == 'agendaDay') {
+        if (view.name == 'agendaDay' && !event.unavailability) {
           element.find('.fc-title').text(function(i, t){
             if ($('#day-view-options-input').is(':checked')) {
               return event.patient.name;
@@ -954,10 +954,6 @@ initialize_calendar = function() {
 
          },
 
-      eventAfterAllRender: function (view) {
-        appointmentComments();
-      },
-
       viewRender: function(view){
         if (view.name == 'agendaDay') {
           $('span#day-view-options').show();
@@ -1075,7 +1071,7 @@ appointmentComments = function() {
   var clientEvents = calendar.fullCalendar('clientEvents');
 
   clientEvents.forEach(event => {
-    if (event.description) {
+    if (event.description && !event.unavailability) {
       var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse.name + ' 利用者：' + event.patient.name + ' ' + event.description;
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }

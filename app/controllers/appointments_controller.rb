@@ -14,7 +14,7 @@ class AppointmentsController < ApplicationController
     elsif params[:patient_id].present? && params[:master].present?
       @appointments = @planning.appointments.valid.where(patient_id: params[:patient_id], master: params[:master])
     elsif params[:master] == 'true' && params[:nurse_id].blank? && params[:patient_id].blank?
-      @appointments = @planning.appointments.where(master: true).where.not(deactivated: true).includes(:patient)
+      @appointments = @planning.appointments.where(master: true).not_archived.includes(:patient)
     else
      @appointments = @planning.appointments.valid.where(master: false).includes(:patient, :nurse)
     end
@@ -73,8 +73,12 @@ class AppointmentsController < ApplicationController
   end
 
   def archive
-    @appointment.update(displayable: false, deleted: true, deleted_at: Time.current, recurring_appointment_id: nil)
-    @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:name), previous_start: @appointment.starts_at, previous_end: @appointment.ends_at
+    @appointment.archive 
+    @appointment.recurring_appointment_id = nil 
+
+    if @appointment.save 
+      @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:name), previous_start: @appointment.starts_at, previous_end: @appointment.ends_at
+    end
   end
 
   def toggle_edit_requested

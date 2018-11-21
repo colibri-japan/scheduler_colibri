@@ -16,9 +16,10 @@ class ProvidedService < ApplicationRecord
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage
 
-	scope :active, -> { where(deactivated: false) }
+	scope :active, -> { where(cancelled: false) }
 	scope :provided, -> { where(provided: true) }
-	scope :is_verified, -> { where.not(verified: [nil, '']) }
+	scope :is_verified, -> { where.not(verified_at: nil) }
+	scope :not_archived, -> { where(archived_at: nil) }
 
 	def self.to_csv(options = {})
 		CSV.generate(options) do |csv|
@@ -43,6 +44,18 @@ class ProvidedService < ApplicationRecord
 
 	def verify!
 		self.update_column(:verified_at, Time.current)
+	end
+
+	def archived?
+		self.archived_at.present?
+	end
+
+	def archive 
+		self.archived_at = Time.current 
+	end
+
+	def archive! 
+		self.update_column(:archived_at, Time.current)
 	end
 
 
@@ -75,14 +88,14 @@ class ProvidedService < ApplicationRecord
 			if self.hour_based_wage == true 
 				sum_hours = 0
 				services.each do |service|
-					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id, deactivated: false)
+					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id, cancelled: false)
 					sum_hours = sum_hours + provided_services.sum{|provided_service| provided_service.service_duration.present? ? provided_service.service_duration : 0 }
 				end
 				self.service_duration = sum_hours
 			else
 				sum_count = 0
 				services.each do |service|
-					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id, deactivated: false)
+					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id, cancelled: false)
 					sum_count = sum_count + provided_services.sum{|provided_service| provided_service.service_counts.present? ? provided_service.service_counts : 1 }
 				end
 				self.service_counts = sum_count 

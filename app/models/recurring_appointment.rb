@@ -18,7 +18,6 @@ class RecurringAppointment < ApplicationRecord
 	before_create :default_frequency
 	before_create :default_master
 	before_create :default_displayable
-	before_create :default_deleted
 	
 	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
@@ -36,20 +35,20 @@ class RecurringAppointment < ApplicationRecord
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
 	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks
 
+	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
 	scope :exclude_self, -> id { where.not(id: id) }
-	scope :valid, -> { where(deactivated: false, displayable: true, deleted: [nil, false]) }
+	scope :valid, -> { where(cancelled: false, displayable: true).not_archived }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
 	scope :from_master, -> { where(master: true) }
 	scope :duplicatable, -> { where(duplicatable: true) }
+	scope :to_be_displayed, -> { where(displayable: true).not_archived }
+	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true).not_archived }
 
 
 	def schedule
 		@schedule ||= begin
 
-		puts 'anchor weekday'
-		puts anchor.wday
-		puts anchor.strftime("%A")
 		day_of_week = anchor.wday
 		end_of_month = Date.new(anchor.year, anchor.month, -1) 
 			
@@ -96,6 +95,18 @@ class RecurringAppointment < ApplicationRecord
 		occurrences = schedule.occurrences_between(start_frequency, end_frequency)
 	end
 
+	def archived?
+		self.archived_at.present?
+	end
+
+	def archive 
+		self.archived_at = Time.current 
+	end
+
+	def archive! 
+		self.update_column(:archived_at, Time.current)
+	end
+
 
 
 	private
@@ -137,10 +148,8 @@ class RecurringAppointment < ApplicationRecord
 
 			recurring_anchor = Date.new(first_appointment.starts_at.year, first_appointment.starts_at.month, first_appointment.starts_at.day)
 			recurring_end_day = Date.new(first_appointment.ends_at.year, first_appointment.ends_at.month, first_appointment.ends_at.day)
-			recurring_appointment_before_edit_date = RecurringAppointment.new(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, deactivated: first_appointment.deactivated, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, starts_at: first_appointment.starts_at, ends_at: first_appointment.ends_at, skip_appointments_callbacks: true, frequency: self.frequency, original_id: self.id, duplicatable: false)
+			recurring_appointment_before_edit_date = RecurringAppointment.new(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, cancelled: first_appointment.cancelled, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, starts_at: first_appointment.starts_at, ends_at: first_appointment.ends_at, skip_appointments_callbacks: true, frequency: self.frequency, original_id: self.id, duplicatable: false)
 			recurring_appointment_before_edit_date.save(validate: false)
-
-			#this recurring appointment should not be reflected to next month's planning
 
 			appointments_before_edit_date.each do |appointment|
 				appointment.recurring_appointment_id = recurring_appointment_before_edit_date.id
@@ -151,17 +160,17 @@ class RecurringAppointment < ApplicationRecord
 		appointments_to_edit.each do |appointment|
 			start_time = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, self.starts_at.hour, self.starts_at.min)
 			end_time = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.starts_at.day, self.ends_at.hour, self.ends_at.min) + self.duration
-			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, starts_at: start_time, ends_at: end_time, edit_requested: self.edit_requested, color: self.color, deleted: self.deleted, deleted_at: self.deleted_at, deactivated: self.deactivated, service_id: self.service_id)
+			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, starts_at: start_time, ends_at: end_time, edit_requested: self.edit_requested, color: self.color, archived_at: self.archived_at, cancelled: self.cancelled, service_id: self.service_id)
 		end
 
 	end
 
 	def toggle_deactivated_on_individual_appointments
-		puts 'toggle deactivated on individual appointments from recurring appointment model'
+		puts 'toggle cancelled on individual appointments from recurring appointment model'
 		appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
 
 		appointments_to_edit.each do |appointment|
-			appointment.update_attribute(:deactivated, self.deactivated)
+			appointment.update_attribute(:cancelled, self.cancelled)
 		end
 	end
 
@@ -173,11 +182,6 @@ class RecurringAppointment < ApplicationRecord
 	def default_master
 		puts 'setting default master'
 		self.master ||= false
-	end
-
-	def default_deleted
-		puts 'setting default deleted'
-		self.deleted ||= false
 	end
 
 	def default_displayable
@@ -280,18 +284,8 @@ class RecurringAppointment < ApplicationRecord
 		recurring_appointments_to_be_deleted = RecurringAppointment.where(displayable: false)
 
 		recurring_appointments_to_be_deleted.each do |recurring_appointment_to_be_deleted|
-			recurring_appointment_to_be_deleted.deleted = true
-			recurring_appointment_to_be_deleted.deleted_at = Time.current
+			recurring_appointment_to_be_deleted.archived_at = Time.current
 			recurring_appointment_to_be_deleted.save!(validate: false)
-		end
-	end
-
-	def self.deleted_nil_to_false
-		recurring_appointments = RecurringAppointment.where(deleted: nil)
-
-		recurring_appointments.each do |recurring_appointment|
-			recurring_appointment.deleted = false
-			recurring_appointment.save!(validate: false)
 		end
 	end
 

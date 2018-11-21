@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181115131354) do
+ActiveRecord::Schema.define(version: 20181120235646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,9 +76,8 @@ ActiveRecord::Schema.define(version: 20181115131354) do
     t.decimal "duration", default: "0.0"
     t.boolean "edit_requested", default: false
     t.string "color"
-    t.boolean "deactivated", default: false
-    t.boolean "deleted", default: false
-    t.datetime "deleted_at"
+    t.boolean "cancelled", default: false
+    t.datetime "archived_at"
     t.bigint "service_id"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_appointments_on_original_id"
@@ -219,7 +218,7 @@ ActiveRecord::Schema.define(version: 20181115131354) do
     t.string "title"
     t.boolean "temporary", default: false, null: false
     t.boolean "provided", default: false
-    t.boolean "deactivated", default: false
+    t.boolean "cancelled", default: false
     t.bigint "appointment_id"
     t.boolean "hour_based_wage", default: true
     t.datetime "service_date"
@@ -228,6 +227,7 @@ ActiveRecord::Schema.define(version: 20181115131354) do
     t.bigint "invoice_setting_id"
     t.bigint "service_salary_id"
     t.datetime "verified_at"
+    t.datetime "archived_at"
     t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
     t.index ["invoice_setting_id"], name: "index_provided_services_on_invoice_setting_id"
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
@@ -253,12 +253,11 @@ ActiveRecord::Schema.define(version: 20181115131354) do
     t.bigint "original_id"
     t.string "color"
     t.text "description"
-    t.boolean "deleted"
-    t.datetime "deleted_at"
+    t.datetime "archived_at"
     t.date "end_day"
     t.integer "duration"
     t.boolean "edit_requested", default: false
-    t.boolean "deactivated", default: false
+    t.boolean "cancelled", default: false
     t.bigint "service_id"
     t.boolean "duplicatable", default: true
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"

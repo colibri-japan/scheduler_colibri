@@ -11,19 +11,19 @@ class RecurringAppointmentsController < ApplicationController
   def index
     if params[:nurse_id].present?
       @nurse = Nurse.find(params[:nurse_id])
-      @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false).where.not(deactivated: true)
+      @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false).where.not(cancelled: true)
     elsif params[:patient_id].present?
-      @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true, master: false).where.not(deactivated: true)
+      @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true, master: false).where.not(cancelled: true)
     elsif params[:master] == 'true'
-      @recurring_appointments = @planning.recurring_appointments.where(master: true).where.not(deactivated: true).includes(:patient, :nurse)
+      @recurring_appointments = @planning.recurring_appointments.where(master: true).where.not(cancelled: true).includes(:patient, :nurse)
     elsif params[:patient_name].present?
       master = params[:master] == 'true' ? true : false
-      @recurring_appointments = @planning.recurring_appointments.joins(:patient).where(patients: {name: params[:patient_name]}).where(displayable: true, master: master).where.not(deactivated: true)
+      @recurring_appointments = @planning.recurring_appointments.joins(:patient).where(patients: {name: params[:patient_name]}).where(displayable: true, master: master).where.not(cancelled: true)
     elsif params[:nurse_name].present?
       master = params[:master] == 'true' ? true : false
-      @recurring_appointments = @planning.recurring_appointments.joins(:nurse).where(nurses: {name: params[:nurse_name]}).where(displayable: true, master: master).where.not(deactivated: true)
+      @recurring_appointments = @planning.recurring_appointments.joins(:nurse).where(nurses: {name: params[:nurse_name]}).where(displayable: true, master: master).where.not(cancelled: true)
     else
-     @recurring_appointments = @planning.recurring_appointments.where(displayable: true, master: false).where.not(deactivated: true).includes(:patient, :nurse)
+     @recurring_appointments = @planning.recurring_appointments.where(displayable: true, master: false).where.not(cancelled: true).includes(:patient, :nurse)
     end
 
     respond_to do |format|
@@ -95,7 +95,10 @@ class RecurringAppointmentsController < ApplicationController
 
   def archive
     appointment_ids = Appointment.valid.where(recurring_appointment_id: @recurring_appointment.id).ids
-    if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current, editing_occurrences_after: recurring_appointment_params[:editing_occurrences_after])
+    @recurring_appointment.archive 
+    @recurring_appointment.editing_occurrences_after = recurring_appointment_params[:editing_occurrences_after]
+
+    if @recurring_appointment.update(displayable: false, deleted: true, deleted_at: Time.current, )
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
       @appointments = Appointment.find(appointment_ids)
     end                  

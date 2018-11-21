@@ -15,8 +15,10 @@ class CopyPlanningFromMasterWorker
 		new_appointments = []
 		new_provided_services = []
 
-		initial_recurring_appointments_count = RecurringAppointment.where(planning_id: planning.id, master: true, displayable: true, edit_requested: false, deactivated: false, deleted: false).count
-		initial_appointments_count = Appointment.valid.edit_not_requested.where(planning_id: planning.id, master: true).where.not(recurring_appointment_id: nil).count
+		recurring_appointments = RecurringAppointment.valid.edit_not_requested.from_master.not_archived.where(planning_id: planning.id)
+
+		initial_recurring_appointments_count = recurring_appointments.count
+		initial_appointments_count = Appointment.where(recurring_appointment_id: recurring_appointments.ids).count
 
 		RecurringAppointment.valid.edit_not_requested.where(planning_id: planning.id, master: true).find_each do |recurring_appointment|
 			new_recurring_appointment = recurring_appointment.dup 
@@ -46,7 +48,7 @@ class CopyPlanningFromMasterWorker
 		new_appointments.each do |appointment|
 			provided_duration = appointment.ends_at - appointment.starts_at
 		  	is_provided =  Time.current + 9.hours > appointment.starts_at
-      		new_provided_service = ProvidedService.new(appointment_id: appointment.id, planning_id: appointment.planning_id, service_duration: provided_duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, deactivated: appointment.deactivated, provided: is_provided, temporary: false, title: appointment.title, hour_based_wage: corporation.hour_based_payroll, service_date: appointment.starts_at, appointment_start: appointment.starts_at, appointment_end: appointment.ends_at)
+      		new_provided_service = ProvidedService.new(appointment_id: appointment.id, planning_id: appointment.planning_id, service_duration: provided_duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, cancelled: appointment.cancelled, provided: is_provided, temporary: false, title: appointment.title, hour_based_wage: corporation.hour_based_payroll, service_date: appointment.starts_at, appointment_start: appointment.starts_at, appointment_end: appointment.ends_at)
       		new_provided_service.run_callbacks(:save) { false }
       		new_provided_services << new_provided_service
 		end

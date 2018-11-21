@@ -20,9 +20,12 @@ class Appointment < ApplicationRecord
 	after_create :create_provided_service
 	after_update :update_provided_service
 
-	scope :valid, -> { where(deactivated: false, displayable: true, deleted: [false,nil]) }
+	scope :not_archived, -> { where(archived_at: nil) }
+	scope :valid, -> { where(cancelled: false, displayable: true).not_archived }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
 	scope :from_master, -> { where(master: true) }
+	scope :to_be_displayed, -> { where(displayable: true).not_archived }
+	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true).not_archived }
 
 
 	def all_day_appointment?
@@ -35,6 +38,18 @@ class Appointment < ApplicationRecord
 
 	def self.overlapping(range)
 		where('((starts_at >= ? AND starts_at < ?) OR (ends_at > ? AND ends_at <= ?)) OR (starts_at < ? AND ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
+	end
+
+	def archived?
+		self.archived_at.present?
+	end
+
+	def archive 
+		self.archived_at = Time.current 
+	end
+
+	def archive! 
+		self.update_column(:archived_at, Time.current)
 	end
 
 	private
@@ -84,7 +99,7 @@ class Appointment < ApplicationRecord
 			end
 			service_salary_id = nurse_service.id
 		  end
-		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, deactivated: self.deactivated, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
+		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, cancelled: self.cancelled, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
 		end
 	end
 
@@ -92,8 +107,8 @@ class Appointment < ApplicationRecord
 		puts 'updating provided service'
 		if self.master != true
 			@provided_service = ProvidedService.where(appointment_id: self.id)
-			if self.deleted == true 
-				@provided_service.update(deactivated: true)
+			if self.archived? == true 
+				@provided_service.update(cancelled: true)
 			else
 		      provided_duration = self.ends_at - self.starts_at
 			  is_provided = Time.current + 9.hours > self.starts_at
@@ -103,8 +118,8 @@ class Appointment < ApplicationRecord
 				nurse_service =  Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first
 				service_salary_id =  nurse_service.present? ? nurse_service.id : self.service_id
 			  end
-			   deactivate_provided =  self.displayable == false || self.deleted == true || self.deactivated == true
-			  @provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, deactivated: deactivate_provided, provided: is_provided, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
+			   deactivate_provided =  self.displayable == false || self.archived? == true || self.cancelled == true
+			  @provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, cancelled: deactivate_provided, provided: is_provided, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
 			end
 		end
 	end

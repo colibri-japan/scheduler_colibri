@@ -5,7 +5,7 @@ json.array! @appointments.each do |appointment|
 
         json.id "appointment_#{appointment.id}"
         json.title "#{appointment.patient.try(:name)} - #{appointment.nurse.try(:name)}"
-        json.extract! appointment, :color, :master, :displayable, :nurse_id, :patient_id, :edit_requested
+        json.extract! appointment, :color, :master, :displayable, :nurse_id, :patient_id, :edit_requested, :cancelled
         json.start appointment.starts_at
         json.end appointment.ends_at
         json.description appointment.description ? appointment.description : ''

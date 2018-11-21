@@ -153,7 +153,9 @@ initialize_nurse_calendar = function(){
           container: 'body'
         });
         element.find('.fc-title').text(function(i, t){
-          return event.patient.name;
+          if (!event.unavailability) {
+            return event.patient.name;
+          }
         });
         return event.displayable;
       },
@@ -356,7 +358,9 @@ initialize_patient_calendar = function(){
           container: 'body'
         });
         element.find('.fc-title').text(function(i, t){
-          return event.nurse.name;
+          if (!event.unavailability) {
+            return event.nurse.name;
+          }
         });
         return event.displayable;
       },

@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_edit_requested]
+  before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :toggle_edit_requested]
   before_action :set_planning
   before_action :set_corporation
 
@@ -10,13 +10,13 @@ class AppointmentsController < ApplicationController
     authorize @planning, :is_employee?
 
     if params[:nurse_id].present? && params[:master].present?
-      @appointments = @planning.appointments.valid.where(nurse_id: params[:nurse_id], master: params[:master])
+      @appointments = @planning.appointments.to_be_displayed.where(nurse_id: params[:nurse_id], master: params[:master])
     elsif params[:patient_id].present? && params[:master].present?
-      @appointments = @planning.appointments.valid.where(patient_id: params[:patient_id], master: params[:master])
+      @appointments = @planning.appointments.to_be_displayed.where(patient_id: params[:patient_id], master: params[:master])
     elsif params[:master] == 'true' && params[:nurse_id].blank? && params[:patient_id].blank?
-      @appointments = @planning.appointments.where(master: true).not_archived.includes(:patient)
+      @appointments = @planning.appointments.to_be_displayed.from_master.includes(:patient)
     else
-     @appointments = @planning.appointments.valid.where(master: false).includes(:patient, :nurse)
+     @appointments = @planning.appointments.to_be_displayed.where(master: false).includes(:patient, :nurse)
     end
   end
 
@@ -69,6 +69,12 @@ class AppointmentsController < ApplicationController
 
     if @appointment.update(appointment_params)
       @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_start: @appointment.starts_at, new_end: @appointment.ends_at, new_edit_requested: @appointment.edit_requested, new_nurse: @appointment.nurse.try(:name), new_patient: @appointment.patient.try(:name), new_title: @appointment.title, new_color: @appointment.color
+    end
+  end
+
+  def toggle_cancelled
+    if @appointment.update_attribute(:cancelled, !@appointment.cancelled)
+      @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_cancelled: !@appointment.cancelled
     end
   end
 

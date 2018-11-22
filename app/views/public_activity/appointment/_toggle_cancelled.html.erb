@@ -1,0 +1,14 @@
+<% if activity.trackable %>
+    <% if activity.previous_cancelled == false %>
+	    が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のサービスをキャンセルしました。<br/>
+	    <span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
+	    <%= activity.trackable.starts_at.strftime("%-d日") %><%= weekday(activity.trackable.starts_at) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%H:%M") %>
+    <% else %>
+	    が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のキャンセルされたサービスを最有効化しました。<br/>
+	    <span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
+	    <%= activity.trackable.starts_at.strftime("%-d日") %><%= weekday(activity.trackable.starts_at) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%H:%M") %>
+    <% end %>
+
+<% else %>
+	がその後削除されたサービスをキャンセルしました。
+<% end %>

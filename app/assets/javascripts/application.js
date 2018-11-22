@@ -133,8 +133,10 @@ initialize_nurse_calendar = function(){
         if (window.eventDragging) {
           return
         }
-        if (event.edit_requested) {
-          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #ddd, #ddd 5px, #FFBBA0 5px, #FFBBA0 10px)' });
+        if (event.cancelled) {
+          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)' });  
+        } else if (event.edit_requested) {
+          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
 
         let popover_content;

@@ -11,6 +11,8 @@ module ActivitiesHelper
 			'edit_requested_32px.png'
 		elsif activity.key.include? "archive"
 			'destroy_32px.png'
+		elsif activity.key.include? "toggle_cancelled"
+			'cancel_32px.png'
 		else
 			' '
 		end

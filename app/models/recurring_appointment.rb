@@ -29,8 +29,8 @@ class RecurringAppointment < ApplicationRecord
 	validate :cannot_overlap_existing_appointment_update, on: :update
 
 	after_create :create_individual_appointments
-	after_update :update_individual_appointments, unless: :saved_change_to_deactivated?
-	after_update :toggle_deactivated_on_individual_appointments, if: :saved_change_to_deactivated?
+	after_update :update_individual_appointments, unless: :saved_change_to_cancelled?
+	after_update :toggle_deactivated_on_individual_appointments, if: :saved_change_to_cancelled?
 
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
 	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks

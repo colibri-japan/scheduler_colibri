@@ -106,9 +106,9 @@ class Appointment < ApplicationRecord
 	def update_provided_service
 		puts 'updating provided service'
 		if self.master != true
-			@provided_service = ProvidedService.where(appointment_id: self.id)
+			@provided_service = self.provided_service
 			if self.archived? == true 
-				@provided_service.update(cancelled: true)
+				@provided_service.archive!
 			else
 		      provided_duration = self.ends_at - self.starts_at
 			  is_provided = Time.current + 9.hours > self.starts_at

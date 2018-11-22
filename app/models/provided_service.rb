@@ -16,7 +16,6 @@ class ProvidedService < ApplicationRecord
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage
 
-	scope :active, -> { where(cancelled: false) }
 	scope :provided, -> { where(provided: true) }
 	scope :is_verified, -> { where.not(verified_at: nil) }
 	scope :not_archived, -> { where(archived_at: nil) }

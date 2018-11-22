@@ -107,7 +107,7 @@ class NursesController < ApplicationController
 
     delete_previous_temporary_services
 
-    @provided_services = ProvidedService.active.where(nurse_id: @nurse.id, planning_id: @planning.id, temporary: false, countable: false)
+    @provided_services = ProvidedService.not_archived.where(nurse_id: @nurse.id, planning_id: @planning.id, temporary: false, countable: false)
 
     now_in_Japan = Time.current + 9.hours
     @services_till_now = @provided_services.where('service_date < ?', now_in_Japan).order(service_date: 'asc')

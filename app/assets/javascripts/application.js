@@ -1527,22 +1527,10 @@ $(document).on('turbolinks:load', function(){
 
   $('.slider').click(function(event){
     var $this = $(this);
-    var patientSlider = $this.hasClass('slider-patient');
+    var patientSlider = $this.hasClass('slider-user');
     if (patientSlider) {
-      var isChecked =  $this.prev().is(':checked')
-      if (isChecked) {
-        var confirmPatient = confirm('選択された利用者の現時点以降のサービスがキャンセルされます。');
-        if (confirmPatient) {
-          $this.trigger('sendAjax');
-        } else {
-
-        }
-      } else {
-        var confirmPatient = confirm('選択された利用者のキャンセルされたサービスが再起動されます。');
-        if (confirmPatient) {
-          $this.trigger('sendAjax');
-        }
-      }
+      $this.trigger('sendAjax');
+     
     }
   });
 

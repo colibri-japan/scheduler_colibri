@@ -84,6 +84,7 @@ Rails.application.routes.draw do
   patch 'plannings/:planning_id/recurring_appointments/:id/toggle_edit_requested' => 'recurring_appointments#toggle_edit_requested', as: :planning_recurring_appointment_toggle_edit_requested
   patch 'planning/:planning_id/recurring_appointments/:id/archive' => 'recurring_appointments#archive', as: :planning_recurring_appointment_archive
   patch 'plannings/:planning_id/recurring_appointment/:id/from_master_to_general' => 'recurring_appointments#from_master_to_general', as: :from_master_to_general
+  patch 'plannings/:planning_id/recurring_appointments/:id/toggle_cancelled' => 'recurring_appointments#toggle_cancelled', as: :planning_recurring_appointment_toggle_cancelled
 
   #custom routes for tags
   get '/tags' => 'tags#index'

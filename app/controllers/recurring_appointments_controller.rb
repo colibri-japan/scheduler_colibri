@@ -1,5 +1,5 @@
 class RecurringAppointmentsController < ApplicationController
-  before_action :set_recurring_appointment, only: [:show, :edit, :destroy, :archive, :from_master_to_general]
+  before_action :set_recurring_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :from_master_to_general]
   before_action :set_planning
   before_action :set_valid_range, only: [:new, :edit, :index, :update]
   before_action :set_corporation
@@ -89,6 +89,16 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment = RecurringAppointment.find(params[:id])
     if @recurring_appointment.update_attribute(edit_requested: !@recurring_appointment.edit_requested)
       @activity = @recurring_appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_edit_requested: !@recurring_appointment.edit_requested
+      @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
+    end
+  end
+
+  def toggle_cancelled
+    @recurring_appointment.cancelled = !@recurring_appointment.cancelled
+    @recurring_appointment.editing_occurrences_after = recurring_appointment_params[:editing_occurrences_after]
+
+    if @recurring_appointment.save 
+      @activity = @recurring_appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_cancelled: !@recurring_appointment.cancelled
       @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
     end
   end

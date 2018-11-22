@@ -649,6 +649,7 @@ initialize_master_calendar = function() {
                 individualMasterToGeneral();
                 toggleEditRequested();
                 recurringAppointmentArchive();
+                recurringAppointmentCancel();
               });
             }
             return false;
@@ -1197,10 +1198,29 @@ let toggleEditRequested = () => {
   })
 }
 
+let recurringAppointmentCancel = () => {
+  $('#recurring-appointment-cancel').click(function(){
+    let cancelUrl = $(this).data('cancel-url');
+    let editing_occurrences_after = $('select#recurring_appointment_editing_occurrences_after').val();
+    let confirmation = confirm('選択された繰り返しがキャンセルされます。');
+    if (confirmation) {
+      $.ajax({
+        url: cancelUrl,
+        type: 'PATCH',
+        data: {
+          recurring_appointment: {
+            editing_occurrences_after: editing_occurrences_after,
+          }
+        }
+      })
+    }
+  })
+}
+
 let recurringAppointmentArchive = () => {
   $('#recurring-appointment-archive').click(function(){
     let archiveUrl = $(this).data('archive-url');
-    let val = $('select#recurring_appointment_editing_occurrences_after').val();
+    let editing_occurrences_after = $('select#recurring_appointment_editing_occurrences_after').val();
     let message = confirm('選択された繰り返しが削除されます。');
     if (message) {
       $.ajax({
@@ -1208,7 +1228,7 @@ let recurringAppointmentArchive = () => {
         type: 'PATCH',
         data: {
           recurring_appointment: {
-            editing_occurrences_after: val,
+            editing_occurrences_after: editing_occurrences_after,
           }
         },
         beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
@@ -1248,6 +1268,7 @@ let appointmentEdit = (url) => {
         recurringAppointmentFormChosen();
         editAfterDate();
         recurringAppointmentArchive();
+        recurringAppointmentCancel();
       })
     })
   } else {

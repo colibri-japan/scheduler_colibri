@@ -42,7 +42,7 @@ class RecurringAppointment < ApplicationRecord
 	scope :from_master, -> { where(master: true) }
 	scope :duplicatable, -> { where(duplicatable: true) }
 	scope :to_be_displayed, -> { where(displayable: true).not_archived }
-	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true).not_archived }
+	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true, duplicatable: true, edit_requested: false).where.not(frequency: 2).not_archived }
 
 
 	def schedule

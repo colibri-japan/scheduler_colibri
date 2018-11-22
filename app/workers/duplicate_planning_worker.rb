@@ -13,9 +13,12 @@ class DuplicatePlanningWorker
 		new_recurring_appointments = []
 		new_appointments = []
 
-		initial_recurring_appointments_count = template_planning.recurring_appointments.where(master: true).valid.edit_not_requested.where.not(frequency: 2).count
+		recurring_appointments = template_planning.recurring_appointments.to_be_copied_to_new_planning
+		puts recurring_appointments.count
 
-		template_planning.recurring_appointments.valid.duplicatable.edit_not_requested.where(master: true).where.not(frequency: 2).find_each do |recurring_appointment|
+		initial_recurring_appointments_count = recurring_appointments.count
+
+		recurring_appointments.find_each do |recurring_appointment|
 
 			new_anchor_day = first_day.wday > recurring_appointment.anchor.wday ?  first_day + 7 - (first_day.wday - recurring_appointment.anchor.wday) :  first_day + (recurring_appointment.anchor.wday - first_day.wday)
 
@@ -32,11 +35,15 @@ class DuplicatePlanningWorker
 			new_recurring_appointments << new_recurring_appointment
 		end
 
+		puts new_recurring_appointments.count
+
 		if new_recurring_appointments.count == initial_recurring_appointments_count
+			puts 'recurring appointments count match'
 			RecurringAppointment.import(new_recurring_appointments)
 		end
 
 		new_recurring_appointments.each do |recurring_appointment|
+			puts 'inside recurring appointments loop'
 			recurring_appointment_occurrences = recurring_appointment.appointments(first_day, last_day)
 
 			recurring_appointment_occurrences.each do |occurrence|
@@ -47,7 +54,9 @@ class DuplicatePlanningWorker
 			end
 		end
 
-    Appointment.import(new_appointments)
+		puts 'before saving appointments'
+		Appointment.import(new_appointments)
+		puts 'after saving appointments'
     
     puts 'job finished'
   end

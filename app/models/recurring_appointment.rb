@@ -29,8 +29,7 @@ class RecurringAppointment < ApplicationRecord
 	validate :cannot_overlap_existing_appointment_update, on: :update
 
 	after_create :create_individual_appointments
-	after_update :update_individual_appointments, unless: :saved_change_to_cancelled?
-	after_update :toggle_deactivated_on_individual_appointments, if: :saved_change_to_cancelled?
+	after_update :update_individual_appointments
 
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
 	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks
@@ -165,14 +164,14 @@ class RecurringAppointment < ApplicationRecord
 
 	end
 
-	def toggle_deactivated_on_individual_appointments
-		puts 'toggle cancelled on individual appointments from recurring appointment model'
-		appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
-
-		appointments_to_edit.each do |appointment|
-			appointment.update_attribute(:cancelled, self.cancelled)
-		end
-	end
+	#def toggle_deactivated_on_individual_appointments
+	#	puts 'toggle cancelled on individual appointments from recurring appointment model'
+	#	appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
+	#
+	#	appointments_to_edit.each do |appointment|
+	#		appointment.update_attribute(:cancelled, self.cancelled)
+	#	end
+	#end
 
 	def default_frequency
 		puts 'adding default frequency'

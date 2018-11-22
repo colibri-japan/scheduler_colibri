@@ -40,4 +40,8 @@ module ApplicationHelper
 			end
 		end
 	end
+
+	def toggle_cancel_text(record)
+		record.cancelled == true ? 'キャンセル解消' : 'キャンセルする'
+	end
 end

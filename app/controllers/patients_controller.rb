@@ -50,9 +50,10 @@ class PatientsController < ApplicationController
   end
 
   def toggle_active
-    @patient.update!(active: !@patient.active, toggled_active_at: Time.now)
-
-    redirect_to patients_path, notice: '利用者のサービスが停止されました。'
+    if @patient.update(active: !@patient.active, toggled_active_at: Time.now)
+      CancelPatientAppointmentsWorker.perform_async(@patient.id)
+      redirect_to patients_path, notice: '利用者のサービスが停止されました。'
+    end
   end
 
   def new

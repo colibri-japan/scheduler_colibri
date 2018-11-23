@@ -76,6 +76,19 @@ p.payable-dashboard-line {
 	background-color:#E9EEFA ;
 }
 
+
+.cancelled-provided-service {
+	font-weight: bold;
+	text-align: center;
+	background-image: repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px) !important;
+}
+
+.edit-requested-provided-service {
+	font-weight: bold;
+	text-align: center;
+    background-image: repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px);
+}
+
 #chosen_custom_email_days_chosen {
     width: 120px !important;
 }

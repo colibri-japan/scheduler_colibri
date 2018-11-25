@@ -83,18 +83,20 @@
 					<%= provided_service.service_counts if provided_service.service_counts.present? %>
 				</td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
-                <td class='verify-provided-service  <%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.edit_requested == true %>' id='provided-service-<%= provided_service.id %>'>
-				  <% if provided_service.cancelled == true %>
-				    <span>キャンセル</span>
-				  <% elsif provided_service.appointment.edit_requested == true %>
-				    <span>調整中リスト</span>
-				  <% else %>
-                    <% if provided_service.verified? %>
-                    	<div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
-                    <% else %>
-                        <%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
-                    <% end %>
-				  <% end %>
+                <td class='verify-provided-service  ' id='provided-service-<%= provided_service.id %>'>
+				  <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.edit_requested == true %>'>
+					<% if provided_service.cancelled == true %>
+						<span>キャンセル</span>
+					<% elsif provided_service.appointment.edit_requested == true %>
+						<span>調整中リスト</span>
+					<% else %>
+						<% if provided_service.verified? %>
+							<div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
+						<% else %>
+							<%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
+						<% end %>
+					<% end %>
+				  </div>
                 </td>
 				<td><%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
 

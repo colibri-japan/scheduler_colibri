@@ -78,14 +78,18 @@ p.payable-dashboard-line {
 
 
 .cancelled-provided-service {
-	font-weight: bold;
 	text-align: center;
+	font-size: 1.15em;
+	padding-bottom: 2px;
+	padding-top: 2px;
 	background-image: repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px) !important;
 }
 
 .edit-requested-provided-service {
-	font-weight: bold;
 	text-align: center;
+	font-size: 1.15em;
+	padding-bottom: 2px;
+	padding-top: 2px;
     background-image: repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px);
 }
 

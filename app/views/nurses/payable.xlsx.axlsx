@@ -28,7 +28,7 @@ wb.styles do |s|
 			end_time = service.appointment_start? ? service.appointment_end.strftime("%H:%M") : ''
 			date = service.service_date.strftime("%-d日") + weekday(service.service_date)
 			row_style = service.weekend_holiday_provided_service? ? weekend_table_cells : table_cells
-			sheet.add_row [date, "#{service.patient.try(:name)}様", service.try(:title),  from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:total_wage) ], style: row_style
+			sheet.add_row [date, "#{service.patient.try(:name)}様", provided_service_title_in_excel(service),  from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:total_wage) ], style: row_style
 		end
 		sheet.add_row ['','','','','','合計：',@total_till_now], style: [nil, nil, nil, nil, nil, final_wage_title, final_wage]
 		days_worked = @services_till_now.map {|s| s.service_date.strftime("%-d日")}

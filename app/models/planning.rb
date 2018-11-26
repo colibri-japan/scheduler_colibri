@@ -5,6 +5,7 @@ class Planning < ApplicationRecord
 	has_many :unavailabilities, dependent: :destroy
 	has_many :recurring_unavailabilities, dependent: :destroy
 	has_many :provided_services, dependent: :destroy
+	has_many :scans, dependent: :destroy
 
 	before_save :default_title
 

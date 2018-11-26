@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :edit, :update]
 
+
   resources :plannings do
   	resources :appointments
   	resources :recurring_appointments
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
     resources :nurses
     resources :patients
     resources :activities
+    resources :scans
   end
 
   resources :services, only: [:destroy]

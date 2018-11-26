@@ -99,6 +99,10 @@ gem 'oj'
 #multi json to always pick the fastest json backend 
 gem 'multi_json'
 
+# carrierwave and fog AWS to upload and permanently store files
+gem 'carrierwave'
+gem 'fog-aws'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

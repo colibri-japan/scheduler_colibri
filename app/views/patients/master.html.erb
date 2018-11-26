@@ -22,6 +22,7 @@
 
 <div id="resource-list-container" class="no-print">
 	<div id="toggle-patients-nurses-wrapper">
+		<%= link_to '提供表読み込み', new_planning_scan_path(@planning), class: 'btn btn-success text-white new-scan', remote: true %>
 		<input type="checkbox" checked id="toggle-patients-nurses">
 	</div>
 	<div id="resource-container"  class="scrollbar-custom">

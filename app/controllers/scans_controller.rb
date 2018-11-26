@@ -1,4 +1,4 @@
-class ScanController < ApplicationController
+class ScansController < ApplicationController
 
   before_action :set_planning, only: [:index, :new, :create]
   before_action :set_scan, only: [:edit, :update, :destroy]
@@ -9,26 +9,27 @@ class ScanController < ApplicationController
 
   def new
     @scan = Scan.new
+    @scans = @planning.scans
   end
 
   def create
-    @scan = Scan.new 
+    @scan = @planning.scans.new(scan_params)
 
-    @scan.create(scan_params)
+    @scan.save!
   end
 
   def edit
-    @planning = Planning.find(:planning_id)
+    @planning = Planning.find(params[:planning_id])
   end
 
   def update
-    @planning = Planning.find(:planning_id)
+    @planning = Planning.find(params[:planning_id])
 
     @scan.update(scan_params)
   end
 
   def destroy
-    @planning = Planning.find(:planning_id)
+    @planning = Planning.find(params[:planning_id])
 
     @scan.destroy
   end
@@ -40,11 +41,11 @@ class ScanController < ApplicationController
   end
 
   def set_planning
-    @planning = Planning.find(:id)
+    @planning = Planning.find(params[:planning_id])
   end
 
   def set_scan 
-    @scan = Scan.find(:id)
+    @scan = Scan.find(params[:id])
   end
 
 end

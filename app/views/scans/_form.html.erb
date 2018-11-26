@@ -1,0 +1,23 @@
+<%= form_for [@planning, scan], remote: true do |form| %>
+  <% if scan.errors.any? %>
+    <div id="error_explanation">
+        <h2>エラーが発生しました：</h2>
+
+        <ul>
+        <% scan.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+        <% end %>
+        </ul>
+    </div>
+  <% end %>
+
+    <div class="form-group">
+      <%= form.label :teikyohyo, "提供表を選択する", class: "colibri-form-label" %>
+      <%= form.file_field :teikyohyo, id: :scan_teikyohyo, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "読み込み開始！", class: 'btn btn-info' %>
+    </div>
+
+<% end %>

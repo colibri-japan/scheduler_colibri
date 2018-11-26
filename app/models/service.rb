@@ -25,11 +25,11 @@ class Service < ApplicationRecord
     if self.corporation.equal_salary == true 
       plannings_ids = self.corporation.plannings.ids
 
-      @provided_services = ProvidedService.where(title: self.title, planning_id: plannings_ids, deactivated: false, temporary: false)
+      @provided_services = ProvidedService.where(title: self.title, planning_id: plannings_ids, cancelled: false, temporary: false)
 
     else
       if self.nurse_id.present?
-        @provided_services = ProvidedService.where(title: self.title, nurse_id: self.nurse_id, temporary: false).where.not(deactivated: true)
+        @provided_services = ProvidedService.where(title: self.title, nurse_id: self.nurse_id, temporary: false).where.not(cancelled: true)
       else
         @provided_services = []
       end

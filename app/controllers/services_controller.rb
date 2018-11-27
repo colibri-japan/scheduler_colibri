@@ -18,11 +18,11 @@ class ServicesController < ApplicationController
     end
 
     def create
-        @service = Service.new
+        @service = @corporation.services.new(service_params)
 
-        @service.nurse_id = @corporation.equal_salary == true ? @nurse.id : nil 
-
-        @service.save(service_params)
+        if @service.save
+            redirect_to services_path
+        end
     end
 
     def edit
@@ -55,6 +55,6 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages)
+        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage)
     end
 end

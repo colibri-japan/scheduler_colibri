@@ -25,8 +25,13 @@
                 </div>
 
                 <div class="form-group">
-                  <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
-                  <%= form.text_field :title, id: :service_title, required: true, class: "form-control" %>
+                  <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label" %>
+                  <%= form.check_box :hour_based_wage, id: :service_hour_based_wage %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :equal_salary, "給与ヘルパー別", class: "colibri-form-label" %>
+                  <%= form.check_box :equal_salary, id: :service_equal_salary %>
                 </div>
 
                 <div class="actions">

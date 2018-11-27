@@ -10,6 +10,9 @@ class Service < ApplicationRecord
   has_many :provided_services
   belongs_to :nurse, optional: true
 
+  before_create :default_hour_based_wage
+  before_create :default_equal_salary
+
   after_save :recalculate_wages, if: :recalculate_previous_wages
   after_create :create_nurse_services, unless: :skip_create_nurses_callback
 
@@ -19,6 +22,14 @@ class Service < ApplicationRecord
   scope :without_nurse_id, -> { where(nurse_id: nil) }
 
   private 
+
+  def default_hour_based_wage
+    self.hour_based_wage = self.corporation.hour_based_wage if self.hour_based_wage.nil?
+  end
+
+  def default_equal_salary
+    self.equal_salary = self.corporation.equal_salary if self.equal_salary.nil?
+  end
 
   def recalculate_wages
     puts 'recalculating wages'

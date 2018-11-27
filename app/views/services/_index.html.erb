@@ -2,7 +2,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="colibri-small-title"><%= @corporation.equal_salary == true ? "事業所の給与テーブル" : "#{@nurse.name}の給与テーブル" %></h1>
+				<h1 class="colibri-small-title"><%= "#{@nurse.name}の給与テーブル" %></h1>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
@@ -12,15 +12,17 @@
                         <tr >
                             <th>サービスタイプ</th>
                             <th>時給.単価</th>
-                            <th>土日.祝日の給与.単価</th>
+                            <th>土日.祝日</th>
+                            <th>全従業員</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% @services.each do |service| %>
                             <tr class="clickable-row service-clickable" data-service-link="<%= edit_nurse_service_path(@nurse, service, format: :js) %>">
-                                <th><%= service.try(:title) %></th>
-                                <th><%= service.try(:unit_wage) %></th>
-                                <th><%= service.weekend_unit_wage.to_i if service.weekend_unit_wage.present? %></th>
+                                <td><%= service.try(:title) %></td>
+                                <td><%= service.try(:unit_wage) %></td>
+                                <td><%= service.weekend_unit_wage.to_i if service.weekend_unit_wage.present? %></td>
+                                <td><span class="<%= 'glyphicon glyphicon-ok' if service.equal_salary == true %>" style="color: #42B97C"></span></td>
                             </tr>
                         <% end %>
                     </tbody>

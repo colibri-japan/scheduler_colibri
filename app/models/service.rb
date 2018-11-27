@@ -15,6 +15,7 @@ class Service < ApplicationRecord
 
   after_save :recalculate_wages, if: :recalculate_previous_wages
   after_create :create_nurse_services, unless: :skip_create_nurses_callback
+  after_update :update_nurse_services
 
   before_destroy :destroy_services_for_other_nurses
 
@@ -73,12 +74,28 @@ class Service < ApplicationRecord
       nurse_service = nurse_services.where(nurse_id: nurse.id).first 
 
       unless nurse_service.present?
-        new_service = Service.new(corporation_id: self.corporation_id, title: self.title, nurse_id: nurse.id, unit_wage: self.unit_wage, weekend_unit_wage: self.weekend_unit_wage, skip_create_nurses_callback: true)
+        new_service = Service.new(corporation_id: self.corporation_id, title: self.title, nurse_id: nurse.id, unit_wage: self.unit_wage, weekend_unit_wage: self.weekend_unit_wage, hour_based_wage: self.hour_based_wage, equal_salary: self.equal_salary, skip_create_nurses_callback: true)
         new_services << new_service
       end
     end
 
     Service.import new_services
+  end
+
+  def update_nurse_services
+    #update other services only if updated the 'main' service, or if the equal salary option is set to true
+    if self.nurse_id.nil? 
+      nurse_services_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(nurse_id: nil).ids
+
+      UpdateServicesWorker.perform_async(self.id, nurse_services_ids)
+    else
+      if self.equal_salary == true 
+        puts 'equal salary is true'
+        services_to_update_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(id: self.id)
+
+        UpdateServicesWorker.perform_async(self.id, services_to_update_ids)
+      end
+    end
   end
 
   def destroy_services_for_other_nurses

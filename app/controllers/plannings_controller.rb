@@ -85,6 +85,9 @@ class PlanningsController < ApplicationController
 
 		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, service_date: Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day..Date.today.end_of_day)
 
+		#shintai vs seikatsu
+		@provided_services_shintai = @provided_services_till_today.where('title LIKE ? ', '%身%').sum(:total_wage)
+		@provided_services_seikatsu = @provided_services_till_today.where('title LIKE ?', '%生%').sum(:total_wage)
 		#data needed to show mashup of this month's salary
 		#what has been accomplished service wise, and counts/hours provided for each nurse
 	end

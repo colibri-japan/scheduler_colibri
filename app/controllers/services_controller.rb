@@ -23,7 +23,7 @@ class ServicesController < ApplicationController
         @service = @corporation.services.new(service_params)
 
         if @service.save
-            redirect_to services_path
+            redirect_back fallback_location: root_path, notice: 'サービスタイプが登録されました'
         end
     end
 

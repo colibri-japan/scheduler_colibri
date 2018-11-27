@@ -16,7 +16,7 @@ class ServicesController < ApplicationController
     end
 
     def new
-        @service = Service.new
+        @service = @corporation.services.new
     end
 
     def create

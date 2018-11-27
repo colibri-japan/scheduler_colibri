@@ -1461,6 +1461,26 @@ let patientSelect2 = () => {
   });
 };
 
+let toggleServiceHourBasedWage = () => {
+  $('#service_hour_based_wage').bootstrapToggle({
+    on: '時給',
+    off: '単価',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  })
+};
+
+let toggleServiceEqualSalary = () => {
+  $('#service_equal_salary').bootstrapToggle({
+    on: '全員同じ',
+    off: 'ヘルパー別',
+    onstyle: 'success',
+    offstyle: 'info',
+    width: 130
+  })
+}
+
 $.ajaxSetup({
   headers: {
     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

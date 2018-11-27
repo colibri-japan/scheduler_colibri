@@ -9,7 +9,9 @@ class ServicesController < ApplicationController
             @nurse =  Nurse.find(params[:nurse_id])
             @services = @corporation.equal_salary == true ? @corporation.services.without_nurse_id.order_by_title.all : @nurse.services.order_by_title.all
         else
+            @planning = Planning.find(params[:planning_id])
             @services = @corporation.services.without_nurse_id.order_by_title
+            @last_nurse = @corporation.nurses.where(displayable: true).last
         end
     end
 

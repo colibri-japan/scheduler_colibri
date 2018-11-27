@@ -5,7 +5,7 @@
 	<div id="settings-menu-list">
         <ul id="settings-list">
             <li id="settings-options" class="settings-list-element settings-list-element-selected">スケジュールオプション</li>
-            <li id="settings-services" class="settings-list-element">サービスタイプ一覧</li>
+            <li id="settings-services" class="settings-list-element"><%= link_to 'サービスタイプ一覧', planning_services_path(@planning), class: 'settings-list-url' %></li>
         </ul>
 	</div>
 
@@ -79,26 +79,6 @@
             </div>
 
         <% end %>
-    </div>
-
-    <div id="service-index" >
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>タイプ</th>
-                    <th>アクション</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <% @services.each do |service| %>
-                    <tr id="service_<%= service.id %>">
-                        <th><%= service.title %></th>
-                        <th><%= link_to '削除', service_path(service), method: :delete, data: {confirm: 'このサービスタイプが削除されます。スケジュールからサービスは削除されません。'}, class: 'btn btn-danger btn-sm' %></th>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
     </div>
 
 </div>

@@ -21,9 +21,10 @@ Rails.application.routes.draw do
     resources :patients
     resources :activities
     resources :scans
+    resources :services, only: :index
   end
 
-  resources :services
+  resources :services, except: :index
 
   resources :recurring_appointments do
     resources :deleted_occurrences, only: [:new, :create]

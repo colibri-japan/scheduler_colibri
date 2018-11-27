@@ -1,0 +1,30 @@
+<div id="index-container">
+  <%= link_to '+新規サービスタイプ', new_service_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
+  
+  <div id="index-table-container">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="table-important-fields">サービスタイプ</th>
+          <th class="table-important-fields">給与計算方法</th>
+          <th class="table-important-fields">ヘルパー別給与</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @services.each do |service| %>
+          <tr class="service-clickable-row" data-link="<%= edit_service_path(service, format: :js) %>">
+            <td><%= service.title %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+</div>
+
+
+
+
+  

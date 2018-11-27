@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     resources :scans
   end
 
-  resources :services, only: [:destroy]
+  resources :services
 
   resources :recurring_appointments do
     resources :deleted_occurrences, only: [:new, :create]

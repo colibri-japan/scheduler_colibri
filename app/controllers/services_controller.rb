@@ -1,19 +1,24 @@
 class ServicesController < ApplicationController
 
     before_action :set_corporation
-    before_action :set_nurse, except: [:destroy]
+    before_action :set_nurse, except: [:destroy, :index, :new, :create]
     before_action :set_service, only: [:edit, :update, :destroy]
 
     def index
-        @services = @corporation.equal_salary == true ? @corporation.services.without_nurse_id.order_by_title.all : @nurse.services.order_by_title.all
+        if params[:nurse_id].present? 
+            @nurse =  Nurse.find(params[:nurse_id])
+            @services = @corporation.equal_salary == true ? @corporation.services.without_nurse_id.order_by_title.all : @nurse.services.order_by_title.all
+        else
+            @services = @corporation.services.without_nurse_id.order_by_title
+        end
     end
 
     def new
-        @service = Service.new()
+        @service = Service.new
     end
 
     def create
-        @service = Service.new()
+        @service = Service.new
 
         @service.nurse_id = @corporation.equal_salary == true ? @nurse.id : nil 
 

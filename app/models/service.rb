@@ -50,20 +50,12 @@ class Service < ApplicationRecord
   end
 
   def update_nurse_services
-    #update other services only if updated the 'main' service, or if the equal salary option is set to true
     if self.nurse_id.nil? 
       nurse_services_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(nurse_id: nil).ids
-      puts 'nurse id nil'
-      puts 'ids of services to update'
-      puts nurse_services_ids
-
       UpdateServicesWorker.perform_async(self.id, nurse_services_ids)
     else
       if self.equal_salary == true 
-        puts 'equal salary is true'
         services_to_update_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(id: self.id).ids 
-        puts 'ids of services to update'
-        puts services_to_update_ids
         UpdateServicesWorker.perform_async(self.id, services_to_update_ids)
       end
     end

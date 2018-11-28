@@ -65,7 +65,6 @@ class ServicesController < ApplicationController
 
     def update_planning_provided_service
         puts  'update method called'
-        puts service_params['recalculate_previous_wages']
         recalculate = service_params['recalculate_previous_wages'].to_i
 
         if recalculate == 1
@@ -78,8 +77,6 @@ class ServicesController < ApplicationController
                 provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND nurse_id = ? AND temporary is false', service_params['planning_id'], service_params['title'], @service.nurse_id)
             end
 
-            puts "provided services count"
-            puts provided_services_to_update.count
 
             provided_services_to_update.each do |provided_service|
                 provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? @service.weekend_unit_wage : @service.unit_wage

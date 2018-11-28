@@ -189,7 +189,7 @@
                   <tr>
                     <td><%= provided_service.patient.try(:name) %></td>
                     <td><%= patient_gender(provided_service.patient) %></td>
-                    <td><%= "#{provided_service.appointment_start.strftime('%H:%M')} ~ #{provided_service.appointment_end.strftime('%H:%M')}" %></td>
+                    <td><%= "#{provided_service.appointment_start.strftime('%H:%M')} ~ #{provided_service.appointment_end.strftime('%H:%M')}" if provided_service.appointment_end.present? && provided_service.appointment_start.present? %></td>
                     <td><%= provided_service.nurse.try(:name) %></td>
                     <td><%= provided_service.title %></td>
                     <td class='verify-provided-service' id='provided-service-<%= provided_service.id %>'>

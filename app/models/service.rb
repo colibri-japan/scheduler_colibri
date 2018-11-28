@@ -1,6 +1,7 @@
 class Service < ApplicationRecord
   attribute :recalculate_previous_wages, :boolean
   attribute :skip_create_nurses_callback, :boolean
+  attribute :skip_update_nurses_callback, :boolean
 
   belongs_to :corporation
   has_many :invoice_setting_services
@@ -15,8 +16,7 @@ class Service < ApplicationRecord
 
   after_save :recalculate_wages, if: :recalculate_previous_wages
   after_create :create_nurse_services, unless: :skip_create_nurses_callback
-  after_update :update_nurse_services
-
+  after_update :update_nurse_services, unless: :skip_update_nurses_callback
   before_destroy :destroy_services_for_other_nurses
 
   scope :order_by_title, -> { order(:title) }
@@ -86,13 +86,17 @@ class Service < ApplicationRecord
     #update other services only if updated the 'main' service, or if the equal salary option is set to true
     if self.nurse_id.nil? 
       nurse_services_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(nurse_id: nil).ids
+      puts 'nurse id nil'
+      puts 'ids of services to update'
+      puts nurse_services_ids
 
       UpdateServicesWorker.perform_async(self.id, nurse_services_ids)
     else
       if self.equal_salary == true 
         puts 'equal salary is true'
-        services_to_update_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(id: self.id)
-
+        services_to_update_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(id: self.id).ids 
+        puts 'ids of services to update'
+        puts services_to_update_ids
         UpdateServicesWorker.perform_async(self.id, services_to_update_ids)
       end
     end

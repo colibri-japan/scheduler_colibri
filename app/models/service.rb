@@ -25,7 +25,7 @@ class Service < ApplicationRecord
   private 
 
   def default_hour_based_wage
-    self.hour_based_wage = self.corporation.hour_based_wage if self.hour_based_wage.nil?
+    self.hour_based_wage = self.corporation.hour_based_payroll if self.hour_based_wage.nil?
   end
 
   def default_equal_salary

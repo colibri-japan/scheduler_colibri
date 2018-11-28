@@ -132,4 +132,11 @@ class Corporation < ApplicationRecord
 		end
 	end
 
+	def self.update_services_with_booleans
+		Corporation.all.each do |corporation|
+			corporation.services.update_all(equal_salary: corporation.equal_salary)
+			corporation.services.update_all(hour_based_wage: corporation.hour_based_payroll)
+		end
+	end
+
 end

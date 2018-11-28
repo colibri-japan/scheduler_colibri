@@ -2,6 +2,7 @@ class Service < ApplicationRecord
   attribute :recalculate_previous_wages, :boolean
   attribute :skip_create_nurses_callback, :boolean
   attribute :skip_update_nurses_callback, :boolean
+  attribute :planning_id, :integer
 
   belongs_to :corporation
   has_many :invoice_setting_services
@@ -14,7 +15,6 @@ class Service < ApplicationRecord
   before_create :default_hour_based_wage
   before_create :default_equal_salary
 
-  after_save :recalculate_wages, if: :recalculate_previous_wages
   after_create :create_nurse_services, unless: :skip_create_nurses_callback
   after_update :update_nurse_services, unless: :skip_update_nurses_callback
   before_destroy :destroy_services_for_other_nurses
@@ -34,11 +34,11 @@ class Service < ApplicationRecord
 
   def recalculate_wages
     puts 'recalculating wages'
-    if self.corporation.equal_salary == true 
+    #do it only for a fraction of services and the rest in background
+
+    if self.equal_salary == true 
       plannings_ids = self.corporation.plannings.ids
-
       @provided_services = ProvidedService.where(title: self.title, planning_id: plannings_ids)
-
     else
       if self.nurse_id.present?
         @provided_services = ProvidedService.where(title: self.title, nurse_id: self.nurse_id)

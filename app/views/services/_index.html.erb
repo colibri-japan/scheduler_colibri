@@ -18,7 +18,7 @@
                     </thead>
                     <tbody>
                         <% @services.each do |service| %>
-                            <tr class="clickable-row service-clickable" data-service-link="<%= edit_nurse_service_path(@nurse, service, format: :js) %>">
+                            <tr class="clickable-row service-clickable" data-service-link="<%= edit_nurse_service_path(@nurse, service, params: {planning_id: params[:planning_id]}, format: :js) %>">
                                 <td><%= service.try(:title) %></td>
                                 <td><%= service.try(:unit_wage) %></td>
                                 <td><%= service.weekend_unit_wage.to_i if service.weekend_unit_wage.present? %></td>

@@ -31,7 +31,10 @@ class ServicesController < ApplicationController
     end
 
     def update
-        @service.update(service_params)
+        if @service.update(service_params)
+            update_planning_provided_service
+            UpdateServicesWorker.perform_async(@service.id, service_params['planning_id'])
+        end
     end
 
     def destroy
@@ -57,6 +60,20 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage)
+        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage, :planning_id)
+    end
+
+    def update_planning_provided_service
+        if @service.equal_salary == true 
+            provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND temporary is false', service_params['planning_id'], service_params['title'])
+        else
+            provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND nurse_id = ? AND temporary is false', service_params['planning_id'], service_params['title'], @service.nurse_id)
+        end
+
+        provided_services_to_update.each do |provided_service|
+            provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? @service.weekend_unit_wage : @service.unit_wage
+            provided_service.skip_callbacks_except_calculate_total_wage = true 
+            provided_service.save
+        end
     end
 end

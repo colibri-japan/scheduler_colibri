@@ -83,10 +83,10 @@
 				</td>
 				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
                 <td class='verify-provided-service  ' id='provided-service-<%= provided_service.id %>'>
-				  <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.edit_requested == true %>'>
+				  <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>'>
 					<% if provided_service.cancelled == true %>
 						<span>キャンセル</span>
-					<% elsif provided_service.appointment.edit_requested == true %>
+					<% elsif provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>
 						<span>調整中リスト</span>
 					<% else %>
 						<% if provided_service.verified? %>

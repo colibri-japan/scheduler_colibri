@@ -7,7 +7,7 @@ class ServicesController < ApplicationController
     def index
         if params[:nurse_id].present? 
             @nurse =  Nurse.find(params[:nurse_id])
-            @services = @corporation.equal_salary == true ? @corporation.services.without_nurse_id.order_by_title.all : @nurse.services.order_by_title.all
+            @services = @nurse.services.order_by_title.all
         else
             @planning = Planning.find(params[:planning_id])
             @services = @corporation.services.without_nurse_id.order_by_title
@@ -33,7 +33,7 @@ class ServicesController < ApplicationController
     def update
         if @service.update(service_params)
             update_planning_provided_service
-            UpdateServicesWorker.perform_async(@service.id, service_params['planning_id'])
+            RecalculatePreviousWagesWorker.perform_async(@service.id, service_params['planning_id'])
         end
     end
 
@@ -64,16 +64,28 @@ class ServicesController < ApplicationController
     end
 
     def update_planning_provided_service
-        if @service.equal_salary == true 
-            provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND temporary is false', service_params['planning_id'], service_params['title'])
-        else
-            provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND nurse_id = ? AND temporary is false', service_params['planning_id'], service_params['title'], @service.nurse_id)
-        end
+        puts  'update method called'
+        puts service_params['recalculate_previous_wages']
+        recalculate = service_params['recalculate_previous_wages'].to_i
 
-        provided_services_to_update.each do |provided_service|
-            provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? @service.weekend_unit_wage : @service.unit_wage
-            provided_service.skip_callbacks_except_calculate_total_wage = true 
-            provided_service.save
+        if recalculate == 1
+            puts 'evaluated recalculate'
+            if @service.equal_salary == true 
+                puts 'equal salary is true'
+                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND temporary is false', service_params['planning_id'], service_params['title'])
+            else
+                puts 'equal salary not true'
+                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND nurse_id = ? AND temporary is false', service_params['planning_id'], service_params['title'], @service.nurse_id)
+            end
+
+            puts "provided services count"
+            puts provided_services_to_update.count
+
+            provided_services_to_update.each do |provided_service|
+                provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? @service.weekend_unit_wage : @service.unit_wage
+                provided_service.skip_callbacks_except_calculate_total_wage = true 
+                provided_service.save
+            end
         end
     end
 end

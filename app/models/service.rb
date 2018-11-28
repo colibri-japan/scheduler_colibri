@@ -32,39 +32,6 @@ class Service < ApplicationRecord
     self.equal_salary = self.corporation.equal_salary if self.equal_salary.nil?
   end
 
-  def recalculate_wages
-    puts 'recalculating wages'
-    #do it only for a fraction of services and the rest in background
-
-    if self.equal_salary == true 
-      plannings_ids = self.corporation.plannings.ids
-      @provided_services = ProvidedService.where(title: self.title, planning_id: plannings_ids)
-    else
-      if self.nurse_id.present?
-        @provided_services = ProvidedService.where(title: self.title, nurse_id: self.nurse_id)
-      else
-        @provided_services = []
-      end
-    end
-
-    @weekday_wage = self.unit_wage 
-    @weekend_wage = self.weekend_unit_wage
-
-    @provided_services.each do |provided_service|
-      if provided_service.temporary == false && provided_service.service_date.present?
-
-        provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? @weekend_wage : @weekday_wage
-
-        provided_service.skip_callbacks_except_calculate_total_wage = true 
-
-        provided_service.save!
-
-      end
-    end
-
-
-  end
-
   def create_nurse_services 
     nurses = self.corporation.nurses.where(displayable: true)
     nurse_services = Service.where(title: self.title, nurse_id: nurses.ids).all

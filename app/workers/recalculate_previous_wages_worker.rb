@@ -3,15 +3,19 @@ class RecalculatePreviousWagesWorker
   sidekiq_options retry: false 
 
   def perform(service_id, planning_id)
+    puts 'performing recalculate previous wages'
     updated_service = Service.find(service_id)
     corporation_plannings_ids = updated_service.corporation.plannings.ids
-    valid_planning_ids = corporation_plannings_ids - [planning_id.to_i]*
+    valid_planning_ids = corporation_plannings_ids - [planning_id.to_i]
 
     if updated_service.equal_salary == true 
         provided_services_to_update = ProvidedService.where(title: updated_service.title, planning_id: valid_planning_ids)
     else
         provided_services_to_update = ProvidedService.where(title: updated_service.title, planning_id: valid_planning_ids, nurse_id: updated_service.nurse_id)
     end
+
+    puts 'count of provided services to update'
+    puts provided_services_to_update.count
 
     provided_services_to_update.each do |provided_service|
         provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? updated_service.weekend_unit_wage : updated_service.unit_wage

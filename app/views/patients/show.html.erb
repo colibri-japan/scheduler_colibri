@@ -22,8 +22,11 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom">
 		<div id="patients-resource" class="no-print">
-			<% @patients.each do |patient| %>
-				<p class="resource-list-element <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+			<% @patients.group_by_kana.each do |kana, patients| %>
+				<div class="nurses-resource-subsection-title"><%= kana %></div>
+				<% patients.each do |patient| %>
+					<p class="resource-list-element <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+				<% end %>
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="hide-resource no-print">

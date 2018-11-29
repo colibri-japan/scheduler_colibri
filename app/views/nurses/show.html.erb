@@ -23,8 +23,11 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom">
 		<div id="patients-resource" class="hide-resource">
-			<% @patients.each do |patient| %>
-				<p class="resource-list-element" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+			<% @patients.group_by_kana.each do |kana, patients| %>
+				<div class="nurses-resource-subsection-title"><%= kana %></div>
+				<% patients.each do |patient| %>
+					<p class="resource-list-element" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+				<% end %>
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="no-print">

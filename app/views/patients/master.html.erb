@@ -22,13 +22,15 @@
 
 <div id="resource-list-container" class="no-print">
 	<div id="toggle-patients-nurses-wrapper">
-		<%= link_to '提供表読み込み', new_planning_scan_path(@planning), class: 'btn btn-success text-white new-scan', remote: true %>
 		<input type="checkbox" checked id="toggle-patients-nurses">
 	</div>
 	<div id="resource-container"  class="scrollbar-custom">
 	  <div id="patients-resource" class="no-print">
-		<% @patients.each do |patient| %>
-			<p class="master-list-element list-patient  <%= 'master-element-selected' if patient == @patient %>" data-url="<%= planning_patient_master_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+		<% @patients.group_by_kana.each do |kana, patients| %>
+			<div class="nurses-resource-subsection-title"><%= kana %></div>
+			<% patients.each do |patient| %>
+				<p class="master-list-element list-patient  <%= 'master-element-selected' if patient == @patient %>" data-url="<%= planning_patient_master_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+			<% end %>
 		<% end %>
 	  </div>
       <div id="nurses-resource" class="hide-resource no-print">
@@ -88,6 +90,10 @@
 			<div class="modal-body">
 				<table class="table">
                     <tbody>
+						<tr>
+							<td>提供表の予定を読み込み、マスタースケジュールにサービスを自動的に作成する。</td>
+							<td><%= link_to '提供表の読み込み', new_planning_scan_path(@planning), class: 'btn btn-success text-white new-scan', remote: true %></td>
+						</tr>
 					    <tr>
                             <th>「全体スケジュール」内の<%= @patient.name %>様に関するこれまで編集情報は全て削除され、<%= @patient.name %>様のマスタースケジュールが上書きされます。</th>
                             <th><button class="btn btn-warning" id="copy-master-patient"><%= @patient.name %>様のマスターを反映</button></th>

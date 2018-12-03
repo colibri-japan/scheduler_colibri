@@ -1324,6 +1324,25 @@ let toggleCountFromServices = () => {
   })
 }
 
+
+let saveUserRole = () => {
+  $('#save-user-role').click(function () {
+    console.log('saveUserRole called')
+    var user_data;
+    user_data = {
+      user: {
+        role: $('#user_role').val()
+      }
+    };
+    $.ajax({
+      url: $(this).data('update-role-url'),
+      data: user_data,
+      type: 'PATCH'
+    });
+  });
+};
+
+
 let humanizeFrequency = (frequency) => {
   console.log(frequency)
   switch(frequency) {

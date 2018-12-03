@@ -7,12 +7,12 @@ class User < ApplicationRecord
   belongs_to :corporation
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
-  validates :role, inclusion: 0..2
+  enum role: [:schedule_restricted, :schedule_admin, :corporation_admin]
+  validates :role, inclusion: { in: roles.keys }
 
   before_validation :set_default_corporation
   before_create :invited_corporation
 
-  enum role: [:schedule_restricted, :schedule_admin, :corporation_admin]
 
   scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 

@@ -53,6 +53,8 @@ Rails.application.routes.draw do
   
   #custom routes for users
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
+  get 'users/:id/edit_role' => 'users#edit_role', as: :edit_user_role
+  patch 'users/:id/update_role' => 'users#update_role', as: :update_user_role
   
   #custom routes for provided services
   patch 'provided_services/:id/verify' => 'provided_services#verify', as: :verify_provided_service

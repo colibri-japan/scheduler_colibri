@@ -3,26 +3,19 @@
   <%= link_to '+事業所内のメンバーを招待する', new_user_invitation_path, class: 'btn btn-info text-white btn-margin-top' %>
 
   <div id="index-table-container">
-    <table class="table table-hover%>">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th>名前</th>
           <th>メール</th>
-          <th>アドミン権限</th>
         </tr>
       </thead>
 
       <tbody>
         <% @users.each do |user| %>
-          <tr>
+          <tr class="user-clickable-row" data-url="<%= edit_user_role_path(user) %>">
             <td><%= user.name %></td>
             <td><%= user.email %></td>
-            <td>
-              <label class="switch" data-boolean="<%= user.admin %>">
-                <input class="switch-input" type="checkbox" id="<%= user.id %>">
-                <span class="slider round slider-user" data-toggle-url="<%= toggle_admin_path(user) %>" id="<%= user.id %>"></span>
-              </label>
-            </td>
           </tr>
         <% end %>
       </tbody>

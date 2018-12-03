@@ -54,6 +54,7 @@
 	border: 0.5px solid #aaa;
 	height: 700px;
 	margin-top: 20px;
+	margin-bottom: 50px;
 }
 
 #account-update-menu {
@@ -61,20 +62,18 @@
 	border-right: 0.5px solid #aaa;
 }
 
-.account-menu-item:hover {
-	cursor: pointer;
-	background-color: #F7F9FE;
-	font-weight: bold;
+.account-menu-selected {
+	color : black;
 }
 
-.account-menu-selected {
-	font-weight: bold;
-	background-color: #F7F9FE;
+.account-menu-item:hover {
+	cursor: pointer;
+	color: black;
 }
 
 .account-menu-item {
 	border-bottom: 0.5px solid #aaa;
-	border-top: 0.5px solid #aaa;
+	color :#4f5b66;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	padding-left: 8px;
@@ -83,4 +82,8 @@
 
 .account-body {
 	padding: 8px;
+}
+
+.user-clickable-row:hover {
+	cursor: pointer;
 }

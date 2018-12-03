@@ -1,0 +1,36 @@
+<div id="edit_user_role" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title"><%= "#{@user.name}の権限を変更する" %></h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+            <div class="modal-body">
+                <%= form_for @user, remote: true do |form| %>
+                    <% if @user.errors.any? %>
+                        <div id="error_explanation">
+                            <h2>エラーが発生しました：</h2>
+
+                            <ul>
+                                <% @user.errors.full_messages.each do |message| %>
+                                    <li><%= message %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                    <% end %>
+
+                    <div class="form-group">
+                        <%= form.label :role, "権限", class: "colibri-form-label" %>
+                        <%= form.select :role, options_for_select([['全体スケジュールのみ', :schedule_restricted], ['スケジュール管理者', :schedule_admin], ['事業所管理者', :corporation_admin]], @user.role), class: "form-control" %>
+                    </div>
+
+                    <div class="actions">
+                        <div class='btn btn-info text-white btn-block' id='save-user-role' data-update-role-url="<%= update_user_role_path(@user) %>">セーブする</div>
+                    </div>
+                <% end %>
+            </div>
+		</div>
+	</div>
+
+</div>

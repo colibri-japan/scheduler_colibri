@@ -10,6 +10,8 @@ class User < ApplicationRecord
   before_validation :set_default_corporation
   before_create :invited_corporation
 
+  enum role: [:schedule_restricted, :schedule_admin, :corporation_admin]
+
   scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 
   def self.assign_to_base_corporation

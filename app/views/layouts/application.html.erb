@@ -15,7 +15,7 @@
 
     <div id="flash" class="no-print">
       <% flash.each do |key, value| %>
-        <% if value.length > 0 %><div class="alert alert-<%= key_helper(key) %>"><%= value %></div><% end %>
+        <% if value.length > 0 %><div class="alert alert-<%= key %>"><%= value %></div><% end %>
       <% end %>
     </div>
 

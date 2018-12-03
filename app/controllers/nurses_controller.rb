@@ -62,7 +62,7 @@ class NursesController < ApplicationController
 
     respond_to do |format|
       if @nurse.save
-        format.html { redirect_to nurses_path }
+        format.html { redirect_to nurses_path, notice: '従業員が登録されました。' }
       else
         format.html { render :new }
       end
@@ -73,7 +73,7 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
     respond_to do |format|
       if @nurse.update(nurse_params)
-        format.html {redirect_back(fallback_location: root_path, notice: 'ヘルパーの情報がアップデートされました')}
+        format.html {redirect_back(fallback_location: root_path, notice: '従業員の情報がアップデートされました')}
       else
         format.html {render :edit}
       end
@@ -84,7 +84,7 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
     @nurse.destroy
     respond_to do |format|
-      format.html { redirect_to nurses_url, notice: 'ヘルパーが削除されました' }
+      format.html { redirect_to nurses_url, notice: '従業員が削除されました' }
       format.json { head :no_content }
       format.js
     end
@@ -133,7 +133,7 @@ class NursesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="ヘルパー給与.xlsx"'}
+      format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="従業員給与.xlsx"'}
     end
   end
 

@@ -1798,11 +1798,6 @@ $(document).on('turbolinks:load', function(){
     $('#account-dropdown-icon').css({'color': 'white'})
   })
 
-
-
-
-
-
   
 
 }); 

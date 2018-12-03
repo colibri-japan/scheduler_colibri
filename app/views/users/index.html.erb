@@ -8,6 +8,7 @@
         <tr>
           <th>名前</th>
           <th>メール</th>
+          <th>権限</th>
         </tr>
       </thead>
 
@@ -16,6 +17,7 @@
           <tr class="user-clickable-row" data-url="<%= edit_user_role_path(user) %>">
             <td><%= user.name %></td>
             <td><%= user.email %></td>
+            <td><%= user_role(user) %></td>
           </tr>
         <% end %>
       </tbody>

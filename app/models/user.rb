@@ -25,6 +25,19 @@ class User < ApplicationRecord
     end
   end
 
+  #to be deleted later
+  def self.reassign_role
+    users = User.all 
+
+    users.each do |user|
+      if user.admin == true 
+        user.update(role: :schedule_admin)
+      else
+        user.update(role: :schedule_restricted)
+      end
+    end
+  end
+
   private
 
   def set_default_corporation

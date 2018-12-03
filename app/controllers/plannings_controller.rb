@@ -83,7 +83,7 @@ class PlanningsController < ApplicationController
 		@full_timers = @corporation.nurses.displayable.full_timers
 		@part_timers = @corporation.nurses.displayable.part_timers
 
-		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, service_date: Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day..Date.today.end_of_day)
+		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day..Date.today.end_of_day)
 
 		#shintai vs seikatsu
 		@provided_services_shintai = @provided_services_till_today.where('title LIKE ? ', '%身%').sum(:total_wage)
@@ -142,7 +142,5 @@ class PlanningsController < ApplicationController
 	def planning_params
 		params.require(:planning).permit(:business_month, :business_year, :title)
 	end
-
-
 
 end

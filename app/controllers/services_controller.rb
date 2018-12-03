@@ -41,7 +41,7 @@ class ServicesController < ApplicationController
         respond_to do |format|
             if @service.destroy 
                 format.js
-                format.html { redirect_back(fallback_location: root_path)  }
+                format.html { redirect_back fallback_location: root_path, notice: 'サービスタイプが削除されました'  }
             end
         end
     end

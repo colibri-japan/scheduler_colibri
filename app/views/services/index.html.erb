@@ -25,6 +25,7 @@
           <th class="table-important-fields">サービスタイプ</th>
           <th class="table-important-fields">給与計算方法</th>
           <th class="table-important-fields">ヘルパー別給与</th>
+          <th class="table-important-fields">削除</th>
         </tr>
       </thead>
 
@@ -34,6 +35,7 @@
             <td><%= service.title %></td>
             <td><%= humanize_hour_based_wage(service) %></td>
             <td><%= humanize_equal_salary(service) %></td>
+            <td><%= link_to '削除', service_path(service), method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'サービスタイプが削除されます。既存のサービスは変更されません。'} %></td>
           </tr>
         <% end %>
       </tbody>

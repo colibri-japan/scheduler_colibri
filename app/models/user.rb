@@ -7,6 +7,8 @@ class User < ApplicationRecord
   belongs_to :corporation
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
+  validates :role, inclusion: 0..2
+
   before_validation :set_default_corporation
   before_create :invited_corporation
 

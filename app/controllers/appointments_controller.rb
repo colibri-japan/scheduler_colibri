@@ -36,7 +36,6 @@ class AppointmentsController < ApplicationController
   def edit  
     @nurses = @corporation.nurses.order_by_kana
     @patients = @corporation.patients.active.order_by_kana
-    @master = @appointment.master
     @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id).all
     @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end

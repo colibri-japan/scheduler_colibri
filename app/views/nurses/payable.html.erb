@@ -45,9 +45,11 @@
 	<div id='payable-table-commands'>
 	    <div id="add-provided-service-line">
 			<%= link_to '+手当を追加する', new_nurse_provided_service_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true %>
-			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_services_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true %>
+			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_services_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true if current_user.corporation_admin? %>
 		</div>
-		<div class="excel-download btn btn-success text-white" id="payable-download-button"><span class="glyphicon glyphicon-download" style="color:white"></span> ダウンロードする</div>
+		<% if current_user.corporation_admin? %>
+			<div class="excel-download btn btn-success text-white" id="payable-download-button"><span class="glyphicon glyphicon-download" style="color:white"></span> ダウンロードする</div>
+		<% end %>
 	</div>
 
 	<table class="table">
@@ -58,9 +60,13 @@
 				<th class="table-important-fields">利用者名</th>
 				<th class="table-important-fields">提供時間</th>
 				<th class="table-important-fields">開始~終了</th>
-				<th class="table-important-fields">時給/単価</th>
+				<% if current_user.corporation_admin? %>
+					<th class="table-important-fields">時給/単価</th>
+				<% end %>
 				<th class="table-important-fields">回数</th>
-				<th class="table-important-fields">計</th>
+				<% if current_user.corporation_admin? %>
+					<th class="table-important-fields">計</th>
+				<% end %>
 				<th class="table-important-fields">確認</th>
 				<th class="table-important-fields">アクション</th>
 			</tr>
@@ -75,13 +81,15 @@
 				<td><%= provided_service.patient.try(:name) %> </td>
 				<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.service_duration.present? %></td>
 				<td><%= "#{provided_service.appointment_start.strftime('%H:%M')}~#{provided_service.appointment_end.strftime('%H:%M')}"  if provided_service.appointment_start.present? && provided_service.appointment_end.present? %></td>
-				<td>
-					<%= provided_service.unit_cost %>¥
-				</td>
+				<% if current_user.corporation_admin? %>
+					<td><%= "#{provided_service.unit_cost}¥" %></td>
+				<% end %>
 				<td>
 					<%= provided_service.service_counts if provided_service.service_counts.present? %>
 				</td>
-				<td id="service-total-<%= provided_service.id %>"><%= provided_service.total_wage %>¥</td>
+				<% if current_user.corporation_admin? %>
+					<td id="service-total-<%= provided_service.id %>"><%= "#{provided_service.total_wage}¥" %></td>
+				<% end %>
                 <td class='verify-provided-service  ' id='provided-service-<%= provided_service.id %>'>
 				  <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>'>
 					<% if provided_service.cancelled == true %>
@@ -101,7 +109,7 @@
 
 			</tr>
 			<% end %>
-			<% if @counter.present? %>
+			<% if @counter.present? && current_user.corporation_admin? %>
 				<tr>
 					<td></td>
 					<td>移動手当</td>
@@ -119,18 +127,20 @@
 					<td><%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, @counter, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
 				</tr>
 			<% end %>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td id="total-salary-label">合計：</td>
-				<td id="total-salary"><%= @total_till_now %>¥</td>
-				<td></td>
-			</tr>
+			<% if current_user.corporation_admin? %>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td id="total-salary-label">合計：</td>
+					<td id="total-salary"><%= @total_till_now %>¥</td>
+					<td></td>
+				</tr>
+			<% end %>
 		</tbody>
 		
 	</table>
@@ -141,9 +151,11 @@
 			<tr>
 				<th class="table-important-fields">タイプ</th>
 				<th class="table-important-fields">提供時間</th>
-				<th class="table-important-fields">時給/単価</th>
 				<th class="table-important-fields">回数</th>
-				<th class="table-important-fields">計</th>
+				<% if current_user.corporation_admin? %>
+					<th class="table-important-fields">時給/単価</th>
+					<th class="table-important-fields">計</th>
+				<% end %>
 			</tr>
 		</thead>
 		<tbody class="text-not-bold">
@@ -151,12 +163,14 @@
 				<tr>
 					<th><%= service.title %></th>
 					<th><%= from_seconds_to_hours_minutes(service.service_duration) if service.service_duration > 0 %></th>
-					<th><%= service.unit_cost %></th>
 					<th><%= service.service_counts %></th>
-					<th><%= service.total_wage %></th>
+					<% if current_user.corporation_admin? %>
+						<th><%= service.unit_cost %></th>
+						<th><%= service.total_wage %></th>
+					<% end %>
 				</tr>
 			<% end %>
-			<% if @counter.present? %>
+			<% if @counter.present? && current_user.corporation_admin? %>
 				<tr>
 					<td>移動手当</td>
 					<td></td>
@@ -169,13 +183,15 @@
 					<td class="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
 				</tr>
 			<% end %>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td id="total-salary-label">合計：</td>
-				<td id="total-salary"><%= @total_till_now %>¥</td>
-			</tr>
+			<% if current_user.corporation_admin? %>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td id="total-salary-label">合計：</td>
+					<td id="total-salary"><%= @total_till_now %>¥</td>
+				</tr>
+			<% end %>
 		</tbody>
 	</table>
 	

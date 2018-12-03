@@ -46,7 +46,7 @@ class NursesController < ApplicationController
     @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 
     set_valid_range
-		@admin = current_user.admin.to_s
+		@admin =  current_user.has_admin_access?.to_s
   end
 
   def edit

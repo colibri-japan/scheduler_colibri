@@ -48,7 +48,7 @@
 		<div id="detail-planning-title" class="print-add-margin">
 			<p class="master-title"> 様</p>
 			<div id="activity-show-button-container" class="no-print">
-				<% if current_user.admin? %>
+				<% if current_user.has_admin_access? %>
 					<div class="btn btn-success text-white" id="copy-master"><i class="glyphicon glyphicon-export" style="color:white"></i> 全体へ反映する</div>
 				<% end %>
 			</div>

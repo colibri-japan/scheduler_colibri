@@ -109,7 +109,7 @@ class PlanningsController < ApplicationController
 		@patients_firstless = @patients - [@patients.first]
 
 		set_valid_range
-		@admin = current_user.admin.to_s
+		@admin = current_user.has_admin_access?.to_s
 	end
 
 	def settings 

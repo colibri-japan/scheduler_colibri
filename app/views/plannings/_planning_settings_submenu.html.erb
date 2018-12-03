@@ -3,12 +3,12 @@
 		<ul class="nav nav-tabs" class="no-print">
 			<li class="planning-menu-items" data-url="<%= planning_path(@planning) %>" title="全体">全</li>
 			<li class="planning-menu-items" data-url="<%= planning_nurse_path(@planning, @last_nurse) %>" title="個別">個</li>
-			<% if current_user.admin? %>
+			<% if current_user.has_admin_access? %>
 				<li class="planning-menu-items" data-url="<%= planning_nurse_payable_path(@planning, @last_nurse) %>" title="給与管理">給</li>
 			<% end %>
 			<li class="planning-menu-items" data-url="<%= planning_activities_path(@planning) %>" title="編集履歴">歴</li>
 			<li class="planning-menu-items" data-url="<%=  planning_nurse_master_path(@planning, @last_nurse) %>" title="マスター">マ</li>
-			<% if current_user.admin? %>
+			<% if current_user.has_admin_access? %>
 				<li class="planning-menu-items  planning-menu-selected"  data-url="<%=  planning_settings_path(@planning) %>" title="設定"><span class='glyphicon glyphicon-cog' style='color:white'></span></li>
 			<% end %>
 		</ul>

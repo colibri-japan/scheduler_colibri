@@ -33,11 +33,15 @@ class User < ApplicationRecord
 
     users.each do |user|
       if user.admin == true 
-        user.update(role: :schedule_admin)
+        user.update(role: :corporation_admin)
       else
         user.update(role: :schedule_restricted)
       end
     end
+  end
+
+  def has_admin_access?
+    schedule_admin? || corporation_admin?
   end
 
   private

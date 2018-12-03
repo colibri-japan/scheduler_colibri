@@ -14,7 +14,7 @@
             <tr class="clickable-row" data-link="<%= planning_path(planning) %>">
               <td class="col-md-10"><%= planning.title %></td>
               <td class="col-md-2">
-                <% if current_user.admin? %>
+                <% if current_user.has_admin_access? %>
                   <%= link_to '削除', planning_archive_path(planning), method: :patch, class: 'btn btn-secondary btn-sm text-white', data: { confirm: 'サービス、提供されたサービス（給与管理）などを含めてスケジュールが削除されます。' } if current_user.admin? %>
                 <% end %>
               </td>

@@ -15,7 +15,7 @@
     <% unless appointment.new_record? %>
 
       <div class="form-group">
-          <%= form.check_box :master, checked:  current_user.admin? && @master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
+          <%= form.check_box :master, checked: appointment.master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
       </div>
 
     <% end %>

@@ -16,7 +16,7 @@
 
 
       <div class="form-group">
-          <%= form.check_box :master, checked:  current_user.admin? && @master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
+          <%= form.check_box :master, checked:  recurring_appointment.master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
       </div>
 
       <div class="form-group">

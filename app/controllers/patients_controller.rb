@@ -2,6 +2,7 @@ class PatientsController < ApplicationController
   before_action :set_corporation
   before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :master, :destroy, :master_to_schedule]
   before_action :set_planning, only: [:show, :master, :master_to_schedule]
+  before_action :set_printing_option, only: [:show, :master]
 
   def index
     if params[:start].present? && params[:end].present? && params[:master].present? && @corporation.plannings.ids.include?(params[:planning_id].to_i)
@@ -119,6 +120,10 @@ class PatientsController < ApplicationController
 
   def set_corporation
   	@corporation = Corporation.find(current_user.corporation_id)
+  end
+
+  def set_printing_option
+    @printing_option = @corporation.printing_option
   end
 
   def patient_params

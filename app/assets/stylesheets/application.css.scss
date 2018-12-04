@@ -396,6 +396,10 @@ th {
     cursor: pointer;
 }
 
+.thick-calendar-line {
+	border-top: 1.33px solid #BFC4C9;
+}
+
 
 @media print {
 	.no-print {
@@ -465,6 +469,8 @@ th {
 	border-color: #ccc !important;
 	background: #fff !important; }
 
+
+
 	/* don't display any button-related controls */ 
 	.fc-button-group,.fc button {
 		  display: none;
@@ -481,6 +487,10 @@ th {
 	.fc-row {
 	border: 0 !important;
 	margin: 0 !important; }
+
+	/* keep thick calendar lines */
+	.thick-calendar-line {
+	border-top: 1.33px solid rgb(209, 227, 245) !important;}
 
   
 }

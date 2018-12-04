@@ -2,6 +2,7 @@ class NursesController < ApplicationController
   before_action :set_corporation
   before_action :set_nurse, except: [:index, :new, :create]
   before_action :set_planning, only: [:show, :master, :payable, :master_to_schedule]
+  before_action :set_printing_option, only: [:show, :master]
 
   def index
     full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
@@ -225,6 +226,10 @@ class NursesController < ApplicationController
       new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, unit_cost: unit_cost, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
       @grouped_services << new_service
     end
+  end
+
+  def set_printing_option
+    @printing_option = @corporation.printing_option
   end
 
 end

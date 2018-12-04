@@ -1776,6 +1776,12 @@ $(document).on('turbolinks:load', function(){
     $('#account-dropdown-icon').css({'color': 'white'})
   })
 
+  $('tr*[data-time="09:00:00"]').addClass('thick-calendar-line');
+  $('tr*[data-time="12:00:00"]').addClass('thick-calendar-line');
+  $('tr*[data-time="15:00:00"]').addClass('thick-calendar-line');
+  $('tr*[data-time="18:00:00"]').addClass('thick-calendar-line');
+
+
   
 
 }); 

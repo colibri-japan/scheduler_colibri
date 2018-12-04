@@ -53,17 +53,23 @@
 				<div class="planning-nurse-module-title">
 					<%= @nurse.try(:name) %>
 				</div>
-				<div id="address-phone-container">
+				<div id="address-phone-container" class="font-size-large print-only">
 					<% if @nurse.address.present? %>
-						<span class="glyphicon glyphicon-home"></span><%= " #{@nurse.address}  " %>
+						<span class="glyphicon glyphicon-home"></span><span class="font-size-large"><%= " #{@nurse.address}  " %></span>
 					<% end %>
 					<% if @nurse.phone_number.present? %>
-						<span class="glyphicon glyphicon-phone"></span><%= " #{@nurse.phone_number}" %>
+						<span class="glyphicon glyphicon-phone"></span><span class="font-size-large"><%= " #{@nurse.phone_number}" %></span>
 					<% end %>
 				</div>
-				<div class="print-only">
+				<div  id="description-container" class="print-only">
 				  <span class="<%= 'no-print' unless @printing_option.print_nurse_description_in_master == true %>">備考：<%= @nurse.try(:description) %></span>
 				</div>
+				<div id="appointment-comments-container" class="print-only">
+		          <div class="<%= 'no-print' unless @printing_option.print_nurse_comments_in_master == true %>">
+			        <div class="appointment-comments-title">コメント</div>
+			        <div id="appointment-comments"></div>
+		          </div>
+		        </div>
 			</div>
 			<div id="activity-show-button-container" class="no-print">
 				<div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
@@ -77,10 +83,7 @@
 			<div class="master_calendar"></div>
 		</div>
 		
-		<div id="recurring-appointment-details-container" class="print-only">
-			<div class="planning-activity-module-title">サービスの詳細</div>
-			<div id="appointment-comments"></div>
-		</div>
+
 	</div>
 </div>
 

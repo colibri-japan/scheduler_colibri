@@ -47,22 +47,36 @@
 
 	<div id="detail-planning-container">
 		<div id="detail-planning-title">
-			<div class="planning-resource-module-title">
-				<span id="resource-name-wrapper"><%= @patient.try(:name) %>様</span>
-				<button id="resource-details-button" class="btn btn-sm">詳細</button>
-			</div>
-			<div id="activity-show-button-container" class="no-print">
-				<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
-				<div class="btn btn-success text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
-				<span id="activity-show-button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-time"></span> 最新編集履歴</span>
-				<span id="activity-hide-button" class="btn btn-secondary btn-sm"><span class="glyphicon glyphicon-time"></span> 最新編集履歴を閉じる</span>
-			</div>
-		</div>
+		    <div id="planning-nurse-information">
+			    <div class="planning-resource-module-title">
+				    <span id="resource-name-wrapper"><%= @patient.try(:name) %>様</span>
+				    <button id="resource-details-button" class="btn btn-sm">詳細</button>
+			    </div>
+			    <div id="address-phone-container" class="print-only">
+				    <% if @patient.address.present? %>
+					    <span class="glyphicon glyphicon-home"></span><span class="font-size-large"><%= " #{@patient.address}  " %></span>
+				    <% end %>
+				    <% if @patient.phone_number.present? %>
+					    <span class="glyphicon glyphicon-phone"></span><span class="font-size-large"><%= " #{@patient.phone_number}" %></span>
+				    <% end %>
+			    </div>
+			    <div id="description-container" class="print-only font-size-large">
+			        <span class="<%= 'no-print' unless @printing_option.print_patient_description == true %>">備考：<%= @patient.try(:description) %></span>
+			    </div>
 
-		<div class="print-only font-size-large">
-			住所：<%= @patient.address %><br/>
-			電話番号：<%= @patient.phone_number %><br/>
-			<span class="<%= 'no-print' unless @printing_option.print_patient_description == true %>">備考：<%= @patient.try(:description) %></span>
+			    <div id="appointment-comments-container" class="print-only font-size-large">
+		          <div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
+			        <div class="appointment-comments-title">コメント</div>
+			        <div id="appointment-comments"></div>
+		          </div>
+		        </div>
+		    </div>
+		    <div id="activity-show-button-container" class="no-print">
+			    <input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
+			    <div class="btn btn-success text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
+			    <span id="activity-show-button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-time"></span> 最新編集履歴</span>
+			    <span id="activity-hide-button" class="btn btn-secondary btn-sm"><span class="glyphicon glyphicon-time"></span> 最新編集履歴を閉じる</span>
+		    </div>
 		</div>
 
 		<div id="planning-container">
@@ -128,13 +142,6 @@
 			</div>
 		</div>
 
-		<div id="recurring-appointment-details-container" class="print-only">
-			<div class="planning-activity-module-title">サービスの詳細</div>
-			<div id="appointment-comments">
-				
-			</div>
-			
-		</div>
 		
 	</div>
 	

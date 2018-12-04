@@ -50,28 +50,38 @@
 <div id="detail-container">
 	<div id="detail-planning-container">
 		<div id="detail-planning-title" class="print-add-margin">
-			<p class="master-title"><%= @patient.try(:name) %></p>
-			<div id="activity-show-button-container" class="no-print">
-				<div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
-				<% if current_user.admin? %>
-					<div class="btn btn-success text-white" id="master-options"><i class="glyphicon glyphicon-cog" style="color:white"></i> オプション</div>
-				<% end %>
+		    <div id="planning-nurse-information">
+		        <div class="planning-nurse-module-title">
+			        <%= @patient.try(:name) %>
+			    </div>
+			    <div id="address-phone-container" class="font-size-large print-only">
+				  <% if @patient.address.present? %>
+					<span class="glyphicon glyphicon-home"></span><span class="font-size-large"><%= " #{@patient.address}  " %></span>
+				  <% end %>
+				  <% if @patient.phone_number.present? %>
+					<span class="glyphicon glyphicon-phone"></span><span class="font-size-large"><%= " #{@patient.phone_number}" %></span>
+				  <% end %>
+			    </div>
+			    <div id="description-container" class="print-only">
+			       <span class="<%= 'no-print' unless @printing_option.print_patient_description_in_master == true %>">備考：<%= @patient.try(:description) %></span>
+			    </div>
+			    <div id="appointment-comments-container" class="print-only">
+		            <div class="<%= 'no-print' unless @printing_option.print_patient_comments_in_master == true %>"> 
+			            <div class="appointment-comments-title">コメント</div>
+			            <div id="appointment-comments"></div>
+					</div>
+		        </div>
 			</div>
-		</div>
-
-		<div class="print-only font-size-large print-add-margin" id="nurse-info-block-master">
-			住所：<span id="master-address"><%= @patient.try(:address) %></span> <br/>
-			電話番号：<span id="master-phone"><%= @patient.try(:phone_number) %></span><br/>
-			<span id="master-description" class="<%= 'no-print' unless @printing_option.print_patient_description_in_master == true %>">備考: <%= @patient.try(:description) %></span>
+		    <div id="activity-show-button-container" class="no-print">
+	  		    <div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
+ 			    <% if current_user.has_admin_access? %>
+				    <div class="btn btn-success text-white" id="master-options"><i class="glyphicon glyphicon-cog" style="color:white"></i> オプション</div>
+			    <% end %>
+		    </div>
 		</div>
 
 		<div id="planning-container">
 			<div class="master_calendar"></div>
-		</div>
-		
-		<div id="recurring-appointment-details-container" class="print-only">
-			<div class="planning-activity-module-title">サービスの詳細</div>
-			<div id="appointment-comments"></div>
 		</div>
 	</div>
 </div>

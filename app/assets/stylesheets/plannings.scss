@@ -241,8 +241,7 @@ li.planning-menu-selected {
 
 .appointment-comment {
 	margin-bottom: 4px;
-	font-size: 1.1em;
-	margin-left: 50px;
+	font-size: 1em;
 }
 
 
@@ -342,4 +341,27 @@ ul.chosen-results {
 
 #nurse-conflict-confirm {
 	display: none;
+}
+
+#appointment-comments-container {
+	width: 100%;
+	margin-left: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 1.1em;
+}
+
+#appointment-comments {
+	margin-left: 0px;
+}
+
+.appointment-comments-title {
+	font-weight: bold;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+#description-container {
+	margin-bottom: 0px;
+	padding-bottom: 0px;
 }

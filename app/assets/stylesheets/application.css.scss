@@ -344,9 +344,7 @@ th {
 	display: none;
 }
 
-.font-size-large {
-	font-size: 1.4em;
-}
+
 
 .colibri-small-title {
 	font-size: 1.8em;
@@ -425,10 +423,6 @@ th {
 	margin-left: 40px;
 	}
 
-	#recurring-appointment-details {
-		margin-left : 50px;
-	}
-
 	.fc-title {
 		font-size: 1.8em !important;
 		font-weight: bold !important;
@@ -437,6 +431,10 @@ th {
 	#resource-details-button {
 		display: none !important;
 	}
+
+    .font-size-large {
+	    font-size: 1.3em;
+    }
 
 
 	@page {size: auto}

@@ -499,7 +499,7 @@ initialize_master_calendar = function() {
 
 
       resources: {
-        url: window.corporationNursesURL　+ '?include_undefined=true&master=true',
+        url: window.corporationNursesURL + '?include_undefined=true&master=true',
       },
 
       events: window.appointmentsURL + '&master=true',
@@ -532,7 +532,6 @@ initialize_master_calendar = function() {
         })
 
         if (view.name != 'agendaDay') {
-            $('#nurse-info-block-master').removeClass('.print-master-no-view');
             element.find('.fc-title').text(function(i,t){
               if ($('#toggle-patients-nurses').is(':checked')) {
                 return event.nurse.name;
@@ -544,7 +543,6 @@ initialize_master_calendar = function() {
 
             return  !event.edit_requested && event.master && event.displayable ;
           } else {
-            $('#nurse-info-block-master').addClass('.print-master-no-view');
             return !event.edit_requested && event.master && event.displayable ;
           }
       },
@@ -1066,6 +1064,7 @@ toggleProvidedServiceForm = function(){
 
 var appointmentComments;
 appointmentComments = function() {
+  console.log('appointment comments loaded')
   $('#appointment-comments').empty();
   if ($('.master_calendar').length) {
     var calendar = $('.master_calendar');

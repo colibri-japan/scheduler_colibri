@@ -61,6 +61,9 @@
 						<span class="glyphicon glyphicon-phone"></span><%= " #{@nurse.phone_number}" %>
 					<% end %>
 				</div>
+				<div class="print-only">
+				  <span class="<%= 'no-print' unless @printing_option.print_nurse_description == true %>">備考：<%= @nurse.try(:description) %></span>
+				</div>
 			</div>
 			<div id="activity-show-button-container" class="no-print">
 				<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
@@ -152,7 +155,7 @@
 			</div>
 		</div>
 
-		<div id="recurring-appointment-details-container" class="print">
+		<div id="recurring-appointment-details-container" class="print-only">
 			<div class="planning-activity-module-title">サービスの詳細</div>
 			<div id="appointment-comments"></div>
 		</div>

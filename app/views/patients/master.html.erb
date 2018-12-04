@@ -59,16 +59,17 @@
 			</div>
 		</div>
 
-		<div class="print font-size-large print-add-margin" id="nurse-info-block-master">
+		<div class="print-only font-size-large print-add-margin" id="nurse-info-block-master">
 			住所：<span id="master-address"><%= @patient.try(:address) %></span> <br/>
-			電話番号：<span id="master-phone"><%= @patient.try(:phone_number) %></span>
+			電話番号：<span id="master-phone"><%= @patient.try(:phone_number) %></span><br/>
+			<span id="master-description" class="<%= 'no-print' unless @printing_option.print_patient_description_in_master == true %>">備考: <%= @patient.try(:description) %></span>
 		</div>
 
 		<div id="planning-container">
 			<div class="master_calendar"></div>
 		</div>
 		
-		<div id="recurring-appointment-details-container" class="print">
+		<div id="recurring-appointment-details-container" class="print-only">
 			<div class="planning-activity-module-title">サービスの詳細</div>
 			<div id="appointment-comments"></div>
 		</div>

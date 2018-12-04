@@ -340,7 +340,7 @@ th {
 	font-weight: bold;
 }
 
-.print {
+.print-only {
 	display: none;
 }
 
@@ -405,7 +405,7 @@ th {
 	.no-print {
 		display: none !important;
 	}
-	.print {
+	.print-only {
 		display: block;
 	}
 

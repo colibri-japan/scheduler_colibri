@@ -107,17 +107,20 @@ p.colibri-nav-link {
 
 .alert {
 	position: absolute !important;
-	top: 49px !important;
-	z-index: 1;
-	width: 50%;
-	left: 25%;
+	top: 46px !important;
+	z-index: 6;
+	width: 100%;
 	text-align: center;
 }
 
 .alert.alert-notice {
 	background-color: #8DE698 !important;
 	color: #106F1C !important;
-	border-radius: 3px;
+	border: none;
+}
+
+.alert.alert-alert {
+	background-color: #FFE878 !important;
 	border: none;
 }
 

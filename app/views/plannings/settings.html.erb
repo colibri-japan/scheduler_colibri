@@ -21,12 +21,12 @@
         <%= form_for @corporation do |form| %>
             <div class="form-group">
                 <%= form.label :business_start_hour, "日開始時間", class: "colibri-form-label" %>
-                <%= form.select :business_start_hour, options_for_select([['06:00', '06:00:00'], ['07:00', '07:00:00'], ['08:00', '08:00:00'], ['09:00', '09:00:00']], @corporation.business_start_hour), class: "form-control" %>
+                <%= form.select :business_start_hour, options_for_select([['05:00', '05:00:00'], ['06:00', '06:00:00'], ['07:00', '07:00:00'], ['08:00', '08:00:00'], ['09:00', '09:00:00'], ['10:00', '10:00:00'], ['11:00', '11:00:00']], @corporation.business_start_hour), class: "form-control" %>
             </div>
 
             <div class="form-group">
                 <%= form.label :business_end_hour, "日終了時間", class: "colibri-form-label" %>
-                <%= form.select :business_end_hour, options_for_select([['20:00', '20:00:00'], ['21:00', '21:00:00'], ['22:00', '22:00:00'], ['23:00', '23:00:00'], ['24:00','24:00:00']], @corporation.business_end_hour), class: "form-control" %>
+                <%= form.select :business_end_hour, options_for_select([['16:00', '16:00:00'], ['17:00', '17:00:00'], ['18:00', '18:00:00'], ['19:00', '19:00:00'], ['20:00', '20:00:00'], ['21:00', '21:00:00'], ['22:00', '22:00:00'], ['23:00', '23:00:00'], ['24:00','24:00:00']], @corporation.business_end_hour), class: "form-control" %>
             </div>
             
             <div class="form-group">

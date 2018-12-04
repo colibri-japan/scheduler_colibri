@@ -6,6 +6,9 @@
         <ul id="settings-list">
             <li id="settings-options" class="settings-list-element settings-list-element-selected">スケジュールオプション</li>
             <li id="settings-services" class="settings-list-element"><%= link_to 'サービスタイプ一覧', planning_services_path(@planning), class: 'settings-list-url' %></li>
+            <% if false  %>
+              <li id="settings-printing-options" class="settings-list-element"><%= link_to '印刷オプション', planning_printing_option_path(@planning, @corporation.printing_option), class: 'settings-list-url' %></li>
+            <% end %>
         </ul>
 	</div>
 

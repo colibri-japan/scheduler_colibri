@@ -1692,27 +1692,7 @@ $(document).on('turbolinks:load', function(){
 
 
   $('#print-button').click(function(){
-    
-    $('#print-options-confirm').dialog({
-
-      resizable: false,
-      height: 'auto',
-      width: 400,
-      modal: true,
-      buttons: {
-        '表示する':function(){
-          $(this).dialog('close');
-          $('#recurring-appointment-details-container').removeClass('no-print');
-          window.print();
-        },
-        '表示しない':function(){
-          $(this).dialog('close');
-          $('#recurring-appointment-details-container').addClass('no-print');
-          window.print();
-        }
-      }
-    });
-    
+    window.print();    
   });
 
   $('#master-print-button').click(function(){
@@ -1761,8 +1741,6 @@ $(document).on('turbolinks:load', function(){
   $('li.account-settings-li').click(function(){
     window.location = $(this).data('url');
   });
-
-  $('#print-options-confirm').hide();
 
   $('#drag-drop-confirm').hide();
 

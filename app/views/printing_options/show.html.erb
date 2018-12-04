@@ -1,0 +1,25 @@
+<%= render 'plannings/planning_settings_submenu' %>
+
+<div id="settings-menu-container" class="no-print">
+
+	<div id="settings-menu-list">
+        <ul id="settings-list">
+            <li id="settings-options" class="settings-list-element"><%= link_to 'スケジュールオプション', planning_settings_path(@planning), class: 'settings-list-url' %></li>
+            <li id="settings-services" class="settings-list-element"><%= link_to 'サービスタイプ一覧', planning_services_path(@planning), class: 'settings-list-url' %></li>
+            <li id="settings-services" class="settings-list-element settings-list-element-selected">印刷オプション</li>
+        </ul>
+	</div>
+
+    <div id="delete-planning-action">
+        <%= link_to "スケジュールを削除", planning_archive_path(@planning), method: :patch, class: 'btn btn-danger text-white', data: {confirm: 'このスケジュールが削除されます'} %>
+    </div>
+
+</div>
+
+<div id="settings-container">
+    <div id="planning-options" >
+        <h1 class="colibri-small-title">印刷オプション</h1>
+    </div>
+
+</div>
+

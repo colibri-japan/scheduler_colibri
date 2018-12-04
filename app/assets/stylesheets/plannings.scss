@@ -179,16 +179,16 @@ li.planning-menu-selected {
 }
 
 
-.resource-list-element {
+.resource-list-element, .planning-list-element, .master-list-element {
 	padding-bottom: 3px;
 	padding-top: 3px;
 	margin-bottom: 0;
 	padding-left: 10px;	
 	font-size: 0.9em;
-	color: #D6D9DC;
+	color: #D6D9DC !important;
 }
 
-.resource-list-element:hover {
+.resource-list-element:hover, .planning-list-element:hover {
 	color: white;
 	cursor: pointer;
 }
@@ -203,14 +203,6 @@ li.planning-menu-selected {
 	color: white;
 }
 
-.master-list-element {
-	padding-bottom: 3px;
-	padding-top: 3px;
-	margin-bottom: 0;
-	padding-left: 10px;	
-	font-size: 0.9em;
-	color: #D6D9DC;	
-}
 
 .master-list-element:hover {
 	cursor: pointer; 

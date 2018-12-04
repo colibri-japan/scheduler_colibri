@@ -1713,6 +1713,7 @@ $(document).on('turbolinks:load', function(){
     window.location = $(this).data('url');
   });
 
+
   $('#toggle-patients-nurses').bootstrapToggle({
     on: '利用者',
     off: '従業員',

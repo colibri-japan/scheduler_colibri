@@ -4,7 +4,9 @@
   </div>
   <div id='dashboard-plannings-list'>
     <% @plannings.each do |planning| %>
-      <div class="resource-list-element" data-url="<%= planning_path(planning) %>"><%= planning.title %></div>
+      <div>
+        <%= link_to "#{planning.title}", planning, target: :_blank, class: 'planning-list-element' %>
+      </div>
     <% end %>
   </div>
 </div>

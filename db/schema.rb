@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181203003900) do
+ActiveRecord::Schema.define(version: 20181204021655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,6 +203,24 @@ ActiveRecord::Schema.define(version: 20181203003900) do
     t.index ["corporation_id"], name: "index_posts_on_corporation_id"
   end
 
+  create_table "printing_options", force: :cascade do |t|
+    t.bigint "corporation_id"
+    t.boolean "print_patient_comments", default: false
+    t.boolean "print_nurse_comments", default: false
+    t.boolean "print_patient_comments_in_master", default: false
+    t.boolean "print_nurse_comments_in_master", default: false
+    t.boolean "print_patient_dates", default: true
+    t.boolean "print_nurse_dates", default: true
+    t.boolean "print_patient_dates_in_master", default: true
+    t.boolean "print_nurse_dates_in_master", default: true
+    t.boolean "print_patient_description", default: false
+    t.boolean "print_nurse_description", default: false
+    t.boolean "print_patient_description_in_master", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corporation_id"], name: "index_printing_options_on_corporation_id"
+  end
+
   create_table "provided_services", force: :cascade do |t|
     t.string "payable_type"
     t.bigint "payable_id"
@@ -393,6 +411,7 @@ ActiveRecord::Schema.define(version: 20181203003900) do
   add_foreign_key "invoice_settings", "corporations"
   add_foreign_key "posts", "corporations"
   add_foreign_key "posts", "users", column: "author_id"
+  add_foreign_key "printing_options", "corporations"
   add_foreign_key "recurring_appointments", "plannings"
   add_foreign_key "scans", "plannings"
   add_foreign_key "services", "corporations"

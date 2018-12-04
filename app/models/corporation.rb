@@ -52,7 +52,9 @@ class Corporation < ApplicationRecord
 	def self.add_printing_option
 		corporations = Corporation.all 
 		corporations.each do |corporation|
-			corporation.printing_option.create 
+			if corporation.printing_option.nil?
+				PrintingOption.create(corporation_id: corporation.id) 
+			end
 		end
 	end
 

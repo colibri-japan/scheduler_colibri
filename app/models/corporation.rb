@@ -6,11 +6,13 @@ class Corporation < ApplicationRecord
 	has_many :services
 	has_many :invoice_settings
 	has_many :posts
+	has_one :printing_option
 
 	validates :weekend_reminder_option, inclusion: 0..2
 
 	before_save :set_default_equal_salary
 	after_create :create_undefined_nurse
+	after_create :create_printing_option
 
 	def self.add_undefined_nurse
 		corporations = Corporation.all
@@ -46,6 +48,14 @@ class Corporation < ApplicationRecord
 		datetime.between?((date_corporation - 15.minutes), (date_corporation + 15.minutes))
 	end
 
+	#to be deleted 
+	def self.add_printing_option
+		corporations = Corporation.all 
+		corporations.each do |corporation|
+			corporation.printing_option.create 
+		end
+	end
+
 	private
 
 	def set_default_equal_salary
@@ -54,6 +64,10 @@ class Corporation < ApplicationRecord
 
 	def create_undefined_nurse
 		self.nurses.create(name: "未定", displayable: false, kana: "あああああ")
+	end
+
+	def create_printing_option
+		self.printing_option.create 
 	end
 
 	def self.create_weekend_holiday_invoice_setting

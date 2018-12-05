@@ -161,12 +161,12 @@
 		<tbody class="text-not-bold">
 			<% @grouped_services.each do |service| %>
 				<tr>
-					<th><%= service.title %></th>
-					<th><%= from_seconds_to_hours_minutes(service.service_duration) if service.service_duration > 0 %></th>
-					<th><%= service.service_counts %></th>
+					<td><%= service.title %></td>
+					<td><%= from_seconds_to_hours_minutes(service.service_duration) if service.service_duration > 0 %></td>
+					<td><%= service.service_counts %></td>
 					<% if current_user.corporation_admin? %>
-						<th><%= service.unit_cost %></th>
-						<th><%= service.total_wage %></th>
+						<td><%= service.unit_cost %></td>
+						<td><%= service.total_wage %></td>
 					<% end %>
 				</tr>
 			<% end %>

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :corporations do
     resources :nurses, only: :index
     resources :patients, only: :index
+    resources :printing_options, only: :update
   end
 
   resources :dashboard, only: :index

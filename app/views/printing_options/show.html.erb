@@ -16,9 +16,76 @@
 
 </div>
 
-<div id="settings-container">
+<div id="printing-settings-container">
     <div id="planning-options" >
         <h1 class="colibri-small-title">印刷オプション</h1>
+
+        <%= form_for [@corporation, @printing_option] do |form| %>
+
+            <div class='colibri-form-subsection'>
+                <div class='colibri-form-subsection-title '>コメント</div>
+                <div class="form-group row">
+                    <%= form.label :print_nurse_comments, "個別従業員のコメント", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_nurse_comments,  class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+                <div class="form-group row">
+                    <%= form.label :print_patient_comments, "個別利用者のコメント", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_patient_comments, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+                <div class="form-group row">
+                    <%= form.label :print_nurse_comments_in_master, "マスター従業員のコメント", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_nurse_comments_in_master, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+                <div class="form-group row">
+                    <%= form.label :print_patient_comments_in_master, "マスター利用者のコメント", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_patient_comments_in_master, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+            </div>
+
+            <div class='colibri-form-subsection'>
+                <div class='colibri-form-subsection-title'>備考</div>
+                <div class="form-group row">
+                    <%= form.label :print_nurse_description, "個別従業員の備考", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_nurse_description, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+                <div class="form-group row">
+                    <%= form.label :print_patient_description, "個別利用者の備考", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_patient_description, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+                <div class="form-group row">
+                    <%= form.label :print_nurse_description_in_master, "マスター従業員の備考", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_nurse_description_in_master, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+                <div class="form-group row">
+                    <%= form.label :print_patient_description_in_master, "マスター利用者の備考", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_patient_description_in_master, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+            </div>
+
+            <div class='colibri-form-subsection'>
+                <div class='colibri-form-subsection-title'>日付</div>
+                <div class="form-group row">
+                    <%= form.label :print_nurse_dates_in_master, "マスター従業員の日付", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_nurse_dates_in_master, class: "col-sm-6 print-option-checkbox" %>
+                </div>
+
+                <div class="form-group row">
+                    <%= form.label :print_patient_dates_in_master, "マスター利用者の日付", class: "colibri-form-label-dark col-sm-6" %>
+                    <%= form.check_box :print_patient_dates_in_master, class: "col-sm-6 print-option-checkbox" %>
+                </div>         
+            </div>
+
+            <div class="actions">
+                <%= form.submit "セーブする", class: "btn btn-info btn-block" %>
+            </div>
+        <% end %>
     </div>
 
 </div>

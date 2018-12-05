@@ -7,5 +7,13 @@ $(document).on 'turbolinks:load', ->
   $('.resource-title-selectable').click ->
     window.location = $(this).data('url')
     return
+
+  $('.print-option-checkbox').bootstrapToggle
+    on: '有',
+    off: '無',
+    size: 'small',
+    onstyle: 'primary',
+    offstyle: 'secondary',
+    width: 55
   
   return

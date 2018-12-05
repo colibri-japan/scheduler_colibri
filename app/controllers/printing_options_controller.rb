@@ -1,17 +1,17 @@
 class PrintingOptionsController < ApplicationController
 
     def show
+        @corporation = current_user.corporation
         @planning = Planning.find(params[:planning_id])
         @printing_option = PrintingOption.find(params[:id])
         @last_nurse = current_user.corporation.nurses.displayable.last
     end
 
     def update
-        @planning = Planning.find(params[:planning_id])
         @printing_option = PrintingOption.find(params[:id])
 
         if @printing_option.update(printing_option_params)
-            redirect_to planning_printing_option_path(@planning, @printing_option)
+            redirect_back(fallback_location: root_path, notice: '印刷設定がセーブされました。')
         end
     end
 

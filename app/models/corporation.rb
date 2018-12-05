@@ -6,6 +6,7 @@ class Corporation < ApplicationRecord
 	has_many :services
 	has_many :invoice_settings
 	has_many :posts
+	has_many :teams
 	has_one :printing_option
 
 	validates :weekend_reminder_option, inclusion: 0..2

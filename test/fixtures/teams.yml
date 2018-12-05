@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  corporation: one
+  team_name: MyString
+
+two:
+  corporation: two
+  team_name: MyString

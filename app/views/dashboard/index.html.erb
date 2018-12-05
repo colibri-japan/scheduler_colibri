@@ -2,7 +2,7 @@
   <div id='new-planning-container'>
     <%= link_to '+新規スケジュール', new_planning_path, class: 'btn btn-info btn-sm text-white btn-margin-top' %>
   </div>
-  <div id='dashboard-plannings-list'>
+  <div id='dashboard-plannings-list' class="scrollbar-custom  colibri-scrollbar-dark">
     <% @plannings.each do |planning| %>
       <div>
         <%= link_to "#{planning.title}", planning, target: :_blank, class: 'planning-list-element' %>
@@ -20,7 +20,7 @@
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ログアウト以降：#{@unseen_activity_count}" %></span>
         </div>
-        <div class='colibri-subcontainer-body'>
+        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light' >
           <% @activities.each do |activity| %>
             <%= render partial: 'activities/activity', locals: {activity: activity} %>
           <% end %>
@@ -32,7 +32,7 @@
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>調整中リスト（先２週間）</span>
         </div>
-        <div class='colibri-subcontainer-body'>
+        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
           <table class='table'>
             <thead>
               <tr>
@@ -64,7 +64,7 @@
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>掲示板</span>
         </div>
-        <div class='colibri-subcontainer-body-with-footer' id='posts-container'>
+        <div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container'>
           <% @posts.each do |post| %>
             <%= render partial: 'posts/post', locals: {post: post} %>
           <% end %>
@@ -83,7 +83,7 @@
       <div class='colibri-subcontainer-header'>
         <span class='colibri-subcontainer-title'>コメント付きサービス（先２週間）</span>
       </div>
-      <div class='colibri-subcontainer-body'>
+      <div class='colibri-subcontainer-body  scrollbar-custom colibri-scrollbar-light'>
         <table class='table'>
           <thead>
             <tr>
@@ -114,7 +114,7 @@
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>利用状況(本日)</span>
         </div>
-          <div class='colibri-subcontainer-body'>
+          <div class='colibri-subcontainer-body  scrollbar-custom colibri-scrollbar-light'>
             <table class='table'>
               <thead>
                 <tr>
@@ -142,7 +142,7 @@
       <div class='colibri-subcontainer-header'>
         <span>利用状況（今週）</span>
       </div>
-      <div class="colibri-subcontainer-body">
+      <div class="colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light">
         <table class="table">
           <thead>
             <tr>
@@ -173,7 +173,7 @@
       <div class='colibri-subcontainer-header'>
         <span class='colibri-subcontainer-title'>本日のサービス</span>
       </div>
-        <div class='colibri-subcontainer-body'>
+        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
           <table class='table'>
             <thead>
               <tr>

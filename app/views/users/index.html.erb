@@ -1,30 +1,42 @@
-<div id="index-container">
-
-  <%= link_to '+事業所内のメンバーを招待する', new_user_invitation_path, class: 'btn btn-info text-white btn-margin-top' %>
-
-  <div id="index-table-container">
-    <table class="table <%= 'table-hover' if current_user.corporation_admin? %>">
-      <thead>
-        <tr>
-          <th>名前</th>
-          <th>メール</th>
-          <th>権限</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @users.each do |user| %>
-          <tr class="<%= 'user-clickable-row' if current_user.corporation_admin? %>" data-url="<%= edit_user_role_path(user) %>">
-            <td><%= user.name %></td>
-            <td><%= user.email %></td>
-            <td><%= user_role(user) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+<div id="account-update-container">
+  <div id="account-update-menu">
+    <div class="account-menu-item account-menu-selected">
+      ユーザー招待.権限
+    </div>
+    <% if false %>
+      <div class="account-menu-item" >
+        チーム管理
+      </div>
+    <% end %>
   </div>
 
+  <div id="account-update-body">
+    <div id="users-index-container">
+      <%= link_to '+事業所内のメンバーを招待する', new_user_invitation_path, class: 'btn btn-info text-white btn-margin-top' %>
 
+      <div id="index-table-container">
+        <table class="table <%= 'table-hover' if current_user.corporation_admin? %>">
+          <thead>
+            <tr>
+              <th>名前</th>
+              <th>メール</th>
+              <th>権限</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @users.each do |user| %>
+              <tr class="<%= 'user-clickable-row' if current_user.corporation_admin? %>" data-url="<%= edit_user_role_path(user) %>">
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td><%= user_role(user) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 

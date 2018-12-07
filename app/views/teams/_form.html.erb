@@ -1,0 +1,23 @@
+<%= form_for team, remote: true do |form| %>
+  <% if team.errors.any? %>
+    <div id="error_explanation">
+        <h2>エラーが発生しました：</h2>
+
+        <ul>
+        <% team.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+        <% end %>
+        </ul>
+    </div>
+  <% end %>
+
+    <div class="form-group">
+      <%= form.label :team_name, "チーム名", class: "colibri-form-label" %>
+      <%= form.text_field :team_name, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "サーブする", class: 'btn btn-info' %>
+    </div>
+
+<% end %>

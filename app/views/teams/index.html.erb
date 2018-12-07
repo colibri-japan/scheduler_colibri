@@ -1,0 +1,43 @@
+<div id="account-update-container">
+  <div id="account-update-menu">
+    <div class="account-menu-item">
+      <%= link_to 'ユーザー招待.権限', users_path %> 
+    </div>
+    <div class="account-menu-item account-menu-selected" >
+      チーム管理
+    </div>
+  </div>
+
+  <div id="account-update-body">
+    <div id="users-index-container">
+      <%= link_to '+新規チームを作る', new_team_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
+
+      <div id="index-table-container">
+        <table class="table <%= 'table-hover' if current_user.has_admin_access? %>">
+          <thead>
+            <tr>
+              <th style="width: 30%">チーム名</th>
+              <th style="width: 70%">従業員名</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @teams.each do |team| %>
+              <tr class="<%= 'user-clickable-row' if current_user.has_admin_access? %>" data-url="<%= edit_team_path(team) %>">
+                <td><%= team.team_name %></td>
+                <td>
+                    <%= team.nurses.map {|nurse| nurse.name}.join(', ') %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  

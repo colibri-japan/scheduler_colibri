@@ -3,11 +3,9 @@
     <div class="account-menu-item account-menu-selected">
       ユーザー招待.権限
     </div>
-    <% if false %>
-      <div class="account-menu-item" >
-        チーム管理
-      </div>
-    <% end %>
+    <div class="account-menu-item" >
+      <%= link_to 'チーム管理', teams_path %> 
+    </div>
   </div>
 
   <div id="account-update-body">

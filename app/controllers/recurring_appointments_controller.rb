@@ -109,7 +109,7 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.editing_occurrences_after = recurring_appointment_params[:editing_occurrences_after]
     @recurring_appointment.displayable = false
 
-    if @recurring_appointment.save
+    if @recurring_appointment.save(validate: false)
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
       @appointments = Appointment.find(appointment_ids)
     end                  

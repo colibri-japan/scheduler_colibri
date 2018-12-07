@@ -81,7 +81,7 @@ class AppointmentsController < ApplicationController
     @appointment.archive 
     @appointment.recurring_appointment_id = nil 
 
-    if @appointment.save 
+    if @appointment.save(validate: false)
       @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:name), previous_start: @appointment.starts_at, previous_end: @appointment.ends_at
     end
   end

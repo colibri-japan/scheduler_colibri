@@ -46,7 +46,7 @@ class PlanningsController < ApplicationController
 
 	def master_to_schedule
 		authorize @planning, :is_employee?
-		authorize current_user, :is_admin?
+		authorize current_user, :has_admin_access?
 
 		CopyPlanningFromMasterWorker.perform_async(@planning.id)
 

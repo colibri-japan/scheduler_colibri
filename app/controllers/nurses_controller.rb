@@ -103,7 +103,7 @@ class NursesController < ApplicationController
   end
 
   def payable
-    authorize current_user, :is_admin?
+    authorize current_user, :has_admin_access?
     authorize @nurse, :is_employee?
 
     delete_previous_temporary_services

@@ -33,16 +33,12 @@
 			<% end %>
 		<% end %>
 	  </div>
-      <div id="nurses-resource" class="no-print">
-	  		<div class="nurses-resource-subsection-title">正社員</div>
-			<% @full_timers.each do |nurse| %>
-				<p class="master-list-element list-nurse <%= 'master-element-selected' if nurse == @nurse %>"  data-url="<%= planning_nurse_master_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+		<% @grouped_nurses.each do |group, nurses| %>
+			<div class="nurses-resource-subsection-title"><%= group %></div>
+			<% nurses.each do |nurse| %>
+				<p class="master-list-element  <%= 'master-element-selected' if nurse == @nurse %>" data-url="<%= planning_nurse_master_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 			<% end %>
-			<div class="nurses-resource-subsection-title">非正社員</div>
-			<% @part_timers.each do |nurse| %>
-				<p class="master-list-element list-nurse  <%= 'master-element-selected' if nurse == @nurse %>"  data-url="<%= planning_nurse_master_path(@planning, nurse) %>" %><%= nurse.try(:name) %></p>
-			<% end %>
-	  </div>
+		<% end %>
 	</div>
 
 </div>

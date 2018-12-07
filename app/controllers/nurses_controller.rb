@@ -19,8 +19,7 @@ class NursesController < ApplicationController
   def show
     authorize @nurse, :is_employee?
 
-    @full_timers = @corporation.nurses.where(full_timer: true).order_by_kana
-    @part_timers = @corporation.nurses.where(full_timer: false).order_by_kana
+    fetch_nurses_grouped_by_team
     @patients = @corporation.patients.where(active: true).order_by_kana
     @patients_with_services = Patient.joins(:provided_services).select("patients.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {nurse_id: @nurse.id}).where(active: true).group('patients.id').order('sum_service_duration DESC')
     @last_patient = @patients.last
@@ -28,9 +27,6 @@ class NursesController < ApplicationController
 
     @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
     @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生%").sum(:service_duration)
-
-    puts @provided_services_seikatsu
-    puts @provided_services_shintai
 
     @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 
@@ -40,11 +36,10 @@ class NursesController < ApplicationController
   def master 
     authorize @planning, :is_employee? 
 
-    @full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
-    @part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    fetch_nurses_grouped_by_team
     @patients = @corporation.patients.where(active: true).order_by_kana
     @last_patient = @patients.last
-    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
+    @last_nurse = @corporation.nurses.displayable.last
 
     set_valid_range
 		@admin =  current_user.has_admin_access?.to_s
@@ -225,6 +220,15 @@ class NursesController < ApplicationController
       unit_cost = matching_service.unit_wage if matching_service.present?
       new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, unit_cost: unit_cost, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
       @grouped_services << new_service
+    end
+  end
+
+  def fetch_nurses_grouped_by_team
+    @nurses = @corporation.nurses.displayable.order_by_kana
+    if @corporation.teams.any?
+      @grouped_nurses = @nurses.group_by {|nurse| nurse.team.team_name }
+    else
+      @grouped_nurses = @nurses.group_by {|nurse| nurse.full_timer ? '正社員' : '非正社員' }
     end
   end
 

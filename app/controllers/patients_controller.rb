@@ -22,10 +22,9 @@ class PatientsController < ApplicationController
     authorize @patient, :is_employee?
     
     @patients = @corporation.patients.active.order_by_kana
+    fetch_nurses_grouped_by_team
     @last_patient = @corporation.patients.last
-    @full_timers = @corporation.nurses.displayable.full_timers.order_by_kana
-    @part_timers = @corporation.nurses.displayable.part_timers.order_by_kana
-    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
+    @last_nurse = @corporation.nurses.displayable.last
     @activities = PublicActivity::Activity.where(planning_id: @planning.id, patient_id: @patient.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
     @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
 
@@ -38,10 +37,9 @@ class PatientsController < ApplicationController
     authorize @planning, :is_employee?
 
     @patients = @corporation.patients.active.all.order_by_kana
-    @full_timers = @corporation.nurses.displayable.full_timers.order_by_kana
-    @part_timers = @corporation.nurses.displayable.part_timers.order_by_kana
+    fetch_nurses_grouped_by_team
     @last_patient = @patients.last
-    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
+    @last_nurse = @corporation.nurses.displayable.last
       
     set_valid_range
 		@admin = current_user.has_admin_access?.to_s
@@ -124,6 +122,15 @@ class PatientsController < ApplicationController
 
   def set_printing_option
     @printing_option = @corporation.printing_option
+  end
+
+  def fetch_nurses_grouped_by_team
+    @nurses = @corporation.nurses.displayable.order_by_kana
+    if @corporation.teams.any?
+      @grouped_nurses = @nurses.group_by {|nurse| nurse.team.team_name }
+    else
+      @grouped_nurses = @nurses.group_by {|nurse| nurse.full_timer ? '正社員' : '非正社員' }
+    end
   end
 
   def patient_params

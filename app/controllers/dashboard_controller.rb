@@ -35,7 +35,7 @@ class DashboardController < ApplicationController
     @commented_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day).where.not(description: [nil, '']).order(starts_at: :asc)
 
     #daily provided_services to be verified
-    @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+    @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
   end
 
   private

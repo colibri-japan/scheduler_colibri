@@ -60,7 +60,7 @@ class Appointment < ApplicationRecord
 		puts 'overlap validation on appointment'
 
 		unless nurse.name == '未定' || self.displayable == false
-			overlaps = Appointment.where(master: self.master, displayable: true, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).select(:id)
+			overlaps = Appointment.where(master: self.master, displayable: true, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).select(:id)
 			overlapping_ids = overlaps.map {|e| e.id}
 
 			errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 

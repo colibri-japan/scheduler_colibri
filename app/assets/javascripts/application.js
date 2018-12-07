@@ -240,6 +240,11 @@ initialize_nurse_calendar = function(){
             day_cells.css('background-color', '#FFE8E8')
           }
         }
+      },
+
+      viewRender : function(view, element) {
+        drawHourMarks();
+        makeTimeAxisPrintFriendly()
       }
 
 
@@ -448,6 +453,12 @@ initialize_patient_calendar = function(){
             day_cells.css('background-color', '#FFE8E8')
           }
         }
+      },
+
+
+      viewRender: function (view, element) {
+        drawHourMarks();
+        makeTimeAxisPrintFriendly()
       }
 
     });
@@ -673,6 +684,12 @@ initialize_master_calendar = function() {
             day_cells.css('background-color', '#FFE8E8')
           }
         }
+      },
+
+
+      viewRender: function (view, element) {
+        drawHourMarks();
+        makeTimeAxisPrintFriendly()
       }
     })
     
@@ -962,6 +979,9 @@ initialize_calendar = function() {
          },
 
       viewRender: function(view){
+        drawHourMarks();
+        makeTimeAxisPrintFriendly();
+
         if (view.name == 'agendaDay') {
           $('span#day-view-options').show();
         } else {
@@ -1499,6 +1519,17 @@ let toggleServiceEqualSalary = () => {
   })
 }
 
+let drawHourMarks = () => {
+  $('tr*[data-time="09:00:00"]').addClass('thick-calendar-line');
+  $('tr*[data-time="12:00:00"]').addClass('thick-calendar-line');
+  $('tr*[data-time="15:00:00"]').addClass('thick-calendar-line');
+  $('tr*[data-time="18:00:00"]').addClass('thick-calendar-line');
+}
+
+let makeTimeAxisPrintFriendly = () => {
+  $('tr[data-time] > td > span').addClass('bolder-calendar-time-axis')
+}
+
 $.ajaxSetup({
   headers: {
     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -1795,14 +1826,5 @@ $(document).on('turbolinks:load', function(){
   }, function(){
     $('#account-dropdown-icon').css({'color': 'white'})
   })
-
-  $('tr*[data-time="09:00:00"]').addClass('thick-calendar-line');
-  $('tr*[data-time="12:00:00"]').addClass('thick-calendar-line');
-  $('tr*[data-time="15:00:00"]').addClass('thick-calendar-line');
-  $('tr*[data-time="18:00:00"]').addClass('thick-calendar-line');
-
-
-  
-
 }); 
 

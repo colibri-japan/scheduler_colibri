@@ -226,7 +226,7 @@ class NursesController < ApplicationController
   def fetch_nurses_grouped_by_team
     @nurses = @corporation.nurses.displayable.order_by_kana
     if @corporation.teams.any?
-      @grouped_nurses = @nurses.group_by {|nurse| nurse.team.team_name }
+      @grouped_nurses = @nurses.group_by {|nurse| nurse.team.try(:team_name) }
     else
       @grouped_nurses = @nurses.group_by {|nurse| nurse.full_timer ? '正社員' : '非正社員' }
     end

@@ -30,6 +30,18 @@
 //= require chartkick
 //= require_tree .
 
+let setUnavailabilityTime = (start, end) => {
+  $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
+  $('#unavailability_starts_at_2i').val(moment(start).format('M'));
+  $('#unavailability_starts_at_3i').val(moment(start).format('D'));
+  $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
+  $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
+  $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
+  $('#unavailability_ends_at_2i').val(moment(end).format('M'));
+  $('#unavailability_ends_at_3i').val(moment(end).format('D'));
+  $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
+  $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
+}
 
 var initialize_nurse_calendar;
 initialize_nurse_calendar = function(){
@@ -103,16 +115,7 @@ initialize_nurse_calendar = function(){
 
           $("#recurring_appointment_nurse_id").val(window.nurseId);
 
-          $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
-          $('#unavailability_starts_at_2i').val(moment(start).format('M'));
-          $('#unavailability_starts_at_3i').val(moment(start).format('D'));
-          $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
-          $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
-          $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
-          $('#unavailability_ends_at_2i').val(moment(end).format('M'));
-          $('#unavailability_ends_at_3i').val(moment(end).format('D'));
-          $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
-          $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
+          setUnavailabilityTime(start, end);
           $("#unavailability_nurse_id").val(window.nurseId);
           
           recurringAppointmentFormChosen();
@@ -179,12 +182,10 @@ initialize_nurse_calendar = function(){
       eventDrop: function (event, delta, revertFunc) {
         $(".popover").remove()
         let minutes = moment.duration(delta).asMinutes();
-        let start_time = event.start
-        let end_time = event.end
-        let previous_start = moment(start_time).subtract(minutes, "minutes");
-        let previous_end = moment(end_time).subtract(minutes, "minutes");
-        let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
-        let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+        let previous_start = moment(event.start).subtract(minutes, "minutes");
+        let previous_end = moment(event.end).subtract(minutes, "minutes");
+        let previousAppointment = previous_start.format('M[月]D[日][(]dd[)] ')  + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
+        let newAppointment = event.start.format('M[月]D[日][(]dd[)]') + event.start.format('LT') + ' ~ ' + event.end.format('LT')
 
         $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').data('event', event)
@@ -322,16 +323,7 @@ initialize_patient_calendar = function(){
 
           $("#recurring_appointment_patient_id").val(window.patientId);
 
-          $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
-          $('#unavailability_starts_at_2i').val(moment(start).format('M'));
-          $('#unavailability_starts_at_3i').val(moment(start).format('D'));
-          $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
-          $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
-          $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
-          $('#unavailability_ends_at_2i').val(moment(end).format('M'));
-          $('#unavailability_ends_at_3i').val(moment(end).format('D'));
-          $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
-          $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
+          setUnavailabilityTime(start, end);
           $("#unavailability_patient_id").val(window.patientId);
 
           recurringAppointmentFormChosen();
@@ -378,12 +370,10 @@ initialize_patient_calendar = function(){
       eventDrop: function (event, delta, revertFunc) {
         $(".popover").remove()
         let minutes = moment.duration(delta).asMinutes();
-        let start_time = event.start 
-        let end_time = event.end 
-        let previous_start = moment(start_time).subtract(minutes, "minutes");
-        let previous_end = moment(end_time).subtract(minutes, "minutes");
-        let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
-        let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+        let previous_start = moment(event.start).subtract(minutes, "minutes");
+        let previous_end = moment(event.end).subtract(minutes, "minutes");
+        let previousAppointment = previous_start.format('M[月]D[日][(]dd[)]') + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
+        let newAppointment = event.start.format('M[月]D[日][(]dd[)]') + event.start.format('LT') + ' ~ ' + event.end.format('LT')
 
         $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
         $('#drag-drop-confirm').data('event', event)
@@ -559,15 +549,9 @@ initialize_master_calendar = function() {
       },
 
       eventDrop: function (event, delta, revertFunc) {
-        $('.popover').remove()
-        let minutes = moment.duration(delta).asMinutes();
-        let start_time = event.start;
-        let end_time = event.end;
-        let previous_start = moment(start_time).subtract(minutes, "minutes");
-        let previous_end = moment(end_time).subtract(minutes, "minutes");
+        $('.popover').remove();
         let frequency = humanizeFrequency(event.frequency);
-        let newAppointment =  '(' + start_time.format('dddd').charAt(0) + ') ' + frequency + ' ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
-        
+        let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
 
         $('#drag-drop-master-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
 
@@ -867,17 +851,7 @@ initialize_calendar = function() {
             $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
           }
 
-
-          $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
-          $('#unavailability_starts_at_2i').val(moment(start).format('M'));
-          $('#unavailability_starts_at_3i').val(moment(start).format('D'));
-          $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
-          $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
-          $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
-          $('#unavailability_ends_at_2i').val(moment(end).format('M'));
-          $('#unavailability_ends_at_3i').val(moment(end).format('D'));
-          $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
-          $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
+          setUnavailabilityTime(start, end);
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
           }
@@ -891,12 +865,10 @@ initialize_calendar = function() {
       eventDrop: function (event, delta, revertFunc) {
         $('.popover').remove()
         let minutes = moment.duration(delta).asMinutes();
-        let start_time = event.start
-        let end_time = event.end
-        let previous_start = moment(start_time).subtract(minutes, "minutes");
-        let previous_end = moment(end_time).subtract(minutes, "minutes");
-        let previousAppointment = previous_start.format('M[月]d[日]') + '(' + previous_start.format('dddd').charAt(0) + ') ' + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
-        let newAppointment = start_time.format('M[月]d[日]') + '(' + start_time.format('dddd').charAt(0) + ') ' + start_time.format('LT') + ' ~ ' + end_time.format('LT')
+        let previous_start = moment(event.start).subtract(minutes, "minutes");
+        let previous_end = moment(event.end).subtract(minutes, "minutes");
+        let previousAppointment = previous_start.format('M[月]D[日][(]dd[)]') + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
+        let newAppointment = event.start.format('M[月]D[日][(]dd[)]') + event.start.format('LT') + ' ~ ' + event.end.format('LT')
         let newResource = $('.calendar').fullCalendar('getResourceById', event.resourceId)
         let resourceChange = '';
         let newPatientId;

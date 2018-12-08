@@ -90,7 +90,7 @@
 			</div>
 		</div>
 
-		<div id="resource-details-panel">
+		<div id="resource-details-panel" style="display: none">
 
 			<div id="resource-details-block">
 				<div id="resource-detail-header">
@@ -129,7 +129,7 @@
 				<% if @nurses_with_services.all[2..-1].present? %>
 					<div class="resource-history">
 						<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
-						<div id="more-resource-history">
+						<div id="more-resource-history" style="display: none">
 							<%= @nurses_with_services.all[2..-1].map{|nurse| nurse.name }.join(', ') %>
 						</div>
 					</div>
@@ -146,7 +146,7 @@
 	
 </div>
 
-<div id="drag-drop-confirm" title="サービス編集確認">
+<div id="drag-drop-confirm" style="display: none" title="サービス編集確認">
 	<p>下記の編集がセーブされます：</p>
 	<div id="drag-drop-content"></div>
 </div>

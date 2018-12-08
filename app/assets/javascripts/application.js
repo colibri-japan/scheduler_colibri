@@ -1559,20 +1559,6 @@ $(document).on('turbolinks:load', function(){
     $('#planning-activity-module').hide();
   });
 
-  $('#unzoom-button').hide();
-
-  $('#zoom-button').click(function(){
-    $(this).hide();
-    $('#unzoom-button').show();
-    $('#planning-container .fc-view > table').css({'width': '300%'})
-  });
-
-  $('#unzoom-button').click(function(){
-    $(this).hide();
-    $('#zoom-button').show();
-    $('#planning-container .fc-view > table').css({'width': ''})
-  });
-
   $('#nurse-filter-zentai_').on('change', function(){
     $('.calendar').fullCalendar('rerenderEvents');
   }); 
@@ -1698,8 +1684,6 @@ $(document).on('turbolinks:load', function(){
     window.location = $(this).data('url');
   });
 
-  $('#account-settings-dropdown').hide();
-
   $('#account-settings').click(function(){
     $('#account-settings-dropdown').toggle();
   });
@@ -1707,9 +1691,6 @@ $(document).on('turbolinks:load', function(){
   $('li.account-settings-li').click(function(){
     window.location = $(this).data('url');
   });
-
-  $('#drag-drop-confirm').hide();
-
 
 
   window.setTimeout(function() {
@@ -1731,8 +1712,6 @@ $(document).on('turbolinks:load', function(){
     patientMasterToSchedule();
     nurseMasterToSchedule();
   });
-
-  $('#drag-drop-master').hide();
 
   $('#day-view-options').hide();
 

@@ -3,8 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on 'turbolinks:load', ->
-  $('#resource-details-panel').hide()
-  $('#more-resource-history').hide()
 
   $('#resource-name-wrapper').hover ->
     $('#resource-details-panel').toggle()

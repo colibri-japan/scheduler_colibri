@@ -79,7 +79,7 @@
 				<% end %>
 				<div class="btn btn-success text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 				<span id="activity-show-button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-time" style="color:white"></span>最新編集履歴</span>
-				<span id="activity-hide-button" class="btn btn-secondary btn-sm"><span class="glyphicon glyphicon-time" style="color:white"></span>最新編集履歴を閉じる</span>
+				<span id="activity-hide-button"  style="display: none" class="btn btn-secondary btn-sm"><span class="glyphicon glyphicon-time" style="color:white"></span>最新編集履歴を閉じる</span>
 			</div>
 		</div>
 
@@ -87,7 +87,7 @@
 
 		<div id="planning-container">
 			<div class="nurse_calendar"></div>
-			<div id="planning-activity-module" class="no-print">
+			<div id="planning-activity-module" style="display: none" class="no-print">
 				<p class="planning-activity-module-title">最新編集履歴</p>
 				<div id="planning-activities">
 					<% @activities.each do |activity| %>

@@ -3,10 +3,13 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 patientSelect2 = ->
-  $('#patient_caveat_list').select2 {
-      tags: true
-      theme: 'bootstrap'
-      language: 'ja'
-    }
+  $('#patient_caveat_list').select2
+    tags: true,
+    theme: 'bootstrap',
+    language: 'ja'
   
+  $('tr.patient-clickable-row').click ->
+    $.getScript($(this).data('link'))
+    return 
+    
   return

@@ -16,8 +16,21 @@ $(document).on 'turbolinks:load', ->
     $('#more-resource-history').toggle()
     return
 
+  $('#new-email-reminder').click ->
+    targetPath =  $(this).data('reminder-url')
+    $.getScript targetPath, ->
+      $('#chosen-custom-email-days').chosen
+        disable_search_threshold: 8
+      return
+    return
 
-  
+  $('#payable-download-button').click ->
+    window.location = window.excelUrl + '?p=' + $('#schedule-filter').val()
+    return
+
+  $('tr.nurse-clickable-row').click ->
+    $.getScript($(this).data('link'))
+    return
     
   
   return

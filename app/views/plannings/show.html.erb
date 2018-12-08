@@ -30,7 +30,7 @@
 			<input type="checkbox" checked  class="bootstrap-toggle">
 			<input type="checkbox" checked  id="edit-request-filter">
 			<span id="activity-show-button" class="btn btn-success"><span class="glyphicon glyphicon-time" style="color:white"></span> 最新編集履歴</span>
-			<span id="activity-hide-button" class="btn btn-secondary"><span class="glyphicon glyphicon-time" style="color:white"></span> 最新編集履歴を閉じる</span>
+			<span id="activity-hide-button" style="display: none" class="btn btn-secondary"><span class="glyphicon glyphicon-time" style="color:white"></span> 最新編集履歴を閉じる</span>
 		</div>
 	</div>
 
@@ -40,7 +40,7 @@
 
 		<div class="calendar"></div>
 
-		<div id="planning-activity-module">
+		<div id="planning-activity-module" style="display: none">
 			<p class="planning-activity-module-title">最新編集履歴</p>
 			<div id="planning-activities">
 				<% @activities.each do |activity| %>

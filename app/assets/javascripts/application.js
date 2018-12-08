@@ -30,6 +30,12 @@
 //= require chartkick
 //= require_tree .
 
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+
 let setUnavailabilityTime = (start, end) => {
   $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
   $('#unavailability_starts_at_2i').val(moment(start).format('M'));
@@ -41,6 +47,39 @@ let setUnavailabilityTime = (start, end) => {
   $('#unavailability_ends_at_3i').val(moment(end).format('D'));
   $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
   $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
+  if (window.nurseId) {
+    $("#unavailability_nurse_id").val(window.nurseId);
+  }
+  if (window.patientId) {
+    $("#unavailability_patient_id").val(window.patientId);
+  }
+}
+
+let setRecurringAppointmentTime = (start, end, view) => {
+  $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
+  $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
+  $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
+  $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
+  $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
+  if (view.name == 'month') {
+    $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
+    $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
+    $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
+    $('#recurring_appointment_ends_at_4i').val(23);
+    $('#recurring_appointment_ends_at_5i').val(59);
+  } else {
+    $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
+    $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
+    $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
+    $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
+    $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
+  }
+  if (window.nurseId) {
+    $('#recurring_appointment_nurse_id').val(window.nurseId);
+  }
+  if (window.patientId) {
+    $('#recurring_appointment_patient_id').val(window.patientId);
+  }
 }
 
 var initialize_nurse_calendar;
@@ -93,30 +132,10 @@ initialize_nurse_calendar = function(){
           masterSwitchToggle();
           toggleEditRequested();
 
-        	$('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
-        	$('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
-          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
-          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
-          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-
-          if (view.name == 'month') {
-            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
-            $('#recurring_appointment_ends_at_4i').val(23);
-            $('#recurring_appointment_ends_at_5i').val(59);
-          } else {
-            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(end).format('D')); 
-            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
-          }
-
-          $("#recurring_appointment_nurse_id").val(window.nurseId);
-
+          setRecurringAppointmentTime(start, end, view);
           setUnavailabilityTime(start, end);
-          $("#unavailability_nurse_id").val(window.nurseId);
+
+          
           
           recurringAppointmentFormChosen();
         });
@@ -207,7 +226,6 @@ initialize_nurse_calendar = function(){
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
                 success: function (data) {
                   $(".popover").remove();
@@ -302,29 +320,8 @@ initialize_patient_calendar = function(){
           toggleEditRequested();
 
 
-          $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
-          $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
-          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));        	         
-          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
-          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-          if (view.name == 'month') {
-            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
-            $('#recurring_appointment_ends_at_4i').val(23);
-            $('#recurring_appointment_ends_at_5i').val(59);
-          } else {
-            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
-            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
-          }
-
-          $("#recurring_appointment_patient_id").val(window.patientId);
-
+          setRecurringAppointmentTime(start, end, view);     	         
           setUnavailabilityTime(start, end);
-          $("#unavailability_patient_id").val(window.patientId);
 
           recurringAppointmentFormChosen();
         });
@@ -395,7 +392,6 @@ initialize_patient_calendar = function(){
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
                 success: function(data) {
                   $(".popover").remove();
@@ -579,7 +575,6 @@ initialize_master_calendar = function() {
                   },
                   master: true
                 },
-                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 success: function (data) {
                   $(".popover").remove();
                 }
@@ -605,30 +600,8 @@ initialize_master_calendar = function() {
           masterSwitchToggle();
           toggleEditRequested();
 
-          $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
-          $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
-          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
-          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
-          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-          if (view.name == 'month') {
-            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
-            $('#recurring_appointment_ends_at_4i').val(23);
-            $('#recurring_appointment_ends_at_5i').val(59);
-          } else {
-            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
-            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
-          }
-          if (window.nurseId) {
-            $('#recurring_appointment_nurse_id').val(window.nurseId);
-          }
-          if (window.patientId) {
-            $('#recurring_appointment_patient_id').val(window.patientId);
-          }
+          setRecurringAppointmentTime(start, end, view);
+
           recurringAppointmentFormChosen();
 
         });
@@ -832,26 +805,9 @@ initialize_calendar = function() {
           masterSwitchToggle();
           toggleEditRequested();
 
-          $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
-          $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
-          $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
-          $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
-          $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-          if (view.name == 'month') {
-            $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
-            $('#recurring_appointment_ends_at_4i').val(23);
-            $('#recurring_appointment_ends_at_5i').val(59);
-          } else {
-            $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
-            $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
-            $('#recurring_appointment_end_day_3i').val(moment(end).format('D'));
-            $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
-            $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
-          }
-
+          setRecurringAppointmentTime(start, end, view);
           setUnavailabilityTime(start, end);
+
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
           }
@@ -916,7 +872,6 @@ initialize_calendar = function() {
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
                 data: appointment_data,
                 success: function (data) {
                   $(".popover").remove();
@@ -1121,7 +1076,6 @@ individualMasterToGeneral = function(){
         $.ajax({
           url: target_url,
           type: 'PATCH',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
         });
       }
     } else {
@@ -1228,7 +1182,6 @@ let recurringAppointmentArchive = () => {
             editing_occurrences_after: editing_occurrences_after,
           }
         },
-        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
       })
     }
   })
@@ -1293,7 +1246,6 @@ let sendReminder = () => {
           custom_email_days: customDays
         }
       },
-      beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
     })
   })
 }
@@ -1370,7 +1322,6 @@ let allMasterToSchedule = () => {
         $.ajax({
           url: window.masterToSchedule,
           type: 'PATCH',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
         })
       }
     }
@@ -1390,7 +1341,6 @@ let patientMasterToSchedule = () => {
         $.ajax({
           url: window.patientMasterToSchedule,
           type: 'PATCH',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
         })
       }
     }
@@ -1409,7 +1359,6 @@ let nurseMasterToSchedule = () => {
         $.ajax({
           url: window.nurseMasterToSchedule,
           type: 'PATCH',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
         })
       }
     }
@@ -1502,11 +1451,7 @@ let makeTimeAxisPrintFriendly = () => {
   $('tr[data-time] > td > span').addClass('bolder-calendar-time-axis')
 }
 
-$.ajaxSetup({
-  headers: {
-    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-  }
-});
+
 
 
 
@@ -1562,7 +1507,6 @@ $(document).on('turbolinks:load', function(){
     $.ajax({
       url: $(this).data('toggle-url'),
       type: 'PATCH',
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     })
   })
 
@@ -1671,7 +1615,6 @@ $(document).on('turbolinks:load', function(){
       $.ajax({
         url: window.duplicateUrl + '?template_id=' + template_id,
         type: 'PATCH',
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
       });
       $this.data('submitted', true);
     } else if (template_id && $this.data('submitted') === true) {

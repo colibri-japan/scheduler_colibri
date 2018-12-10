@@ -18,12 +18,12 @@
 
   <div class="form-group row">
     <%= form.label :business_month, "月", class: "col-sm-1 colibri-form-label" %><span class='required-field col-sm-2'>*</span>
-    <%= form.number_field :business_month, id: :planning_business_month, required: true, class: "col-sm-8 form-control" %>
+    <%= form.select :business_month, options_for_select([['1月',1],['2月',2],['3月',3],['4月',4],['5月',5],['6月',6],['7月',7],['8月',8],['9月',9],['10月',10],['11月',11],['12月',12]]), prompt: '月を選択してください', id: :planning_business_month, required: true, class: "col-sm-8 form-control" %>
   </div>
 
   <div class="form-group row">
     <%= form.label :business_year, "年", class: "col-sm-1 colibri-form-label" %><span class='required-field col-sm-2'>*</span>
-    <%= form.number_field :business_year, id: :planning_business_year, required: true, class: "col-sm-8 form-control" %>
+    <%= form.select :business_year, options_for_select([['2018年', 2018], ['2019年', 2019], ['2020年', 2020], ['2021年', 2021]]), prompt: '年を選択してください', id: :planning_business_year, required: true, class: "col-sm-8 form-control" %>
   </div>
 
   <div class="actions">

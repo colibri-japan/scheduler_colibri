@@ -1462,6 +1462,13 @@ let makeTimeAxisPrintFriendly = () => {
   $('tr[data-time] > td > span').addClass('bolder-calendar-time-axis')
 }
 
+let teamMembersSelect2 = () => {
+  $('#team_member_ids').select2({
+    theme: 'bootstrap',
+    language: 'ja',
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

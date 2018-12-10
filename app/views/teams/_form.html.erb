@@ -16,6 +16,11 @@
       <%= form.text_field :team_name, class: "form-control" %>
     </div>
 
+    <div class="form-group">
+      <%= form.label :member_ids, "メンバー", class: "colibri-form-label" %>
+      <%= form.collection_select :member_ids, @corporation.nurses.displayable, :id, :name, {selected: team.nurses.ids}, {multiple: true} %>
+    </div>
+
     <div class="actions">
       <%= form.submit "サーブする", class: 'btn btn-info' %>
     </div>

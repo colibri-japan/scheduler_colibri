@@ -21,6 +21,13 @@
     <%= form.text_field :kana, id: :nurse_kana, required: true, class: "form-control" %>
   </div>
 
+  <% if @corporation.teams.any? %>
+    <div class="form-group">
+      <%= form.label :team_id, "チーム", class: "colibri-form-label" %>
+      <%= form.collection_select(:team_id, @corporation.teams, :id, :team_name, {prompt: 'チームを選択する'}) %>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= form.check_box :full_timer, id: 'full-timer-toggle' %>
   </div>

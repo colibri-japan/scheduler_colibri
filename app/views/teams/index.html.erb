@@ -26,10 +26,14 @@
               <tr class="<%= 'user-clickable-row' if current_user.has_admin_access? %>" data-url="<%= edit_team_path(team) %>">
                 <td><%= team.team_name %></td>
                 <td>
-                    <%= team.nurses.map {|nurse| nurse.name}.join(', ') %>
+                    <%= team.nurses.displayable.map {|nurse| nurse.name}.join(', ') %>
                 </td>
               </tr>
             <% end %>
+            <tr>
+              <td>チーム外</td>
+              <td><%= @nurses_without_any_team.map {|nurse| nurse.name }.join(', ') %></td>
+            </tr>
           </tbody>
         </table>
       </div>

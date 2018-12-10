@@ -3,7 +3,8 @@ class TeamsController < ApplicationController
     before_action :set_corporation
 
     def index 
-        @teams = @corporation.teams.includes(:nurses)
+        @teams = @corporation.teams.includes(:nurses).where(nurses: {displayable: true})
+        @nurses_without_any_team = @corporation.nurses.displayable.where(team_id: nil)
     end
 
     def new 

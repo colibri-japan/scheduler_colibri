@@ -49,9 +49,11 @@ let setUnavailabilityTime = (start, end) => {
   $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
   if (window.nurseId) {
     $("#unavailability_nurse_id").val(window.nurseId);
+    $("#unavailability_nurse_id").trigger("chosen:updated");
   }
   if (window.patientId) {
     $("#unavailability_patient_id").val(window.patientId);
+    $("#unavailability_patient_id").trigger("chosen:updated");
   }
 }
 
@@ -938,7 +940,7 @@ initialize_calendar = function() {
 var appointmentFormChosen;
 appointmentFormChosen = function(){
   $('#appointment_nurse_id').chosen({
-    no_results_text: 'ヘルパーが見つかりません',
+    no_results_text: '従業員が見つかりません',
   });
   $('#appointment_patient_id').chosen({
     no_results_text: '利用者が見つかりません',
@@ -948,9 +950,18 @@ appointmentFormChosen = function(){
 var recurringAppointmentFormChosen;
 recurringAppointmentFormChosen = function(){
   $('#recurring_appointment_nurse_id').chosen({
-    no_results_text: 'ヘルパーが見つかりません',
+    no_results_text: '従業員が見つかりません',
   });
   $('#recurring_appointment_patient_id').chosen({
+    no_results_text: '利用者が見つかりません',
+  })
+}
+
+let unavailabilityFormChosen = () => {
+  $('#unavailability_nurse_id').chosen({
+    no_results_text: '従業員が見つかりません',
+  });
+  $('#unavailability_patient_id').chosen({
     no_results_text: '利用者が見つかりません',
   })
 }

@@ -7,6 +7,9 @@ patientSelect2 = ->
     tags: true,
     theme: 'bootstrap',
     language: 'ja'
+  return
+
+$(document).on 'turbolinks:load', ->
   
   $('tr.patient-clickable-row').click ->
     $.getScript($(this).data('link'))

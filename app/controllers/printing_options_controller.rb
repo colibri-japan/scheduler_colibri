@@ -4,7 +4,7 @@ class PrintingOptionsController < ApplicationController
         @corporation = current_user.corporation
         @planning = Planning.find(params[:planning_id])
         @printing_option = PrintingOption.find(params[:id])
-        @last_nurse = current_user.corporation.nurses.displayable.last
+        @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
     end
 
     def update

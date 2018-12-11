@@ -11,7 +11,7 @@ class ServicesController < ApplicationController
         else
             @planning = Planning.find(params[:planning_id])
             @services = @corporation.services.without_nurse_id.order_by_title
-            @last_nurse = @corporation.nurses.where(displayable: true).last
+            @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
         end
     end
 

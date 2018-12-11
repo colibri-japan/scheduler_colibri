@@ -179,16 +179,16 @@ li.planning-menu-selected {
 }
 
 
-.resource-list-element, .planning-list-element, .master-list-element {
+.resource-list-element, a.planning-list-element.colorize, .master-list-element {
 	padding-bottom: 3px;
 	padding-top: 3px;
 	margin-bottom: 0;
 	padding-left: 10px;	
 	font-size: 0.9em;
-	color: #D6D9DC !important;
+	color: #D6D9DC;
 }
 
-.resource-list-element:hover, .planning-list-element:hover {
+.resource-list-element:hover, a.planning-list-element.colorize:hover {
 	color: white;
 	cursor: pointer;
 }

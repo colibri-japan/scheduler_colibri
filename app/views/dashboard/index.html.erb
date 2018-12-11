@@ -5,7 +5,7 @@
   <div id='dashboard-plannings-list' class="scrollbar-custom  colibri-scrollbar-dark">
     <% @plannings.each do |planning| %>
       <div>
-        <%= link_to "#{planning.title}", planning_nurse_path(planning, @main_nurse), class: 'planning-list-element' %>
+        <%= link_to "#{planning.title}", planning_nurse_path(planning, @main_nurse), class: 'planning-list-element colorize' %>
       </div>
     <% end %>
   </div>

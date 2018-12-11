@@ -6,8 +6,7 @@ class User < ApplicationRecord
 
   belongs_to :corporation
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
-  has_one :nurse, optional: true
-
+  
   enum role: [:schedule_restricted, :schedule_admin, :corporation_admin]
   validates :role, inclusion: { in: roles.keys }
 

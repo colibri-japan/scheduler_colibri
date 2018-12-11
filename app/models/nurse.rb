@@ -13,6 +13,7 @@ class Nurse < ApplicationRecord
 	has_many :invoice_setting_nurses
 	has_many :nurses, through: :invoice_setting_nurses
 	has_many :services
+	has_one :user
 
 	validates :name, presence: true
 

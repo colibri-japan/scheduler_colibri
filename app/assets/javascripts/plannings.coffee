@@ -51,6 +51,8 @@ $(document).on 'turbolinks:load', ->
     off: "調整中リスト",
     offstyle: "success"
 
+
+
   $('#edit-request-filter').parent().on 'change', -> 
     $('.calendar').fullCalendar('rerenderEvents')
     return 

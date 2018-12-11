@@ -1396,6 +1396,8 @@ let toggleDayResources = () => {
   }
 }
 
+
+
 let recurringAppointmentsSelect =  () => {
   $('#recurring_appointment_title').select2({
     tags: true,
@@ -1532,7 +1534,6 @@ $(document).on('turbolinks:load', function(){
     nurseMasterToSchedule();
   });
 
-  $('#day-view-options').hide();
 
   $('.colibri-nav-username').hover(function(){
     $('#account-dropdown-icon').css({'color':'black', 'cursor':'pointer'})

@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
   before_action :set_corporation
+  before_action :set_main_nurse
 
 
   def index
@@ -42,5 +43,9 @@ class DashboardController < ApplicationController
 
   def set_corporation
     @corporation = current_user.corporation
+  end
+
+  def set_main_nurse
+    @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
   end
 end

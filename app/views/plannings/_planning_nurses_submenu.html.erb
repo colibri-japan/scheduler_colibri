@@ -2,7 +2,7 @@
 	<div id="planning-menu-list" class="no-print">
 		<ul class="nav nav-tabs" class="no-print">
 			<li class="planning-menu-items" data-url="<%= planning_path(@planning) %>" title="全体">全</li>
-			<li class="planning-menu-items planning-menu-selected" data-url="<%= planning_patient_path(@planning, @last_patient) %>" title="個別">個</li>
+			<li class="planning-menu-items planning-menu-selected" data-url="<%= planning_nurse_path(@planning, @nurse) %>" title="個別">個</li>
 			<% if current_user.has_admin_access? %>
 				<li class="planning-menu-items" data-url="<%= planning_nurse_payable_path(@planning, @nurse) %>" title="給与管理">給</li>
 			<% end %>

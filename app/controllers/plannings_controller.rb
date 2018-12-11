@@ -2,8 +2,9 @@ class PlanningsController < ApplicationController
 
 	before_action :set_corporation
 	before_action :set_planning, only: [:show, :destroy, :master, :archive, :master_to_schedule, :duplicate_from, :duplicate, :settings, :payable]
-	before_action :set_nurses, only: [:show]
+	before_action :set_nurses, only: :show
 	before_action :set_patients, only: [:show, :master]
+	before_action :set_main_nurse, only: [:show, :settings]
 
 	def index
 		@plannings = @corporation.plannings.where(archived: false)
@@ -14,8 +15,6 @@ class PlanningsController < ApplicationController
 		authorize @planning, :is_not_archived?
 
 		set_valid_range
-		@last_patient = @patients.last
-		@last_nurse = @nurses.last
 		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 	end
 
@@ -113,7 +112,6 @@ class PlanningsController < ApplicationController
 	end
 
 	def settings 
-		@last_nurse = @corporation.nurses.where(displayable: true).last
 	end
 
 
@@ -137,6 +135,10 @@ class PlanningsController < ApplicationController
 
 	def set_patients
 		@patients = @corporation.patients.active.order_by_kana
+	end
+
+	def set_main_nurse
+		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 	end
 
 	def planning_params

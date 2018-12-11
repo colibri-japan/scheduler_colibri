@@ -22,8 +22,6 @@ class NursesController < ApplicationController
     fetch_nurses_grouped_by_team
     @patients = @corporation.patients.where(active: true).order_by_kana
     @patients_with_services = Patient.joins(:provided_services).select("patients.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {nurse_id: @nurse.id}).where(active: true).group('patients.id').order('sum_service_duration DESC')
-    @last_patient = @patients.last
-    @last_nurse = @nurse
 
     @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
     @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生%").sum(:service_duration)
@@ -38,8 +36,6 @@ class NursesController < ApplicationController
 
     fetch_nurses_grouped_by_team
     @patients = @corporation.patients.where(active: true).order_by_kana
-    @last_patient = @patients.last
-    @last_nurse = @corporation.nurses.displayable.last
 
     set_valid_range
 		@admin =  current_user.has_admin_access?.to_s
@@ -113,8 +109,6 @@ class NursesController < ApplicationController
 
     @full_timers = @corporation.nurses.displayable.full_timers.order_by_kana
     @part_timers = @corporation.nurses.displayable.part_timers.order_by_kana
-    @last_patient = @corporation.patients.last
-    @last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 
     set_counter
     @counter.update(service_counts: @services_till_now.where.not(appointment_id: nil).count )

@@ -8,8 +8,7 @@ class ActivitiesController < ApplicationController
 		@nurses = @corporation.nurses.all
 		@patients = @corporation.patients.all
 		@users = @corporation.users.all
-		@last_patient = @patients.last
-		@last_nurse = @nurses.last
+		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 
 		@activities = PublicActivity::Activity.where(planning_id: @planning.id).limit(25).order("created_at desc").includes({trackable: :nurse}, {trackable: :patient}, :owner)
 

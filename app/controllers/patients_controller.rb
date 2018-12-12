@@ -131,7 +131,8 @@ class PatientsController < ApplicationController
     if @corporation.teams.any?
       @grouped_nurses = @nurses.group_by {|nurse| nurse.team.try(:team_name) }
     else
-      @grouped_nurses = @nurses.group_by {|nurse| nurse.full_timer ? '正社員' : '非正社員' }
+      nurses_grouped_by_full_timer = @nurses.group_by {|nurse| nurse.full_timer }
+      @grouped_nurses = {'正社員' => nurses_grouped_by_full_timer[true], '非正社員' => nurses_grouped_by_full_timer[false]}
     end
   end
 

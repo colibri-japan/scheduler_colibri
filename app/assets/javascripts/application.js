@@ -1329,11 +1329,14 @@ let allMasterToSchedule = () => {
     } else {
       var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
       if (message && copyMasterState != 1) {
-        copyMasterState = 1;
-        $.ajax({
-          url: window.masterToSchedule,
-          type: 'PATCH',
-        })
+        var second_message = confirm('全体と個別の利用者.従業員すべての今までの編集が削除され、マスターのサービスが反映されます！');
+        if (second_message) {
+          copyMasterState = 1;
+          $.ajax({
+            url: window.masterToSchedule,
+            type: 'PATCH',
+          })
+        }
       }
     }
   });

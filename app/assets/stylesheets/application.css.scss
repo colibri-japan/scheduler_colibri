@@ -421,6 +421,18 @@ th {
 	border-top: 1.33px solid #BFC4C9;
 }
 
+.btn-warning-danger {
+	background-color: #FF7007 !important;
+	color: white;
+	border-color: #FF7007 !important;
+}
+
+.btn-warning-danger:hover {
+	background-color: #C95500 !important;
+	color: white;
+	border-color: #9E4300 !important
+}
+
 
 @media print {
 

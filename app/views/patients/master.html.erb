@@ -74,7 +74,7 @@
 		    <div id="activity-show-button-container" class="no-print">
 	  		    <div class="btn btn-success text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
  			    <% if current_user.has_admin_access? %>
-				    <div class="btn btn-success text-white" id="master-options"><i class="glyphicon glyphicon-cog" style="color:white"></i> オプション</div>
+				    <div class="btn btn-success text-white" id="master-options"><i class="glyphicon glyphicon-cog" style="color:white; font-size: 1.25em"></i> オプション</div>
 			    <% end %>
 		    </div>
 		</div>
@@ -107,7 +107,7 @@
 
                         <tr>
                             <th>「全体スケジュール」のこれまで編集情報は全て削除され、マスタースケジュールが上書きされます。</th>
-                            <th><button class="btn btn-warning" id="copy-master">全マスターを反映</button></th>
+                            <th><button class="btn btn-warning btn-warning-danger" id="copy-master">全マスターを反映</button></th>
                         </tr>
                     </tbody>
                 </table>

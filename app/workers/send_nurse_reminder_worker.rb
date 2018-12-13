@@ -10,11 +10,16 @@ class SendNurseReminderWorker
 
     puts 'nurse fetched by id'
     puts @nurse.name
+
+    puts 'custom email days before map'
+    puts custom_email_days
+    puts custom_email_days.class.name
     
     custom_email_days.map! {|e| e.to_date }
 
-    puts 'custom email days'
+    puts 'custom email days and class name'
     puts custom_email_days
+    puts custom_email_days.class.name
 
     valid_plannings = Planning.where(business_month: [Time.current.month, Time.current.month + 1], corporation_id: @nurse.corporation_id, archived: false)
 

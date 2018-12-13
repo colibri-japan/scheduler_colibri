@@ -29,7 +29,7 @@ class Corporation < ApplicationRecord
 		elsif self.weekend_reminder_option == 1
 			[1,2,3,4,5].include?(date.wday) ? [date + 1.day] : [date + 1.day, date + 2.days]
 		elsif self.weekend_reminder_option == 2
-			date + 1.day
+			[date + 1.day]
 		end
 	end
 

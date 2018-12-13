@@ -1,0 +1,16 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+	title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+	thick_border = s.add_style border: { style: :thick, color: 'FF000000'  }, sz: 12, alignment: {horizontal: :center, vertical: :center }
+	align_right = s.add_style alignment: {horizontal: :right}
+	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
+	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+
+	wb.add_worksheet(name: "実績給与詳細") do |sheet|
+        sheet.add_row ['実績給与詳細'], style: title_style 
+
+        @provided_services.each do 
+	end
+end

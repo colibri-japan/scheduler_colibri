@@ -116,9 +116,9 @@ class PlanningsController < ApplicationController
 
 	def monthly_general_report
 		@planning = Planning.find(params[:id])
-		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true).includes(:nurse, :appointment)
+		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true, countable: false).includes(:nurse, :appointment)
 		@service_types = @provided_services.order(:title).map{|p| p.title }.uniq
-		@nurses = @corporation.nurses 
+		@nurses = @corporation.nurses.displayable
 		@service_counts_grouped_by_nurse = {}
 		@nurses.each do |nurse|
 			nurse_services = @provided_services.where(nurse_id: nurse.id)

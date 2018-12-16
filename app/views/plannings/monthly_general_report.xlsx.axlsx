@@ -9,11 +9,6 @@ wb.styles do |s|
 	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
 
 	wb.add_worksheet(name: "実績給与詳細") do |sheet|
-		sheet.add_row ['実績給与詳細'], style: title_style 
-
-		sheet.add_row 
-
-		count = @service_types.count
 
 		sheet.add_row do |row|
 			row.add_cell '従業員', style: table_header
@@ -31,8 +26,5 @@ wb.styles do |s|
 			end
 		end
 
-
-
-	
 	end
 end

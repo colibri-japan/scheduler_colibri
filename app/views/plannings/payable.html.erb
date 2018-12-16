@@ -47,4 +47,18 @@
 		</div>
 
 	</div>
+
+	<div class='colibri-dashboard-container-row'>
+		<div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>データをダウンロードする</span>
+      </div>
+      <div class='colibri-subcontainer-body'>
+				<div class="report-download-wrapper">
+        	<%= link_to '全従業員サービス稼動数', planning_monthly_general_report_path(@planning, format: :xlsx), class: 'btn btn-success text-white' %>
+				</div>
+      </div>
+		</div>
+
+	</div>
 </div>

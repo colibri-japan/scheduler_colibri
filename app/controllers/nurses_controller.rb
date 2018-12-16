@@ -128,7 +128,7 @@ class NursesController < ApplicationController
   end
 
   def master_to_schedule
-    authorize current_user, :is_admin?
+    authorize current_user, :has_admin_access?
 
     CopyNursePlanningFromMasterWorker.perform_async(@nurse.id, @planning.id)
 

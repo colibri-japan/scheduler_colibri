@@ -117,8 +117,19 @@ class PlanningsController < ApplicationController
 	def monthly_general_report
 		@planning = Planning.find(params[:id])
 		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true).includes(:nurse, :appointment)
-		@service_types = @provided_services.map{|p| p.title }.uniq
-		puts  @service_types
+		@service_types = @provided_services.order(:title).map{|p| p.title }.uniq
+		@nurses = @corporation.nurses 
+		@service_counts_grouped_by_nurse = {}
+		@nurses.each do |nurse|
+			nurse_services = @provided_services.where(nurse_id: nurse.id)
+			sub_hash = {}
+			@service_types.each do |type|
+				sub_hash[type] = nurse_services.where(title: type).count
+			end
+			@service_counts_grouped_by_nurse[nurse.name] = sub_hash
+		end
+
+		puts @service_counts_grouped_by_nurse
 		
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}

@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :corporation
-  belongs_to :nurse
+  belongs_to :nurse, optional: true
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
   enum role: [:schedule_restricted, :schedule_admin, :corporation_admin]

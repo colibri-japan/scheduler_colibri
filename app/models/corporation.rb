@@ -70,7 +70,7 @@ class Corporation < ApplicationRecord
 	end
 
 	def create_printing_option
-		self.printing_option.create 
+		PrintingOption.create(corporation_id: self.id)
 	end
 
 	def self.create_weekend_holiday_invoice_setting

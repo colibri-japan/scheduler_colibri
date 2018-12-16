@@ -64,7 +64,7 @@ class Appointment < ApplicationRecord
 			overlapping_ids = overlaps.map {|e| e.id}
 
 			errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 
-			errors[:base] << "その日のヘルパーが重複しています。" if overlaps.present?
+			errors[:base] << "その日の従業員が重複しています。" if overlaps.present?
 		end
 	end
 

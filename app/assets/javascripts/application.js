@@ -551,7 +551,7 @@ initialize_master_calendar = function() {
         let frequency = humanizeFrequency(event.frequency);
         let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
 
-        $('#drag-drop-master-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
+        $('#drag-drop-master-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
 
         $('#drag-drop-master').dialog({
           height: 'auto',
@@ -834,7 +834,7 @@ initialize_calendar = function() {
 
         if (newResource !== myResource) {
           if (newResource.is_nurse_resource) {
-            resourceChange = '新規ヘルパー：' + newResource.title  + '</p><p>' ;
+            resourceChange = '新規従業員：' + newResource.title  + '</p><p>' ;
             newNurseId = newResource.id;
             newPatientId = event.patient_id;
           } else {
@@ -852,7 +852,7 @@ initialize_calendar = function() {
           }
         }
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').data('event', event)
         $('#drag-drop-confirm').data('delta', delta)
         $('#drag-drop-confirm').dialog({
@@ -877,7 +877,7 @@ initialize_calendar = function() {
                 data: appointment_data,
                 success: function (data) {
                   $(".popover").remove();
-                  if (data.includes("その日のヘルパーが重複しています")) {
+                  if (data.includes("その日の従業員が重複しています")) {
                     revertFunc();
                   }
                 }

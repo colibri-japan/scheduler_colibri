@@ -2,10 +2,10 @@
   console.log('errors detected')
   <% if @recurring_appointment.master == true %>
     console.log('master true')
-    alert("<%= j @recurring_appointment.errors[:base].join('、') + 'のヘルパーが重複してます。' %>")
+    alert("<%= j @recurring_appointment.errors[:base].join('、') + 'の従業員が重複してます。' %>")
   <% else %>
     console.log('master false')
-    $('#nurse-conflict-days').text("<%= j @recurring_appointment.errors[:base].join('、') + 'のヘルパーが重複してます。' %>")
+    $('#nurse-conflict-days').text("<%= j @recurring_appointment.errors[:base].join('、') + 'の従業員が重複してます。' %>")
     $('.modal').modal('hide');
     $('#nurse-conflict-confirm').dialog({
       resizable: false,

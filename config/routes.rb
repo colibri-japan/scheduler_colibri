@@ -74,8 +74,9 @@ Rails.application.routes.draw do
   get 'plannings/:planning_id/patients/:id/master' => 'patients#master', as: :planning_patient_master
   patch 'patients/:id/toggle_active' => 'patients#toggle_active', as: :toggle_active
   patch 'plannings/:planning_id/patients/:id/master_to_schedule' => 'patients#master_to_schedule', as: :patient_master_to_schedule
-
+  
   #custom routes for plannings
+  get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report_path
   get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
   get 'plannings/:id/payable' => 'plannings#payable', as: :planning_payable

@@ -114,6 +114,17 @@ class PlanningsController < ApplicationController
 	def settings 
 	end
 
+	def monthly_general_report
+		@planning = Planning.find(params[:id])
+		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true).includes(:nurse, :appointment)
+		@service_types = @provided_services.map{|p| p.title }.uniq
+		puts  @service_types
+		
+		respond_to do |format|
+			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}
+		end
+	end
+
 
 	private
 

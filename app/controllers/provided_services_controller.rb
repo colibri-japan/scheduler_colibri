@@ -51,15 +51,6 @@ class ProvidedServicesController < ApplicationController
 		@provided_service.verify! 
 	end
 
-	def monthly_general_report
-		@planning = Planning.find(:id)
-		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true).includes(:nurses, :appointments)
-		
-		respond_to do |format|
-			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}
-		end
-	end
-
 
 	private
 

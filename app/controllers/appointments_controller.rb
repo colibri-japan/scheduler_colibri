@@ -87,9 +87,10 @@ class AppointmentsController < ApplicationController
   end
 
   def toggle_edit_requested
-    edit_requested = !@appointment.edit_requested
+    @appointment.edit_requested = !@appointment.edit_requested
+    @appointment.recurring_appointment_id = nil
 
-    if @appointment.update_attribute(:edit_requested, edit_requested)
+    if @appointment.save(validate: false)
       @activity = @appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@appointment.edit_requested
     end
   end

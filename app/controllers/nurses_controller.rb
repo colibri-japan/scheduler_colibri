@@ -3,13 +3,14 @@ class NursesController < ApplicationController
   before_action :set_nurse, except: [:index, :new, :create]
   before_action :set_planning, only: [:show, :master, :payable, :master_to_schedule]
   before_action :set_printing_option, only: [:show, :master]
+  before_action :set_skills, only: [:new, :edit]
 
   def index
     full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
     part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
     @nurses = full_timers + part_timers
 
-    if  params[:include_undefined] == 'true'
+    if params[:include_undefined] == 'true'
       undisplayable = @corporation.nurses.where(displayable: false)
       @nurses =  undisplayable + @nurses
     end
@@ -163,6 +164,10 @@ class NursesController < ApplicationController
 
   def set_valid_range
     @start_valid = Date.new(@planning.business_year, @planning.business_month, 1).strftime("%Y-%m-%d")
+  end
+
+  def set_skills
+    @skills = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: {taggable_type: 'Nurse', taggable_id: @corporation.nurses.ids, context: 'skills'})
   end
 
   def nurse_params

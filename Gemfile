@@ -103,6 +103,9 @@ gem 'multi_json'
 gem 'carrierwave'
 gem 'fog-aws'
 
+#gem for importing popper js
+gem 'popper_js', '~> 1.14.5'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

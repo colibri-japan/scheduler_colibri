@@ -14,7 +14,7 @@ class DashboardController < ApplicationController
     end
 
     #posts
-    @posts = @corporation.posts.order(created_at: :desc).first(10)
+    @posts = @corporation.posts.order(created_at: :desc).limit(40)
 
     #appointments : today, upcoming two weeks, since monday
     today = Date.today 

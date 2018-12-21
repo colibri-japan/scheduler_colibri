@@ -1401,20 +1401,41 @@ let toggleDayResources = () => {
 
 
 
-let recurringAppointmentsSelect =  () => {
+let newRecurringAppointmentSelect2 = () => {
   $('#recurring_appointment_title').select2({
     tags: true,
     theme: 'bootstrap',
     language: 'ja',
+    dropdownParent: $('#new_recurring_appointment')
   });
 };
 
-let appointmentsSelect = () => {
+let editRecurringAppointmentSelect2 =  () => {
+  $('#recurring_appointment_title').select2({
+    tags: true,
+    theme: 'bootstrap',
+    language: 'ja',
+    dropdownParent: $('#edit_recurring_appointment')
+  });
+};
+
+let newAppointmentSelect2 = () => {
   let parent;
   $('#appointment_title').select2({
     tags: true,
     theme: 'bootstrap',
     language: 'ja',
+    dropdownParent: $('#new_appointment')
+  })
+}
+
+let editAppointmentSelect2 = () => {
+  let parent;
+  $('#appointment_title').select2({
+    tags: true,
+    theme: 'bootstrap',
+    language: 'ja',
+    dropdownParent: $('#edit_appointment')
   })
 }
 

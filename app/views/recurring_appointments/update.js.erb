@@ -1,10 +1,7 @@
 <% if @recurring_appointment.errors.any?  %>
-  console.log('errors detected')
   <% if @recurring_appointment.master == true %>
-    console.log('master true')
     alert("<%= j @recurring_appointment.errors[:base].join('、') + 'の従業員が重複してます。' %>")
   <% else %>
-    console.log('master false')
     $('#nurse-conflict-days').text("<%= j @recurring_appointment.errors[:base].join('、') + 'の従業員が重複してます。' %>")
     $('.modal').modal('hide');
     $('#nurse-conflict-confirm').dialog({
@@ -41,36 +38,39 @@
     })
   <% end %>
 <% else %>
-  $('.modal').modal('hide');
+  let pathname = window.location.pathname 
 
-  if (typeof calendar === 'undefined') {
-    let calendar;
-  }
-  if ($('.calendar').length > 0) {
-    calendar = $('.calendar');
-  } else if ($('.patient_calendar').length > 0) {
-    calendar = $('.patient_calendar');
-  } else if ($('.nurse_calendar').length > 0) {
-    calendar = $('.nurse_calendar');
-  } else if ($('.master_calendar').length > 0) {
-    calendar = $('.master_calendar');
-  }
+  <% if pathname.include? 'payable' %>
+    $('.modal').modal('hide');
 
-  console.log(calendar)
+    if (typeof calendar === 'undefined') {
+      let calendar;
+    }
+    if ($('.calendar').length > 0) {
+      calendar = $('.calendar');
+    } else if ($('.patient_calendar').length > 0) {
+      calendar = $('.patient_calendar');
+    } else if ($('.nurse_calendar').length > 0) {
+      calendar = $('.nurse_calendar');
+    } else if ($('.master_calendar').length > 0) {
+      calendar = $('.master_calendar');
+    }
 
-  <% @appointments.each do |appointment| %>
-    calendar.fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
+    <% @appointments.each do |appointment| %>
+      calendar.fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
 
-    calendar.fullCalendar(
-      'renderEvent', 
-      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
-      false
-    );
+      calendar.fullCalendar(
+        'renderEvent', 
+        $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
+        false
+      );
+    <% end %>
+
+    if ($('#planning-activities').length > 0) {
+      $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>")
+    }
+  <% else %>
+    location.reload()
   <% end %>
-
-  if ($('#planning-activities').length > 0) {
-    $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>")
-  }
-
 <% end %>
 

@@ -1,4 +1,10 @@
 $('.modal').modal('hide');
 $('#remote_container').html('<%= j render "edit" %>');
 $('#edit_recurring_appointment').modal('show');
-editRecurringAppointmentSelect2()
+editRecurringAppointmentSelect2();
+toggleEditRequested();
+masterSwitchToggle();
+recurringAppointmentFormChosen();
+editAfterDate();
+recurringAppointmentArchive();
+recurringAppointmentCancel();

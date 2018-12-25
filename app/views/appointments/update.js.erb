@@ -52,42 +52,51 @@
     }
   })
 <% else %>
-  if (typeof calendar === 'undefined') {
-    let calendar;
+  if (typeof pathname === 'undefined') {
+    let pathname
   }
-  if ($('.calendar').length > 0) {
-    calendar = $('.calendar');
-  } else if ($('.patient_calendar').length > 0) {
-    calendar = $('.patient_calendar');
-  } else if ($('.nurse_calendar').length > 0) {
-    calendar = $('.nurse_calendar');
-  } else if ($('.master_calendar').length > 0) {
-    calendar = $('.master_calendar');
-  }
-
-  calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
-
-  $('.modal').modal('hide');
-
-  calendar.fullCalendar(
-    'renderEvent', 
-    $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-    false
-  );
-
-  if ($('#planning-activities').length > 0) {
-    $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
-  }
-  <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
-    if ($('.calendar').length > 0) {
-      let view = $('.calendar').fullCalendar('getView');
-      if (!$('#day-view-options-input').is(':checked') && view.name === 'agendaDay') {
-        calendar.fullCalendar('refetchResources');
-        let event = $('.calendar').fullCalendar('clientEvents', '<%= "appointment_#{@appointment.id}" %>')[0];
-        event.resourceId = event.patient_id;
-        $('.calendar').fullCalendar('updateEvent', event);
-      }
+  pathname = window.location.pathname;
+  if (pathname.includes('payable')) {
+    location.reload()
+  } else {
+    if (typeof calendar === 'undefined') {
+      let calendar;
     }
-  <% end %>
+    if ($('.calendar').length > 0) {
+      calendar = $('.calendar');
+    } else if ($('.patient_calendar').length > 0) {
+      calendar = $('.patient_calendar');
+    } else if ($('.nurse_calendar').length > 0) {
+      calendar = $('.nurse_calendar');
+    } else if ($('.master_calendar').length > 0) {
+      calendar = $('.master_calendar');
+    }
+
+    calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+
+    $('.modal').modal('hide');
+
+    calendar.fullCalendar(
+      'renderEvent', 
+      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+      false
+    );
+
+    if ($('#planning-activities').length > 0) {
+      $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
+    }
+    <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
+      if ($('.calendar').length > 0) {
+        let view = $('.calendar').fullCalendar('getView');
+        if (!$('#day-view-options-input').is(':checked') && view.name === 'agendaDay') {
+          calendar.fullCalendar('refetchResources');
+          let event = $('.calendar').fullCalendar('clientEvents', '<%= "appointment_#{@appointment.id}" %>')[0];
+          event.resourceId = event.patient_id;
+          $('.calendar').fullCalendar('updateEvent', event);
+        }
+      }
+    <% end %>
+
+  }
 
 <% end %> 

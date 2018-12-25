@@ -188,9 +188,6 @@ initialize_nurse_calendar = function(){
          
       eventClick: function(event, jsEvent, view) {
           $.getScript(event.edit_url, function() {
-            masterSwitchToggle();
-            appointmentFormChosen();
-            toggleEditRequested();
             appointmentEdit(event.recurring_appointment_path);
           });
       },
@@ -417,10 +414,6 @@ initialize_patient_calendar = function(){
          
       eventClick: function(event, jsEvent, view) {
            $.getScript(event.edit_url, function() {
-            masterSwitchToggle();
-            appointmentFormChosen();
-            toggleEditRequested();
-            console.log(event.recurring_appointment_path)
             appointmentEdit(event.recurring_appointment_path);
            });
          },
@@ -613,16 +606,7 @@ initialize_master_calendar = function() {
          
       eventClick: function (event, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(event.recurring_appointment_path + '?master=true', function() {
-
-                masterSwitchToggle();
-                recurringAppointmentFormChosen();
-                editAfterDate();
-                individualMasterToGeneral();
-                toggleEditRequested();
-                recurringAppointmentArchive();
-                recurringAppointmentCancel();
-              });
+              $.getScript(event.recurring_appointment_path + '?master=true')
             }
             return false;
          },
@@ -899,9 +883,6 @@ initialize_calendar = function() {
          
       eventClick: function(event, jsEvent, view) {
            $.getScript(event.edit_url, function() {
-            masterSwitchToggle();
-            appointmentFormChosen();
-            toggleEditRequested();
             appointmentEdit(event.recurring_appointment_path);
            });
 
@@ -1214,6 +1195,7 @@ let serviceLinkClick = () => {
 
 let appointmentEdit = (url) => {
   if (url) {
+    $('#edit-options').show()
     $('#edit-appointment-body').hide();
     $('#one-day-edit').click(function () {
       $('#edit-options').hide();
@@ -1223,20 +1205,9 @@ let appointmentEdit = (url) => {
       $('.modal').modal('hide');
       $('.modal-backdrop').remove();
       let targetUrl = $(this).data('recurring-url');
-      $.getScript(targetUrl, function () {
-        toggleEditRequested();
-        masterSwitchToggle();
-        recurringAppointmentFormChosen();
-        editAfterDate();
-        recurringAppointmentArchive();
-        recurringAppointmentCancel();
-      })
+      $.getScript(targetUrl)
     })
-  } else {
-    $('#edit-options').hide();
-
   }
-
 }
 
 let sendReminder = () => {

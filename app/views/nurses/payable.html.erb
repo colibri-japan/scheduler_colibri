@@ -63,12 +63,11 @@
 				<% if current_user.corporation_admin? %>
 					<th class="table-important-fields">時給/単価</th>
 				<% end %>
-				<th class="table-important-fields">回数</th>
 				<% if current_user.corporation_admin? %>
 					<th class="table-important-fields">計</th>
 				<% end %>
-				<th class="table-important-fields">確認</th>
-				<th class="table-important-fields">アクション</th>
+				<th class="table-important-fields"></th>
+				<th class="table-important-fields"></th>
 			</tr>
 			
 		</thead>
@@ -77,20 +76,17 @@
 			<% @services_till_now.each do |provided_service| %>
 			<tr class="<%= 'weekend-holiday-provided-service' if provided_service.weekend_holiday_provided_service? %> ">
 				<td><%= provided_service.service_date.strftime("%-m月%-d日") + ' ' + weekday(provided_service.service_date) %></td>
-				<td><%= provided_service.try(:title) %></td>
+				<td><%= provided_service_title_with_counts(provided_service) %></td>
 				<td><%= provided_service.patient.try(:name) %> </td>
 				<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.service_duration.present? %></td>
 				<td><%= "#{provided_service.appointment_start.strftime('%H:%M')}~#{provided_service.appointment_end.strftime('%H:%M')}"  if provided_service.appointment_start.present? && provided_service.appointment_end.present? %></td>
 				<% if current_user.corporation_admin? %>
 					<td><%= "#{provided_service.unit_cost}¥" %></td>
 				<% end %>
-				<td>
-					<%= provided_service.service_counts if provided_service.service_counts.present? %>
-				</td>
 				<% if current_user.corporation_admin? %>
 					<td id="service-total-<%= provided_service.id %>"><%= "#{provided_service.total_wage}¥" %></td>
 				<% end %>
-                <td class='verify-provided-service  ' id='provided-service-<%= provided_service.id %>'>
+                <td class='verify-provided-service ' id='provided-service-<%= provided_service.id %>'>
 				  <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>'>
 					<% if provided_service.cancelled == true %>
 						<span>キャンセル</span>
@@ -107,9 +103,9 @@
                 </td>
 				<td>
 					<% if provided_service.appointment.present? %>
-						<%= link_to 'エディット', edit_planning_appointment_path(@planning, provided_service.appointment), remote: true, class: 'btn btn-sm btn-success text-white' %>
+						<%= link_to '編集', edit_planning_appointment_path(@planning, provided_service.appointment), remote: true, class: 'btn btn-sm btn-success text-white' %>
 					<% else %>
-						<%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %>
+						<%= link_to '編集', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %>
 					<% end %>
 				</td>
 
@@ -118,19 +114,22 @@
 			<% if @counter.present? && current_user.corporation_admin? %>
 				<tr>
 					<td></td>
-					<td>移動手当</td>
-					<td></td>
+					<td>移動手当 (x<%= @counter.service_counts %>)</td>
 					<td></td>
 					<td></td>
 					<td></td>
 					<td>
 						<%= @counter.unit_cost %>
 					</td>
-					<td>
-						<%= @counter.service_counts %>
-					</td>
 					<td id="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
-					<td><%= link_to 'エディット', edit_nurse_provided_service_path(@nurse, @counter, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
+					<td class='verify-provided-service' id='provided-service-<%= @counter.id %>'>
+						<% if @counter.verified? %>
+							<div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
+						<% else %>
+							<%= link_to '確認', verify_provided_service_path(@counter), method: :patch, remote: :true, class: 'btn btn-success btn-sm'  %>
+						<% end %>
+					</td>
+					<td><%= link_to '編集', edit_nurse_provided_service_path(@nurse, @counter, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
 				</tr>
 			<% end %>
 			<% if current_user.corporation_admin? %>
@@ -140,10 +139,9 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td></td>
-					<td></td>
 					<td id="total-salary-label">合計：</td>
 					<td id="total-salary"><%= @total_till_now %>¥</td>
+					<td></td>
 					<td></td>
 				</tr>
 			<% end %>

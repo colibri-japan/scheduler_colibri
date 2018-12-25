@@ -124,7 +124,7 @@ class NursesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="従業員給与.xlsx"'}
+      format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与明細書.xlsx"'}
     end
   end
 

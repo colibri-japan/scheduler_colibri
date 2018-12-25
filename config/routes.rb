@@ -99,5 +99,8 @@ Rails.application.routes.draw do
   #custom routes for tags
   get '/tags' => 'tags#index'
 
+  #custom routes for dashboard
+  get 'dashboard/extended_daily_summary' => 'dashboard#extended_daily_summary', as: :dashboard_extended_daily_summary
+
   root 'dashboard#index'
 end

@@ -1,0 +1,2 @@
+$('#extended-daily-summary-container').empty()
+$('#extended-daily-summary-container').append("<%= j render partial: 'dashboard/extended_daily_summary', locals: {appointments_grouped_by_title: @appointments_grouped_by_title, weekly_appointments_grouped_by_title: @weekly_appointments_grouped_by_title, daily_provided_services: @daily_provided_services} %>")

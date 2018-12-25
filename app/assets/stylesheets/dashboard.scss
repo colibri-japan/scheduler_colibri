@@ -95,9 +95,12 @@
 	border-bottom: 0.5px solid #ccc;
 }
 
-
-
 .unseen-activity-count {
 	font-size: 0.9em;
 	color: #4F4F4F;
+}
+
+#extended-daily-summary-title-container {
+	display: flex;
+	margin: 5px;
 }

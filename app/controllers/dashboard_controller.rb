@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   before_action :set_corporation
-  before_action :set_main_nurse
+  before_action :set_main_nurse, only: :index
 
 
   def index
@@ -37,6 +37,18 @@ class DashboardController < ApplicationController
 
     #daily provided_services to be verified
     @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+  end
+
+  def extended_daily_summary
+    @plannings = @corporation.plannings.where(archived: false).order(created_at: :desc)
+
+    query_day = params[:q].to_date
+
+    #weekly  summary, from monday to query date
+    @weekly_appointments_grouped_by_title = Appointment.valid.edit_not_requested.where(planning_id: @plannings.ids, master: false, starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..query_day.end_of_day).group_by {|a| a.title}
+
+    #daily provided_services to be verified
+    @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
   end
 
   private

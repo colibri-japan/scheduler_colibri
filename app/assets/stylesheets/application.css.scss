@@ -344,13 +344,21 @@ th {
 	display: none;
 }
 
-
+.small-side-margins {
+	margin-left: 5px;
+	margin-right: 5px;
+}
 
 .colibri-small-title {
 	font-size: 1.8em;
 	color: #4f5b66;
 }
 
+.colibri-xs-title {
+	font-size: 1.25em;
+	color: black;
+	padding-bottom: 0px;
+}
 
 .appointment-section-title {
 	font-size: 1.5em;

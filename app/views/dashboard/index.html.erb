@@ -1,4 +1,4 @@
-<div id='dashboard-plannings-container'>
+<div id='dashboard-plannings-container' class='no-print'>
   <div id='new-planning-container'>
     <%= link_to '+新規スケジュール', new_planning_path, class: 'btn btn-info btn-sm text-white btn-margin-top' %>
   </div>
@@ -13,7 +13,7 @@
 
 <div id='colibri-dashboard-container'>
 
-  <div class='colibri-dashboard-big-container'>
+  <div class='colibri-dashboard-big-container no-print'>
     <div class='colibri-dashboard-container-column'>
 
       <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
@@ -78,7 +78,7 @@
   </div>
 
 
-  <div class='colibri-dashboard-container-row'>
+  <div class='colibri-dashboard-container-row no-print'>
     <div class='colibri-dashboard-subcontainer'>
       <div class='colibri-subcontainer-header'>
         <span class='colibri-subcontainer-title'>コメント付きサービス（先２週間）</span>
@@ -109,105 +109,9 @@
     
   </div>
 
-  <div class='colibri-dashboard-container-row'>
-    <div class='colibri-dashboard-subcontainer'>
-        <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'>利用状況(本日)</span>
-        </div>
-          <div class='colibri-subcontainer-body  scrollbar-custom colibri-scrollbar-light'>
-            <table class='table'>
-              <thead>
-                <tr>
-                  <th class="table-important-fields">サービス</th>
-                  <th class="table-important-fields">女</th>
-                  <th class="table-important-fields">男</th>
-                  <th class="table-important-fields">計</th>
-                </tr>
-              </thead>
-              <tbody>
-                <%  @appointments_grouped_by_title.each do |service_name, appointments| %>
-                  <tr>
-                    <td><%= service_name %></td>
-                    <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
-                    <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
-                    <td><%= appointments.count %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-    </div>
-
-    <div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span>利用状況（今週）</span>
-      </div>
-      <div class="colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light">
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="table-important-fields">サービス</th>
-              <th class="table-important-fields">女</th>
-              <th class="table-important-fields">男</th>
-              <th class="table-important-fields">計</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%  @weekly_appointments_grouped_by_title.each do |service_name, appointments| %>
-              <tr>
-                <td><%= service_name %></td>
-                <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
-                <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
-                <td><%= appointments.count %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div id='extended-daily-summary-container'>
+    <%= render partial: 'extended_daily_summary', locals: {appointments_grouped_by_title: @appointments_grouped_by_title, weekly_appointments_grouped_by_title: @weekly_appointments_grouped_by_title, daily_provided_services: @daily_provided_services} %>
   </div>
-
-  <div class='colibri-dashboard-container-row-large'>
-
-    <div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>本日のサービス</span>
-      </div>
-        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
-          <table class='table'>
-            <thead>
-              <tr>
-                <th class="table-important-fields">利用者名</th>
-                <th class="table-important-fields">性別</th>
-                <th class="table-important-fields">訪問時間</th>
-                <th class="table-important-fields">従業員</th>
-                <th class="table-important-fields">サービスタイプ</th>
-                <th class="table-important-fields">確認する</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @daily_provided_services.each do |nurse_id, provided_service_array| %>
-                <% provided_service_array.each do |provided_service| %>
-                  <tr>
-                    <td><%= provided_service.patient.try(:name) %></td>
-                    <td><%= patient_gender(provided_service.patient) %></td>
-                    <td><%= "#{provided_service.appointment_start.strftime('%H:%M')} ~ #{provided_service.appointment_end.strftime('%H:%M')}" if provided_service.appointment_end.present? && provided_service.appointment_start.present? %></td>
-                    <td><%= provided_service.nurse.try(:name) %></td>
-                    <td><%= provided_service.title %></td>
-                    <td class='verify-provided-service' id='provided-service-<%= provided_service.id %>'>
-                      <% if provided_service.verified? %>
-                        <div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
-                      <% else %>
-                        <%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
-                      <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-    </div>
-  </div>
+ 
 
 </div>

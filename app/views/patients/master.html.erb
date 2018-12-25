@@ -30,7 +30,7 @@
 		<% @patients.group_by_kana.each do |kana, patients| %>
 			<div class="nurses-resource-subsection-title"><%= kana %></div>
 			<% patients.each do |patient| %>
-				<p class="master-list-element list-patient  <%= 'master-element-selected' if patient == @patient %>" data-url="<%= planning_patient_master_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+				<p class="master-list-element colibri-clickable-link list-patient  <%= 'master-element-selected' if patient == @patient %>" data-url="<%= planning_patient_master_path(@planning, patient) %>"><%= patient.try(:name) %></p>
 			<% end %>
 		<% end %>
 	  </div>
@@ -38,7 +38,7 @@
 		<% @grouped_nurses.each do |group, nurses| %>
 			<div class="nurses-resource-subsection-title"><%= group %></div>
 			<% nurses.each do |nurse| %>
-				<p class="master-list-element " data-url="<%= planning_nurse_master_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+				<p class="master-list-element colibri-clickable-link " data-url="<%= planning_nurse_master_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 			<% end %>
 		<% end %>
 	  </div>

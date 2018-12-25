@@ -3,10 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on 'turbolinks:load', ->
-  
-  $('.resource-title-selectable').click ->
-    window.location = $(this).data('url')
-    return
 
   $('tr.clickable-row').click ->
     window.location = $(this).data('link')
@@ -75,17 +71,9 @@ $(document).on 'turbolinks:load', ->
     $('#planning-activity-module').hide()
     return
 
-  $('li.planning-menu-items').click ->
+  $('.colibri-clickable-link').click ->
     window.location = $(this).data('url')
     return
-  
-  $('.master-list-element').click ->
-    window.location = $(this).data('url')
-    return
-
-  $('.resource-list-element').click ->
-    window.location = $(this).data('url')
-    return 
   
   $('#toggle-patients-nurses').bootstrapToggle
     on: '利用者',

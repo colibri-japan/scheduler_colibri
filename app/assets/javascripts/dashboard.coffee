@@ -36,4 +36,8 @@ $(document).on 'turbolinks:load', ->
         firstDay: 1
     }
 
+  $('.post-clickable').click ->
+    $.getScript $(this).data('url')
+    return
+
   return

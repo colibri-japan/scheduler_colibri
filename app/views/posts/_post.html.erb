@@ -3,7 +3,7 @@
         <div class="post-author-wrapper"><%= post.author.name %></div>
         <div class="post-timestamps-wrapper"><%= resource_creation_date(post) %></div>
     </div>
-    <div class="post-body">
+    <div class="post-body <%= 'post-clickable' if post.author == current_user %>" data-url="<%= edit_post_path(post) %>">
         <%= simple_format(post.body) %>
     </div>
 </div>

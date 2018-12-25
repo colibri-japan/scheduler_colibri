@@ -6,7 +6,8 @@
   </div>
 
   <div class="actions">
-    <%= form.submit '共有する', class: 'btn btn-info form-control btn-block' %>
+    <%= form.submit '共有する', class: 'btn btn-info' %>
+    <%= link_to '削除する', post, method: :delete, remote: true, class: 'btn btn-danger' unless post.new_record? %>
   </div>
 
 <% end %>

@@ -1,0 +1,4 @@
+$('#post-<%= @post.id %> > .post-body').empty()
+$('#post-<%= @post.id %> > .post-body').append("<%= j simple_format(@post.body) %>")
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();

@@ -567,6 +567,20 @@ th {
 	border-top: 1.5px solid rgb(209, 227, 245) !important;
 	}
 
+	/* some styles for dashboard print */
+
+	#colibri-dashboard-container {
+		margin: 0px;
+	}
+
+	.colibri-dashboard-container-row {
+		height: auto !important;
+	}
+
+	.colibri-dashboard-container-row-large {
+		height: auto !important;
+	}
+
   
 }
 

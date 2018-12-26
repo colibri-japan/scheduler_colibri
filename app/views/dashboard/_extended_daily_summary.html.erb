@@ -1,9 +1,3 @@
-<div id='extended-daily-summary-title-container' class='no-print'>
-    <div class='colibri-xs-title'>業務日報</div>
-    <div class='small-side-margins'><%= text_field_tag 'query_date', "#{Date.today.strftime("%Y-%m-%d")}" %></div>
-    <div class='btn btn-sm btn-success text-white small-side-margins' id='print-button'>印刷</div>
-</div>
-
 <div class='colibri-dashboard-container-row'>
     <div class='colibri-dashboard-subcontainer'>
         <div class='colibri-subcontainer-header'>
@@ -23,8 +17,8 @@
                 <%  appointments_grouped_by_title.each do |service_name, appointments| %>
                   <tr>
                     <td><%= service_name %></td>
-                    <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
-                    <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
+                    <td><%= appointments.select{|appointment| female_patients_ids.include?(appointment.patient_id)}.count %></td>
+                    <td><%= appointments.select{|appointment| male_patients_ids.include?(appointment.patient_id)}.count %></td>
                     <td><%= appointments.count %></td>
                   </tr>
                 <% end %>

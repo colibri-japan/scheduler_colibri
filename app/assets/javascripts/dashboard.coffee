@@ -40,4 +40,9 @@ $(document).on 'turbolinks:load', ->
     $.getScript $(this).data('url')
     return
 
+  $('#query_date').on 'change', ->
+    url = $(this).data('url') + '?q=' + $(this).val()
+    $.getScript url
+    return
+
   return

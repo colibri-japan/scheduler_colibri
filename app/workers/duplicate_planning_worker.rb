@@ -20,8 +20,8 @@ class DuplicatePlanningWorker
 
 		recurring_appointments.find_each do |recurring_appointment|
 
-			new_anchor_day = first_day.wday > recurring_appointment.anchor.wday ?  first_day + 7 - (first_day.wday - recurring_appointment.anchor.wday) :  first_day + (recurring_appointment.anchor.wday - first_day.wday)
-
+			# new_anchor_day = first_day.wday > recurring_appointment.anchor.wday ?  first_day + 7 - (first_day.wday - recurring_appointment.anchor.wday) :  first_day + (recurring_appointment.anchor.wday - first_day.wday)
+			new_anchor_day = recurring_appointment.appointments(first_day, last_day).first
 			new_recurring_appointment = recurring_appointment.dup 
 			new_recurring_appointment.planning_id = new_planning.id
 			new_recurring_appointment.anchor = new_anchor_day
@@ -31,6 +31,11 @@ class DuplicatePlanningWorker
 			new_recurring_appointment.master = true
 			new_recurring_appointment.displayable = true
 			new_recurring_appointment.original_id = ''
+
+			if new_recurring_appointment.frequency == 6
+				exception_time = last_day - (last_day.wday - new_recurring_appointment.anchor.wday) % 7
+				new_recurring_appointment.schedule.add_exception_time exception_time
+			end
 
 			new_recurring_appointments << new_recurring_appointment
 		end

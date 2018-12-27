@@ -24,7 +24,7 @@ class RecurringAppointment < ApplicationRecord
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
-	validates :frequency, inclusion: 0..6
+	validates :frequency, inclusion: 0..7
 	validate :cannot_overlap_existing_appointment_create, on: :create
 	validate :cannot_overlap_existing_appointment_update, on: :update
 
@@ -58,7 +58,7 @@ class RecurringAppointment < ApplicationRecord
 				schedule.add_recurrence_rule IceCube::Rule.weekly(1)
 			when 1
 				# bi weekly starting first week
-				schedule.add_recurrence_rule IceCube::Rule.weekly(2)
+				schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week => [1,3,5])
 			when 2
 				#only that day == no rule
 			when 3
@@ -75,6 +75,9 @@ class RecurringAppointment < ApplicationRecord
 				schedule.add_recurrence_rule IceCube::Rule.weekly(1)
 				exception_time = end_of_month - (end_of_month.wday - day_of_week) % 7
 				schedule.add_exception_time(exception_time)
+			when 7
+				#every other week
+				schedule.add_recurrence_rule IceCube::Rule.weekly(2)
 			else
 			end
 			schedule

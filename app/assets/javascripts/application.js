@@ -130,16 +130,8 @@ initialize_nurse_calendar = function(){
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.bootstrapToggleUrl, function() {
-          
-          masterSwitchToggle();
-          toggleEditRequested();
-
           setRecurringAppointmentTime(start, end, view);
           setUnavailabilityTime(start, end);
-
-          
-          
-          recurringAppointmentFormChosen();
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -314,15 +306,8 @@ initialize_patient_calendar = function(){
 
       select: function (start, end, jsEvent, view, resource) {
         $.getScript(window.bootstrapToggleUrl, function() {
-          
-          masterSwitchToggle();
-          toggleEditRequested();
-
-
           setRecurringAppointmentTime(start, end, view);     	         
           setUnavailabilityTime(start, end);
-
-          recurringAppointmentFormChosen();
         });
 
 
@@ -591,14 +576,7 @@ initialize_master_calendar = function() {
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
-          
-          masterSwitchToggle();
-          toggleEditRequested();
-
           setRecurringAppointmentTime(start, end, view);
-
-          recurringAppointmentFormChosen();
-
         });
 
         master_calendar.fullCalendar('unselect');
@@ -787,18 +765,12 @@ initialize_calendar = function() {
 
       select: function(start, end, jsEvent, view, resource) {
       	$.getScript(window.bootstrapToggleUrl, function() {
-          
-          masterSwitchToggle();
-          toggleEditRequested();
-
           setRecurringAppointmentTime(start, end, view);
           setUnavailabilityTime(start, end);
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
           }
-          recurringAppointmentFormChosen();
-
         });
 
         calendar.fullCalendar('unselect');
@@ -1003,7 +975,6 @@ toggleProvidedServiceForm = function(){
 
 var appointmentComments;
 appointmentComments = function() {
-  console.log('appointment comments loaded')
   $('#appointment-comments').empty();
   if ($('.master_calendar').length) {
     var calendar = $('.master_calendar');
@@ -1472,6 +1443,9 @@ $(document).on('turbolinks:load', initialize_patient_calendar);
 $(document).on('turbolinks:load', initialize_master_calendar);
 
 $(document).on('turbolinks:load', function(){
+
+  $.fn.modal.Constructor.prototype._enforceFocus = function () { };
+
   $('#trigger-duplication').click(function(){
   	var $this = $(this);
     var template_id = $('#duplicate-from').val() ;

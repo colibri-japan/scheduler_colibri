@@ -581,6 +581,10 @@ th {
 		height: auto !important;
 	}
 
+	.colibri-subcontainer-body {
+		height: 100%;
+	}
+
 	.colibri-xs-title {
 		font-size: 1.4em;
 	}
@@ -590,6 +594,12 @@ th {
 		font-size: 1.3em;
 		border: none;
 	}
+
+	table { page-break-after:auto; height: auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    td    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
 
   
 }

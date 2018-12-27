@@ -104,7 +104,7 @@ class RecurringAppointmentsController < ApplicationController
   end
 
   def archive
-    appointment_ids = Appointment.valid.where(recurring_appointment_id: @recurring_appointment.id).ids
+    appointment_ids = Appointment.where(recurring_appointment_id: @recurring_appointment.id).ids
     @recurring_appointment.archive 
     @recurring_appointment.editing_occurrences_after = recurring_appointment_params[:editing_occurrences_after]
     @recurring_appointment.displayable = false

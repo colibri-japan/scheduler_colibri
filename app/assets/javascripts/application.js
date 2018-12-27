@@ -78,9 +78,11 @@ let setRecurringAppointmentTime = (start, end, view) => {
   }
   if (window.nurseId) {
     $('#recurring_appointment_nurse_id').val(window.nurseId);
+    $('#recurring_appointment_nurse_id').trigger('chosen:updated');
   }
   if (window.patientId) {
     $('#recurring_appointment_patient_id').val(window.patientId);
+    $('#recurring_appointment_patient_id').trigger('chosen:updated');
   }
 }
 

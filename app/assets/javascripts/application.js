@@ -586,7 +586,9 @@ initialize_master_calendar = function() {
          
       eventClick: function (event, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(event.recurring_appointment_path + '?master=true')
+              $.getScript(event.recurring_appointment_path + '?master=true', function(){
+                individualMasterToGeneral()
+              })
             }
             return false;
          },

@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :toggle_edit_requested]
-  before_action :set_planning
+  before_action :set_planning, except: [:new_batch_delete, :new_batch_cancel, :new_batch_request_edit]
   before_action :set_corporation
 
 
@@ -101,6 +101,31 @@ class AppointmentsController < ApplicationController
     @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:patient), previous_end: @appointment.ends_at, previous_start: @appointment.starts_at
     @appointment.delete
   end
+
+  def new_batch_delete
+    @nurses = @corporation.nurses.displayable.order_by_kana
+    @patients = @corporation.patients.active.order_by_kana
+  end
+
+  def batch_delete
+  end  
+
+  def new_batch_cancel
+    @nurses = @corporation.nurses.displayable.order_by_kana
+    @patients = @corporation.patients.active.order_by_kana
+  end
+
+  def batch_cancel
+  end
+
+  def new_batch_request_edit
+    @nurses = @corporation.nurses.displayable.order_by_kana
+    @patients = @corporation.patients.active.order_by_kana
+  end
+
+  def batch_request_edit 
+  end
+
 
   private
     # Use methods to share common setup or constraints between actions.

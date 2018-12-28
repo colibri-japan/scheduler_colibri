@@ -24,8 +24,7 @@
 //= require locale-all
 //= require scheduler
 //= require daterangepicker
-//= require select2-full
-//= require select2_locale_ja
+//= require selectize
 //= require Chart.bundle
 //= require chartkick
 //= require_tree .
@@ -1346,60 +1345,53 @@ let toggleDayResources = () => {
 }
 
 
-
-let newRecurringAppointmentSelect2 = () => {
-  $('#recurring_appointment_title').select2({
-    tags: true,
-    theme: 'bootstrap',
-    language: 'ja',
-    dropdownParent: $('#new_recurring_appointment')
+let recurringAppointmentSelectize = () => {
+  $('#recurring_appointment_title').selectize({
+    persist: false,
+    create: true,
+    render: {
+      option_create: function(data, escape) {
+        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
   });
 };
 
-let editRecurringAppointmentSelect2 =  () => {
-  $('#recurring_appointment_title').select2({
-    tags: true,
-    theme: 'bootstrap',
-    language: 'ja',
-    dropdownParent: $('#edit_recurring_appointment')
-  });
-};
-
-let newAppointmentSelect2 = () => {
-  let parent;
-  $('#appointment_title').select2({
-    tags: true,
-    theme: 'bootstrap',
-    language: 'ja',
-    dropdownParent: $('#new_appointment')
+let appointmentSelectize = () => {
+  $('#appointment_title').selectize({
+    persist: false,
+    create: true,
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
   })
 }
 
-let editAppointmentSelect2 = () => {
-  let parent;
-  $('#appointment_title').select2({
-    tags: true,
-    theme: 'bootstrap',
-    language: 'ja',
-    dropdownParent: $('#edit_appointment')
+let skillsSelectize = () => {
+  $('#nurse_skill_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規スキル <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
   })
 }
 
-let skillsSelect = () => {
-  $('#nurse_skill_list').select2({
-    tags: true,
-    width: '100%',
-    theme: 'bootstrap',
-    language: 'ja',
-  })
-}
-
-let patientSelect2 = () => {
-  $('#patient_caveat_list').select2({
-    tags: true,
-    width: '100%',
-    theme: 'bootstrap',
-    language: 'ja'
+let caveatsSelectize = () => {
+  $('#patient_caveat_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規特徴 <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
   });
 };
 

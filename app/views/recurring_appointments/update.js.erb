@@ -38,9 +38,6 @@
     })
   <% end %>
 <% else %>
-  let pathname = window.location.pathname 
-
-  <% if pathname.include? 'payable' %>
     $('.modal').modal('hide');
 
     if (typeof calendar === 'undefined') {
@@ -69,8 +66,5 @@
     if ($('#planning-activities').length > 0) {
       $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>")
     }
-  <% else %>
-    location.reload()
-  <% end %>
 <% end %>
 

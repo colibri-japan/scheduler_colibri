@@ -84,8 +84,8 @@ gem 'activerecord-import'
 #group by date, timeseries for chartkick
 gem 'groupdate'
 
-#select2 for checkboxes
-gem 'select2-rails'
+#selectize for checkboxes
+gem 'selectize-rails'
 
 #acts as taggable on 
 gem 'acts-as-taggable-on'

@@ -1372,6 +1372,7 @@ let skillsSelectize = () => {
     delimiter: ',',
     persist: false,
     create: true,
+    plugins: ['remove_button'],
     render: {
       option_create: function (data, escape) {
         return '<div class="create">新規スキル <strong>' + escape(data.input) + '</strong>&hellip;</div>'
@@ -1385,6 +1386,7 @@ let caveatsSelectize = () => {
     delimiter: ',',
     persist: false,
     create: true,
+    plugins: ['remove_button'],
     render: {
       option_create: function (data, escape) {
         return '<div class="create">新規特徴 <strong>' + escape(data.input) + '</strong>&hellip;</div>'
@@ -1424,10 +1426,10 @@ let makeTimeAxisPrintFriendly = () => {
   $('tr[data-time] > td > span').addClass('bolder-calendar-time-axis')
 }
 
-let teamMembersSelect2 = () => {
-  $('#team_member_ids').select2({
-    theme: 'bootstrap',
-    language: 'ja',
+let teamMembersSelectize = () => {
+  $('#team_member_ids').selectize({
+    plugins: ['remove_button'],
+    persist: false,
   })
 }
 

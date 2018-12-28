@@ -25,6 +25,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :anchor, presence: true
 	validates :frequency, presence: true
 	validates :frequency, inclusion: 0..7
+	validates :title, presence: true
 	validate :cannot_overlap_existing_appointment_create, on: :create
 	validate :cannot_overlap_existing_appointment_update, on: :update
 

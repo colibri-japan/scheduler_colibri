@@ -893,8 +893,7 @@ initialize_calendar = function() {
 };
 
 
-var appointmentFormChosen;
-appointmentFormChosen = function(){
+let appointmentFormChosen = () => {
   $('#appointment_nurse_id').chosen({
     no_results_text: '従業員が見つかりません',
   });
@@ -903,8 +902,8 @@ appointmentFormChosen = function(){
   })
 }
 
-var recurringAppointmentFormChosen;
-recurringAppointmentFormChosen = function(){
+
+let recurringAppointmentFormChosen = () => {
   $('#recurring_appointment_nurse_id').chosen({
     no_results_text: '従業員が見つかりません',
   });
@@ -922,8 +921,8 @@ let unavailabilityFormChosen = () => {
   })
 }
 
-var masterSwitchToggle;
-masterSwitchToggle = function() {
+
+let masterSwitchToggle = () => {
   $('.master-toggle').bootstrapToggle({
    on: 'マスター',
    off: '普通',
@@ -934,8 +933,8 @@ masterSwitchToggle = function() {
   });
 }
 
-var editAfterDate;
-editAfterDate = function(){
+
+let editAfterDate = () => {
   $('#delete-recurring-appointment').hide();
   $('#recurring_appointment_editing_occurrences_after option').each(function () {
     var $this = $(this);
@@ -947,8 +946,8 @@ editAfterDate = function(){
 }
 
 
-var toggleProvidedServiceForm;
-toggleProvidedServiceForm = function(){
+
+let toggleProvidedServiceForm = () => {
   if ($('#hour-based-wage-toggle').is(':checked') && $('#hour-input-method').is(':checked')) {
     $("label[for='provided_service_unit_cost']").text('時給');
     $('#pay-by-hour-field').show();
@@ -976,8 +975,7 @@ toggleProvidedServiceForm = function(){
   }
 }
 
-var appointmentComments;
-appointmentComments = function() {
+let appointmentComments = () => {
   $('#appointment-comments').empty();
   if ($('.master_calendar').length) {
     var calendar = $('.master_calendar');
@@ -1000,8 +998,8 @@ appointmentComments = function() {
   
 }
 
-var addProvidedServiceToggle;
-addProvidedServiceToggle = function(){
+
+let addProvidedServiceToggle = () => {
   $('#hour-based-wage-toggle').bootstrapToggle({
     on: '時給計算',
     off: '単価計算',
@@ -1030,8 +1028,8 @@ addProvidedServiceToggle = function(){
   });
 };
 
-var individualMasterToGeneral;
-individualMasterToGeneral = function(){
+
+let individualMasterToGeneral = () => {
   var copyState;
   $('#individual-from-master-to-general').click(function () {
     var target_url = $(this).data('master-to-general-url');
@@ -1051,8 +1049,8 @@ individualMasterToGeneral = function(){
   })
 }
 
-var toggleFulltimeEmployee;
-toggleFulltimeEmployee = function(){
+
+let toggleFulltimeEmployee = () => {
   $('#full-timer-toggle').bootstrapToggle({
     on: '正社員',
     off: '非正社員',
@@ -1063,8 +1061,8 @@ toggleFulltimeEmployee = function(){
   });
 }
 
-var toggleReminderable;
-toggleReminderable = function(){
+
+let toggleReminderable = () => {
   $('#reminderable-toggle').bootstrapToggle({
     on: 'リマインダー送信',
     off: 'リマインダーなし',
@@ -1074,8 +1072,8 @@ toggleReminderable = function(){
   })
 }
 
-var phoneMailRequirement;
-phoneMailRequirement = function(){
+
+let phoneMailRequirement = () => {
   if ($('#reminderable-toggle').is(':checked')) {
     $('#nurse_phone_mail').prop('required', true);
   }
@@ -1088,8 +1086,8 @@ phoneMailRequirement = function(){
   })
 }
 
-var providedServicesChosenOptions;
-providedServicesChosenOptions = function(){
+
+let providedServicesChosenOptions = () => {
   $('#select-all-services').click(function(){
     $('#chosen-target-services > option').prop('selected', true);
     $('#chosen-target-services').trigger('chosen:updated');
@@ -1431,6 +1429,49 @@ let teamMembersSelect2 = () => {
     theme: 'bootstrap',
     language: 'ja',
   })
+}
+
+let validateForm = () => {
+  if (typeof form === 'undefined') {
+    let form;
+  }
+
+  if ($('form.new_recurring_appointment').length > 0) {
+    form = $('form.new_recurring_appointment')
+  } else if ($('form.edit_recurring_appointment').length > 0) {
+    form = $('form.edit_recurring_appointment')
+  } else if ($('form.new_appointment').length > 0) {
+    form = $('form.new_appointment')
+  } else if ($('form.edit_appointment').length > 0) {
+    form = $('form.edit_appointment')
+  } else {
+    return false
+  }
+
+  form.submit(function(e){
+    
+
+    if (typeof titleIsPresent === 'undefined') {
+      let titleIsPresent;
+    }
+
+    if ($('form.new_recurring_appointment').length > 0) {
+      titleIsPresent = $('#recurring_appointment_title').val() !== ""
+    } else if ($('form.edit_recurring_appointment').length > 0) {
+      titleIsPresent = $('#recurring_appointment_title').val() !== ""
+    } else if ($('form.new_appointment').length > 0) {
+      titleIsPresent = $('#appointment_title').val() !== ""
+    } else if ($('form.edit_appointment').length > 0) {
+      titleIsPresent = $('#appointment_title').val() !== ""
+    } 
+
+    if (!titleIsPresent) {
+      alert('サービスタイプを選択してください');
+      e.preventDefault();
+      return false
+    } 
+  })
+  
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

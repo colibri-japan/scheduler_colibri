@@ -1476,6 +1476,53 @@ let validateForm = () => {
   
 }
 
+let batchActionFormButton = () => {
+  if (typeof actionButton === 'undefined') {
+    let actionButton;
+  }
+  if (typeof actionUrl === 'undefined') {
+    let actionUrl;
+  }
+
+  if ($('#new-batch-request-edit-submit').length > 0) {
+    actionButton = $('#new-batch-request-edit-submit');
+    actionUrl = 'appointments/batch_request_edit_confirm'
+  } else if ($('#new-batch-cancel-submit').length > 0) {
+    actionButton = $('#new-batch-cancel-submit');
+    actionUrl = 'appointments/batch_cancel_confirm'
+  } else if ($('#new-batch-delete-submit').length > 0) {
+    actionButton = $('#new-batch-delete-submit');
+    actionUrl = 'appointments/batch_delete_confirm'
+  }
+
+  actionButton.click(function(){
+    $.ajax({
+      url: actionUrl,
+      type: 'GET'
+    })
+  });
+}
+
+let initializeBatchActionForm = () => {
+  $('#nurse_id').selectize({
+    delimiter: ',',
+    plugins: ['remove_button']
+  })
+  $('#patient_id').selectize({
+    delimiter: ',',
+    plugins: ['remove_button']
+  })
+  $('input[name="date_range"]').daterangepicker({
+    timePicker: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(48, 'hour'),
+    locale: {
+      format: 'M月DD日 H:mm '
+    }
+  })
+  batchActionFormButton()
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

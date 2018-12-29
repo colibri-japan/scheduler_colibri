@@ -107,6 +107,9 @@ class AppointmentsController < ApplicationController
     @patients = @corporation.patients.active.order_by_kana
   end
 
+  def batch_delete_confirm
+  end
+
   def batch_delete
   end  
 
@@ -115,12 +118,18 @@ class AppointmentsController < ApplicationController
     @patients = @corporation.patients.active.order_by_kana
   end
 
+  def batch_cancel_confirm
+  end
+
   def batch_cancel
   end
 
   def new_batch_request_edit
     @nurses = @corporation.nurses.displayable.order_by_kana
     @patients = @corporation.patients.active.order_by_kana
+  end
+
+  def batch_request_edit_confirm
   end
 
   def batch_request_edit 

@@ -1486,29 +1486,36 @@ let batchActionFormButton = () => {
 
   if ($('#new-batch-request-edit-submit').length > 0) {
     actionButton = $('#new-batch-request-edit-submit');
-    actionUrl = 'appointments/batch_request_edit_confirm'
+    actionUrl = '/appointments/batch_request_edit_confirm'
   } else if ($('#new-batch-cancel-submit').length > 0) {
     actionButton = $('#new-batch-cancel-submit');
-    actionUrl = 'appointments/batch_cancel_confirm'
+    actionUrl = '/appointments/batch_cancel_confirm'
   } else if ($('#new-batch-delete-submit').length > 0) {
     actionButton = $('#new-batch-delete-submit');
-    actionUrl = 'appointments/batch_delete_confirm'
+    actionUrl = '/appointments/batch_delete_confirm'
   }
 
   actionButton.click(function(){
+    appointment_filters = {
+      nurse_ids: $('#nurse_id_filter').val(),
+      patient_ids: $('#patient_id_filter').val(),
+      range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
+      range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
+    }
     $.ajax({
       url: actionUrl,
+      data: appointment_filters,
       type: 'GET'
     })
   });
 }
 
 let initializeBatchActionForm = () => {
-  $('#nurse_id').selectize({
+  $('#nurse_id_filter').selectize({
     delimiter: ',',
     plugins: ['remove_button']
   })
-  $('#patient_id').selectize({
+  $('#patient_id_filter').selectize({
     delimiter: ',',
     plugins: ['remove_button']
   })
@@ -1517,7 +1524,35 @@ let initializeBatchActionForm = () => {
     startDate: moment().startOf('hour'),
     endDate: moment().startOf('hour').add(48, 'hour'),
     locale: {
-      format: 'M月DD日 H:mm '
+      format: 'M月DD日 H:mm ',
+      applyLabel: "選択する",
+      cancelLabel: "消す",
+      fromLabel: "",
+      toLabel: "から",
+      daysOfWeek: [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土",
+      ],
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ],
+      firstDay: 1
     }
   })
   batchActionFormButton()

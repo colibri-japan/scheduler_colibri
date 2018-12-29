@@ -3,10 +3,10 @@
     <%= text_field_tag :date_range, value=nil, {class: 'form-control'} %>
 </div>
 <div class="form-group">
-    <%= label_tag :nurse_id, "従業員フィルター", class: "colibri-form-label" %>
-    <%= select_tag :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select), {multiple: true} %>
+    <%= label_tag :nurse_id_filter, "従業員フィルター", class: "colibri-form-label" %>
+    <%= select_tag :nurse_id_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {multiple: true} %>
 </div>
 <div class="form-group">
-    <%= label_tag :patient_id, "利用者フィルター", class: "colibri-form-label" %>
-    <%= select_tag :patient_id, options_from_collection_for_select(@patients, :id, :name, {prompt: '利用者選択'}), {multiple: true} %>
+    <%= label_tag :patient_id_filter, "利用者フィルター", class: "colibri-form-label" %>
+    <%= select_tag :patient_id_filter, options_from_collection_for_select(@patients, :id, :name, {prompt: '利用者選択'}), {multiple: true} %>
 </div>

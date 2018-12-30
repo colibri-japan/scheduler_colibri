@@ -2,16 +2,16 @@
     <thead>
         <th>タイプ</th>
         <th>利用者</th>
-        <th>ヘルパー</th>
+        <th>従業員</th>
         <th>日程</th>
     </thead>
     <tbody>
         <% appointments.each do |appointment| %>
-            <tr>
-                <th><%= appointment.try(:title) %></th>
-                <th><%= appointment.patient.try(:name) %></th>
-                <th><%= appointment.nurse.try(:name) %></th>
-                <th><%= date_and_time(appointment) %></th>
+            <tr class="appointment_row" id="<%= appointment.id %>">
+                <td><%= appointment.try(:title) %></td>
+                <td><%= appointment.patient.try(:name) %></td>
+                <td><%= appointment.nurse.try(:name) %></td>
+                <td><%= date_and_time(appointment) %></td>
             </tr>
         <% end %>
     </tbody>

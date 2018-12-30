@@ -1,1 +1,5 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "batch_delete_confirm" %>');
+$('#batch_delete_confirm').modal('show');
+confirmBatchAction()

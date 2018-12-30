@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :toggle_edit_requested]
-  before_action :set_planning, except: [:new_batch_delete, :new_batch_cancel, :new_batch_request_edit, :batch_delete_confirm, :batch_cancel_confirm, :batch_request_edit_confirm]
+  before_action :set_planning, except: [:new_batch_delete, :new_batch_cancel, :new_batch_request_edit, :batch_delete_confirm, :batch_cancel_confirm, :batch_request_edit_confirm, :batch_delete, :batch_cancel, :batch_request_edit]
   before_action :set_corporation
 
 
@@ -119,9 +119,21 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_cancel_confirm
+    #will need to validate nurse and patient ids
+    plannings = @corporation.plannings.where(archived: false)
+
+    @appointments = Appointment.to_be_displayed.where(planning_id: plannings.ids).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
+
+    @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
+    @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
   end
 
   def batch_cancel
+    #will need to validate appointment ids
+    @appointments = Appointment.where(id: params[:appointment_ids])
+
+    @appointments.update_all(cancelled: true)
+    @appointments.update_all(recurring_appointment_id: nil)
   end
 
   def new_batch_request_edit

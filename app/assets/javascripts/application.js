@@ -1558,6 +1558,40 @@ let initializeBatchActionForm = () => {
   batchActionFormButton()
 }
 
+let confirmBatchAction = () => {
+  let array = [];
+  $('.appointment_row').map(function(){
+    array.push($(this).attr('id'))
+  })
+  console.log(array)
+  appointment_ids = {
+    appointment_ids: array
+  }
+
+  $('#batch-request-edit-confirm-submit').click(function(){
+    $.ajax({
+      url: $(this).data('submit-path'),
+      data: appointment_ids,
+      type: 'PATCH'
+    })
+  })
+  $('#batch-cancel-confirm-submit').click(function () {
+    $.ajax({
+      url: $(this).data('submit-path'),
+      data: appointment_ids,
+      type: 'PATCH'
+    })
+  })
+  $('#batch-delete-confirm-submit').click(function () {
+    $.ajax({
+      url: $(this).data('submit-path'),
+      data: appointment_ids,
+      type: 'PATCH'
+    })
+  })
+
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

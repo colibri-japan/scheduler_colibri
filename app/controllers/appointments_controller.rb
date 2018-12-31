@@ -1,9 +1,9 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :toggle_edit_requested]
-  before_action :set_planning, except: [:new_batch_delete, :new_batch_cancel, :new_batch_request_edit, :batch_delete_confirm, :batch_cancel_confirm, :batch_request_edit_confirm, :batch_delete, :batch_cancel, :batch_request_edit]
+  before_action :set_planning, except: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit, :batch_archive_confirm, :batch_cancel_confirm, :batch_request_edit_confirm, :batch_archive, :batch_cancel, :batch_request_edit]
   before_action :set_corporation
-  before_action :new_batch_action, only: [:new_batch_delete, :new_batch_cancel, :new_batch_request_edit]
-  before_action :confirm_batch_action, only: [:batch_cancel_confirm, :batch_delete_confirm, :batch_request_edit_confirm]
+  before_action :new_batch_action, only: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit]
+  before_action :confirm_batch_action, only: [:batch_cancel_confirm, :batch_archive_confirm, :batch_request_edit_confirm]
 
   # GET /appointments
   # GET /appointments.json
@@ -103,15 +103,15 @@ class AppointmentsController < ApplicationController
     @appointment.delete
   end
 
-  def new_batch_delete
+  def new_batch_archive
   end
 
-  def batch_delete_confirm
+  def batch_archive_confirm
   end
 
-  def batch_delete
-    #will need to validate appointment ids
-    @appointments = Appointment.where(id: params[:appointment_ids])
+  def batch_archive
+    planning_ids = @corporation.plannings.ids 
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
 
     @appointments.update_all(archived_at: Time.current)
   end  
@@ -123,8 +123,8 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_cancel
-    #will need to validate appointment ids
-    @appointments = Appointment.where(id: params[:appointment_ids])
+    planning_ids = @corporation.plannings.ids 
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
 
     @appointments.update_all(cancelled: true)
     @appointments.update_all(recurring_appointment_id: nil)
@@ -137,8 +137,8 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_request_edit 
-    @appointments = Appointment.where(id: params[:appointment_ids])
-    validate_appointments
+    planning_ids = @corporation.plannings.ids 
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
 
     @appointments.update_all(edit_requested: true)
     @appointments.update_all(recurring_appointment_id: nil)
@@ -157,7 +157,6 @@ class AppointmentsController < ApplicationController
     end
 
     def confirm_batch_action
-      #will need to validate nurse and patient ids
       plannings = @corporation.plannings.where(archived: false)
 
       @appointments = Appointment.to_be_displayed.where(planning_id: plannings.ids, master: false).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
@@ -181,14 +180,6 @@ class AppointmentsController < ApplicationController
 
     def set_planning
       @planning = Planning.find(params[:planning_id])
-    end
-
-    def validate_appointments
-      planning_ids = @corporation.plannings.ids 
-
-      unless (@appointments.map(&:planning_id).uniq - planning_ids).empty?
-        #handle errors
-      end
     end
 
     def from_master_planning?

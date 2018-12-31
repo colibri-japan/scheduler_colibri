@@ -89,9 +89,9 @@ Rails.application.routes.draw do
   patch 'plannings/:planning_id/appointments/:id/toggle_cancelled' => 'appointments#toggle_cancelled', as: :planning_appointment_toggle_cancelled
   patch 'plannings/:planning_id/appointments/:id/toggle_edit_requested' => 'appointments#toggle_edit_requested', as: :planning_appointment_toggle_edit_requested
   patch 'plannings/:planning_id/appointments/:id/archive' => 'appointments#archive', as: :planning_appointment_archive
-  get 'appointments/new_batch_delete' => 'appointments#new_batch_delete', as: :new_appointments_batch_delete
-  get 'appointments/batch_delete_confirm' => 'appointments#batch_delete_confirm', as: :appointments_batch_delete_confirm
-  patch 'appointments/batch_delete' => 'appointments#batch_delete', as: :appointments_batch_delete
+  get 'appointments/new_batch_archive' => 'appointments#new_batch_archive', as: :new_appointments_batch_archive
+  get 'appointments/batch_archive_confirm' => 'appointments#batch_archive_confirm', as: :appointments_batch_archive_confirm
+  patch 'appointments/batch_archive' => 'appointments#batch_archive', as: :appointments_batch_archive
   get 'appointments/new_batch_cancel' => 'appointments#new_batch_cancel', as: :new_appointments_batch_cancel
   get 'appointments/batch_cancel_confirm' => 'appointments#batch_cancel_confirm', as: :appointments_batch_cancel_confirm
   patch 'appointments/batch_cancel' => 'appointments#batch_cancel', as: :appointments_batch_cancel

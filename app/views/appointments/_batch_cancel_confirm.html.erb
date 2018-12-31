@@ -11,6 +11,7 @@
             <%= render partial: 'batch_action_appointments_table', locals: {appointments: @appointments} %>
 
                 <div>
+					<%= link_to '戻る', new_appointments_batch_cancel_path, remote: true, class:'btn btn-light' %>
                     <div class="btn btn-danger text-white" id="batch-cancel-confirm-submit" data-submit-path="<%= appointments_batch_cancel_path %>">一斉にキャンセルする</div>
                 </div>
 			</div>

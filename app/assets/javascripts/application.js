@@ -1490,9 +1490,9 @@ let batchActionFormButton = () => {
   } else if ($('#new-batch-cancel-submit').length > 0) {
     actionButton = $('#new-batch-cancel-submit');
     actionUrl = '/appointments/batch_cancel_confirm'
-  } else if ($('#new-batch-delete-submit').length > 0) {
-    actionButton = $('#new-batch-delete-submit');
-    actionUrl = '/appointments/batch_delete_confirm'
+  } else if ($('#new-batch-archive-submit').length > 0) {
+    actionButton = $('#new-batch-archive-submit');
+    actionUrl = '/appointments/batch_archive_confirm'
   }
 
   actionButton.click(function(){
@@ -1582,7 +1582,7 @@ let confirmBatchAction = () => {
       type: 'PATCH'
     })
   })
-  $('#batch-delete-confirm-submit').click(function () {
+  $('#batch-archive-confirm-submit').click(function () {
     $.ajax({
       url: $(this).data('submit-path'),
       data: appointment_ids,

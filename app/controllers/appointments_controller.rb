@@ -2,7 +2,8 @@ class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :toggle_edit_requested]
   before_action :set_planning, except: [:new_batch_delete, :new_batch_cancel, :new_batch_request_edit, :batch_delete_confirm, :batch_cancel_confirm, :batch_request_edit_confirm, :batch_delete, :batch_cancel, :batch_request_edit]
   before_action :set_corporation
-
+  before_action :new_batch_action, only: [:new_batch_delete, :new_batch_cancel, :new_batch_request_edit]
+  before_action :confirm_batch_action, only: [:batch_cancel_confirm, :batch_delete_confirm, :batch_request_edit_confirm]
 
   # GET /appointments
   # GET /appointments.json
@@ -103,29 +104,22 @@ class AppointmentsController < ApplicationController
   end
 
   def new_batch_delete
-    @nurses = @corporation.nurses.displayable.order_by_kana
-    @patients = @corporation.patients.active.order_by_kana
   end
 
   def batch_delete_confirm
   end
 
   def batch_delete
+    #will need to validate appointment ids
+    @appointments = Appointment.where(id: params[:appointment_ids])
+
+    @appointments.update_all(archived_at: Time.current)
   end  
 
   def new_batch_cancel
-    @nurses = @corporation.nurses.displayable.order_by_kana
-    @patients = @corporation.patients.active.order_by_kana
   end
 
   def batch_cancel_confirm
-    #will need to validate nurse and patient ids
-    plannings = @corporation.plannings.where(archived: false)
-
-    @appointments = Appointment.to_be_displayed.where(planning_id: plannings.ids).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
-
-    @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
-    @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
   end
 
   def batch_cancel
@@ -137,14 +131,17 @@ class AppointmentsController < ApplicationController
   end
 
   def new_batch_request_edit
-    @nurses = @corporation.nurses.displayable.order_by_kana
-    @patients = @corporation.patients.active.order_by_kana
   end
 
   def batch_request_edit_confirm
   end
 
   def batch_request_edit 
+    @appointments = Appointment.where(id: params[:appointment_ids])
+    validate_appointments
+
+    @appointments.update_all(edit_requested: true)
+    @appointments.update_all(recurring_appointment_id: nil)
   end
 
 
@@ -152,6 +149,21 @@ class AppointmentsController < ApplicationController
     # Use methods to share common setup or constraints between actions.
     def set_appointment
       @appointment = Appointment.find(params[:id])
+    end
+
+    def new_batch_action
+      @nurses = @corporation.nurses.displayable.order_by_kana
+      @patients = @corporation.patients.active.order_by_kana
+    end
+
+    def confirm_batch_action
+      #will need to validate nurse and patient ids
+      plannings = @corporation.plannings.where(archived: false)
+
+      @appointments = Appointment.to_be_displayed.where(planning_id: plannings.ids, master: false).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
+
+      @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
+      @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
     end
 
     def store_original_params
@@ -169,6 +181,14 @@ class AppointmentsController < ApplicationController
 
     def set_planning
       @planning = Planning.find(params[:planning_id])
+    end
+
+    def validate_appointments
+      planning_ids = @corporation.plannings.ids 
+
+      unless (@appointments.map(&:planning_id).uniq - planning_ids).empty?
+        #handle errors
+      end
     end
 
     def from_master_planning?

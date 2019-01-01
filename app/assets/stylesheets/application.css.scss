@@ -441,6 +441,25 @@ th {
 	border-color: #9E4300 !important
 }
 
+.btn-colibri-light-gray {
+	background-color: #85929E !important;
+	border-color: #85929E !important;
+	color: white;
+}
+
+.btn-colibri-light-gray:hover {
+	background-color: #6C757D !important;
+	border-color: #6C757D !important;
+	color: white;
+}
+
+.colibri-glyphicon-container{
+	margin: auto;
+	margin-top: 8px;
+	height: 40px;
+	width: 40px;
+}
+
 
 @media print {
 

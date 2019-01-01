@@ -391,3 +391,22 @@ ul.chosen-results {
 .report-download-wrapper {
 	margin-top: 5px;
 }
+
+#colibri-batch-action-button {
+	position: fixed;
+	text-align: center;
+	vertical-align: middle;
+	z-index: 10;
+	bottom: 60px;
+	right: 80px;
+	width: 56px;
+	height: 56px;
+	border-radius: 50px;
+	background: #fc7181;
+	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#colibri-batch-action-button:hover {
+	background: #f15365;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}

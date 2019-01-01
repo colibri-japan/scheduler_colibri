@@ -27,7 +27,7 @@ if unavailability.nurse_id.present?
     end
 end
 
-json.color '#D46A6A'
+json.color '#ff7777'
 
 json.base_url planning_unavailability_path(@planning, unavailability)
 json.edit_url edit_planning_unavailability_path(@planning, unavailability)

@@ -1511,6 +1511,7 @@ let batchActionFormButton = () => {
 }
 
 let initializeBatchActionForm = () => {
+  $("#colibri-batch-action-button").popover('hide')
   $('#nurse_id_filter').selectize({
     delimiter: ',',
     plugins: ['remove_button']

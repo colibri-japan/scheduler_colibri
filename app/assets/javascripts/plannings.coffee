@@ -114,5 +114,15 @@ $(document).on 'turbolinks:load', ->
     window.print()
     return
 
+  popoverContent = $('#batch-action-menu').html()
+
+  $('#colibri-batch-action-button').popover
+    html: true
+    title: ''
+    content: popoverContent
+    trigger: 'click'
+    placement: 'top'
+      
+
   
   return

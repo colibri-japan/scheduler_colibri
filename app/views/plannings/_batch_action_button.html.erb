@@ -1,5 +1,12 @@
 <div id="colibri-batch-action-button">
     <div class="colibri-glyphicon-container">
         <span class="glyphicon glyphicon-pencil" style="color:white;line-height:40px"></span>
+        <div id='batch-action-menu' style="display:none">
+            <span class="glyphicon glyphicon-th-list" style="color:#85929E;font-size:1.2em"></span><%= link_to '  編集中リスト', new_appointments_batch_request_edit_path, remote: true, style: 'color:#606E7C ;font-size:1.2em' %><br/>
+            <span class="glyphicon glyphicon-remove" style="color:#85929E;font-size:1.2em"></span><%= link_to '  キャンセル', new_appointments_batch_cancel_path, remote: true, style: 'color:#606E7C ;font-size:1.2em' %><br/>
+            <span class="glyphicon glyphicon-trash" style="color:#85929E;font-size:1.2em"></span><%= link_to '  削除', new_appointments_batch_archive_path, remote: true, style: 'color:#606E7C ;font-size:1.2em' %><br/>
+        </div>
     </div>
 </div>
+
+

@@ -1522,12 +1522,13 @@ let initializeBatchActionForm = () => {
   })
   $('input[name="date_range"]').daterangepicker({
     timePicker: true,
+    timePicker24Hour: true,
     startDate: moment().startOf('hour'),
     endDate: moment().startOf('hour').add(48, 'hour'),
     locale: {
-      format: 'M月DD日 H:mm ',
+      format: 'M月DD日 H:mm',
       applyLabel: "選択する",
-      cancelLabel: "消す",
+      cancelLabel: "削除",
       fromLabel: "",
       toLabel: "から",
       daysOfWeek: [

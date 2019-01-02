@@ -1529,7 +1529,7 @@ let initializeBatchActionForm = () => {
     locale: {
       format: 'M月DD日 H:mm',
       applyLabel: "選択する",
-      cancelLabel: "削除",
+      cancelLabel: "取消",
       fromLabel: "",
       toLabel: "から",
       daysOfWeek: [

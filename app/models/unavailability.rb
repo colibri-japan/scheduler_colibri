@@ -22,7 +22,7 @@ class Unavailability < ApplicationRecord
 			patient_id: self.patient_id,
 			nurse_id: self.nurse_id,
 			edit_requested: self.edit_requested,
-			description: self.description,
+			description: self.description || '',
 			resourceId: self.nurse_id,
 			allDay: self.all_day_unavailability?,
 			color: '#ff7777',
@@ -30,13 +30,13 @@ class Unavailability < ApplicationRecord
 			edit_url: "/plannings/#{self.planning_id}/unavailabilities/#{self.id}/edit",
 			displayable: true,
 			unavailability: true,
-			service_type: self.title,
+			service_type: self.title || '',
 			nurse: {
-				name: self.nurse.name,
+				name: self.nurse.try(:name),
 			},
 			patient: {
-				name: self.patient.name,
-				address: self.patient.address
+				name: self.patient.try(:name),
+				address: self.patient.try(:address)
 			},
 
 		}

@@ -89,22 +89,22 @@ class Appointment < ApplicationRecord
 			resourceId: self.nurse_id,
 			allDay: self.all_day_appointment?,
 			color: self.color,
-			base_url: "/plannings/#{self.planning_id}/appointments/#{self.id}",
-			edit_url: "/plannings/#{self.planning_id}/appointments/#{self.id}/edit",
 			displayable: self.displayable,
 			master: self.master,
 			cancelled: self.cancelled,
 			unavailability: false,
-			service_type: self.title,
+			service_type: self.title || '',
 			borderColor: self.borderColor,
 			nurse: {
 				name: self.nurse.name,
 			},
 			patient: {
 				name: self.patient.name,
-				address: self.patient.address
+				address: self.patient.try(:address)
 			},
 			frequency: self.recurring_appointment_frequency,
+			base_url: "/plannings/#{self.planning_id}/appointments/#{self.id}",
+			edit_url: "/plannings/#{self.planning_id}/appointments/#{self.id}/edit",
 			recurring_appointment_path: self.recurring_appointment_path
 		}
 	end

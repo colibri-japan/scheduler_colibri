@@ -16,6 +16,10 @@ class UnavailabilitiesController < ApplicationController
 	  else
 	   @unavailabilities = @planning.unavailabilities.all
 	 end
+
+	 respond_to do |format|
+		format.json {render json: @unavailabilities.as_json}
+	 end
 	end
 
 	# GET /unavailabilities/1
@@ -40,13 +44,9 @@ class UnavailabilitiesController < ApplicationController
 	  respond_to do |format|
 	    if @unavailability.save
 	      @activity = @unavailability.create_activity :create, owner: current_user, planning_id: @planning.id, patient_id: @unavailability.patient_id
-	      format.html { redirect_to @unavailability, notice: 'unavailability was successfully created.' }
 	      format.js
-	      format.json { render :show, status: :created, location: @unavailability }
 	    else
-	      format.html { render :new }
 	      format.js
-	      format.json { render json: @unavailability.errors, status: :unprocessable_entity }
 	    end
 	  end
 	end
@@ -58,13 +58,9 @@ class UnavailabilitiesController < ApplicationController
 	    if @unavailability.update(unavailability_params)
 	      @activity = @unavailability.create_activity :update, owner: current_user, planning_id: @planning.id, patient_id: @unavailability.patient_id
 
-	      format.html { redirect_to @unavailability, notice: 'unavailability was successfully updated.' }
 	      format.js
-	      format.json { render :show, status: :ok, location: @unavailability }
 	    else
-	      format.html { render :edit }
 	      format.js
-	      format.json { render json: @unavailability.errors, status: :unprocessable_entity }
 	    end
 	  end
 	end

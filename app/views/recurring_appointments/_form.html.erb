@@ -86,12 +86,12 @@
 
       <div class="form-group">
         <%= form.label :starts_at, "スタート時間", class: "colibri-form-label" %>
-        <%= form.time_select :starts_at, id: :recurring_appointment_start, class: "form-control" %>
+        <%= form.time_select :starts_at, {minute_step: 5} %>
       </div>
 
       <div class="form-group">
         <%= form.label :ends_at, "終了時間", class: "colibri-form-label" %>
-        <%= form.time_select :ends_at, id: :recurring_appointment_end, class: "form-control" %>
+        <%= form.time_select :ends_at, {minute_step: 5} %>
       </div>
 
       <% end %>

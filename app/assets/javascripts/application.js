@@ -66,8 +66,8 @@ let setRecurringAppointmentTime = (start, end, view) => {
     $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
     $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
     $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
-    $('#recurring_appointment_ends_at_4i').val(23);
-    $('#recurring_appointment_ends_at_5i').val(59);
+    $('#recurring_appointment_ends_at_4i').val('23');
+    $('#recurring_appointment_ends_at_5i').val('00');
   } else {
     $('#recurring_appointment_end_day_1i').val(moment(end).format('YYYY'));
     $('#recurring_appointment_end_day_2i').val(moment(end).format('M'));
@@ -1523,6 +1523,7 @@ let initializeBatchActionForm = () => {
   $('input[name="date_range"]').daterangepicker({
     timePicker: true,
     timePicker24Hour: true,
+    timePickerIncrement: 15,
     startDate: moment().startOf('hour'),
     endDate: moment().startOf('hour').add(48, 'hour'),
     locale: {

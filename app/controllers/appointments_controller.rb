@@ -19,6 +19,10 @@ class AppointmentsController < ApplicationController
     else
      @appointments = @planning.appointments.to_be_displayed.where(master: false).includes(:patient, :nurse, :recurring_appointment)
     end
+
+    respond_to do |format|
+      format.json {render json: @appointments.as_json}
+    end
   end
 
   # GET /appointments/1

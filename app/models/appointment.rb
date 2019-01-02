@@ -52,6 +52,63 @@ class Appointment < ApplicationRecord
 		self.update_column(:archived_at, Time.current)
 	end
 
+	def recurring_appointment_frequency 
+		if self.recurring_appointment.present? 
+			self.recurring_appointment.frequency 
+		else
+			''
+		end
+	end
+
+	def recurring_appointment_path
+		if self.recurring_appointment.present? 
+			"/plannings/#{self.planning_id}/recurring_appointments/#{self.recurring_appointment_id}/edit"
+		else 
+			''
+		end
+	end
+
+	def borderColor 
+        if self.cancelled == true 
+            '#FF8484'
+        elsif self.edit_requested == true 
+            '#99E6BF'
+        end
+	end
+
+	def as_json
+		{
+			id: "appointment_#{self.id}",
+			title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
+			start: self.starts_at,
+			end: self.ends_at,
+			patient_id: self.patient_id,
+			nurse_id: self.nurse_id,
+			edit_requested: self.edit_requested,
+			description: self.description || '',
+			resourceId: self.nurse_id,
+			allDay: self.all_day_appointment?,
+			color: self.color,
+			base_url: "/plannings/#{self.planning_id}/appointments/#{self.id}",
+			edit_url: "/plannings/#{self.planning_id}/appointments/#{self.id}/edit",
+			displayable: self.displayable,
+			master: self.master,
+			cancelled: self.cancelled,
+			unavailability: false,
+			service_type: self.title,
+			borderColor: self.borderColor,
+			nurse: {
+				name: self.nurse.name,
+			},
+			patient: {
+				name: self.patient.name,
+				address: self.patient.address
+			},
+			frequency: self.recurring_appointment_frequency,
+			recurring_appointment_path: self.recurring_appointment_path
+		}
+	end
+
 	private
 
 	def do_not_overlap

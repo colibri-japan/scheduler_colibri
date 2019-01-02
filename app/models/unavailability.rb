@@ -21,7 +21,7 @@ class Unavailability < ApplicationRecord
 			end: self.ends_at,
 			patient_id: self.patient_id,
 			nurse_id: self.nurse_id,
-			edit_request: self.edit_requested,
+			edit_requested: self.edit_requested,
 			description: self.description,
 			resourceId: self.nurse_id,
 			allDay: self.all_day_unavailability?,

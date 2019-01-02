@@ -112,8 +112,12 @@ class AppointmentsController < ApplicationController
   def batch_archive
     planning_ids = @corporation.plannings.ids 
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
+    @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
 
-    @appointments.update_all(archived_at: Time.current)
+    now = Time.current
+
+    @appointments.update_all(archived_at: now)
+    @provided_services.update_all(archived_at: now)
   end  
 
   def new_batch_cancel
@@ -125,9 +129,11 @@ class AppointmentsController < ApplicationController
   def batch_cancel
     planning_ids = @corporation.plannings.ids 
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
+    @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
 
     @appointments.update_all(cancelled: true)
     @appointments.update_all(recurring_appointment_id: nil)
+    @provided_services.update_all(cancelled: true)
   end
 
   def new_batch_request_edit
@@ -139,6 +145,7 @@ class AppointmentsController < ApplicationController
   def batch_request_edit 
     planning_ids = @corporation.plannings.ids 
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
+    @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
 
     @appointments.update_all(edit_requested: true)
     @appointments.update_all(recurring_appointment_id: nil)

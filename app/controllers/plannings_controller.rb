@@ -112,6 +112,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def settings 
+		fresh_when etag: @corporation, last_modified: @corporation.updated_at
 	end
 
 	def monthly_general_report

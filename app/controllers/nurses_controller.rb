@@ -6,15 +6,18 @@ class NursesController < ApplicationController
   before_action :set_skills, only: [:new, :edit]
 
   def index
-    full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
-    part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
+    nurses = @corporation.nurses
+    full_timers = nurses.where(full_timer: true, displayable: true).order_by_kana
+    part_timers = nurses.where(full_timer: false, displayable: true).order_by_kana
     @nurses = full_timers + part_timers
 
     if params[:include_undefined] == 'true'
-      undisplayable = @corporation.nurses.where(displayable: false)
+      undisplayable = nurses.where(displayable: false)
       @nurses =  undisplayable + @nurses
     end
-  	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
+    @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
+
+    fresh_when etag: nurses, last_modified: nurses.maximum(:updated_at)
   end
 
   def show
@@ -225,7 +228,8 @@ class NursesController < ApplicationController
   def fetch_nurses_grouped_by_team
     @nurses = @corporation.nurses.displayable.order_by_kana
     if @corporation.teams.any?
-      @grouped_nurses = @nurses.group_by {|nurse| nurse.team.try(:team_name) }
+      team_name_by_id = @corporation.teams.pluck(:id, :team_name).to_h
+      @grouped_nurses = @nurses.group_by {|nurse| team_name_by_id[nurse.team_id] }
     else
       nurses_grouped_by_full_timer = @nurses.group_by {|nurse| nurse.full_timer}
       full_timers = nurses_grouped_by_full_timer[true] ||= []

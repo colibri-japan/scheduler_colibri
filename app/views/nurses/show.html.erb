@@ -91,7 +91,9 @@
 				<p class="planning-activity-module-title">最新編集履歴</p>
 				<div id="planning-activities">
 					<% @activities.each do |activity| %>
+					  <% cache activity do %>
 						<%= render partial: 'activities/activity', locals: {activity: activity} %>
+					  <% end %>
 					<% end %>
 				</div>
 			</div>

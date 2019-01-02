@@ -1,13 +1,6 @@
-<% if @planning.present? %>
-  <%= render 'plannings/planning_patients_submenu' %>
-<% else %>
-<% end %>
-
 <div id="index-container">
 
-  <% if @planning.nil? %>
   <%= link_to '+新規利用者', new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
-  <% end %>
 
   <div id="index-table-container">
     <table class="<%= @planning ? 'table table-hover' : 'table' %>">
@@ -22,12 +15,14 @@
 
       <tbody>
         <% @patients.each do |patient| %>
-          <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>">
-            <td><%= patient.name %></td>
-            <td><%= patient.phone_number %></td>
-            <td><%= patient.phone_mail %></td>
-            <td><%= patient.address %></td>
-          </tr>
+          <% cache patient do %>
+            <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>">
+              <td><%= patient.name %></td>
+              <td><%= patient.phone_number %></td>
+              <td><%= patient.phone_mail %></td>
+              <td><%= patient.address %></td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>

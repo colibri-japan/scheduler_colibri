@@ -11,13 +11,13 @@ class AppointmentsController < ApplicationController
     authorize @planning, :is_employee?
 
     if params[:nurse_id].present? && params[:master].present?
-      @appointments = @planning.appointments.to_be_displayed.where(nurse_id: params[:nurse_id], master: params[:master])
+      @appointments = @planning.appointments.to_be_displayed.where(nurse_id: params[:nurse_id], master: params[:master]).includes(:patient, :nurse, :recurring_appointment)
     elsif params[:patient_id].present? && params[:master].present?
-      @appointments = @planning.appointments.to_be_displayed.where(patient_id: params[:patient_id], master: params[:master])
+      @appointments = @planning.appointments.to_be_displayed.where(patient_id: params[:patient_id], master: params[:master]).includes(:patient, :nurse, :recurring_appointment)
     elsif params[:master] == 'true' && params[:nurse_id].blank? && params[:patient_id].blank?
-      @appointments = @planning.appointments.to_be_displayed.from_master.includes(:patient)
+      @appointments = @planning.appointments.to_be_displayed.from_master.includes(:patient, :nurse, :recurring_appointment)
     else
-     @appointments = @planning.appointments.to_be_displayed.where(master: false).includes(:patient, :nurse)
+     @appointments = @planning.appointments.to_be_displayed.where(master: false).includes(:patient, :nurse, :recurring_appointment)
     end
   end
 

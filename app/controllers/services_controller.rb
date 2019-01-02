@@ -13,6 +13,8 @@ class ServicesController < ApplicationController
             @services = @corporation.services.without_nurse_id.order_by_title
             @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
         end
+
+        fresh_when etag: @services, last_modified: @services.maximum(:updated_at)
     end
 
     def new

@@ -17,7 +17,9 @@ class PatientsController < ApplicationController
       @patients = @corporation.patients.active.order_by_kana
     end
 
-  	@planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
+    @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
+    
+    fresh_when etag: @patients, last_modified: @patients.maximum(:updated_at)
   end
 
   def show

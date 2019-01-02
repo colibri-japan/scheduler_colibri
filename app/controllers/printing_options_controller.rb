@@ -5,6 +5,8 @@ class PrintingOptionsController < ApplicationController
         @planning = Planning.find(params[:planning_id])
         @printing_option = PrintingOption.find(params[:id])
         @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
+
+        fresh_when etag: @printing_option, last_modified: @printing_option.updated_at
     end
 
     def update

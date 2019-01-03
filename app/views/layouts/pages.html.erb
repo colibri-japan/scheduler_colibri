@@ -10,26 +10,45 @@
       display: flex;
       justify-content: space-between;
   }
-  #colibri-pages-nav > #brand-container > #brand {
+  #colibri-pages-nav > #brand-container > #brand-name {
       color: #302939;
+      font-size: 1.7em;
+      margin-left: 25%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
   }
+  #pages-nav-right {
+      display:flex;
+      justify-content: center;
+      align-items: center;
+  }
+  #nav-login-button {
+      margin-right: 8px;
+      margin-left: 8px;
+  }
+
+  #nav-contact-form-link {
+      color: white !important;
+  }
+
 
 <% end %>
 
 <%= content_for :content do %>
 <nav id="colibri-pages-nav">
     <div id="brand-container">
-        <p id="brand">Colibri</p>
+        <div id="brand-name">Colibri</div>
     </div>
-    <div>
+    <div id="pages-nav-right">
     	<ul>
     	    <% if user_signed_in? %>
             <li class="li-float-right">
               <%= link_to 'アプリへ', root_path, title: 'ホームページ.ダッシュボード' %>  
             </li>
     	    <% else %>
-    	      <li class="li-float-right"><%= link_to 'ログイン', new_user_session_path %></li>
-    	      <li class="li-float-right"><%= link_to 'お問い合わせ', pages_path(:contact_form) %></li>
+    	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>
+    	      <li class="li-float-right btn btn-info"><%= link_to 'お問い合わせ', pages_path(:contact_form), id:'nav-contact-form-link' %></li>
     	    <% end %>
     	</ul>
     <div>

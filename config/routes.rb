@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'contact_form/new'
+
+  get 'contact_form/create'
+
   get 'tags/index'
 
   devise_for :users, controllers: {
@@ -51,6 +55,8 @@ Rails.application.routes.draw do
   resources :dashboard, only: :index
 
   resources :teams
+
+  resources :contact_forms, only: [:new, :create]
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

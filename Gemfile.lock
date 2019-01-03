@@ -154,6 +154,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
+    mail_form (1.7.1)
+      actionmailer (>= 3.2, < 6)
+      activemodel (>= 3.2, < 6)
     mechanize (2.7.5)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0)
@@ -318,6 +321,7 @@ DEPENDENCIES
   ice_cube
   jbuilder (~> 2.5)
   jquery-rails
+  mail_form
   miyabi
   multi_json
   oj

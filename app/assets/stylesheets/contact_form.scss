@@ -1,0 +1,28 @@
+// Place all the styles related to the contact_form controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#contact-form-background {
+    width: 100%;
+    height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #9BBDF9;
+}
+
+#colibri-contact-form-container {
+    min-width: 400px;
+    width: 50%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+#colibri-contact-form-title {
+    color: rgb(117, 117, 117);
+    text-align: center;
+    font-size: 1.6em;
+    margin-bottom: 20px;
+}

@@ -1,6 +1,5 @@
 <%= content_for :stylesheets do %>
   #colibri-scheduler-nav {display: none}
-
 <% end %>
 
 <%= content_for :content do %>
@@ -16,7 +15,7 @@
             </li>
     	    <% else %>
     	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>
-    	      <li class="li-float-right btn btn-info"><%= link_to 'お問い合わせ', new_contact_form_path, id:'nav-contact-form-link' %></li>
+    	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ホームページへ', pages_path(:home) %></li>
     	    <% end %>
     	</ul>
     <div>

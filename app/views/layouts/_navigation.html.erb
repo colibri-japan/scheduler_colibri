@@ -19,12 +19,7 @@
             <li class="li-float-right">
               <%= link_to 'ホーム', root_path,title: 'ホームページ.ダッシュボード', class: 'colibri-nav-link' %>  
             </li>
-
-
     	    <% else %>
-    	      <li class="li-float-right">
-    	        <%= link_to 'ホームページ', "https://www.home.colibri.jp", target: "_blank", id: "link-to-home", class: 'colibri-nav-link'  %>
-    	      </li>
     	      <li class="li-float-right"><%= link_to 'ログイン', new_user_session_path, class: 'colibri-nav-link' %></li>
     	      <li class="li-float-right"><%= link_to '新規登録', new_user_registration_path, class: 'colibri-nav-link' %></li>
     	    <% end %>

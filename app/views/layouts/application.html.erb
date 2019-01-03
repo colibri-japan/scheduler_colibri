@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Scheduler</title>
+    <title>Colibri</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <style><%= yield :stylesheets %></style>
   </head>
 
   <body>
@@ -31,7 +32,9 @@
           
       </div>
 
+      <%= yield :content %>
       <%= yield %>
+
     </div>
 
 

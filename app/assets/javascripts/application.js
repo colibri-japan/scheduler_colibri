@@ -127,7 +127,7 @@ initialize_nurse_calendar = function(){
       selectHelper: false,
       editable: true,
       eventColor: '#7AD5DE',
-      eventSources: [window.appointmentsURL + '&master=false', window.unavailabilitiesUrl + '&master=false'],
+      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true},{url: window.unavailabilitiesUrl + '&master=false', cache: true}],
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.bootstrapToggleUrl, function() {
@@ -302,7 +302,7 @@ initialize_patient_calendar = function(){
       selectable: true,
       selectHelper: false,
       editable: true,
-      eventSources: [window.appointmentsURL + '&master=false', window.unavailabilitiesUrl + '&master=false'],
+      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true}, {url: window.unavailabilitiesUrl + '&master=false', cache: true}],
 
 
       select: function (start, end, jsEvent, view, resource) {
@@ -667,9 +667,10 @@ initialize_calendar = function() {
 
       resources: {
         url: window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId,
+        cache: true
       }, 
 
-      eventSources: [ window.appointmentsURL, window.unavailabilitiesUrl],
+      eventSources: [ {url: window.appointmentsURL, cache: true}, {url: window.unavailabilitiesUrl, cache: true}],
 
 
       eventDragStart: function (event, jsEvent, ui, view) {

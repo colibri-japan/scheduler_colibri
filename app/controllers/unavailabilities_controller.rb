@@ -17,8 +17,10 @@ class UnavailabilitiesController < ApplicationController
 	   @unavailabilities = @planning.unavailabilities.all
 	 end
 
-	 respond_to do |format|
-		format.json {render json: @unavailabilities.as_json}
+	 if stale?(etag: @unavailabilities, last_modified: @unavailabilities.maximum(:updated_at))
+		respond_to do |format|
+			format.json {render json: @unavailabilities.as_json}
+		end
 	 end
 	end
 

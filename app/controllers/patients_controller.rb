@@ -19,7 +19,12 @@ class PatientsController < ApplicationController
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
     
-    fresh_when etag: @patients, last_modified: @patients.maximum(:updated_at)
+    if stale?(@patients)
+      respond_to do |format|
+        format.html
+        format.json {render json: @patients.as_json}
+      end
+    end
   end
 
   def show

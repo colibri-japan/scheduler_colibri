@@ -30,6 +30,14 @@ class Nurse < ApplicationRecord
 		}
 	end
 
+	def as_json
+		{
+			id: id, 
+			title: name, 
+			is_nurse_resource: true 
+		}
+	end
+
 	
 	private 
 

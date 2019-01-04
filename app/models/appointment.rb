@@ -37,7 +37,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def self.overlapping(range)
-		where('((starts_at >= ? AND starts_at < ?) OR (ends_at > ? AND ends_at <= ?)) OR (starts_at < ? AND ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
+		where('((appointments.starts_at >= ? AND appointments.starts_at < ?) OR (appointments.ends_at > ? AND appointments.ends_at <= ?)) OR (appointments.starts_at < ? AND appointments.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
 	end
 
 	def archived?

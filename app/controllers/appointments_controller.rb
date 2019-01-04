@@ -10,6 +10,7 @@ class AppointmentsController < ApplicationController
   def index
     authorize @planning, :is_employee?
 
+
     if params[:nurse_id].present? && params[:master].present?
       @appointments = @planning.appointments.to_be_displayed.where(nurse_id: params[:nurse_id], master: params[:master]).includes(:patient, :nurse, :recurring_appointment)
     elsif params[:patient_id].present? && params[:master].present?
@@ -18,6 +19,10 @@ class AppointmentsController < ApplicationController
       @appointments = @planning.appointments.to_be_displayed.from_master.includes(:patient, :nurse, :recurring_appointment)
     else
      @appointments = @planning.appointments.to_be_displayed.where(master: false).includes(:patient, :nurse, :recurring_appointment)
+    end
+
+    if params[:start].present? && params[:end].present? 
+      @appointments = @appointments.overlapping(params[:start]..params[:end])
     end
 
     if stale?(etag: @appointments, last_modified: @appointments.maximum(:updated_at))

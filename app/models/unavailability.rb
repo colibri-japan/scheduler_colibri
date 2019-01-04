@@ -9,6 +9,9 @@ class Unavailability < ApplicationRecord
 	validates :title, presence: true
 
 
+	def self.overlapping(range)
+		where('((unavailabilities.starts_at >= ? AND unavailabilities.starts_at < ?) OR (unavailabilities.ends_at > ? AND unavailabilities.ends_at <= ?)) OR (unavailabilities.starts_at < ? AND unavailabilities.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
+	end
 	def all_day_unavailability?
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
 	end

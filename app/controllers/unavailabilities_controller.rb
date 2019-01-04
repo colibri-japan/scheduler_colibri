@@ -17,6 +17,10 @@ class UnavailabilitiesController < ApplicationController
 	   @unavailabilities = @planning.unavailabilities.all
 	 end
 
+	 if params[:start].present? && params[:end].present? 
+		@unavailabilities = @unavailabilities.overlapping(params[:start]..params[:end])
+	 end
+
 	 if stale?(etag: @unavailabilities, last_modified: @unavailabilities.maximum(:updated_at))
 		respond_to do |format|
 			format.json {render json: @unavailabilities.as_json}

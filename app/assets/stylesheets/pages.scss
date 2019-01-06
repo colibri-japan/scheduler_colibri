@@ -14,7 +14,7 @@
 }
 
 #colibri-pages-nav > #brand-container > #brand-name {
-    color: #302939;
+    color: #393e46 !important;
     font-size: 1.7em;
     margin-left: 25%;
     display: flex;
@@ -48,7 +48,7 @@
 
 #colibri-banner-text {
     color: white;
-    font-size: 2em;
+    font-size: 2.7em;
     max-width: 66%;
     text-align: center;
 }
@@ -63,11 +63,95 @@
 }
 
 .light-blue-background {
-    background-color: #e3f8ff;
+    background-color: #bbeeff;
 }
 
 footer {
     background-color: #324e7b;
     color: white;
     height: 60vh;
+}
+
+.colibri-home-subsection {
+    color: #393e46;
+    padding: 25px 60px 25px 60px;
+}
+
+.align-text-right {
+    text-align: right;
+}
+
+.home-subsection-content-container {
+    margin-top: 20px;
+    display: flex;
+}
+
+.home-subsection-content {
+    width: 50%;
+    height: 100%;
+}
+
+.colibri-home-subsection-title {
+    display: block;
+}
+
+.home-subsection-image-container {
+    width: 50%;
+    height: 100%;
+}
+
+.colibri-merits-subsection {
+    background-color: #9BBDF9;
+    height: 60vh;
+    color: white;
+    padding: 20px;
+}
+
+.align-text-center {
+    text-align: center;
+}
+
+
+
+.colibri-merits {
+    margin-top: 20px;
+    font-size: 1.4em;
+}
+
+.colibri-about-us {
+    height: 70vh;
+    padding: 20px;
+}
+
+.colibri-about-us > p {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.founders-container {
+    display: flex;
+}
+
+.colibri-founder {
+    text-align: center;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.colibri-self-photo-container {
+    background-color: #aaa;
+    width: 80px;
+    height: 80px;
+}
+
+.founder-bio {
+    margin-top: 20px;
+    width: 50%;
+    min-width: 100px;
+}
+
+.founder-bio-important {
+    font-size: 1.3em;
 }

@@ -127,8 +127,8 @@ class AppointmentsController < ApplicationController
 
     now = Time.current
 
-    @appointments.update_all(archived_at: now)
-    @provided_services.update_all(archived_at: now)
+    @appointments.update_all(archived_at: now, updated_at: now)
+    @provided_services.update_all(archived_at: now, updated_at: now)
   end  
 
   def new_batch_cancel
@@ -142,9 +142,11 @@ class AppointmentsController < ApplicationController
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
     @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
 
-    @appointments.update_all(cancelled: true)
-    @appointments.update_all(recurring_appointment_id: nil)
-    @provided_services.update_all(cancelled: true)
+    now = Time.current
+
+    @appointments.update_all(cancelled: true, updated_at: now)
+    @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
+    @provided_services.update_all(cancelled: true, updated_at: now)
   end
 
   def new_batch_request_edit
@@ -158,8 +160,10 @@ class AppointmentsController < ApplicationController
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
     @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
 
-    @appointments.update_all(edit_requested: true)
-    @appointments.update_all(recurring_appointment_id: nil)
+    now = Time.current
+
+    @appointments.update_all(edit_requested: true, updated_at: now)
+    @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
   end
 
 

@@ -78,8 +78,6 @@
 					<div class="btn btn-colibri-light-gray text-white btn-sm" id="new-email-reminder" data-reminder-url="<%= nurse_new_reminder_email_path(@nurse) %>"><span class="glyphicon glyphicon-envelope" style="color:white"></span>リマインダー</div>
 				<% end %>
 				<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
-				<span id="activity-show-button" class="btn btn-colibri-light-gray btn-sm"><span class="glyphicon glyphicon-time" style="color:white"></span>編集履歴</span>
-				<span id="activity-hide-button"  style="display: none" class="btn btn-colibri-light-gray btn-sm"><span class="glyphicon glyphicon-time" style="color:white"></span>閉じる</span>
 			</div>
 		</div>
 
@@ -87,16 +85,6 @@
 
 		<div id="planning-container">
 			<div class="nurse_calendar"></div>
-			<div id="planning-activity-module" style="display: none" class="no-print">
-				<p class="planning-activity-module-title">最新編集履歴</p>
-				<div id="planning-activities">
-					<% @activities.each do |activity| %>
-					  <% cache activity do %>
-						<%= render partial: 'activities/activity', locals: {activity: activity} %>
-					  <% end %>
-					<% end %>
-				</div>
-			</div>
 		</div>
 
 		<div id="resource-details-panel" style="display: none">

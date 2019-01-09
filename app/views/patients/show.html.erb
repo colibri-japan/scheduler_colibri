@@ -73,21 +73,11 @@
 		    <div id="activity-show-button-container" class="no-print">
 			    <input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
 			    <div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
-			    <span id="activity-show-button" class="btn btn-colibri-light-gray btn-sm"><span class="glyphicon glyphicon-time"></span> 最新編集履歴</span>
-			    <span id="activity-hide-button"  style="display: none" class="btn btn-colibri-light-gray btn-sm"><span class="glyphicon glyphicon-time"></span> 最新編集履歴を閉じる</span>
 		    </div>
 		</div>
 
 		<div id="planning-container">
 			<div class="patient_calendar"></div>
-			<div id="planning-activity-module" style="display: none" class="no-print">
-				<p class="planning-activity-module-title">最新編集履歴</p>
-				<div id="planning-activities">
-					<% @activities.each do |activity| %>
-						<%= render partial: 'activities/activity', locals: {activity: activity} %>
-					<% end %>
-				</div>
-			</div>
 		</div>
 
 		<div id="resource-details-panel" style="display: none">

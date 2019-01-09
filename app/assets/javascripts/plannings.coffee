@@ -53,23 +53,6 @@ $(document).on 'turbolinks:load', ->
     $('.calendar').fullCalendar('rerenderEvents')
     return 
 
-  $('#activity-show-button').click -> 
-    $('#planning-activity-module').show()
-    $('.calendar').css({'max-width': '75%'})
-    $('.nurse_calendar').css({'max-width': '75%'})
-    $('.patient_calendar').css({'max-width': '75%'})
-    $(this).hide()
-    $('#activity-hide-button').show()
-    return
-
-  $('#activity-hide-button').click ->
-    $(this).hide()
-    $('.calendar').css({'max-width': ''})
-    $('.nurse_calendar').css({'max-width': ''})
-    $('.patient_calendar').css({'max-width': ''})
-    $('#activity-show-button').show()
-    $('#planning-activity-module').hide()
-    return
 
   $('.colibri-clickable-link').click ->
     window.location = $(this).data('url')

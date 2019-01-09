@@ -15,7 +15,6 @@ class PlanningsController < ApplicationController
 		authorize @planning, :is_not_archived?
 
 		set_valid_range
-		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
 	end
 
 	def new

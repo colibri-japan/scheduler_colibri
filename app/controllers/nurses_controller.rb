@@ -36,8 +36,6 @@ class NursesController < ApplicationController
     @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
     @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生%").sum(:service_duration)
 
-    @activities = PublicActivity::Activity.where(nurse_id: @nurse.id, planning_id: @planning.id).includes(:owner, {trackable: :nurse}, {trackable: :patient}).order(created_at: :desc).limit(6)
-
     set_valid_range
   end
 

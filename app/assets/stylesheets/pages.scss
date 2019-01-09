@@ -66,6 +66,10 @@
     background-color: #bbeeff;
 }
 
+.middle-blue-background {
+    background-color: #9BBDF9;
+}
+
 footer {
     background-color: #324e7b;
     color: white;
@@ -82,7 +86,7 @@ footer {
 }
 
 .home-subsection-content-container {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
 }
 
@@ -101,10 +105,17 @@ footer {
 }
 
 .colibri-merits-subsection {
-    background-color: #9BBDF9;
-    height: 60vh;
     color: white;
-    padding: 20px;
+    padding: 60px 10px 60px 10px;
+}
+
+.colibri-merits-subsection > div {
+    margin-top: 30px;
+}
+
+.colibri-merits-subsection > div > p {
+    font-size: 1rem;
+    line-height: 1.5rem;
 }
 
 .align-text-center {
@@ -119,8 +130,7 @@ footer {
 }
 
 .colibri-about-us {
-    height: 70vh;
-    padding: 20px;
+    padding: 20px 10px 60px 10px;
 }
 
 .colibri-about-us > p {
@@ -154,4 +164,23 @@ footer {
 
 .founder-bio-important {
     font-size: 1.3em;
+}
+
+#about-colibri {
+    padding: 60px 10px 60px 10px;   
+    text-align: center;
+    width: 100%;
+}
+
+#about-colibri > div {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+
+}
+
+.contact-us-button-container {
+    padding: 20px 10px 60px 10px;
+    text-align: center;
 }

@@ -74,6 +74,31 @@ footer {
     background-color: #324e7b;
     color: white;
     height: 60vh;
+    padding: 70px 20px 60px 20px;
+}
+
+#colibri-footer {
+    display: flex;
+}
+
+#footer-brand-container {
+    width: 30%;
+    text-align: center;
+}
+
+#footer-brand-name {
+    font-size: 1.7em;
+    color: #ff9090;
+}
+
+#footer-colibri-information-container {
+    width: 70%;
+    padding-left: 10px;
+}
+
+#footer-colibri-information-title {
+    font-size: 1.3em;
+    margin-bottom: 10px;
 }
 
 .colibri-home-subsection {
@@ -151,14 +176,12 @@ footer {
 }
 
 .colibri-self-photo-container {
-    background-color: #aaa;
-    width: 80px;
-    height: 80px;
+    width: 25%;
 }
 
 .founder-bio {
     margin-top: 20px;
-    width: 50%;
+    width: 45%;
     min-width: 100px;
 }
 

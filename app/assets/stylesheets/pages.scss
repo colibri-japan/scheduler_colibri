@@ -53,11 +53,6 @@
     text-align: center;
 }
 
-.colibri-home-subsection {
-    height: 60vh;
-    width: 100%;
-}
-
 .white-background {
     background-color: white;
 }
@@ -103,7 +98,8 @@ footer {
 
 .colibri-home-subsection {
     color: #393e46;
-    padding: 25px 60px 25px 60px;
+    padding: 60px 50px 60px 50px;
+    width: 100%;
 }
 
 .align-text-right {
@@ -127,6 +123,7 @@ footer {
 .home-subsection-image-container {
     width: 50%;
     height: 100%;
+    text-align: center;
 }
 
 .colibri-merits-subsection {

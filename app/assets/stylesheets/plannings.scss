@@ -409,18 +409,9 @@ ul.chosen-results {
 	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-
-@media only screen and (max-width: 768px), (orientation: portrait) {
-	#colibri-batch-action-button {
-		bottom: 40%;
-		right: 10%;
-	}
+#colibri-batch-action-button {
+	bottom: 80px;
+	right: 60px;
 }
 
-@media only screen and (min-width: 768px) {
-	#colibri-batch-action-button {
-		bottom: 80px;
-		right: 60px;
-	}
-}
 

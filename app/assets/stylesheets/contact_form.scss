@@ -12,7 +12,6 @@
 }
 
 #colibri-contact-form-container {
-    min-width: 400px;
     width: 50%;
     background-color: white;
     padding: 20px;
@@ -25,4 +24,25 @@
     text-align: center;
     font-size: 1.6em;
     margin-bottom: 20px;
+}
+
+@media screen and (orientation: portrait) {
+
+    #colibri-contact-form-container {
+        padding: 70px 20px 70px 20px;
+        width: 90%;
+    }
+    #colibri-contact-form-title {
+        font-size: 3em;
+        margin-bottom: 40px;
+    }
+    .colibri-form-label-dark.home {
+        font-size: 1.6em;
+    }
+    .form-group.actions.home > input{
+        font-size: 2em;
+    }
+    input.form-control.home, textarea.form-control.home {
+        font-size: 1.6em;
+    }
 }

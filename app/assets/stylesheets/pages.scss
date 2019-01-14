@@ -236,10 +236,6 @@ footer {
         font-size: 2em;
     }
 
-    .colibri-home-subsection-title {
-        font-size: 2.6em;
-    }
-
     .home-subsection-content {
         font-size: 2em;
     }
@@ -254,6 +250,10 @@ footer {
 
     .home-subsection-content-container {
         flex-direction: column;
+    }
+
+    .colibri-home-subsection {
+        padding: 120px 50px 120px 50px;
     }
 
     .colibri-home-subsection-title {

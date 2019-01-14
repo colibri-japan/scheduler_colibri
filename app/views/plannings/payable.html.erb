@@ -48,6 +48,16 @@
 
 	</div>
 
+	<div id='extended-daily-summary-title-container'>
+    <div class='colibri-xs-title'>業務日報</div>
+    <div class='small-side-margins'><%= text_field_tag 'query_date', "#{Date.today.strftime("%Y-%m-%d")}", {data: {url: dashboard_extended_daily_summary_path}} %></div>
+    <div class='btn btn-sm btn-success text-white small-side-margins no-print' id='print-button'>印刷</div>
+  </div>
+
+  <div id='extended-daily-summary-container'>
+    <%= render partial: 'extended_daily_summary', locals: {appointments_grouped_by_title: @appointments_grouped_by_title, weekly_appointments_grouped_by_title: @weekly_appointments_grouped_by_title, daily_provided_services: @daily_provided_services, female_patients_ids: @female_patients_ids, male_patients_ids: @male_patients_ids} %>
+  </div>
+
 	<% if false %>
 
 	<div class='colibri-dashboard-container-row'>

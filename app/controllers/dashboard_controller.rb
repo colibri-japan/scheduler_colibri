@@ -20,23 +20,11 @@ class DashboardController < ApplicationController
     today = Date.today 
     appointments = Appointment.valid.where(planning_id: @plannings.ids, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)
 
-    
-    #daily summary
-    @appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: today.beginning_of_day..today.end_of_day).group_by {|e| e.title}
-    @female_patients_ids = @corporation.patients.where(gender: true).ids 
-    @male_patients_ids = @corporation.patients.where(gender: false).ids
-    
-    #weekly summary, from monday to today
-    @weekly_appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day).group_by {|a| a.title}
-
     #edit requested appointments for next two weeks
     @edit_requested_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day, edit_requested: true).order(starts_at: :asc)
 
     #appointments with comments for the next two weeks
     @commented_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day).where.not(description: [nil, '']).order(starts_at: :asc)
-
-    #daily provided_services to be verified
-    @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
   end
 
   def extended_daily_summary

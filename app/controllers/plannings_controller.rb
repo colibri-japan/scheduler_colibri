@@ -86,8 +86,23 @@ class PlanningsController < ApplicationController
 		#shintai vs seikatsu
 		@provided_services_shintai = @provided_services_till_today.where('title LIKE ? ', '%身%').sum(:total_wage)
 		@provided_services_seikatsu = @provided_services_till_today.where('title LIKE ?', '%生%').sum(:total_wage)
-		#data needed to show mashup of this month's salary
-		#what has been accomplished service wise, and counts/hours provided for each nurse
+
+		planning_ids = @corporation.plannings.where(archived: false).select(:id)
+
+    	#appointments : today, upcoming two weeks, since monday
+		today = Date.today 
+        appointments = Appointment.valid.where(planning_id: planning_ids, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)
+
+	    #daily summary
+    	@appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: today.beginning_of_day..today.end_of_day).group_by {|e| e.title}
+    	@female_patients_ids = @corporation.patients.where(gender: true).ids 
+    	@male_patients_ids = @corporation.patients.where(gender: false).ids
+		
+    	#weekly summary, from monday to today
+    	@weekly_appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day).group_by {|a| a.title}
+
+    	#daily provided_services to be verified
+    	@daily_provided_services = ProvidedService.where(planning_id: planning_ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
 	end
 
 	def archive

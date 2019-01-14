@@ -354,8 +354,7 @@ tr.patient-clickable-row:hover {
 
 
 div .fc-scroller {
-	min-height: 57vh !important;
-    max-height: 57vh !important;
+    height: 57vh !important;
 }
 
 th {
@@ -571,9 +570,14 @@ th {
 	/* kill the scrollbars and allow natural height */
 	.fc-scroller,
 	.fc-day-grid-container,
-	.fc-time-grid-container {
+	.fc-time-grid-container, #detail-planning-container, #detail-container, #planning-container {
 	overflow: visible !important;
 	height: auto !important; }
+
+	div .fc-scroller {
+		overflow: visible !important;
+		height: auto !important;
+	}
 
 	/* kill the horizontal border/padding used to compensate for scrollbars */
 	.fc-row {

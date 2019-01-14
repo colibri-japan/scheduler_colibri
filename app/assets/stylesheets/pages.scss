@@ -79,8 +79,7 @@
 footer {
     background-color: #324e7b;
     color: white;
-    height: 60vh;
-    padding: 70px 20px 60px 20px;
+    padding: 70px 20px 80px 20px;
 }
 
 #colibri-footer {
@@ -113,7 +112,11 @@ footer {
     width: 100%;
 }
 
-.align-text-right {
+.aligned-left-home {
+    flex-direction: row-reverse;
+ }
+
+.align-text-right-home {
     text-align: right;
 }
 
@@ -206,7 +209,7 @@ footer {
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    max-width: 50%;
 }
 
 .contact-us-button-container {
@@ -214,3 +217,101 @@ footer {
     text-align: center;
 }
 
+@media screen and (orientation: portrait) {
+    
+    #colibri-pages-nav {
+        font-size: 2.4em;
+    }
+
+    #pages-nav-right > ul > li > a {
+        font-size: 2em;
+    }
+
+    #colibri-banner-text {
+        font-size: 4.8em;
+        max-width:90%;
+    }
+
+    .colibri-home-presentation-title {
+        font-size: 2em;
+    }
+
+    .colibri-home-subsection-title {
+        font-size: 2.6em;
+    }
+
+    .home-subsection-content {
+        font-size: 2em;
+    }
+
+    .align-text-right-home {
+        text-align: left;
+    }
+
+    .home-subsection-content {
+        width: 100%;
+    }
+
+    .home-subsection-content-container {
+        flex-direction: column;
+    }
+
+    .colibri-home-subsection-title {
+        font-size: 3em;
+    }
+
+    .colibri-merits-subsection > div > p {
+        font-size: 2em;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 2em;
+    }
+
+    #about-colibri > div {
+        font-size: 2em;
+        max-width: 90%;
+    }
+
+    .contact-us-button-container >  a {
+        font-size: 2em;
+    }
+
+    .colibri-self-photo-container {
+        width: 50%;
+    }
+
+    .founder-bio {
+        margin-top: 30px;
+        width: 90%;
+    }
+
+    .founder-bio > p {
+        font-size: 2em;
+        line-height: 1.3em;
+    }
+
+    .founder-bio-important {
+        font-size: 1.6em;
+    }
+
+    #footer-brand-name {
+        font-size: 2em;
+        font-weight: bold;
+    }
+
+    #footer-colibri-information-container {
+        font-size: 1.6em;
+    }
+
+    .home-subsection-image-container {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }   
+
+
+
+
+
+}

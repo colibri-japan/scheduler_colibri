@@ -73,7 +73,7 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
     respond_to do |format|
       if @nurse.update(nurse_params)
-        format.html {redirect_back(fallback_location: root_path, notice: '従業員の情報がアップデートされました')}
+        format.html {redirect_back(fallback_location: authenticated_root_path, notice: '従業員の情報がアップデートされました')}
       else
         format.html {render :edit}
       end

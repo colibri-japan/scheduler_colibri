@@ -30,6 +30,7 @@
 html, body {
 	max-width: 100%;
 	overflow-x: hidden;
+	height: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -484,6 +485,7 @@ th {
 	height: 40px;
 	width: 40px;
 }
+
 
 
 @media print {

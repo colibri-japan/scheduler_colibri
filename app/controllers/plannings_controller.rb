@@ -92,7 +92,7 @@ class PlanningsController < ApplicationController
 
 	def archive
 		if @planning.update(archived: true)
-			redirect_to root_path, notice: 'スケジュールが削除されました。'
+			redirect_to authenticated_root_path, notice: 'スケジュールが削除されました。'
 		end
 	end
 

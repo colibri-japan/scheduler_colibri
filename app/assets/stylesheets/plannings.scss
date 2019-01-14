@@ -125,6 +125,7 @@ li.planning-menu-selected {
 	display: flex;
 	margin-left: 175px;
 	margin-right: 5px;
+	height: 100%;
 }
 
 #detail-planning-title {
@@ -414,7 +415,35 @@ ul.chosen-results {
 	right: 60px;
 }
 
+span.glyphicon.glyphicon-pencil.batch-action-pencil {
+	color: white;
+	line-height: 40px;
+}
 
+
+@media screen and (orientation: portrait) {
+	div .fc-scroller {
+		overflow: visible !important;
+		height: auto !important;
+	}
+	
+	#detail-planning-container, #detail-container, #planning-container {
+		overflow: visible !important;
+		height: auto !important;
+	}
+
+	#colibri-batch-action-button {
+		height: 90px;
+		width: 90px;
+		border-radius: 90px;
+	}
+
+	span.glyphicon.glyphicon-pencil.batch-action-pencil {
+		line-height: 74px;
+		font-size: 1.7em;
+	}
+
+}
 
 
 

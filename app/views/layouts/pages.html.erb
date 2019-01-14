@@ -12,7 +12,7 @@
     	<ul>
     	    <% if user_signed_in? %>
             <li class="li-float-right btn btn-mid-light" style="margin-right:8px">
-              <%= link_to 'アプリへ', root_path, title: 'ホームページ.ダッシュボード' %>  
+              <%= link_to 'アプリへ', authenticated_root_path, title: 'ホームページ.ダッシュボード' %>  
             </li>
     	    <% else %>
     	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>

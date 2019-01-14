@@ -120,5 +120,11 @@ Rails.application.routes.draw do
   #custom routes for dashboard
   get 'dashboard/extended_daily_summary' => 'dashboard#extended_daily_summary', as: :dashboard_extended_daily_summary
 
-  root 'dashboard#index'
+  authenticated :user do  
+    root  to: 'dashboard#index', as: :authenticated_root
+  end
+  unauthenticated do 
+    root to: 'pages#show', page: 'home', as: :unauthenticated_root
+  end
+
 end

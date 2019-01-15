@@ -29,7 +29,7 @@
 
     <div class='colibri-dashboard-subcontainer'>
       <div class='colibri-subcontainer-header'>
-        <span>利用状況（今週）</span>
+        <span class='colibri-subcontainer-title'>利用状況（今週）</span>
       </div>
       <div class="colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light">
         <table class="table">
@@ -42,7 +42,35 @@
             </tr>
           </thead>
           <tbody>
-            <%  @weekly_appointments_grouped_by_title.each do |service_name, appointments| %>
+            <%  weekly_appointments_grouped_by_title.each do |service_name, appointments| %>
+              <tr>
+                <td><%= service_name %></td>
+                <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
+                <td><%= appointments.select{|appointment| @male_patients_ids.include?(appointment.patient_id)}.count %></td>
+                <td><%= appointments.count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class='colibri-dashboard-subcontainer'>
+      <div class='colibri-subcontainer-header'>
+        <span class='colibri-subcontainer-title'>利用状況(今月)</span>
+      </div>
+      <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th class="table-important-fields">サービス</th>
+              <th class="table-important-fields">女</th>
+              <th class="table-important-fields">男</th>
+              <th class="table-important-fields">計</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%  monthly_appointments_grouped_by_title.each do |service_name, appointments| %>
               <tr>
                 <td><%= service_name %></td>
                 <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
@@ -74,7 +102,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @daily_provided_services.each do |nurse_id, provided_service_array| %>
+              <% daily_provided_services.each do |nurse_id, provided_service_array| %>
                 <% provided_service_array.each do |provided_service| %>
                   <tr>
                     <td><%= provided_service.patient.try(:name) %></td>

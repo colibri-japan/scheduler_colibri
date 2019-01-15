@@ -89,18 +89,20 @@ class PlanningsController < ApplicationController
 
 		planning_ids = @corporation.plannings.where(archived: false).select(:id)
 
-    	#appointments : today, upcoming two weeks, since monday
+    	#appointments : since beginning of month
 		today = Date.today 
-        appointments = Appointment.valid.where(planning_id: planning_ids, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)
+        appointments = Appointment.valid.edit_not_requested.where(planning_id: planning_ids, master: false, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
 
 	    #daily summary
-    	@appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: today.beginning_of_day..today.end_of_day).group_by {|e| e.title}
+    	@appointments_grouped_by_title = appointments.where(starts_at: today.beginning_of_day..today.end_of_day).group_by(&:title)
     	@female_patients_ids = @corporation.patients.where(gender: true).ids 
     	@male_patients_ids = @corporation.patients.where(gender: false).ids
 		
     	#weekly summary, from monday to today
-    	@weekly_appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day).group_by {|a| a.title}
+    	@weekly_appointments_grouped_by_title = appointments.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day).group_by(&:title)
 
+		#monthly summary, until end of today
+		@monthly_appointments_grouped_by_title = appointments.group_by(&:title)
     	#daily provided_services to be verified
     	@daily_provided_services = ProvidedService.where(planning_id: planning_ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
 	end

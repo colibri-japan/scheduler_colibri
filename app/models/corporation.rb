@@ -44,13 +44,12 @@ class Corporation < ApplicationRecord
 	end
 
 	def can_send_reminder_now?(datetime)
-		datetime_in_tokyo = datetime.in_time_zone('Tokyo')
 		parsed_reminder_hour = Time.parse(self.reminder_email_hour)
-		valid_reminder_datetime = DateTime.new(datetime_in_tokyo.year, datetime_in_tokyo.month, datetime_in_tokyo.day, parsed_reminder_hour.hour, parsed_reminder_hour.min, 0, '+9')
-		puts 'datetime in tokyo and valid reminder datetime'
-		puts datetime_in_tokyo
+		valid_reminder_datetime = DateTime.new(datetime.year, datetime.month, datetime.day, parsed_reminder_hour.hour, parsed_reminder_hour.min, 0, '+9')
+		puts 'datetime and valid reminder'
+		puts datetime 
 		puts valid_reminder_datetime
-		datetime_in_tokyo.between?((valid_reminder_datetime - 15.minutes), (valid_reminder_datetime + 15.minutes))
+		datetime.between?((valid_reminder_datetime - 15.minutes), (valid_reminder_datetime + 15.minutes))
 	end
 
 	#to be deleted 

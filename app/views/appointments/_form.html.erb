@@ -68,7 +68,7 @@
 
     <div class="actions">
       <%= form.submit "セーブする", class: "btn btn-info" %>
-      <%= link_to toggle_cancel_text(appointment), planning_appointment_toggle_cancelled_path(@planning, appointment), method: :patch, class: 'btn btn-danger', data: {confirm: 'サービスがキャンセルされます。'}, remote: true unless appointment.new_record? %>
+      <%= link_to toggle_cancel_text(appointment), planning_appointment_toggle_cancelled_path(@planning, appointment), method: :patch, class: 'btn btn-danger', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>
       <%= link_to '削除する', planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-secondary', data: {confirm: 'サービスが削除され、スケジュールから消えます。'}, remote: true unless appointment.new_record? %>
     </div>
   </div>

@@ -84,7 +84,11 @@ class AppointmentsController < ApplicationController
   end
 
   def toggle_cancelled
-    if @appointment.update_attribute(:cancelled, !@appointment.cancelled)
+    @appointment.cancelled = !@appointment.cancelled
+    @appointment.recurring_appointment_id = nil 
+    validate = !@appointment.cancelled
+
+    if @appointment.save(validate: validate)
       @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_cancelled: !@appointment.cancelled
     end
   end

@@ -41,17 +41,6 @@ $(document).on 'turbolinks:load', ->
 
   $('#master-patient-filter-zentai_').on 'change', ->
     $('.master_calendar').fullCalendar('rerenderEvents')
-  
-  $('#edit-request-filter').bootstrapToggle
-    on: "全サービス",
-    off: "調整中リスト",
-    offstyle: "success"
-
-
-
-  $('#edit-request-filter').parent().on 'change', -> 
-    $('.calendar').fullCalendar('rerenderEvents')
-    return 
 
 
   $('.colibri-clickable-link').click ->

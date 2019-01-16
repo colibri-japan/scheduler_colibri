@@ -70,9 +70,9 @@ class PatientsController < ApplicationController
 
     respond_to do |format|
       if @patient.save
-        format.html { redirect_to patients_path, notice: '利用者がセーブされました' }
+        format.js 
       else
-        format.html { render :new }
+        format.js 
       end
     end
   end

@@ -1,0 +1,7 @@
+<% if @patient.errors.any? %>
+  alert("セーブできません：<%= @patient.errors.messages.map {|key, value| value }.join('、') %>")
+<% else %>
+  $('.modal').modal('hide');
+  $('#flash').append("<div class='alert alert-notice'><%= @patient.name %>様が登録されました</div>")
+  location.reload().delay(100)
+<% end %>

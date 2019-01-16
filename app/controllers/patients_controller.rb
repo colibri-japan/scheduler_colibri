@@ -14,7 +14,7 @@ class PatientsController < ApplicationController
       @patients = @corporation.patients.joins(:appointments).where(appointments: {displayable: true, master: params[:master], planning_id: params[:planning_id], starts_at: start_time..end_time})
       @patients = @patients.active.order_by_kana
     else 
-      @patients = @corporation.patients.active.order_by_kana
+      @patients = @corporation.patients.active.order_by_kana.group_by_kana
     end
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?

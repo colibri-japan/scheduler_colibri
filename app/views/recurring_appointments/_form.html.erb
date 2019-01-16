@@ -37,7 +37,8 @@
         <%= form.check_box :master, checked: @master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' if current_user.admin? %>
       </div>
 
-      <% frequency_options = @master == true ? [['毎週',0], ['隔週',7], ['第一、三、五週目', 1], ['第二、四週目', 3], ['第一週目', 4], ['最後の週', 5], ['最後の週以外毎週', 6]] : [['毎週',0],['隔週',7], ['第一、三、五週目', 1], ['第二、四週目', 3], ['第一週目', 4], ['最後の週', 5],  ['その日のみ', 2], ['最後の週以外毎週', 6]] %>
+      <% frequency_options =  [['毎週',0], ['隔週',7], ['第一、三、五週目', 1], ['第二、四週目', 3], ['第1週目', 4], ['第2週目', 8], ['第3週目', 9], ['第4週目', 10], ['最後の週', 5], ['最後の週以外毎週', 6]] %>
+      <% frequency_options << ['その日のみ', 2] if @master == false %>
 
       <div class="form-group">
         <%= form.label :frequency, "頻度", class: "colibri-form-label" %>

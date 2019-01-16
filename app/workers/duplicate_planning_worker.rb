@@ -20,7 +20,6 @@ class DuplicatePlanningWorker
 
 		recurring_appointments.find_each do |recurring_appointment|
 
-			# new_anchor_day = first_day.wday > recurring_appointment.anchor.wday ?  first_day + 7 - (first_day.wday - recurring_appointment.anchor.wday) :  first_day + (recurring_appointment.anchor.wday - first_day.wday)
 			new_anchor_day = recurring_appointment.appointments(first_day, last_day).first
 			new_recurring_appointment = recurring_appointment.dup 
 			new_recurring_appointment.planning_id = new_planning.id

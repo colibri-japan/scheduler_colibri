@@ -32,15 +32,18 @@ class DashboardController < ApplicationController
 
     query_day = params[:q].to_date
 
-    appointments = Appointment.valid.where(planning_id: @plannings.ids, master: false, starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..(query_day + 15.days).beginning_of_day).includes(:patient, :nurse)
+    appointments = Appointment.valid.edit_not_requested.where(planning_id: @plannings.ids, master: false, starts_at: query_day.beginning_of_month.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse)
 
     #daily summary
-    @appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: query_day.beginning_of_day..query_day.end_of_day).group_by {|e| e.title}
+    @appointments_grouped_by_title = appointments.where(starts_at: query_day.beginning_of_day..query_day.end_of_day).group_by(&:title)
     @female_patients_ids = @corporation.patients.where(gender: true).ids 
     @male_patients_ids = @corporation.patients.where(gender: false).ids
 
     #weekly  summary, from monday to query date
-    @weekly_appointments_grouped_by_title = appointments.edit_not_requested.where(starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..query_day.end_of_day).group_by {|a| a.title}
+    @weekly_appointments_grouped_by_title = appointments.where(starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..query_day.end_of_day).group_by(&:title)
+    
+    #monthly summary, until end of today
+		@monthly_appointments_grouped_by_title = appointments.group_by(&:title)
 
     #daily provided_services to be verified
     @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}

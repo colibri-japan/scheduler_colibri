@@ -15,11 +15,6 @@ class Patient < ApplicationRecord
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 	scope :active, -> { where(active: true) }
 
-	def name_uniqueness 
-		names = Patient.where(corporation_id: self.corporation_id).pluck(:name).map {|name| name.tr(' ','').tr('　','') }
-		errors.add(:name, 'すでに同じ名前の利用者が登録されてます') if names.include? self.name.tr(' ','').tr('　','')
-	end
-
 	def self.group_by_kana
 		{
 			'あ' => where( "kana LIKE 'あ%' OR kana LIKE 'い%'  OR kana LIKE 'う%' OR kana LIKE 'え%' OR kana LIKE 'お%' OR kana LIKE 'ア%' OR kana LIKE 'イ%'  OR kana LIKE 'ウ%' OR kana LIKE 'エ%' OR kana LIKE 'オ%'" ),
@@ -42,6 +37,13 @@ class Patient < ApplicationRecord
 			title: name,
 			is_nurse_resource: false 
 		}
+	end
+
+	private 
+
+	def name_uniqueness 
+		names = Patient.where(corporation_id: self.corporation_id).where.not(id: self.id).pluck(:name).map {|name| name.tr(' ','').tr('　','') }
+		errors.add(:name, 'すでに同じ名前の利用者が登録されてます') if names.include? self.name.tr(' ','').tr('　','')
 	end
 
 

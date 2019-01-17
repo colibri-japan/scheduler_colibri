@@ -80,9 +80,9 @@ class PatientsController < ApplicationController
   def update
     respond_to do |format|
       if @patient.update(patient_params)
-        format.html { redirect_back fallback_location: authenticated_root_path, notice: '利用者の情報がアップデートされました' }
+        format.js
       else
-        format.html {render :edit}
+        format.js 
       end
     end
   end

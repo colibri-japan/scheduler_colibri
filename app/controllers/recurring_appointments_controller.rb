@@ -137,10 +137,11 @@ class RecurringAppointmentsController < ApplicationController
         @activity = @new_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @new_appointment.nurse_id, patient_id: @new_appointment.patient_id , new_nurse: @new_appointment.nurse.try(:name), new_patient: @new_appointment.patient.try(:name), new_anchor: @new_appointment.anchor, new_start: @new_appointment.starts_at, new_end: @new_appointment.ends_at
 
         format.js
-        format.html{ redirect_to planning_nurse_path(@planning, Nurse.find(@new_appointment.nurse_id)), notice: 'サービスがマスターから全体へ反映されました'}
       else 
+        puts 'save failed'
+        puts @new_appointment.errors.messages
+        puts @recurring_appointment.id
         format.js
-        format.html {redirect_to planning_master_path(@planning), notice: '反映にエラーが発生しました。'}
       end
     end
   end

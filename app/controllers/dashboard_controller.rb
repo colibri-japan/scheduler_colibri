@@ -31,8 +31,14 @@ class DashboardController < ApplicationController
     @plannings = @corporation.plannings.where(archived: false).order(created_at: :desc)
 
     query_day = params[:q].to_date
+    team = Team.find(params[:team_id]) if params[:team_id] != 'undefined'
 
     appointments = Appointment.valid.edit_not_requested.where(planning_id: @plannings.ids, master: false, starts_at: query_day.beginning_of_month.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse)
+
+    if team.present?
+      puts 'presence of team, further filter appointments'
+      appointments = appointments.where(nurse_id: team.nurses.displayable.ids)
+    end
 
     #daily summary
     @appointments_grouped_by_title = appointments.where(starts_at: query_day.beginning_of_day..query_day.end_of_day).group_by(&:title)
@@ -46,7 +52,10 @@ class DashboardController < ApplicationController
 		@monthly_appointments_grouped_by_title = appointments.group_by(&:title)
 
     #daily provided_services to be verified
-    @daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+    daily_provided_services = ProvidedService.where(planning_id: @plannings.ids, temporary: false, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse).order(service_date: :asc)
+    daily_provided_services = daily_provided_services.where(nurse_id: team.nurses.displayable.ids) if team.present?
+    @daily_provided_services = daily_provided_services.group_by {|provided_service| provided_service.nurse_id}
+
   end
 
   private

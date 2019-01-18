@@ -41,7 +41,7 @@ $(document).on 'turbolinks:load', ->
     return
 
   $('#query_date').on 'change', ->
-    url = $(this).data('url') + '?q=' + $(this).val()
+    url = $(this).data('url') + '?q=' + $(this).val() + '&team_id=' + window.teamId
     $.getScript url
     return
 

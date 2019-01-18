@@ -5,7 +5,7 @@
 	<div id="nurses-resource" class="no-print">
 			<div class="nurses-resource-subsection-title resource-title-selectable"  data-url="<%= planning_payable_path(@planning) %>">全員</div>
 			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title resource-title-selectable"><%= group %></div>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @team_name_by_id.present? %>" data-url="/plannings/<%= @planning.id %>/teams/<%= @team_name_by_id.key(group) %>"><%= group %></div>
 				<% nurses.each do |nurse| %>
 					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 				<% end %>

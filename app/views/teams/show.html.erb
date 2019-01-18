@@ -1,16 +1,18 @@
+<%= javascript_tag do %>
+  window.teamId = "<%= j @team.id.to_s %>"
+<% end %>
+
 <%= render 'plannings/planning_payable_submenu' %>
 
 <div id="resource-list-container" class="no-print">
   <div id="resource-container" class="scrollbar-custom">
 	<div id="nurses-resource" class="no-print">
-			<div class="nurses-resource-subsection-title resource-title-selectable"  data-url="<%= planning_payable_path(@planning) %>">全員</div>
-			<div class="nurses-resource-subsection-title">正社員</div>
-			<% @full_timers.each do |nurse| %>	
-				<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
-			<% end %>
-			<div class="nurses-resource-subsection-title">非正社員</div>
-			<% @part_timers.each do |nurse| %>
-				<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link"  data-url="<%= planning_payable_path(@planning) %>">全員</div>
+			<% @grouped_nurses.each do |group, nurses| %>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @team_name_by_id.present? %>" data-url="/plannings/<%= @planning.id %>/teams/<%= @team_name_by_id.key(group) %>"><%= group %></div>
+				<% nurses.each do |nurse| %>
+					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+				<% end %>
 			<% end %>
 	</div>
   </div>
@@ -24,7 +26,7 @@
   </div>
 
   <div id='extended-daily-summary-container'>
-    <%= render partial: 'extended_daily_summary', locals: {appointments_grouped_by_title: @appointments_grouped_by_title, weekly_appointments_grouped_by_title: @weekly_appointments_grouped_by_title, monthly_appointments_grouped_by_title: @monthly_appointments_grouped_by_title, daily_provided_services: @daily_provided_services, female_patients_ids: @female_patients_ids, male_patients_ids: @male_patients_ids} %>
+    <%= render partial: 'plannings/extended_daily_summary', locals: {appointments_grouped_by_title: @appointments_grouped_by_title, weekly_appointments_grouped_by_title: @weekly_appointments_grouped_by_title, monthly_appointments_grouped_by_title: @monthly_appointments_grouped_by_title, daily_provided_services: @daily_provided_services, female_patients_ids: @female_patients_ids, male_patients_ids: @male_patients_ids} %>
   </div>
 
 </div>

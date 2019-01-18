@@ -115,8 +115,7 @@ class NursesController < ApplicationController
 
     mark_services_as_provided
 
-    @full_timers = @corporation.nurses.displayable.full_timers.order_by_kana
-    @part_timers = @corporation.nurses.displayable.part_timers.order_by_kana
+    fetch_nurses_grouped_by_team
 
     set_counter
     @counter.update(service_counts: @services_till_now.where.not(appointment_id: nil).count )

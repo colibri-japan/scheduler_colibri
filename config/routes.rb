@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :scans
     resources :services, only: :index
     resources :printing_options, only: :show
+    resources :teams, only: :show
   end
 
   resources :services, except: :index

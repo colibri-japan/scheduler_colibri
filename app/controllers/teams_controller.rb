@@ -11,10 +11,6 @@ class TeamsController < ApplicationController
         @team = Team.new()
     end
 
-    def edit
-        @team = Team.find(params[:id])
-    end
-
     def create
         @team = @corporation.teams.new(team_params)
 
@@ -22,6 +18,16 @@ class TeamsController < ApplicationController
             redirect_to teams_path, notice: '新規チームが登録されました'
         end
     end
+
+    def show
+        @planning = Planning.find(params[:planning_id])
+        @team = Team.find(params[:id])
+    end
+
+    def edit
+        @team = Team.find(params[:id])
+    end
+
 
     def update
         @team = Team.find(params[:id])

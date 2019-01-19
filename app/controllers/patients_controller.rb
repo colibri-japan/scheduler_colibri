@@ -37,7 +37,6 @@ class PatientsController < ApplicationController
 
     @nurses_with_services = Nurse.joins(:provided_services).select("nurses.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {patient_id: @patient.id}).where(displayable: true).group('nurses.id').order('sum_service_duration DESC')
 
-    set_valid_range
   end
 
   def master
@@ -45,8 +44,7 @@ class PatientsController < ApplicationController
 
     @patients = @corporation.patients.active.all.order_by_kana
     fetch_nurses_grouped_by_team
-      
-    set_valid_range
+
 		@admin = current_user.has_admin_access?.to_s
   end
 
@@ -115,10 +113,6 @@ class PatientsController < ApplicationController
 
   def set_planning 
     @planning = Planning.find(params[:planning_id])
-  end
-
-  def set_valid_range
-    @start_valid = Date.new(@planning.business_year, @planning.business_month, 1).strftime("%Y-%m-%d")
   end
 
   def set_corporation

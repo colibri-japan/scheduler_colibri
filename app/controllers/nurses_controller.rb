@@ -36,7 +36,6 @@ class NursesController < ApplicationController
     @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
     @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生%").sum(:service_duration)
 
-    set_valid_range
   end
 
   def master 
@@ -45,7 +44,6 @@ class NursesController < ApplicationController
     fetch_nurses_grouped_by_team
     @patients = @corporation.patients.where(active: true).order_by_kana
 
-    set_valid_range
 		@admin =  current_user.has_admin_access?.to_s
   end
 
@@ -151,13 +149,6 @@ class NursesController < ApplicationController
 
   def set_planning
     @planning = Planning.find(params[:planning_id])
-  end
-
-  def set_valid_range
-    valid_month = @planning.business_month
-    valid_year = @planning.business_year
-    @start_valid = Date.new(valid_year, valid_month, 1).strftime("%Y-%m-%d")
-    @end_valid = Date.new(valid_year, valid_month +1, 1).strftime("%Y-%m-%d")
   end
 
   def set_corporation

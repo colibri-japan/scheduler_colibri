@@ -6,14 +6,13 @@
 	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>"
-	window.validRangeStart = "<%= j @start_valid %>";
 	window.defaultView = "<%= j @corporation.default_individual_view %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 	window.firstDay = "<%= j @corporation.default_first_day.to_s %>";
 	window.printDates = "<%= j @printing_option.print_nurse_dates.to_s %>";
-	window.holidays = "<%= j HolidayJp.between(Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day, Date.new(@planning.business_year, @planning.business_month, -1).end_of_day).to_json.html_safe %>"
+	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 <% end %>
 
 <%= render 'plannings/planning_nurses_submenu' %>

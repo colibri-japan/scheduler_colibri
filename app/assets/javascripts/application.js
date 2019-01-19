@@ -112,10 +112,6 @@ initialize_nurse_calendar = function(){
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',
       nowIndicator: true,
-      validRange: {
-        start: window.validRangeStart,
-        end: moment(window.validRangeStart).add(1, 'months').format("YYYY-MM-DD"),
-      },
       minTime: window.minTime,
       maxTime: window.maxTime, 
       header: {
@@ -282,10 +278,6 @@ initialize_patient_calendar = function(){
       locale: 'ja',
       firstDay: window.firstDay,
       eventColor: '#7AD5DE',
-      validRange: {
-        start: window.validRangeStart,
-        end: moment(window.validRangeStart).add(1, 'months').format("YYYY-MM-DD"),
-      },
       views: {
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
@@ -458,10 +450,6 @@ initialize_master_calendar = function() {
       firstDay: window.firstDay,
       nowIndicator: true,
       locale: 'ja',
-      validRange: {
-        start: window.validRangeStart,
-        end: moment(window.validRangeStart).add(1, 'months').format("YYYY-MM-DD"),
-      },
       minTime: window.minTime,
       maxTime: window.maxTime, 
       header: {
@@ -647,10 +635,6 @@ initialize_calendar = function() {
       nowIndicator: true,
       firstDay: window.firstDay,
       locale: 'ja',
-      validRange: {
-        start: window.validRangeStart,
-        end: moment(window.validRangeStart).add(1, 'months').format("YYYY-MM-DD"),
-      },
       minTime: window.minTime,
       maxTime: window.maxTime, 
       header: {

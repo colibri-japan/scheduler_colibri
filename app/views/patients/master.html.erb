@@ -2,7 +2,6 @@
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, patient_id: @patient.id) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-	window.validRangeStart = "<%= j @start_valid %>";
 	window.userIsAdmin = "<%= j @admin %>";
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -13,7 +12,7 @@
 	window.planningId = "<%= j @planning.id.to_s %>";
 	window.firstDay = "<%= j @corporation.default_first_day.to_s %>";
 	window.printDates = "<%= j @printing_option.print_patient_dates_in_master.to_s %>";
-	window.holidays = "<%= j HolidayJp.between(Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day, Date.new(@planning.business_year, @planning.business_month, -1).end_of_day).to_json.html_safe %>"
+	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 <% end %>
 
 

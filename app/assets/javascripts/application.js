@@ -480,7 +480,7 @@ initialize_master_calendar = function() {
         url: window.corporationNursesURL + '?include_undefined=true&master=true',
       },
 
-      events: window.appointmentsURL + '&master=true',
+      events: window.recurringAppointmentsURL + '&master=true',
 
 
       eventDragStart: function (event, jsEvent, ui, view) {

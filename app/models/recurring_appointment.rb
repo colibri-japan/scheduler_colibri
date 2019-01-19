@@ -125,56 +125,60 @@ class RecurringAppointment < ApplicationRecord
 
 	def create_individual_appointments
 		puts 'creating individual appointments'
-		planning = Planning.find(self.planning_id)
-		first_day = Date.new(planning.business_year, planning.business_month, 1)
-		last_day = Date.new(planning.business_year, planning.business_month, -1)
-		occurrences = self.appointments(first_day, last_day)
+		if self.master == false
+			planning = Planning.find(self.planning_id)
+			first_day = Date.new(planning.business_year, planning.business_month, 1)
+			last_day = Date.new(planning.business_year, planning.business_month, -1)
+			occurrences = self.appointments(first_day, last_day)
 
 
-		occurrences.each do |occurrence|
-			start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min)
-		    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
-			occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
-			occurrence_appointment.save!(validate: false)
+			occurrences.each do |occurrence|
+				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min)
+				end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
+				occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
+				occurrence_appointment.save!(validate: false)
+			end
 		end
 	end
 
 	def update_individual_appointments
 		puts 'updating individual appointments'
 
-		appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
+		if self.master == false
 
-		if self.editing_occurrences_after.present?
+			appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
 
-			puts 'inside editing occurrences'
+			if self.editing_occurrences_after.present?
 
-			all_appointments = appointments_to_edit
+				puts 'inside editing occurrences'
 
-			editing_start_occurrence = Appointment.find(self.editing_occurrences_after.to_i)
-			edit_after_date = Date.new(editing_start_occurrence.starts_at.year, editing_start_occurrence.starts_at.month, editing_start_occurrence.starts_at.day)
-			edit_after_date = edit_after_date.beginning_of_day
-			appointments_to_edit = all_appointments.where("starts_at >= ?",edit_after_date)
-			appointments_before_edit_date = all_appointments - appointments_to_edit 
+				all_appointments = appointments_to_edit
 
-			first_appointment = appointments_before_edit_date.first
+				editing_start_occurrence = Appointment.find(self.editing_occurrences_after.to_i)
+				edit_after_date = Date.new(editing_start_occurrence.starts_at.year, editing_start_occurrence.starts_at.month, editing_start_occurrence.starts_at.day)
+				edit_after_date = edit_after_date.beginning_of_day
+				appointments_to_edit = all_appointments.where("starts_at >= ?",edit_after_date)
+				appointments_before_edit_date = all_appointments - appointments_to_edit 
 
-			recurring_anchor = Date.new(first_appointment.starts_at.year, first_appointment.starts_at.month, first_appointment.starts_at.day)
-			recurring_end_day = Date.new(first_appointment.ends_at.year, first_appointment.ends_at.month, first_appointment.ends_at.day)
-			recurring_appointment_before_edit_date = RecurringAppointment.new(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, cancelled: first_appointment.cancelled, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, starts_at: first_appointment.starts_at, ends_at: first_appointment.ends_at, skip_appointments_callbacks: true, frequency: self.frequency, original_id: self.id, duplicatable: false)
-			recurring_appointment_before_edit_date.save(validate: false)
+				first_appointment = appointments_before_edit_date.first
 
-			appointments_before_edit_date.each do |appointment|
-				appointment.recurring_appointment_id = recurring_appointment_before_edit_date.id
-				appointment.save!(validate: false)
+				recurring_anchor = Date.new(first_appointment.starts_at.year, first_appointment.starts_at.month, first_appointment.starts_at.day)
+				recurring_end_day = Date.new(first_appointment.ends_at.year, first_appointment.ends_at.month, first_appointment.ends_at.day)
+				recurring_appointment_before_edit_date = RecurringAppointment.new(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, cancelled: first_appointment.cancelled, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, starts_at: first_appointment.starts_at, ends_at: first_appointment.ends_at, skip_appointments_callbacks: true, frequency: self.frequency, original_id: self.id, duplicatable: false)
+				recurring_appointment_before_edit_date.save(validate: false)
+
+				appointments_before_edit_date.each do |appointment|
+					appointment.recurring_appointment_id = recurring_appointment_before_edit_date.id
+					appointment.save!(validate: false)
+				end
+			end
+
+			appointments_to_edit.each do |appointment|
+				start_time = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, self.starts_at.hour, self.starts_at.min)
+				end_time = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.starts_at.day, self.ends_at.hour, self.ends_at.min) + self.duration
+				appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, starts_at: start_time, ends_at: end_time, edit_requested: self.edit_requested, color: self.color, archived_at: self.archived_at, cancelled: self.cancelled, service_id: self.service_id)
 			end
 		end
-
-		appointments_to_edit.each do |appointment|
-			start_time = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, self.starts_at.hour, self.starts_at.min)
-			end_time = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.starts_at.day, self.ends_at.hour, self.ends_at.min) + self.duration
-			appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, starts_at: start_time, ends_at: end_time, edit_requested: self.edit_requested, color: self.color, archived_at: self.archived_at, cancelled: self.cancelled, service_id: self.service_id)
-		end
-
 	end
 
 	#def toggle_deactivated_on_individual_appointments
@@ -229,23 +233,25 @@ class RecurringAppointment < ApplicationRecord
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
-			planning = Planning.find(self.planning_id)
-			first_day = Date.new(planning.business_year, planning.business_month, 1)
-			last_day = Date.new(planning.business_year, planning.business_month, -1)
+			if master == false
+				planning = Planning.find(self.planning_id)
+				first_day = Date.new(planning.business_year, planning.business_month, 1)
+				last_day = Date.new(planning.business_year, planning.business_month, -1)
 
-			self_occurrences = self.appointments(first_day, last_day)
-			master = self.master.present? ? self.master : true
+				self_occurrences = self.appointments(first_day, last_day)
+				master = self.master.present? ? self.master : true
 
-			self_occurrences.each do |self_occurrence|
-				start_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.starts_at.hour, self.starts_at.min)
-				end_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
-				range = Range.new(start_of_appointment, end_of_appointment)
+				self_occurrences.each do |self_occurrence|
+					start_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.starts_at.hour, self.starts_at.min)
+					end_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
+					range = Range.new(start_of_appointment, end_of_appointment)
 
-				overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, archived_at: nil, cancelled: false).overlapping(range).select(:id)
-				overlapping_ids = overlaps.map{|e| e.id}
+					overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, archived_at: nil, cancelled: false).overlapping(range).select(:id)
+					overlapping_ids = overlaps.map{|e| e.id}
 
-				errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present?
-				errors[:base] << "#{start_of_appointment.strftime('%-m月%-d日')}" if overlaps.present?
+					errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present?
+					errors[:base] << "#{start_of_appointment.strftime('%-m月%-d日')}" if overlaps.present?
+				end
 			end
 		end
 

@@ -573,18 +573,18 @@ initialize_master_calendar = function() {
          
       eventClick: function (event, jsEvent, view) {
             if (window.userIsAdmin == 'true') {
-              $.getScript(event.recurring_appointment_path + '?master=true', function(){
+              $.getScript(event.edit_url + '?master=true', function(){
                 individualMasterToGeneral()
               })
             }
             return false;
          },
       
-      eventAfterAllRender: function(view) {
+      eventAfterAllRender: function() {
         appointmentComments();
       },
 
-      dayRender: function (date, cell) {
+      dayRender: function (date) {
         let holidays = JSON.parse(window.holidays);
         if (holidays.length > 0) {
           let dates = [];
@@ -599,7 +599,7 @@ initialize_master_calendar = function() {
       },
 
 
-      viewRender: function (view, element) {
+      viewRender: function () {
         drawHourMarks();
         makeTimeAxisPrintFriendly()
       }

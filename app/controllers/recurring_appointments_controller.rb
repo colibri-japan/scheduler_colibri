@@ -1,7 +1,6 @@
 class RecurringAppointmentsController < ApplicationController
   before_action :set_recurring_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :from_master_to_general]
   before_action :set_planning
-  before_action :set_valid_range, only: [:new, :edit, :index, :update]
   before_action :set_corporation
   before_action :set_nurses, only: [:new, :edit]
   before_action :set_patients, only: [:new, :edit]
@@ -9,21 +8,15 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments
   # GET /recurring_appointments.json
   def index
-    if params[:nurse_id].present?
-      @recurring_appointments = @planning.recurring_appointments.where(nurse_id: params[:nurse_id], displayable: true, master: false).where.not(cancelled: true)
-    elsif params[:patient_id].present?
-      @recurring_appointments = @planning.recurring_appointments.where(patient_id: params[:patient_id], displayable: true, master: false).where.not(cancelled: true)
-    elsif params[:master] == 'true'
-      @recurring_appointments = @planning.recurring_appointments.where(master: true).where.not(cancelled: true).includes(:patient, :nurse)
-    elsif params[:patient_name].present?
-      master = params[:master] == 'true' ? true : false
-      @recurring_appointments = @planning.recurring_appointments.joins(:patient).where(patients: {name: params[:patient_name]}).where(displayable: true, master: master).where.not(cancelled: true)
-    elsif params[:nurse_name].present?
-      master = params[:master] == 'true' ? true : false
-      @recurring_appointments = @planning.recurring_appointments.joins(:nurse).where(nurses: {name: params[:nurse_name]}).where(displayable: true, master: master).where.not(cancelled: true)
-    else
-     @recurring_appointments = @planning.recurring_appointments.where(displayable: true, master: false).where.not(cancelled: true).includes(:patient, :nurse)
-    end
+    @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).to_be_displayed.includes(:patient, :nurse)
+
+    @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
+    @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
+    @recurring_appointments = @recurring_appointments.where(master: params[:master]) if params[:master].present? && params[:master] != 'undefined'
+
+    puts @recurring_appointments.count
+    puts params[:start]
+    puts params[:end]
 
     respond_to do |format|
       format.json
@@ -178,11 +171,6 @@ class RecurringAppointmentsController < ApplicationController
 
     def set_planning
       @planning = Planning.find(params[:planning_id])
-    end
-
-    def set_valid_range
-      @start_valid = Date.new(@planning.business_year, @planning.business_month, 1).strftime("%Y-%m-%d")
-      @end_valid = (Date.new(@planning.business_year, @planning.business_month, 1) + 1.month).strftime("%Y-%m-%d")
     end
 
     def from_master_planning?

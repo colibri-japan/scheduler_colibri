@@ -1,14 +1,19 @@
-<div id='dashboard-plannings-container' class='no-print'>
-  <div id='new-planning-container'>
-    <%= link_to '+新規スケジュール', new_planning_path, class: 'btn btn-info btn-sm text-white btn-margin-top' %>
-  </div>
-  <div id='dashboard-plannings-list' class="scrollbar-custom  colibri-scrollbar-dark">
-    <% @plannings.each do |planning| %>
-      <div>
-        <%= link_to "#{planning.title}", planning_nurse_path(planning, @main_nurse), class: 'planning-list-element colorize' %>
-      </div>
-    <% end %>
-  </div>
+<div id="planning-menu-container" class="no-print">
+	<div id="planning-menu-list">
+		<ul class="nav nav-tabs">
+      <li class="planning-menu-items planning-menu-selected" title="ホーム.ダッシュボード">ホ</li>
+			<li class="planning-menu-items colibri-clickable-link" data-url="<%= planning_path(@planning) %>" title="全体">全</li>
+			<li class="planning-menu-items colibri-clickable-link" data-url="<%= planning_nurse_path(@planning, @main_nurse) %>" title="個別">個</li>
+			<% if current_user.has_admin_access? %>
+				<li class="planning-menu-items colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, @main_nurse) %>" title="給与管理">給</li>
+			<% end %>
+			<li class="planning-menu-items" data-url="<%= planning_activities_path(@planning) %>" title="編集履歴">歴</li>
+			<li class="planning-menu-items colibri-clickable-link" data-url="<%=  planning_nurse_master_path(@planning, @main_nurse) %>" title="マスター">マ</li>
+			<% if current_user.has_admin_access? %>
+				<li class="planning-menu-items colibri-clickable-link"  data-url="<%=  planning_settings_path(@planning) %>" title="設定"><span class='glyphicon glyphicon-cog' style='color:#94979A'></span></li>
+			<% end %>
+		</ul>
+	</div>
 </div>
 
 <div id='colibri-dashboard-container'>

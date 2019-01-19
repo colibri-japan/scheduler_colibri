@@ -4,13 +4,13 @@ class DashboardController < ApplicationController
 
 
   def index
-    @plannings = @corporation.plannings.where(archived: false).order(created_at: :desc)
+    @planning = @corporation.planning
 
     #activity module
-    @activities = PublicActivity::Activity.where(planning_id: @plannings.ids, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at)
+    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at)
     @unseen_activity_count = @activities.count
     if @unseen_activity_count == 0
-      @activities = PublicActivity::Activity.where(planning_id: @plannings.ids).last(5)
+      @activities = PublicActivity::Activity.where(planning_id: @planning.id).last(5)
     end
 
     #posts
@@ -18,7 +18,7 @@ class DashboardController < ApplicationController
 
     #appointments : today, upcoming two weeks, since monday
     today = Date.today 
-    appointments = Appointment.valid.where(planning_id: @plannings.ids, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)
+    appointments = Appointment.valid.where(planning_id: @planning.id, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)
 
     #edit requested appointments for next two weeks
     @edit_requested_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day, edit_requested: true).order(starts_at: :asc)

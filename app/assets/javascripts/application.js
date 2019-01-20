@@ -1136,10 +1136,21 @@ let recurringAppointmentCancel = () => {
 
 let recurringAppointmentArchive = () => {
   $('#recurring-appointment-archive').click(function(){
-    let archiveUrl = $(this).data('archive-url');
-    let editing_occurrences_after = $('select#recurring_appointment_editing_occurrences_after').val();
-    let message = confirm('選択された繰り返しが削除されます。');
-    if (message) {
+    let archiveUrl = $(this).data('archive-url') + '.js';
+    let editing_occurrences_after;
+    if ($('select#recurring_appointment_editing_occurrences_after').val()) {
+      editing_occurrences_after =  $('select#recurring_appointment_editing_occurrences_after').val();
+    } else {
+      editing_occurrences_after = ''
+    }
+    let message;
+    if (window.masterSchedule === 'true') {
+      message= '全繰り返しが削除されます';
+    } else {
+      message = '選択された繰り返しが削除されます'
+    }
+    let confirmation = confirm(message);
+    if (confirmation) {
       $.ajax({
         url: archiveUrl,
         type: 'PATCH',

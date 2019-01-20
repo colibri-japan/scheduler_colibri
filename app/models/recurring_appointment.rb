@@ -126,19 +126,16 @@ class RecurringAppointment < ApplicationRecord
 		if self.master == false
 			puts 'creating individual appointments'
 			planning = Planning.find(self.planning_id)
-			first_day = self.anchor.beginning_of_month
+			first_day = self.anchor
 			last_day = self.anchor.end_of_month
 			occurrences = self.appointments(first_day, last_day)
-			appointments_to_create = []
 
 			occurrences.each do |occurrence|
 				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min)
 				end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
 				occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
-				appointments_to_create << occurrence_appointment
+				occurrence_appointment.save(validate: false)
 			end
-
-			Appointment.import appointments_to_create
 		end
 	end
 

@@ -3,19 +3,25 @@
 <div id="resource-list-container" class="no-print">
   <div id="resource-container" class="scrollbar-custom">
 	<div id="nurses-resource" class="no-print">
-			<div class="nurses-resource-subsection-title resource-title-selectable"  data-url="<%= planning_payable_path(@planning) %>">全員</div>
+			<% today = Date.today %>
+			<div class="nurses-resource-subsection-title resource-title-selectable"  data-url="<%= planning_payable_path(@planning, params: {m: today.month, y: today.year}) %>">全員</div>
 			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @team_name_by_id.present? %>" data-url="/plannings/<%= @planning.id %>/teams/<%= @team_name_by_id.key(group) %>"><%= group %></div>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @team_name_by_id.present? %>" data-url="/plannings/<%= @planning.id %>/teams/<%= @team_name_by_id.key(group) %>?m=<%= today.month %>&y=<%= today.year %>"><%= group %></div>
 				<% nurses.each do |nurse| %>
-					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse, params: {m: today.month, y: today.year}) %>"><%= nurse.try(:name) %></p>
 				<% end %>
 			<% end %>
 	</div>
   </div>
 </div>
 
-<div id="colibri-dashboard-container">
+<div id="payable-container">
   <div class='colibri-xs-title no-print' style='margin-left:5px'>給与統計</div>
+	<div>
+		<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
+		<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
+		<button id='payable-query-trigger' class='refresh-button'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
+	</div>
 	<div class='colibri-dashboard-container-row no-print'>
 		<div class='colibri-dashboard-subcontainer'>
       <div class='colibri-subcontainer-header'>

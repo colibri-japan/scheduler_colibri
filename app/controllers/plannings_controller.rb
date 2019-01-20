@@ -78,30 +78,32 @@ class PlanningsController < ApplicationController
 
 		fetch_nurses_grouped_by_team
 
-		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: Date.new(@planning.business_year, @planning.business_month, 1).beginning_of_day..Date.today.end_of_day)
+		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
+
+		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: first_day..last_day)
 
 		#shintai vs seikatsu
 		@provided_services_shintai = @provided_services_till_today.where('title LIKE ? ', '%身%').sum(:total_wage)
 		@provided_services_seikatsu = @provided_services_till_today.where('title LIKE ?', '%生%').sum(:total_wage)
 
-		planning_ids = @corporation.plannings.where(archived: false).select(:id)
-
     	#appointments : since beginning of month
 		today = Date.today 
-        appointments = Appointment.valid.edit_not_requested.where(planning_id: planning_ids, master: false, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
+        appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
 
 	    #daily summary
-    	@appointments_grouped_by_title = appointments.where(starts_at: today.beginning_of_day..today.end_of_day).group_by(&:title)
+    	@appointments_grouped_by_title = appointments.where(starts_at: last_day.beginning_of_day..last_day).group_by(&:title)
     	@female_patients_ids = @corporation.patients.where(gender: true).ids 
     	@male_patients_ids = @corporation.patients.where(gender: false).ids
 		
     	#weekly summary, from monday to today
-    	@weekly_appointments_grouped_by_title = appointments.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day).group_by(&:title)
+    	@weekly_appointments_grouped_by_title = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day).group_by(&:title)
 
 		#monthly summary, until end of today
 		@monthly_appointments_grouped_by_title = appointments.group_by(&:title)
     	#daily provided_services to be verified
-    	@daily_provided_services = ProvidedService.where(planning_id: planning_ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+    	@daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
 	end
 
 	def archive

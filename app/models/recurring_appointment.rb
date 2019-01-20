@@ -124,20 +124,22 @@ class RecurringAppointment < ApplicationRecord
 	private
 
 	def create_individual_appointments
-		puts 'creating individual appointments'
 		if self.master == false
+			puts 'creating individual appointments'
 			planning = Planning.find(self.planning_id)
-			first_day = Date.new(planning.business_year, planning.business_month, 1)
-			last_day = Date.new(planning.business_year, planning.business_month, -1)
+			first_day = self.anchor.beginning_of_month
+			last_day = self.anchor.end_of_month
 			occurrences = self.appointments(first_day, last_day)
-
+			appointments_to_create = []
 
 			occurrences.each do |occurrence|
 				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min)
 				end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
 				occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
-				occurrence_appointment.save!(validate: false)
+				appointments_to_create << occurrence_appointment
 			end
+
+			Appointment.import appointments_to_create
 		end
 	end
 
@@ -146,7 +148,7 @@ class RecurringAppointment < ApplicationRecord
 
 		if self.master == false
 
-			appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
+			appointments_to_edit = Appointment.where(recurring_appointment_id: self.id).to_be_displayed
 
 			if self.editing_occurrences_after.present?
 
@@ -180,15 +182,6 @@ class RecurringAppointment < ApplicationRecord
 			end
 		end
 	end
-
-	#def toggle_deactivated_on_individual_appointments
-	#	puts 'toggle cancelled on individual appointments from recurring appointment model'
-	#	appointments_to_edit = Appointment.where(recurring_appointment_id: self.id, displayable: true)
-	#
-	#	appointments_to_edit.each do |appointment|
-	#		appointment.update_attribute(:cancelled, self.cancelled)
-	#	end
-	#end
 
 	def default_frequency
 		puts 'adding default frequency'
@@ -233,13 +226,12 @@ class RecurringAppointment < ApplicationRecord
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
-			if master == false
+			if self.master == false
 				planning = Planning.find(self.planning_id)
-				first_day = Date.new(planning.business_year, planning.business_month, 1)
-				last_day = Date.new(planning.business_year, planning.business_month, -1)
+				first_day = self.anchor.beginning_of_month
+				last_day = self.anchor.end_of_month
 
 				self_occurrences = self.appointments(first_day, last_day)
-				master = self.master.present? ? self.master : true
 
 				self_occurrences.each do |self_occurrence|
 					start_of_appointment = DateTime.new(self_occurrence.year, self_occurrence.month, self_occurrence.day, self.starts_at.hour, self.starts_at.min)
@@ -252,6 +244,8 @@ class RecurringAppointment < ApplicationRecord
 					errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present?
 					errors[:base] << "#{start_of_appointment.strftime('%-m月%-d日')}" if overlaps.present?
 				end
+			elsif self.master == true 
+				puts 'no validation yet for master'
 			end
 		end
 

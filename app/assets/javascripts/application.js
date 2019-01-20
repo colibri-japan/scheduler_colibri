@@ -572,6 +572,18 @@ initialize_master_calendar = function() {
       },
          
       eventClick: function (event, jsEvent, view) {
+        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
+        // Get the table
+        var table = $(this).parent().parent().parent().parent().children();
+        let dateClicked;
+        $(table).each(function () {
+          // Get the thead
+          if ($(this).is('thead')) {
+            var tds = $(this).children().children();
+            dateClicked = $(tds[caseNumber]).attr("data-date");
+          }
+        });
+        console.log(dateClicked)
             if (window.userIsAdmin == 'true') {
               $.getScript(event.edit_url + '?master=true', function(){
                 individualMasterToGeneral()

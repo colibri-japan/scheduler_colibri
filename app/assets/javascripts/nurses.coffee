@@ -31,6 +31,11 @@ $(document).on 'turbolinks:load', ->
   $('tr.nurse-clickable-row').click ->
     $.getScript($(this).data('link'))
     return
+
+  $('#payable-query-trigger').click ->
+    url = window.location.href.split('?')[0] + '?m=' + $('#query_month').val() + '&y=' + $('#query_year').val();
+    window.location = url
+    return
     
   
   return

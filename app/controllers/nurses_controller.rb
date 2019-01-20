@@ -105,11 +105,14 @@ class NursesController < ApplicationController
 
     delete_previous_temporary_services
 
-    @provided_services = ProvidedService.not_archived.where(nurse_id: @nurse.id, planning_id: @planning.id, temporary: false, countable: false)
+    first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+    last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+
+    @provided_services = ProvidedService.not_archived.where(nurse_id: @nurse.id, planning_id: @planning.id, temporary: false, countable: false).where('service_date BETWEEN ? and ?', first_day, last_day)
 
     now_in_Japan = Time.current + 9.hours
-    @services_till_now = @provided_services.where('service_date < ?', now_in_Japan).order(service_date: 'asc')
-    @services_from_now = @provided_services.where('service_date >= ?', now_in_Japan).order(service_date: 'asc')
+    @services_till_now = @provided_services.where('service_date BETWEEN ? and ?', first_day, now_in_Japan).order(service_date: 'asc')
+    @services_from_now = @provided_services.where('service_date BETWEEN ? and ?', now_in_Japan, last_day).order(service_date: 'asc')
 
     mark_services_as_provided
 

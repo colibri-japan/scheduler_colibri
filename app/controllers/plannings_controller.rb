@@ -13,8 +13,6 @@ class PlanningsController < ApplicationController
 	def show
 		authorize @planning, :is_employee?
 		authorize @planning, :is_not_archived?
-
-		set_valid_range
 	end
 
 	def new
@@ -122,7 +120,6 @@ class PlanningsController < ApplicationController
     	@last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
 		@patients_firstless = @patients - [@patients.first]
 
-		set_valid_range
 		@admin = current_user.has_admin_access?.to_s
 	end
 
@@ -161,10 +158,6 @@ class PlanningsController < ApplicationController
 
 	def set_planning
 		@planning = Planning.find(params[:id])
-	end
-
-	def set_valid_range
-		@start_valid = Date.new(@planning.business_year, @planning.business_month, 1).strftime("%Y-%m-%d")
 	end
 
 	def set_nurses

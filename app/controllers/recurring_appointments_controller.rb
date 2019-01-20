@@ -1,5 +1,5 @@
 class RecurringAppointmentsController < ApplicationController
-  before_action :set_recurring_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :from_master_to_general]
+  before_action :set_recurring_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :from_master_to_general, :terminate]
   before_action :set_planning
   before_action :set_corporation
   before_action :set_nurses, only: [:new, :edit]
@@ -96,7 +96,7 @@ class RecurringAppointmentsController < ApplicationController
   end
 
   def terminate 
-    @recurring_appointment.termination_date = params[:t_date].to_date 
+    @recurring_appointment.termination_date = params[:t_date].to_date.beginning_of_day
     if @recurring_appointment.save 
       @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
     end

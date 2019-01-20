@@ -1,10 +1,5 @@
 @recurring_appointments.each do |recurring_appointment|
     appointments = recurring_appointment.appointments(params[:start], params[:end])
-    puts params[:start]
-    puts params[:end]
-
-    puts appointments 
-    puts appointments.count
 
     json.array! appointments do |appointment|
         json.allDay recurring_appointment.all_day_recurring_appointment? ? true : false

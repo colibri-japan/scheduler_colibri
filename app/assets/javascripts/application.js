@@ -576,6 +576,8 @@ initialize_master_calendar = function() {
         // Get the table
         var table = $(this).parent().parent().parent().parent().children();
         let dateClicked;
+        let start = moment(view.start).format('YYYY-MM-DD');
+        let end = moment(view.end).format('YYYY-MM-DD');
         $(table).each(function () {
           // Get the thead
           if ($(this).is('thead')) {
@@ -583,14 +585,14 @@ initialize_master_calendar = function() {
             dateClicked = $(tds[caseNumber]).attr("data-date");
           }
         });
-        console.log(dateClicked)
-            if (window.userIsAdmin == 'true') {
-              $.getScript(event.edit_url + '?master=true', function(){
-                individualMasterToGeneral()
-              })
-            }
-            return false;
-         },
+        if (window.userIsAdmin == 'true') {
+          $.getScript(event.edit_url + '?master=true', function(){
+            individualMasterToGeneral()
+            terminateRecurringAppointment(dateClicked, start, end)
+          })
+        }
+        return false;
+      },
       
       eventAfterAllRender: function() {
         appointmentComments();
@@ -1590,6 +1592,24 @@ let confirmBatchAction = () => {
     })
   })
 
+}
+
+let terminateRecurringAppointment = (date, start, end) => {
+
+  $('#recurring-appointment-terminate').text(moment(date).format('M月DD日') + '以降停止');
+  let data = {
+    t_date: date,
+    start: start,
+    end: end
+  };
+  console.log(data)
+  $('#recurring-appointment-terminate').click(function(){
+    $.ajax({
+      url: $(this).data('terminate-url'),
+      data: data,
+      type: 'PATCH'
+    })
+  })
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

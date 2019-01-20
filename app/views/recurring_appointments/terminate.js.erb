@@ -16,8 +16,8 @@
 
   calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
   calendar.fullCalendar(
-    'renderEvent', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: recurring_appointment}).html_safe  %>"), 
+    'renderEvents', 
+    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe  %>"), 
     false
   );
 

@@ -27,9 +27,6 @@
     );
   <% end %>
 
-  if ($('#planning-activities').length > 0) {
-    $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
-  }
 
 <% end %>
 

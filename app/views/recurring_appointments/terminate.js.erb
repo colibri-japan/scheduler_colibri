@@ -14,15 +14,11 @@
     calendar = $('.master_calendar');
   }
 
-  <% @appointments.each do |appointment| %>
-    calendar.fullCalendar('removeEvents' , '<%= "appointment_#{appointment.id}" %>');
-    
-    calendar.fullCalendar(
-      'renderEvent', 
-      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
-      false
-    );
-
-  <% end %>
+  calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
+  calendar.fullCalendar(
+    'renderEvent', 
+    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: recurring_appointment}).html_safe  %>"), 
+    false
+  );
 
 <% end %>

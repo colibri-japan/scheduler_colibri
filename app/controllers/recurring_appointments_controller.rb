@@ -95,6 +95,13 @@ class RecurringAppointmentsController < ApplicationController
     end
   end
 
+  def terminate 
+    @recurring_appointment.termination_date = params[:t_date].to_date 
+    if @recurring_appointment.save 
+      @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+    end
+  end
+
   def archive
     appointment_ids = Appointment.where(recurring_appointment_id: @recurring_appointment.id).ids
     @recurring_appointment.archive 

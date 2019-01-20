@@ -88,9 +88,6 @@ pathname = window.location.pathname;
       false
     );
 
-    if ($('#planning-activities').length > 0) {
-      $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
-    }
     <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
       if ($('.calendar').length > 0) {
         let view = $('.calendar').fullCalendar('getView');

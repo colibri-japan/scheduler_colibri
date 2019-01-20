@@ -564,8 +564,11 @@ initialize_master_calendar = function() {
 
 
       select: function(start, end, jsEvent, view, resource) {
+        let view_start = moment(view.start).format('YYYY-MM-DD');
+        let view_end = moment(view.end).format('YYYY-MM-DD');
         $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
           setRecurringAppointmentTime(start, end, view);
+          setHiddenRecurringAppointmentFields(view_start, view_end);
         });
 
         master_calendar.fullCalendar('unselect');
@@ -576,8 +579,8 @@ initialize_master_calendar = function() {
         // Get the table
         var table = $(this).parent().parent().parent().parent().children();
         let dateClicked;
-        let start = moment(view.start).format('YYYY-MM-DD');
-        let end = moment(view.end).format('YYYY-MM-DD');
+        let view_start = moment(view.start).format('YYYY-MM-DD');
+        let view_end = moment(view.end).format('YYYY-MM-DD');
         $(table).each(function () {
           // Get the thead
           if ($(this).is('thead')) {
@@ -588,7 +591,8 @@ initialize_master_calendar = function() {
         if (window.userIsAdmin == 'true') {
           $.getScript(event.edit_url + '?master=true', function(){
             individualMasterToGeneral()
-            terminateRecurringAppointment(dateClicked, start, end)
+            terminateRecurringAppointment(dateClicked, view_start, view_end)
+            setHiddenRecurringAppointmentFields(view_start, view_end);
           })
         }
         return false;
@@ -670,7 +674,6 @@ initialize_calendar = function() {
 
       eventSources: [ {url: window.appointmentsURL, cache: true}, {url: window.unavailabilitiesUrl, cache: true}],
 
-
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;
         myResource = $('.calendar').fullCalendar('getResourceById', event.resourceId);
@@ -679,7 +682,6 @@ initialize_calendar = function() {
       eventDragStop: function (event, jsEvent, ui, view) {
         window.eventDragging = false;
       },
-
 
       eventRender: function eventRender(event, element, view) {
         if (window.eventDragging) {
@@ -769,6 +771,7 @@ initialize_calendar = function() {
       	$.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);
           setUnavailabilityTime(start, end);
+          setHiddenRecurringAppointmentFields(start, end);
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
@@ -1610,6 +1613,11 @@ let terminateRecurringAppointment = (date, start, end) => {
       type: 'PATCH'
     })
   })
+} 
+
+let setHiddenRecurringAppointmentFields = (start, end) => {
+  $('#start').val(start)
+  $('#end').val(end)
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

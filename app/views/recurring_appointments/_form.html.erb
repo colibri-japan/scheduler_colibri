@@ -129,6 +129,8 @@
 
 
       <%= hidden_field_tag(:master, 'true') if @master == true %>
+      <%= hidden_field_tag(:start, Date.today) %>
+      <%= hidden_field_tag(:end, Date.today) %>
 
       <div class="actions">
         <%= form.submit 'セーブする', class: 'btn btn-info', id: 'save-recurring-appointment' %>

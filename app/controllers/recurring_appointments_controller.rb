@@ -53,13 +53,11 @@ class RecurringAppointmentsController < ApplicationController
     respond_to do |format|
       if @recurring_appointment.save
         @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name), new_anchor: @recurring_appointment.anchor, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at
-        puts 'saved recurring appointment and activity, now fetching appointments'
         @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id)
+
         format.js
-        format.json { render :show, status: :created, location: @recurring_appointment }
       else
         format.js
-        format.json { render json: @recurring_appointment.errors, status: :unprocessable_entity }
       end
     end
   end

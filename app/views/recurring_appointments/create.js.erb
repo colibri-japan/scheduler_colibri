@@ -39,9 +39,7 @@
   <% end %>
 
 <% else %>
-
   $('.modal').modal('hide');
-
   if (typeof calendar === 'undefined') {
     let calendar;
   }
@@ -54,15 +52,18 @@
   } else if ($('.master_calendar').length > 0) {
     calendar = $('.master_calendar');
   }
-
-  <% @appointments.each do |appointment| %>
+  <% if @recurring_appointment.master == true %>
     calendar.fullCalendar(
-      'renderEvent', 
-      jQuery.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"),
-      false
+      'renderEvents',
+      jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
     );
-
+  <% else %>
+    <% @appointments.each do |appointment| %>
+      calendar.fullCalendar(
+        'renderEvent', 
+        jQuery.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"),
+        false
+      );
+    <% end %>
   <% end %>
-
-
 <% end %>

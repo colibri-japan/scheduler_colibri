@@ -6,11 +6,12 @@ class CancelPatientAppointmentsWorker
     patient = Patient.find(patient_id)
     puts patient.name
 
-    valid_plannings = patient.corporation.plannings.where('(business_month >= ? AND business_year = ?) OR (business_year > ?)', Time.current.month, Time.current.year, Time.current.year)
-    puts valid_plannings.ids
+    planning = patient.corporation.planning
 
-	Appointment.to_be_displayed.where(patient_id: patient_id, master: false).where('starts_at > ?', Time.current).update_all(cancelled: true)
-	ProvidedService.where('service_date > ?', Time.current).where(patient_id: patient_id).update_all(cancelled: true)
-	RecurringAppointment.to_be_displayed.from_master.where(planning_id: valid_plannings.ids, patient_id: patient_id).update_all(duplicatable: false)
+    now = Time.current 
+
+	  Appointment.to_be_displayed.where(patient_id: patient_id, master: false).where('starts_at > ?', now).update_all(cancelled: true, updated_at: now)
+	  ProvidedService.where('service_date > ?', now).where(patient_id: patient_id).update_all(cancelled: true, updated_at: now)
+	  RecurringAppointment.to_be_displayed.from_master.where(planning_id: planning.id, patient_id: patient_id).where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', now).update_all(termination_date: now, updated_at: now)
   end
 end

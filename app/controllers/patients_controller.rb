@@ -101,11 +101,7 @@ class PatientsController < ApplicationController
   def master_to_schedule
     authorize current_user, :has_admin_access?
 
-    puts 'params'
-    puts params[:month]
-    puts params[:year]
     @planning = @corporation.planning
-
     CopyPatientPlanningFromMasterWorker.perform_async(@patient.id, params[:month], params[:year])
 
     redirect_to planning_patient_path(@planning, @patient), notice: "#{@patient.name}様のサービスの反映が始まりました。数秒後リフレッシュしてください"

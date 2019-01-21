@@ -3,5 +3,5 @@
 <% else %>
   $('.modal').modal('hide');
   $('#flash').append("<div class='alert alert-notice'><%= @patient.name %>様の情報がアップデートされました</div>")
-  location.reload().delay(100)
+  location.reload().delay(200)
 <% end %>

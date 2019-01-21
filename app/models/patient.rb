@@ -42,7 +42,8 @@ class Patient < ApplicationRecord
 	private 
 
 	def name_uniqueness 
-		names = Patient.where(corporation_id: self.corporation_id).where.not(id: self.id).pluck(:name).map {|name| name.tr(' ','').tr('　','') }
+		names = Patient.where(corporation_id: self.corporation_id, active: true).where.not(id: self.id).pluck(:name).map {|name| name.tr(' ','').tr('　','') }
+	    puts names
 		errors.add(:name, 'すでに同じ名前の利用者が登録されてます') if names.include? self.name.tr(' ','').tr('　','')
 	end
 

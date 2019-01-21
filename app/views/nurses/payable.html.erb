@@ -11,7 +11,7 @@
 			<% today = Date.today %>
 			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_payable_path(@planning, params: {m: today.month, y: today.year}) %>">全員</div>
 			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @team_name_by_id.present? %>" data-url="/plannings/<%= @planning.id %>/teams/<%= @team_name_by_id.key(group) %>?m=<%= today.month %>&y=<%= today.year %>"><%= group %></div>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @team_name_by_id.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@team_name_by_id.key(group)}?m=#{today.month}&y=#{today.year}" if @team_name_by_id.present? %>'><%= group %></div>
 				<% nurses.each do |nurse| %>
 					<p class="resource-list-element colibri-clickable-link  <%= 'resource-selected' if nurse == @nurse %>" data-url="<%= planning_nurse_payable_path(@planning, nurse, params: {m: today.month, y: today.year}) %>"><%= nurse.try(:name) %></p>
 				<% end %>

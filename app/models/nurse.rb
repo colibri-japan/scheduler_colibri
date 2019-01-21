@@ -57,13 +57,9 @@ class Nurse < ApplicationRecord
 
 	def self.service_reminder
 		Nurse.where(reminderable: true, displayable: true).find_each do |nurse|
-			puts nurse.corporation.can_send_reminder_today?(Time.current.in_time_zone('Tokyo'))
-			puts nurse.corporation.can_send_reminder_now?(Time.current.in_time_zone('Tokyo'))
 			if nurse.corporation.can_send_reminder_today?(Time.current.in_time_zone('Tokyo')) && nurse.corporation.can_send_reminder_now?(Time.current.in_time_zone('Tokyo'))
-				puts 'will send email'
+				puts 'sending email'
 				selected_days = nurse.corporation.reminder_email_days(Time.current.in_time_zone('Tokyo'))
-				puts 'selected days'
-				puts selected_days
 				SendNurseReminderWorker.perform_async(nurse.id, selected_days)
 			else 
 				puts 'will not send email'

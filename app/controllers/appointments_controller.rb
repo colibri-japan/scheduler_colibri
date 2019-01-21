@@ -25,11 +25,11 @@ class AppointmentsController < ApplicationController
       @appointments = @appointments.overlapping(params[:start]..params[:end])
     end
 
-    if stale?(etag: @appointments, last_modified: @appointments.maximum(:updated_at))
-      respond_to do |format|
-        format.json {render json: @appointments.as_json}
-      end
+
+    respond_to do |format|
+      format.json {render json: @appointments.as_json}
     end
+
   end
 
   # GET /appointments/1
@@ -125,9 +125,9 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_archive
-    planning_ids = @corporation.plannings.ids 
-    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
-    @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
+    planning_id = @corporation.planning.id
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
+    @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
 
@@ -142,9 +142,9 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_cancel
-    planning_ids = @corporation.plannings.ids 
-    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
-    @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
+    planning_id = @corporation.planning.id
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
+    @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
 
@@ -160,9 +160,9 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_request_edit 
-    planning_ids = @corporation.plannings.ids 
-    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_ids)
-    @provided_services = ProvidedService.where(planning_id: planning_ids, appointment_id: @appointments.ids)
+    planning_id = @corporation.planning.id 
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
+    @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
 
@@ -183,9 +183,9 @@ class AppointmentsController < ApplicationController
     end
 
     def confirm_batch_action
-      plannings = @corporation.plannings.where(archived: false)
+      planning_id = @corporation.planning.id
 
-      @appointments = Appointment.to_be_displayed.where(planning_id: plannings.ids, master: false).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
+      @appointments = Appointment.to_be_displayed.where(planning_id: planning_id, master: false).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
 
       @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
       @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?

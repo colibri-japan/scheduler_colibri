@@ -7,7 +7,7 @@ class PatientsController < ApplicationController
   before_action :set_caveats, only: [:new, :edit]
 
   def index
-    if params[:start].present? && params[:end].present? && params[:master].present? && @corporation.plannings.ids.include?(params[:planning_id].to_i)
+    if params[:start].present? && params[:end].present? && params[:master].present? && params[:planning_id].to_i == @corporation.planning.id
       start_time = params[:start].to_date.beginning_of_day
       end_time = params[:end].to_date.beginning_of_day
 

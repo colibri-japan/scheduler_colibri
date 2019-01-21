@@ -8,24 +8,22 @@ class UnavailabilitiesController < ApplicationController
 	# GET /unavailabilities
 	# GET /unavailabilities.json
 	def index
-	  if params[:nurse_id].present?
-	  	@nurse = Nurse.find(params[:nurse_id])
-	    @unavailabilities = @planning.unavailabilities.where(nurse_id: params[:nurse_id])
-	  elsif params[:patient_id].present?
-	  	@unavailabilities = @planning.unavailabilities.where(patient_id: params[:patient_id])
-	  else
-	   @unavailabilities = @planning.unavailabilities.all
-	 end
+			if params[:nurse_id].present?
+				@nurse = Nurse.find(params[:nurse_id])
+				@unavailabilities = @planning.unavailabilities.where(nurse_id: params[:nurse_id])
+			elsif params[:patient_id].present?
+				@unavailabilities = @planning.unavailabilities.where(patient_id: params[:patient_id])
+			else
+			@unavailabilities = @planning.unavailabilities.all
+		end
 
-	 if params[:start].present? && params[:end].present? 
-		@unavailabilities = @unavailabilities.overlapping(params[:start]..params[:end])
-	 end
+		if params[:start].present? && params[:end].present? 
+			@unavailabilities = @unavailabilities.overlapping(params[:start]..params[:end])
+		end
 
-	 if stale?(etag: @unavailabilities, last_modified: @unavailabilities.maximum(:updated_at))
 		respond_to do |format|
 			format.json {render json: @unavailabilities.as_json}
 		end
-	 end
 	end
 
 	# GET /unavailabilities/1

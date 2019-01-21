@@ -48,7 +48,12 @@ class PlanningsController < ApplicationController
 		authorize @planning, :is_employee?
 		authorize current_user, :has_admin_access?
 
-		CopyPlanningFromMasterWorker.perform_async(@planning.id)
+		
+        puts 'params'
+        puts params[:month]
+        puts params[:year]
+
+		CopyPlanningFromMasterWorker.perform_async(@planning.id, params[:month], params[:year])
 
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
 	end

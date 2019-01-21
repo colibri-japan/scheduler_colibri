@@ -2,53 +2,64 @@ class CopyNursePlanningFromMasterWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
-  def perform(nurse_id, planning_id)
+  def perform(nurse_id, month, year)
     nurse = Nurse.find(nurse_id)
-    planning = Planning.find(planning_id)
-    corporation = planning.corporation
+    corporation = nurse.corporation
+    planning = corporation.planning
 
-    nurse.recurring_appointments.where(planning_id: planning.id, master: false).delete_all
-    nurse.appointments.where(planning_id: planning.id, master: false).delete_all
-    nurse.provided_services.where(planning_id: planning.id).delete_all
+    first_day = DateTime.new(year.to_i, month.to_i, 1, 0, 0, 0)
+    last_day = DateTime.new(year.to_i, month.to_i, -1, 23, 59, 59)
+
+    nurse.recurring_appointments.where(planning_id: planning.id, master: false, anchor: first_day..last_day).delete_all
+    nurse.appointments.where(planning_id: planning.id, master: false, starts_at: first_day..last_day).delete_all
+    nurse.provided_services.where(planning_id: planning.id, service_date: first_day..last_day).delete_all
 
     new_recurring_appointments = []
     new_appointments = []
     new_provided_services = []
 
-    recurring_appointments = nurse.recurring_appointments.from_master.valid.edit_not_requested.where(planning_id: planning.id)
-
-    initial_recurring_appointments_count = recurring_appointments.count 
-
-
-    initial_appointments_count = Appointment.where(recurring_appointment_id: recurring_appointments.ids).count
-
+    recurring_appointments = planning.recurring_appointments.from_master.where(nurse_id: nurse.id).to_be_displayed.edit_not_requested.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', first_day)
 
     recurring_appointments.find_each do |recurring_appointment|
-      new_recurring_appointment = recurring_appointment.dup 
-			new_recurring_appointment.master = false 
-			new_recurring_appointment.original_id = recurring_appointment.id
-      new_recurring_appointment.skip_appointments_callbacks = true 
-      
-      new_recurring_appointments << new_recurring_appointment
-    end
-
-    if new_recurring_appointments.count == initial_recurring_appointments_count
-      RecurringAppointment.import(new_recurring_appointments)
-    end
-
-    new_recurring_appointments.each do |recurring_appointment|
-      Appointment.where(recurring_appointment_id: recurring_appointment.original_id).each do |appointment|
-          new_appointment = appointment.dup 
-          new_appointment.master = false 
-          new_appointment.recurring_appointment_id = recurring_appointment.id
-
-          new_appointments << new_appointment
+      new_anchor = recurring_appointment.appointments(first_day, last_day).first
+      if new_anchor.present? 
+        new_recurring_appointment = recurring_appointment.dup 
+        new_recurring_appointment.master = false 
+        new_recurring_appointment.original_id = recurring_appointment.id
+        new_recurring_appointment.skip_appointments_callbacks = true 
+        new_recurring_appointment.anchor = new_anchor
+        
+        new_recurring_appointments << new_recurring_appointment
       end
     end
 
-    if initial_appointments_count == new_appointments.count 
-      Appointment.import(new_appointments)
+
+    RecurringAppointment.import(new_recurring_appointments)
+
+    new_recurring_appointments.each do |r|
+      occurrences = r.appointments(first_day, last_day)
+
+      occurrences.each do |occurrence|
+        new_appointment = Appointment.new(
+          starts_at: DateTime.new(occurrence.year, occurrence.month, occurrence.day, r.starts_at.hour, r.starts_at.min),
+          ends_at: DateTime.new(occurrence.year, occurrence.month, occurrence.day, r.ends_at.hour, r.ends_at.min),
+          title: r.title,
+          color: r.color,
+          nurse_id: r.nurse_id,
+          patient_id: r.patient_id,
+          description: r.description,
+          planning_id: r.planning_id,
+          master: false,
+          displayable: true,
+          recurring_appointment_id: r.id,
+          service_id: r.service_id,
+          duration: r.duration
+        )
+        new_appointments << new_appointment
+      end
     end
+
+    Appointment.import(new_appointments)
 
     new_appointments.each do |appointment|  
       provided_duration = appointment.ends_at - appointment.starts_at

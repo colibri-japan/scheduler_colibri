@@ -1,7 +1,7 @@
 <nav id="colibri-scheduler-nav" class="no-print">
     <div id="brand-container">
         <%= image_tag('https://s3.us-east-2.amazonaws.com/puraimage/logo_jpeg.jpg', size: '40') %>
-        <p id="brand">Colibri Scheduler</p>
+        <p id="brand">Colibri</p>
     </div>
 
 
@@ -15,9 +15,6 @@
             </li>
             <li class="li-float-right">
               <%= link_to '従業員', nurses_path,title: 'ヘルパー一覧', class: 'colibri-nav-link' %>  
-            </li>
-            <li class="li-float-right">
-              <%= link_to 'ホーム', authenticated_root_path,title: 'ホームページ.ダッシュボード', class: 'colibri-nav-link' %>  
             </li>
     	    <% else %>
     	      <li class="li-float-right"><%= link_to 'ログイン', new_user_session_path, class: 'colibri-nav-link' %></li>

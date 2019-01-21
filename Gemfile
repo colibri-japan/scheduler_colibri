@@ -35,7 +35,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'jquery-rails'
 
-gem 'bootstrap'
+gem 'bootstrap', '~> 4.2.1'
 
 #schedule occcurrences
 gem 'ice_cube'

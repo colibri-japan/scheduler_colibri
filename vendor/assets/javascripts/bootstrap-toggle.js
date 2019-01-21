@@ -28,8 +28,8 @@
 		offstyle: 'danger',
 		size: 'normal',
 		style: '',
-		width: null,
-		height: null
+		width: 140,
+		height: 40
 	}
 
 	Toggle.prototype.defaults = function() {

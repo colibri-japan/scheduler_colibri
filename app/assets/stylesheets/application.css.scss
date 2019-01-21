@@ -24,6 +24,7 @@
  *= require_self
  */
 
+
  @import "bootstrap";
  @import 'bootstrap/glyphicons';
 
@@ -69,6 +70,14 @@ body {
 }
 
 .glyphicon.glyphicon-cog:hover {
+	color: white !important;
+}
+
+.glyphicon.glyphicon-home {
+	font-size: 24px;
+}
+
+.glyphicon.glyphicon-home:hover {
 	color: white !important;
 }
 
@@ -485,6 +494,7 @@ th {
 	height: 40px;
 	width: 40px;
 }
+
 
 
 

@@ -1,7 +1,7 @@
 <div id="planning-menu-container" class="no-print">
 	<div id="planning-menu-list" class="no-print">
 		<ul class="nav nav-tabs" class="no-print">
-			<li class="planning-menu-items colibri-clickable-link" data-url="<%= authenticated_root_path %>" title="ホーム.ダッシュボード">ホ</li>
+			<li class="planning-menu-items colibri-clickable-link" data-url="<%= authenticated_root_path %>" title="ホーム.ダッシュボード"><span class="glyphicon glyphicon-home"  style='color:#94979A'></span></li>
 			<li class="planning-menu-items colibri-clickable-link" data-url="<%= planning_path(@planning) %>" title="全体">全</li>
 			<li class="planning-menu-items colibri-clickable-link" data-url="<%= planning_nurse_path(@planning, @nurse) %>" title="個別">個</li>
 			<% if current_user.has_admin_access? %>

@@ -73,9 +73,6 @@
 			</div>
 		    <div id="activity-show-button-container" class="no-print">
 	  		    <div class="btn btn-colibri-light-gray text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
- 			    <% if current_user.has_admin_access? %>
-				    <div class="btn btn-colibri-light-gray text-white" id="master-options"><i class="glyphicon glyphicon-cog" style="color:white; font-size: 1.25em"></i> オプション</div>
-			    <% end %>
 		    </div>
 		</div>
 
@@ -85,36 +82,17 @@
 	</div>
 </div>
 
-<div id="modal-master-options" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="colibri-small-title">マスターオプション</h1>
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-
-			<div class="modal-body">
-				<table class="table">
-                    <tbody>
-						<tr>
-							<td>提供表の予定を読み込み、マスタースケジュールにサービスを自動的に作成する。</td>
-							<td><%= link_to '提供表の読み込み', new_planning_scan_path(@planning), class: 'btn btn-success text-white new-scan', remote: true %></td>
-						</tr>
-					    <tr>
-                            <th>「全体スケジュール」内の<%= @patient.name %>様に関するこれまで編集情報は全て削除され、<%= @patient.name %>様のマスタースケジュールが上書きされます。</th>
-                            <th><button class="btn btn-warning" id="copy-master-patient"><%= @patient.name %>様のマスターを反映</button></th>
-                        </tr>
-
-                        <tr>
-                            <th>「全体スケジュール」のこれまで編集情報は全て削除され、マスタースケジュールが上書きされます。</th>
-                            <th><button class="btn btn-warning btn-warning-danger" id="copy-master">全マスターを反映</button></th>
-                        </tr>
-                    </tbody>
-                </table>
-			</div>
-		</div>
-	</div>
+<% if current_user.has_admin_access? %>
+<div id="colibri-batch-master-action-button" class="no-print batch-action-button">
+    <div class="colibri-glyphicon-container">
+        <span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
+        <div id='batch-action-menu' style="display:none">
+		    <p id='reflect-resource' class='master-reflect-option' style='color:#606E7C ;font-size:1.2em' data-resource-name="<%= @patient.try(:name) %>"><%= link_to "#{@patient.try(:name)}様のみ", new_patient_master_to_schedule_path(@patient), remote: true  %></p>
+		    <p id='reflect-all' class='master-reflect-option' style='color:#606E7C ;font-size:1.2em'><%= link_to '全員', new_planning_master_to_schedule_path(@planning), remote: true  %></p>
+        </div>
+    </div>
 </div>
+<% end %>
 
 <%= render 'plannings/nurse_conflict_days' %>
 
@@ -122,3 +100,4 @@
 	<p>下記のサービスの繰り返しが新規マスターサービスとしてセーブされます：</p>
 	<div id="drag-drop-master-content"></div>
 </div>
+

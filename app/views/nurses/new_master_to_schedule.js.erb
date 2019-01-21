@@ -1,0 +1,5 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "new_master_to_schedule" %>');
+$('#reflect-nurse-master').modal('show');
+submitReflect()

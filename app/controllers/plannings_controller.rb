@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :archive, :master_to_schedule, :duplicate_from, :duplicate, :settings, :payable]
+	before_action :set_planning, only: [:show, :destroy, :master, :archive, :new_master_to_schedule, :master_to_schedule, :duplicate_from, :duplicate, :settings, :payable]
 	before_action :set_nurses, only: :show
 	before_action :set_patients, only: [:show, :master]
 	before_action :set_main_nurse, only: [:show, :settings]
@@ -38,6 +38,10 @@ class PlanningsController < ApplicationController
 				format.js
 			end
 		end
+	end
+
+	def new_master_to_schedule
+		authorize current_user, :has_admin_access?
 	end
 
 	def master_to_schedule

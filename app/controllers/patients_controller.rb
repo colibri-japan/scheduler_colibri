@@ -1,6 +1,6 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
-  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :master, :destroy, :master_to_schedule]
+  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :master, :destroy, :new_master_to_schedule, :master_to_schedule]
   before_action :set_planning, only: [:show, :master, :master_to_schedule]
   before_action :set_printing_option, only: [:show, :master]
   before_action :set_main_nurse, only: [:master, :show]
@@ -92,6 +92,10 @@ class PatientsController < ApplicationController
       format.json { head :no_content }
       format.js
     end
+  end
+
+  def new_master_to_schedule
+    authorize current_user, :has_admin_access?
   end
 
   def master_to_schedule

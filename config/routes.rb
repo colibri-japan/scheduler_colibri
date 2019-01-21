@@ -78,13 +78,15 @@ Rails.application.routes.draw do
   get 'plannings/:planning_id/nurses/:id/master' => 'nurses#master', as: :planning_nurse_master
   get 'nurses/:id/new_reminder_email' => 'nurses#new_reminder_email', as: :nurse_new_reminder_email
   patch 'nurses/:id/send_reminder_email' => 'nurses#send_reminder_email', as: :nurse_send_reminder_email
-  patch 'plannings/:planning_id/nurses/:id/master_to_schedule' => 'nurses#master_to_schedule', as: :nurse_master_to_schedule
-  
+  patch 'nurses/:id/master_to_schedule' => 'nurses#master_to_schedule', as: :nurse_master_to_schedule
+  get 'nurses/:id/new_master_to_schedule' => "nurses#new_master_to_schedule", as: :new_nurse_master_to_schedule
+
   #custom routes for patients
   get 'plannings/:planning_id/patients/:id/master' => 'patients#master', as: :planning_patient_master
   patch 'patients/:id/toggle_active' => 'patients#toggle_active', as: :toggle_active
-  patch 'plannings/:planning_id/patients/:id/master_to_schedule' => 'patients#master_to_schedule', as: :patient_master_to_schedule
-  
+  patch 'patients/:id/master_to_schedule' => 'patients#master_to_schedule', as: :patient_master_to_schedule
+  get 'patients/:id/new_master_to_schedule' => "patients#new_master_to_schedule", as: :new_patient_master_to_schedule
+
   #custom routes for plannings
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report
   get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
@@ -94,6 +96,7 @@ Rails.application.routes.draw do
   patch 'plannings/:id/duplicate' => 'plannings#duplicate', as: :planning_duplicate
   patch 'plannings/:id/master_to_schedule' => 'plannings#master_to_schedule', as: :master_to_schedule
   patch 'plannings/:id/archive' => 'plannings#archive', as: :planning_archive
+  get 'plannings/:id/new_master_to_schedule' => "plannings#new_master_to_schedule", as: :new_planning_master_to_schedule
 
   #custom routes for appointments
   patch 'plannings/:planning_id/appointments/:id/toggle_cancelled' => 'appointments#toggle_cancelled', as: :planning_appointment_toggle_cancelled

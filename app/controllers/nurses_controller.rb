@@ -135,6 +135,10 @@ class NursesController < ApplicationController
     end
   end
 
+  def new_master_to_schedule
+    authorize current_user, :has_admin_access?
+  end
+
   def master_to_schedule
     authorize current_user, :has_admin_access?
 

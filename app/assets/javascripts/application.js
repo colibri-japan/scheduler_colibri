@@ -1641,6 +1641,18 @@ let getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+let submitReflect = () => {
+  $('#submit-reflect').click(function(){
+    let year = $('#master-reflect-year').val()
+    let month = $('#master-reflect-month').val()
+    let url = $(this).data('submit-url') + '?month=' + month + '&year=' + year;
+    $.ajax({
+      url: url,
+      type: 'PATCH',
+    })
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

@@ -94,7 +94,13 @@ $(document).on 'turbolinks:load', ->
     content: popoverContent
     trigger: 'click'
     placement: 'top'
-      
 
+  $('#colibri-batch-master-action-button').popover 
+    html: true
+    title: 'マスター反映'
+    content: popoverContent
+    trigger: 'click'
+    placement: 'top'
+    
   
   return

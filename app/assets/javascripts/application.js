@@ -513,11 +513,15 @@ initialize_master_calendar = function() {
           }
       },
 
-      eventDrop: function (event, delta, revertFunc) {
+      eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
         $('.popover').remove();
         let frequency = humanizeFrequency(event.frequency);
         let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
 
+        let start_time = moment(view.start).format('YYYY-MM-DD')
+        console.log(start_time)
+        let end_time = moment(view.end).format('YYYY-MM-DD')
+        console.log(end_time)
         $('#drag-drop-master-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
 
         $('#drag-drop-master').dialog({
@@ -528,7 +532,7 @@ initialize_master_calendar = function() {
             'コピーする': function(){
               $(this).dialog("close");
               $.ajax({
-                url: "/plannings/" + window.planningId + "/recurring_appointments.js",
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time,
                 type: 'POST',
                 data: {
                   recurring_appointment: {

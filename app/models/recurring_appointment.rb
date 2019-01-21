@@ -118,6 +118,15 @@ class RecurringAppointment < ApplicationRecord
 		self.update_column(:archived_at, Time.current)
 	end
 
+	def overlapping_hours(start_time, end_time)
+		self_start = self.starts_at.utc.strftime("%H:%M")
+		self_end = self.ends_at.utc.strftime("%H:%M")
+		check_start = start_time.utc.strftime("%H:%M")
+		check_end = end_time.utc.strftime("%H:%M")
+		
+		check_start >= self_start && check_start < self_end || check_end > self_start && check_end <= self_end || check_start <= self_start && check_end >= self_end
+	end
+
 
 
 	private
@@ -218,7 +227,7 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def cannot_overlap_existing_appointment_create
-		puts 'overlap validation on create'
+		puts 'overlap validation on create recurring appointment'
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
@@ -241,7 +250,23 @@ class RecurringAppointment < ApplicationRecord
 					errors[:base] << "#{start_of_appointment.strftime('%-m月%-d日')}" if overlaps.present?
 				end
 			elsif self.master == true 
-				puts 'no validation yet for master'
+				puts 'validates master'
+				competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).where('(termination_date IS NULL) OR (termination_date > ?)', self.anchor.beginning_of_day)
+
+				overlapping_ids = []
+				overlapping_days = []
+
+				competing_recurring_appointments.each do |r|
+					if self.overlapping_hours(r.starts_at, r.ends_at)
+						self_occurrences = self.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
+						competing_occurrences = r.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
+						overlapping_ids << r.id if (self_occurrences - competing_occurrences).length != self_occurrences.length 
+						overlapping_days << (self_occurrences & competing_occurrences).map! {|e| e.strftime("
+						%-m月%-d日")} if (self_occurrences - competing_occurrences).length != self_occurrences.length 
+					end
+				end
+				errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 
+				errors[:base] << overlapping_days if overlapping_days.present?
 			end
 		end
 

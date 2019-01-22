@@ -54,7 +54,7 @@
 			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_services_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true if current_user.corporation_admin? %>
 		</div>
 		<% if current_user.corporation_admin? %>
-			<div class="excel-download btn btn-success text-white" id="payable-download-button"><span class="glyphicon glyphicon-download" style="color:white"></span> ダウンロードする</div>
+			<%= link_to '<i class="glyphicon glyphicon-download" style="color:white"></i>  ダウンロード'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class:'excel-download btn btn-colibri-light-gray text-white' %>
 		<% end %>
 	</div>
 

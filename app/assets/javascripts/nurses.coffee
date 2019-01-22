@@ -24,10 +24,6 @@ $(document).on 'turbolinks:load', ->
       return
     return
 
-  $('#payable-download-button').click ->
-    window.location = window.excelUrl + '?p=' + $('#schedule-filter').val()
-    return
-
   $('tr.nurse-clickable-row').click ->
     $.getScript($(this).data('link'))
     return

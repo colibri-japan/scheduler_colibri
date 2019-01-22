@@ -132,20 +132,33 @@ class RecurringAppointment < ApplicationRecord
 	private
 
 	def create_individual_appointments
-		if self.master == false
-			puts 'creating individual appointments'
-			planning = Planning.find(self.planning_id)
-			first_day = self.anchor
-			last_day = self.anchor.end_of_month
-			occurrences = self.appointments(first_day, last_day)
+		puts 'creating individual appointments'
 
+		planning = Planning.find(self.planning_id)
+		first_day = self.anchor
+		last_day = self.anchor.end_of_month
+		
+		if self.master == true 
+			puts 'master is true'
+			non_master_recurring_appointment = self.dup 
+			non_master_recurring_appointment.master = false 
+			non_master_recurring_appointment.original_id = self.id 
+			non_master_recurring_appointment.termination_date = last_day
+			non_master_recurring_appointment.save(validate: false)
+			
+		else 
+			puts 'master is false'
+			occurrences = self.appointments(first_day, last_day)
+			
 			occurrences.each do |occurrence|
 				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min)
 				end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
-				occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: self.master, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
+				occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: false, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
 				occurrence_appointment.save(validate: false)
 			end
 		end
+		
+
 	end
 
 	def update_individual_appointments

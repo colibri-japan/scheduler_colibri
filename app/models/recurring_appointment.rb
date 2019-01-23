@@ -3,6 +3,7 @@ class RecurringAppointment < ApplicationRecord
 
 	attribute :editing_occurrences_after, :integer
 	attribute :skip_appointments_callbacks, :boolean
+	attribute :request_edit_for_overlapping_appointments, :boolean
 	
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
@@ -144,6 +145,7 @@ class RecurringAppointment < ApplicationRecord
 			non_master_recurring_appointment.master = false 
 			non_master_recurring_appointment.original_id = self.id 
 			non_master_recurring_appointment.termination_date = last_day
+			non_master_recurring_appointment.request_edit_for_overlapping_appointments = true
 			non_master_recurring_appointment.save(validate: false)
 			
 		else 
@@ -153,7 +155,7 @@ class RecurringAppointment < ApplicationRecord
 			occurrences.each do |occurrence|
 				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min)
 				end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i
-				occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: false, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id)
+				occurrence_appointment = Appointment.new(title: self.title, nurse_id: self.nurse_id, recurring_appointment_id: self.id, patient_id: self.patient_id, planning_id: self.planning_id, master: false, displayable: true, starts_at: start_time, ends_at: end_time, color: self.color, edit_requested: self.edit_requested, description: self.description, service_id: self.service_id, request_edit_for_overlapping_appointments: self.request_edit_for_overlapping_appointments)
 				occurrence_appointment.save(validate: false)
 			end
 		end
@@ -264,7 +266,7 @@ class RecurringAppointment < ApplicationRecord
 				end
 			elsif self.master == true 
 				puts 'validates master'
-				competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).where('(termination_date IS NULL) OR (termination_date > ?)', self.anchor.beginning_of_day)
+				competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).where('(termination_date IS NULL) OR (termination_date > ?)', self.anchor.beginning_of_day).where.not(id: self.id)
 
 				overlapping_ids = []
 				overlapping_days = []
@@ -289,22 +291,25 @@ class RecurringAppointment < ApplicationRecord
 		puts 'overlap validation on update'
 		nurse = Nurse.find(self.nurse_id)
 
-		unless nurse.name == '未定' || self.displayable == false
-			appointments_to_be_validated = Appointment.where(recurring_appointment_id: self.id, displayable: true, master: self.master)
+		if self.master == false 
+
+			unless nurse.name == '未定' || self.displayable == false
+				appointments_to_be_validated = Appointment.where(recurring_appointment_id: self.id, displayable: true, master: self.master)
 
 
-			appointments_to_be_validated.each do |appointment_to_be_validated|
-				start_time = DateTime.new(appointment_to_be_validated.starts_at.year, appointment_to_be_validated.starts_at.month, appointment_to_be_validated.starts_at.day, self.starts_at.hour, self.starts_at.min)
-				end_time = DateTime.new(appointment_to_be_validated.ends_at.year, appointment_to_be_validated.ends_at.month, appointment_to_be_validated.ends_at.day, self.ends_at.hour, self.ends_at.min)
-				range = Range.new(start_time, end_time)
-				overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, archived_at: nil, cancelled: false).where.not(recurring_appointment_id: self.id).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id]).overlapping(range).select(:id)
-				
-				overlapping_ids = overlaps.map{|e| e.id} 
-				
-				errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present?
-				errors[:base] << "#{start_time.strftime('%-m月%-d日')}" if overlaps.present?
+				appointments_to_be_validated.each do |appointment_to_be_validated|
+					start_time = DateTime.new(appointment_to_be_validated.starts_at.year, appointment_to_be_validated.starts_at.month, appointment_to_be_validated.starts_at.day, self.starts_at.hour, self.starts_at.min)
+					end_time = DateTime.new(appointment_to_be_validated.ends_at.year, appointment_to_be_validated.ends_at.month, appointment_to_be_validated.ends_at.day, self.ends_at.hour, self.ends_at.min)
+					range = Range.new(start_time, end_time)
+					overlaps = Appointment.where(nurse_id: self.nurse_id, planning_id: self.planning_id, displayable: true, master: self.master, edit_requested: false, archived_at: nil, cancelled: false).where.not(recurring_appointment_id: self.id).where.not(id: [appointment_to_be_validated.original_id, appointment_to_be_validated.id]).overlapping(range).select(:id)
+					
+					overlapping_ids = overlaps.map{|e| e.id} 
+					
+					errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present?
+					errors[:base] << "#{start_time.strftime('%-m月%-d日')}" if overlaps.present?
+				end
+
 			end
-
 		end
 	end
 

@@ -1,6 +1,8 @@
 class Appointment < ApplicationRecord
 	include PublicActivity::Common
 
+	attribute :request_edit_for_overlapping_appointments, :boolean 
+
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
 	belongs_to :planning
@@ -12,8 +14,10 @@ class Appointment < ApplicationRecord
 	validates :title, presence: true
 	validate :do_not_overlap
 	
+	before_create :overlapping_appointments_to_edit_requested, if: :request_edit_for_overlapping_appointments?
 	before_create :default_master
 	before_create :default_displayable
+
 	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
 
@@ -34,6 +38,12 @@ class Appointment < ApplicationRecord
 
 	def weekend_holiday_appointment?
 		!self.starts_at.on_weekday? || !self.ends_at.on_weekday? || HolidayJp.between(self.starts_at, self.ends_at).present? ? true : false
+	end
+
+	def request_edit_for_overlapping_appointments?
+		puts 'request edit for overlapping appointments?'
+		puts self.request_edit_for_overlapping_appointments
+		self.request_edit_for_overlapping_appointments
 	end
 
 	def self.overlapping(range)
@@ -110,6 +120,14 @@ class Appointment < ApplicationRecord
 	end
 
 	private
+
+	def overlapping_appointments_to_edit_requested
+		puts 'requesting edit for overlapping appointments'
+		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).overlapping(self.starts_at..self.ends_at)
+		puts 'overlapping appointments count'
+		puts overlapping_appointments.count
+		overlapping_appointments.update_all(edit_requested: true, updated_at: Time.current)
+	end
 
 	def do_not_overlap
 		nurse = Nurse.find(self.nurse_id)

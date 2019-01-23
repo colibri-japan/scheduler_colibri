@@ -19,7 +19,7 @@ class Unavailability < ApplicationRecord
 	def as_json
 		{
 			id: "unavailability_#{self.id}",
-			title: self.title,
+			title: "#{self.nurse.try(:name)} #{self.patient.try(:name)}:#{self.title}",
 			start: self.starts_at,
 			end: self.ends_at,
 			patient_id: self.patient_id,

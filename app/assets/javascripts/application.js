@@ -519,9 +519,7 @@ initialize_master_calendar = function() {
         let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
 
         let start_time = moment(view.start).format('YYYY-MM-DD')
-        console.log(start_time)
         let end_time = moment(view.end).format('YYYY-MM-DD')
-        console.log(end_time)
         $('#drag-drop-master-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
 
         $('#drag-drop-master').dialog({
@@ -700,8 +698,9 @@ initialize_calendar = function() {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
         element.popover({
+          html: true,
           title: event.service_type,
-          content: event.description,
+          content: event.nurse.name + ' x ' + event.patient.name + '<br/>' + event.description,
           trigger: 'hover',
           placement: 'top',
           container: 'body'

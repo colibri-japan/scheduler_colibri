@@ -12,21 +12,4 @@
     <%= select_tag :patient_id_filter, options_from_collection_for_select(@patients, :id, :name, {prompt: '利用者選択'}), {multiple: true} %>
 </div>
 
-<div class="form-group">
-    <%= label_tag :edit_requested_filter, "調整中", class: "colibri-form-label" %>
-    <%= radio_button_tag :edit_requested_filter, 'true', checked = false %>
-    <%= label_tag :edit_requested_filter, "非調整中", class: "colibri-form-label colibri-radio" %>
-    <%= radio_button_tag :edit_requested_filter, 'false', checked = false %>
-    <%= label_tag :edit_requested_filter, "両方", class: "colibri-form-label colibri-radio" %>
-    <%= radio_button_tag :edit_requested_filter, 'undefined', checked = true %>
-</div>
-
-<div class="form-group">
-    <%= label_tag :cancelled_filter, "キャンセル", class: "colibri-form-label" %>
-    <%= radio_button_tag :cancelled_filter, 'true', checked = false %>
-    <%= label_tag :cancelled_filter, "非キャンセル", class: "colibri-form-label colibri-radio" %>
-    <%= radio_button_tag :cancelled_filter, 'false', checked = false %>
-    <%= label_tag :cancelled_filter, "両方", class: "colibri-form-label colibri-radio" %>
-    <%= radio_button_tag :cancelled_filter, 'undefined', checked = true %>
-</div>
 

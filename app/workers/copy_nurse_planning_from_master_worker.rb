@@ -49,8 +49,10 @@ class CopyNursePlanningFromMasterWorker
           displayable: true,
           recurring_appointment_id: r.id,
           service_id: r.service_id,
-          duration: r.duration
+          duration: r.duration,
+          request_edit_for_overlapping_appointments: true
         )
+        new_appointment.run_callbacks(:create) { false }
         new_appointments << new_appointment
       end
     end

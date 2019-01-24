@@ -36,20 +36,19 @@ class DashboardController < ApplicationController
     appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: query_day.beginning_of_month.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse)
 
     if team.present?
-      puts 'presence of team, further filter appointments'
       appointments = appointments.where(nurse_id: team.nurses.displayable.ids)
     end
 
     #daily summary
-    @appointments_grouped_by_title = appointments.where(starts_at: query_day.beginning_of_day..query_day.end_of_day).group_by(&:title)
+    @daily_appointments = appointments.where(starts_at: query_day.beginning_of_day..query_day.end_of_day)
     @female_patients_ids = @corporation.patients.where(gender: true).ids 
     @male_patients_ids = @corporation.patients.where(gender: false).ids
 
     #weekly  summary, from monday to query date
-    @weekly_appointments_grouped_by_title = appointments.where(starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..query_day.end_of_day).group_by(&:title)
+    @weekly_appointments = appointments.where(starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..query_day.end_of_day)
     
     #monthly summary, until end of today
-		@monthly_appointments_grouped_by_title = appointments.group_by(&:title)
+		@monthly_appointments = appointments
 
     #daily provided_services to be verified
     daily_provided_services = ProvidedService.where(planning_id: @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse).order(service_date: :asc)

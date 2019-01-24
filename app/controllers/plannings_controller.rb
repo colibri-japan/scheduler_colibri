@@ -102,15 +102,16 @@ class PlanningsController < ApplicationController
         appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
 
 	    #daily summary
-    	@appointments_grouped_by_title = appointments.where(starts_at: last_day.beginning_of_day..last_day).group_by(&:title)
-    	@female_patients_ids = @corporation.patients.where(gender: true).ids 
+    	@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
+    	@female_patients_ids = @corporation.patients.where(gender: true).ids
     	@male_patients_ids = @corporation.patients.where(gender: false).ids
 		
     	#weekly summary, from monday to today
-    	@weekly_appointments_grouped_by_title = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day).group_by(&:title)
+    	@weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
 
 		#monthly summary, until end of today
-		@monthly_appointments_grouped_by_title = appointments.group_by(&:title)
+		@monthly_appointments = appointments
+
     	#daily provided_services to be verified
     	@daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
 	end

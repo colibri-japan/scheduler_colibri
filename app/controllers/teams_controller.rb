@@ -31,15 +31,15 @@ class TeamsController < ApplicationController
         appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, nurse_id: nurse_ids, master: false, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
 
 	    #daily summary
-    	@appointments_grouped_by_title = appointments.where(starts_at: today.beginning_of_day..today.end_of_day).group_by(&:title)
+    	@daily_appointments = appointments.where(starts_at: today.beginning_of_day..today.end_of_day)
     	@female_patients_ids = @corporation.patients.where(gender: true).ids 
     	@male_patients_ids = @corporation.patients.where(gender: false).ids
 		
     	#weekly summary, from monday to today
-    	@weekly_appointments_grouped_by_title = appointments.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day).group_by(&:title)
+    	@weekly_appointments = appointments.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day)
 
 		#monthly summary, until end of today
-		@monthly_appointments_grouped_by_title = appointments.group_by(&:title)
+		@monthly_appointments = appointments
     	#daily provided_services to be verified
     	@daily_provided_services = ProvidedService.where(planning_id: @planning.id, nurse_id: nurse_ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
     end

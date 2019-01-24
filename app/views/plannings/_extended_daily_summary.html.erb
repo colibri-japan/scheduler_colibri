@@ -14,7 +14,7 @@
                 </tr>
               </thead>
               <tbody>
-                <%  appointments_grouped_by_title.each do |service_name, appointments| %>
+                <%  daily_appointments.group_by(&:title).each do |service_name, appointments| %>
                   <tr>
                     <td><%= service_name %></td>
                     <td><%= appointments.select{|appointment| female_patients_ids.include?(appointment.patient_id)}.count %></td>
@@ -22,6 +22,12 @@
                     <td><%= appointments.count %></td>
                   </tr>
                 <% end %>
+                <tr>
+                  <td class='table-important-fields'>合計</td>
+                  <td class='table-important-fields'><%= daily_appointments.select{|a| female_patients_ids.include?(a.patient_id)}.count %></td>
+                  <td class='table-important-fields'><%= daily_appointments.select{|a| male_patients_ids.include?(a.patient_id)}.count %></td>
+                  <td class='table-important-fields'><%= daily_appointments.count %></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -42,7 +48,7 @@
             </tr>
           </thead>
           <tbody>
-            <%  weekly_appointments_grouped_by_title.each do |service_name, appointments| %>
+            <%  weekly_appointments.group_by(&:title).each do |service_name, appointments| %>
               <tr>
                 <td><%= service_name %></td>
                 <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
@@ -50,6 +56,12 @@
                 <td><%= appointments.count %></td>
               </tr>
             <% end %>
+              <tr>
+                <td class='table-important-fields'>合計</td>
+                <td class='table-important-fields'><%= weekly_appointments.select{|a| female_patients_ids.include?(a.patient_id)}.count %></td>
+                <td class='table-important-fields'><%= weekly_appointments.select{|a| male_patients_ids.include?(a.patient_id)}.count %></td>
+                <td class='table-important-fields'><%= weekly_appointments.count %></td>
+              </tr>
           </tbody>
         </table>
       </div>
@@ -70,7 +82,7 @@
             </tr>
           </thead>
           <tbody>
-            <%  monthly_appointments_grouped_by_title.each do |service_name, appointments| %>
+            <%  monthly_appointments.group_by(&:title).each do |service_name, appointments| %>
               <tr>
                 <td><%= service_name %></td>
                 <td><%= appointments.select{|appointment| @female_patients_ids.include?(appointment.patient_id)}.count %></td>
@@ -78,6 +90,12 @@
                 <td><%= appointments.count %></td>
               </tr>
             <% end %>
+              <tr>
+                <td class='table-important-fields'>合計</td>
+                <td class='table-important-fields'><%= monthly_appointments.select{|a| female_patients_ids.include?(a.patient_id)}.count %></td>
+                <td class='table-important-fields'><%= monthly_appointments.select{|a| male_patients_ids.include?(a.patient_id)}.count %></td>
+                <td class='table-important-fields'><%= monthly_appointments.count %></td>
+              </tr>
           </tbody>
         </table>
       </div>

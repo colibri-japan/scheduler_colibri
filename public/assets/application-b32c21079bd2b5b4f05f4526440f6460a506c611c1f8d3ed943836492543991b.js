@@ -87342,9 +87342,6 @@ module.exports = function(Chart) {
         });
       });
     });
-    $('#payable-download-button').click(function() {
-      window.location = window.excelUrl + '?p=' + $('#schedule-filter').val();
-    });
     $('tr.nurse-clickable-row').click(function() {
       $.getScript($(this).data('link'));
     });
@@ -88017,11 +88014,13 @@ initialize_master_calendar = function() {
           }
       },
 
-      eventDrop: function (event, delta, revertFunc) {
+      eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
         $('.popover').remove();
         let frequency = humanizeFrequency(event.frequency);
         let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
 
+        let start_time = moment(view.start).format('YYYY-MM-DD')
+        let end_time = moment(view.end).format('YYYY-MM-DD')
         $('#drag-drop-master-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
 
         $('#drag-drop-master').dialog({
@@ -88032,7 +88031,7 @@ initialize_master_calendar = function() {
             'コピーする': function(){
               $(this).dialog("close");
               $.ajax({
-                url: "/plannings/" + window.planningId + "/recurring_appointments.js",
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time,
                 type: 'POST',
                 data: {
                   recurring_appointment: {
@@ -88200,8 +88199,9 @@ initialize_calendar = function() {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
         element.popover({
+          html: true,
           title: event.service_type,
-          content: event.description,
+          content: event.nurse.name + ' x ' + event.patient.name + '<br/>' + event.description,
           trigger: 'hover',
           placement: 'top',
           container: 'body'
@@ -89146,14 +89146,18 @@ let getParameterByName = (name, url) => {
 }
 
 let submitReflect = () => {
-  $('#submit-reflect').click(function(){
+  $('#submit-reflect').one('click', function(event){
+    event.preventDefault();
     let year = $('#master-reflect-year').val()
     let month = $('#master-reflect-month').val()
     let url = $(this).data('submit-url') + '?month=' + month + '&year=' + year;
+
     $.ajax({
       url: url,
       type: 'PATCH',
     })
+
+    $(this).prop('disabled', true)
   })
 }
 

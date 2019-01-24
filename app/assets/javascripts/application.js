@@ -1645,14 +1645,18 @@ let getParameterByName = (name, url) => {
 }
 
 let submitReflect = () => {
-  $('#submit-reflect').click(function(){
+  $('#submit-reflect').one('click', function(event){
+    event.preventDefault();
     let year = $('#master-reflect-year').val()
     let month = $('#master-reflect-month').val()
     let url = $(this).data('submit-url') + '?month=' + month + '&year=' + year;
+
     $.ajax({
       url: url,
       type: 'PATCH',
     })
+
+    $(this).prop('disabled', true)
   })
 }
 

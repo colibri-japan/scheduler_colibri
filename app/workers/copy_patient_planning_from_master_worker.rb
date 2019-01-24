@@ -10,10 +10,6 @@ class CopyPatientPlanningFromMasterWorker
     first_day = DateTime.new(year.to_i, month.to_i, 1, 0, 0, 0)
     last_day = DateTime.new(year.to_i, month.to_i, -1, 23, 59, 59)
 
-    patient.recurring_appointments.where(planning_id: planning.id, master: false, anchor: first_day..last_day).delete_all 
-    patient.appointments.where(planning_id: planning.id, master: false, starts_at: first_day..last_day).delete_all 
-    patient.provided_services.where(planning_id: planning.id, service_date: first_day..last_day).delete_all
-
     new_recurring_appointments = []
     new_appointments = []
     new_provided_services = []

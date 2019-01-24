@@ -1517,6 +1517,8 @@ let batchActionFormButton = () => {
       patient_ids: $('#patient_id_filter').val(),
       range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
       range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
+      edit_requested: $('input[name=edit_requested_filter]:checked').val(),
+      cancelled: $('input[name=cancelled_filter]:checked').val()
     }
     $.ajax({
       url: actionUrl,

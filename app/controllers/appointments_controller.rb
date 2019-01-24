@@ -139,6 +139,8 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_cancel_confirm
+    puts params[:edit_requested]
+    puts params[:cancelled]
   end
 
   def batch_cancel
@@ -189,6 +191,8 @@ class AppointmentsController < ApplicationController
 
       @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
       @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
+      @appointments = @appointments.where(cancelled: params[:cancelled]) if params[:cancelled].present? && params[:cancelled] != 'undefined'
+      @appointments = @appointments.where(edit_requested: params[:edit_requested]) if params[:edit_requested].present? && params[:edit_requested] != 'undefined'
     end
 
     def store_original_params

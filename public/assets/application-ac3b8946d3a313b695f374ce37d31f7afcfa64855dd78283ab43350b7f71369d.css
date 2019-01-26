@@ -1361,7 +1361,7 @@ p.master-reflect-option {
     height: auto !important;
   }
   /* line 443, app/assets/stylesheets/plannings.scss */
-  #colibri-batch-action-button {
+  #colibri-batch-action-button, #colibri-batch-master-action-button {
     height: 90px;
     width: 90px;
     border-radius: 90px;
@@ -20055,52 +20055,52 @@ tr.patient-clickable-row:hover {
   font-weight: bold;
 }
 
-/* line 367, app/assets/stylesheets/application.css.scss */
-div .fc-scroller {
+/* line 364, app/assets/stylesheets/application.css.scss */
+.fc-scroller {
   height: 57vh !important;
 }
 
-/* line 371, app/assets/stylesheets/application.css.scss */
+/* line 369, app/assets/stylesheets/application.css.scss */
 th {
   font-weight: normal;
 }
 
-/* line 375, app/assets/stylesheets/application.css.scss */
+/* line 373, app/assets/stylesheets/application.css.scss */
 .table-important-fields {
   font-weight: bold;
 }
 
-/* line 379, app/assets/stylesheets/application.css.scss */
+/* line 377, app/assets/stylesheets/application.css.scss */
 .print-only {
   display: none;
 }
 
-/* line 383, app/assets/stylesheets/application.css.scss */
+/* line 381, app/assets/stylesheets/application.css.scss */
 .small-side-margins {
   margin-left: 5px;
   margin-right: 5px;
 }
 
-/* line 388, app/assets/stylesheets/application.css.scss */
+/* line 386, app/assets/stylesheets/application.css.scss */
 .colibri-small-title {
   font-size: 1.8em;
   color: #4f5b66;
 }
 
-/* line 393, app/assets/stylesheets/application.css.scss */
+/* line 391, app/assets/stylesheets/application.css.scss */
 .colibri-xs-title {
   font-size: 1.25em;
   color: black;
   padding-bottom: 0px;
 }
 
-/* line 399, app/assets/stylesheets/application.css.scss */
+/* line 397, app/assets/stylesheets/application.css.scss */
 .appointment-section-title {
   font-size: 1.5em;
   color: #4f5b66;
 }
 
-/* line 404, app/assets/stylesheets/application.css.scss */
+/* line 402, app/assets/stylesheets/application.css.scss */
 .light-blue-background {
   background: #F7F9FE;
   margin: 1px;
@@ -20108,112 +20108,117 @@ th {
   border-bottom-right-radius: 2px;
 }
 
-/* line 411, app/assets/stylesheets/application.css.scss */
+/* line 409, app/assets/stylesheets/application.css.scss */
 .required-field {
   color: red;
 }
 
-/* line 415, app/assets/stylesheets/application.css.scss */
+/* line 413, app/assets/stylesheets/application.css.scss */
 .btn-mid-light {
   background-color: #e4e4e4;
 }
 
-/* line 419, app/assets/stylesheets/application.css.scss */
+/* line 417, app/assets/stylesheets/application.css.scss */
 .btn-mid-light:hover {
   background-color: #C5C5C5;
 }
 
-/* line 423, app/assets/stylesheets/application.css.scss */
+/* line 421, app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
 
-/* line 427, app/assets/stylesheets/application.css.scss */
+/* line 425, app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar {
   width: 8px;
 }
 
-/* line 431, app/assets/stylesheets/application.css.scss */
+/* line 429, app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar-thumb {
   border-radius: 7px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
-/* line 436, app/assets/stylesheets/application.css.scss */
+/* line 434, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-dark::-webkit-scrollbar-track {
   background-color: #606E7C;
 }
 
-/* line 440, app/assets/stylesheets/application.css.scss */
+/* line 438, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-dark::-webkit-scrollbar {
   background-color: #606E7C;
 }
 
-/* line 444, app/assets/stylesheets/application.css.scss */
+/* line 442, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-dark::-webkit-scrollbar-thumb {
   background-color: #b1b1b1;
 }
 
-/* line 448, app/assets/stylesheets/application.css.scss */
+/* line 446, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-light::-webkit-scrollbar-track {
   background-color: white;
 }
 
-/* line 452, app/assets/stylesheets/application.css.scss */
+/* line 450, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-light::-webkit-scrollbar {
   background-color: white;
 }
 
-/* line 456, app/assets/stylesheets/application.css.scss */
+/* line 454, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-light::-webkit-scrollbar-thumb {
   background-color: #DEDDDD;
 }
 
-/* line 460, app/assets/stylesheets/application.css.scss */
+/* line 458, app/assets/stylesheets/application.css.scss */
 .fc-event {
   cursor: pointer;
 }
 
-/* line 464, app/assets/stylesheets/application.css.scss */
+/* line 462, app/assets/stylesheets/application.css.scss */
 .thick-calendar-line {
   border-top: 1.33px solid #BFC4C9;
 }
 
-/* line 468, app/assets/stylesheets/application.css.scss */
+/* line 466, app/assets/stylesheets/application.css.scss */
 .btn-warning-danger {
   background-color: #FF7007 !important;
   color: white;
   border-color: #FF7007 !important;
 }
 
-/* line 474, app/assets/stylesheets/application.css.scss */
+/* line 472, app/assets/stylesheets/application.css.scss */
 .btn-warning-danger:hover {
   background-color: #C95500 !important;
   color: white;
   border-color: #9E4300 !important;
 }
 
-/* line 480, app/assets/stylesheets/application.css.scss */
+/* line 478, app/assets/stylesheets/application.css.scss */
 .btn-colibri-light-gray {
   background-color: #85929E !important;
   border-color: #85929E !important;
   color: white;
 }
 
-/* line 486, app/assets/stylesheets/application.css.scss */
+/* line 484, app/assets/stylesheets/application.css.scss */
 .btn-colibri-light-gray:hover {
   background-color: #6C757D !important;
   border-color: #6C757D !important;
   color: white;
 }
 
-/* line 492, app/assets/stylesheets/application.css.scss */
+/* line 490, app/assets/stylesheets/application.css.scss */
 .colibri-glyphicon-container {
   margin: auto;
   margin-top: 8px;
   height: 40px;
   width: 40px;
+}
+
+/* line 497, app/assets/stylesheets/application.css.scss */
+.colibri-radio {
+  margin-left: 8px;
 }
 
 @media print {
@@ -20341,7 +20346,7 @@ th {
   /* making horizontal lines thicker for 9:00 12:00 15:00 18:00 */
   /* line 628, app/assets/stylesheets/application.css.scss */
   .thick-calendar-line {
-    border-top: 1.5px solid #d1e3f5 !important;
+    border-top: 3px solid #ccc !important;
   }
   /* some styles for dashboard print */
   /* line 634, app/assets/stylesheets/application.css.scss */

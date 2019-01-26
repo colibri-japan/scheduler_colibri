@@ -637,20 +637,24 @@ initialize_calendar = function() {
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: window.defaultView,
       views: {
-      	agendaThreeDay: {
-      		type: 'agenda',
-      		duration: {days: 3},
-      		buttonText: '３日',
-      	},
-        day: {
-          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        timelineWeek: {
+          slotDuration: {days: 1},
+          buttonText: '横週',
+          slotLabelFormat: 'ddd',
+          resourceColumns: [{
+            labelText: '従業員',
+            field: 'title'
+          }]
         },
-        month: {
-          displayEventEnd: true,
+        agendaDay: {
+          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+          slotDuration: '00:15:00'
+        },
+        agendaWeek: {
+          slotDuration: '00:15:00'
         }
       },
       slotLabelFormat: 'H:mm',
-      slotDuration: '00:15:00',
       timeFormat: 'H:mm',
       nowIndicator: true,
       firstDay: window.firstDay,
@@ -660,7 +664,7 @@ initialize_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaThreeDay,agendaDay'
+        right: 'agendaDay,agendaWeek,timelineWeek'
       },
       selectable: true,
       selectHelper: false,
@@ -876,6 +880,12 @@ initialize_calendar = function() {
           $('span#day-view-options').show();
         } else {
           $('span#day-view-options').hide();
+        }
+
+        if (view.name == 'timelineWeek') {
+          let height = $('.fc-content').height();
+          $('td.fc-resource-area.fc-widget-header > div.fc-scroller-clip').height(height);
+          $('td.fc-time-area.fc-widget-header > div.fc-scroller-clip').height(height)
         }
       },
 

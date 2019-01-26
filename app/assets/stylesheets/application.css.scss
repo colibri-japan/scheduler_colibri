@@ -501,7 +501,6 @@ th {
 @media print {
 
 	@page {
-		size: auto;
 		margin: 5mm 5mm 5mm 5mm;
 	}
 
@@ -541,8 +540,6 @@ th {
 	    font-size: 1.3em;
 	}
 
-
-	@page {size: auto}
 
 	/* Fullcalendar-related styles */
 
@@ -643,7 +640,7 @@ th {
 	}
 
 	.colibri-subcontainer-body {
-		height: 100%;
+		height: auto !important;
 	}
 
 	.colibri-xs-title {
@@ -660,7 +657,13 @@ th {
     tr    { page-break-inside:avoid; page-break-after:auto }
     td    { page-break-inside:avoid; page-break-after:auto }
     thead { display:table-header-group }
-    tfoot { display:table-footer-group }
+	tfoot { display:table-footer-group }
+	
+	/* fixing one pager print */
+
+	html, body {
+		height: auto;
+	}
 
   
 }

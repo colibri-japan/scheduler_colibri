@@ -109,3 +109,10 @@
 .post-clickable:hover {
 	cursor: pointer;
 }
+
+@media print {
+	#extended-daily-summary-container {
+		height: auto !important;
+		overflow: visible !important;
+	}
+}

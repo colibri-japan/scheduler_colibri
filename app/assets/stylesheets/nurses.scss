@@ -166,3 +166,12 @@ p.payable-dashboard-line {
 .refresh-button:hover {
 	cursor: pointer;
 }
+
+
+@media print {
+	#payable-container {
+		margin: 0px;
+		height: auto !important;
+		overflow: visible;
+	}
+}

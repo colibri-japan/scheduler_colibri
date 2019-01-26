@@ -52,7 +52,9 @@
 
       <div class="form-group">
         <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
-        <%= form.select(:frequency,  options_for_select(frequency_options, recurring_appointment.frequency), id: :recurring_appointment_frequency) %>
+        <% new_frequency = @master == true ? 0 : 2 %>
+        <% frequency = recurring_appointment.frequency ||= new_frequency %>
+        <%= form.select(:frequency,  options_for_select(frequency_options, new_frequency), id: :recurring_appointment_frequency) %>
       </div>
 
     <% end %>

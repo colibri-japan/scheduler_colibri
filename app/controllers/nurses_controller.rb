@@ -118,9 +118,6 @@ class NursesController < ApplicationController
 
     fetch_nurses_grouped_by_team
 
-    set_counter
-    @counter.update(service_counts: @services_till_now.where.not(appointment_id: nil).count )
-
     calculate_total_wage
     @total_time_worked = @services_till_now.sum{|e|   e.service_duration.present? ? e.service_duration : 0 } 
     
@@ -186,17 +183,7 @@ class NursesController < ApplicationController
 
   def calculate_total_wage
     @total_till_now = @services_till_now.sum{|service| service.total_wage.present? ? service.total_wage : 0 }
-    @total_till_now = @total_till_now + @counter.try(:total_wage) if @counter.total_wage.present?
-
     @total_from_now = @services_from_now.sum{|service| service.total_wage.present? ? service.total_wage : 0 }
-  end
-
-  def set_counter
-    @counter = @nurse.provided_services.where(planning_id: @planning.id, countable: true, temporary: false).take
-
-    unless @counter.present?
-      @counter = @nurse.provided_services.create!(planning_id: @planning.id, countable: true, provided: true, hour_based_wage: false)
-    end
   end
 
   def delete_previous_temporary_services

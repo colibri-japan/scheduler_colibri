@@ -117,27 +117,6 @@
 
 			</tr>
 			<% end %>
-			<% if @counter.present? && current_user.corporation_admin? %>
-				<tr>
-					<td></td>
-					<td>移動手当 (x<%= @counter.service_counts %>)</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>
-						<%= @counter.unit_cost %>
-					</td>
-					<td id="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
-					<td class='verify-provided-service' id='provided-service-<%= @counter.id %>'>
-						<% if @counter.verified? %>
-							<div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
-						<% else %>
-							<%= link_to '確認', verify_provided_service_path(@counter), method: :patch, remote: :true, class: 'btn btn-success btn-sm'  %>
-						<% end %>
-					</td>
-					<td><%= link_to '編集', edit_nurse_provided_service_path(@nurse, @counter, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %></td>
-				</tr>
-			<% end %>
 			<% if current_user.corporation_admin? %>
 				<tr>
 					<td></td>
@@ -178,19 +157,6 @@
 						<td><%= service.unit_cost %></td>
 						<td><%= service.total_wage %></td>
 					<% end %>
-				</tr>
-			<% end %>
-			<% if @counter.present? && current_user.corporation_admin? %>
-				<tr>
-					<td>移動手当</td>
-					<td></td>
-					<td>
-						<%= @counter.unit_cost %>
-					</td>
-					<td>
-						<%= @counter.service_counts %>
-					</td>
-					<td class="service-total-<%= @counter.id %>"><%= @counter.total_wage %>¥</td>
 				</tr>
 			<% end %>
 			<% if current_user.corporation_admin? %>

@@ -640,7 +640,9 @@ initialize_calendar = function() {
         timelineWeek: {
           slotDuration: {days: 1},
           buttonText: '横週',
-          slotLabelFormat: 'ddd',
+          slotLabelFormat: 'D日[(]ddd[)]',
+          resourceAreaWidth: '10%',
+          displayEventEnd: true,
           resourceColumns: [{
             labelText: '従業員',
             field: 'title'
@@ -719,7 +721,9 @@ initialize_calendar = function() {
             }
           });
         } else if (view.name == 'timelineWeek' && !event.unavailability) {
-          event.title = event.patient.name
+          element.find('.fc-title').text(function(i,t){
+            return event.patient.name;
+          })
         }
 
 

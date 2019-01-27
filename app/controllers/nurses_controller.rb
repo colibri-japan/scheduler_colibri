@@ -205,7 +205,7 @@ class NursesController < ApplicationController
     end
 
     service_types.each do |service_title|
-      matching_provided_services = @services_till_now.where(title: service_title).all
+      matching_provided_services = @services_till_now.where(title: service_title, cancelled: false).all
       
       sum_duration = matching_provided_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
       sum_total_wage = matching_provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }

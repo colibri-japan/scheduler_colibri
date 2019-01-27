@@ -191,8 +191,23 @@ class AppointmentsController < ApplicationController
 
       @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
       @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
-      @appointments = @appointments.where(cancelled: params[:cancelled]) if params[:cancelled].present? && params[:cancelled] != 'undefined'
-      @appointments = @appointments.where(edit_requested: params[:edit_requested]) if params[:edit_requested].present? && params[:edit_requested] != 'undefined'
+      cancelled = params[:cancelled]
+      edit_requested = params[:edit_requested]
+
+      if edit_requested == 'false' && cancelled == 'false'
+        @appointments = @appointments.where('cancelled is false AND edit_requested is false')
+      elsif edit_requested == 'undefined' && cancelled == 'undefined' 
+      elsif edit_requested == 'undefined' && cancelled == 'false'
+        @appointments = @appointments.where(cancelled: false)
+      elsif edit_requested == 'false' && cancelled == 'undefined'
+        @appointments = @appointments.where('(edit_requested is false) OR (edit_requested is true AND cancelled is true)')
+      elsif edit_requested == 'true' && cancelled == 'false'
+        @appointments = @appointments.where(edit_requested: true, cancelled: false)
+      elsif edit_requested == 'undefined' && cancelled == 'true'
+        @appointments = @appointments.where(cancelled: true)
+      elsif edit_requested == 'true' && cancelled == 'true'
+        @appointments = @appointments.where('cancelled is true OR edit_requested is true')
+      end
     end
 
     def store_original_params

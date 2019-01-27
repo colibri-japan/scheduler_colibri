@@ -11,21 +11,12 @@
                 <%= render 'batch_action_form' %>
 
 				<div class="form-group">
-					<%= label_tag :edit_requested_filter, "調整中", class: "colibri-form-label" %>
-					<%= radio_button_tag :edit_requested_filter, 'true', checked = false %>
-					<%= label_tag :edit_requested_filter, "非調整中", class: "colibri-form-label colibri-radio" %>
-					<%= radio_button_tag :edit_requested_filter, 'false', checked = false %>
-					<%= label_tag :edit_requested_filter, "両方", class: "colibri-form-label colibri-radio" %>
-					<%= radio_button_tag :edit_requested_filter, 'undefined', checked = true %>
-				</div>
-
-				<div class="form-group">
-					<%= label_tag :cancelled_filter, "キャンセル", class: "colibri-form-label" %>
-					<%= radio_button_tag :cancelled_filter, 'true', checked = false %>
-					<%= label_tag :cancelled_filter, "非キャンセル", class: "colibri-form-label colibri-radio" %>
-					<%= radio_button_tag :cancelled_filter, 'false', checked = false %>
-					<%= label_tag :cancelled_filter, "両方", class: "colibri-form-label colibri-radio" %>
-					<%= radio_button_tag :cancelled_filter, 'undefined', checked = true %>
+					<%= label_tag :cancelled_and_edit_requested_filter, "通常", class: "colibri-form-label" %>
+					<%= check_box_tag :normal_filter, 'normal', checked = true %>
+					<%= label_tag :cancelled_and_edit_requested_filter, "調整中", class: "colibri-form-label colibri-radio" %>
+					<%= check_box_tag :edit_requested_filter, 'edit_requested', checked = true %>
+					<%= label_tag :cancelled_and_edit_requested_filter, "キャンセル", class: "colibri-form-label colibri-radio" %>
+					<%= check_box_tag :cancelled_filter, 'cancelled', checked = true %>
 				</div>
 
                 <div>

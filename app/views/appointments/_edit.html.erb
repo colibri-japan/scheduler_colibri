@@ -9,7 +9,7 @@
 			<div id='edit-options' style='display:none'>
 				<div class="modal-body">
 					<div class='btn btn-info text-white btn-block' id='one-day-edit'>この日のみ編集する</div>
-					<div class='btn btn-info text-white btn-block' id='recurring-edit' data-recurring-url='<%= "/plannings/#{@planning.id}/recurring_appointments/#{@appointment.try(:recurring_appointment_id)}/edit" %>'>繰り返しを編集する</div>
+					<div class='btn btn-info text-white btn-block' id='recurring-edit' data-recurring-url='<%= "/plannings/#{@planning.id}/recurring_appointments/#{@appointment.try(:recurring_appointment_id)}/edit" %>'>月の繰り返しの編集</div>
 				</div>
 			</div>
 

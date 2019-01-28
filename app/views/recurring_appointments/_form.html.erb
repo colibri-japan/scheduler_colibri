@@ -15,9 +15,12 @@
     <% unless recurring_appointment.new_record? %>
 
 
+      <% if false %>
       <div class="form-group">
           <%= form.check_box :master, checked:  recurring_appointment.master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
       </div>
+
+      <% end %>
 
       <% if recurring_appointment.master == true %>
 

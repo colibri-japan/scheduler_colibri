@@ -1532,51 +1532,63 @@ let batchActionFormButton = () => {
 
   actionButton.click(function(){
     let cancelledAndEditRequested = evaluateCancelledAndEditRequested();
+    let edit_requested;
+    let cancelled;
 
-    if (!cancelledAndEditRequested) {
+    if (cancelledAndEditRequested == -1) {
       alert('通常.調整中.キャンセルのどちらかを選択してください');
       return
     } else {
+      if (!cancelledAndEditRequested) {
+        edit_requested = 'undefined';
+        cancelled = 'undefined'
+      } else {
+        edit_requested = cancelledAndEditRequested['edit_requested'];
+        cancelled = cancelledAndEditRequested['cancelled']
+      }
       appointment_filters = {
         nurse_ids: $('#nurse_id_filter').val(),
         patient_ids: $('#patient_id_filter').val(),
         range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
-        edit_requested: cancelledAndEditRequested['edit_requested'],
-        cancelled: cancelledAndEditRequested['cancelled']
+        edit_requested: edit_requested,
+        cancelled: cancelled
       }
       $.ajax({
         url: actionUrl,
         data: appointment_filters,
         type: 'GET'
       })
-
     }
-
   });
 }
 
 let evaluateCancelledAndEditRequested = () => {
-  let normal_filter = $('#normal_filter').is(':checked');
-  let edit_requested_filter = $('#edit_requested_filter').is(':checked');
-  let cancelled_filter = $('#cancelled_filter').is(':checked');
 
-  if (normal_filter && !edit_requested_filter && !cancelled_filter) {
-    return {edit_requested: false, cancelled: false}
-  } else if (normal_filter && edit_requested_filter && cancelled_filter) {
-    return {edit_requested: 'undefined', cancelled: 'undefined'}
-  } else if (normal_filter && edit_requested_filter && !cancelled_filter) {
-    return {edit_requested: 'undefined', cancelled: false}
-  } else if (normal_filter && !edit_requested_filter && cancelled_filter) {
-    return {edit_requested: false, cancelled: 'undefined'}
-  } else if (!normal_filter && edit_requested_filter && !cancelled_filter) {
-    return {edit_requested: true, cancelled: false}
-  } else if (!normal_filter && !edit_requested_filter && cancelled_filter) {
-    return {edit_requested: 'undefined', cancelled: true}
-  } else if (!normal_filter && edit_requested_filter && cancelled_filter) {
-    return {edit_requested: true, cancelled: true}
+  if ($('#normal_filter').length < 1 && $('#edit_requested_filter').length < 1 && $('#cancelled_filter').length < 1) {
+    return false;
   } else {
-    return false
+    let normal_filter = $('#normal_filter').is(':checked');
+    let edit_requested_filter = $('#edit_requested_filter').is(':checked');
+    let cancelled_filter = $('#cancelled_filter').is(':checked');
+  
+    if (normal_filter && !edit_requested_filter && !cancelled_filter) {
+      return {edit_requested: false, cancelled: false}
+    } else if (normal_filter && edit_requested_filter && cancelled_filter) {
+      return {edit_requested: 'undefined', cancelled: 'undefined'}
+    } else if (normal_filter && edit_requested_filter && !cancelled_filter) {
+      return {edit_requested: 'undefined', cancelled: false}
+    } else if (normal_filter && !edit_requested_filter && cancelled_filter) {
+      return {edit_requested: false, cancelled: 'undefined'}
+    } else if (!normal_filter && edit_requested_filter && !cancelled_filter) {
+      return {edit_requested: true, cancelled: false}
+    } else if (!normal_filter && !edit_requested_filter && cancelled_filter) {
+      return {edit_requested: 'undefined', cancelled: true}
+    } else if (!normal_filter && edit_requested_filter && cancelled_filter) {
+      return {edit_requested: true, cancelled: true}
+    } else {
+      return -1
+    }
   }
 }
 

@@ -31,9 +31,9 @@ class CopyPlanningFromMasterWorker
 	RecurringAppointment.import(new_recurring_appointments)
 	
 
-    new_recurring_appointments.each do |r|
+  new_recurring_appointments.each do |r|
+    if r.id.present?
       occurrences = r.appointments(first_day, last_day)
-
       occurrences.each do |occurrence|
         new_appointment = Appointment.new(
           starts_at: DateTime.new(occurrence.year, occurrence.month, occurrence.day, r.starts_at.hour, r.starts_at.min),
@@ -53,6 +53,7 @@ class CopyPlanningFromMasterWorker
         new_appointments << new_appointment
       end
     end
+  end
 
 	Appointment.import(new_appointments)
 

@@ -33,27 +33,29 @@ class CopyNursePlanningFromMasterWorker
     RecurringAppointment.import(new_recurring_appointments)
 
     new_recurring_appointments.each do |r|
-      occurrences = r.appointments(first_day, last_day)
+      if r.id.present?
+        occurrences = r.appointments(first_day, last_day)
 
-      occurrences.each do |occurrence|
-        new_appointment = Appointment.new(
-          starts_at: DateTime.new(occurrence.year, occurrence.month, occurrence.day, r.starts_at.hour, r.starts_at.min),
-          ends_at: DateTime.new(occurrence.year, occurrence.month, occurrence.day, r.ends_at.hour, r.ends_at.min),
-          title: r.title,
-          color: r.color,
-          nurse_id: r.nurse_id,
-          patient_id: r.patient_id,
-          description: r.description,
-          planning_id: r.planning_id,
-          master: false,
-          displayable: true,
-          recurring_appointment_id: r.id,
-          service_id: r.service_id,
-          duration: r.duration,
-          request_edit_for_overlapping_appointments: true
-        )
-        new_appointment.run_callbacks(:create) { false }
-        new_appointments << new_appointment
+        occurrences.each do |occurrence|
+          new_appointment = Appointment.new(
+            starts_at: DateTime.new(occurrence.year, occurrence.month, occurrence.day, r.starts_at.hour, r.starts_at.min),
+            ends_at: DateTime.new(occurrence.year, occurrence.month, occurrence.day, r.ends_at.hour, r.ends_at.min),
+            title: r.title,
+            color: r.color,
+            nurse_id: r.nurse_id,
+            patient_id: r.patient_id,
+            description: r.description,
+            planning_id: r.planning_id,
+            master: false,
+            displayable: true,
+            recurring_appointment_id: r.id,
+            service_id: r.service_id,
+            duration: r.duration,
+            request_edit_for_overlapping_appointments: true
+          )
+          new_appointment.run_callbacks(:create) { false }
+          new_appointments << new_appointment
+        end
       end
     end
 

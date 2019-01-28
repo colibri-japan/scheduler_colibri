@@ -58,19 +58,6 @@ class PlanningsController < ApplicationController
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
 	end
 
-	def duplicate_from
-		@plannings = @corporation.plannings.where(archived: false) - [@planning]
-	end
-
-	def duplicate
-		template_planning = Planning.find(params[:template_id])
-		authorize template_planning, :is_employee?
-
-		DuplicatePlanningWorker.perform_async(template_planning.id, @planning.id)
-
-		redirect_to planning_nurse_master_path(@planning, @corporation.nurses.where(displayable: true).first), notice: 'サービスが新しいスケジュールへコピーされてます。数十秒後にリフレッシュしてください。'
-	end
-
 	def destroy
 	  authorize @planning, :is_employee?
 

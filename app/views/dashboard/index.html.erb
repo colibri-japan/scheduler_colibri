@@ -19,7 +19,37 @@
 <div id='colibri-dashboard-container'>
 
   <div class='colibri-dashboard-big-container no-print'>
-    <div class='colibri-dashboard-container-column'>
+    <div class='colibri-dashboard-container-column-large'>
+
+      <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
+        <div class='colibri-subcontainer-header'>
+          <span class='colibri-subcontainer-title'><%= @current_user_team.team_name if @current_user_team.present? %>調整中リスト（先２週間）</span>
+        </div>
+        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>サービス</th>
+                <th>利用者名</th>
+                <th>従業員名</th>
+                <th>提供日</th>
+                <th>稼働時間</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @edit_requested_appointments.each do |appointment| %>
+              <tr>
+                <td><%= appointment.title %></td>
+                <td><%= appointment.patient.try(:name) %></td>
+                <td><%= appointment.nurse.try(:name) %></td>
+                <td><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
+                <td><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
         <div class='colibri-subcontainer-header'>
@@ -32,39 +62,9 @@
         </div>
       </div>
 
-
-      <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
-        <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'>調整中リスト（先２週間）</span>
-        </div>
-        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
-          <table class='table'>
-            <thead>
-              <tr>
-                <th>サービス</th>
-                <th>利用者名</th>
-                <th>提供日</th>
-                <th>稼働時間</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @edit_requested_appointments.each do |appointment| %>
-              <tr>
-                <td><%= appointment.title %></td>
-                <td><%= appointment.patient.name %></td>
-                <td><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
-                <td><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></td>
-              </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-
     </div>
 
-    <div class='colibri-dashboard-container-column'>
+    <div class='colibri-dashboard-container-column-narrow'>
       <div class='colibri-dashboard-subcontainer subcontainer-column-full-height'>
         <div class='colibri-subcontainer-header'>
           <span class='colibri-subcontainer-title'>掲示板</span>

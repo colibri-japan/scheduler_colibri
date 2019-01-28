@@ -21,8 +21,10 @@ class DashboardController < ApplicationController
     appointments = Appointment.valid.where(planning_id: @planning.id, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)
 
     #edit requested appointments for next two weeks
-    @edit_requested_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day, edit_requested: true).order(starts_at: :asc)
+    @current_user_team = Team.find(current_user.nurse.team_id) if @corporation.teams.present? && current_user.nurse_id.present? 
 
+    @edit_requested_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day, edit_requested: true).order(starts_at: :asc)
+    @edit_requested_appointments = @edit_requested_appointments.where(nurse_id: @current_user_team.nurses.ids) if @current_user_team
     #appointments with comments for the next two weeks
     @commented_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day).where.not(description: [nil, '']).order(starts_at: :asc)
   end

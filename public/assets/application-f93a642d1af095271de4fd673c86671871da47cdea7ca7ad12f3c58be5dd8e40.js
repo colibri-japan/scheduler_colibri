@@ -87563,7 +87563,7 @@ let setRecurringAppointmentTime = (start, end, view) => {
   $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
   $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-  if (view.name == 'month') {
+  if (view.name == 'month' || view.name ==  'timelineWeek' ) {
     $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
     $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
     $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
@@ -88141,7 +88141,9 @@ initialize_calendar = function() {
         timelineWeek: {
           slotDuration: {days: 1},
           buttonText: '横週',
-          slotLabelFormat: 'ddd',
+          slotLabelFormat: 'D日[(]ddd[)]',
+          resourceAreaWidth: '10%',
+          displayEventEnd: true,
           resourceColumns: [{
             labelText: '従業員',
             field: 'title'
@@ -88205,7 +88207,7 @@ initialize_calendar = function() {
         element.popover({
           html: true,
           title: event.service_type,
-          content: event.nurse.name + ' x ' + event.patient.name + '<br/>' + event.description,
+          content: event.nurse.name + ' x ' + event.patient.name + '<br/>' + event.description + '<br/>' + event.patient.address,
           trigger: 'hover',
           placement: 'top',
           container: 'body'
@@ -88219,6 +88221,10 @@ initialize_calendar = function() {
               return event.nurse.name;
             }
           });
+        } else if (view.name == 'timelineWeek' && !event.unavailability) {
+          element.find('.fc-title').text(function(i,t){
+            return event.patient.name;
+          })
         }
 
 
@@ -88283,6 +88289,9 @@ initialize_calendar = function() {
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
+          } else if (view.name == 'timelineWeek') {
+            $('#recurring_appointment_nurse_id').val(resource.id);
+            $('#recurring_appointment_nurse_id').trigger('chosen:updated')
           }
         });
 
@@ -89024,51 +89033,63 @@ let batchActionFormButton = () => {
 
   actionButton.click(function(){
     let cancelledAndEditRequested = evaluateCancelledAndEditRequested();
+    let edit_requested;
+    let cancelled;
 
-    if (!cancelledAndEditRequested) {
+    if (cancelledAndEditRequested == -1) {
       alert('通常.調整中.キャンセルのどちらかを選択してください');
       return
     } else {
+      if (!cancelledAndEditRequested) {
+        edit_requested = 'undefined';
+        cancelled = 'undefined'
+      } else {
+        edit_requested = cancelledAndEditRequested['edit_requested'];
+        cancelled = cancelledAndEditRequested['cancelled']
+      }
       appointment_filters = {
         nurse_ids: $('#nurse_id_filter').val(),
         patient_ids: $('#patient_id_filter').val(),
         range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
-        edit_requested: cancelledAndEditRequested['edit_requested'],
-        cancelled: cancelledAndEditRequested['cancelled']
+        edit_requested: edit_requested,
+        cancelled: cancelled
       }
       $.ajax({
         url: actionUrl,
         data: appointment_filters,
         type: 'GET'
       })
-
     }
-
   });
 }
 
 let evaluateCancelledAndEditRequested = () => {
-  let normal_filter = $('#normal_filter').is(':checked');
-  let edit_requested_filter = $('#edit_requested_filter').is(':checked');
-  let cancelled_filter = $('#cancelled_filter').is(':checked');
 
-  if (normal_filter && !edit_requested_filter && !cancelled_filter) {
-    return {edit_requested: false, cancelled: false}
-  } else if (normal_filter && edit_requested_filter && cancelled_filter) {
-    return {edit_requested: 'undefined', cancelled: 'undefined'}
-  } else if (normal_filter && edit_requested_filter && !cancelled_filter) {
-    return {edit_requested: 'undefined', cancelled: false}
-  } else if (normal_filter && !edit_requested_filter && cancelled_filter) {
-    return {edit_requested: false, cancelled: 'undefined'}
-  } else if (!normal_filter && edit_requested_filter && !cancelled_filter) {
-    return {edit_requested: true, cancelled: false}
-  } else if (!normal_filter && !edit_requested_filter && cancelled_filter) {
-    return {edit_requested: 'undefined', cancelled: true}
-  } else if (!normal_filter && edit_requested_filter && cancelled_filter) {
-    return {edit_requested: true, cancelled: true}
+  if ($('#normal_filter').length < 1 && $('#edit_requested_filter').length < 1 && $('#cancelled_filter').length < 1) {
+    return false;
   } else {
-    return false
+    let normal_filter = $('#normal_filter').is(':checked');
+    let edit_requested_filter = $('#edit_requested_filter').is(':checked');
+    let cancelled_filter = $('#cancelled_filter').is(':checked');
+  
+    if (normal_filter && !edit_requested_filter && !cancelled_filter) {
+      return {edit_requested: false, cancelled: false}
+    } else if (normal_filter && edit_requested_filter && cancelled_filter) {
+      return {edit_requested: 'undefined', cancelled: 'undefined'}
+    } else if (normal_filter && edit_requested_filter && !cancelled_filter) {
+      return {edit_requested: 'undefined', cancelled: false}
+    } else if (normal_filter && !edit_requested_filter && cancelled_filter) {
+      return {edit_requested: false, cancelled: 'undefined'}
+    } else if (!normal_filter && edit_requested_filter && !cancelled_filter) {
+      return {edit_requested: true, cancelled: false}
+    } else if (!normal_filter && !edit_requested_filter && cancelled_filter) {
+      return {edit_requested: 'undefined', cancelled: true}
+    } else if (!normal_filter && edit_requested_filter && cancelled_filter) {
+      return {edit_requested: true, cancelled: true}
+    } else {
+      return -1
+    }
   }
 }
 

@@ -8,4 +8,12 @@ module AppointmentsHelper
         appointment.cancelled == true ? "サービスのキャンセルが解除されます" : "サービスがキャンセルされます"
     end
 
+	def toggle_cancel_text(record)
+		record.cancelled ? 'キャンセル解消' : 'キャンセルする'
+	end
+
+	def toggle_edit_requested_text(record)
+		record.edit_requested ? '調整中解除' : '調整中リストへ'
+	end
+
 end

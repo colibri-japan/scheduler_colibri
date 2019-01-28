@@ -1133,7 +1133,21 @@ let toggleEditRequested = () => {
     off: offText,
     onstyle: 'success',
     offstyle: 'secondary',
-    width: 120
+    width: 150
+  })
+}
+
+let toggleCancelled = () => {
+  let $this  = $('.cancelled-toggle')
+  let cancelled = $this.data('cancelled')
+  let onText = cancelled ? '残す' : 'キャンセルする';
+  let offText = cancelled ? 'キャンセル解除' : 'キャンセルなし';
+  $this.bootstrapToggle({
+    on: onText,
+    off: offText,
+    onstyle: 'danger',
+    offstyle: 'secondary',
+    width: 160
   })
 }
 

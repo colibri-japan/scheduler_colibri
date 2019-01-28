@@ -12,25 +12,21 @@
   <% end %>
 
   <div id="form-options-container">
-    <% unless appointment.new_record? %>
+    <div class="appointment-section-title">単発編集</div>
 
-      <div class="form-group">
-          <%= form.check_box :master, checked: appointment.master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
-      </div>
-
-    <% end %>
+    <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> #{toggle_cancel_text(appointment)}".html_safe, planning_appointment_toggle_cancelled_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>
+    <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 削除'.html_safe, planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: 'サービスが削除され、スケジュールから消えます。'}, remote: true unless appointment.new_record? %>
+    <%= link_to "<i class='glyphicon glyphicon-th-list' style='color:white;font-size:12px'></i> #{toggle_edit_requested_text(appointment)}".html_safe, planning_appointment_toggle_edit_requested_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: 'サービスが調整中リストへ追加されます'}, remote: true unless appointment.new_record? %>
 
   </div>
 
+
   <div class="modal-body">
+    <div class="appointment-section-title">詳細編集</div>
+    
     <div class="form-group">
       <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
       <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', appointment.title), id: :appointment_title, required: true, title: 'サービスタイプを選択してください', required_pattern: '.*\S+.*', class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :description, "コメント", class: "colibri-form-label" %>
-      <%= form.text_area :description, id: :appointment_description, class: "form-control" %>
     </div>
 
     <div class="form-group">
@@ -65,11 +61,21 @@
       </div>
     <% end %>
 
+    <% unless @master%>
+      <div class="form-group">
+        <%= form.label :cancelled, "キャンセル", class: "colibri-form-label" %>
+        <%= form.check_box :cancelled, class: "cancelled-toggle", data: {cancelled: appointment.cancelled} %>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :description, "コメント", class: "colibri-form-label" %>
+      <%= form.text_area :description, id: :appointment_description, class: "form-control" %>
+    </div>
+
 
     <div class="actions">
-      <%= form.submit "セーブする", class: "btn btn-info" %>
-      <%= link_to toggle_cancel_text(appointment), planning_appointment_toggle_cancelled_path(@planning, appointment), method: :patch, class: 'btn btn-danger', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>
-      <%= link_to '削除する', planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-secondary', data: {confirm: 'サービスが削除され、スケジュールから消えます。'}, remote: true unless appointment.new_record? %>
+      <%= form.submit "編集する", class: "btn btn-info btn-block" %>
     </div>
   </div>
 

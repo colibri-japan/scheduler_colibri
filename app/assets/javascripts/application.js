@@ -176,16 +176,7 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
-        var table = $(this).parent().parent().parent().parent().children();
-        let dateClicked;
-        $(table).each(function () {
-          // Get the thead
-          if ($(this).is('thead')) {
-            var tds = $(this).children().children();
-            dateClicked = $(tds[caseNumber]).attr("data-date");
-          }
-        });
+        let dateClicked = moment(event.start).format('YYYY-MM-DD');
         $.getScript(event.edit_url + '?date=' + dateClicked, function() {
           appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
         });
@@ -401,16 +392,7 @@ initialize_patient_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
-        var table = $(this).parent().parent().parent().parent().children();
-        let dateClicked;
-        $(table).each(function () {
-          // Get the thead
-          if ($(this).is('thead')) {
-            var tds = $(this).children().children();
-            dateClicked = $(tds[caseNumber]).attr("data-date");
-          }
-        });
+        let dateClicked = moment(event.start).format('YYYY-MM-DD');
         $.getScript(event.edit_url + '?date=' + dateClicked, function() {
           appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
         });
@@ -600,16 +582,7 @@ initialize_master_calendar = function() {
         // Get the table
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
-        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
-        var table = $(this).parent().parent().parent().parent().children();
-        let dateClicked;
-        $(table).each(function () {
-          // Get the thead
-          if ($(this).is('thead')) {
-            var tds = $(this).children().children();
-            dateClicked = $(tds[caseNumber]).attr("data-date");
-          }
-        });
+        let dateClicked = moment(event.start).format('YYYY-MM-DD');
         if (window.userIsAdmin == 'true') {
           $.getScript(event.edit_url + '?master=true&date=' + dateClicked, function(){
             individualMasterToGeneral()

@@ -1,7 +1,7 @@
 class RecurringAppointment < ApplicationRecord
 	include PublicActivity::Common
 
-	attribute :editing_occurrences_after, :integer
+	attribute :editing_occurrences_after, :date
 	attribute :skip_appointments_callbacks, :boolean
 	attribute :request_edit_for_overlapping_appointments, :boolean
 	
@@ -19,9 +19,13 @@ class RecurringAppointment < ApplicationRecord
 	before_create :default_frequency
 	before_create :default_master
 	before_create :default_displayable
-	
+
 	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
+
+	before_update :update_individual_occurrences
+
+	after_create :create_individual_appointments
 
 	validates :anchor, presence: true
 	validates :frequency, presence: true
@@ -30,11 +34,9 @@ class RecurringAppointment < ApplicationRecord
 	validate :cannot_overlap_existing_appointment_create, on: :create
 	validate :cannot_overlap_existing_appointment_update, on: :update
 
-	after_create :create_individual_appointments
-	after_update :update_individual_appointments
 
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks
-	skip_callback :update, :after, :update_individual_appointments, if: :skip_appointments_callbacks
+	skip_callback :update, :before, :update_individual_occurrences, if: :skip_appointments_callbacks
 
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
@@ -163,34 +165,23 @@ class RecurringAppointment < ApplicationRecord
 
 	end
 
-	def update_individual_appointments
-		puts 'updating individual appointments'
+	def update_individual_occurrences
+		puts 'updating individual occurrences'
 
 		if self.master == false
-
-			appointments_to_edit = Appointment.where(recurring_appointment_id: self.id).to_be_displayed
+			appointments_to_edit = Appointment.where(recurring_appointment_id: self.id).to_be_displayed.order(starts_at: :asc)
 
 			if self.editing_occurrences_after.present?
-
 				puts 'inside editing occurrences'
-
 				all_appointments = appointments_to_edit
+				appointments_to_edit = appointments_to_edit.where("starts_at >= ?", self.editing_occurrences_after.to_date.beginning_of_day)
+				appointments_not_to_be_edited = all_appointments - appointments_to_edit 
 
-				editing_start_occurrence = Appointment.find(self.editing_occurrences_after.to_i)
-				edit_after_date = Date.new(editing_start_occurrence.starts_at.year, editing_start_occurrence.starts_at.month, editing_start_occurrence.starts_at.day)
-				edit_after_date = edit_after_date.beginning_of_day
-				appointments_to_edit = all_appointments.where("starts_at >= ?",edit_after_date)
-				appointments_before_edit_date = all_appointments - appointments_to_edit 
+				recurring_appointment_before_edit = RecurringAppointment.new(title: title_was, description: description_was, nurse_id: nurse_id_was, patient_id: patient_id_was, color: color_was, master: master_was, displayable: displayable_was, cancelled: cancelled_was, planning_id: planning_id_was, anchor: anchor_was, end_day: end_day_was, starts_at: starts_at_was, ends_at: ends_at_was, skip_appointments_callbacks: true, frequency: frequency_was, original_id: id, duplicatable: false)
+				recurring_appointment_before_edit.save(validate: false)
 
-				first_appointment = appointments_before_edit_date.first
-
-				recurring_anchor = Date.new(first_appointment.starts_at.year, first_appointment.starts_at.month, first_appointment.starts_at.day)
-				recurring_end_day = Date.new(first_appointment.ends_at.year, first_appointment.ends_at.month, first_appointment.ends_at.day)
-				recurring_appointment_before_edit_date = RecurringAppointment.new(title: first_appointment.title, description: first_appointment.description, nurse_id: first_appointment.nurse_id, patient_id: first_appointment.patient_id, color: first_appointment.color, master: first_appointment.master, displayable: first_appointment.displayable, cancelled: first_appointment.cancelled, planning_id: first_appointment.planning_id, anchor: recurring_anchor, end_day: recurring_end_day, starts_at: first_appointment.starts_at, ends_at: first_appointment.ends_at, skip_appointments_callbacks: true, frequency: self.frequency, original_id: self.id, duplicatable: false)
-				recurring_appointment_before_edit_date.save(validate: false)
-
-				appointments_before_edit_date.each do |appointment|
-					appointment.recurring_appointment_id = recurring_appointment_before_edit_date.id
+				appointments_not_to_be_edited.each do |appointment|
+					appointment.recurring_appointment_id = recurring_appointment_before_edit.id
 					appointment.save!(validate: false)
 				end
 			end
@@ -200,26 +191,40 @@ class RecurringAppointment < ApplicationRecord
 				end_time = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.starts_at.day, self.ends_at.hour, self.ends_at.min) + self.duration
 				appointment.update(title: self.title, description: self.description, nurse_id: self.nurse_id, patient_id: self.patient_id, master: self.master, displayable: self.displayable, starts_at: start_time, ends_at: end_time, edit_requested: self.edit_requested, color: self.color, archived_at: self.archived_at, cancelled: self.cancelled, service_id: self.service_id)
 			end
+		else
+			puts 'updating occurrences for master'
+			if editing_occurrences_after.present? 
+				puts 'editing occurrences after was found'
+				new_recurring = self.dup 
+				new_recurring.anchor = editing_occurrences_after
+				new_recurring.original_id = self.id
+				new_recurring.save(validate: false)
+				
+				self.nurse_id = self.nurse_id_was
+				self.patient_id = self.patient_id_was
+				self.starts_at = self.starts_at_was
+				self.ends_at = self.ends_at_was
+				self.color = self.color_was
+				self.title = self.title_was
+				self.service_id = self.service_id_was
+				self.termination_date = editing_occurrences_after.to_date - 1.day
+			end
 		end
 	end
 
 	def default_frequency
-		puts 'adding default frequency'
 		self.frequency ||= 2
 	end
 
 	def default_master
-		puts 'setting default master'
 		self.master ||= false
 	end
 
 	def default_displayable
-		puts 'setting default displayable'
 		self.displayable = true if self.displayable.nil?
 	end
 
 	def calculate_duration
-		puts 'calculating duration'
 		unless self.duration.present?
 			if self.end_day.present? && self.anchor.present? && self.end_day != self.anchor
 				self.duration = (self.end_day - self.anchor).to_i
@@ -230,19 +235,16 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def request_edit_if_undefined_nurse
-		puts 'request edit if undefined nurse'
 		nurse = Nurse.find(self.nurse_id)
 		self.edit_requested = true if nurse.name === '未定'
 	end
 
 
 	def calculate_end_day
-		puts 'calculating end day'
 		self.end_day = self.anchor + duration
 	end
 
 	def cannot_overlap_existing_appointment_create
-		puts 'overlap validation on create recurring appointment'
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
@@ -313,33 +315,6 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
-	def self.create_appointments 
-		@recurring_appointments = RecurringAppointment.where(displayable: true)
-
-		@recurring_appointments.each do |recurring_appointment|
-			planning = Planning.find(recurring_appointment.planning_id)
-			first_day = Date.new(planning.business_year, planning.business_month, 1)
-			last_day = Date.new(planning.business_year, planning.business_month, -1)
-			occurrences = recurring_appointment.appointments(first_day, last_day)
-
-			occurrences.each do |occurrence|
-				start_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
-			    end_time = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i
-				occurrence_appointment = Appointment.new(title: recurring_appointment.title, nurse_id: recurring_appointment.nurse_id, recurring_appointment_id: recurring_appointment.id, patient_id: recurring_appointment.patient_id, planning_id: recurring_appointment.planning_id, master: recurring_appointment.master, displayable: true, starts_at: start_time, ends_at: end_time, color: recurring_appointment.color, edit_requested: recurring_appointment.edit_requested)
-				occurrence_appointment.save!(validate: false)
-			end
-		end
-	end
-
-	def self.mark_recurring_appointments_as_deleted
-		recurring_appointments_to_be_deleted = RecurringAppointment.where(displayable: false)
-
-		recurring_appointments_to_be_deleted.each do |recurring_appointment_to_be_deleted|
-			recurring_appointment_to_be_deleted.archived_at = Time.current
-			recurring_appointment_to_be_deleted.save!(validate: false)
-		end
-	end
-
 	def match_title_to_service
 		puts 'match title to services'
 		first_service = Service.where(corporation_id: self.planning.corporation.id, title: self.title, nurse_id: nil).first
@@ -351,67 +326,5 @@ class RecurringAppointment < ApplicationRecord
 			self.service_id = new_service.id
 		end
 	end
-
-	def self.create_activities
-		create_activities = PublicActivity::Activity.where(key: 'recurring_appointment.create', new_anchor: nil, new_start: nil)
-
-		create_activities.each do |activity|
-			if activity.trackable.present?
-				activity.new_anchor = activity.trackable.anchor
-				activity.new_start = activity.trackable.starts_at
-				activity.new_end = activity.trackable.ends_at 
-				activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
-				activity.new_patient = activity.trackable.patient.name if activity.trackable.patient.present?
-				activity.new_edit_requested = activity.trackable.edit_requested
-				activity.save! 
-			end
-		end
-	end
-
-	def self.update_activities 
-		update_activities = PublicActivity::Activity.where(key: 'recurring_appointment.update', new_start: nil)
-
-		update_activities.each do |activity|
-			if activity.trackable.present?
-				activity.new_anchor = activity.trackable.anchor
-				activity.new_start = activity.trackable.starts_at
-				activity.new_end = activity.trackable.ends_at 
-				activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
-				activity.new_patient = activity.trackable.patient.name if activity.trackable.patient.present?
-				activity.new_edit_requested = activity.trackable.edit_requested
-				activity.save! 
-			end
-		end
-	end
-
-	def self.archive_activities
-		archive_activities = PublicActivity::Activity.where(key: 'recurring_appointment.archive', previous_start: nil)
-
-		archive_activities.each do |activity|
-			if activity.trackable.present?
-				activity.previous_anchor = activity.trackable.anchor
-				activity.previous_start = activity.trackable.starts_at
-				activity.previous_end = activity.trackable.ends_at 
-				activity.previous_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present?
-				activity.previous_patient = activity.trackable.patient.name if activity.trackable.patient.present?
-
-				activity.save! 
-			end
-		end
-	end
-
-	def self.add_or_create_service
-		appointments = RecurringAppointment.where(service_id: nil) 
-
-		appointments.find_each do |appointment|
-			service = Service.where(corporation_id: appointment.planning.corporation.id, nurse_id: nil, title: appointment.title).first
-			if service.present?
-				appointment.service_id = service.id
-				appointment.skip_appointments_callbacks = true
-				appointment.save(validate: false)
-			end
-		end
-	end
-
 
 end

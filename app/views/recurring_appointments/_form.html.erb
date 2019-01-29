@@ -12,43 +12,35 @@
   <% end %>
 
   <div id="form-options-container">
+    <div class="appointment-section-title">簡易編集</div>
+
     <% unless recurring_appointment.new_record? %>
-
-
-      <% if false %>
       <div class="form-group">
-          <%= form.check_box :master, checked:  recurring_appointment.master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' %>
+        <span class='colibri-form-label'>繰り返し/期間</span>
+        <% if recurring_appointment.master %>
+          <%= frequency_to_text(recurring_appointment) %><%= weekday_full(recurring_appointment.anchor) %>
+          <%= recurring_appointment.anchor.strftime("%-m月%-d日") %> ~ <%= recurring_appointment.termination_date.strftime("%-m月%-d日") if recurring_appointment.termination_date.present? %>
+        <% else %>
+          <%= @appointments.map{|appointment| appointment.starts_at.strftime("%-m月%-d日") }.to_sentence(words_connector: ' / ', last_word_connector: ' / ', two_words_connector: ' / ') %>
+        <% end %>
       </div>
-
-      <% end %>
-
-      <% if recurring_appointment.master == true %>
-
-        <div class="form-group">
-          <span class='colibri-form-label'>繰り返し：</span>
-          <%= frequency_to_text(recurring_appointment) %> // <%= weekday_full(recurring_appointment.anchor) %>
-        </div>
-
-      <% else %>
-        <div class="form-group">
-          <span class="colibri-form-label">繰り返し：</span>
-          <%= @appointments.map{|appointment| appointment.starts_at.strftime("%-m月%-d日") }.to_sentence(words_connector: ' // ', last_word_connector: ' // ', two_words_connector: ' // ') %>
-        </div>
-
-        <div class="form-group">
-          <%= form.label :editing_occurrences_after, '変更する日', class: "colibri-form-label" %>
-          <%= form.collection_select(:editing_occurrences_after, @appointments_after_first, :id, :starts_at, {prompt: '全繰り返し'},) %>
-        </div>
-
-      <% end %>
-
     <% end %>
 
+    <% if recurring_appointment.master %>
+      <div class='btn btn-secondary btn-sm text-white' id='recurring-appointment-terminate' data-terminate-url="<%= planning_recurring_appointment_terminate_path(@planning, recurring_appointment) %>">サービス停止</div>
+    <% end %>
+    <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> 全繰り返し#{toggle_cancel_text(recurring_appointment)}".html_safe, planning_recurring_appointment_toggle_cancelled_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm' unless recurring_appointment.master %>
+    <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 全繰り返し削除'.html_safe, planning_recurring_appointment_archive_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm', data: {confirm: 'サービスが削除され、全繰り返しがスケジュールから消えます。'}unless recurring_appointment.new_record? %>
+  </div>
 
+
+
+  <div class="modal-body">
+    <div class="appointment-section-title">詳細編集</div>
+
+
+    
     <% if recurring_appointment.new_record? %>
-      <div class="form-group">
-        <%= form.check_box :master, checked: @master, disabled: true, data: {toggle: 'toggle'}, class: 'master-toggle' if current_user.admin? %>
-      </div>
 
       <% frequency_options =  [['毎週',0], ['隔週',7], ['第一、三、五週目', 1], ['第二、四週目', 3], ['第一○曜日', 4], ['第二○曜日', 8], ['第三○曜日', 9], ['第四○曜日', 10], ['最後の週', 5], ['最後の週以外毎週', 6]] %>
       <% frequency_options << ['その日のみ', 2] if @master == false %>
@@ -61,22 +53,15 @@
       </div>
 
     <% end %>
-  </div>
 
-
-
-  <div class="modal-body">
-    
-
+      <div class="form-group">
+        <%= form.label :editing_occurrences_after, '編集するサービス', class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'} %>
+      </div>
 
       <div class="form-group">
         <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
         <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', recurring_appointment.title), id: :recurring_appointment_title, required: true, title: 'サービスタイプを選択してください', required_pattern: '.*\S+.*', class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= form.label :description, "詳細・コメント", class: "colibri-form-label" %>
-        <%= form.text_area :description, id: :recurring_appointment_description, class: "form-control" %>
       </div>
 
       <div class="form-group">
@@ -127,28 +112,26 @@
           <%= form.label :edit_requested, "調整中リスト", class: "colibri-form-label" %>
           <%= form.check_box :edit_requested, class: "edit-requested-toggle", data: {requested: recurring_appointment.edit_requested} %>
         </div>
+
+        <% unless recurring_appointment.new_record? %>
+          <div class="form-group">
+            <%= form.label :cancelled, "キャンセル", class: "colibri-form-label" %>
+            <%= form.check_box :cancelled, class: "cancelled-toggle", data: {cancelled: recurring_appointment.cancelled} %>
+          </div>
+        <% end %>
       <% end %>
 
-
-
-
+      <div class="form-group">
+        <%= form.label :description, "詳細・コメント", class: "colibri-form-label" %>
+        <%= form.text_area :description, id: :recurring_appointment_description, class: "form-control" %>
+      </div>
 
       <%= hidden_field_tag(:master, 'true') if @master == true %>
       <%= hidden_field_tag(:start, Date.today) %>
       <%= hidden_field_tag(:end, Date.today) %>
 
       <div class="actions">
-        <%= form.submit 'セーブする', class: 'btn btn-info', id: 'save-recurring-appointment' %>
-        <% unless recurring_appointment.new_record? %>
-          <% if recurring_appointment.master == true %>
-            <div class='btn btn-danger text-white' id='recurring-appointment-terminate' data-terminate-url="<%= planning_recurring_appointment_terminate_path(@planning, recurring_appointment) %>">サービス停止</div>
-          <% else %>
-            <div class='btn btn-danger text-white' id='recurring-appointment-cancel' data-cancel-url="<%= planning_recurring_appointment_toggle_cancelled_path(@planning, recurring_appointment) %>"><%= toggle_cancel_text(recurring_appointment) %></div>
-          <% end %>
-          <div class='btn btn-secondary text-white' id='recurring-appointment-archive' data-archive-url="<%= planning_recurring_appointment_archive_path(@planning, recurring_appointment) %>">削除する</div>
-        <% end %>
+        <%= form.submit '編集する', class: 'btn btn-info btn-block', id: 'save-recurring-appointment' %>
       </div>
   </div>
-
-
 <% end %>

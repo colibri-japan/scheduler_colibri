@@ -176,9 +176,19 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-          $.getScript(event.edit_url, function() {
-            appointmentEdit(event.recurring_appointment_path);
-          });
+        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
+        var table = $(this).parent().parent().parent().parent().children();
+        let dateClicked;
+        $(table).each(function () {
+          // Get the thead
+          if ($(this).is('thead')) {
+            var tds = $(this).children().children();
+            dateClicked = $(tds[caseNumber]).attr("data-date");
+          }
+        });
+        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
+        });
       },
 
       eventAfterAllRender: function (view) {
@@ -391,10 +401,20 @@ initialize_patient_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-           $.getScript(event.edit_url, function() {
-            appointmentEdit(event.recurring_appointment_path);
-           });
-         },
+        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
+        var table = $(this).parent().parent().parent().parent().children();
+        let dateClicked;
+        $(table).each(function () {
+          // Get the thead
+          if ($(this).is('thead')) {
+            var tds = $(this).children().children();
+            dateClicked = $(tds[caseNumber]).attr("data-date");
+          }
+        });
+        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
+        });
+      },
 
       eventAfterAllRender: function (view) {
         appointmentComments();
@@ -577,12 +597,12 @@ initialize_master_calendar = function() {
       },
          
       eventClick: function (event, jsEvent, view) {
-        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
         // Get the table
-        var table = $(this).parent().parent().parent().parent().children();
-        let dateClicked;
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
+        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
+        var table = $(this).parent().parent().parent().parent().children();
+        let dateClicked;
         $(table).each(function () {
           // Get the thead
           if ($(this).is('thead')) {
@@ -591,7 +611,7 @@ initialize_master_calendar = function() {
           }
         });
         if (window.userIsAdmin == 'true') {
-          $.getScript(event.edit_url + '?master=true', function(){
+          $.getScript(event.edit_url + '?master=true&date=' + dateClicked, function(){
             individualMasterToGeneral()
             terminateRecurringAppointment(dateClicked, view_start, view_end)
             setHiddenRecurringAppointmentFields(view_start, view_end);
@@ -875,11 +895,20 @@ initialize_calendar = function() {
       },
          
       eventClick: function(event, jsEvent, view) {
-           $.getScript(event.edit_url, function() {
-            appointmentEdit(event.recurring_appointment_path);
-           });
-
-         },
+        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
+        var table = $(this).parent().parent().parent().parent().children();
+        let dateClicked;
+        $(table).each(function () {
+          // Get the thead
+          if ($(this).is('thead')) {
+            var tds = $(this).children().children();
+            dateClicked = $(tds[caseNumber]).attr("data-date");
+          }
+        });
+        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
+        }) 
+      },
 
       viewRender: function(view){
         drawHourMarks();
@@ -1131,9 +1160,11 @@ let toggleEditRequested = () => {
   $this.bootstrapToggle({
     on: onText,
     off: offText,
+    size: 'small',
     onstyle: 'success',
     offstyle: 'secondary',
-    width: 150
+    height: 30,
+    width: 140
   })
 }
 
@@ -1145,9 +1176,11 @@ let toggleCancelled = () => {
   $this.bootstrapToggle({
     on: onText,
     off: offText,
+    size: 'small',
     onstyle: 'danger',
     offstyle: 'secondary',
-    width: 160
+    height: 30,
+    width: 140
   })
 }
 
@@ -1215,6 +1248,8 @@ let serviceLinkClick = () => {
 }
 
 let appointmentEdit = (url) => {
+  console.log(url)
+  console.log('recurring url')
   if (url) {
     $('#edit-options').show()
     $('#edit-appointment-body').hide();
@@ -1225,8 +1260,7 @@ let appointmentEdit = (url) => {
     $('#recurring-edit').click(function () {
       $('.modal').modal('hide');
       $('.modal-backdrop').remove();
-      let targetUrl = $(this).data('recurring-url');
-      $.getScript(targetUrl)
+      $.getScript(url)
     })
   }
 }

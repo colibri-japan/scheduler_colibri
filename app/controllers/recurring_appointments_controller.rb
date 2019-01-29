@@ -66,10 +66,11 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1.json
   def update    
     @recurring_appointment = RecurringAppointment.find(params[:id])
-    set_previous_params
     appointment_ids = Appointment.valid.where(recurring_appointment_id: @recurring_appointment.id).ids
+    set_previous_params
       
     if @recurring_appointment.update(recurring_appointment_params)
+      @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id, master: true).last if @recurring_appointment.master
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
       @appointments = Appointment.find(appointment_ids)
     end
@@ -85,7 +86,6 @@ class RecurringAppointmentsController < ApplicationController
 
   def toggle_cancelled
     @recurring_appointment.cancelled = !@recurring_appointment.cancelled
-    @recurring_appointment.editing_occurrences_after = recurring_appointment_params[:editing_occurrences_after]
 
     if @recurring_appointment.save 
       @activity = @recurring_appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_cancelled: !@recurring_appointment.cancelled
@@ -103,7 +103,6 @@ class RecurringAppointmentsController < ApplicationController
   def archive
     appointment_ids = Appointment.where(recurring_appointment_id: @recurring_appointment.id).ids
     @recurring_appointment.archive 
-    @recurring_appointment.editing_occurrences_after = recurring_appointment_params[:editing_occurrences_after]
     @recurring_appointment.displayable = false
 
     if @recurring_appointment.save(validate: false)
@@ -188,7 +187,7 @@ class RecurringAppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after, :edit_requested, :service_id)
+      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after, :edit_requested, :cancelled, :service_id)
     end
 
 

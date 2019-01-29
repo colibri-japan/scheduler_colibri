@@ -9,7 +9,7 @@ module AppointmentsHelper
     end
 
 	def toggle_cancel_text(record)
-		record.cancelled ? 'キャンセル解消' : 'キャンセルする'
+		record.cancelled ? 'キャンセル解消' : 'キャンセル'
 	end
 
 	def toggle_edit_requested_text(record)

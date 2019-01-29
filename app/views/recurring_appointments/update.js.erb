@@ -59,6 +59,11 @@
         'renderEvents',
         $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe  %>"), 
         false
+      );
+      calendar.fullCalendar(
+        'renderEvents',
+        $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe  %>"), 
+        false
       )
     <% else %>
       <% @appointments.each do |appointment| %>

@@ -24,11 +24,11 @@
 <% end %>
 
 <div id="appointment-container">
-  <% @appointments.each do |day, appointment_array| %>
+  <% @events.each do |day, events_array| %>
 	<div class="day-group" style="margin-bottom:10px">
-	  <% appointment_array.each do |appointment| %>
+	  <% events_array.each do |event| %>
 	    <div class="appointment-line">
-		  <%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日") %><%= weekday(appointment.starts_at) %>  <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
+		  <%= event.class.name == 'Unavailability' ? event.try(:title) : "#{event.patient.try(:name)}様" %>: <%= event.starts_at.strftime("%-d日") %><%= weekday(event.starts_at) %>  <%= event.starts_at.strftime("%-H:%M") %>~<%= event.ends_at.strftime("%-H:%M") %>
 	    </div>
 	  <% end %>
 	</div>

@@ -5,9 +5,9 @@
 <%= @custom_message if @custom_message.present? %>
 <%= @corporation.custom_email_intro_text if @corporation.custom_email_intro_text.present? %>
 
-<% @appointments.each do |day, appointment_array| %>
-<% appointment_array.each do |appointment| %>
-<%= appointment.patient.try(:name) %>様: <%= appointment.starts_at.strftime("%-d日")  %><%= weekday(appointment.starts_at) %> <%= appointment.starts_at.strftime("%-H:%M") %>~<%= appointment.ends_at.strftime("%-H:%M") %>
+<% @events.each do |day, events_array| %>
+<% events_array.each do |event| %>
+<%= event.patient.try(:name) %>様: <%= event.starts_at.strftime("%-d日")  %><%= weekday(event.starts_at) %> <%= event.starts_at.strftime("%-H:%M") %>~<%= event.ends_at.strftime("%-H:%M") %>
 <% end %>
 <% end %>
 

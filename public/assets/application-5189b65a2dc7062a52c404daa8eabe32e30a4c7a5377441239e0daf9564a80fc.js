@@ -87677,9 +87677,10 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-          $.getScript(event.edit_url, function() {
-            appointmentEdit(event.recurring_appointment_path);
-          });
+        let dateClicked = moment(event.start).format('YYYY-MM-DD');
+        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
+        });
       },
 
       eventAfterAllRender: function (view) {
@@ -87892,10 +87893,11 @@ initialize_patient_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-           $.getScript(event.edit_url, function() {
-            appointmentEdit(event.recurring_appointment_path);
-           });
-         },
+        let dateClicked = moment(event.start).format('YYYY-MM-DD');
+        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
+        });
+      },
 
       eventAfterAllRender: function (view) {
         appointmentComments();
@@ -88078,21 +88080,12 @@ initialize_master_calendar = function() {
       },
          
       eventClick: function (event, jsEvent, view) {
-        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
         // Get the table
-        var table = $(this).parent().parent().parent().parent().children();
-        let dateClicked;
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
-        $(table).each(function () {
-          // Get the thead
-          if ($(this).is('thead')) {
-            var tds = $(this).children().children();
-            dateClicked = $(tds[caseNumber]).attr("data-date");
-          }
-        });
+        let dateClicked = moment(event.start).format('YYYY-MM-DD');
         if (window.userIsAdmin == 'true') {
-          $.getScript(event.edit_url + '?master=true', function(){
+          $.getScript(event.edit_url + '?master=true&date=' + dateClicked, function(){
             individualMasterToGeneral()
             terminateRecurringAppointment(dateClicked, view_start, view_end)
             setHiddenRecurringAppointmentFields(view_start, view_end);
@@ -88376,11 +88369,20 @@ initialize_calendar = function() {
       },
          
       eventClick: function(event, jsEvent, view) {
-           $.getScript(event.edit_url, function() {
-            appointmentEdit(event.recurring_appointment_path);
-           });
-
-         },
+        var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
+        var table = $(this).parent().parent().parent().parent().children();
+        let dateClicked;
+        $(table).each(function () {
+          // Get the thead
+          if ($(this).is('thead')) {
+            var tds = $(this).children().children();
+            dateClicked = $(tds[caseNumber]).attr("data-date");
+          }
+        });
+        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
+        }) 
+      },
 
       viewRender: function(view){
         drawHourMarks();
@@ -88632,9 +88634,27 @@ let toggleEditRequested = () => {
   $this.bootstrapToggle({
     on: onText,
     off: offText,
+    size: 'small',
     onstyle: 'success',
     offstyle: 'secondary',
-    width: 120
+    height: 30,
+    width: 140
+  })
+}
+
+let toggleCancelled = () => {
+  let $this  = $('.cancelled-toggle')
+  let cancelled = $this.data('cancelled')
+  let onText = cancelled ? '残す' : 'キャンセルする';
+  let offText = cancelled ? 'キャンセル解除' : 'キャンセルなし';
+  $this.bootstrapToggle({
+    on: onText,
+    off: offText,
+    size: 'small',
+    onstyle: 'danger',
+    offstyle: 'secondary',
+    height: 30,
+    width: 140
   })
 }
 
@@ -88702,6 +88722,8 @@ let serviceLinkClick = () => {
 }
 
 let appointmentEdit = (url) => {
+  console.log(url)
+  console.log('recurring url')
   if (url) {
     $('#edit-options').show()
     $('#edit-appointment-body').hide();
@@ -88712,8 +88734,7 @@ let appointmentEdit = (url) => {
     $('#recurring-edit').click(function () {
       $('.modal').modal('hide');
       $('.modal-backdrop').remove();
-      let targetUrl = $(this).data('recurring-url');
-      $.getScript(targetUrl)
+      $.getScript(url)
     })
   }
 }
@@ -89107,8 +89128,8 @@ let initializeBatchActionForm = () => {
     timePicker: true,
     timePicker24Hour: true,
     timePickerIncrement: 15,
-    startDate: moment().startOf('hour'),
-    endDate: moment().startOf('hour').add(48, 'hour'),
+    startDate: moment().set({'hour': 6, 'minute': 0}),
+    endDate: moment().set({ 'hour': 21, 'minute': 0}),
     locale: {
       format: 'M月DD日 H:mm',
       applyLabel: "選択する",

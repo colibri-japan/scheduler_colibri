@@ -1627,8 +1627,8 @@ let initializeBatchActionForm = () => {
     timePicker: true,
     timePicker24Hour: true,
     timePickerIncrement: 15,
-    startDate: moment().startOf('hour'),
-    endDate: moment().startOf('hour').add(48, 'hour'),
+    startDate: moment().set({'hour': 6, 'minute': 0}),
+    endDate: moment().set({ 'hour': 21, 'minute': 0}),
     locale: {
       format: 'M月DD日 H:mm',
       applyLabel: "選択する",

@@ -30,7 +30,7 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
 
     fetch_nurses_grouped_by_team
-    @patients = @corporation.patients.where(active: true).order_by_kana
+    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
     @patients_with_services = Patient.joins(:provided_services).select("patients.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {nurse_id: @nurse.id}).where(active: true).group('patients.id').order('sum_service_duration DESC')
 
     @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
@@ -42,7 +42,7 @@ class NursesController < ApplicationController
     authorize @planning, :is_employee? 
 
     fetch_nurses_grouped_by_team
-    @patients = @corporation.patients.where(active: true).order_by_kana
+    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
 
 		@admin =  current_user.has_admin_access?.to_s
   end
@@ -139,10 +139,6 @@ class NursesController < ApplicationController
   def master_to_schedule
     authorize current_user, :has_admin_access?
 
-    puts 'params'
-    puts params[:month]
-    puts params[:year]
-
     @planning = @corporation.planning
 
     CopyNursePlanningFromMasterWorker.perform_async(@nurse.id, params[:month], params[:year])
@@ -162,7 +158,7 @@ class NursesController < ApplicationController
   end
 
   def set_corporation
-  	@corporation = Corporation.find(current_user.corporation_id)
+  	@corporation = current_user.cached_corporation
   end
 
   def set_planning

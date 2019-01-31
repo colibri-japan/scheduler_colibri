@@ -24,7 +24,7 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="hide-resource">
-			<% @patients.group_by_kana.each do |kana, patients| %>
+			<% @patients_grouped_by_kana.each do |kana, patients| %>
 				<div class="nurses-resource-subsection-title"><%= kana %></div>
 				<% patients.each do |patient| %>
 					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>

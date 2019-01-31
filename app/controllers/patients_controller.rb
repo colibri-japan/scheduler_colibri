@@ -30,7 +30,7 @@ class PatientsController < ApplicationController
   def show
     authorize @patient, :is_employee?
     
-    @patients = @corporation.patients.active.order_by_kana
+    @patients = @corporation.cached_active_patients_grouped_by_kana
     fetch_nurses_grouped_by_team
 
     @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
@@ -42,7 +42,7 @@ class PatientsController < ApplicationController
   def master
     authorize @planning, :is_employee?
 
-    @patients = @corporation.patients.active.all.order_by_kana
+    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
     fetch_nurses_grouped_by_team
 
 		@admin = current_user.has_admin_access?.to_s
@@ -120,7 +120,7 @@ class PatientsController < ApplicationController
   end
 
   def set_corporation
-  	@corporation = Corporation.find(current_user.corporation_id)
+  	@corporation = current_user.cached_corporation
   end
 
   def set_caveats

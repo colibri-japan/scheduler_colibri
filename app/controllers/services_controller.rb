@@ -54,7 +54,7 @@ class ServicesController < ApplicationController
     end
 
     def set_corporation
-        @corporation = current_user.corporation
+        @corporation = current_user.cached_corporation
     end
 
     def set_service

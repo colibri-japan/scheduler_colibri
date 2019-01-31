@@ -1,9 +1,11 @@
-<div class="post-container" id="post-<%= post.id %>">
-    <div class="post-header">
-        <div class="post-author-wrapper"><%= post.author.name %></div>
-        <div class="post-timestamps-wrapper"><%= resource_creation_date(post) %></div>
+<%= cache post do %>
+    <div class="post-container" id="post-<%= post.id %>">
+        <div class="post-header">
+            <div class="post-author-wrapper"><%= post.author.name %></div>
+            <div class="post-timestamps-wrapper"><%= resource_creation_date(post) %></div>
+        </div>
+        <div class="post-body <%= 'post-clickable' if post.author_id == current_user.id %>" data-url="<%= edit_post_path(post) %>">
+            <%= simple_format(post.body) %>
+        </div>
     </div>
-    <div class="post-body <%= 'post-clickable' if post.author_id == current_user.id %>" data-url="<%= edit_post_path(post) %>">
-        <%= simple_format(post.body) %>
-    </div>
-</div>
+<% end %>

@@ -82,7 +82,7 @@ class RecurringUnavailabilitiesController < ApplicationController
 
 	  
 	  def set_corporation
-	    @corporation = Corporation.find(current_user.corporation_id)
+	    @corporation = current_user.cached_corporation
 	  end
 
 	  def set_planning

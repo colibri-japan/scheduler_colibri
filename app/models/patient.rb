@@ -7,7 +7,7 @@ class Patient < ApplicationRecord
 	has_many :unavailabilities
 	has_many :recurring_unavailabilities
 	has_many :provided_services
-	belongs_to :corporation
+	belongs_to :corporation, touch: true
 	
 	validates :kana, presence: true, format: { with: /\A[\p{katakana}\p{blank}\0-9１-９}ー－]+\z/, message: 'フリガナはカタカナで入力してください' }
 	validate :name_uniqueness

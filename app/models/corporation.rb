@@ -37,6 +37,10 @@ class Corporation < ApplicationRecord
 		Rails.cache.fetch([self, 'recent_posts']) { posts.includes(:author).order(created_at: :desc).limit(40) }
 	end
 
+	def cached_active_patients_grouped_by_kana
+		Rails.cache.fetch([self, 'active_patients_grouped_by_kana']) { patients.active.group_by_kana }
+	end
+
 	def can_send_reminder_today?(date)
 		if self.weekend_reminder_option == 0
 			[1,2,3,4,5].include?(date.wday)

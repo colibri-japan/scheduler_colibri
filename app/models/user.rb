@@ -28,17 +28,8 @@ class User < ApplicationRecord
     end
   end
 
-  #to be deleted later
-  def self.reassign_role
-    users = User.all 
-
-    users.each do |user|
-      if user.admin == true 
-        user.update(role: :corporation_admin)
-      else
-        user.update(role: :schedule_restricted)
-      end
-    end
+  def cached_corporation
+    Rails.cache.fetch([self, 'corporation']) { corporation }
   end
 
   def has_admin_access?

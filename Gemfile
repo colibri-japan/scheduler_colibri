@@ -113,6 +113,9 @@ gem 'mail_form'
 gem 'dalli'
 gem 'memcachier'
 
+#mini-profiler
+gem 'rack-mini-profiler'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

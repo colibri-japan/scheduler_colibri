@@ -216,17 +216,10 @@ class NursesController < ApplicationController
   end
 
   def fetch_nurses_grouped_by_team
-    @nurses = @corporation.nurses.displayable.order_by_kana
     if @corporation.teams.any?
-      puts 'teams present'
-      @team_name_by_id = @corporation.teams.pluck(:id, :team_name).to_h
-      @grouped_nurses = @nurses.group_by {|nurse| @team_name_by_id[nurse.team_id] }
+      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
     else
-      puts 'no team'
-      nurses_grouped_by_full_timer = @nurses.group_by {|nurse| nurse.full_timer}
-      full_timers = nurses_grouped_by_full_timer[true] ||= []
-      part_timers = nurses_grouped_by_full_timer[false] ||= []
-      @grouped_nurses = {'正社員' => full_timers, '非正社員' => part_timers }
+      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
     end
   end
 

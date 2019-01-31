@@ -41,6 +41,22 @@ class Corporation < ApplicationRecord
 		Rails.cache.fetch([self, 'active_patients_grouped_by_kana']) { patients.active.group_by_kana }
 	end
 
+	def cached_displayable_nurses_grouped_by_team_name
+		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_team_name']) { 
+			team_name_by_id = self.teams.pluck(:id, :team_name).to_h
+			return nurses.displayable.order_by_kana.group_by {|n| team_name_by_id[n.team_id] }
+		}
+	end
+
+	def cached_displayable_nurses_grouped_by_fulltimer
+		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_fulltimer']) {
+			{
+				'正社員' => nurses.displayable.full_timers.order_by_kana,
+				'非正社員' => nurses.displayable.part_timers.order_by_kana
+			}
+		}
+	end
+
 	def can_send_reminder_today?(date)
 		if self.weekend_reminder_option == 0
 			[1,2,3,4,5].include?(date.wday)

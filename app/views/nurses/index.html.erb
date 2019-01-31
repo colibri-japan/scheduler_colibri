@@ -15,21 +15,23 @@
 
       <tbody>
         <% @nurses.each do |nurse| %>
-          <tr class="nurse-clickable-row" data-link="<%= edit_nurse_path(nurse, format: :js) %>">
-            <td><%= nurse.name %></td>
-            <td><%= nurse.phone_number %></td>
-            <td><%= nurse.phone_mail %></td>
-            <td>
-              <% if nurse.full_timer == true %>
-                <span class="glyphicon glyphicon-ok" style="color: #42B97C"></span>
-              <% end %> 
-            </td>
-            <td>
-              <% if nurse.reminderable == true %>
-                <span class="glyphicon glyphicon-envelope" style="color: #FFAA00"></span>
-              <% end %> 
-            </td>
-          </tr>
+          <% cache nurse do  %>
+            <tr class="nurse-clickable-row" data-link="<%= edit_nurse_path(nurse, format: :js) %>">
+              <td><%= nurse.name %></td>
+              <td><%= nurse.phone_number %></td>
+              <td><%= nurse.phone_mail %></td>
+              <td>
+                <% if nurse.full_timer == true %>
+                  <span class="glyphicon glyphicon-ok" style="color: #42B97C"></span>
+                <% end %> 
+              </td>
+              <td>
+                <% if nurse.reminderable == true %>
+                  <span class="glyphicon glyphicon-envelope" style="color: #FFAA00"></span>
+                <% end %> 
+              </td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>

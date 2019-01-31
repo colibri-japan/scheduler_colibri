@@ -23,18 +23,22 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="no-print">
-			<% @patients.each do |kana, patients| %>
-				<div class="nurses-resource-subsection-title"><%= kana %></div>
-				<% patients.each do |patient| %>
-					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+			<% cache @patients do %>
+				<% @patients.each do |kana, patients| %>
+					<div class="nurses-resource-subsection-title"><%= kana %></div>
+					<% patients.each do |patient| %>
+						<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+					<% end %>
 				<% end %>
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="hide-resource no-print">
-			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title"><%= group %></div>
-				<% nurses.each do |nurse| %>
-					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+			<% cache @grouped_nurses do %>
+				<% @grouped_nurses.each do |group, nurses| %>
+					<div class="nurses-resource-subsection-title"><%= group %></div>
+					<% nurses.each do |nurse| %>
+						<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+					<% end %>
 				<% end %>
 			<% end %>
 		</div>
@@ -81,7 +85,6 @@
 		</div>
 
 		<div id="resource-details-panel" style="display: none">
-
 			<div id="resource-details-block">
 				<div id="resource-detail-header">
 					<h1 class="colibri-xs-title"><%= @patient.name %>の詳細</h1>
@@ -130,8 +133,6 @@
 				<%= link_to 'エディット', edit_patient_path(@patient), remote: true, class: 'btn btn-info btn-block' %>
 			</div>
 		</div>
-
-		
 	</div>
 	
 </div>

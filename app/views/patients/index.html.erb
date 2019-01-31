@@ -22,12 +22,14 @@
             <th></th>
           </tr>
           <% patients.each do |patient| %>
-          <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>">
-            <td><%= patient.name  %></td>
-            <td><%= patient.phone_number %></td>
-            <td><%= patient.phone_mail %></td>
-            <td><%= patient.address %></td>
-          </tr>
+            <% cache patient do  %>
+              <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>">
+                <td><%= patient.name  %></td>
+                <td><%= patient.phone_number %></td>
+                <td><%= patient.phone_mail %></td>
+                <td><%= patient.address %></td>
+              </tr>
+            <% end %>
           <% end %>
         <% end %>
       </tbody>

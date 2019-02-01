@@ -206,7 +206,7 @@ class NursesController < ApplicationController
       sum_duration = matching_provided_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
       sum_total_wage = matching_provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
       sum_counts = matching_provided_services.sum{|e| e.service_counts.present? ? e.service_counts : 1 }
-      hour_based = matching_provided_services.first.hour_based_wage
+      hour_based = matching_provided_services.first.hour_based_wage ||= false
 
       matching_service = @corporation.equal_salary == true ? Service.where(corporation_id: @corporation.id, title: service_title, nurse_id: nil).first : Service.where(corporation_id: @corporation.id, title: service_title, nurse_id: @nurse.id).first
       unit_cost = matching_service.unit_wage if matching_service.present?

@@ -23,22 +23,18 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="no-print">
-			<% cache @patients do %>
-				<% @patients.each do |kana, patients| %>
-					<div class="nurses-resource-subsection-title"><%= kana %></div>
-					<% patients.each do |patient| %>
-						<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
-					<% end %>
+			<% @patients.each do |kana, patients| %>
+				<div class="nurses-resource-subsection-title"><%= kana %></div>
+				<% patients.each do |patient| %>
+					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="hide-resource no-print">
-			<% cache @grouped_nurses do %>
-				<% @grouped_nurses.each do |group, nurses| %>
-					<div class="nurses-resource-subsection-title"><%= group %></div>
-					<% nurses.each do |nurse| %>
-						<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
-					<% end %>
+			<% @grouped_nurses.each do |group, nurses| %>
+				<div class="nurses-resource-subsection-title"><%= group %></div>
+				<% nurses.each do |nurse| %>
+					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>

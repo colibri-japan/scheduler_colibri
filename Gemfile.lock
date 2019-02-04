@@ -325,6 +325,7 @@ DEPENDENCIES
   carrierwave
   chartkick
   coffee-rails (~> 4.2)
+  connection_pool
   dalli
   devise
   devise-i18n

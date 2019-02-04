@@ -28,10 +28,6 @@ class User < ApplicationRecord
     end
   end
 
-  def cached_corporation
-    Rails.cache.fetch([self, 'corporation']) { corporation }
-  end
-
   def has_admin_access?
     schedule_admin? || corporation_admin?
   end

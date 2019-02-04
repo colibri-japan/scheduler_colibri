@@ -220,7 +220,7 @@ class AppointmentsController < ApplicationController
     end
 
     def set_corporation
-      @corporation = current_user.cached_corporation
+      @corporation = current_user.corporation
     end
 
     def set_planning

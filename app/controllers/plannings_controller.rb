@@ -48,11 +48,6 @@ class PlanningsController < ApplicationController
 		authorize @planning, :is_employee?
 		authorize current_user, :has_admin_access?
 
-		
-        puts 'params'
-        puts params[:month]
-        puts params[:year]
-
 		CopyPlanningFromMasterWorker.perform_async(@planning.id, params[:month], params[:year])
 
 	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
@@ -123,7 +118,6 @@ class PlanningsController < ApplicationController
 	end
 
 	def settings 
-		fresh_when etag: @corporation, last_modified: @corporation.updated_at
 	end
 
 	def monthly_general_report
@@ -151,9 +145,9 @@ class PlanningsController < ApplicationController
 
 	private
 
-	def set_corporation
-		@corporation = current_user.cached_corporation
-	end
+  	def set_corporation
+  	  @corporation = Corporation.cached_find(current_user.corporation_id)
+  	end
 
 	def set_planning
 		@planning = Planning.find(params[:id])

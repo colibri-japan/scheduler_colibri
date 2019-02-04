@@ -14,6 +14,7 @@ class Corporation < ApplicationRecord
 	before_save :set_default_equal_salary
 	after_create :create_undefined_nurse
 	after_create :create_printing_option
+	after_commit :flush_cache
 
 	def self.add_undefined_nurse
 		corporations = Corporation.all
@@ -57,6 +58,10 @@ class Corporation < ApplicationRecord
 		}
 	end
 
+	def self.cached_find(id)
+		Rails.cache.fetch([name, id]) { find(id) }
+	end
+
 	def can_send_reminder_today?(date)
 		if self.weekend_reminder_option == 0
 			[1,2,3,4,5].include?(date.wday)
@@ -87,6 +92,10 @@ class Corporation < ApplicationRecord
 	end
 
 	private
+
+	def flush_cache 
+		Rails.cache.delete([self.class.name, id])
+	end
 
 	def set_default_equal_salary
 		self.equal_salary ||= false

@@ -65,6 +65,9 @@ Rails.application.routes.draw do
   #custom routes for static pages
   get "/pages/*page" => "pages#show", as: :pages
 
+  #custom routes for teams
+  get 'plannings/:planning_id/teams/:id/payable' => 'teams#payable', as: :planning_team_payable
+
   #custom routes for users
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
   get 'users/:id/edit_role' => 'users#edit_role', as: :edit_user_role

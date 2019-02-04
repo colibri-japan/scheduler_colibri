@@ -19,7 +19,7 @@ class TeamsController < ApplicationController
         end
     end
 
-    def show
+    def payable
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id])
         @nurse = current_user.nurse_id.present? ? current_user.nurse : @team.nurses.displayable.order_by_kana.first
@@ -71,16 +71,15 @@ class TeamsController < ApplicationController
     end
 
     def fetch_nurses_grouped_by_team
-		@nurses = @corporation.nurses.displayable.order_by_kana
-		if @corporation.teams.any?
-			@team_name_by_id = @corporation.teams.pluck(:id, :team_name).to_h
-			puts @team_name_by_id
-			@grouped_nurses = @nurses.group_by {|nurse| @team_name_by_id[nurse.team_id] }
-		else
-			nurses_grouped_by_full_timer = @nurses.group_by {|nurse| nurse.full_timer}
-			full_timers = nurses_grouped_by_full_timer[true] ||= []
-			part_timers = nurses_grouped_by_full_timer[false] ||= []
-			@grouped_nurses = {'正社員' => full_timers, '非正社員' => part_timers }
-		end
-	end
+      if @corporation.teams.any?
+        @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
+        set_teams_id_by_name
+      else
+        @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
+      end
+    end
+
+    def set_teams_id_by_name
+        @teams_id_by_name = @corporation.cached_team_id_by_name
+    end
 end

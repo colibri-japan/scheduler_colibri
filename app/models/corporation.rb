@@ -58,6 +58,12 @@ class Corporation < ApplicationRecord
 		}
 	end
 
+	def cached_team_id_by_name
+		Rails.cache.fetch([self, 'team_name_by_id']) {
+			teams.pluck(:team_name, :id).to_h
+		}
+	end
+
 	def self.cached_find(id)
 		Rails.cache.fetch([name, id]) { find(id) }
 	end

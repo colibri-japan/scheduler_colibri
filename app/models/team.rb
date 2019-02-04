@@ -1,7 +1,7 @@
 class Team < ApplicationRecord
   attribute :member_ids
   
-  belongs_to :corporation
+  belongs_to :corporation, touch: true
   has_many :nurses
 
   after_save :update_members, if: :member_ids_changed?

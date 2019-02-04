@@ -1,4 +1,7 @@
 <% if @provided_service.verified? %>
-    $('#provided-service-<%= @provided_service.id %>').html("<div><span class='glyphicon glyphicon-ok' style='color: #42B97C'></span></div>")
+    console.log('provided service verified')
+    $('#provided-service-<%= @provided_service.id %>').html('<div><span class="glyphicon glyphicon-check"  style="color: #42B97C"></span></div><%= link_to "#{@provided_service.verifier.try(:name)} #{@provided_service.try(:verified_at).strftime('%-m月%-d日')}", toggle_verified_provided_service_path(@provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>')
 <% else %>
+    console.log('provided service not verified')
+    $('#provided-service-<%= @provided_service.id %>').html('<%= link_to "確認", toggle_verified_provided_service_path(@provided_service), method: :patch, remote: :true, class: "btn btn-success btn-sm" %>')
 <% end %>

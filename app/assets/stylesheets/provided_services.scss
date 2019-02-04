@@ -5,3 +5,17 @@
 #chosen_target_services_chosen {
     width: 250px !important;
 }
+
+.verify-provided-service {
+    display: flex;
+}
+
+.verified-at-and-by {
+    margin-left: 4px;
+    color: #4f5b66;
+}
+
+.verified-at-and-by:hover {
+    color: black;
+    cursor: pointer;
+}

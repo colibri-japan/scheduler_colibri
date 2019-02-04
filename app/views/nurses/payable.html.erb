@@ -102,7 +102,7 @@
 						<% if provided_service.verified? %>
 							<div><span class='glyphicon glyphicon-ok'  style="color: #42B97C"></span></div>
 						<% else %>
-							<%= link_to '確認', verify_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
+							<%= link_to '確認', toggle_verified_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
 						<% end %>
 					<% end %>
 				  </div>

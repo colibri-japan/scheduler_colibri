@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190130181926) do
+ActiveRecord::Schema.define(version: 20190204165027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 20190130181926) do
     t.bigint "service_salary_id"
     t.datetime "verified_at"
     t.datetime "archived_at"
+    t.bigint "verifier_id"
     t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
     t.index ["invoice_setting_id"], name: "index_provided_services_on_invoice_setting_id"
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
@@ -258,6 +259,7 @@ ActiveRecord::Schema.define(version: 20190130181926) do
     t.index ["payable_type", "payable_id"], name: "index_provided_services_on_payable_type_and_payable_id"
     t.index ["planning_id"], name: "index_provided_services_on_planning_id"
     t.index ["service_salary_id"], name: "index_provided_services_on_service_salary_id"
+    t.index ["verifier_id"], name: "index_provided_services_on_verifier_id"
   end
 
   create_table "recurring_appointments", force: :cascade do |t|
@@ -427,6 +429,7 @@ ActiveRecord::Schema.define(version: 20190130181926) do
   add_foreign_key "posts", "corporations"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "printing_options", "corporations"
+  add_foreign_key "provided_services", "users", column: "verifier_id"
   add_foreign_key "recurring_appointments", "plannings"
   add_foreign_key "scans", "plannings"
   add_foreign_key "services", "corporations"

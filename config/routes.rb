@@ -74,7 +74,7 @@ Rails.application.routes.draw do
   patch 'users/:id/update_role' => 'users#update_role', as: :update_user_role
   
   #custom routes for provided services
-  patch 'provided_services/:id/verify' => 'provided_services#verify', as: :verify_provided_service
+  patch 'provided_services/:id/toggle_verified' => 'provided_services#toggle_verified', as: :toggle_verified_provided_service
   
   #custom routes for nurses
   get 'plannings/:planning_id/nurses/:id/payable' => 'nurses#payable', as: :planning_nurse_payable

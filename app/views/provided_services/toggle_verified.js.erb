@@ -1,0 +1,4 @@
+<% if @provided_service.verified? %>
+    $('#provided-service-<%= @provided_service.id %>').html("<div><span class='glyphicon glyphicon-ok' style='color: #42B97C'></span></div>")
+<% else %>
+<% end %>

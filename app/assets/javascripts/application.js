@@ -192,28 +192,36 @@ initialize_nurse_calendar = function(){
         let previous_end = moment(event.end).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]D[日][(]dd[)] ')  + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = event.start.format('M[月]D[日][(]dd[)]') + event.start.format('LT') + ' ~ ' + event.end.format('LT')
+        let nurse_name = event.nurse.name;
+        let patient_name = event.patient.name
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').data('event', event)
-        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').dialog({
           height: 'auto',
           width: 400,
           modal: true,
           buttons: {
             'セーブする': function () {
-              let appointment = $(this).data('event');
-              let delta = $(this).data('delta');
-              appointment_data = {
-                appointment: {
-                  starts_at: appointment.start.format(),
-                  ends_at: appointment.end.format(),
-                }
-              };
+              let ajaxData;
+              if (event.unavailability) {
+                ajaxData = {
+                  unavailability: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                  }
+                };
+              } else {
+                ajaxData = {
+                  appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                  }
+                };
+              }
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                data: appointment_data,
+                data: ajaxData,
                 success: function (data) {
                   $(".popover").remove();
                   if (data.includes("その日のヘルパーが重複しています")) {
@@ -309,14 +317,7 @@ initialize_patient_calendar = function(){
       },
 
 
-      eventDragStart: function (event, jsEvent, ui, view) {
-        window.eventDragging = true;
-      },
-
-      eventDragStop: function (event, jsEvent, ui, view) {
-        window.eventDragging = false;
-      },
-
+      
       eventRender: function (event, element, view){
         if (window.eventDragging) {
           return
@@ -341,7 +342,14 @@ initialize_patient_calendar = function(){
         return event.displayable;
       },
 
+      eventDragStart: function (event, jsEvent, ui, view) {
+        window.eventDragging = true;
+      },
 
+      eventDragStop: function (event, jsEvent, ui, view) {
+        window.eventDragging = false;
+      },
+      
       eventDrop: function (event, delta, revertFunc) {
         $(".popover").remove()
         let minutes = moment.duration(delta).asMinutes();
@@ -349,28 +357,36 @@ initialize_patient_calendar = function(){
         let previous_end = moment(event.end).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]D[日][(]dd[)]') + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = event.start.format('M[月]D[日][(]dd[)]') + event.start.format('LT') + ' ~ ' + event.end.format('LT')
+        let nurse_name = event.nurse.name || '';
+        let patient_name = event.patient.name || '';
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
-        $('#drag-drop-confirm').data('event', event)
-        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
         $('#drag-drop-confirm').dialog({
           height: 'auto',
           width: 400,
           modal: true,
           buttons: {
             'セーブする': function(){
-              let appointment = $(this).data('event');
-              let delta = $(this).data('delta');
-              appointment_data = {
-                appointment: {
-                  starts_at: appointment.start.format(),
-                  ends_at: appointment.end.format(),
+              let ajaxData;
+              if (event.unavailability) {
+                ajaxData = {
+                  unavailability: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(), 
+                  }
                 }
-              };
+              } else {
+                ajaxData = {
+                  appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                  }
+                };
+              }
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                data: appointment_data,
+                data: ajaxData,
                 success: function(data) {
                   $(".popover").remove();
                   if(data.includes("その日のヘルパーが重複しています")) {
@@ -806,6 +822,8 @@ initialize_calendar = function() {
         let resourceChange = '';
         let newPatientId;
         let newNurseId;
+        let nurse_name = event.nurse.name || '';
+        let patient_name = event.patient.name || '';
 
         if (newResource !== myResource) {
           if (newResource.is_nurse_resource) {
@@ -827,29 +845,37 @@ initialize_calendar = function() {
           }
         }
 
-        $('#drag-drop-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').data('event', event)
-        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').dialog({
           height: 'auto',  
           width: 400,
           modal: true,
           buttons: {
             'セーブする': function () {
-              let appointment = $(this).data('event');
-              let delta = $(this).data('delta');
-              appointment_data = {
-                appointment: {
-                  starts_at: appointment.start.format(),
-                  ends_at: appointment.end.format(),
-                  patient_id: newPatientId,
-                  nurse_id: newNurseId,
+              let ajaxData;
+              if (event.unavailability) {
+                ajaxData = {
+                  unavailability: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                    patient_id: newPatientId,
+                    nurse_id: newNurseId,
+                  }               
                 }
-              };
+              } else {
+                ajaxData = {
+                  appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                    patient_id: newPatientId,
+                    nurse_id: newNurseId,
+                  }
+                };
+              }
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                data: appointment_data,
+                data: ajaxData,
                 success: function (data) {
                   $(".popover").remove();
                   if (data.includes("その日の従業員が重複しています")) {

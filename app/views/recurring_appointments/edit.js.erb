@@ -1,11 +1,11 @@
 $('.modal').modal('hide');
 $('#remote_container').html('<%= j render "edit" %>');
 $('#edit_recurring_appointment').modal('show');
-recurringAppointmentSelectize();
+recurringAppointmenSelectizeTitle();
+recurringAppointmentSelectizeNursePatient();
 toggleEditRequested();
 toggleCancelled();
 masterSwitchToggle();
-recurringAppointmentFormChosen();
 editAfterDate();
 recurringAppointmentArchive();
 recurringAppointmentCancel();

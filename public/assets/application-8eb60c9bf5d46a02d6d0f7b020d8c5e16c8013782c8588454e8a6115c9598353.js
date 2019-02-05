@@ -87277,7 +87277,17 @@ module.exports = function(Chart) {
 
 }).call(this);
 (function() {
-
+  $(document).on('turbolinks:load', function() {
+    $('#corporation_include_description_in_nurse_mailer').bootstrapToggle({
+      on: '表示する',
+      off: '表示しない',
+      size: 'small',
+      onstyle: 'primary',
+      offstyle: 'secondary',
+      width: '120',
+      height: '30'
+    });
+  });
 
 }).call(this);
 (function() {
@@ -87492,6 +87502,10 @@ module.exports = function(Chart) {
 
 }).call(this);
 (function() {
+
+
+}).call(this);
+(function() {
   $(document).on('turbolinks:load', function() {
     $('.user-clickable-row').click(function() {
       $.getScript($(this).data('url'));
@@ -87549,11 +87563,9 @@ let setUnavailabilityTime = (start, end) => {
   $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
   if (window.nurseId) {
     $("#unavailability_nurse_id").val(window.nurseId);
-    $("#unavailability_nurse_id").trigger("chosen:updated");
   }
   if (window.patientId) {
     $("#unavailability_patient_id").val(window.patientId);
-    $("#unavailability_patient_id").trigger("chosen:updated");
   }
 }
 
@@ -87578,11 +87590,9 @@ let setRecurringAppointmentTime = (start, end, view) => {
   }
   if (window.nurseId) {
     $('#recurring_appointment_nurse_id').val(window.nurseId);
-    $('#recurring_appointment_nurse_id').trigger('chosen:updated');
   }
   if (window.patientId) {
     $('#recurring_appointment_patient_id').val(window.patientId);
-    $('#recurring_appointment_patient_id').trigger('chosen:updated');
   }
 }
 
@@ -87630,6 +87640,8 @@ initialize_nurse_calendar = function(){
         $.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);
           setUnavailabilityTime(start, end);
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient();
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -87803,6 +87815,8 @@ initialize_patient_calendar = function(){
         $.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);     	         
           setUnavailabilityTime(start, end);
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient();
         });
 
 
@@ -88074,6 +88088,8 @@ initialize_master_calendar = function() {
         $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
           setRecurringAppointmentTime(start, end, view);
           setHiddenRecurringAppointmentFields(view_start, view_end);
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient();
         });
 
         master_calendar.fullCalendar('unselect');
@@ -88282,10 +88298,13 @@ initialize_calendar = function() {
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
+            $('#unavailability_nurse_id').val(resource.id);
           } else if (view.name == 'timelineWeek') {
             $('#recurring_appointment_nurse_id').val(resource.id);
-            $('#recurring_appointment_nurse_id').trigger('chosen:updated')
+            $('#unavailability_nurse_id').val(resource.id);
           }
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient()
         });
 
         calendar.fullCalendar('unselect');
@@ -88420,32 +88439,9 @@ initialize_calendar = function() {
 };
 
 
-let appointmentFormChosen = () => {
-  $('#appointment_nurse_id').chosen({
-    no_results_text: '従業員が見つかりません',
-  });
-  $('#appointment_patient_id').chosen({
-    no_results_text: '利用者が見つかりません',
-  })
-}
-
-
-let recurringAppointmentFormChosen = () => {
-  $('#recurring_appointment_nurse_id').chosen({
-    no_results_text: '従業員が見つかりません',
-  });
-  $('#recurring_appointment_patient_id').chosen({
-    no_results_text: '利用者が見つかりません',
-  })
-}
-
-let unavailabilityFormChosen = () => {
-  $('#unavailability_nurse_id').chosen({
-    no_results_text: '従業員が見つかりません',
-  });
-  $('#unavailability_patient_id').chosen({
-    no_results_text: '利用者が見つかりません',
-  })
+let unavailabilitySelectizeNursePatient = () => {
+  $('#unavailability_nurse_id').selectize()
+  $('#unavailability_patient_id').selectize()
 }
 
 
@@ -88900,7 +88896,7 @@ let toggleDayResources = () => {
 }
 
 
-let recurringAppointmentSelectize = () => {
+let recurringAppointmenSelectizeTitle = () => {
   $('#recurring_appointment_title').selectize({
     persist: false,
     create: true,
@@ -88912,6 +88908,11 @@ let recurringAppointmentSelectize = () => {
   });
 };
 
+let recurringAppointmentSelectizeNursePatient = () => {
+  $('#recurring_appointment_nurse_id').selectize();
+  $('#recurring_appointment_patient_id').selectize();
+}
+
 let appointmentSelectize = () => {
   $('#appointment_title').selectize({
     persist: false,
@@ -88921,7 +88922,9 @@ let appointmentSelectize = () => {
         return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
       }
     }
-  })
+  });
+  $('#appointment_nurse_id').selectize();
+  $('#appointment_patient_id').selectize();
 }
 
 let skillsSelectize = () => {
@@ -89128,8 +89131,8 @@ let initializeBatchActionForm = () => {
     timePicker: true,
     timePicker24Hour: true,
     timePickerIncrement: 15,
-    startDate: moment().startOf('hour'),
-    endDate: moment().startOf('hour').add(48, 'hour'),
+    startDate: moment().set({'hour': 6, 'minute': 0}),
+    endDate: moment().set({ 'hour': 21, 'minute': 0}),
     locale: {
       format: 'M月DD日 H:mm',
       applyLabel: "選択する",
@@ -89246,6 +89249,10 @@ let submitReflect = () => {
 
     $(this).prop('disabled', true)
   })
+}
+
+let postSelectize = () => {
+  $('#post_patient_id').selectize();
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

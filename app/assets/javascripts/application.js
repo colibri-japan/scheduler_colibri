@@ -1747,6 +1747,10 @@ let submitReflect = () => {
   })
 }
 
+let postSelectize = () => {
+  $('#post_patient_id').selectize();
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

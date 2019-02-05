@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
     before_action :set_corporation
+    before_action :set_patients, only: [:new, :edit]
 
     def new
         @post = Post.new
@@ -32,10 +33,14 @@ class PostsController < ApplicationController
     private
 
     def set_corporation
-      @corporation = Corporation.cached_find(current_user.corporation_id)
+        @corporation = Corporation.cached_find(current_user.corporation_id)
+    end
+
+    def set_patients 
+        @patients = @corporation.cached_active_patients_ordered_by_kana
     end
 
     def post_params
-        params.require(:post).permit(:body)
+        params.require(:post).permit(:body, :patient_id)
     end
 end

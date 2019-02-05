@@ -35,11 +35,15 @@ class Corporation < ApplicationRecord
 	end
 
 	def cached_recent_posts
-		Rails.cache.fetch([self, 'recent_posts']) { posts.includes(:author).order(created_at: :desc).limit(40) }
+		Rails.cache.fetch([self, 'recent_posts']) { posts.includes(:author, :patient).order(created_at: :desc).limit(40) }
 	end
 
 	def cached_active_patients_grouped_by_kana
 		Rails.cache.fetch([self, 'active_patients_grouped_by_kana']) { patients.active.group_by_kana }
+	end
+
+	def cached_active_patients_ordered_by_kana
+		Rails.cache.fetch([self, 'active_patients_ordered_by_kana']) { patients.active.order_by_kana }
 	end
 
 	def cached_displayable_nurses_grouped_by_team_name

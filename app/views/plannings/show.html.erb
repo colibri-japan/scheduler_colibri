@@ -15,7 +15,8 @@
 	window.planningId = "<%= j @planning.id.to_s %>";
 	window.firstDay = "<%= j @corporation.default_first_day.to_s %>";
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
-	window.masterSchedule = 'false'
+	window.masterSchedule = 'false';
+	window.generalPlanning = 'true'
 <% end %>
 
 

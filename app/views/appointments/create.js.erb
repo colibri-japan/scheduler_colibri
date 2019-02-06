@@ -1,17 +1,17 @@
 $('.modal').modal('hide');
 
-  if (typeof calendar === 'undefined') {
-    let calendar;
-  }
-  if ($('.calendar').length > 0) {
-    calendar = $('.calendar');
-  } else if ($('.patient_calendar').length > 0) {
-    calendar = $('.patient_calendar');
-  } else if ($('.nurse_calendar').length > 0) {
-    calendar = $('.nurse_calendar');
-  } else if ($('.master_calendar').length > 0) {
-    calendar = $('.master_calendar');
-  }
+if (typeof calendar === 'undefined') {
+  let calendar;
+}
+if ($('.calendar').length > 0) {
+  calendar = $('.calendar');
+} else if ($('.patient_calendar').length > 0) {
+  calendar = $('.patient_calendar');
+} else if ($('.nurse_calendar').length > 0) {
+  calendar = $('.nurse_calendar');
+} else if ($('.master_calendar').length > 0) {
+  calendar = $('.master_calendar');
+}
 
 calendar.fullCalendar(
   'renderEvent', 

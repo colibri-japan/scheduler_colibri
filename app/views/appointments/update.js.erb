@@ -82,11 +82,15 @@ pathname = window.location.pathname;
 
     $('.modal').modal('hide');
 
-    calendar.fullCalendar(
-      'renderEvent', 
-      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-      false
-    );
+    if (window.nurseId == <%= @appointment.nurse_id %> || window.patientId == <%= @appointment.patient_id %> || window.generalPlanning == 'true' ) {
+      calendar.fullCalendar(
+        'renderEvent', 
+        $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
+        false
+      );
+    } else {
+    }
+
 
     <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
       if ($('.calendar').length > 0) {

@@ -194,30 +194,27 @@ class NursesController < ApplicationController
   end
 
   def create_grouped_services
-    service_types = []
     @grouped_services = []
     @grouped_services_sum_duration = 0
     @grouped_services_sum_count = 0
 
-    @services_till_now.each do |service|
-      service_types << service.title unless service_types.include?(service.title)
-    end
+    service_types = @services_till_now.pluck(:title).uniq
 
     service_types.each do |service_title|
-      matching_provided_services = @services_till_now.where(title: service_title, cancelled: false).where(appointments: {edit_requested: false}).all
+      matching_provided_services = @services_till_now.where(title: service_title, cancelled: false).where(appointments: {edit_requested: false})
       
-      sum_duration = matching_provided_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
-      sum_total_wage = matching_provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
-      sum_counts = matching_provided_services.sum{|e| e.service_counts.present? ? e.service_counts : 1 }
+      sum_duration = matching_provided_services.sum('service_duration')
+      sum_total_wage = matching_provided_services.sum('total_wage')
+      sum_counts = matching_provided_services.sum('service_counts')
       hour_based = matching_provided_services.first.present? ? matching_provided_services.first.hour_based_wage : false 
 
       matching_service = @corporation.equal_salary == true ? Service.where(corporation_id: @corporation.id, title: service_title, nurse_id: nil).first : Service.where(corporation_id: @corporation.id, title: service_title, nurse_id: @nurse.id).first
       unit_cost = matching_service.unit_wage if matching_service.present?
-      new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, unit_cost: unit_cost, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
-      @grouped_services << new_service
+      @grouped_services << ProvidedService.new(title: service_title, service_duration: sum_duration, unit_cost: unit_cost, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
       @grouped_services_sum_count = @grouped_services_sum_count + sum_counts 
       @grouped_services_sum_duration = @grouped_services_sum_duration + sum_duration
     end
+    ProvidedService.import @grouped_services
   end
 
   def set_teams_id_by_name

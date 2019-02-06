@@ -5,7 +5,11 @@ module AppointmentsHelper
     end
 
     def confirm_cancel_message(appointment)
-        appointment.cancelled == true ? "サービスのキャンセルが解除されます" : "サービスがキャンセルされます"
+        appointment.cancelled ? "サービスのキャンセルが解除されます" : "サービスがキャンセルされます"
+    end
+
+    def confirm_request_edit_message(appointment)
+        appointment.edit_requested ? '調整中を解除しますか？' : 'サービスが調整中リストへ追加されます'
     end
 
 	def toggle_cancel_text(record)

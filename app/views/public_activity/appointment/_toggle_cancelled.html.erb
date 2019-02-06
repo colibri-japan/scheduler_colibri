@@ -1,4 +1,4 @@
-<% if activity.trackable %>
+<% if activity.trackable.present? %>
     <% if activity.previous_cancelled == false %>
 	    が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のサービスをキャンセルしました。<br/>
 	    <span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>

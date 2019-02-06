@@ -1,4 +1,4 @@
-<% if activity.trackable %>
+<% if activity.trackable.present? %>
 	が<span class="activity-important-fields"><%= activity.try(:new_patient) %>様</span>のサービスを追加しました(繰り返し)<br/>
 	<span class="activity-important-fields"><%= activity.try(:new_nurse) %></span>
 	<%= weekday(activity.try(:new_anchor)) %><%= activity.try(:new_start).strftime("%H:%M") %> ~ <%= activity.try(:new_end).strftime("%H:%M") %>

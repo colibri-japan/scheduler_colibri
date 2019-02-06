@@ -1,4 +1,4 @@
-<% if activity.trackable %>
+<% if activity.trackable.present? %>
 	がヘルパーの働けない時間をアップデートしました。<br/>
 	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
 	<%= weekday(activity.trackable.anchor) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%H:%M") %>

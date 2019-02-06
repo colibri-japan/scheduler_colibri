@@ -1,4 +1,4 @@
-<% if activity.trackable %>
+<% if activity.trackable.present? %>
 	が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のサービスを編集リストへ追加しました。<br/>
 	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
 	<%= weekday(activity.trackable.anchor) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%H:%M") %>

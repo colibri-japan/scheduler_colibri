@@ -1,6 +1,6 @@
-<% if activity.trackable %>
+<% if activity.trackable.present? %>
 	が自社サービス以外の予定を追加しました。<br/>
-	<span class="activity-important-fields"><%= activity.trackable.nurse.present? ? "#{activity.trackable.nurse.try(:name)   }" : "#{activity.trackable.patient.try(:name)}様"  %></span>
+	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)}" %><% "#{activity.trackable.patient.try(:name)}様" if activity.trackable.patient.present? %></span>
 	<%= weekday(activity.trackable.starts_at) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= weekday(activity.trackable.ends_at) %><%= activity.trackable.ends_at.strftime("%H:%M") %>
 <% else %>
 	がその後削除された自社サービス以外の予定を追加しました。

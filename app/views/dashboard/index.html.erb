@@ -56,9 +56,7 @@
           <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ログアウト以降：#{@unseen_activity_count}" %></span>
         </div>
         <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light' >
-          <% @activities.each do |activity| %>
-            <%= render partial: 'activities/activity', locals: {activity: activity} %>
-          <% end %>
+          <%= render partial: 'activities/activity', collection: @activities, cached: true %>
         </div>
       </div>
 
@@ -70,7 +68,7 @@
           <span class='colibri-subcontainer-title'>掲示板</span>
         </div>
         <div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container'>
-          <%= render partial: 'posts/post', collection: @posts, cached: true %>
+          <%= render partial: 'posts/post', collection: @posts %>
         </div>
         <div class='colibri-subcontainer-footer'>
           <%= link_to '新規メッセージ', new_post_path, remote: true, class: 'btn btn-info text-white form-control btn-block' %>

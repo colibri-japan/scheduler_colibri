@@ -162,10 +162,10 @@
 			<% end %>
 			<% if current_user.corporation_admin? %>
 				<tr>
+					<td class="table-important-fields">合計</td>
+					<td	class="table-important-fields"><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
+					<td	class="table-important-fields"><%= @grouped_services_sum_count %></td>
 					<td></td>
-					<td></td>
-					<td></td>
-					<td id="total-salary-label">合計：</td>
 					<td id="total-salary"><%= @total_till_now %>¥</td>
 				</tr>
 			<% end %>

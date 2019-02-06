@@ -111,7 +111,7 @@ class NursesController < ApplicationController
     @provided_services = ProvidedService.not_archived.where(nurse_id: @nurse.id, planning_id: @planning.id, temporary: false, countable: false).where('service_date BETWEEN ? and ?', first_day, last_day)
 
     now_in_Japan = Time.current + 9.hours
-    @services_till_now = @provided_services.where('service_date BETWEEN ? and ?', first_day, now_in_Japan).order(service_date: 'asc')
+    @services_till_now = @provided_services.where('service_date BETWEEN ? and ?', first_day, now_in_Japan).order(service_date: 'asc').includes(:appointment, :patient)
     @services_from_now = @provided_services.where('service_date BETWEEN ? and ?', now_in_Japan, last_day).order(service_date: 'asc')
 
     mark_services_as_provided
@@ -196,12 +196,15 @@ class NursesController < ApplicationController
   def create_grouped_services
     service_types = []
     @grouped_services = []
+    @grouped_services_sum_duration = 0
+    @grouped_services_sum_count = 0
+
     @services_till_now.each do |service|
       service_types << service.title unless service_types.include?(service.title)
     end
 
     service_types.each do |service_title|
-      matching_provided_services = @services_till_now.where(title: service_title, cancelled: false).all
+      matching_provided_services = @services_till_now.where(title: service_title, cancelled: false).where(appointments: {edit_requested: false}).all
       
       sum_duration = matching_provided_services.sum{|e| e.service_duration.present? ? e.service_duration : 0 }
       sum_total_wage = matching_provided_services.sum{|e| e.total_wage.present? ? e.total_wage : 0 }
@@ -212,6 +215,8 @@ class NursesController < ApplicationController
       unit_cost = matching_service.unit_wage if matching_service.present?
       new_service = ProvidedService.create(title: service_title, service_duration: sum_duration, unit_cost: unit_cost, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
       @grouped_services << new_service
+      @grouped_services_sum_count = @grouped_services_sum_count + sum_counts 
+      @grouped_services_sum_duration = @grouped_services_sum_duration + sum_duration
     end
   end
 

@@ -26,7 +26,7 @@
     
     <div class="form-group">
       <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', appointment.title), id: :appointment_title, required: true, title: 'サービスタイプを選択してください', required_pattern: '.*\S+.*', class: "form-control" %>
+      <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', appointment.title), id: :appointment_title, required: true, prompt: '検索する', title: 'サービスタイプを選択してください', required_pattern: '.*\S+.*', class: "form-control" %>
     </div>
 
     <div class="form-group">

@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
     @planning = @corporation.planning
 
     #activity module
-    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:trackable)
+    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:trackable).limit(15)
     @unseen_activity_count = @activities.count
     if @unseen_activity_count == 0
       @activities = PublicActivity::Activity.where(planning_id: @planning.id).last(5)
@@ -15,6 +15,7 @@ class DashboardController < ApplicationController
 
     #posts
     @posts = @corporation.cached_recent_posts
+    @unread_count = @posts.unread_by(current_user).count
 
     #appointments : today, upcoming two weeks, since monday
     today = Date.today 

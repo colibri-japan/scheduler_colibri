@@ -30,6 +30,10 @@ class PostsController < ApplicationController
         @post.destroy
     end
 
+    def mark_all_posts_as_read
+        Post.mark_as_read! :all, for: current_user
+    end
+
     private
 
     def set_corporation

@@ -1,9 +1,12 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-
+  :recoverable, :rememberable, :trackable, :validatable
+  
+  acts_as_reader
+  
   belongs_to :corporation
   belongs_to :nurse, optional: true
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'

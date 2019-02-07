@@ -128,6 +128,9 @@ Rails.application.routes.draw do
   #custom routes for dashboard
   get 'dashboard/extended_daily_summary' => 'dashboard#extended_daily_summary', as: :dashboard_extended_daily_summary
 
+  #custom routes for posts
+  patch 'users/:user_id/posts/mark_all_posts_as_read' => 'posts#mark_all_posts_as_read', as: :mark_all_posts_as_read
+
   authenticated :user do  
     root  to: 'dashboard#index', as: :authenticated_root
   end

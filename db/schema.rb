@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190205144236) do
+ActiveRecord::Schema.define(version: 20190207094417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,6 +262,17 @@ ActiveRecord::Schema.define(version: 20190205144236) do
     t.index ["planning_id"], name: "index_provided_services_on_planning_id"
     t.index ["service_salary_id"], name: "index_provided_services_on_service_salary_id"
     t.index ["verifier_id"], name: "index_provided_services_on_verifier_id"
+  end
+
+  create_table "read_marks", id: :serial, force: :cascade do |t|
+    t.string "readable_type", null: false
+    t.integer "readable_id"
+    t.string "reader_type", null: false
+    t.integer "reader_id"
+    t.datetime "timestamp"
+    t.index ["readable_type", "readable_id"], name: "index_read_marks_on_readable_type_and_readable_id"
+    t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index", unique: true
+    t.index ["reader_type", "reader_id"], name: "index_read_marks_on_reader_type_and_reader_id"
   end
 
   create_table "recurring_appointments", force: :cascade do |t|

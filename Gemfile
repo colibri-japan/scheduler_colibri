@@ -119,6 +119,9 @@ gem 'rack-mini-profiler'
 #pooling connection for dalli with puma
 gem 'connection_pool'
 
+#gem that handles unread/read records
+gem 'unread'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

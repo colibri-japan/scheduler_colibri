@@ -1,0 +1,33 @@
+<div id="index-container">
+
+
+  <div id="index-table-container">
+    <div id='posts-filters-container' class='no-print' style="margin-bottom:5px;display:flex;justify-content:space-between">
+        <div style='width:29%'><span class='colibri-form-label-dark'>期間</span><%= text_field_tag :posts_date_range, value=nil, class: 'form-control' %></div>
+        <div style='width:29%'><span class='colibri-form-label-dark'>送信者</span><%= select_tag :posts_author_ids_filter, options_from_collection_for_select(@users, :id, :name, {prompt: '送信元選択'}), {multiple: true} %></div>
+        <div style='width:29%'><span class='colibri-form-label-dark'>利用者タグ</span><%= select_tag :posts_patient_ids_filter, options_from_collection_for_select(@patients, :id, :name, {prompt: '利用者選択'}), {multiple: true} %></div>
+        <div style="margin-top:23px"><button class='btn btn-info' id='posts-search-button'>検索する</button></div>
+    </div>
+
+    <div id='posts-action-container' class='align-right no-print' style='margin-bottom:5px'>
+        <button class='btn btn-colibri-light-gray' id="print-button"><span class="glyphicon glyphicon-print" style='color:white;font-size:18px'></span> 印刷</button>
+        <%= link_to "<i class='glyphicon glyphicon-download-alt' style='color:white;font-size:18px'></i> エクセル".html_safe, posts_path, format: :xlsx, class: 'btn btn-colibri-light-gray text-white' %>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="table-important-fields" style="width:9%">日付</th>
+            <th class="table-important-fields" style="width:14%">送信元</th>
+            <th class="table-important-fields" style="width:14%">利用者タグ</th>
+            <th class="table-important-fields" style="width:44%">メッセージ</th>
+            <th class="table-important-fields" style="width:19%">既読者</th>
+        </tr>
+        </thead>  
+        <tbody>
+            <%= render partial: 'posts/post_table', collection: @posts, as: :post %>
+        </tbody>
+    </table>
+  </div>
+  
+</div>

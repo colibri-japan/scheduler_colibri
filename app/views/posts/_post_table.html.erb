@@ -1,0 +1,9 @@
+
+<tr>
+  <td><%= post.created_at.strftime("%-m月%-d日") %></td>
+  <td><%= post.author.try(:name) %></td>
+  <td><%= post.patient.try(:name) %></td>
+  <td><%= simple_format(post.body) %></td>
+  <td><%= @posts_readers[post.id].join(', ') %></td>
+</tr>
+

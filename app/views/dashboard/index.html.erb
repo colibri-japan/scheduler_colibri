@@ -69,17 +69,17 @@
             <div id='dashboard-posts-header'>
               <% if @unread_count > 0 %>
                 <span id='unread-count' style='font-weight:bold;margin-left:4px'><%= "未読#{@unread_count}件" %></span>
+                </div>
+                <%= link_to '既読にする', mark_all_posts_as_read_path(current_user), method: :patch, remote: true, id: 'mark-posts-as-read-button', class: 'btn btn-sm btn-success' %>
               <% else %>
                 <span class='colibri-subcontainer-title'>掲示板</span>
+                </div>
+                <%= link_to 'もっと見る', posts_path, class: 'btn btn-sm btn-info text-white' %>
               <% end %>
-            </div>
-            <% if @unread_count > 0 %>
-              <%= link_to '既読にする', mark_all_posts_as_read_path(current_user), method: :patch, remote: true, id: 'mark-posts-as-read-button', class: 'btn btn-sm btn-success' %>
-            <% end %>
           </div>
         </div>
         <div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container'>
-          <%= render partial: 'posts/post', collection: @posts %>
+          <%= render @posts %>
         </div>
         <div class='colibri-subcontainer-footer'>
           <%= link_to '新規メッセージ', new_post_path, remote: true, class: 'btn btn-info text-white form-control btn-block' %>

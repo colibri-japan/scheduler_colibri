@@ -107,7 +107,7 @@ li.planning-menu-selected {
 
 
 #index-container {
-	max-width: 80%;
+	width: 80%;
 	margin-left: auto;
 	margin-right:auto;
 }
@@ -441,6 +441,17 @@ p.master-reflect-option {
 
 #shintai-stats-div {
 	width: 50%;
+}
+
+@media print {
+	#index-container {
+		width: 95%;
+	}
+
+	#index-table-container {
+		margin: 0px;
+	}
+
 }
 
 

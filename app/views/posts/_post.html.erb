@@ -1,11 +1,9 @@
-<%= cache post do %>
-    <div class="post-container" id="post-<%= post.id %>">
-        <div class="post-header">
-            <div class="post-author-wrapper"><%= post.author.name %><%=" > #{post.patient.name}" if post.patient_id.present? %></div>
-            <div class="post-timestamps-wrapper"><%= resource_creation_date(post) %></div>
-        </div>
-        <div class="post-body <%= 'post-clickable' if post.author_id == current_user.id %> <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(post.id) %>" data-url="<%= edit_post_path(post) %>">
-            <%= simple_format(post.body) %>
-        </div>
+<div class="post-container" id="post-<%= post.id %>">
+    <div class="post-header">
+        <div class="post-author-wrapper"><%= post.author.name %><%=" > #{post.patient.name}" if post.patient_id.present? %></div>
+        <div class="post-timestamps-wrapper"><%= resource_creation_date(post) %></div>
     </div>
-<% end %>
+    <div class="post-body <%= 'post-clickable' if post.author_id == current_user.id %> <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(post.id) %>" data-url="<%= edit_post_path(post) %>">
+        <%= simple_format(post.body) %>
+    </div>
+</div>

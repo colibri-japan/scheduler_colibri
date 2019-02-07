@@ -46,6 +46,10 @@ class Corporation < ApplicationRecord
 		Rails.cache.fetch([self, 'active_patients_ordered_by_kana']) { patients.active.order_by_kana }
 	end
 
+	def cached_registered_users_ordered_by_kana
+		Rails.cache.fetch([self, 'registered_users_ordered_by_kana']) { users.registered.order_by_kana }
+	end
+
 	def cached_displayable_nurses_grouped_by_team_name
 		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_team_name']) { 
 			team_name_by_id = self.teams.pluck(:id, :team_name).to_h

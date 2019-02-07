@@ -31,6 +31,11 @@ class DashboardController < ApplicationController
     @edit_requested_appointments = @edit_requested_appointments.where(nurse_id: @current_user_team.nurses.ids) if @current_user_team.present?
     #appointments with comments for the next two weeks
     @commented_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day).where.not(description: [nil, '']).order(starts_at: :asc)
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def extended_daily_summary

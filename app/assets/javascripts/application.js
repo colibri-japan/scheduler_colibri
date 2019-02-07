@@ -1583,7 +1583,7 @@ let batchActionFormButton = () => {
         cancelled = cancelledAndEditRequested['cancelled']
       }
       appointment_filters = {
-        nurse_ids: $('#nurse_id_filter').val(),
+        patient_ids: $('#nurse_id_filter').val(),
         patient_ids: $('#patient_id_filter').val(),
         range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),

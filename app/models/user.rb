@@ -7,7 +7,7 @@ class User < ApplicationRecord
   
   acts_as_reader
   
-  belongs_to :corporation
+  belongs_to :corporation, touch: true
   belongs_to :nurse, optional: true
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
@@ -19,6 +19,7 @@ class User < ApplicationRecord
 
 
   scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
+	scope :registered, -> { where.not(name: ['', nil]) }
 
   def self.assign_to_base_corporation
     @corporation = Corporation.create(name: 'Colibri Trial', address: 'Paris, France', identifier: '0123456789')

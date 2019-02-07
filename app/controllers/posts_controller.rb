@@ -26,7 +26,7 @@ class PostsController < ApplicationController
         respond_to do |format|
             format.html
             format.js
-            format.xlsx
+            format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"経過記録_#{Date.today.strftime("%-m月%-d日")}.xlsx\""}
         end
     end
 

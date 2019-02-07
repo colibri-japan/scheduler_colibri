@@ -1,0 +1,26 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+	title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+	thick_border = s.add_style border: { style: :thick, color: 'FF000000'  }, sz: 12, alignment: {horizontal: :center, vertical: :center }
+	align_right = s.add_style alignment: {horizontal: :right}
+	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
+	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+	weekend_table_cells = s.add_style border: {style: :thin, color: 'FF000000'}, bg_color: 'FFFDF498'
+	final_wage_title = s.add_style sz: 12, b: true, border: {style: :thin, color: 'FF000000'}
+	final_wage = s.add_style sz: 12, b: true, border: { style: :thick, color: 'FF000000'  }, alignment: {horizontal: :center, vertical: :center }
+
+	wb.add_worksheet(name: "経過記録") do |sheet|
+		sheet.add_row ['経過記録'], style: title_style
+        sheet.merge_cells "A1:E1"
+        sheet.add_row
+        sheet.add_row ['日付', '送信者','利用者',  'メッセージ', '既読'], style: table_header
+
+        @posts.each do |post|
+          sheet.add_row [post.created_at.strftime("%-m月%-d日"), post.author.try(:name), post.patient.try(:name), post.try(:body), @posts_readers[post.id].join(', ')], style: table_cells
+        end
+
+        sheet.column_widths 10, 15, 15, 45, 30
+	end
+end

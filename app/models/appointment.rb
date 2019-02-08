@@ -106,10 +106,10 @@ class Appointment < ApplicationRecord
 			service_type: self.title || '',
 			borderColor: self.borderColor,
 			nurse: {
-				name: self.nurse.name,
+				name: self.nurse.try(:name),
 			},
 			patient: {
-				name: self.patient.name,
+				name: self.patient.try(:name),
 				address: self.patient.try(:address)
 			},
 			frequency: self.recurring_appointment_frequency,

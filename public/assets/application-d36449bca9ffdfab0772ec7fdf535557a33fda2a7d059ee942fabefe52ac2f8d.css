@@ -1022,7 +1022,7 @@ li.planning-menu-selected {
 
 /* line 109, app/assets/stylesheets/plannings.scss */
 #index-container {
-  max-width: 80%;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -1409,24 +1409,35 @@ p.master-reflect-option {
   width: 50%;
 }
 
+@media print {
+  /* line 447, app/assets/stylesheets/plannings.scss */
+  #index-container {
+    width: 95%;
+  }
+  /* line 451, app/assets/stylesheets/plannings.scss */
+  #index-table-container {
+    margin: 0px;
+  }
+}
+
 @media screen and (orientation: portrait) {
-  /* line 448, app/assets/stylesheets/plannings.scss */
+  /* line 459, app/assets/stylesheets/plannings.scss */
   div .fc-scroller {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 453, app/assets/stylesheets/plannings.scss */
+  /* line 464, app/assets/stylesheets/plannings.scss */
   #detail-planning-container, #detail-container, #planning-container {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 458, app/assets/stylesheets/plannings.scss */
+  /* line 469, app/assets/stylesheets/plannings.scss */
   #colibri-batch-action-button, #colibri-batch-master-action-button {
     height: 90px;
     width: 90px;
     border-radius: 90px;
   }
-  /* line 464, app/assets/stylesheets/plannings.scss */
+  /* line 475, app/assets/stylesheets/plannings.scss */
   span.glyphicon.glyphicon-pencil.batch-action-pencil {
     line-height: 74px;
     font-size: 1.7em;
@@ -1459,6 +1470,16 @@ p.master-reflect-option {
   background-color: #defcfc;
   border-radius: 2px;
   padding: 3px 7px 5px 7px;
+}
+
+/* line 25, app/assets/stylesheets/posts.scss */
+.post-body.unread-post {
+  background-color: #E8FFB7;
+}
+
+/* line 29, app/assets/stylesheets/posts.scss */
+.post-clickable-row:hover {
+  cursor: pointer;
 }
 /* line 1, app/assets/stylesheets/provided_services.scss */
 #chosen-select-all-container {
@@ -20424,58 +20445,63 @@ span.fc-time {
   .thick-calendar-line {
     border-top: 3px solid #ccc !important;
   }
-  /* some styles for dashboard print */
+  /* hiding now indicator when printing */
   /* line 635, app/assets/stylesheets/application.css.scss */
+  div.fc-now-indicator.fc-now-indicator-arrow, div.fc-now-indicator.fc-now-indicator-line {
+    display: none;
+  }
+  /* some styles for dashboard print */
+  /* line 641, app/assets/stylesheets/application.css.scss */
   #colibri-dashboard-container {
     margin: 0px;
   }
-  /* line 639, app/assets/stylesheets/application.css.scss */
+  /* line 645, app/assets/stylesheets/application.css.scss */
   .colibri-dashboard-container-row {
     height: auto !important;
   }
-  /* line 643, app/assets/stylesheets/application.css.scss */
+  /* line 649, app/assets/stylesheets/application.css.scss */
   .colibri-dashboard-container-row-large {
     height: auto !important;
   }
-  /* line 647, app/assets/stylesheets/application.css.scss */
+  /* line 653, app/assets/stylesheets/application.css.scss */
   .colibri-subcontainer-body {
     height: auto !important;
   }
-  /* line 651, app/assets/stylesheets/application.css.scss */
+  /* line 657, app/assets/stylesheets/application.css.scss */
   .colibri-xs-title {
     font-size: 1.4em;
   }
-  /* line 655, app/assets/stylesheets/application.css.scss */
+  /* line 661, app/assets/stylesheets/application.css.scss */
   #query_date {
     font-weight: bold;
     font-size: 1.3em;
     border: none;
   }
-  /* line 661, app/assets/stylesheets/application.css.scss */
+  /* line 667, app/assets/stylesheets/application.css.scss */
   table {
     page-break-after: auto;
     height: auto;
   }
-  /* line 662, app/assets/stylesheets/application.css.scss */
+  /* line 668, app/assets/stylesheets/application.css.scss */
   tr {
     page-break-inside: avoid;
     page-break-after: auto;
   }
-  /* line 663, app/assets/stylesheets/application.css.scss */
+  /* line 669, app/assets/stylesheets/application.css.scss */
   td {
     page-break-inside: avoid;
     page-break-after: auto;
   }
-  /* line 664, app/assets/stylesheets/application.css.scss */
+  /* line 670, app/assets/stylesheets/application.css.scss */
   thead {
     display: table-header-group;
   }
-  /* line 665, app/assets/stylesheets/application.css.scss */
+  /* line 671, app/assets/stylesheets/application.css.scss */
   tfoot {
     display: table-footer-group;
   }
   /* fixing one pager print */
-  /* line 669, app/assets/stylesheets/application.css.scss */
+  /* line 675, app/assets/stylesheets/application.css.scss */
   html, body {
     height: auto;
   }

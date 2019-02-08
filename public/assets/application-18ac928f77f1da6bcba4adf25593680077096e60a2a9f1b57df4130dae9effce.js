@@ -87478,6 +87478,56 @@ module.exports = function(Chart) {
 
 }).call(this);
 (function() {
+  $(document).on('turbolinks:load', function() {
+    $('#posts_author_ids_filter').selectize({
+      plugins: ['remove_button']
+    });
+    $('#posts_patient_ids_filter').selectize({
+      plugins: ['remove_button']
+    });
+    $('input[name="posts_date_range"]').daterangepicker({
+      timePicker: true,
+      timePicker24Hour: true,
+      timePickerIncrement: 15,
+      startDate: moment().set({
+        'hour': 6,
+        'minute': 0
+      }),
+      endDate: moment().set({
+        'hour': 21,
+        'minute': 0
+      }),
+      locale: {
+        format: 'M月DD日 H:mm',
+        applyLabel: "選択する",
+        cancelLabel: "取消",
+        fromLabel: "",
+        toLabel: "から",
+        daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
+        monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        firstDay: 1
+      }
+    });
+    $('#posts-search-button').click(function() {
+      var queryData;
+      queryData = {
+        range_start: $('#posts_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
+        range_end: $('#posts_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
+        patient_ids: $('#posts_patient_ids_filter').val(),
+        author_ids: $('#posts_author_ids_filter').val()
+      };
+      $.ajax({
+        url: '/posts.js',
+        data: queryData
+      });
+    });
+    $('tr.post-clickable-row').click(function() {
+      $.getScript($(this).data('url'));
+    });
+  });
+
+}).call(this);
+(function() {
 
 
 }).call(this);
@@ -87563,11 +87613,9 @@ let setUnavailabilityTime = (start, end) => {
   $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
   if (window.nurseId) {
     $("#unavailability_nurse_id").val(window.nurseId);
-    $("#unavailability_nurse_id").trigger("chosen:updated");
   }
   if (window.patientId) {
     $("#unavailability_patient_id").val(window.patientId);
-    $("#unavailability_patient_id").trigger("chosen:updated");
   }
 }
 
@@ -87592,11 +87640,9 @@ let setRecurringAppointmentTime = (start, end, view) => {
   }
   if (window.nurseId) {
     $('#recurring_appointment_nurse_id').val(window.nurseId);
-    $('#recurring_appointment_nurse_id').trigger('chosen:updated');
   }
   if (window.patientId) {
     $('#recurring_appointment_patient_id').val(window.patientId);
-    $('#recurring_appointment_patient_id').trigger('chosen:updated');
   }
 }
 
@@ -87644,6 +87690,8 @@ initialize_nurse_calendar = function(){
         $.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);
           setUnavailabilityTime(start, end);
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient();
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -87709,28 +87757,36 @@ initialize_nurse_calendar = function(){
         let previous_end = moment(event.end).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]D[日][(]dd[)] ')  + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = event.start.format('M[月]D[日][(]dd[)]') + event.start.format('LT') + ' ~ ' + event.end.format('LT')
+        let nurse_name = event.nurse.name;
+        let patient_name = event.patient.name
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').data('event', event)
-        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').dialog({
           height: 'auto',
           width: 400,
           modal: true,
           buttons: {
             'セーブする': function () {
-              let appointment = $(this).data('event');
-              let delta = $(this).data('delta');
-              appointment_data = {
-                appointment: {
-                  starts_at: appointment.start.format(),
-                  ends_at: appointment.end.format(),
-                }
-              };
+              let ajaxData;
+              if (event.unavailability) {
+                ajaxData = {
+                  unavailability: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                  }
+                };
+              } else {
+                ajaxData = {
+                  appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                  }
+                };
+              }
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                data: appointment_data,
+                data: ajaxData,
                 success: function (data) {
                   $(".popover").remove();
                   if (data.includes("その日のヘルパーが重複しています")) {
@@ -87817,6 +87873,8 @@ initialize_patient_calendar = function(){
         $.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);     	         
           setUnavailabilityTime(start, end);
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient();
         });
 
 
@@ -87824,14 +87882,7 @@ initialize_patient_calendar = function(){
       },
 
 
-      eventDragStart: function (event, jsEvent, ui, view) {
-        window.eventDragging = true;
-      },
-
-      eventDragStop: function (event, jsEvent, ui, view) {
-        window.eventDragging = false;
-      },
-
+      
       eventRender: function (event, element, view){
         if (window.eventDragging) {
           return
@@ -87856,7 +87907,14 @@ initialize_patient_calendar = function(){
         return event.displayable;
       },
 
+      eventDragStart: function (event, jsEvent, ui, view) {
+        window.eventDragging = true;
+      },
 
+      eventDragStop: function (event, jsEvent, ui, view) {
+        window.eventDragging = false;
+      },
+      
       eventDrop: function (event, delta, revertFunc) {
         $(".popover").remove()
         let minutes = moment.duration(delta).asMinutes();
@@ -87864,28 +87922,36 @@ initialize_patient_calendar = function(){
         let previous_end = moment(event.end).subtract(minutes, "minutes");
         let previousAppointment = previous_start.format('M[月]D[日][(]dd[)]') + previous_start.format('LT') + ' ~ ' + previous_end.format('LT')
         let newAppointment = event.start.format('M[月]D[日][(]dd[)]') + event.start.format('LT') + ' ~ ' + event.end.format('LT')
+        let nurse_name = event.nurse.name || '';
+        let patient_name = event.patient.name || '';
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + event.nurse.name + '  / 利用者名： ' + event.patient.name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
-        $('#drag-drop-confirm').data('event', event)
-        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
         $('#drag-drop-confirm').dialog({
           height: 'auto',
           width: 400,
           modal: true,
           buttons: {
             'セーブする': function(){
-              let appointment = $(this).data('event');
-              let delta = $(this).data('delta');
-              appointment_data = {
-                appointment: {
-                  starts_at: appointment.start.format(),
-                  ends_at: appointment.end.format(),
+              let ajaxData;
+              if (event.unavailability) {
+                ajaxData = {
+                  unavailability: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(), 
+                  }
                 }
-              };
+              } else {
+                ajaxData = {
+                  appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                  }
+                };
+              }
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                data: appointment_data,
+                data: ajaxData,
                 success: function(data) {
                   $(".popover").remove();
                   if(data.includes("その日のヘルパーが重複しています")) {
@@ -88088,6 +88154,8 @@ initialize_master_calendar = function() {
         $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
           setRecurringAppointmentTime(start, end, view);
           setHiddenRecurringAppointmentFields(view_start, view_end);
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient();
         });
 
         master_calendar.fullCalendar('unselect');
@@ -88296,10 +88364,13 @@ initialize_calendar = function() {
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
+            $('#unavailability_nurse_id').val(resource.id);
           } else if (view.name == 'timelineWeek') {
             $('#recurring_appointment_nurse_id').val(resource.id);
-            $('#recurring_appointment_nurse_id').trigger('chosen:updated')
+            $('#unavailability_nurse_id').val(resource.id);
           }
+          recurringAppointmentSelectizeNursePatient();
+          unavailabilitySelectizeNursePatient()
         });
 
         calendar.fullCalendar('unselect');
@@ -88316,6 +88387,8 @@ initialize_calendar = function() {
         let resourceChange = '';
         let newPatientId;
         let newNurseId;
+        let nurse_name = event.nurse.name || '';
+        let patient_name = event.patient.name || '';
 
         if (newResource !== myResource) {
           if (newResource.is_nurse_resource) {
@@ -88337,29 +88410,37 @@ initialize_calendar = function() {
           }
         }
 
-        $('#drag-drop-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').data('event', event)
-        $('#drag-drop-confirm').data('delta', delta)
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         $('#drag-drop-confirm').dialog({
           height: 'auto',  
           width: 400,
           modal: true,
           buttons: {
             'セーブする': function () {
-              let appointment = $(this).data('event');
-              let delta = $(this).data('delta');
-              appointment_data = {
-                appointment: {
-                  starts_at: appointment.start.format(),
-                  ends_at: appointment.end.format(),
-                  patient_id: newPatientId,
-                  nurse_id: newNurseId,
+              let ajaxData;
+              if (event.unavailability) {
+                ajaxData = {
+                  unavailability: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                    patient_id: newPatientId,
+                    nurse_id: newNurseId,
+                  }               
                 }
-              };
+              } else {
+                ajaxData = {
+                  appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                    patient_id: newPatientId,
+                    nurse_id: newNurseId,
+                  }
+                };
+              }
               $.ajax({
                 url: event.base_url + '.js?delta=' + delta,
                 type: 'PATCH',
-                data: appointment_data,
+                data: ajaxData,
                 success: function (data) {
                   $(".popover").remove();
                   if (data.includes("その日の従業員が重複しています")) {
@@ -88434,32 +88515,9 @@ initialize_calendar = function() {
 };
 
 
-let appointmentFormChosen = () => {
-  $('#appointment_nurse_id').chosen({
-    no_results_text: '従業員が見つかりません',
-  });
-  $('#appointment_patient_id').chosen({
-    no_results_text: '利用者が見つかりません',
-  })
-}
-
-
-let recurringAppointmentFormChosen = () => {
-  $('#recurring_appointment_nurse_id').chosen({
-    no_results_text: '従業員が見つかりません',
-  });
-  $('#recurring_appointment_patient_id').chosen({
-    no_results_text: '利用者が見つかりません',
-  })
-}
-
-let unavailabilityFormChosen = () => {
-  $('#unavailability_nurse_id').chosen({
-    no_results_text: '従業員が見つかりません',
-  });
-  $('#unavailability_patient_id').chosen({
-    no_results_text: '利用者が見つかりません',
-  })
+let unavailabilitySelectizeNursePatient = () => {
+  $('#unavailability_nurse_id').selectize()
+  $('#unavailability_patient_id').selectize()
 }
 
 
@@ -88914,7 +88972,7 @@ let toggleDayResources = () => {
 }
 
 
-let recurringAppointmentSelectize = () => {
+let recurringAppointmenSelectizeTitle = () => {
   $('#recurring_appointment_title').selectize({
     persist: false,
     create: true,
@@ -88926,6 +88984,11 @@ let recurringAppointmentSelectize = () => {
   });
 };
 
+let recurringAppointmentSelectizeNursePatient = () => {
+  $('#recurring_appointment_nurse_id').selectize();
+  $('#recurring_appointment_patient_id').selectize();
+}
+
 let appointmentSelectize = () => {
   $('#appointment_title').selectize({
     persist: false,
@@ -88935,7 +88998,9 @@ let appointmentSelectize = () => {
         return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
       }
     }
-  })
+  });
+  $('#appointment_nurse_id').selectize();
+  $('#appointment_patient_id').selectize();
 }
 
 let skillsSelectize = () => {
@@ -89083,7 +89148,7 @@ let batchActionFormButton = () => {
         cancelled = cancelledAndEditRequested['cancelled']
       }
       appointment_filters = {
-        nurse_ids: $('#nurse_id_filter').val(),
+        patient_ids: $('#nurse_id_filter').val(),
         patient_ids: $('#patient_id_filter').val(),
         range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
@@ -89260,6 +89325,10 @@ let submitReflect = () => {
 
     $(this).prop('disabled', true)
   })
+}
+
+let postSelectize = () => {
+  $('#post_patient_id').selectize();
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

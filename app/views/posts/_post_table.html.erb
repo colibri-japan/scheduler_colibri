@@ -1,5 +1,5 @@
 
-<tr>
+<tr class="<%= 'post-clickable-row' if current_user.id == post.author_id %>" data-url="<%= edit_post_path(post) %>">
   <td><%= post.created_at.strftime("%-m月%-d日") %></td>
   <td><%= post.author.try(:name) %></td>
   <td><%= post.patient.try(:name) %></td>

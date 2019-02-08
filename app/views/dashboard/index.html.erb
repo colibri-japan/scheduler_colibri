@@ -65,7 +65,7 @@
     <div class='colibri-dashboard-container-column-narrow'>
       <div class='colibri-dashboard-subcontainer subcontainer-column-full-height'>
         <div class='colibri-subcontainer-header'>
-          <div style='display:flex;justify-content:space-between;margin-bottom:3px'>
+          <div style='display:flex;justify-content:space-between;margin-bottom:3px' id='dashboard-posts-header-container'>
             <div id='dashboard-posts-header'>
               <% if @unread_count > 0 %>
                 <span id='unread-count' style='font-weight:bold;margin-left:4px'><%= "未読#{@unread_count}件" %></span>
@@ -74,7 +74,7 @@
               <% else %>
                 <span class='colibri-subcontainer-title'>掲示板</span>
                 </div>
-                <%= link_to 'もっと見る', posts_path, class: 'btn btn-sm btn-info text-white' %>
+                <%= link_to '検索する', posts_path, class: 'btn btn-sm btn-info text-white' %>
               <% end %>
           </div>
         </div>

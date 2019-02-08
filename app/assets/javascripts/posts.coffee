@@ -43,15 +43,18 @@ $(document).on 'turbolinks:load', ->
       firstDay: 1
   
   $('#posts-search-button').click ->
-    console.log('click called')
     queryData =
       range_start: $('#posts_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
       range_end: $('#posts_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
       patient_ids: $('#posts_patient_ids_filter').val()
       author_ids: $('#posts_author_ids_filter').val()
-    console.log(queryData)
     $.ajax
       url: '/posts.js'
       data: queryData
     return
+
+  $('tr.post-clickable-row').click ->
+    $.getScript($(this).data('url'))
+    return
+
   return

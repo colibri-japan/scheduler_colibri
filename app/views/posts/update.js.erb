@@ -1,6 +1,10 @@
-$('#post-<%= @post.id %> > .post-body').empty()
-$('#post-<%= @post.id %> > .post-header > .post-author-wrapper').empty()
-$('#post-<%= @post.id %> > .post-body').append("<%= j simple_format(@post.body) %>")
-$('#post-<%= @post.id %> > .post-header > .post-author-wrapper').append("<%= j @post.author.name %><%= j " > #{@post.patient.name}" if @post.patient_id.present? %>")
-$('.modal').modal('hide');
-$('.modal-backdrop').remove();
+if (window.location.pathname.includes('posts')) {
+  location.reload()
+} else {
+  $('#post-<%= @post.id %> > .post-body').empty()
+  $('#post-<%= @post.id %> > .post-header > .post-author-wrapper').empty()
+  $('#post-<%= @post.id %> > .post-body').append("<%= j simple_format(@post.body) %>")
+  $('#post-<%= @post.id %> > .post-header > .post-author-wrapper').append("<%= j @post.author.name %><%= j " > #{@post.patient.name}" if @post.patient_id.present? %>")
+  $('.modal').modal('hide');
+  $('.modal-backdrop').remove();
+}

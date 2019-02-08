@@ -1022,7 +1022,7 @@ li.planning-menu-selected {
 
 /* line 109, app/assets/stylesheets/plannings.scss */
 #index-container {
-  max-width: 80%;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -1409,24 +1409,35 @@ p.master-reflect-option {
   width: 50%;
 }
 
+@media print {
+  /* line 447, app/assets/stylesheets/plannings.scss */
+  #index-container {
+    width: 95%;
+  }
+  /* line 451, app/assets/stylesheets/plannings.scss */
+  #index-table-container {
+    margin: 0px;
+  }
+}
+
 @media screen and (orientation: portrait) {
-  /* line 448, app/assets/stylesheets/plannings.scss */
+  /* line 459, app/assets/stylesheets/plannings.scss */
   div .fc-scroller {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 453, app/assets/stylesheets/plannings.scss */
+  /* line 464, app/assets/stylesheets/plannings.scss */
   #detail-planning-container, #detail-container, #planning-container {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 458, app/assets/stylesheets/plannings.scss */
+  /* line 469, app/assets/stylesheets/plannings.scss */
   #colibri-batch-action-button, #colibri-batch-master-action-button {
     height: 90px;
     width: 90px;
     border-radius: 90px;
   }
-  /* line 464, app/assets/stylesheets/plannings.scss */
+  /* line 475, app/assets/stylesheets/plannings.scss */
   span.glyphicon.glyphicon-pencil.batch-action-pencil {
     line-height: 74px;
     font-size: 1.7em;
@@ -1460,6 +1471,16 @@ p.master-reflect-option {
   border-radius: 2px;
   padding: 3px 7px 5px 7px;
 }
+
+/* line 25, app/assets/stylesheets/posts.scss */
+.post-body.unread-post {
+  background-color: #E8FFB7;
+}
+
+/* line 29, app/assets/stylesheets/posts.scss */
+.post-clickable-row:hover {
+  cursor: pointer;
+}
 /* line 1, app/assets/stylesheets/provided_services.scss */
 #chosen-select-all-container {
   margin-left: 150px;
@@ -1468,6 +1489,23 @@ p.master-reflect-option {
 /* line 5, app/assets/stylesheets/provided_services.scss */
 #chosen_target_services_chosen {
   width: 250px !important;
+}
+
+/* line 9, app/assets/stylesheets/provided_services.scss */
+.verify-provided-service {
+  display: flex;
+}
+
+/* line 13, app/assets/stylesheets/provided_services.scss */
+.verified-at-and-by {
+  margin-left: 4px;
+  color: #4f5b66;
+}
+
+/* line 18, app/assets/stylesheets/provided_services.scss */
+.verified-at-and-by:hover {
+  color: black;
+  cursor: pointer;
 }
 /* line 5, app/assets/stylesheets/recurring_appointments.scss */
 .appointment-occurrence {

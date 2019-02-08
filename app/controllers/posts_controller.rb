@@ -10,8 +10,7 @@ class PostsController < ApplicationController
         @users = @corporation.cached_registered_users_ordered_by_kana
         @patients = @corporation.cached_active_patients_ordered_by_kana
                 
-        fetch_post_readers
-
+        
         if params[:range_start].present? || params[:range_end].present? 
             @posts = @corporation.posts.where('created_at BETWEEN ? AND ?', params[:range_start], params[:range_end])
             @posts = @posts.where(patient_id: params[:patient_ids]) if params[:patient_ids].present? && (params[:patient_ids].map(&:to_i) - @patients.ids).empty?
@@ -20,6 +19,7 @@ class PostsController < ApplicationController
             @posts = @corporation.cached_recent_posts
         end
         
+        fetch_post_readers
 
         respond_to do |format|
             format.html

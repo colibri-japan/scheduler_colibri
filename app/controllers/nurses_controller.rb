@@ -43,8 +43,6 @@ class NursesController < ApplicationController
 
     fetch_nurses_grouped_by_team
     @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
-
-		@admin =  current_user.has_admin_access?.to_s
   end
 
   def edit
@@ -100,7 +98,7 @@ class NursesController < ApplicationController
   end
 
   def payable
-    authorize current_user, :has_admin_access?
+    authorize current_user, :has_access_to_provided_services?
     authorize @nurse, :is_employee?
 
     delete_previous_temporary_services

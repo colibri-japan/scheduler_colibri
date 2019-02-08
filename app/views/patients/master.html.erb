@@ -2,7 +2,7 @@
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, patient_id: @patient.id) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-	window.userIsAdmin = "<%= j @admin %>";
+	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";

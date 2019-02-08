@@ -11,7 +11,12 @@ class User < ApplicationRecord
   belongs_to :nurse, optional: true
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
-  enum role: [:schedule_restricted, :schedule_admin, :corporation_admin]
+  enum role: [:schedule_restricted, :schedule_restricted_with_provided_services, :schedule_admin, :corporation_admin]
+  # schedule restricted: master readonly, no access to provided services
+  # schedule restricted with provided services: master readonly, limited access to provided services
+  # schedule admin: master edit, limited access to provided services
+  # corporation admin: master edit, full access to provided services and salaries 
+
   validates :role, inclusion: { in: roles.keys }
 
   before_validation :set_default_corporation
@@ -30,6 +35,10 @@ class User < ApplicationRecord
       user.corporation_id = @corporation.id
       user.save
     end
+  end
+
+  def has_restricted_access?
+    schedule_restricted?
   end
 
   def has_admin_access?

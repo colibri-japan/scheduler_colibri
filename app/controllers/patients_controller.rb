@@ -44,8 +44,6 @@ class PatientsController < ApplicationController
 
     @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
     fetch_nurses_grouped_by_team
-
-		@admin = current_user.has_admin_access?.to_s
   end
 
   def edit

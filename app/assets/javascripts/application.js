@@ -1766,6 +1766,13 @@ let postSelectize = () => {
   $('#post_patient_id').selectize();
 }
 
+
+let clickablePost = () => {
+  $('tr.post-clickable-row').click(function() {
+    $.getScript($(this).data('url'));
+  });
+};
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

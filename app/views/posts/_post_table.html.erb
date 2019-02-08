@@ -1,9 +1,9 @@
 
-<tr class="<%= 'post-clickable-row' if current_user.id == post.author_id %>" data-url="<%= edit_post_path(post) %>">
+<tr id="post-<%= post.id %>" class="<%= 'post-clickable-row' if current_user.id == post.author_id %>" data-url="<%= edit_post_path(post) %>">
   <td><%= post.created_at.strftime("%-m月%-d日") %></td>
   <td><%= post.author.try(:name) %></td>
-  <td><%= post.patient.try(:name) %></td>
-  <td><%= simple_format(post.body) %></td>
-  <td><%= @posts_readers[post.id].join(', ') %></td>
+  <td class='td-patient-tag'><%= post.patient.try(:name) %></td>
+  <td class='td-post-body'><%= simple_format(post.body) %></td>
+  <td class='td-post-readers'><%= @posts_readers[post.id].join(', ') %></td>
 </tr>
 

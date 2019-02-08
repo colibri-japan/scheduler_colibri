@@ -18,6 +18,8 @@ class PostsController < ApplicationController
         else
             @posts = @corporation.cached_recent_posts
         end
+
+        @posts = @posts.order(created_at: 'DESC')
         
         fetch_post_readers
 
@@ -42,8 +44,8 @@ class PostsController < ApplicationController
 
     def update
         @post = Post.find(params[:id])
-
         @post.update(post_params)
+        @post_readers = @corporation.users.registered.have_read(@post).pluck(:name)
     end
 
     def destroy
@@ -69,7 +71,7 @@ class PostsController < ApplicationController
     def fetch_post_readers
         @posts_readers = {}
         @posts.each do |post|
-            readers = @corporation.users.have_read(post).pluck(:name)
+            readers = @corporation.users.registered.have_read(post).pluck(:name)
             @posts_readers[post.id] = readers 
         end
     end

@@ -53,8 +53,6 @@ $(document).on 'turbolinks:load', ->
       data: queryData
     return
 
-  $('tr.post-clickable-row').click ->
-    $.getScript($(this).data('url'))
-    return
+  clickablePost()
 
   return

@@ -1,5 +1,9 @@
 if (window.location.pathname.includes('posts')) {
-  location.reload()
+  $('#post-<%= @post.id %> > .td-patient-tag').html("<%= j @post.patient.try(:name) %>");
+  $('#post-<%= @post.id %> > .td-post-body').html("<%= j simple_format(@post.body) %>");
+  $('#post-<%= @post.id %> > .td-post-readers').html("<%= j @post_readers.join(', ') %>");
+  $('.modal').modal('hide');
+  $('.modal-backdrop').remove();
 } else {
   $('#post-<%= @post.id %> > .post-body').empty()
   $('#post-<%= @post.id %> > .post-header > .post-author-wrapper').empty()

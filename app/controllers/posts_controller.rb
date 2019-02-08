@@ -9,9 +9,7 @@ class PostsController < ApplicationController
     def index
         @users = @corporation.cached_registered_users_ordered_by_kana
         @patients = @corporation.cached_active_patients_ordered_by_kana
-        
-        @posts = @corporation.cached_recent_posts
-        
+                
         fetch_post_readers
 
         if params[:range_start].present? || params[:range_end].present? 
@@ -71,7 +69,7 @@ class PostsController < ApplicationController
     def fetch_post_readers
         @posts_readers = {}
         @posts.each do |post|
-            readers = User.have_read(post).pluck(:name)
+            readers = @corporation.users.have_read(post).pluck(:name)
             @posts_readers[post.id] = readers 
         end
     end

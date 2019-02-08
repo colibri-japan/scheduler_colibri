@@ -629,6 +629,12 @@ span.fc-time {
 	border-top: 3px solid #ccc !important;
 	}
 
+	/* hiding now indicator when printing */
+
+	div.fc-now-indicator.fc-now-indicator-arrow, div.fc-now-indicator.fc-now-indicator-line {
+		display: none;
+	}
+
 	/* some styles for dashboard print */
 
 	#colibri-dashboard-container {

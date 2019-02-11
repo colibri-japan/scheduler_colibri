@@ -17,30 +17,8 @@
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_patient_path(@planning, @patient), resource_master_path: planning_patient_master_path(@planning, @patient), nurse: @main_nurse} %>
 
-<div id="resource-list-container" class="no-print">
-	<div id="toggle-patients-nurses-wrapper">
-		<input type="checkbox" checked id="toggle-patients-nurses">
-	</div>
-	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
-		<div id="patients-resource" class="no-print">
-			<% @patients.each do |kana, patients| %>
-				<div class="nurses-resource-subsection-title"><%= kana %></div>
-				<% patients.each do |patient| %>
-					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.id %>" data-url="<%= planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
-				<% end %>
-			<% end %>
-		</div>
-		<div id="nurses-resource" class="hide-resource no-print">
-			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title"><%= group %></div>
-				<% nurses.each do |nurse| %>
-					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
-				<% end %>
-			<% end %>
-		</div>
-	</div>
+<%= render partial: 'plannings/resources_submenu', locals: {resource_type: 'patient', master_resource: false} %>
 
-</div>
 
 <div id="detail-container">
 

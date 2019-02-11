@@ -1,0 +1,23 @@
+<div id="resource-list-container" class="no-print">
+	<div id="toggle-patients-nurses-wrapper">
+        <%= check_box_tag :toggle_resource, 1, checked = resource_type == 'patient', {id: 'toggle-patients-nurses'} %>
+	</div>
+	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
+		<div id="patients-resource" class="no-print <%= 'hide-resource' if resource_type == 'nurse' %>">
+			<% @patients_grouped_by_kana.each do |kana, patients| %>
+				<div class="nurses-resource-subsection-title"><%= kana %></div>
+				<% patients.each do |patient| %>
+					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if resource_type == 'patient' && patient.id == @patient.id %>" data-url="<%= master_resource ? planning_patient_master_path(@planning, patient) : planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+				<% end %>
+			<% end %>
+		</div>
+		<div id="nurses-resource" class="no-print <%= 'hide-resource' if resource_type == 'patient' %>">
+			<% @grouped_nurses.each do |group, nurses| %>
+				<div class="nurses-resource-subsection-title"><%= group %></div>
+				<% nurses.each do |nurse| %>
+					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if resource_type == 'nurse' && nurse.id == @nurse.id %>" data-url="<%= master_resource ? planning_nurse_master_path(@planning, nurse) : planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+</div>

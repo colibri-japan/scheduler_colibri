@@ -30,7 +30,7 @@ class PatientsController < ApplicationController
   def show
     authorize @patient, :is_employee?
     
-    @patients = @corporation.cached_active_patients_grouped_by_kana
+    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
     fetch_nurses_grouped_by_team
 
     @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)

@@ -76,6 +76,20 @@
 			</div>
 		</div>
 
+		<div class='colibri-dashboard-container-row'>
+			<div class='colibri-dashboard-subcontainer'>
+				<div class='colibri-subcontainer-header'>
+					<span class='colibri-subcontainer-title'>データをダウンロードする</span>
+				</div>
+				<div class='colibri-subcontainer-body'>
+					<div class="report-download-wrapper">
+						<%= link_to '全従業員サービス稼動数', planning_monthly_general_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success text-white' %>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
 	<% end %>
 
 	<div id='extended-daily-summary-title-container'>
@@ -87,22 +101,4 @@
   <div id='extended-daily-summary-container'>
     <%= render partial: 'extended_daily_summary', locals: {daily_appointments: @daily_appointments, weekly_appointments: @weekly_appointments, monthly_appointments: @monthly_appointments, daily_provided_services: @daily_provided_services, female_patients_ids: @female_patients_ids, male_patients_ids: @male_patients_ids} %>
   </div>
-
-	<% if false %>
-
-	<div class='colibri-dashboard-container-row'>
-		<div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>データをダウンロードする</span>
-      </div>
-      <div class='colibri-subcontainer-body'>
-				<div class="report-download-wrapper">
-        	<%= link_to '全従業員サービス稼動数', planning_monthly_general_report_path(@planning, format: :xlsx), class: 'btn btn-success text-white' %>
-				</div>
-      </div>
-		</div>
-
-	</div>
-
-	<% end %>
 </div>

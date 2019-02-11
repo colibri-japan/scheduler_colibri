@@ -79,23 +79,23 @@ class PlanningsController < ApplicationController
 		@provided_services_shintai = @provided_services_till_today.where('title LIKE ? ', '%身%').sum(:total_wage)
 		@provided_services_seikatsu = @provided_services_till_today.where('title LIKE ?', '%生%').sum(:total_wage)
 
-    	#appointments : since beginning of month
+    #appointments : since beginning of month
 		today = Date.today 
-        appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
+    appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
 
-	    #daily summary
-    	@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
-    	@female_patients_ids = @corporation.patients.where(gender: true).ids
-    	@male_patients_ids = @corporation.patients.where(gender: false).ids
+	  #daily summary
+    @daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
+    @female_patients_ids = @corporation.patients.where(gender: true).ids
+    @male_patients_ids = @corporation.patients.where(gender: false).ids
 		
-    	#weekly summary, from monday to today
-    	@weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
+    #weekly summary, from monday to today
+    @weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
 
 		#monthly summary, until end of today
 		@monthly_appointments = appointments
 
-    	#daily provided_services to be verified
-    	@daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+    #daily provided_services to be verified
+    @daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
 	end
 
 	def archive
@@ -122,20 +122,20 @@ class PlanningsController < ApplicationController
 
 	def monthly_general_report
 		@planning = Planning.find(params[:id])
-		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true, countable: false).includes(:nurse, :appointment)
-		@service_types = @provided_services.order(:title).map{|p| p.title }.uniq
+		start_date = Date.new(params[:y].to_i, params[:m].to_i, 1).beginning_of_day
+		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day
+		
+		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true, countable: false, service_date: start_date..end_date).includes(:nurse, :appointment)
+		@service_types = @provided_services.order(:title).map(&:title).uniq
 		@nurses = @corporation.nurses.displayable
 		@service_counts_grouped_by_nurse = {}
 		@nurses.each do |nurse|
-			nurse_services = @provided_services.where(nurse_id: nurse.id)
 			sub_hash = {}
 			@service_types.each do |type|
-				sub_hash[type] = nurse_services.where(title: type).count
+				sub_hash[type] = @provided_services.where(nurse_id: nurse.id, title: type).count
 			end
 			@service_counts_grouped_by_nurse[nurse.name] = sub_hash
 		end
-
-		puts @service_counts_grouped_by_nurse
 		
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}

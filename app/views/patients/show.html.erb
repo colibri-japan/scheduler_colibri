@@ -15,7 +15,7 @@
 	window.masterSchedule = 'false'
 <% end %>
 
-<%= render 'plannings/planning_patients_submenu' %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_patient_path(@planning, @patient), resource_master_path: planning_patient_master_path(@planning, @patient), nurse: @main_nurse} %>
 
 <div id="resource-list-container" class="no-print">
 	<div id="toggle-patients-nurses-wrapper">

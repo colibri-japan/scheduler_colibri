@@ -20,7 +20,7 @@
 <% end %>
 
 
-<%= render 'planning_view_submenu' %>
+<%= render partial: 'planning_left_menu', locals: {nurse: @main_nurse, resource_path: planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), view: 'general'} %>
 
 <div id="planning-show-main">
 	<div id="main-planning-header">

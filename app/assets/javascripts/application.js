@@ -1557,13 +1557,13 @@ let batchActionFormButton = () => {
 
   if ($('#new-batch-request-edit-submit').length > 0) {
     actionButton = $('#new-batch-request-edit-submit');
-    actionUrl = '/appointments/batch_request_edit_confirm'
+    actionUrl = '/appointments/batch_request_edit_confirm.js'
   } else if ($('#new-batch-cancel-submit').length > 0) {
     actionButton = $('#new-batch-cancel-submit');
-    actionUrl = '/appointments/batch_cancel_confirm'
+    actionUrl = '/appointments/batch_cancel_confirm.js'
   } else if ($('#new-batch-archive-submit').length > 0) {
     actionButton = $('#new-batch-archive-submit');
-    actionUrl = '/appointments/batch_archive_confirm'
+    actionUrl = '/appointments/batch_archive_confirm.js'
   }
 
   actionButton.click(function(){
@@ -1583,7 +1583,7 @@ let batchActionFormButton = () => {
         cancelled = cancelledAndEditRequested['cancelled']
       }
       appointment_filters = {
-        patient_ids: $('#nurse_id_filter').val(),
+        nurse_ids: $('#nurse_id_filter').val(),
         patient_ids: $('#patient_id_filter').val(),
         range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),

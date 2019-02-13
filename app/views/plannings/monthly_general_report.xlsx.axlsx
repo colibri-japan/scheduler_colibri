@@ -12,15 +12,15 @@ wb.styles do |s|
 
 		sheet.add_row do |row|
 			row.add_cell '従業員', style: table_header
-			@service_types.each do |service_type|
-				row.add_cell service_type, style: table_header
+			@service_names.each do |service_name|
+				row.add_cell service_name, style: table_header
 			end
 		end
 
-		@service_counts_grouped_by_nurse.each do |nurse, services|
+		@service_counts_grouped_by_nurse.each do |nurse_name, count_per_service_title|
 			sheet.add_row do |row|
-				row.add_cell nurse, style: table_cells
-				services.each do |type, count|
+				row.add_cell nurse_name, style: table_cells
+				count_per_service_title.each do |service_title, count|
 					row.add_cell count, style: table_cells
 				end
 			end

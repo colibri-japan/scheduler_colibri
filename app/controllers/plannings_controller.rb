@@ -126,13 +126,25 @@ class PlanningsController < ApplicationController
 		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day
 		
 		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true, countable: false, service_date: start_date..end_date).includes(:nurse, :appointment)
-		@service_types = @provided_services.order(:title).map(&:title).uniq
+		
+		@service_names = @provided_services.order(:title).map(&:title).uniq
+
 		@nurses = @corporation.nurses.displayable
 		@service_counts_grouped_by_nurse = {}
+
 		@nurses.each do |nurse|
 			sub_hash = {}
-			@service_types.each do |type|
-				sub_hash[type] = @provided_services.where(nurse_id: nurse.id, title: type).count
+			@service_names.each do |service_name|
+				if @provided_services.where(nurse_id: nurse.id, title: service_name).exists?
+					if @provided_services.where(nurse_id: nurse.id, title: service_name).first.hour_based_wage == true 
+						sum_duration = @provided_services.where(nurse_id: nurse.id, title: service_name).sum(:service_duration)
+						sub_hash[service_name] = sum_duration.to_f / (60 * 60)
+					else
+						sub_hash[service_name] = @provided_services.where(nurse_id: nurse.id, title: service_name).count
+					end
+				else
+					sub_hash[service_name] = 0
+				end
 			end
 			@service_counts_grouped_by_nurse[nurse.name] = sub_hash
 		end

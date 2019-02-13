@@ -17,7 +17,7 @@ class ProvidedServicesController < ApplicationController
 
 
 		if @provided_service.save
-		  redirect_to planning_nurse_payable_path(@planning, @nurse), notice: "新規手当がセーブされました"
+		  redirect_back fallback_location: authenticated_root_path, notice: "新規手当がセーブされました"
 		end
 
 	end
@@ -31,9 +31,9 @@ class ProvidedServicesController < ApplicationController
 
 		respond_to do |format|
 			if @provided_service.update(provided_service_params)
-				format.html {redirect_to planning_nurse_payable_path(@planning, @nurse), notice: '実績がアップデートされました' }
+				format.html {redirect_back fallback_location: authenticated_root_path, notice: '実績がアップデートされました' }
 			else
-				format.html {redirect_to planning_nurse_payable_path(@planning, @nurse), notice: '実績のアップデートが失敗しました' }
+				format.html {redirect_back fallback_location: authenticated_root_path, notice: '実績のアップデートが失敗しました' }
 			end
 		end
 	end
@@ -43,7 +43,7 @@ class ProvidedServicesController < ApplicationController
 		@nurse = Nurse.find(@provided_service.nurse_id)
 
 		if @provided_service.delete
-			redirect_to planning_nurse_payable_path(@planning, @nurse), notice: '実績が削除されました'
+			redirect_back fallback_location: authenticated_root_path, notice: '実績が削除されました'
 		end
 	end
 

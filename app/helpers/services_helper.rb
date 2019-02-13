@@ -5,7 +5,7 @@ module ServicesHelper
     end
 
     def humanize_equal_salary(service)
-        service.equal_salary ? '全員同じ' : 'ヘルパー別'
+        service.equal_salary ? '全員同じ' : '従業員別'
     end
     
 end

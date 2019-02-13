@@ -87510,19 +87510,18 @@ module.exports = function(Chart) {
     });
     $('#posts-search-button').click(function() {
       var queryData;
-      console.log('click called');
       queryData = {
         range_start: $('#posts_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#posts_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
         patient_ids: $('#posts_patient_ids_filter').val(),
         author_ids: $('#posts_author_ids_filter').val()
       };
-      console.log(queryData);
       $.ajax({
         url: '/posts.js',
         data: queryData
       });
     });
+    clickablePost();
   });
 
 }).call(this);
@@ -89043,7 +89042,7 @@ let toggleServiceHourBasedWage = () => {
 let toggleServiceEqualSalary = () => {
   $('#service_equal_salary').bootstrapToggle({
     on: '全員同じ',
-    off: 'ヘルパー別',
+    off: '従業員別',
     onstyle: 'success',
     offstyle: 'info',
     width: 130
@@ -89121,13 +89120,13 @@ let batchActionFormButton = () => {
 
   if ($('#new-batch-request-edit-submit').length > 0) {
     actionButton = $('#new-batch-request-edit-submit');
-    actionUrl = '/appointments/batch_request_edit_confirm'
+    actionUrl = '/appointments/batch_request_edit_confirm.js'
   } else if ($('#new-batch-cancel-submit').length > 0) {
     actionButton = $('#new-batch-cancel-submit');
-    actionUrl = '/appointments/batch_cancel_confirm'
+    actionUrl = '/appointments/batch_cancel_confirm.js'
   } else if ($('#new-batch-archive-submit').length > 0) {
     actionButton = $('#new-batch-archive-submit');
-    actionUrl = '/appointments/batch_archive_confirm'
+    actionUrl = '/appointments/batch_archive_confirm.js'
   }
 
   actionButton.click(function(){
@@ -89147,7 +89146,7 @@ let batchActionFormButton = () => {
         cancelled = cancelledAndEditRequested['cancelled']
       }
       appointment_filters = {
-        patient_ids: $('#nurse_id_filter').val(),
+        nurse_ids: $('#nurse_id_filter').val(),
         patient_ids: $('#patient_id_filter').val(),
         range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
@@ -89329,6 +89328,13 @@ let submitReflect = () => {
 let postSelectize = () => {
   $('#post_patient_id').selectize();
 }
+
+
+let clickablePost = () => {
+  $('tr.post-clickable-row').click(function() {
+    $.getScript($(this).data('url'));
+  });
+};
 
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 

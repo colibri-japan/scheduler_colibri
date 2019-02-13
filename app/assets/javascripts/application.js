@@ -1479,7 +1479,7 @@ let toggleServiceHourBasedWage = () => {
 let toggleServiceEqualSalary = () => {
   $('#service_equal_salary').bootstrapToggle({
     on: '全員同じ',
-    off: 'ヘルパー別',
+    off: '従業員別',
     onstyle: 'success',
     offstyle: 'info',
     width: 130

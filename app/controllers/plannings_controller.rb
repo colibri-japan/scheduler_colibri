@@ -125,7 +125,7 @@ class PlanningsController < ApplicationController
 		start_date = Date.new(params[:y].to_i, params[:m].to_i, 1).beginning_of_day
 		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day
 		
-		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true, countable: false, service_date: start_date..end_date).includes(:nurse, :appointment)
+		@provided_services = @planning.provided_services.where(temporary: false, archived_at: nil, cancelled: false, provided: true, countable: false, service_date: start_date..end_date).includes(:nurse, :appointment).where(appointments: {edit_requested: false})
 		
 		@service_names = @provided_services.order(:title).map(&:title).uniq
 

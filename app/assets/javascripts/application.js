@@ -146,8 +146,10 @@ initialize_nurse_calendar = function(){
         }
         if (event.cancelled) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)' });  
+          element.addClass('colibri-cancelled')
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
+          element.addClass('colibri-edit-requested')
         }
 
         let popover_content;
@@ -168,6 +170,9 @@ initialize_nurse_calendar = function(){
         element.find('.fc-title').text(function(i, t){
           if (!event.unavailability) {
             return event.patient.name;
+          } else {
+            let patient_name = event.patient.name ? ': ' + event.patient.name + '様' : ''
+            return event.service_type + patient_name;
           }
         });
         return event.displayable;
@@ -311,13 +316,9 @@ initialize_patient_calendar = function(){
           recurringAppointmentSelectizeNursePatient();
           unavailabilitySelectizeNursePatient();
         });
-
-
         patient_calendar.fullCalendar('unselect');
       },
 
-
-      
       eventRender: function (event, element, view){
         if (window.eventDragging) {
           return
@@ -337,6 +338,9 @@ initialize_patient_calendar = function(){
         element.find('.fc-title').text(function(i, t){
           if (!event.unavailability) {
             return event.nurse.name;
+          } else {
+            let nurse_name = event.nurse.name ? ': ' + event.nurse.name : ''
+            return event.service_type + nurse_name;
           }
         });
         return event.displayable;
@@ -714,27 +718,46 @@ initialize_calendar = function() {
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
+        
+        let patient_name = event.patient.name ? event.patient.name + '様' : ''
+        let nurse_name = event.nurse.name ? event.nurse.name : ''
+        let patient_address = event.patient.address || ''
+
         element.popover({
           html: true,
           title: event.service_type,
-          content: event.nurse.name + ' x ' + event.patient.name + '<br/>' + event.description + '<br/>' + event.patient.address,
+          content: nurse_name + ' x ' + patient_name + '<br/>' + event.description + '<br/>' + patient_address,
           trigger: 'hover',
           placement: 'top',
           container: 'body'
         })
 
-        if (view.name == 'agendaDay' && !event.unavailability) {
+        if (view.name == 'agendaDay') {
           element.find('.fc-title').text(function(i, t){
-            if ($('#day-view-options-input').is(':checked')) {
-              return event.patient.name;
+            if (!event.unavailability) {
+              if ($('#day-view-options-input').is(':checked')) {
+                return patient_name;
+              } else {
+                return nurse_name;
+              }
             } else {
-              return event.nurse.name;
+              return event.service_type;
             }
           });
-        } else if (view.name == 'timelineWeek' && !event.unavailability) {
+        } else if (view.name == 'timelineWeek') {
           element.find('.fc-title').text(function(i,t){
-            return event.patient.name;
+            if (!event.unavailability) {
+              return patient_name;
+            } else {
+              return event.service_type + ': ' + patient_name;
+            }
           })
+        } else {
+          if (event.unavailability) {
+            element.find('.fc-title').text(function (i, t) {
+              return event.service_type;
+            })
+          }
         }
 
 

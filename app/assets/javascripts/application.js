@@ -955,19 +955,6 @@ let unavailabilitySelectizeNursePatient = () => {
   $('#unavailability_patient_id').selectize()
 }
 
-
-let masterSwitchToggle = () => {
-  $('.master-toggle').bootstrapToggle({
-   on: 'マスター',
-   off: '普通',
-   size: 'normal',
-   onstyle: 'success',
-   offstyle: 'info',
-   width: 100,
-  });
-}
-
-
 let editAfterDate = () => {
   $('#delete-recurring-appointment').hide();
   $('#recurring_appointment_editing_occurrences_after option').each(function () {
@@ -1162,55 +1149,6 @@ let toggleCancelled = () => {
     offstyle: 'secondary',
     height: 30,
     width: 140
-  })
-}
-
-let recurringAppointmentCancel = () => {
-  $('#recurring-appointment-cancel').click(function(){
-    let cancelUrl = $(this).data('cancel-url');
-    let editing_occurrences_after = $('select#recurring_appointment_editing_occurrences_after').val();
-    let confirmation = confirm('選択された繰り返しがキャンセルされます。');
-    if (confirmation) {
-      $.ajax({
-        url: cancelUrl,
-        type: 'PATCH',
-        data: {
-          recurring_appointment: {
-            editing_occurrences_after: editing_occurrences_after,
-          }
-        }
-      })
-    }
-  })
-}
-
-let recurringAppointmentArchive = () => {
-  $('#recurring-appointment-archive').click(function(){
-    let archiveUrl = $(this).data('archive-url') + '.js';
-    let editing_occurrences_after;
-    if ($('select#recurring_appointment_editing_occurrences_after').val()) {
-      editing_occurrences_after =  $('select#recurring_appointment_editing_occurrences_after').val();
-    } else {
-      editing_occurrences_after = ''
-    }
-    let message;
-    if (window.masterSchedule === 'true') {
-      message= '全繰り返しが削除されます';
-    } else {
-      message = '選択された繰り返しが削除されます'
-    }
-    let confirmation = confirm(message);
-    if (confirmation) {
-      $.ajax({
-        url: archiveUrl,
-        type: 'PATCH',
-        data: {
-          recurring_appointment: {
-            editing_occurrences_after: editing_occurrences_after,
-          }
-        },
-      })
-    }
   })
 }
 
@@ -1504,48 +1442,6 @@ let teamMembersSelectize = () => {
   })
 }
 
-let validateForm = () => {
-  if (typeof form === 'undefined') {
-    let form;
-  }
-
-  if ($('form.new_recurring_appointment').length > 0) {
-    form = $('form.new_recurring_appointment')
-  } else if ($('form.edit_recurring_appointment').length > 0) {
-    form = $('form.edit_recurring_appointment')
-  } else if ($('form.new_appointment').length > 0) {
-    form = $('form.new_appointment')
-  } else if ($('form.edit_appointment').length > 0) {
-    form = $('form.edit_appointment')
-  } else {
-    return false
-  }
-
-  form.submit(function(e){
-    
-
-    if (typeof titleIsPresent === 'undefined') {
-      let titleIsPresent;
-    }
-
-    if ($('form.new_recurring_appointment').length > 0) {
-      titleIsPresent = $('#recurring_appointment_title').val() !== ""
-    } else if ($('form.edit_recurring_appointment').length > 0) {
-      titleIsPresent = $('#recurring_appointment_title').val() !== ""
-    } else if ($('form.new_appointment').length > 0) {
-      titleIsPresent = $('#appointment_title').val() !== ""
-    } else if ($('form.edit_appointment').length > 0) {
-      titleIsPresent = $('#appointment_title').val() !== ""
-    } 
-
-    if (!titleIsPresent) {
-      alert('サービスタイプを選択してください');
-      e.preventDefault();
-      return false
-    } 
-  })
-  
-}
 
 let batchActionFormButton = () => {
   if (typeof actionButton === 'undefined') {

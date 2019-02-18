@@ -1,4 +1,4 @@
-<%= form_for [@planning, recurring_appointment], remote: true do |form| %>
+<%= form_with model: recurring_appointment, url: [@planning, recurring_appointment] do |form| %>
   <% if recurring_appointment.errors.any? %>
   <div id="error_explanation">
     <h2>エラーが発生しました：</h2>
@@ -57,13 +57,13 @@
       <% unless recurring_appointment.new_record? %>
         <div class="form-group">
           <%= form.label :editing_occurrences_after, '編集するサービス', class: "colibri-form-label" %><span class='required-field'>*</span>
-          <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'} %>
+          <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'}, {id: :recurring_appointment_editing_occurrences_after} %>
         </div>
       <% end %>
 
       <div class="form-group">
         <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
-        <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', recurring_appointment.title), id: :recurring_appointment_title, required: true, prompt: '検索する', title: 'サービスタイプを選択してください', required_pattern: '.*\S+.*', class: "form-control" %>
+        <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', recurring_appointment.title), {prompt: '検索する'}, {required: true, id: :recurring_appointment_title} %>
       </div>
 
       <div class="form-group">
@@ -101,12 +101,12 @@
 
       <div class="form-group">
         <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %><span class='required-field'>*</span>
-        <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, recurring_appointment.nurse_id), required: true %>
+        <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, recurring_appointment.nurse_id), {}, {required: true, id: :recurring_appointment_nurse_id} %>
       </div>
 
       <div class="form-group">
         <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %><span class='required-field'>*</span>
-        <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
+        <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {required: true, id: :recurring_appointment_patient_id}) %>
       </div>
 
       <% unless @master %>

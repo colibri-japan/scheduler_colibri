@@ -1,4 +1,4 @@
-<%= form_for [@planning, appointment], remote: true do |form| %>
+<%= form_with model: appointment, url: [@planning, appointment] do |form| %>
   <% if appointment.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
@@ -26,12 +26,12 @@
     
     <div class="form-group">
       <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', appointment.title), id: :appointment_title, required: true, prompt: '検索する', title: 'サービスタイプを選択してください', required_pattern: '.*\S+.*', class: "form-control" %>
+      <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', appointment.title), {prompt: '検索する'}, {id: :appointment_title, required: true} %>
     </div>
 
     <div class="form-group">
       <%= form.label :color, "カラー", class: "colibri-form-label" %>
-      <%= form.select(:color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], appointment.color), id: :appointment_color) %>
+      <%= form.select :color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], appointment.color), id: :appointment_color %>
   　</div> 
 
     <div class="form-group">
@@ -46,12 +46,12 @@
 
     <div class="form-group">
       <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, appointment.nurse_id), required: true %>
+      <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, appointment.nurse_id), {}, {required: true, id: :appointment_nurse_id} %>
     </div>
 
     <div class="form-group">
       <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {:required => true}) %>
+      <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {required: true, id: :appointment_patient_id}) %>
     </div>
 
     <% unless @master%>

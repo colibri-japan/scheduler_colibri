@@ -466,6 +466,7 @@ initialize_master_calendar = function() {
           displayEventEnd: true,
         }
       },
+      lazyFetching: false,
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',

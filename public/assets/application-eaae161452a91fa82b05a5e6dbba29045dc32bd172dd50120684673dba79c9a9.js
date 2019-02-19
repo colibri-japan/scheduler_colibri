@@ -87709,8 +87709,10 @@ initialize_nurse_calendar = function(){
         }
         if (event.cancelled) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)' });  
+          element.addClass('colibri-cancelled')
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
+          element.addClass('colibri-edit-requested')
         }
 
         let popover_content;
@@ -87731,6 +87733,9 @@ initialize_nurse_calendar = function(){
         element.find('.fc-title').text(function(i, t){
           if (!event.unavailability) {
             return event.patient.name;
+          } else {
+            let patient_name = event.patient.name ? ': ' + event.patient.name + '様' : ''
+            return event.service_type + patient_name;
           }
         });
         return event.displayable;
@@ -87874,13 +87879,9 @@ initialize_patient_calendar = function(){
           recurringAppointmentSelectizeNursePatient();
           unavailabilitySelectizeNursePatient();
         });
-
-
         patient_calendar.fullCalendar('unselect');
       },
 
-
-      
       eventRender: function (event, element, view){
         if (window.eventDragging) {
           return
@@ -87900,6 +87901,9 @@ initialize_patient_calendar = function(){
         element.find('.fc-title').text(function(i, t){
           if (!event.unavailability) {
             return event.nurse.name;
+          } else {
+            let nurse_name = event.nurse.name ? ': ' + event.nurse.name : ''
+            return event.service_type + nurse_name;
           }
         });
         return event.displayable;
@@ -88025,6 +88029,7 @@ initialize_master_calendar = function() {
           displayEventEnd: true,
         }
       },
+      lazyFetching: false,
       slotLabelFormat: 'H:mm',
       slotDuration: '00:15:00',
       timeFormat: 'H:mm',
@@ -88277,27 +88282,46 @@ initialize_calendar = function() {
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
+        
+        let patient_name = event.patient.name ? event.patient.name + '様' : ''
+        let nurse_name = event.nurse.name ? event.nurse.name : ''
+        let patient_address = event.patient.address || ''
+
         element.popover({
           html: true,
           title: event.service_type,
-          content: event.nurse.name + ' x ' + event.patient.name + '<br/>' + event.description + '<br/>' + event.patient.address,
+          content: nurse_name + ' x ' + patient_name + '<br/>' + event.description + '<br/>' + patient_address,
           trigger: 'hover',
           placement: 'top',
           container: 'body'
         })
 
-        if (view.name == 'agendaDay' && !event.unavailability) {
+        if (view.name == 'agendaDay') {
           element.find('.fc-title').text(function(i, t){
-            if ($('#day-view-options-input').is(':checked')) {
-              return event.patient.name;
+            if (!event.unavailability) {
+              if ($('#day-view-options-input').is(':checked')) {
+                return patient_name;
+              } else {
+                return nurse_name;
+              }
             } else {
-              return event.nurse.name;
+              return event.service_type;
             }
           });
-        } else if (view.name == 'timelineWeek' && !event.unavailability) {
+        } else if (view.name == 'timelineWeek') {
           element.find('.fc-title').text(function(i,t){
-            return event.patient.name;
+            if (!event.unavailability) {
+              return patient_name;
+            } else {
+              return event.service_type + ': ' + patient_name;
+            }
           })
+        } else {
+          if (event.unavailability) {
+            element.find('.fc-title').text(function (i, t) {
+              return event.service_type;
+            })
+          }
         }
 
 
@@ -88518,19 +88542,6 @@ let unavailabilitySelectizeNursePatient = () => {
   $('#unavailability_patient_id').selectize()
 }
 
-
-let masterSwitchToggle = () => {
-  $('.master-toggle').bootstrapToggle({
-   on: 'マスター',
-   off: '普通',
-   size: 'normal',
-   onstyle: 'success',
-   offstyle: 'info',
-   width: 100,
-  });
-}
-
-
 let editAfterDate = () => {
   $('#delete-recurring-appointment').hide();
   $('#recurring_appointment_editing_occurrences_after option').each(function () {
@@ -88725,55 +88736,6 @@ let toggleCancelled = () => {
     offstyle: 'secondary',
     height: 30,
     width: 140
-  })
-}
-
-let recurringAppointmentCancel = () => {
-  $('#recurring-appointment-cancel').click(function(){
-    let cancelUrl = $(this).data('cancel-url');
-    let editing_occurrences_after = $('select#recurring_appointment_editing_occurrences_after').val();
-    let confirmation = confirm('選択された繰り返しがキャンセルされます。');
-    if (confirmation) {
-      $.ajax({
-        url: cancelUrl,
-        type: 'PATCH',
-        data: {
-          recurring_appointment: {
-            editing_occurrences_after: editing_occurrences_after,
-          }
-        }
-      })
-    }
-  })
-}
-
-let recurringAppointmentArchive = () => {
-  $('#recurring-appointment-archive').click(function(){
-    let archiveUrl = $(this).data('archive-url') + '.js';
-    let editing_occurrences_after;
-    if ($('select#recurring_appointment_editing_occurrences_after').val()) {
-      editing_occurrences_after =  $('select#recurring_appointment_editing_occurrences_after').val();
-    } else {
-      editing_occurrences_after = ''
-    }
-    let message;
-    if (window.masterSchedule === 'true') {
-      message= '全繰り返しが削除されます';
-    } else {
-      message = '選択された繰り返しが削除されます'
-    }
-    let confirmation = confirm(message);
-    if (confirmation) {
-      $.ajax({
-        url: archiveUrl,
-        type: 'PATCH',
-        data: {
-          recurring_appointment: {
-            editing_occurrences_after: editing_occurrences_after,
-          }
-        },
-      })
-    }
   })
 }
 
@@ -89042,7 +89004,7 @@ let toggleServiceHourBasedWage = () => {
 let toggleServiceEqualSalary = () => {
   $('#service_equal_salary').bootstrapToggle({
     on: '全員同じ',
-    off: 'ヘルパー別',
+    off: '従業員別',
     onstyle: 'success',
     offstyle: 'info',
     width: 130
@@ -89067,48 +89029,6 @@ let teamMembersSelectize = () => {
   })
 }
 
-let validateForm = () => {
-  if (typeof form === 'undefined') {
-    let form;
-  }
-
-  if ($('form.new_recurring_appointment').length > 0) {
-    form = $('form.new_recurring_appointment')
-  } else if ($('form.edit_recurring_appointment').length > 0) {
-    form = $('form.edit_recurring_appointment')
-  } else if ($('form.new_appointment').length > 0) {
-    form = $('form.new_appointment')
-  } else if ($('form.edit_appointment').length > 0) {
-    form = $('form.edit_appointment')
-  } else {
-    return false
-  }
-
-  form.submit(function(e){
-    
-
-    if (typeof titleIsPresent === 'undefined') {
-      let titleIsPresent;
-    }
-
-    if ($('form.new_recurring_appointment').length > 0) {
-      titleIsPresent = $('#recurring_appointment_title').val() !== ""
-    } else if ($('form.edit_recurring_appointment').length > 0) {
-      titleIsPresent = $('#recurring_appointment_title').val() !== ""
-    } else if ($('form.new_appointment').length > 0) {
-      titleIsPresent = $('#appointment_title').val() !== ""
-    } else if ($('form.edit_appointment').length > 0) {
-      titleIsPresent = $('#appointment_title').val() !== ""
-    } 
-
-    if (!titleIsPresent) {
-      alert('サービスタイプを選択してください');
-      e.preventDefault();
-      return false
-    } 
-  })
-  
-}
 
 let batchActionFormButton = () => {
   if (typeof actionButton === 'undefined') {
@@ -89120,13 +89040,13 @@ let batchActionFormButton = () => {
 
   if ($('#new-batch-request-edit-submit').length > 0) {
     actionButton = $('#new-batch-request-edit-submit');
-    actionUrl = '/appointments/batch_request_edit_confirm'
+    actionUrl = '/appointments/batch_request_edit_confirm.js'
   } else if ($('#new-batch-cancel-submit').length > 0) {
     actionButton = $('#new-batch-cancel-submit');
-    actionUrl = '/appointments/batch_cancel_confirm'
+    actionUrl = '/appointments/batch_cancel_confirm.js'
   } else if ($('#new-batch-archive-submit').length > 0) {
     actionButton = $('#new-batch-archive-submit');
-    actionUrl = '/appointments/batch_archive_confirm'
+    actionUrl = '/appointments/batch_archive_confirm.js'
   }
 
   actionButton.click(function(){
@@ -89146,7 +89066,7 @@ let batchActionFormButton = () => {
         cancelled = cancelledAndEditRequested['cancelled']
       }
       appointment_filters = {
-        patient_ids: $('#nurse_id_filter').val(),
+        nurse_ids: $('#nurse_id_filter').val(),
         patient_ids: $('#patient_id_filter').val(),
         range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
         range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),

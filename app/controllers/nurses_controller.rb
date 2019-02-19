@@ -172,7 +172,7 @@ class NursesController < ApplicationController
   end
 
   def nurse_params
-    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :description, :full_timer, :reminderable,:custom_email_subject, :custom_email_message, skill_list:[], custom_email_days: [])
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :custom_email_message, skill_list:[], custom_email_days: [])
   end
 
   def calculate_total_wage

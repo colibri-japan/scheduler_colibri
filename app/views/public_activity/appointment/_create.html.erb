@@ -1,7 +1,7 @@
 <% if activity.trackable.present? %>
-	が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のサービスを追加しました。<br/>
+	が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のサービスを追加しました<br/>
 	<span class="activity-important-fields"><%= activity.trackable.nurse.try(:name) %></span><br/>
-	<%= weekday(activity.trackable.starts_at) %><%= activity.trackable.starts_at.strftime("%H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%H:%M") %>
+	<%= activity.trackable.starts_at.strftime("%-m月%-d日#{weekday(activity.trackable.starts_at)} %-H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%-H:%M") %>
 <% else %>
 	がその後削除されたサービスを追加しました。
 <% end %>

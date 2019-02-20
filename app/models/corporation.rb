@@ -105,6 +105,38 @@ class Corporation < ApplicationRecord
 		end
 	end
 
+	def monthly_service_counts_by_title_and_team(year, month)
+		t = self.teams.all 
+		return_hash = {}
+
+		start_date = Date.new(year.to_i, month.to_i, 1).beginning_of_day
+		end_date = Date.new(year.to_i, month.to_i, -1).end_of_day
+
+		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, provided: true).pluck(:title).uniq
+
+		teams.each do |team|
+			team_hash = {}
+
+			nurse_ids = team.nurses.all.pluck(:id)
+
+			team_provided_services = ProvidedService.where(nurse_id: nurse_ids, service_date: start_date..end_date, archived_at: nil, provided: true).group(:title).count
+			team_provided_services_female = ProvidedService.includes(:patient).where(nurse_id: nurse_ids, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: true}).group(:title).count
+			team_provided_services_male = ProvidedService.includes(:patient).where(nurse_id: nurse_ids, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: false}).group(:title).count
+
+			titles.each do |title|
+				team_hash[title] = {
+					female: team_provided_services_female[title] || 0,
+					male: team_provided_services_male[title] || 0,
+					total: team_provided_services[title] || 0
+				}
+			end
+
+			return_hash[team.team_name] = team_hash
+		end
+
+		return_hash
+	end
+
 	private
 
 	def flush_cache 

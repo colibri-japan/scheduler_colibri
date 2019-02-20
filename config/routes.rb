@@ -92,6 +92,7 @@ Rails.application.routes.draw do
 
   #custom routes for plannings
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report
+  get 'plannings/:id/monthly_teams_report' => 'plannings#monthly_teams_report', as: :planning_monthly_teams_report
   get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
   get 'plannings/:id/payable' => 'plannings#payable', as: :planning_payable

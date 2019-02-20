@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :archive, :new_master_to_schedule, :master_to_schedule, :duplicate_from, :duplicate, :settings, :payable]
+	before_action :set_planning, only: [:show, :destroy, :master, :archive, :new_master_to_schedule, :monthly_general_report, :monthly_teams_report, :master_to_schedule, :duplicate_from, :duplicate, :settings, :payable]
 	before_action :set_nurses, only: :show
 	before_action :set_patients, only: [:show, :master]
 	before_action :set_main_nurse, only: [:show, :settings]
@@ -121,7 +121,6 @@ class PlanningsController < ApplicationController
 	end
 
 	def monthly_general_report
-		@planning = Planning.find(params[:id])
 		start_date = Date.new(params[:y].to_i, params[:m].to_i, 1).beginning_of_day
 		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day
 		
@@ -154,12 +153,20 @@ class PlanningsController < ApplicationController
 		end
 	end
 
+	def monthly_teams_report
+		@monthly_service_counts_by_title_and_team = @corporation.monthly_service_counts_by_title_and_team(params[:y], params[:m])
+
+		respond_to do |format|
+			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="チーム分け実績.xlsx"' }
+		end
+	end
+
 
 	private
 
-  	def set_corporation
-  	  @corporation = Corporation.cached_find(current_user.corporation_id)
-  	end
+  def set_corporation
+    @corporation = Corporation.cached_find(current_user.corporation_id)
+  end
 
 	def set_planning
 		@planning = Planning.find(params[:id])

@@ -1,0 +1,27 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+	title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+	thick_border = s.add_style border: { style: :thick, color: 'FF000000'  }, sz: 12, alignment: {horizontal: :center, vertical: :center }
+	align_right = s.add_style alignment: {horizontal: :right}
+	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
+	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+
+	wb.add_worksheet(name: "チーム分け実績") do |sheet|
+
+        @monthly_service_counts_by_title_and_team.each do |team_name, service_counts_by_title|
+
+            sheet.add_row [team_name, '','','']
+            sheet.add_row ['サービスタイプ', '女', '男', '計'], style: table_header
+
+            service_counts_by_title.each do |title, service_counts_per_gender|
+                sheet.add_row [title, service_counts_per_gender[:female], service_counts_per_gender[:male], service_counts_per_gender[:total]], style: table_cells
+            end
+            sheet.add_row ['計', service_counts_by_title.values.map{|counts| counts[:female]}.sum, service_counts_by_title.values.map{|counts| counts[:male]}.sum, service_counts_by_title.values.map{|counts| counts[:total]}.sum], style: table_cells
+
+            sheet.add_row
+        end
+
+	end
+end

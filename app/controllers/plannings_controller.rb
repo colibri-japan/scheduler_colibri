@@ -76,8 +76,13 @@ class PlanningsController < ApplicationController
 		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: first_day..last_day)
 
 		#shintai vs seikatsu
-		@provided_services_shintai = @provided_services_till_today.where('title LIKE ? ', '%身%').sum(:total_wage)
-		@provided_services_seikatsu = @provided_services_till_today.where('title LIKE ?', '%生%').sum(:total_wage)
+		shintai = @provided_services_till_today.where('title LIKE ? ', '%身%')
+		seikatsu = @provided_services_till_today.where('title LIKE ?', '%生%')
+
+		@provided_services_shintai_sum = shintai.sum(:total_wage)
+		@provided_services_shintai_count = shintai.count
+		@provided_services_seikatsu_sum = seikatsu.sum(:total_wage)
+		@provided_services_seikatsu_count = seikatsu.count
 
     #appointments : since beginning of month
 		today = Date.today 

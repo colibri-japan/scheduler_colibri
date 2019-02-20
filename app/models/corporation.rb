@@ -112,16 +112,16 @@ class Corporation < ApplicationRecord
 		start_date = Date.new(year.to_i, month.to_i, 1).beginning_of_day
 		end_date = Date.new(year.to_i, month.to_i, -1).end_of_day
 
-		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, provided: true).pluck(:title).uniq
+		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, provided: true, cancelled: false).pluck(:title).uniq
 
 		teams.each do |team|
 			team_hash = {}
 
 			nurse_ids = team.nurses.all.pluck(:id)
 
-			team_provided_services = ProvidedService.where(nurse_id: nurse_ids, service_date: start_date..end_date, archived_at: nil, provided: true).group(:title).count
-			team_provided_services_female = ProvidedService.includes(:patient).where(nurse_id: nurse_ids, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: true}).group(:title).count
-			team_provided_services_male = ProvidedService.includes(:patient).where(nurse_id: nurse_ids, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: false}).group(:title).count
+			team_provided_services = ProvidedService.includes(:appointment).where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil, provided: true).where(appointments: {edit_requested: false}).group(:title).count
+			team_provided_services_female = ProvidedService.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: true}).where(appointments: {edit_requested: false}).group(:title).count
+			team_provided_services_male = ProvidedService.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: false}).where(appointments: {edit_requested: false}).group(:title).count
 
 			titles.each do |title|
 				team_hash[title] = {

@@ -1727,6 +1727,10 @@ let patientDatePicker = () => {
   })
 }
 
+let nursePatientSelectize = () => {
+  $('#patient_nurse_id').selectize()
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

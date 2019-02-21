@@ -47,6 +47,7 @@ class PatientsController < ApplicationController
   end
 
   def edit
+    set_nurses
   end
 
   def toggle_active
@@ -58,6 +59,7 @@ class PatientsController < ApplicationController
 
   def new
     @patient = Patient.new
+    set_nurses
   end
 
   def create
@@ -127,6 +129,10 @@ class PatientsController < ApplicationController
 
   def set_printing_option
     @printing_option = @corporation.printing_option
+  end
+
+  def set_nurses
+    @nurses = @corporation.nurses.displayable.order_by_kana
   end
 
   def set_main_nurse 

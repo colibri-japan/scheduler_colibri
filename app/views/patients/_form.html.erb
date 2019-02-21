@@ -97,6 +97,11 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :nurse_id, "担当従業員", class: "colibri-form-label-dark" %>
+    <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, patient.nurse_id), {prompt: '検索する'}, {id: :patient_nurse_id}  %>
+  </div>
+
+  <div class="form-group">
     <%= form.label :caveat_list, "特徴タグ", class: "colibri-form-label-dark" %>
     <%= form.select :caveat_list, options_from_collection_for_select(@caveats, 'name', 'name', patient.caveat_list), {}, {multiple: true, id: "patient_caveat_list"} %>
   </div>

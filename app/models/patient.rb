@@ -13,8 +13,7 @@ class Patient < ApplicationRecord
 	
 	validates :kana, presence: true, format: { with: /\A[\p{katakana}\p{blank}\0-9１-９}ー－]+\z/, message: 'フリガナはカタカナで入力してください' }
 	validate :name_uniqueness
-	validates :kaigo_level, inclusion: 0..6
-
+	
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 	scope :active, -> { where(active: true) }
 

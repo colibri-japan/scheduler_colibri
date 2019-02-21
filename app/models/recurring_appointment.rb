@@ -105,7 +105,7 @@ class RecurringAppointment < ApplicationRecord
 	def appointments(start_date, end_date)
 		start_frequency = start_date.to_date 
 		end_frequency = end_date.to_date 
-		end_frequency = termination_date if termination_date.present? && termination_date < end_frequency
+		end_frequency = (termination_date - 1.day) if termination_date.present? && termination_date < end_frequency
 		occurrences = schedule.occurrences_between(start_frequency, end_frequency)
 	end
 

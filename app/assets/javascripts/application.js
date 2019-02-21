@@ -1635,7 +1635,7 @@ let confirmBatchAction = () => {
 
 let terminateRecurringAppointment = (date, start, end) => {
 
-  $('#recurring-appointment-terminate').text(moment(date).format('M月DD日') + '以降停止');
+  $('#recurring-appointment-terminate').text(moment(date).format('M月DD日') + '以降削除');
   let data = {
     t_date: date,
     start: start,

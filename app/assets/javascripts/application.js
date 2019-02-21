@@ -1693,6 +1693,40 @@ let clickablePost = () => {
   });
 };
 
+let patientDatePicker = () => {
+  $('#patient_date_of_contract').daterangepicker({
+    singleDatePicker: true,
+    showDropDowns: true,
+    locale: {
+      format: 'YYYY年M月DD日',
+      daysOfWeek: [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土",
+      ],
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ],
+      firstDay: 1
+    }
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

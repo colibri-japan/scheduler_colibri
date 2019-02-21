@@ -12,12 +12,12 @@
   <% end %>
 
   <div class="form-group">
-    <%= form.label :name, "利用者名", class: "colibri-form-label" %><span class='required-field'>*</span>
+    <%= form.label :name, "利用者名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
     <%= form.text_field :name, id: :patient_name, required: true, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= form.label :kana, "フリガナ", class: "colibri-form-label" %><span class='required-field'>*</span>
+    <%= form.label :kana, "フリガナ", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
     <%= form.text_field :kana, id: :patient_kana, required: true, class: "form-control" %>
   </div>
 
@@ -29,27 +29,80 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :phone_number, "電話番号", class: "colibri-form-label" %>
+    <%= form.label :phone_number, "電話番号", class: "colibri-form-label-dark" %>
     <%= form.text_field :phone_number, id: :patient_phone_number, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= form.label :phone_mail, "携帯メールアドレス", class: "colibri-form-label" %>
+    <%= form.label :phone_mail, "携帯メールアドレス", class: "colibri-form-label-dark" %>
     <%= form.text_field :phone_mail, id: :patient_phone_mail, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= form.label :address, "住所", class: "colibri-form-label" %>
+    <%= form.label :address, "住所", class: "colibri-form-label-dark" %>
     <%= form.text_area :address, id: :patient_address, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= form.label :caveat_list, "特徴", class: "colibri-form-label" %>
+    <%= form.label :date_of_contract, "契約日", class: "colibri-form-label-dark" %>
+    <%= form.text_field :date_of_contract, id: :patient_date_of_contract, class: "form-control" %>
+  </div>
+
+  <div class="colibri-form-group-flex">
+    <div style="width:20%">
+      <%= form.label :insurance_category, "保険区分", class: "colibri-form-label-dark" %>
+    </div>
+    <div style="width:80%">
+      <%= form.radio_button :insurance_category, false, {class: "radio-inline"} %>
+      <%= label :insurance_category_false, '介護' %>
+      <%= form.radio_button :insurance_category, true, {class: "radio-inline"} %>
+      <%= label :insurance_category_true, '医療' %>
+    </div>
+  </div>
+
+  <div class="colibri-form-group-flex">
+    <div style="width:20%">
+      <%= form.label :kaigo_level, "介護度", class: "colibri-form-label-dark" %>
+    </div>
+    <div style="width:80%">
+      <div>
+        <%= form.radio_button :kaigo_level, 0, {class: "radio-inline"} %>
+        <%= label :kaigo_level_0, '要支援1' %>
+        <%= form.radio_button :kaigo_level, 1, {class: "radio-inline"} %>
+        <%= label :kaigo_level_1, '要支援2' %>
+        <%= form.radio_button :kaigo_level, 2, {class: "radio-inline"} %>
+        <%= label :kaigo_level_2, '要介護1' %>
+        <%= form.radio_button :kaigo_level, 3, {class: "radio-inline"} %>
+        <%= label :kaigo_level_3, '要介護2' %>
+      </div>
+      <div>
+        <%= form.radio_button :kaigo_level, 4, {class: "radio-inline"} %>
+        <%= label :kaigo_level_4, '要介護3' %>
+        <%= form.radio_button :kaigo_level, 5, {class: "radio-inline"} %>
+        <%= label :kaigo_level_5, '要介護4' %>
+        <%= form.radio_button :kaigo_level, 6, {class: "radio-inline"} %>
+        <%= label :kaigo_level_6, '要介護5' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :care_manager_name, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
+    <%= form.text_field :care_manager_name, id: :patient_care_manager_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :doctor_name, "主治医", class: "colibri-form-label-dark" %>
+    <%= form.text_field :doctor_name, id: :patient_doctor_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :caveat_list, "特徴タグ", class: "colibri-form-label-dark" %>
     <%= form.select :caveat_list, options_from_collection_for_select(@caveats, 'name', 'name', patient.caveat_list), {}, {multiple: true, id: "patient_caveat_list"} %>
   </div>
 
   <div class="form-group">
-    <%= form.label :description, "備考", class: "colibri-form-label" %>
+    <%= form.label :description, "備考", class: "colibri-form-label-dark" %>
     <%= form.text_area :description, id: :patient_description, class: "form-control" %>
   </div>
 

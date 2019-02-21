@@ -3,6 +3,7 @@ class Patient < ApplicationRecord
 	acts_as_taggable_on :caveats
 
 	belongs_to :corporation, touch: true
+	belongs_to :nurse, optional: true
 	has_many :appointments
 	has_many :recurring_appointments
 	has_many :unavailabilities
@@ -12,6 +13,7 @@ class Patient < ApplicationRecord
 	
 	validates :kana, presence: true, format: { with: /\A[\p{katakana}\p{blank}\0-9１-９}ー－]+\z/, message: 'フリガナはカタカナで入力してください' }
 	validate :name_uniqueness
+	validates :kaigo_level, inclusion: 0..6
 
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 	scope :active, -> { where(active: true) }

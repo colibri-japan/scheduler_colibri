@@ -1,7 +1,7 @@
 <% if activity.trackable.present? %>
 	が<span class="activity-important-fields"><%= activity.try(:new_patient) %>様</span>のサービスを追加しました(繰り返し)<br/>
 	<span class="activity-important-fields"><%= activity.try(:new_nurse) %></span>
-	<%= activity.try(:new_start).strftime("%-m月%-d日#{weekday(activity.try(:new_anchor))}開始 %-H:%M") %> ~ <%= activity.try(:new_end).strftime("%H:%M") %>
+	<%= activity.try(:new_anchor).strftime("%-m月%-d日#{weekday(activity.try(:new_anchor))}") %><%= activity.try(:new_start).strftime("開始 %-H:%M") %> ~ <%= activity.try(:new_end).strftime("%H:%M") %>
 <% else %>
 	がその後削除されたサービスを追加しました（繰り返し）
 <% end %>

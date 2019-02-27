@@ -30,6 +30,6 @@ module PlanningsHelper
 	end
 
 	def japanese_date_if_present(date)
-		date.present? ? date.strftime('%Y年%-m月%-d日') : ''
+		date.present? ? date.strftime('%Y年%-m月%-d日') : '未記入'
 	end
 end

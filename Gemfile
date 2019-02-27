@@ -35,7 +35,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'jquery-rails'
 
-gem 'bootstrap', '~> 4.2.1'
+gem 'bootstrap', '~> 4.3.1'
 
 #schedule occcurrences
 gem 'ice_cube'
@@ -65,7 +65,7 @@ gem 'miyabi'
 gem 'wareki'
 
 #create excel templates with axlsx
-gem 'rubyzip', '>= 1.2.1'
+gem 'rubyzip', '>= 1.2.2'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 

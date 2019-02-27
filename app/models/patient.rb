@@ -42,7 +42,7 @@ class Patient < ApplicationRecord
 	end
 
 	private 
-
+	
 	def name_uniqueness 
 		names = Patient.where(corporation_id: self.corporation_id, active: true).where.not(id: self.id).pluck(:name).map {|name| name.tr(' ','').tr('　','') }
 		errors.add(:name, 'すでに同じ名前の利用者が登録されてます') if names.include? self.name.tr(' ','').tr('　','')

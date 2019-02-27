@@ -93,6 +93,7 @@ Rails.application.routes.draw do
   #custom routes for plannings
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report
   get 'plannings/:id/monthly_teams_report' => 'plannings#monthly_teams_report', as: :planning_monthly_teams_report
+  get 'plannings/:id/recent_patients_report' => 'plannings#recent_patients_report', as: :planning_recent_patients_report
   get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
   get 'plannings/:id/payable' => 'plannings#payable', as: :planning_payable
@@ -101,6 +102,7 @@ Rails.application.routes.draw do
   patch 'plannings/:id/master_to_schedule' => 'plannings#master_to_schedule', as: :master_to_schedule
   patch 'plannings/:id/archive' => 'plannings#archive', as: :planning_archive
   get 'plannings/:id/new_master_to_schedule' => "plannings#new_master_to_schedule", as: :new_planning_master_to_schedule
+
 
   #custom routes for appointments
   patch 'plannings/:planning_id/appointments/:id/toggle_cancelled' => 'appointments#toggle_cancelled', as: :planning_appointment_toggle_cancelled

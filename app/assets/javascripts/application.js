@@ -1698,7 +1698,7 @@ let patientDatePicker = () => {
     singleDatePicker: true,
     showDropDowns: true,
     locale: {
-      format: 'YYYY年M月DD日',
+      format: 'YYYY-MM-DD',
       daysOfWeek: [
         "日",
         "月",

@@ -166,6 +166,14 @@ class PlanningsController < ApplicationController
 		end
 	end
 
+	def recent_patients_report
+		@recent_patients = @corporation.recent_patients(Date.today, 60)
+
+		respond_to do |format|
+			format.xlsx {  response.headers['Content-Disposition'] = "attachment; filename=\"新規利用者#{Date.today}.xlsx\""  }
+		end
+	end
+
 
 	private
 

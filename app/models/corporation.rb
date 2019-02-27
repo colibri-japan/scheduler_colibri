@@ -95,16 +95,6 @@ class Corporation < ApplicationRecord
 		datetime.between?((valid_reminder_datetime - 15.minutes), (valid_reminder_datetime + 15.minutes))
 	end
 
-	#to be deleted 
-	def self.add_printing_option
-		corporations = Corporation.all 
-		corporations.each do |corporation|
-			if corporation.printing_option.nil?
-				PrintingOption.create(corporation_id: corporation.id) 
-			end
-		end
-	end
-
 	def monthly_service_counts_by_title_and_team(year, month)
 		t = self.teams.all 
 		return_hash = {}
@@ -135,6 +125,10 @@ class Corporation < ApplicationRecord
 		end
 
 		return_hash
+	end
+
+	def recent_patients(start_time, number_of_days)
+		patients.includes(:nurse).active.where('(date_of_contract IS NOT NULL AND date_of_contract > ?) OR (date_of_contract IS NULL and created_at > ?)', start_time - number_of_days.days, start_time - number_of_days.days).order(date_of_contract: :desc)
 	end
 
 	private

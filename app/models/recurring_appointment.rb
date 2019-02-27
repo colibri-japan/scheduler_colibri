@@ -28,11 +28,12 @@ class RecurringAppointment < ApplicationRecord
 	after_create :create_individual_appointments
 
 	validates :anchor, presence: true
-	validates :frequency, presence: true
-	validates :frequency, inclusion: 0..10
+	validates :frequency, presence: true, inclusion: 0..10
 	validates :title, presence: true
-	validate :cannot_overlap_existing_appointment_create, on: :create
-	validate :cannot_overlap_existing_appointment_update, on: :update
+	validates :nurse_id, presence: true 
+	validates :patient_id, presence: true
+	validate :cannot_overlap_existing_appointment_create, on: :create, if: -> { nurse_id.present? }
+	validate :cannot_overlap_existing_appointment_update, on: :update, if: -> { nurse_id.present? }
 
 
 	skip_callback :create, :after, :create_individual_appointments, if: :skip_appointments_callbacks

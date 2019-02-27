@@ -15,21 +15,23 @@
           $(this).dialog('close');
           let appointment_ids = <%=  @recurring_appointment.errors[:nurse_id].flatten %>;
           let indexCount =  0;
-          let ajaxResults = [];
+
           appointment_ids.forEach(function(appointment_id, index, array){
             let request_edit_url = '/plannings/' + <%= @recurring_appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-            indexCount++;
-
-            let result = $.ajax({
+            $.ajax({
               url: request_edit_url,
               type: 'PATCH',
+              success: function() {
+                indexCount++
+                if (indexCount == appointment_ids.length) {
+                  console.log('now sending the form again')
+                  $('input#save-recurring-appointment').click();
+                } else {
+                  console.log(indexCount)
+                }
+              }
             });
-
-            ajaxResults.push(result)
           });
-          if (indexCount == appointment_ids.length) {
-            $('input#save-recurring-appointment').click();
-          }
         },
         'キャンセル':function(){
           $(this).dialog('close');

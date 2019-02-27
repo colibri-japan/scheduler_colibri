@@ -1731,6 +1731,16 @@ let nursePatientSelectize = () => {
   $('#patient_nurse_id').selectize()
 }
 
+let downloadTeamsReport = () => {
+  $('#teams-report-download').click(function(){
+    let range_start = $('#report_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    let range_end = $('#report_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
+    console.log(range_start)
+    console.log(range_end)
+    window.location.href = $(this).data('url') + '?range_start=' + range_start + '&range_end=' + range_end
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

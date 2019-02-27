@@ -10,7 +10,7 @@ wb.styles do |s|
 
 	wb.add_worksheet(name: "チーム分け実績") do |sheet|
 
-        @monthly_service_counts_by_title_and_team.each do |team_name, service_counts_by_title|
+        @service_counts_by_title_and_team.each do |team_name, service_counts_by_title|
 
             sheet.add_row [team_name, '','','']
             sheet.add_row ['サービスタイプ', '女', '男', '計'], style: table_header

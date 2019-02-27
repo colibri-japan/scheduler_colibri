@@ -158,8 +158,8 @@ class PlanningsController < ApplicationController
 		end
 	end
 
-	def monthly_teams_report
-		@monthly_service_counts_by_title_and_team = @corporation.monthly_service_counts_by_title_and_team(params[:y], params[:m])
+	def teams_report
+		@service_counts_by_title_and_team = @corporation.monthly_service_counts_by_title_and_team(params[:range_start], params[:range_end])
 
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="チーム分け実績.xlsx"' }

@@ -101,7 +101,7 @@
 							<% if @corporation.teams.exists? %>
 								<tr>
 									<td>チーム分け訪問日数</td>
-									<td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_teams_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
+									<td><div class="btn btn-sm btn-success text-white" id="teams-report"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
 								</tr>
 							<% end %>
 							<tr>
@@ -126,4 +126,25 @@
   <div id='extended-daily-summary-container'>
     <%= render partial: 'extended_daily_summary', locals: {daily_appointments: @daily_appointments, weekly_appointments: @weekly_appointments, monthly_appointments: @monthly_appointments, daily_provided_services: @daily_provided_services, female_patients_ids: @female_patients_ids, male_patients_ids: @male_patients_ids} %>
   </div>
+</div>
+
+<div id="team-report-range" class="modal fade" style="display:none">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">チームレポート期間を選択する</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+			 <div class="form-group">
+				<%= label_tag :report_range, "対象期間", class: "colibri-form-label-dark" %><span class='required-field'>*</span> 
+				<%= text_field_tag :report_range, value=nil, {class: 'form-control'} %>
+			 </div>
+
+			 <div class="form-group">
+			  <button class="btn btn-block btn-info text-white" id="teams-report-download" data-url="<%= planning_teams_report_path(@planning, format: :xlsx) %>">データをダウンロードする</button>
+			 </div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -95,12 +95,12 @@ class Corporation < ApplicationRecord
 		datetime.between?((valid_reminder_datetime - 15.minutes), (valid_reminder_datetime + 15.minutes))
 	end
 
-	def monthly_service_counts_by_title_and_team(year, month)
+	def monthly_service_counts_by_title_and_team(range_start, range_end)
 		t = self.teams.all 
 		return_hash = {}
 
-		start_date = Date.new(year.to_i, month.to_i, 1).beginning_of_day
-		end_date = Date.new(year.to_i, month.to_i, -1).end_of_day
+		start_date = range_start.to_date.beginning_of_day
+		end_date = range_end.to_date.end_of_day
 
 		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, provided: true, cancelled: false).pluck(:title).uniq
 

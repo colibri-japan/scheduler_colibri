@@ -101,6 +101,45 @@ $(document).on 'turbolinks:load', ->
     content: popoverContent
     trigger: 'click'
     placement: 'top'
-    
   
+  $('#teams-report').click ->
+    $('.modal').modal('hide')
+    $('.modal-backdrop').remove()
+    $('#remote-container').html($('#team-report-range'))
+    $('#team-report-range').modal('show')
+    downloadTeamsReport()
+    return
+
+  $('#report_range').daterangepicker
+    locale: 
+      format: 'M月DD日'
+      applyLabel: "選択する"
+      cancelLabel: "取消"
+      fromLabel: ""
+      toLabel: "から"
+      daysOfWeek: [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土",
+      ]
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ]
+      firstDay: 1
+
   return

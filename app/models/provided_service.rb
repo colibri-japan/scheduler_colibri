@@ -9,6 +9,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :invoice_setting, optional: true
 	belongs_to :service_salary, class_name: 'Service', optional: true
 	belongs_to :verifier, class_name: 'User', optional: true
+	belongs_to :second_verifier, class_name: 'User', optional: true
 
 	before_save :set_default_countable, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :lookup_unit_cost, unless: :skip_callbacks_except_calculate_total_wage
@@ -35,37 +36,54 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def verified?
-		self.verified_at.present?
+		verified_at.present?
+	end
+
+	def second_verified?
+		second_verified_at.present? 
 	end
 
 	def verify(user_id)
-		self.verified_at = Time.current
-		self.verifier_id = user_id
+		verified_at = Time.current
+		verifier_id = user_id
 	end
+
+	def second_verify(user_id)
+		second_verified_at = Time.current 
+		second_verified_id = user_id 
+	end
+
+	def toggle_second_verified!(user_id)
+		if second_verified? 
+			update_column(:second_verified_at, nil)
+			update_column(:second_verifier_id, nil)
+		else
+			update_column(:second_verified_at, Time.current)
+			update_column(:second_verifier_id, user_id)		
+		end
+	end	
 
 	def toggle_verified!(user_id)
 		if verified? 
-			self.update_column(:verified_at, nil)
-			self.update_column(:verifier_id, nil)
+			update_column(:verified_at, nil)
+			update_column(:verifier_id, nil)
 		else
-			self.update_column(:verified_at, Time.current)
-			self.update_column(:verifier_id, user_id)
+			update_column(:verified_at, Time.current)
+			update_column(:verifier_id, user_id)
 		end
 	end
 
 	def archived?
-		self.archived_at.present?
+		archived_at.present?
 	end
 
 	def archive 
-		self.archived_at = Time.current 
+		archived_at = Time.current 
 	end
 
 	def archive! 
-		self.update_column(:archived_at, Time.current)
+		update_column(:archived_at, Time.current)
 	end
-
-
 
 	private
 

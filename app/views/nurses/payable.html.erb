@@ -72,8 +72,8 @@
 				<% if current_user.corporation_admin? %>
 					<th class="table-important-fields">計</th>
 				<% end %>
-				<th class="table-important-fields"></th>
-				<th class="table-important-fields"></th>
+				<th class="table-important-fields" colspan="2">ステータス</th>
+				<th class="table-important-fields">編集</th>
 			</tr>
 			
 		</thead>
@@ -110,6 +110,22 @@
 				    </div>
 				  </div>
         </td>
+				<td>
+				  <div style="display:flex" id='provided-service-second-verified-<%= provided_service.id %>'>
+				    <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>' style="display:flex">
+					    <% if provided_service.cancelled == true %>
+					    <% elsif provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>
+					    <% else %>
+                <% if provided_service.second_verified? %>
+                  <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
+                  <%= link_to "#{provided_service.second_verifier.try(:name)} #{provided_service.try(:second_verified_at).strftime('%-m月%-d日')}", toggle_second_verified_provided_service_path(provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+                <% else %>
+                  <%= link_to '確認', toggle_second_verified_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.second_verified? %>
+                <% end %>
+					    <% end %>
+				    </div>
+				  </div>
+				</td>
 				<td>
 					<% if provided_service.appointment.present? %>
 						<%= link_to '編集', edit_planning_appointment_path(@planning, provided_service.appointment), remote: true, class: 'btn btn-sm btn-success text-white' %>

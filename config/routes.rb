@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   
   #custom routes for provided services
   patch 'provided_services/:id/toggle_verified' => 'provided_services#toggle_verified', as: :toggle_verified_provided_service
+  patch 'provided_services/:id/toggle_second_verified' => 'provided_services#toggle_second_verified', as: :toggle_second_verified_provided_service
   
   #custom routes for nurses
   get 'plannings/:planning_id/nurses/:id/payable' => 'nurses#payable', as: :planning_nurse_payable

@@ -1,6 +1,6 @@
 class ProvidedServicesController < ApplicationController
-	before_action :set_provided_service, only: [:update, :destroy, :edit, :destroy, :toggle_verified]
-	before_action :set_nurse, except: [:destroy, :toggle_verified]
+	before_action :set_provided_service, only: [:update, :destroy, :edit, :destroy, :toggle_verified, :toggle_second_verified]
+	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified]
 	before_action :set_planning, only: [:new, :edit]
 
 	def new
@@ -49,6 +49,10 @@ class ProvidedServicesController < ApplicationController
 
 	def toggle_verified
 		@provided_service.toggle_verified!(current_user.id)
+	end
+
+	def toggle_second_verified
+		@provided_service.toggle_second_verified!(current_user.id)
 	end
 
 

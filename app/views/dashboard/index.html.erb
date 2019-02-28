@@ -63,7 +63,7 @@
           </div>
         </div>
         <div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container'>
-          <% @posts.reverse_order.each do |post| %>
+          <% @posts.to_a.reverse.each do |post| %>
             <%= render post %>
           <% end %>
         </div>

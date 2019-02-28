@@ -92,22 +92,24 @@
 				<% if current_user.corporation_admin? %>
 					<td id="service-total-<%= provided_service.id %>"><%= "#{provided_service.total_wage}¥" %></td>
 				<% end %>
-                <td class='verify-provided-service ' id='provided-service-<%= provided_service.id %>'>
-				  <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %> verify-provided-service'>
-					<% if provided_service.cancelled == true %>
-						<span>キャンセル</span>
-					<% elsif provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>
-						<span>調整中リスト</span>
-					<% else %>
-                      <% if provided_service.verified? %>
-                          <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-                          <%= link_to "#{provided_service.verifier.try(:name)} #{provided_service.try(:verified_at).strftime('%-m月%-d日')}", toggle_verified_provided_service_path(provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
-                      <% else %>
-                        <%= link_to '確認', toggle_verified_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
-                      <% end %>
-					<% end %>
+        <td>
+				  <div style="display:flex" id='provided-service-<%= provided_service.id %>'>
+				    <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>' style="display:flex">
+					    <% if provided_service.cancelled == true %>
+					    	<span>キャンセル</span>
+					    <% elsif provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>
+					    	<span>調整中リスト</span>
+					    <% else %>
+                <% if provided_service.verified? %>
+                  <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
+                  <%= link_to "#{provided_service.verifier.try(:name)} #{provided_service.try(:verified_at).strftime('%-m月%-d日')}", toggle_verified_provided_service_path(provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+                <% else %>
+                  <%= link_to '確認', toggle_verified_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
+                <% end %>
+					    <% end %>
+				    </div>
 				  </div>
-                </td>
+        </td>
 				<td>
 					<% if provided_service.appointment.present? %>
 						<%= link_to '編集', edit_planning_appointment_path(@planning, provided_service.appointment), remote: true, class: 'btn btn-sm btn-success text-white' %>
@@ -125,8 +127,8 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td id="total-salary-label">合計：</td>
-					<td id="total-salary"><%= @total_till_now %>¥</td>
+					<td><span id="total-salary-label" style="font-weight:bold;float:right">合計：</span></td>
+					<td id="total-salary" style="font-weight:bold"><%= @total_till_now %>¥</td>
 					<td></td>
 					<td></td>
 				</tr>

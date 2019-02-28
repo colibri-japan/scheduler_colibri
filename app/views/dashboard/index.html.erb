@@ -63,7 +63,9 @@
           </div>
         </div>
         <div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container'>
-          <%= render @posts %>
+          <% @posts.reverse_order.each do |post| %>
+            <%= render post %>
+          <% end %>
         </div>
         <div class='colibri-subcontainer-footer'>
           <%= link_to '新規メッセージ', new_post_path, remote: true, class: 'btn btn-info text-white form-control btn-block' %>

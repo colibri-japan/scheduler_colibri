@@ -507,6 +507,7 @@ span.fc-time {
 	display: flex;
 }
 
+
 @media print {
 
 	@page {
@@ -586,7 +587,7 @@ span.fc-time {
 	.fc tbody,
 	.fc-row {
 	border-color: #ccc !important;
-	background: #fff !important; }
+	background: transparent !important; }
 
 
 

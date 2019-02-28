@@ -69,17 +69,6 @@
 			</div>
 		</div>
 
-		<div class='colibri-dashboard-container-row no-print'>
-			<div class='colibri-dashboard-subcontainer'>
-				<div class='colibri-subcontainer-header'>
-					<span class='colibri-subcontainer-title'>従業員一覧</span>
-				</div>
-				<div class='colibri-subcontainer-body'>
-					<%= bar_chart @provided_services_till_today.group('nurses.name').sum(:total_wage), suffix: '￥', plotOptions: {series: {pointWidth: 10}} %>
-				</div>
-			</div>
-		</div>
-
 		<div class='colibri-dashboard-container-row'>
 			<div class='colibri-dashboard-subcontainer'>
 				<div class='colibri-subcontainer-header'>

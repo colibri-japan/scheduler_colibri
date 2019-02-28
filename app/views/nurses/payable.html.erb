@@ -102,7 +102,7 @@
 					    <% else %>
                 <% if provided_service.verified? %>
                   <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-                  <%= link_to "#{provided_service.verifier.try(:name)} #{provided_service.try(:verified_at).strftime('%-m月%-d日')}", toggle_verified_provided_service_path(provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+                  <%= link_to "#{provided_service.verifier.try(:name)} #{provided_service.try(:verified_at).strftime('%y/%m/%d')}", toggle_verified_provided_service_path(provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
                 <% else %>
                   <%= link_to '確認', toggle_verified_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.verified? %>
                 <% end %>
@@ -118,7 +118,7 @@
 					    <% else %>
                 <% if provided_service.second_verified? %>
                   <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-                  <%= link_to "#{provided_service.second_verifier.try(:name)} #{provided_service.try(:second_verified_at).strftime('%-m月%-d日')}", toggle_second_verified_provided_service_path(provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+                  <%= link_to "#{provided_service.second_verifier.try(:name)}#{provided_service.try(:second_verified_at).strftime('%y/%m/%d')}", toggle_second_verified_provided_service_path(provided_service), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
                 <% else %>
                   <%= link_to '確認', toggle_second_verified_provided_service_path(provided_service), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !provided_service.second_verified? %>
                 <% end %>
@@ -128,9 +128,9 @@
 				</td>
 				<td>
 					<% if provided_service.appointment.present? %>
-						<%= link_to '編集', edit_planning_appointment_path(@planning, provided_service.appointment), remote: true, class: 'btn btn-sm btn-success text-white' %>
+						<%= link_to '編集', edit_planning_appointment_path(@planning, provided_service.appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
 					<% else %>
-						<%= link_to '編集', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-success text-white' %>
+						<%= link_to '編集', edit_nurse_provided_service_path(@nurse, provided_service, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
 					<% end %>
 				</td>
 
@@ -145,6 +145,7 @@
 					<td></td>
 					<td><span id="total-salary-label" style="font-weight:bold;float:right">合計：</span></td>
 					<td id="total-salary" style="font-weight:bold"><%= @total_till_now %>¥</td>
+					<td></td>
 					<td></td>
 					<td></td>
 				</tr>

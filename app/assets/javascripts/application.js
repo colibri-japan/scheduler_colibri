@@ -1745,6 +1745,12 @@ let downloadTeamsReport = () => {
   })
 }
 
+let scrollPosts = () => {
+  if ($("#posts-container").length > 0) {
+    $("#posts-container").scrollTop($("#posts-container")[0].scrollHeight)
+  }
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

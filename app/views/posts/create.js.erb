@@ -1,3 +1,4 @@
-$('#posts-container').prepend("<%= j render partial: 'posts/post', locals: { post: @post } %>");
+$('#posts-container').append("<%= j render partial: 'posts/post', locals: { post: @post } %>");
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
+scrollPosts()

@@ -45,4 +45,6 @@ $(document).on 'turbolinks:load', ->
     $.getScript url
     return
 
+  scrollPosts()
+
   return

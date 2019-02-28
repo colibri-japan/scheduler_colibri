@@ -24,6 +24,8 @@ module PlanningsHelper
 			'要介護4'
 		when 6
 			'要介護5'
+		when 7
+			'申請中'
 		else 
 			''
 		end

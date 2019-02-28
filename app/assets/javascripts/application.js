@@ -35,6 +35,10 @@ $.ajaxSetup({
   }
 });
 
+var myDefaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList;
+
+myDefaultWhiteList.a = ['data-remote', 'href']
+
 let setUnavailabilityTime = (start, end) => {
   $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
   $('#unavailability_starts_at_2i').val(moment(start).format('M'));

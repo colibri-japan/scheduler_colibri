@@ -1,4 +1,4 @@
 $('tbody > tr').remove()
-$('tbody').html("<%= j render partial: 'posts/post_table', collection: @posts, as: :post %>")
+$('tbody').html("<%= j render partial: 'posts/post_table', collection: @posts.to_a.reverse, as: :post %>")
 $('#posts-excel-button').attr("href", "<%= posts_path(format: 'xlsx', params: {range_end: params[:range_end], range_start: params[:range_start], author_ids: params[:author_ids], patient_ids: params[:patient_ids]}) %>")
 clickablePost()

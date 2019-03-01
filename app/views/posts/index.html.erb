@@ -25,7 +25,7 @@
         </tr>
         </thead>  
         <tbody>
-            <%= render partial: 'posts/post_table', collection: @posts, as: :post %>
+            <%= render partial: 'posts/post_table', collection: @posts.to_a.reverse, as: :post %>
         </tbody>
     </table>
   </div>

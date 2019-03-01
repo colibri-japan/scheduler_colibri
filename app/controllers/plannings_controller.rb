@@ -155,13 +155,5 @@ class PlanningsController < ApplicationController
   def set_teams_id_by_name
       @teams_id_by_name = @corporation.cached_team_id_by_name
 	end
-	
-	def fetch_nurses_grouped_by_team
-    if @corporation.teams.any?
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
-    else
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
-    end
-  end
 
 end

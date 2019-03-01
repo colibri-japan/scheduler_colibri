@@ -40,14 +40,12 @@
 				<div id="description-container" class="print-only font-size-large">
 				  <span class="<%= 'no-print' unless @printing_option.print_nurse_description == true %>">備考：<%= @nurse.try(:description) %></span>
 				</div>
-
-			    <div id="appointment-comments-container" class="print-only font-size-large">
-		          <div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
-			        <div class="appointment-comments-title">コメント</div>
-			        <div id="appointment-comments"></div>
-		          </div>
+			  <div id="appointment-comments-container" class="print-only font-size-large">
+		        <div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
+			      <div class="appointment-comments-title">コメント</div>
+			      <div id="appointment-comments"></div>
 		        </div>
-
+		    </div>
 			</div>
 			<div id="activity-show-button-container" class="no-print">
 				<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">

@@ -19,6 +19,14 @@ class TeamsController < ApplicationController
         end
     end
 
+    def show
+        @planning = Planning.find(params[:planning_id])
+        @team = Team.find(params[:id]) 
+        set_main_nurse
+        set_patients_grouped_by_kana
+        fetch_nurses_grouped_by_team
+    end
+
     def payable
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id])
@@ -65,6 +73,14 @@ class TeamsController < ApplicationController
     def team_params
         params.require(:team).permit(:team_name, member_ids: [])
     end
+
+    def set_main_nurse
+		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
+    end
+    
+    def set_patients_grouped_by_kana
+		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
+	end
 
     def set_corporation
       @corporation = Corporation.cached_find(current_user.corporation_id)

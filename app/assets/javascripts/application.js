@@ -664,7 +664,7 @@ initialize_calendar = function() {
           resourceAreaWidth: '10%',
           displayEventEnd: true,
           resourceColumns: [{
-            labelText: '従業員',
+            labelText: window.resourceLabel,
             field: 'title'
           }]
         },
@@ -751,10 +751,18 @@ initialize_calendar = function() {
           });
         } else if (view.name == 'timelineWeek') {
           element.find('.fc-title').text(function(i,t){
-            if (!event.unavailability) {
-              return patient_name;
+            if (window.resourceType == 'nurse') {
+              if (!event.unavailability) {
+                return patient_name;
+              } else {
+                return event.service_type + ': ' + patient_name;
+              }
             } else {
-              return event.service_type + ': ' + patient_name;
+              if (!event.unavailability) {
+                return nurse_name;
+              } else {
+                return event.service_type + ': ' + nurse_name;
+              }
             }
           })
         } else {
@@ -764,56 +772,6 @@ initialize_calendar = function() {
             })
           }
         }
-
-
-        var patientFilterArray = $('#patient-filter-zentai_').val();
-        var nurseFilterArray = $('#nurse-filter-zentai_').val();
-        var editRequestFilter = $('#edit-request-filter').prop('checked');
-        if (patientFilterArray === null) {
-          patientFilterArray = ['']
-        };
-
-        if (nurseFilterArray === null) {
-          nurseFilterArray = ['']
-        };
-
-        var filterPatient = function(){
-          for (var i=0; i < patientFilterArray.length; i++) {
-            if (event.patient_id) {
-              if (['', event.patient_id.toString()].indexOf(patientFilterArray[i]) >= 0) {
-                return true
-              }
-            } else {
-              if (event.unavailability) {
-                return true
-              }
-            }
-          }
-          return false
-        }
-        var filterNurse = function() {
-          for (var i=0; i< nurseFilterArray.length; i++) {
-            if (event.nurse_id) {
-              if (['', event.nurse_id.toString()].indexOf(nurseFilterArray[i]) >= 0) {
-                return true
-              }
-            } else {
-              if (event.unavailability) {
-                return true
-              }
-            }
-          }
-          return false
-        } 
-        var filterEditRequested = function(){
-          if (editRequestFilter == false) {
-            return event.edit_requested;
-          } else {
-            return true;
-          }
-        }
-
-        return filterPatient() && filterNurse() && filterEditRequested() ;
       },
 
 
@@ -1350,26 +1308,6 @@ let nurseMasterToSchedule = () => {
       }
     }
   })
-}
-
-let toggleDayResources = () => {
-  if ($('#day-view-options-input').is(':checked')) {
-    window.resourceUrl = window.corporationNursesUrl;
-    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false');
-    $('.calendar').fullCalendar('refetchResources');
-    $('.calendar').fullCalendar('clientEvents').forEach(function (event) {
-      event.resourceId = event.nurse_id;
-      $('.calendar').fullCalendar('updateEvent', event);
-    })
-  } else {
-    window.resourceUrl = window.corporationPatientsUrl;
-    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId);
-    $('.calendar').fullCalendar('refetchResources');
-    $('.calendar').fullCalendar('clientEvents').forEach(function(event){
-      event.resourceId = event.patient_id;
-      $('.calendar').fullCalendar('updateEvent', event);
-    })
-  }
 }
 
 

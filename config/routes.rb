@@ -102,8 +102,9 @@ Rails.application.routes.draw do
   patch 'plannings/:id/duplicate' => 'plannings#duplicate', as: :planning_duplicate
   patch 'plannings/:id/master_to_schedule' => 'plannings#master_to_schedule', as: :master_to_schedule
   patch 'plannings/:id/archive' => 'plannings#archive', as: :planning_archive
-  get 'plannings/:id/new_master_to_schedule' => "plannings#new_master_to_schedule", as: :new_planning_master_to_schedule
-
+  get 'plannings/:id/new_master_to_schedule' => 'plannings#new_master_to_schedule', as: :new_planning_master_to_schedule
+  get 'plannings/:id/all_patients' => 'plannings#all_patients', as: :planning_all_patients
+  get 'plannings/:id/all_nurses' => 'plannings#all_nurses', as: :planning_all_nurses
 
   #custom routes for appointments
   patch 'plannings/:planning_id/appointments/:id/toggle_cancelled' => 'appointments#toggle_cancelled', as: :planning_appointment_toggle_cancelled

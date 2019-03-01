@@ -20,7 +20,7 @@
 	<%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>
 </div>
 
-<%= render partial: 'plannings/resources_submenu', locals: {resource_type: 'nurse', master_resource: true} %>
+<%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'nurse', master_resource: true} %>
 
 <div id="detail-container">
 	<div id="detail-planning-container">

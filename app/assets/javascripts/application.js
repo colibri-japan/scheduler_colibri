@@ -1751,6 +1751,17 @@ let scrollPosts = () => {
   }
 }
 
+let unavailabilityBootstrapToggle = () => {
+  $('#unavailabilityToggle').bootstrapToggle({
+    on: 'サービス追加',
+    off: 'サービス以外',
+    onstyle: 'info',
+    offstyle: 'danger',
+    width: '150',
+    height: '40'
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

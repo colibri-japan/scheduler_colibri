@@ -8,6 +8,8 @@ $(document).on 'turbolinks:load', ->
     window.location = $(this).data('link')
     return
 
+  unavailabilityBootstrapToggle()
+
   $('.print-option-checkbox').bootstrapToggle
     on: '有',
     off: '無',

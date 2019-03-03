@@ -144,4 +144,18 @@ $(document).on 'turbolinks:load', ->
       ]
       firstDay: 1
 
+  $('#toggle-switch-patients').click ->
+    $(this).hide()
+    $('#toggle-switch-nurses').show()
+    $('#patients-resource').hide()
+    $('#nurses-resource').show()
+    return
+  
+  $('#toggle-switch-nurses').click ->
+    $(this).hide()
+    $('#toggle-switch-patients').show()
+    $('#patients-resource').show()
+    $('#nurses-resource').hide()
+    return
+
   return

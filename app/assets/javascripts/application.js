@@ -526,18 +526,16 @@ initialize_master_calendar = function() {
 
         if (view.name != 'agendaDay') {
             element.find('.fc-title').text(function(i,t){
-              if ($('#toggle-patients-nurses').is(':checked')) {
+              if (window.patientId) {
                 return event.nurse.name;
               } else {
                 return event.patient.name;
               }
             });
-
-
             return  !event.edit_requested && event.master && event.displayable ;
-          } else {
+        } else {
             return !event.edit_requested && event.master && event.displayable ;
-          }
+        }
       },
 
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
@@ -1796,7 +1794,6 @@ $(document).on('turbolinks:load', function(){
     }
   });
 
-
   $('#account-settings').click(function(){
     $('#account-settings-dropdown').toggle();
   });
@@ -1805,14 +1802,11 @@ $(document).on('turbolinks:load', function(){
     window.location = $(this).data('url');
   });
 
-
   window.setTimeout(function() {
       $(".alert").fadeTo(500, 0).slideUp(500, function(){
           $(this).remove(); 
       });
   }, 4000);
-
-  
 
   $('#loader-container').hide();
 

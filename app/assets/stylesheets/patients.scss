@@ -5,16 +5,3 @@
 .hide-resource {
 	display: none;
 }
-
-
-
-#resource-list-container {
-	height: 100%;
-	width: 100px;
-	position: fixed;
-	z-index: 0;
-	top: 0;
-	left: 50px;
-	overflow-x: hidden;
-	padding-top: 60px;
-}

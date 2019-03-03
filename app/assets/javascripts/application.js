@@ -16,7 +16,7 @@
 //= require jquery-ui
 //= require popper
 //= require bootstrap
-//= require bootstrap-toggle.min
+//= require bootstrap4-toggle.min
 //= require moment.min
 //= require chosen.jquery
 //= require popper

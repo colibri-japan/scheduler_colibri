@@ -348,89 +348,78 @@
 }
 
 /* line 10, app/assets/stylesheets/nurses.scss */
-#total-salary-label {
-  float: right;
-  font-weight: bold;
-}
-
-/* line 15, app/assets/stylesheets/nurses.scss */
 #payable-container {
   margin-top: 15px;
   margin-left: 185px;
   margin-right: 5px;
 }
 
-/* line 21, app/assets/stylesheets/nurses.scss */
+/* line 16, app/assets/stylesheets/nurses.scss */
 #ts {
   display: flex;
   margin-bottom: 20px;
 }
 
-/* line 26, app/assets/stylesheets/nurses.scss */
+/* line 21, app/assets/stylesheets/nurses.scss */
 #payable-dashboard {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* line 32, app/assets/stylesheets/nurses.scss */
+/* line 27, app/assets/stylesheets/nurses.scss */
 p.payable-dashboard-line {
   margin-bottom: 5px;
 }
 
-/* line 36, app/assets/stylesheets/nurses.scss */
+/* line 31, app/assets/stylesheets/nurses.scss */
 .payable-dashboard-important {
   font-weight: bold;
   font-size: 1.3em;
 }
 
-/* line 41, app/assets/stylesheets/nurses.scss */
+/* line 36, app/assets/stylesheets/nurses.scss */
 .payable-dashboard-text-container {
   margin-left: 10px;
 }
 
-/* line 45, app/assets/stylesheets/nurses.scss */
+/* line 40, app/assets/stylesheets/nurses.scss */
 #payable-charts {
   display: flex;
   margin-bottom: 20px;
 }
 
-/* line 50, app/assets/stylesheets/nurses.scss */
-#total-salary {
-  font-weight: bold;
-}
-
-/* line 54, app/assets/stylesheets/nurses.scss */
+/* line 45, app/assets/stylesheets/nurses.scss */
 #resource-list-container {
   min-width: 10%;
 }
 
-/* line 58, app/assets/stylesheets/nurses.scss */
+/* line 49, app/assets/stylesheets/nurses.scss */
 #toggle-patients-nurses {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 7px;
 }
 
-/* line 64, app/assets/stylesheets/nurses.scss */
+/* line 55, app/assets/stylesheets/nurses.scss */
 #payable-download-button {
   margin-left: auto;
   margin-right: 0;
 }
 
-/* line 69, app/assets/stylesheets/nurses.scss */
+/* line 60, app/assets/stylesheets/nurses.scss */
 #payable-table-commands {
   display: flex;
   justify-content: space-between;
   margin-bottom: 7px;
 }
 
-/* line 75, app/assets/stylesheets/nurses.scss */
+/* line 66, app/assets/stylesheets/nurses.scss */
 .weekend-holiday-provided-service {
   background-color: #E9EEFA;
 }
 
-/* line 80, app/assets/stylesheets/nurses.scss */
+/* line 71, app/assets/stylesheets/nurses.scss */
 .cancelled-provided-service {
   text-align: center;
   font-size: 1.15em;
@@ -439,7 +428,7 @@ p.payable-dashboard-line {
   background-image: repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px) !important;
 }
 
-/* line 88, app/assets/stylesheets/nurses.scss */
+/* line 79, app/assets/stylesheets/nurses.scss */
 .edit-requested-provided-service {
   text-align: center;
   font-size: 1.15em;
@@ -448,27 +437,27 @@ p.payable-dashboard-line {
   background-image: repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px);
 }
 
-/* line 96, app/assets/stylesheets/nurses.scss */
+/* line 87, app/assets/stylesheets/nurses.scss */
 #chosen_custom_email_days_chosen {
   width: 120px !important;
 }
 
-/* line 100, app/assets/stylesheets/nurses.scss */
+/* line 91, app/assets/stylesheets/nurses.scss */
 #nurse-details-button {
   margin-left: 10px;
 }
 
-/* line 104, app/assets/stylesheets/nurses.scss */
+/* line 95, app/assets/stylesheets/nurses.scss */
 .planning-nurse-module-title {
   min-width: 100px;
 }
 
-/* line 108, app/assets/stylesheets/nurses.scss */
+/* line 99, app/assets/stylesheets/nurses.scss */
 .planning-nurse-module-title:hover {
   cursor: pointer;
 }
 
-/* line 112, app/assets/stylesheets/nurses.scss */
+/* line 103, app/assets/stylesheets/nurses.scss */
 #resource-details-panel {
   background-color: white;
   position: absolute;
@@ -481,7 +470,7 @@ p.payable-dashboard-line {
   border-left: 0.5px solid #ddd;
 }
 
-/* line 124, app/assets/stylesheets/nurses.scss */
+/* line 115, app/assets/stylesheets/nurses.scss */
 .resource-details-block-title {
   margin-top: 15px;
   padding-bottom: 5px;
@@ -490,55 +479,55 @@ p.payable-dashboard-line {
   color: #4F4F4F;
 }
 
-/* line 132, app/assets/stylesheets/nurses.scss */
+/* line 123, app/assets/stylesheets/nurses.scss */
 #chart-and-details-container {
   display: flex;
 }
 
-/* line 136, app/assets/stylesheets/nurses.scss */
+/* line 127, app/assets/stylesheets/nurses.scss */
 .details-table-head {
   width: 55px;
 }
 
-/* line 140, app/assets/stylesheets/nurses.scss */
+/* line 131, app/assets/stylesheets/nurses.scss */
 #resource-action-block {
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
-/* line 145, app/assets/stylesheets/nurses.scss */
+/* line 136, app/assets/stylesheets/nurses.scss */
 .btn-light-custom {
   border: 0.5px solid #eee;
 }
 
-/* line 149, app/assets/stylesheets/nurses.scss */
+/* line 140, app/assets/stylesheets/nurses.scss */
 #resource-detail-header {
   border-bottom: 0.5px solid #ddd;
 }
 
-/* line 153, app/assets/stylesheets/nurses.scss */
+/* line 144, app/assets/stylesheets/nurses.scss */
 .close-button-span:hover {
   cursor: pointer;
 }
 
-/* line 157, app/assets/stylesheets/nurses.scss */
+/* line 148, app/assets/stylesheets/nurses.scss */
 #payable-query {
   font-size: 0.7em;
 }
 
-/* line 161, app/assets/stylesheets/nurses.scss */
+/* line 152, app/assets/stylesheets/nurses.scss */
 .refresh-button {
   margin-bottom: 3px;
   background-color: #bbb;
 }
 
-/* line 166, app/assets/stylesheets/nurses.scss */
+/* line 157, app/assets/stylesheets/nurses.scss */
 .refresh-button:hover {
   cursor: pointer;
 }
 
 @media print {
-  /* line 172, app/assets/stylesheets/nurses.scss */
+  /* line 163, app/assets/stylesheets/nurses.scss */
   #payable-container {
     margin: 0px;
     height: auto !important;
@@ -1498,17 +1487,13 @@ p.master-reflect-option {
 }
 
 /* line 9, app/assets/stylesheets/provided_services.scss */
-.verify-provided-service {
-  display: flex;
-}
-
-/* line 13, app/assets/stylesheets/provided_services.scss */
 .verified-at-and-by {
   margin-left: 4px;
   color: #4f5b66;
+  font-size: 0.9em;
 }
 
-/* line 18, app/assets/stylesheets/provided_services.scss */
+/* line 15, app/assets/stylesheets/provided_services.scss */
 .verified-at-and-by:hover {
   color: black;
   cursor: pointer;
@@ -4351,90 +4336,48 @@ This file is generated by `grunt build`, do not edit it by hand.
 }
 
 /* @end */
-/*! ========================================================================
- * Bootstrap Toggle: bootstrap-toggle.css v2.2.0
- * http://www.bootstraptoggle.com
- * ========================================================================
- * Copyright 2014 Min Hur, The New York Times Company
- * Licensed under MIT
- * ======================================================================== */
+/*\
+|*| ========================================================================
+|*| Bootstrap Toggle: bootstrap4-toggle.css v3.4.0
+|*| https://gitbrent.github.io/bootstrap-toggle/
+|*| ========================================================================
+|*| Copyright 2018-2019 Brent Ely
+|*| Licensed under MIT
+|*| ========================================================================
+\*/
 
-
-
-.checkbox label .toggle,
-.checkbox-inline .toggle {
-	margin-left: -20px;
-	margin-right: 5px;
-}
-
-.toggle {
-	position: relative;
-	overflow: hidden;
-}
-.toggle input[type="checkbox"] {
-	display: none;
-}
-.toggle-group {
-	position: absolute;
-	width: 200%;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	transition: left 0.35s;
-	-webkit-transition: left 0.35s;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-}
-.toggle.off .toggle-group {
-	left: -100%;
-}
-.toggle-on {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 50%;
-	margin: 0;
-	border: 0;
-	border-radius: 0;
-}
-.toggle-off {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 50%;
-	right: 0;
-	margin: 0;
-	border: 0;
-	border-radius: 0;
-}
-.toggle-handle {
-	position: relative;
-	margin: 0 auto;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	height: 100%;
-	width: 0px;
-	border-width: 0 1px;
-}
-
-.toggle.btn { min-width: 59px; min-height: 34px; }
-.toggle-on.btn { padding-right: 24px; }
-.toggle-off.btn { padding-left: 24px; }
-
-.toggle.btn-lg { min-width: 79px; min-height: 45px; }
-.toggle-on.btn-lg { padding-right: 31px; }
-.toggle-off.btn-lg { padding-left: 31px; }
-.toggle-handle.btn-lg { width: 40px; }
-
-.toggle.btn-sm { min-width: 50px; min-height: 30px;}
-.toggle-on.btn-sm { padding-right: 20px; }
-.toggle-off.btn-sm { padding-left: 20px; }
-
-.toggle.btn-xs { min-width: 35px; min-height: 22px;}
-.toggle-on.btn-xs { padding-right: 12px; }
-.toggle-off.btn-xs { padding-left: 12px; }
-
+.btn-group-xs>.btn,.btn-xs{padding:.35rem .4rem .25rem;font-size:.875rem;line-height:.5;border-radius:.2rem}
+.checkbox label .toggle,.checkbox-inline .toggle{margin-left:-1.25rem;margin-right:.35rem}
+.toggle{position:relative;overflow:hidden}
+.toggle.btn.btn-light,.toggle.btn.btn-outline-light{border-color:rgba(0,0,0,.15)}
+.toggle input[type=checkbox]{display:none}
+.toggle-group{position:absolute;width:200%;top:0;bottom:0;left:0;transition:left .35s;-webkit-transition:left .35s;-moz-user-select:none;-webkit-user-select:none}
+.toggle.off .toggle-group{left:-100%}
+.toggle-on{position:absolute;top:0;bottom:0;left:0;right:50%;margin:0;border:0;border-radius:0}
+.toggle-off{position:absolute;top:0;bottom:0;left:50%;right:0;margin:0;border:0;border-radius:0;box-shadow:none}
+.toggle-handle{position:relative;margin:0 auto;padding-top:0;padding-bottom:0;height:100%;width:0;border-width:0 1px;background-color:#fff}
+.toggle.btn-outline-primary .toggle-handle{background-color:var(--primary);border-color:var(--primary)}
+.toggle.btn-outline-secondary .toggle-handle{background-color:var(--secondary);border-color:var(--secondary)}
+.toggle.btn-outline-success .toggle-handle{background-color:var(--success);border-color:var(--success)}
+.toggle.btn-outline-danger .toggle-handle{background-color:var(--danger);border-color:var(--danger)}
+.toggle.btn-outline-warning .toggle-handle{background-color:var(--warning);border-color:var(--warning)}
+.toggle.btn-outline-info .toggle-handle{background-color:var(--info);border-color:var(--info)}
+.toggle.btn-outline-light .toggle-handle{background-color:var(--light);border-color:var(--light)}
+.toggle.btn-outline-dark .toggle-handle{background-color:var(--dark);border-color:var(--dark)}
+.toggle[class*=btn-outline]:hover .toggle-handle{background-color:var(--light);opacity:.5}
+.toggle.btn{min-width:3.7rem;min-height:2.15rem}
+.toggle-on.btn{padding-right:1.5rem}
+.toggle-off.btn{padding-left:1.5rem}
+.toggle.btn-lg{min-width:5rem;min-height:2.815rem}
+.toggle-on.btn-lg{padding-right:2rem}
+.toggle-off.btn-lg{padding-left:2rem}
+.toggle-handle.btn-lg{width:2.5rem}
+.toggle.btn-sm{min-width:3.125rem;min-height:1.938rem}
+.toggle-on.btn-sm{padding-right:1rem}
+.toggle-off.btn-sm{padding-left:1rem}
+.toggle.btn-xs{min-width:2.19rem;min-height:1.375rem}
+.toggle-on.btn-xs{padding-right:.8rem}
+.toggle-off.btn-xs{padding-left:.8rem}
 /*! jQuery UI - v1.12.1 - 2018-08-19
 * http://jqueryui.com
 * Includes: draggable.css, core.css, resizable.css, selectable.css, sortable.css, accordion.css, autocomplete.css, menu.css, button.css, controlgroup.css, checkboxradio.css, datepicker.css, dialog.css, progressbar.css, selectmenu.css, slider.css, spinner.css, tabs.css, tooltip.css, theme.css
@@ -20507,73 +20450,73 @@ span.fc-time {
   @page {
     margin: 5mm 5mm 5mm 5mm;
   }
-  /* line 517, app/assets/stylesheets/application.css.scss */
+  /* line 518, app/assets/stylesheets/application.css.scss */
   .no-print {
     display: none !important;
   }
-  /* line 520, app/assets/stylesheets/application.css.scss */
+  /* line 521, app/assets/stylesheets/application.css.scss */
   .print-only {
     display: block;
   }
-  /* line 524, app/assets/stylesheets/application.css.scss */
+  /* line 525, app/assets/stylesheets/application.css.scss */
   .print-master-no-view {
     display: none !important;
   }
-  /* line 528, app/assets/stylesheets/application.css.scss */
+  /* line 529, app/assets/stylesheets/application.css.scss */
   #detail-container {
     margin-left: 5px;
   }
-  /* line 532, app/assets/stylesheets/application.css.scss */
+  /* line 533, app/assets/stylesheets/application.css.scss */
   #planning-show-main {
     margin-left: 5px;
   }
-  /* line 536, app/assets/stylesheets/application.css.scss */
+  /* line 537, app/assets/stylesheets/application.css.scss */
   .print-add-margin {
     margin-left: 40px;
   }
-  /* line 540, app/assets/stylesheets/application.css.scss */
+  /* line 541, app/assets/stylesheets/application.css.scss */
   .fc-title {
     font-size: 1.8em !important;
     font-weight: bold !important;
   }
-  /* line 545, app/assets/stylesheets/application.css.scss */
+  /* line 546, app/assets/stylesheets/application.css.scss */
   #resource-details-button {
     display: none !important;
   }
-  /* line 549, app/assets/stylesheets/application.css.scss */
+  /* line 550, app/assets/stylesheets/application.css.scss */
   .font-size-large {
     font-size: 1.3em;
   }
   /* Fullcalendar-related styles */
   /* Global Event Restyling
 	--------------------------------------------------------------------------------------------------*/
-  /* line 559, app/assets/stylesheets/application.css.scss */
+  /* line 560, app/assets/stylesheets/application.css.scss */
   .fc-event {
     background: #fff;
     color: #000 !important;
     page-break-inside: avoid;
   }
-  /* line 564, app/assets/stylesheets/application.css.scss */
+  /* line 565, app/assets/stylesheets/application.css.scss */
   .fc-event.fc-draggable.colibri-edit-requested {
     background-image: repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px) !important;
     -webkit-print-color-adjust: exact;
   }
-  /* line 569, app/assets/stylesheets/application.css.scss */
+  /* line 570, app/assets/stylesheets/application.css.scss */
   .fc-event.fc-draggable.colibri-cancelled {
     background-image: repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px) !important;
     -webkit-print-color-adjust: exact;
   }
-  /* line 574, app/assets/stylesheets/application.css.scss */
+  /* line 575, app/assets/stylesheets/application.css.scss */
   .fc-event .fc-resizer {
     display: none;
   }
-  /* line 577, app/assets/stylesheets/application.css.scss */
+  /* line 578, app/assets/stylesheets/application.css.scss */
   span.fc-time {
     font-size: 1em !important;
   }
   /* Table & Day-Row Restyling
 --------------------------------------------------------------------------------------------------*/
-  /* line 583, app/assets/stylesheets/application.css.scss */
+  /* line 584, app/assets/stylesheets/application.css.scss */
   .fc th,
   .fc td,
   .fc hr,
@@ -20581,118 +20524,118 @@ span.fc-time {
   .fc tbody,
   .fc-row {
     border-color: #ccc !important;
-    background: #fff !important;
+    background: transparent !important;
   }
   /* don't display any button-related controls */
-  /* line 595, app/assets/stylesheets/application.css.scss */
+  /* line 596, app/assets/stylesheets/application.css.scss */
   .fc-button-group, .fc button {
     display: none;
   }
   /* kill the scrollbars and allow natural height */
-  /* line 600, app/assets/stylesheets/application.css.scss */
+  /* line 601, app/assets/stylesheets/application.css.scss */
   .fc-scroller,
   .fc-day-grid-container,
   .fc-time-grid-container, #detail-planning-container, #detail-container, #planning-container {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 606, app/assets/stylesheets/application.css.scss */
+  /* line 607, app/assets/stylesheets/application.css.scss */
   div .fc-scroller {
     overflow: visible !important;
     height: auto !important;
   }
   /* kill the horizontal border/padding used to compensate for scrollbars */
-  /* line 612, app/assets/stylesheets/application.css.scss */
+  /* line 613, app/assets/stylesheets/application.css.scss */
   .fc-row {
     border: 0 !important;
     margin: 0 !important;
   }
   /* more visible dates */
-  /* line 618, app/assets/stylesheets/application.css.scss */
+  /* line 619, app/assets/stylesheets/application.css.scss */
   .fc-day-header {
     font-weight: bold;
     font-size: 1.35em;
   }
-  /* line 623, app/assets/stylesheets/application.css.scss */
+  /* line 624, app/assets/stylesheets/application.css.scss */
   .fc-axis {
     width: 7% !important;
   }
-  /* line 627, app/assets/stylesheets/application.css.scss */
+  /* line 628, app/assets/stylesheets/application.css.scss */
   .bolder-calendar-time-axis {
     font-size: 1.25em;
     font-weight: bold;
   }
   /* make event borders thicker */
-  /* line 634, app/assets/stylesheets/application.css.scss */
+  /* line 635, app/assets/stylesheets/application.css.scss */
   .fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.fc-draggable {
     border-width: 2.5px !important;
   }
-  /* line 638, app/assets/stylesheets/application.css.scss */
+  /* line 639, app/assets/stylesheets/application.css.scss */
   .fc-time-grid-event.fc-v-event.fc-event.fc-start.fc-end.fc-draggable.fc-resizable {
     border-width: 5px !important;
   }
   /* making horizontal lines thicker for 9:00 12:00 15:00 18:00 */
-  /* line 644, app/assets/stylesheets/application.css.scss */
+  /* line 645, app/assets/stylesheets/application.css.scss */
   .thick-calendar-line {
     border-top: 3px solid #ccc !important;
   }
   /* hiding now indicator when printing */
-  /* line 650, app/assets/stylesheets/application.css.scss */
+  /* line 651, app/assets/stylesheets/application.css.scss */
   div.fc-now-indicator.fc-now-indicator-arrow, div.fc-now-indicator.fc-now-indicator-line {
     display: none;
   }
   /* some styles for dashboard print */
-  /* line 656, app/assets/stylesheets/application.css.scss */
+  /* line 657, app/assets/stylesheets/application.css.scss */
   #colibri-dashboard-container {
     margin: 0px;
   }
-  /* line 660, app/assets/stylesheets/application.css.scss */
+  /* line 661, app/assets/stylesheets/application.css.scss */
   .colibri-dashboard-container-row {
     height: auto !important;
   }
-  /* line 664, app/assets/stylesheets/application.css.scss */
+  /* line 665, app/assets/stylesheets/application.css.scss */
   .colibri-dashboard-container-row-large {
     height: auto !important;
   }
-  /* line 668, app/assets/stylesheets/application.css.scss */
+  /* line 669, app/assets/stylesheets/application.css.scss */
   .colibri-subcontainer-body {
     height: auto !important;
   }
-  /* line 672, app/assets/stylesheets/application.css.scss */
+  /* line 673, app/assets/stylesheets/application.css.scss */
   .colibri-xs-title {
     font-size: 1.4em;
   }
-  /* line 676, app/assets/stylesheets/application.css.scss */
+  /* line 677, app/assets/stylesheets/application.css.scss */
   #query_date {
     font-weight: bold;
     font-size: 1.3em;
     border: none;
   }
-  /* line 682, app/assets/stylesheets/application.css.scss */
+  /* line 683, app/assets/stylesheets/application.css.scss */
   table {
     page-break-after: auto;
     height: auto;
   }
-  /* line 683, app/assets/stylesheets/application.css.scss */
+  /* line 684, app/assets/stylesheets/application.css.scss */
   tr {
     page-break-inside: avoid;
     page-break-after: auto;
   }
-  /* line 684, app/assets/stylesheets/application.css.scss */
+  /* line 685, app/assets/stylesheets/application.css.scss */
   td {
     page-break-inside: avoid;
     page-break-after: auto;
   }
-  /* line 685, app/assets/stylesheets/application.css.scss */
+  /* line 686, app/assets/stylesheets/application.css.scss */
   thead {
     display: table-header-group;
   }
-  /* line 686, app/assets/stylesheets/application.css.scss */
+  /* line 687, app/assets/stylesheets/application.css.scss */
   tfoot {
     display: table-footer-group;
   }
   /* fixing one pager print */
-  /* line 690, app/assets/stylesheets/application.css.scss */
+  /* line 691, app/assets/stylesheets/application.css.scss */
   html, body {
     height: auto;
   }

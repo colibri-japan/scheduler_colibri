@@ -28,7 +28,7 @@
 			<%= select_tag 'nurse-filter-zentai[]', options_from_collection_for_select(@nurses, 'id', 'name', 0), data: {placeholder: "全従業員"}, multiple: true %>
 			<%= select_tag 'patient-filter-zentai[]', options_from_collection_for_select(@patients, 'id', 'name', ''), data: {placeholder: "全利用者"}, multiple: true %>
 			<span id="day-view-options" style="display: none"><input type="checkbox" id="day-view-options-input" checked  data-toggle="toggle" data-width="120" data-height="37.5" data-on="従業員軸" data-off="利用者軸" data-offstyle="success" onchange="toggleDayResources()"></span>
-			<input type="checkbox" checked  class="bootstrap-toggle unavailability-toggle">
+			<input class="toggle-service" type="checkbox" checked data-toggle="toggle" data-on="サービス追加" data-off="サービス以外" data-onstyle="info" data-offstyle="danger" data-width="150" data-height="40">
 		</div>
 	</div>
 

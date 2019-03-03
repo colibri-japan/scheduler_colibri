@@ -1,6 +1,7 @@
 <div id="resource-list-container" class="no-print">
 	<div id="toggle-patients-nurses-wrapper">
-        <%= check_box_tag :toggle_resource, 1, checked = resource_type == 'patient', {id: 'toggle-patients-nurses'} %>
+		<%= check_box_tag :toggle_resource, 1, checked = resource_type == 'patient', data: {toggle: 'toggle', on: '利用者', off: '従業員', onstyle: 'info', offstyle: 'info', width: 100}, id: 'toggle-patients-nurses' %>
+
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="no-print <%= 'hide-resource' if resource_type == 'nurse' %>">

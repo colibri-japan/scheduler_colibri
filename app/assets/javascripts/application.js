@@ -16,7 +16,7 @@
 //= require jquery-ui
 //= require popper
 //= require bootstrap
-//= require bootstrap-toggle
+//= require bootstrap-toggle.min
 //= require moment.min
 //= require chosen.jquery
 //= require popper
@@ -1777,9 +1777,7 @@ $(document).on('turbolinks:load', function(){
 
   });
 
-  $('.bootstrap-toggle').bootstrapToggle();
-
-  $('input[type="checkbox"].bootstrap-toggle').change(function(){
+  $('input[type="checkbox"].toggle-service').change(function(){
     if (window.bootstrapToggleUrl === window.createRecurringAppointmentURL) {
       window.bootstrapToggleUrl = window.createUnavailabilityURL
     } else {

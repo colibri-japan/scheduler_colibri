@@ -25,9 +25,12 @@ class AppointmentsController < ApplicationController
       @appointments = @appointments.overlapping(params[:start]..params[:end])
     end
 
+    patient_resource = params[:patient_resource].present? ? true : false
+
+    puts patient_resource
 
     respond_to do |format|
-      format.json {render json: @appointments.as_json}
+      format.json {render json: @appointments.as_json(patient_resource: patient_resource)}
     end
 
   end

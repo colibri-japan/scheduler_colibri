@@ -1,43 +1,19 @@
 class PlanningsController < ApplicationController
-
 	before_action :set_corporation
-	before_action :set_planning, only: [:show, :destroy, :master, :archive, :new_master_to_schedule, :monthly_general_report, :monthly_teams_report, :master_to_schedule, :duplicate_from, :duplicate, :settings, :payable]
-	before_action :set_nurses, only: :show
-	before_action :set_patients, only: [:show, :master]
-	before_action :set_main_nurse, only: [:show, :settings]
+	before_action :set_planning, except: [:recent_patients_report] 
+	before_action :set_main_nurse, only: [:all_patients, :all_nurses, :settings]
+	before_action :set_patients_grouped_by_kana, only: [:all_patients, :all_nurses]
 
-	def index
-		@plannings = @corporation.plannings.where(archived: false)
-	end
-
-	def show
+	def all_patients
 		authorize @planning, :is_employee?
-		authorize @planning, :is_not_archived?
+
+		fetch_nurses_grouped_by_team
 	end
+	
+	def all_nurses
+		authorize @planning, :is_employee?
 
-	def new
-		if @corporation.nurses.count < 2
-			redirect_to nurses_path, notice: 'スケジュールを作成する前にヘルパーを追加してください'
-		elsif @corporation.patients.empty?
-			redirect_to patients_path, notice: 'スケジュールを作成する前に利用者を追加してください'
-		else
-			@planning = Planning.new
-		end
-	end
-
-	def create
-		@planning = Planning.new(planning_params)
-		@planning.corporation_id = current_user.corporation_id
-
-		respond_to do |format|
-			if @planning.save
-				format.html { redirect_to planning_duplicate_from_path(@planning), notice: 'スケジュールがセーブされました'}
-				format.js
-			else
-				format.html { render :new }
-				format.js
-			end
-		end
+		fetch_nurses_grouped_by_team
 	end
 
 	def new_master_to_schedule
@@ -50,18 +26,7 @@ class PlanningsController < ApplicationController
 
 		CopyPlanningFromMasterWorker.perform_async(@planning.id, params[:month], params[:year])
 
-	    redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
-	end
-
-	def destroy
-	  authorize @planning, :is_employee?
-
-	  @planning.destroy
-	  respond_to do |format|
-	    format.html { redirect_to plannings_url, notice: 'サービスなどを含めて、スケジュールが削除されました。' }
-	    format.json { head :no_content }
-	    format.js
-	  end
+	  redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
 	end
 
 	def payable
@@ -101,25 +66,6 @@ class PlanningsController < ApplicationController
 
     #daily provided_services to be verified
     @daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).includes(:patient, :nurse).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
-	end
-
-	def archive
-		if @planning.update(archived: true)
-			redirect_to authenticated_root_path, notice: 'スケジュールが削除されました。'
-		end
-	end
-
-	def master
-		authorize @planning, :is_employee?
-
-		@full_timers = @corporation.nurses.where(full_timer: true, displayable: true).order_by_kana
-    	@part_timers = @corporation.nurses.where(full_timer: false, displayable: true).order_by_kana
-
-		@last_patient = @patients.last
-    	@last_nurse = @full_timers.present? ? @full_timers.last : @part_timers.last
-		@patients_firstless = @patients - [@patients.first]
-
-		@admin = current_user.has_admin_access?.to_s
 	end
 
 	def settings 
@@ -185,33 +131,29 @@ class PlanningsController < ApplicationController
 		@planning = Planning.find(params[:id])
 	end
 
-	def set_nurses
-		@nurses = @corporation.nurses.order_by_kana
-	end
-
-	def set_patients
-		@patients = @corporation.patients.active.order_by_kana
-	end
-
 	def set_main_nurse
 		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
+	end
+
+	def set_patients_grouped_by_kana
+		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
 	end
 
 	def planning_params
 		params.require(:planning).permit(:business_month, :business_year, :title)
 	end
 
-    def fetch_nurses_grouped_by_team
-      if @corporation.teams.any?
-        @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
-        set_teams_id_by_name
-      else
-        @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
-      end
+  def fetch_nurses_grouped_by_team
+    if @corporation.teams.any?
+      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
+      set_teams_id_by_name
+    else
+      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
     end
+  end
 
-    def set_teams_id_by_name
-        @teams_id_by_name = @corporation.cached_team_id_by_name
-    end
+  def set_teams_id_by_name
+      @teams_id_by_name = @corporation.cached_team_id_by_name
+	end
 
 end

@@ -16,6 +16,7 @@
 	window.masterSchedule = 'false'
 <% end %>
 
+<<<<<<< HEAD
 <div id="planning-view-container">
 	<div id="planning-menu">
 		<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>
@@ -41,6 +42,11 @@
 					<div id="description-container" class="print-only font-size-large">
 						<span class="<%= 'no-print' unless @printing_option.print_nurse_description == true %>">備考：<%= @nurse.try(:description) %></span>
 					</div>
+=======
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>
+
+<%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'nurse', master_resource: false} %>
+>>>>>>> delete_general
 
 						<div id="appointment-comments-container" class="print-only font-size-large">
 								<div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
@@ -57,6 +63,25 @@
 					<% end %>
 					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 				</div>
+<<<<<<< HEAD
+=======
+				<div id="description-container" class="print-only font-size-large">
+				  <span class="<%= 'no-print' unless @printing_option.print_nurse_description == true %>">備考：<%= @nurse.try(:description) %></span>
+				</div>
+			  <div id="appointment-comments-container" class="print-only font-size-large">
+		        <div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
+			      <div class="appointment-comments-title">コメント</div>
+			      <div id="appointment-comments"></div>
+		        </div>
+		    </div>
+			</div>
+			<div id="activity-show-button-container" class="no-print">
+				<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
+				<% if @nurse.phone_mail.present? %>
+					<div class="btn btn-colibri-light-gray text-white btn-sm" id="new-email-reminder" data-reminder-url="<%= nurse_new_reminder_email_path(@nurse) %>"><span class="glyphicon glyphicon-envelope" style="color:white"></span>リマインダー</div>
+				<% end %>
+				<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
+>>>>>>> delete_general
 			</div>
 
 

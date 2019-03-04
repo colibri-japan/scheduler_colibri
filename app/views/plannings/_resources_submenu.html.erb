@@ -11,18 +11,21 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="no-print <%= 'hide-resource' if resource_type == 'nurse' %>">
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_all_patients_path(@planning) if master_resource == false %>">利用者全員</div>
 			<% @patients_grouped_by_kana.each do |kana, patients| %>
 				<div class="nurses-resource-subsection-title"><%= kana %></div>
 				<% patients.each do |patient| %>
-					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if resource_type == 'patient' && patient.id == @patient.id %>" data-url="<%= master_resource ? planning_patient_master_path(@planning, patient) : planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'patient' && patient.id == @patient.id %>" data-url="<%= master_resource ? planning_patient_master_path(@planning, patient) : planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="no-print <%= 'hide-resource' if resource_type == 'patient' %>">
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_all_nurses_path(@planning) if master_resource == false %>">従業員全員</div>
+			<% today = Date.today %>
 			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title"><%= group %></div>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}" if @teams_id_by_name.present? %>'><%= group %></div>
 				<% nurses.each do |nurse| %>
-					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if resource_type == 'nurse' && nurse.id == @nurse.id %>" data-url="<%= master_resource ? planning_nurse_master_path(@planning, nurse) : planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'nurse' && nurse.id == @nurse.id %>" data-url="<%= master_resource ? planning_nurse_master_path(@planning, nurse) : planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>

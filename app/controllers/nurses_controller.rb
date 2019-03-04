@@ -7,6 +7,14 @@ class NursesController < ApplicationController
 
   def index
     nurses = @corporation.nurses
+    
+    if params[:team_id].present? 
+      team = Team.find(params[:team_id])
+      authorize team, :belongs_to_current_user_corporation?
+      nurse_ids = team.nurses.pluck(:id)
+      nurses = nurses.where(id: nurse_ids)
+    end
+
     full_timers = nurses.where(full_timer: true, displayable: true).order_by_kana
     part_timers = nurses.where(full_timer: false, displayable: true).order_by_kana
     @nurses = full_timers + part_timers

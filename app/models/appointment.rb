@@ -86,7 +86,7 @@ class Appointment < ApplicationRecord
         end
 	end
 
-	def as_json
+	def as_json(options = {})
 		{
 			id: "appointment_#{self.id}",
 			title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
@@ -96,7 +96,7 @@ class Appointment < ApplicationRecord
 			nurse_id: self.nurse_id,
 			edit_requested: self.edit_requested,
 			description: self.description || '',
-			resourceId: self.nurse_id,
+			resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
 			allDay: self.all_day_appointment?,
 			color: self.color,
 			displayable: self.displayable,

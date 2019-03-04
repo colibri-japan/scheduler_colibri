@@ -19,17 +19,16 @@
 
 
 <%= render partial: 'plannings/planning_left_menu', locals: {nurse: @main_nurse, resource_path: planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), view: 'resource'} %>
-
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'nurse', master_resource: false} %>
 
 <div id="detail-container">
   <div id="detail-planning-container">
-    <div style="display:flex;justify-content:space-between">
+    <div style="display:flex;justify-content:space-between;margin-bottom: 15px">
       <div id="planning-nurse-information">
 	  		<span id="resource-name-wrapper"><%= @team.try(:team_name) %></span>
 	  	</div>
       <div id="activity-show-button-container">
-        <input type="checkbox" checked style="float:right" class="bootstrap-toggle unavailability-toggle">
+        <%= render 'plannings/unavailability_toggle_switch' %>
       </div>
     </div>
     <div id="planning-container">

@@ -24,14 +24,14 @@
 
 <div id="detail-container">
   <div id="detail-planning-container">
-	<div>
-		<div id="activity-show-button-container">
-			<input type="checkbox" checked style="float:right" class="bootstrap-toggle unavailability-toggle">
+		<div style="display:flex;flex-direction:row-reverse">
+			<div id="planning-top-right-action-container">
+				<%= render 'plannings/unavailability_toggle_switch' %>
+			</div>
 		</div>
-	</div>
-	<div id="planning-container">
-		<div class="calendar"></div>
-	</div>
+		<div id="planning-container">
+			<div class="calendar"></div>
+		</div>
   </div>
 </div>
 

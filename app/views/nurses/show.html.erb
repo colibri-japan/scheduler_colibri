@@ -16,147 +16,111 @@
 	window.masterSchedule = 'false'
 <% end %>
 
-<<<<<<< HEAD
-<div id="planning-view-container">
-	<div id="planning-menu">
-		<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>
-		<%= render partial: 'plannings/resources_submenu', locals: {resource_type: 'nurse', master_resource: false} %>
-	</div>
-	<div id="detail-container">
 
-		<div id="detail-planning-container">
-			<div id="detail-planning-title">
-				<div id="planning-nurse-information">
-					<div class="planning-resource-module-title">
-						<span id="resource-name-wrapper"><%= @nurse.try(:name) %></span>
-						<button id="resource-details-button" class="btn btn-sm btn-mid-light">詳細</button>
-					</div>
-					<div id="address-phone-container">
-						<% if @nurse.address.present? %>
-							<span class="glyphicon glyphicon-home"></span><span class="font-size-large"><%= " #{@nurse.address}  " %></span>
-						<% end %>
-						<% if @nurse.phone_number.present? %>
-							<span class="glyphicon glyphicon-phone"></span><span  class="font-size-large"><%= " #{@nurse.phone_number}" %></span>
-						<% end %>
-					</div>
-					<div id="description-container" class="print-only font-size-large">
-						<span class="<%= 'no-print' unless @printing_option.print_nurse_description == true %>">備考：<%= @nurse.try(:description) %></span>
-					</div>
-=======
+
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>
-
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'nurse', master_resource: false} %>
->>>>>>> delete_general
 
-						<div id="appointment-comments-container" class="print-only font-size-large">
-								<div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
-								<div class="appointment-comments-title">コメント</div>
-								<div id="appointment-comments"></div>
-						</div>
+
+<div id="detail-container">
+	<div id="detail-planning-container">
+		<div id="detail-planning-title">
+		    <div id="planning-nurse-information">
+			    <div class="planning-resource-module-title">
+				    <span id="resource-name-wrapper"><%= @nurse.try(:name) %></span>
+				    <button id="resource-details-button" class="btn btn-sm btn-mid-light">詳細</button>
+			    </div>
+			    <div id="address-phone-container" class="print-only">
+				    <% if @nurse.address.present? %>
+					    <span class="glyphicon glyphicon-home"></span><span class="font-size-large"><%= " #{@nurse.address}  " %></span>
+				    <% end %>
+				    <% if @nurse.phone_number.present? %>
+					    <span class="glyphicon glyphicon-phone"></span><span class="font-size-large"><%= " #{@nurse.phone_number}" %></span>
+				    <% end %>
+			    </div>
+			    <div id="description-container" class="print-only font-size-large">
+			        <span class="<%= 'no-print' unless @printing_option.print_patient_description == true %>">備考：<%= @nurse.try(:description) %></span>
+			    </div>
+				<div id="appointment-comments-container" class="print-only font-size-large">
+						<div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
+						<div class="appointment-comments-title">コメント</div>
+						<div id="appointment-comments"></div>
 					</div>
-
 				</div>
-				<div id="planning-top-right-action-container" class="no-print">
+			</div>
+			<div id="planning-top-right-action-container" class="no-print">
 					<%= render 'plannings/unavailability_toggle_switch' %>
 					<% if @nurse.phone_mail.present? %>
 						<div class="btn btn-colibri-light-gray text-white btn-sm" id="new-email-reminder" style="margin-right:5px;max-height:40px" data-reminder-url="<%= nurse_new_reminder_email_path(@nurse) %>"><span class="glyphicon glyphicon-envelope" style="color:white"></span>リマインダー</div>
 					<% end %>
 					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
-				</div>
-<<<<<<< HEAD
-=======
-				<div id="description-container" class="print-only font-size-large">
-				  <span class="<%= 'no-print' unless @printing_option.print_nurse_description == true %>">備考：<%= @nurse.try(:description) %></span>
-				</div>
-			  <div id="appointment-comments-container" class="print-only font-size-large">
-		        <div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
-			      <div class="appointment-comments-title">コメント</div>
-			      <div id="appointment-comments"></div>
-		        </div>
-		    </div>
 			</div>
-			<div id="activity-show-button-container" class="no-print">
-				<input type="checkbox" checked data-toggle="toggle" class="bootstrap-toggle">
-				<% if @nurse.phone_mail.present? %>
-					<div class="btn btn-colibri-light-gray text-white btn-sm" id="new-email-reminder" data-reminder-url="<%= nurse_new_reminder_email_path(@nurse) %>"><span class="glyphicon glyphicon-envelope" style="color:white"></span>リマインダー</div>
+		</div>
+
+
+
+		<div id="planning-container">
+			<div class="nurse_calendar"></div>
+		</div>
+
+		<div id="resource-details-panel" style="display: none">
+			<div id="resource-details-block">
+				<div id="resource-detail-header">
+					<h1 class="colibri-xs-title"><%= @nurse.name %>の詳細</h1>
+					<span class="close-button-span" value="閉じる" onclick="$('#resource-details-panel').toggle()">x</span>
+				</div>
+				<table>
+					<tr>
+						<td class="details-table-head">メール</td>
+						<td><%= @nurse.phone_mail %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">電話</td>
+						<td><%= @nurse.phone_number %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">住所</td>
+						<td><%= @nurse.address %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">スキル</td>
+						<td><%= @nurse.skill_list %></td>
+					</tr>
+					<tr>
+						<td class="details-table-head">備考</td>
+						<td><%= @nurse.description %></td>
+					</tr>
+				</table>
+			</div>
+			<div id="service-history-block">
+				<div class='resource-details-block-title'>過去の利用者</div>
+				<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
+					<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_service_duration) %></div>
 				<% end %>
-				<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
->>>>>>> delete_general
-			</div>
-
-
-
-			<div id="planning-container">
-				<div class="nurse_calendar"></div>
-			</div>
-
-			<div id="resource-details-panel" style="display: none">
-
-				<div id="resource-details-block">
-					<div id="resource-detail-header">
-						<h1 class="colibri-xs-title"><%= @nurse.name %>の詳細</h1>
-						<span class="close-button-span" value="閉じる" onclick="$('#resource-details-panel').toggle()">x</span>
-					</div>
-					<table>
-						<tr>
-							<td class="details-table-head">メール</td>
-							<td><%= @nurse.phone_mail %></td>
-						</tr>
-						<tr>
-							<td class="details-table-head">電話</td>
-							<td><%= @nurse.phone_number %></td>
-						</tr>
-						<tr>
-							<td class="details-table-head">住所</td>
-							<td><%= @nurse.address %></td>
-						</tr>
-						<tr>
-							<td class="details-table-head">スキル</td>
-							<td><%= @nurse.skill_list %></td>
-						</tr>
-						<tr>
-							<td class="details-table-head">備考</td>
-							<td><%= @nurse.description %></td>
-						</tr>
-					</table>
-				</div>
-
-				<div id="service-history-block">
-					<div class='resource-details-block-title'>過去の利用者</div>
-					<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
-						<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_service_duration) %></div>
-					<% end %>
-					<% if @patients_with_services.all[2..-1].present? %>
-						<div class="resource-history">
-							<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
-							<div id="more-resource-history" style="display: none">
-								<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
-							</div>
-						</div>
-					<% end %>
-				</div>
-
-				<div id="service-balance-block">
-					<div class='resource-details-block-title'>身体VS生活</div>
-					<div id="chart-and-details-container">
-						<div id="chart-wrapper">
-							<%= pie_chart [['身体', @provided_services_shintai], ['生活', @provided_services_seikatsu]], donut: true, width: '100px', height: '100px', legend: false, colors: ['#ffc107', '#FF2E07'] %>
-						</div>
-						<div id="service-balance-details">
-							<div class="service-balance-line">身体：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_shintai) %></span></div>
-							<div class="service-balance-line">生活：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_seikatsu) %> </span></div>
+				<% if @patients_with_services.all[2..-1].present? %>
+					<div class="resource-history">
+						<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
+						<div id="more-resource-history" style="display: none">
+							<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
 						</div>
 					</div>
-
-				</div>
-
-				<div id="resource-action-block">
-					<%= link_to 'エディット', edit_nurse_path(@nurse), remote: true, class: 'btn btn-info btn-block' %>
+				<% end %>
+			</div>
+			<div id="service-balance-block">
+				<div class='resource-details-block-title'>身体VS生活</div>
+				<div id="chart-and-details-container">
+					<div id="chart-wrapper">
+						<%= pie_chart [['身体', @provided_services_shintai], ['生活', @provided_services_seikatsu]], donut: true, width: '100px', height: '100px', legend: false, colors: ['#ffc107', '#FF2E07'] %>
+					</div>
+					<div id="service-balance-details">
+						<div class="service-balance-line">身体：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_shintai) %></span></div>
+						<div class="service-balance-line">生活：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_seikatsu) %> </span></div>
+					</div>
 				</div>
 			</div>
-
-
-
+			<div id="resource-action-block">
+				<%= link_to 'エディット', edit_nurse_path(@nurse), remote: true, class: 'btn btn-info btn-block' %>
+			</div>
 		</div>
 	</div>
 </div>

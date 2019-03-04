@@ -8,8 +8,6 @@ $(document).on 'turbolinks:load', ->
     window.location = $(this).data('link')
     return
 
-  unavailabilityBootstrapToggle()
-
   $('.print-option-checkbox').bootstrapToggle
     on: '有',
     off: '無',
@@ -157,5 +155,17 @@ $(document).on 'turbolinks:load', ->
     $('#patients-resource').show()
     $('#nurses-resource').hide()
     return
+
+  $('#toggle-switch-appointments').click ->
+    $(this).hide()
+    $('#toggle-switch-unavailabilities').show()
+    window.bootstrapToggleUrl = window.createUnavailabilityURL
+    return 
+
+  $('#toggle-switch-unavailabilities').click ->
+    $(this).hide()
+    $('#toggle-switch-appointments').show()
+    window.bootstrapToggleUrl = window.createRecurringAppointmentURL
+    return 
 
   return

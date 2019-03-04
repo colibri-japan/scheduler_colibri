@@ -46,12 +46,12 @@
 								<div class="<%= 'no-print' unless @printing_option.print_nurse_comments == true %>">
 								<div class="appointment-comments-title">コメント</div>
 								<div id="appointment-comments"></div>
-								</div>
-							</div>
+						</div>
+					</div>
 
 				</div>
-				<div id="activity-show-button-container" class="no-print">
-					<input type="checkbox" checked id="unavailabilityToggle" class="toggle-service">
+				<div id="planning-top-right-action-container" class="no-print">
+					<%= render 'plannings/unavailability_toggle_switch' %>
 					<% if @nurse.phone_mail.present? %>
 						<div class="btn btn-colibri-light-gray text-white btn-sm" id="new-email-reminder" data-reminder-url="<%= nurse_new_reminder_email_path(@nurse) %>"><span class="glyphicon glyphicon-envelope" style="color:white"></span>リマインダー</div>
 					<% end %>

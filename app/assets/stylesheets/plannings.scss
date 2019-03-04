@@ -80,6 +80,8 @@ li.planning-menu-selected {
 
 #main-planning-header {
 	margin-top: 7px;
+	display:flex;
+	flex-direction: row-reverse;
 }
 
 
@@ -119,9 +121,10 @@ li.planning-menu-selected {
 	margin-top: 18px;
 }
 
-#activity-show-button-container {
+#planning-top-right-action-container {
 	text-align: right;
 	margin-bottom: 10px;
+	display: flex;
 }
 
 #detail-container {

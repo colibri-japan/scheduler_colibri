@@ -1749,17 +1749,6 @@ let scrollPosts = () => {
   }
 }
 
-let unavailabilityBootstrapToggle = () => {
-  $('#unavailabilityToggle').bootstrapToggle({
-    on: 'サービス追加',
-    off: 'サービス以外',
-    onstyle: 'info',
-    offstyle: 'danger',
-    width: '150',
-    height: '40'
-  })
-}
-
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
@@ -1784,14 +1773,6 @@ $(document).on('turbolinks:load', function(){
       alert('反映したいスケジュールを選択してください');
     }
 
-  });
-
-  $('input[type="checkbox"].toggle-service').change(function(){
-    if (window.bootstrapToggleUrl === window.createRecurringAppointmentURL) {
-      window.bootstrapToggleUrl = window.createUnavailabilityURL
-    } else {
-      window.bootstrapToggleUrl =  window.createRecurringAppointmentURL
-    }
   });
 
   $('#account-settings').click(function(){

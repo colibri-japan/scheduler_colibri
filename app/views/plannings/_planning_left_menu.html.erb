@@ -2,7 +2,7 @@
 	<div id="planning-menu-list">
 		<ul class="nav nav-tabs">
 			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'home' %>" data-url="<%= authenticated_root_path %>" title="ホーム.ダッシュボード"><span class="glyphicon glyphicon-home"  style="<%= view == 'home' ? 'color:white' : 'color:#94979A' %>"></span></li>
-			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'resource' %>" data-url="<%= resource_path %>" title="実績">実</li>
+			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'resource' %>" data-url="<%= resource_path %>" title="スケジュール">ス</li>
 			<% unless current_user.has_restricted_access? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= planning_nurse_payable_path(@planning, nurse, params: {m: Date.today.month, y: Date.today.year}) %>" title="給与管理">給</li>
 			<% end %>

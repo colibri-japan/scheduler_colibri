@@ -1,4 +1,4 @@
-class Unavailability < ApplicationRecord
+class PrivateEvent < ApplicationRecord
 	include PublicActivity::Common
 
 	belongs_to :nurse, optional: true
@@ -10,15 +10,15 @@ class Unavailability < ApplicationRecord
 
 
 	def self.overlapping(range)
-		where('((unavailabilities.starts_at >= ? AND unavailabilities.starts_at < ?) OR (unavailabilities.ends_at > ? AND unavailabilities.ends_at <= ?)) OR (unavailabilities.starts_at < ? AND unavailabilities.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
+		where('((private_events.starts_at >= ? AND private_events.starts_at < ?) OR (private_events.ends_at > ? AND private_events.ends_at <= ?)) OR (private_events.starts_at < ? AND private_events.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
 	end
-	def all_day_unavailability?
+	def all_day_private_event?
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
 	end
 	
 	def as_json
 		{
-			id: "unavailability_#{self.id}",
+			id: "private_event_#{self.id}",
 			title: "#{self.nurse.try(:name)} #{self.patient.try(:name)}:#{self.title}",
 			start: self.starts_at,
 			end: self.ends_at,
@@ -27,12 +27,12 @@ class Unavailability < ApplicationRecord
 			edit_requested: self.edit_requested,
 			description: self.description || '',
 			resourceId: self.nurse_id,
-			allDay: self.all_day_unavailability?,
+			allDay: self.all_day_private_event?,
 			color: '#ff7777',
-			base_url: "/plannings/#{self.planning_id}/unavailabilities/#{self.id}",
-			edit_url: "/plannings/#{self.planning_id}/unavailabilities/#{self.id}/edit",
+			base_url: "/plannings/#{self.planning_id}/private_events/#{self.id}",
+			edit_url: "/plannings/#{self.planning_id}/private_events/#{self.id}/edit",
 			displayable: true,
-			unavailability: true,
+			private_event: true,
 			service_type: self.title || '',
 			nurse: {
 				name: self.nurse.try(:name),

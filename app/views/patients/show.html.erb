@@ -2,8 +2,8 @@
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {patient_id: @patient.id}) %>";
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>"
-	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>"
-	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning, params: {patient_id: @patient.id}) %>"
+	window.createPrivateEventURL = "<%= j new_planning_private_event_url(@planning) %>"
+	window.privateEventsUrl = "<%= j planning_private_events_url(@planning, params: {patient_id: @patient.id}) %>"
 	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>"
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.defaultView = "<%= j @corporation.default_individual_view %>";
@@ -49,7 +49,7 @@
 		        </div>
 		    </div>
 		    <div id="planning-top-right-action-container" class="no-print">
-				<%= render 'plannings/unavailability_toggle_switch' %>
+				<%= render 'plannings/private_event_toggle_switch' %>
 			    <div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
 		    </div>
 		</div>

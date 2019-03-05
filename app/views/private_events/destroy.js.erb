@@ -10,5 +10,5 @@ if ($('.calendar').length > 0) {
   calendar = $('.nurse_calendar');
 }
 
-calendar.fullCalendar('removeEvents', '<%= "unavailability_#{@unavailability.id}" %>');
+calendar.fullCalendar('removeEvents', '<%= "private_event_#{@private_event.id}" %>');
 $('.modal').modal('hide');

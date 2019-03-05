@@ -11,7 +11,7 @@
         json.end DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i
         json.resourceId recurring_appointment.nurse_id
         json.borderColor '#FFBBA0' if recurring_appointment.edit_requested == true
-        json.unavailability false
+        json.private_event false
         json.service_type recurring_appointment.title
         json.description recurring_appointment.description ||= ''
         json.patient do  

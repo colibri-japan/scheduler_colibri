@@ -1,9 +1,9 @@
 <%= javascript_tag do %>
   window.appointmentsURL = "<%= j planning_appointments_url(@planning) %>";
-  window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning) %>";
+  window.privateEventsUrl = "<%= j planning_private_events_url(@planning) %>";
   window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json, team_id: @team.id) %>";
   window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-  window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>";
+  window.createPrivateEventURL = "<%= j new_planning_private_event_url(@planning) %>";
   window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
   window.defaultView = "<%= j @corporation.default_view %>";
   window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -28,7 +28,7 @@
 	  		<span id="resource-name-wrapper"><%= @team.try(:team_name) %></span>
 	  	</div>
       <div id="activity-show-button-container">
-        <%= render 'plannings/unavailability_toggle_switch' %>
+        <%= render 'plannings/private_event_toggle_switch' %>
       </div>
     </div>
     <div id="planning-container">

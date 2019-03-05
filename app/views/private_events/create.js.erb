@@ -12,10 +12,10 @@ if ($('.calendar').length > 0) {
   calendar = $('.nurse_calendar');
 }
 
-if (window.nurseId == <%= @unavailability.nurse_id || 0 %> || window.patientId == <%= @unavailability.patient_id || 0 %> || window.generalPlanning == 'true') {
+if (window.nurseId == <%= @private_event.nurse_id || 0 %> || window.patientId == <%= @private_event.patient_id || 0 %> || window.generalPlanning == 'true') {
   calendar.fullCalendar(
     'renderEvent', 
-    jQuery.parseJSON("<%= j render(partial: 'unavailabilities/unavailability.json', locals: {unavailability: @unavailability}).html_safe %>"),
+    jQuery.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"),
     false
   );
 }

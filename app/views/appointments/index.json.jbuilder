@@ -22,7 +22,7 @@ json.array! @appointments.each do |appointment|
             json.name appointment.nurse.name
         end
 
-        json.unavailability false
+        json.private_event false
 
         json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 

@@ -2,8 +2,8 @@
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {patient_resource: true}) %>";
 	window.resourceUrl = "<%= j corporation_patients_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-	window.createUnavailabilityURL = "<%= j new_planning_unavailability_url(@planning) %>";
-	window.unavailabilitiesUrl = "<%= j planning_unavailabilities_url(@planning) %>";
+	window.createPrivateEventURL = "<%= j new_planning_private_event_url(@planning) %>";
+	window.privateEventsUrl = "<%= j planning_private_events_url(@planning) %>";
 	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.defaultView = "<%= j @corporation.default_view %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -13,8 +13,8 @@
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 	window.masterSchedule = 'false';
 	window.generalPlanning = 'true';
-    window.resourceLabel = '利用者';
-    window.resourceType = 'patient';
+  window.resourceLabel = '利用者';
+  window.resourceType = 'patient';
 <% end %>
 
 
@@ -26,7 +26,7 @@
   <div id="detail-planning-container">
 		<div style="display:flex;flex-direction:row-reverse">
 			<div id="planning-top-right-action-container">
-				<%= render 'plannings/unavailability_toggle_switch' %>
+				<%= render 'plannings/private_event_toggle_switch' %>
 			</div>
 		</div>
 		<div id="planning-container">

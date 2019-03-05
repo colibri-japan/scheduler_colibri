@@ -6,7 +6,7 @@ class Patient < ApplicationRecord
 	belongs_to :nurse, optional: true
 	has_many :appointments
 	has_many :recurring_appointments
-	has_many :unavailabilities
+	has_many :private_events
 	has_many :recurring_unavailabilities
 	has_many :provided_services
 	has_many :posts

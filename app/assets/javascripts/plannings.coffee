@@ -158,11 +158,11 @@ $(document).on 'turbolinks:load', ->
 
   $('#toggle-switch-appointments').click ->
     $(this).hide()
-    $('#toggle-switch-unavailabilities').show()
-    window.bootstrapToggleUrl = window.createUnavailabilityURL
+    $('#toggle-switch-private-events').show()
+    window.bootstrapToggleUrl = window.createPrivateEventURL
     return 
 
-  $('#toggle-switch-unavailabilities').click ->
+  $('#toggle-switch-private-events').click ->
     $(this).hide()
     $('#toggle-switch-appointments').show()
     window.bootstrapToggleUrl = window.createRecurringAppointmentURL

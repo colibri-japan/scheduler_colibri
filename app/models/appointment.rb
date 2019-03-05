@@ -102,7 +102,7 @@ class Appointment < ApplicationRecord
 			displayable: self.displayable,
 			master: self.master,
 			cancelled: self.cancelled,
-			unavailability: false,
+			private_event: false,
 			service_type: self.title || '',
 			borderColor: self.borderColor,
 			nurse: {

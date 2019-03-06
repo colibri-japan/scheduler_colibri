@@ -65,19 +65,7 @@ body {
 	vertical-align: middle;
 }
 
-.glyphicon.glyphicon-cog {
-	font-size: 25px;
-}
-
-.glyphicon.glyphicon-cog:hover {
-	color: white !important;
-}
-
-.glyphicon.glyphicon-home {
-	font-size: 24px;
-}
-
-.glyphicon.glyphicon-home:hover {
+.glyphicon.glyphicon-cog:hover, .glyphicon.glyphicon-home:hover, .glyphicon.glyphicon-calendar:hover {
 	color: white !important;
 }
 

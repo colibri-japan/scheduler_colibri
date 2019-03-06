@@ -322,18 +322,18 @@ ul.chosen-results {
 }
 
 #settings-container {
-	margin-left: 305px;
-	margin-top: 20px;
-	margin-right: 160px;
-}
-
-#printing-settings-container {
-	margin-left: 305px;
-	margin-top: 20px;
-	max-width: 500px;	
+	width: calc(100% - 300px);
+	margin-left: auto;
+	margin-top: 30px;	
 }
 
 #planning-options {
+	max-width: 500px;
+	margin-bottom: 30px;
+}
+
+#printing-options {
+	max-width: 340px;
 	margin-bottom: 30px;
 }
 

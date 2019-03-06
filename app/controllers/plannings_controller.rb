@@ -26,7 +26,7 @@ class PlanningsController < ApplicationController
 
 		CopyPlanningFromMasterWorker.perform_async(@planning.id, params[:month], params[:year])
 
-	  redirect_to @planning, notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
+	  redirect_to planning_all_nurses_path(@planning), notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
 	end
 
 	def payable

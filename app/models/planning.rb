@@ -3,7 +3,7 @@ class Planning < ApplicationRecord
 	has_many :appointments, dependent: :destroy
 	has_many :recurring_appointments, dependent: :destroy
 	has_many :private_events, dependent: :destroy
-	has_many :recurring_unavailabilities, dependent: :destroy
+	has_many :wished_slots, dependent: :destroy
 	has_many :provided_services, dependent: :destroy
 	has_many :scans, dependent: :destroy
 

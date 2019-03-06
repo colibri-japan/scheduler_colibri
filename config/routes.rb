@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   	resources :appointments
   	resources :recurring_appointments
     resources :private_events
-    resources :recurring_unavailabilities
+    resources :wished_slots
     resources :nurses
     resources :patients
     resources :activities

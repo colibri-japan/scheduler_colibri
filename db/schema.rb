@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190305010142) do
+ActiveRecord::Schema.define(version: 20190306072752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -332,22 +332,6 @@ ActiveRecord::Schema.define(version: 20190305010142) do
     t.index ["service_id"], name: "index_recurring_appointments_on_service_id"
   end
 
-  create_table "recurring_unavailabilities", force: :cascade do |t|
-    t.string "title"
-    t.date "anchor"
-    t.integer "frequency"
-    t.datetime "starts_at"
-    t.datetime "ends_at"
-    t.bigint "planning_id"
-    t.bigint "nurse_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "patient_id"
-    t.index ["nurse_id"], name: "index_recurring_unavailabilities_on_nurse_id"
-    t.index ["patient_id"], name: "index_recurring_unavailabilities_on_patient_id"
-    t.index ["planning_id"], name: "index_recurring_unavailabilities_on_planning_id"
-  end
-
   create_table "scans", force: :cascade do |t|
     t.bigint "planning_id"
     t.datetime "done_at"
@@ -440,6 +424,22 @@ ActiveRecord::Schema.define(version: 20190305010142) do
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
     t.index ["nurse_id"], name: "index_users_on_nurse_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "wished_slots", force: :cascade do |t|
+    t.string "title"
+    t.date "anchor"
+    t.integer "frequency"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.bigint "planning_id"
+    t.bigint "nurse_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "description"
+    t.date "end_day"
+    t.index ["nurse_id"], name: "index_wished_slots_on_nurse_id"
+    t.index ["planning_id"], name: "index_wished_slots_on_planning_id"
   end
 
   add_foreign_key "appointments", "plannings"

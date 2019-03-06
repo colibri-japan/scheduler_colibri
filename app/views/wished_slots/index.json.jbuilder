@@ -1,0 +1,1 @@
+json.partial! @wished_slots, partial: 'wished_slots/wished_slot', as: :wished_slot

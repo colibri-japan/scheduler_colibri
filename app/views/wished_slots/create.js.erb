@@ -1,0 +1,6 @@
+$('.modal').modal('hide');
+$('.nurse_calendar').fullCalendar(
+  'renderEvents', 
+  jQuery.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>"),
+  false
+);

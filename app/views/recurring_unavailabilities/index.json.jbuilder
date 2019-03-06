@@ -1,1 +1,0 @@
-json.partial! @recurring_unavailabilities, partial: 'recurring_unavailabilities/recurring_unavailability', as: :recurring_unavailability

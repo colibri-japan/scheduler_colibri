@@ -735,41 +735,21 @@ initialize_calendar = function() {
           container: 'body'
         })
 
-        if (view.name == 'agendaDay') {
-          element.find('.fc-title').text(function(i, t){
+        element.find('.fc-title').text(function (i, t) {
+          if (window.resourceType == 'nurse') {
             if (!event.private_event) {
-              if ($('#day-view-options-input').is(':checked')) {
-                return patient_name;
-              } else {
-                return nurse_name;
-              }
+              return patient_name;
             } else {
-              return event.service_type;
+              return event.service_type + ': ' + patient_name;
             }
-          });
-        } else if (view.name == 'timelineWeek') {
-          element.find('.fc-title').text(function(i,t){
-            if (window.resourceType == 'nurse') {
-              if (!event.private_event) {
-                return patient_name;
-              } else {
-                return event.service_type + ': ' + patient_name;
-              }
+          } else {
+            if (!event.private_event) {
+              return nurse_name;
             } else {
-              if (!event.private_event) {
-                return nurse_name;
-              } else {
-                return event.service_type + ': ' + nurse_name;
-              }
+              return event.service_type + ': ' + nurse_name;
             }
-          })
-        } else {
-          if (event.private_event) {
-            element.find('.fc-title').text(function (i, t) {
-              return event.service_type;
-            })
           }
-        }
+        })
       },
 
 

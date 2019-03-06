@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190306072752) do
+ActiveRecord::Schema.define(version: 20190306080355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,14 +108,6 @@ ActiveRecord::Schema.define(version: 20190306072752) do
     t.string "reminder_email_hour", default: "11:00"
     t.integer "weekend_reminder_option", default: 0
     t.boolean "include_description_in_nurse_mailer", default: false
-  end
-
-  create_table "deleted_occurrences", force: :cascade do |t|
-    t.bigint "recurring_appointment_id"
-    t.date "deleted_day"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["recurring_appointment_id"], name: "index_deleted_occurrences_on_recurring_appointment_id"
   end
 
   create_table "invoice_setting_nurses", force: :cascade do |t|
@@ -443,7 +435,6 @@ ActiveRecord::Schema.define(version: 20190306072752) do
   end
 
   add_foreign_key "appointments", "plannings"
-  add_foreign_key "deleted_occurrences", "recurring_appointments"
   add_foreign_key "invoice_setting_nurses", "invoice_settings"
   add_foreign_key "invoice_setting_nurses", "nurses"
   add_foreign_key "invoice_setting_services", "invoice_settings"

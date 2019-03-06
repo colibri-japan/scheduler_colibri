@@ -10,7 +10,6 @@ class RecurringAppointment < ApplicationRecord
 	belongs_to :planning
 	belongs_to :original, class_name: 'RecurringAppointment', optional: true
 	belongs_to :service, optional: true
-	has_many :deleted_occurrences, dependent: :destroy
 	has_many :appointments, dependent: :destroy
 
 	before_validation :calculate_duration

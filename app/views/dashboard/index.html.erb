@@ -13,20 +13,20 @@
           <table class='table'>
             <thead>
               <tr>
+                <th>提供日</th>
                 <th>サービス</th>
                 <th>利用者名</th>
                 <th>従業員名</th>
-                <th>提供日</th>
                 <th>稼働時間</th>
               </tr>
             </thead>
             <tbody>
               <% @edit_requested_appointments.each do |appointment| %>
               <tr>
+                <td><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
                 <td><%= appointment.title %></td>
                 <td><%= appointment.patient.try(:name) %></td>
                 <td><%= appointment.nurse.try(:name) %></td>
-                <td><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
                 <td><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></td>
               </tr>
               <% end %>

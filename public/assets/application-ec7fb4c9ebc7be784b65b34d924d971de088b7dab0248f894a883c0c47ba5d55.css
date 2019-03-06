@@ -886,19 +886,12 @@ footer {
 .hide-resource {
   display: none;
 }
-
-/* line 11, app/assets/stylesheets/patients.scss */
-#resource-list-container {
-  height: 100%;
-  width: 100px;
-  position: fixed;
-  z-index: 0;
-  top: 0;
-  left: 50px;
-  overflow-x: hidden;
-  padding-top: 60px;
+/* line 6, app/assets/stylesheets/plannings.scss */
+#planning-view-container {
+  display: flex;
 }
-/* line 7, app/assets/stylesheets/plannings.scss */
+
+/* line 10, app/assets/stylesheets/plannings.scss */
 #planning-menu-container {
   height: 100%;
   width: 50px;
@@ -910,13 +903,13 @@ footer {
   padding-top: 60px;
 }
 
-/* line 20, app/assets/stylesheets/plannings.scss */
+/* line 23, app/assets/stylesheets/plannings.scss */
 #planning-show-main {
   margin-left: 55px;
   margin-right: 5px;
 }
 
-/* line 25, app/assets/stylesheets/plannings.scss */
+/* line 28, app/assets/stylesheets/plannings.scss */
 #planning-menu-title {
   font-size: 1.8em;
   font-weight: bold;
@@ -925,20 +918,20 @@ footer {
   color: #4F4F4F;
 }
 
-/* line 33, app/assets/stylesheets/plannings.scss */
+/* line 36, app/assets/stylesheets/plannings.scss */
 #planning-menu-list {
   font-size: 2em;
   display: block;
 }
 
-/* line 38, app/assets/stylesheets/plannings.scss */
+/* line 41, app/assets/stylesheets/plannings.scss */
 #address-phone-container {
   color: #4F4F4F;
   margin-top: 3px;
   font-size: 0.9em;
 }
 
-/* line 45, app/assets/stylesheets/plannings.scss */
+/* line 48, app/assets/stylesheets/plannings.scss */
 li.planning-menu-items {
   font-size: 2em;
   display: inline;
@@ -950,44 +943,46 @@ li.planning-menu-items {
   margin-right: auto;
 }
 
-/* line 57, app/assets/stylesheets/plannings.scss */
+/* line 60, app/assets/stylesheets/plannings.scss */
 li.planning-menu-items:hover {
   cursor: pointer;
   color: white;
 }
 
-/* line 62, app/assets/stylesheets/plannings.scss */
+/* line 65, app/assets/stylesheets/plannings.scss */
 li.planning-menu-selected {
   color: white;
 }
 
-/* line 66, app/assets/stylesheets/plannings.scss */
+/* line 69, app/assets/stylesheets/plannings.scss */
 #planning-container {
   display: flex;
 }
 
-/* line 70, app/assets/stylesheets/plannings.scss */
+/* line 73, app/assets/stylesheets/plannings.scss */
 .calendar {
   max-width: 100%;
 }
 
-/* line 74, app/assets/stylesheets/plannings.scss */
+/* line 77, app/assets/stylesheets/plannings.scss */
 .nurse_calendar {
   max-width: 100%;
 }
 
-/* line 78, app/assets/stylesheets/plannings.scss */
+/* line 81, app/assets/stylesheets/plannings.scss */
 #main-planning-header {
   margin-top: 7px;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
-/* line 83, app/assets/stylesheets/plannings.scss */
+/* line 88, app/assets/stylesheets/plannings.scss */
 #planning-activity-module {
   padding-top: 10px;
   padding-left: 10px;
 }
 
-/* line 89, app/assets/stylesheets/plannings.scss */
+/* line 94, app/assets/stylesheets/plannings.scss */
 .planning-activity-module-title {
   font-weight: bold;
   font-size: 1.5em;
@@ -995,13 +990,13 @@ li.planning-menu-selected {
   display: block;
 }
 
-/* line 96, app/assets/stylesheets/plannings.scss */
+/* line 101, app/assets/stylesheets/plannings.scss */
 .planning-nurse-module-title {
   font-weight: bold;
   font-size: 1.5em;
 }
 
-/* line 101, app/assets/stylesheets/plannings.scss */
+/* line 106, app/assets/stylesheets/plannings.scss */
 .master-title {
   font-weight: bold;
   font-size: 1.5em;
@@ -1009,54 +1004,64 @@ li.planning-menu-selected {
   display: block;
 }
 
-/* line 109, app/assets/stylesheets/plannings.scss */
+/* line 114, app/assets/stylesheets/plannings.scss */
 #index-container {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 115, app/assets/stylesheets/plannings.scss */
+/* line 120, app/assets/stylesheets/plannings.scss */
 #index-table-container {
   margin-top: 18px;
 }
 
-/* line 119, app/assets/stylesheets/plannings.scss */
-#activity-show-button-container {
+/* line 124, app/assets/stylesheets/plannings.scss */
+#planning-top-right-action-container {
   text-align: right;
   margin-bottom: 10px;
+  display: flex;
 }
 
-/* line 124, app/assets/stylesheets/plannings.scss */
+/* line 130, app/assets/stylesheets/plannings.scss */
 #detail-container {
   display: flex;
-  margin-left: 175px;
+  width: calc(100% - 190px);
+  margin-left: auto;
   margin-right: 5px;
   height: 100%;
 }
 
-/* line 131, app/assets/stylesheets/plannings.scss */
+/* line 138, app/assets/stylesheets/plannings.scss */
 #detail-planning-title {
   display: flex;
   justify-content: space-between;
 }
 
-/* line 136, app/assets/stylesheets/plannings.scss */
+/* line 143, app/assets/stylesheets/plannings.scss */
 #detail-planning-container {
   margin-top: 10px;
   margin-left: 7px;
 }
 
-/* line 141, app/assets/stylesheets/plannings.scss */
+/* line 148, app/assets/stylesheets/plannings.scss */
 #resource-list-container {
   background-color: #606E7C;
   border: 0.5px solid #606E7C;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 100%;
+  width: 130px;
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 50px;
+  overflow-x: hidden;
+  padding-top: 60px;
 }
 
-/* line 149, app/assets/stylesheets/plannings.scss */
+/* line 164, app/assets/stylesheets/plannings.scss */
 #settings-menu-container {
   height: 100%;
   width: 230px;
@@ -1073,17 +1078,17 @@ li.planning-menu-selected {
   overflow: hidden;
 }
 
-/* line 165, app/assets/stylesheets/plannings.scss */
+/* line 180, app/assets/stylesheets/plannings.scss */
 #resource-container {
   overflow-y: auto;
 }
 
-/* line 169, app/assets/stylesheets/plannings.scss */
+/* line 184, app/assets/stylesheets/plannings.scss */
 #nurses-resource, #patients-resource {
   padding-bottom: 30px;
 }
 
-/* line 173, app/assets/stylesheets/plannings.scss */
+/* line 188, app/assets/stylesheets/plannings.scss */
 .nurses-resource-subsection-title {
   margin-top: 8px;
   margin-left: 3px;
@@ -1093,7 +1098,7 @@ li.planning-menu-selected {
   font-size: 0.95em;
 }
 
-/* line 183, app/assets/stylesheets/plannings.scss */
+/* line 198, app/assets/stylesheets/plannings.scss */
 .resource-list-element, a.planning-list-element.colorize, .master-list-element {
   padding-bottom: 3px;
   padding-top: 3px;
@@ -1103,95 +1108,96 @@ li.planning-menu-selected {
   color: #D6D9DC;
 }
 
-/* line 192, app/assets/stylesheets/plannings.scss */
+/* line 207, app/assets/stylesheets/plannings.scss */
 .resource-list-element:hover, a.planning-list-element.colorize:hover {
   color: white;
   cursor: pointer;
 }
 
-/* line 197, app/assets/stylesheets/plannings.scss */
+/* line 212, app/assets/stylesheets/plannings.scss */
 .resource-list-element.resource-selected {
   background-color: #39ACCD;
   color: white;
 }
 
-/* line 202, app/assets/stylesheets/plannings.scss */
+/* line 217, app/assets/stylesheets/plannings.scss */
 .master-list-element.master-element-selected {
   background-color: #39ACCD;
   color: white;
 }
 
-/* line 208, app/assets/stylesheets/plannings.scss */
+/* line 223, app/assets/stylesheets/plannings.scss */
 .master-list-element:hover {
   cursor: pointer;
   color: white;
 }
 
-/* line 213, app/assets/stylesheets/plannings.scss */
+/* line 228, app/assets/stylesheets/plannings.scss */
 #nurse-filter-zentai_ {
   width: 400px;
 }
 
-/* line 217, app/assets/stylesheets/plannings.scss */
+/* line 232, app/assets/stylesheets/plannings.scss */
 #patient-filter-zentai_ {
   width: 400px;
 }
 
-/* line 221, app/assets/stylesheets/plannings.scss */
+/* line 236, app/assets/stylesheets/plannings.scss */
 #master-nurse-filter-zentai_ {
   width: 400px;
 }
 
-/* line 225, app/assets/stylesheets/plannings.scss */
+/* line 240, app/assets/stylesheets/plannings.scss */
 #master-patient-filter-zentai_ {
   width: 400px;
 }
 
-/* line 229, app/assets/stylesheets/plannings.scss */
+/* line 244, app/assets/stylesheets/plannings.scss */
 #duplicate-button-wrapper {
   margin-top: 10px;
   margin-bottom: 5px;
 }
 
-/* line 234, app/assets/stylesheets/plannings.scss */
+/* line 249, app/assets/stylesheets/plannings.scss */
 #no-duplicate-button-wrapper {
   text-align: center;
 }
 
-/* line 238, app/assets/stylesheets/plannings.scss */
+/* line 253, app/assets/stylesheets/plannings.scss */
 #toggle-patients-nurses-wrapper {
   margin-bottom: 7px;
-  margin-left: 7px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* line 243, app/assets/stylesheets/plannings.scss */
+/* line 259, app/assets/stylesheets/plannings.scss */
 .appointment-comment {
   margin-bottom: 4px;
   font-size: 1em;
 }
 
-/* line 249, app/assets/stylesheets/plannings.scss */
+/* line 265, app/assets/stylesheets/plannings.scss */
 #patient_filter_zentai__chosen, #nurse_filter_zentai__chosen {
   width: 250px !important;
 }
 
-/* line 253, app/assets/stylesheets/plannings.scss */
+/* line 269, app/assets/stylesheets/plannings.scss */
 .chosen-container {
   font-size: 1em !important;
 }
 
-/* line 257, app/assets/stylesheets/plannings.scss */
+/* line 273, app/assets/stylesheets/plannings.scss */
 ul.chosen-results {
   font-size: 1em !important;
 }
 
-/* line 261, app/assets/stylesheets/plannings.scss */
+/* line 277, app/assets/stylesheets/plannings.scss */
 #delete-planning-action {
   margin-bottom: 30px;
   text-align: center;
 }
 
-/* line 266, app/assets/stylesheets/plannings.scss */
+/* line 282, app/assets/stylesheets/plannings.scss */
 .settings-list-element {
   font-size: 1.2em;
   color: #ccc !important;
@@ -1199,66 +1205,66 @@ ul.chosen-results {
   padding-bottom: 3px;
 }
 
-/* line 275, app/assets/stylesheets/plannings.scss */
+/* line 291, app/assets/stylesheets/plannings.scss */
 .settings-list-element:hover {
   font-size: 1.2em;
   color: white;
   cursor: pointer;
 }
 
-/* line 281, app/assets/stylesheets/plannings.scss */
+/* line 297, app/assets/stylesheets/plannings.scss */
 .settings-list-element-selected {
   color: white !important;
 }
 
-/* line 285, app/assets/stylesheets/plannings.scss */
+/* line 301, app/assets/stylesheets/plannings.scss */
 .settings-list-url {
   color: #ccc !important;
 }
 
-/* line 289, app/assets/stylesheets/plannings.scss */
+/* line 305, app/assets/stylesheets/plannings.scss */
 .settings-list-url:hover {
   color: white !important;
 }
 
-/* line 293, app/assets/stylesheets/plannings.scss */
+/* line 309, app/assets/stylesheets/plannings.scss */
 #settings-list {
   margin-right: 20px;
   margin-left: 20px;
 }
 
-/* line 298, app/assets/stylesheets/plannings.scss */
+/* line 314, app/assets/stylesheets/plannings.scss */
 .settings-list-element {
   width: 100%;
   border-bottom: solid #ccc 0.5px;
 }
 
-/* line 303, app/assets/stylesheets/plannings.scss */
+/* line 319, app/assets/stylesheets/plannings.scss */
 #settings-menu-list {
   text-align: right;
   margin-top: 15px;
 }
 
-/* line 308, app/assets/stylesheets/plannings.scss */
+/* line 324, app/assets/stylesheets/plannings.scss */
 #settings-container {
-  margin-left: 305px;
-  margin-top: 20px;
-  margin-right: 160px;
+  width: calc(100% - 300px);
+  margin-left: auto;
+  margin-top: 30px;
 }
 
-/* line 314, app/assets/stylesheets/plannings.scss */
-#printing-settings-container {
-  margin-left: 305px;
-  margin-top: 20px;
-  max-width: 500px;
-}
-
-/* line 320, app/assets/stylesheets/plannings.scss */
+/* line 330, app/assets/stylesheets/plannings.scss */
 #planning-options {
+  max-width: 500px;
   margin-bottom: 30px;
 }
 
-/* line 324, app/assets/stylesheets/plannings.scss */
+/* line 335, app/assets/stylesheets/plannings.scss */
+#printing-options {
+  max-width: 340px;
+  margin-bottom: 30px;
+}
+
+/* line 340, app/assets/stylesheets/plannings.scss */
 .colibri-xs-title {
   color: #4F4F4F;
   font-size: 1.15em;
@@ -1266,13 +1272,13 @@ ul.chosen-results {
   padding-bottom: 5px;
 }
 
-/* line 331, app/assets/stylesheets/plannings.scss */
+/* line 347, app/assets/stylesheets/plannings.scss */
 #resource-detail-header {
   display: flex;
   justify-content: space-between;
 }
 
-/* line 336, app/assets/stylesheets/plannings.scss */
+/* line 352, app/assets/stylesheets/plannings.scss */
 #resource-name-wrapper {
   font-weight: bold;
   font-size: 1.5em;
@@ -1281,18 +1287,18 @@ ul.chosen-results {
   padding-top: 10px;
 }
 
-/* line 344, app/assets/stylesheets/plannings.scss */
+/* line 360, app/assets/stylesheets/plannings.scss */
 .resource-title-selectable:hover {
   cursor: pointer;
   color: #D6D9DC;
 }
 
-/* line 349, app/assets/stylesheets/plannings.scss */
+/* line 365, app/assets/stylesheets/plannings.scss */
 #nurse-conflict-confirm {
   display: none;
 }
 
-/* line 353, app/assets/stylesheets/plannings.scss */
+/* line 369, app/assets/stylesheets/plannings.scss */
 #appointment-comments-container {
   width: 100%;
   margin-left: 0px;
@@ -1301,32 +1307,32 @@ ul.chosen-results {
   font-size: 1.1em;
 }
 
-/* line 361, app/assets/stylesheets/plannings.scss */
+/* line 377, app/assets/stylesheets/plannings.scss */
 #appointment-comments {
   margin-left: 0px;
 }
 
-/* line 365, app/assets/stylesheets/plannings.scss */
+/* line 381, app/assets/stylesheets/plannings.scss */
 .appointment-comments-title {
   font-weight: bold;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
-/* line 371, app/assets/stylesheets/plannings.scss */
+/* line 387, app/assets/stylesheets/plannings.scss */
 #description-container {
   margin-bottom: 0px;
   padding-bottom: 0px;
 }
 
-/* line 376, app/assets/stylesheets/plannings.scss */
+/* line 392, app/assets/stylesheets/plannings.scss */
 .colibri-form-subsection {
   width: 100%;
   margin-bottom: 10px;
   margin-top: 5px;
 }
 
-/* line 383, app/assets/stylesheets/plannings.scss */
+/* line 399, app/assets/stylesheets/plannings.scss */
 .colibri-form-subsection-title {
   margin-top: 15px;
   padding-bottom: 5px;
@@ -1336,12 +1342,12 @@ ul.chosen-results {
   color: black;
 }
 
-/* line 392, app/assets/stylesheets/plannings.scss */
+/* line 408, app/assets/stylesheets/plannings.scss */
 .report-download-wrapper {
   margin-top: 5px;
 }
 
-/* line 396, app/assets/stylesheets/plannings.scss */
+/* line 412, app/assets/stylesheets/plannings.scss */
 .batch-action-button {
   position: fixed;
   text-align: center;
@@ -1356,83 +1362,119 @@ ul.chosen-results {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
-/* line 410, app/assets/stylesheets/plannings.scss */
+/* line 426, app/assets/stylesheets/plannings.scss */
 .batch-action-button:hover {
   background: #f15365;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-/* line 416, app/assets/stylesheets/plannings.scss */
+/* line 432, app/assets/stylesheets/plannings.scss */
 span.glyphicon.glyphicon-pencil.batch-action-pencil {
   color: white;
   line-height: 40px;
 }
 
-/* line 421, app/assets/stylesheets/plannings.scss */
+/* line 437, app/assets/stylesheets/plannings.scss */
 .master-reflect-option:hover {
   cursor: pointer;
   color: black !important;
 }
 
-/* line 426, app/assets/stylesheets/plannings.scss */
+/* line 442, app/assets/stylesheets/plannings.scss */
 p.master-reflect-option {
   margin-bottom: 5px;
 }
 
-/* line 430, app/assets/stylesheets/plannings.scss */
+/* line 446, app/assets/stylesheets/plannings.scss */
 #shintai-chart-container {
   display: flex;
   justify-content: start;
   align-items: center;
 }
 
-/* line 436, app/assets/stylesheets/plannings.scss */
+/* line 452, app/assets/stylesheets/plannings.scss */
 #shintai-chart-div {
   margin-top: auto;
   margin-bottom: auto;
   width: 40%;
 }
 
-/* line 442, app/assets/stylesheets/plannings.scss */
+/* line 458, app/assets/stylesheets/plannings.scss */
 #shintai-stats-div {
   width: 50%;
 }
 
-/* line 446, app/assets/stylesheets/plannings.scss */
+/* line 462, app/assets/stylesheets/plannings.scss */
 .glyphicon-action-button {
   color: #85929E;
   font-size: 1.2em;
 }
 
+/* line 467, app/assets/stylesheets/plannings.scss */
+.colibri-toggle-switch {
+  display: flex;
+  padding: 0px !important;
+  margin: 0px !important;
+  height: 40px;
+}
+
+/* line 474, app/assets/stylesheets/plannings.scss */
+.colibri-toggle-handle {
+  padding: 0px !important;
+  height: 92%;
+  width: 7px;
+  margin: -2px 1px 1px 1px;
+}
+
+/* line 481, app/assets/stylesheets/plannings.scss */
+.colibri-handle-left {
+  border-radius: 4px 2px 2px 4px !important;
+}
+
+/* line 485, app/assets/stylesheets/plannings.scss */
+.colibri-handle-right {
+  border-radius: 2px 4px 4px 2px !important;
+}
+
+/* line 489, app/assets/stylesheets/plannings.scss */
+.colibri-toggle-text-left {
+  margin: 6px 12px 6px 18px;
+}
+
+/* line 493, app/assets/stylesheets/plannings.scss */
+.colibri-toggle-text-right {
+  margin: 6px 18px 6px 12px;
+}
+
 @media print {
-  /* line 452, app/assets/stylesheets/plannings.scss */
+  /* line 498, app/assets/stylesheets/plannings.scss */
   #index-container {
     width: 95%;
   }
-  /* line 456, app/assets/stylesheets/plannings.scss */
+  /* line 502, app/assets/stylesheets/plannings.scss */
   #index-table-container {
     margin: 0px;
   }
 }
 
 @media screen and (orientation: portrait) {
-  /* line 464, app/assets/stylesheets/plannings.scss */
+  /* line 510, app/assets/stylesheets/plannings.scss */
   div .fc-scroller {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 469, app/assets/stylesheets/plannings.scss */
+  /* line 515, app/assets/stylesheets/plannings.scss */
   #detail-planning-container, #detail-container, #planning-container {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 474, app/assets/stylesheets/plannings.scss */
+  /* line 520, app/assets/stylesheets/plannings.scss */
   #colibri-batch-action-button, #colibri-batch-master-action-button {
     height: 90px;
     width: 90px;
     border-radius: 90px;
   }
-  /* line 480, app/assets/stylesheets/plannings.scss */
+  /* line 526, app/assets/stylesheets/plannings.scss */
   span.glyphicon.glyphicon-pencil.batch-action-pencil {
     line-height: 74px;
     font-size: 1.7em;
@@ -1538,10 +1580,6 @@ p.master-reflect-option {
 #recurring_appointment_nurse_id_chosen, #recurring_appointment_patient_id_chosen {
   width: 130px !important;
 }
-/* line 6, app/assets/stylesheets/recurring_unavailabilities.scss */
-.appointment-delete-occurrence:hover {
-  cursor: pointer;
-}
 /* line 1, app/assets/stylesheets/scaffolds.scss */
 body {
   background-color: #fff;
@@ -1642,15 +1680,6 @@ label {
 /* line 6, app/assets/stylesheets/scan.scss */
 .new-scan {
   margin-bottom: 7px;
-}
-/* line 5, app/assets/stylesheets/unavailabilities.scss */
-#unavailability_patient_id_chosen {
-  width: 150px !important;
-}
-
-/* line 9, app/assets/stylesheets/unavailabilities.scss */
-#unavailability_nurse_id_chosen {
-  width: 150px !important;
 }
 /* line 6, app/assets/stylesheets/users.scss */
 .switch {
@@ -4336,35 +4365,48 @@ This file is generated by `grunt build`, do not edit it by hand.
 }
 
 /* @end */
-/*! ========================================================================
- * Bootstrap Toggle: bootstrap-toggle.css v2.2.0
- * http://www.bootstraptoggle.com
- * ========================================================================
- * Copyright 2014 Min Hur, The New York Times Company
- * Licensed under MIT
- * ======================================================================== */
+/*\
+|*| ========================================================================
+|*| Bootstrap Toggle: bootstrap4-toggle.css v3.4.0
+|*| https://gitbrent.github.io/bootstrap-toggle/
+|*| ========================================================================
+|*| Copyright 2018-2019 Brent Ely
+|*| Licensed under MIT
+|*| ========================================================================
+\*/
 
-.checkbox label .toggle,.checkbox-inline .toggle{margin-left:-20px;margin-right:5px}
+.btn-group-xs>.btn,.btn-xs{padding:.35rem .4rem .25rem;font-size:.875rem;line-height:.5;border-radius:.2rem}
+.checkbox label .toggle,.checkbox-inline .toggle{margin-left:-1.25rem;margin-right:.35rem}
 .toggle{position:relative;overflow:hidden}
+.toggle.btn.btn-light,.toggle.btn.btn-outline-light{border-color:rgba(0,0,0,.15)}
 .toggle input[type=checkbox]{display:none}
 .toggle-group{position:absolute;width:200%;top:0;bottom:0;left:0;transition:left .35s;-webkit-transition:left .35s;-moz-user-select:none;-webkit-user-select:none}
 .toggle.off .toggle-group{left:-100%}
 .toggle-on{position:absolute;top:0;bottom:0;left:0;right:50%;margin:0;border:0;border-radius:0}
-.toggle-off{position:absolute;top:0;bottom:0;left:50%;right:0;margin:0;border:0;border-radius:0}
-.toggle-handle{position:relative;margin:0 auto;padding-top:0;padding-bottom:0;height:100%;width:0;border-width:0 1px}
-.toggle.btn{min-width:59px;min-height:34px}
-.toggle-on.btn{padding-right:24px}
-.toggle-off.btn{padding-left:24px}
-.toggle.btn-lg{min-width:79px;min-height:45px}
-.toggle-on.btn-lg{padding-right:31px}
-.toggle-off.btn-lg{padding-left:31px}
-.toggle-handle.btn-lg{width:40px}
-.toggle.btn-sm{min-width:50px;min-height:30px}
-.toggle-on.btn-sm{padding-right:20px}
-.toggle-off.btn-sm{padding-left:20px}
-.toggle.btn-xs{min-width:35px;min-height:22px}
-.toggle-on.btn-xs{padding-right:12px}
-.toggle-off.btn-xs{padding-left:12px}
+.toggle-off{position:absolute;top:0;bottom:0;left:50%;right:0;margin:0;border:0;border-radius:0;box-shadow:none}
+.toggle-handle{position:relative;margin:0 auto;padding-top:0;padding-bottom:0;height:100%;width:0;border-width:0 1px;background-color:#fff}
+.toggle.btn-outline-primary .toggle-handle{background-color:var(--primary);border-color:var(--primary)}
+.toggle.btn-outline-secondary .toggle-handle{background-color:var(--secondary);border-color:var(--secondary)}
+.toggle.btn-outline-success .toggle-handle{background-color:var(--success);border-color:var(--success)}
+.toggle.btn-outline-danger .toggle-handle{background-color:var(--danger);border-color:var(--danger)}
+.toggle.btn-outline-warning .toggle-handle{background-color:var(--warning);border-color:var(--warning)}
+.toggle.btn-outline-info .toggle-handle{background-color:var(--info);border-color:var(--info)}
+.toggle.btn-outline-light .toggle-handle{background-color:var(--light);border-color:var(--light)}
+.toggle.btn-outline-dark .toggle-handle{background-color:var(--dark);border-color:var(--dark)}
+.toggle[class*=btn-outline]:hover .toggle-handle{background-color:var(--light);opacity:.5}
+.toggle.btn{min-width:3.7rem;min-height:2.15rem}
+.toggle-on.btn{padding-right:1.5rem}
+.toggle-off.btn{padding-left:1.5rem}
+.toggle.btn-lg{min-width:5rem;min-height:2.815rem}
+.toggle-on.btn-lg{padding-right:2rem}
+.toggle-off.btn-lg{padding-left:2rem}
+.toggle-handle.btn-lg{width:2.5rem}
+.toggle.btn-sm{min-width:3.125rem;min-height:1.938rem}
+.toggle-on.btn-sm{padding-right:1rem}
+.toggle-off.btn-sm{padding-left:1rem}
+.toggle.btn-xs{min-width:2.19rem;min-height:1.375rem}
+.toggle-on.btn-xs{padding-right:.8rem}
+.toggle-off.btn-xs{padding-left:.8rem}
 /*! jQuery UI - v1.12.1 - 2018-08-19
 * http://jqueryui.com
 * Includes: draggable.css, core.css, resizable.css, selectable.css, sortable.css, accordion.css, autocomplete.css, menu.css, button.css, controlgroup.css, checkboxradio.css, datepicker.css, dialog.css, progressbar.css, selectmenu.css, slider.css, spinner.css, tabs.css, tooltip.css, theme.css
@@ -19912,37 +19954,22 @@ body {
 }
 
 /* line 69, app/assets/stylesheets/application.css.scss */
-.glyphicon.glyphicon-cog {
-  font-size: 25px;
+.glyphicon.glyphicon-cog:hover, .glyphicon.glyphicon-home:hover, .glyphicon.glyphicon-calendar:hover {
+  color: white !important;
 }
 
 /* line 73, app/assets/stylesheets/application.css.scss */
-.glyphicon.glyphicon-cog:hover {
-  color: white !important;
-}
-
-/* line 77, app/assets/stylesheets/application.css.scss */
-.glyphicon.glyphicon-home {
-  font-size: 24px;
-}
-
-/* line 81, app/assets/stylesheets/application.css.scss */
-.glyphicon.glyphicon-home:hover {
-  color: white !important;
-}
-
-/* line 85, app/assets/stylesheets/application.css.scss */
 #brand-container {
   display: flex;
 }
 
-/* line 89, app/assets/stylesheets/application.css.scss */
+/* line 77, app/assets/stylesheets/application.css.scss */
 #logo {
   margin-left: 16px;
   margin-right: 10px;
 }
 
-/* line 94, app/assets/stylesheets/application.css.scss */
+/* line 82, app/assets/stylesheets/application.css.scss */
 #brand {
   font-size: 1.2em;
   color: white;
@@ -19951,7 +19978,7 @@ body {
   margin-bottom: 0px;
 }
 
-/* line 102, app/assets/stylesheets/application.css.scss */
+/* line 90, app/assets/stylesheets/application.css.scss */
 #colibri-scheduler-nav {
   position: absolute;
   top: 0;
@@ -19963,7 +19990,7 @@ body {
   z-index: 2;
 }
 
-/* line 113, app/assets/stylesheets/application.css.scss */
+/* line 101, app/assets/stylesheets/application.css.scss */
 a.colibri-nav-link {
   display: block;
   color: white;
@@ -19973,12 +20000,12 @@ a.colibri-nav-link {
   font-size: 1.2em;
 }
 
-/* line 122, app/assets/stylesheets/application.css.scss */
+/* line 110, app/assets/stylesheets/application.css.scss */
 .colibri-nav-username {
   margin-left: 10px;
 }
 
-/* line 126, app/assets/stylesheets/application.css.scss */
+/* line 114, app/assets/stylesheets/application.css.scss */
 p.colibri-nav-link {
   display: block;
   color: white;
@@ -19989,18 +20016,18 @@ p.colibri-nav-link {
   margin-bottom: 0px;
 }
 
-/* line 136, app/assets/stylesheets/application.css.scss */
+/* line 124, app/assets/stylesheets/application.css.scss */
 .colibri-nav-link:hover {
   cursor: pointer;
   color: black !important;
 }
 
-/* line 141, app/assets/stylesheets/application.css.scss */
+/* line 129, app/assets/stylesheets/application.css.scss */
 #account-dropdown-icon {
   margin-left: 3px;
 }
 
-/* line 145, app/assets/stylesheets/application.css.scss */
+/* line 133, app/assets/stylesheets/application.css.scss */
 .alert {
   position: absolute !important;
   top: 46px !important;
@@ -20009,42 +20036,42 @@ p.colibri-nav-link {
   text-align: center;
 }
 
-/* line 153, app/assets/stylesheets/application.css.scss */
+/* line 141, app/assets/stylesheets/application.css.scss */
 .alert.alert-notice {
   background-color: #8DE698 !important;
   color: #106F1C !important;
   border: none;
 }
 
-/* line 159, app/assets/stylesheets/application.css.scss */
+/* line 147, app/assets/stylesheets/application.css.scss */
 .alert.alert-alert {
   background-color: #FFE878 !important;
   border: none;
 }
 
-/* line 166, app/assets/stylesheets/application.css.scss */
+/* line 154, app/assets/stylesheets/application.css.scss */
 .main-page {
   padding-top: 46px;
 }
 
-/* line 170, app/assets/stylesheets/application.css.scss */
+/* line 158, app/assets/stylesheets/application.css.scss */
 .show {
   display: block;
 }
 
-/* line 174, app/assets/stylesheets/application.css.scss */
+/* line 162, app/assets/stylesheets/application.css.scss */
 a {
   color: inherit;
 }
 
-/* line 178, app/assets/stylesheets/application.css.scss */
+/* line 166, app/assets/stylesheets/application.css.scss */
 a:hover {
   background-color: transparent;
   color: inherit;
   text-decoration: none;
 }
 
-/* line 184, app/assets/stylesheets/application.css.scss */
+/* line 172, app/assets/stylesheets/application.css.scss */
 ul {
   list-style-type: none;
   margin: 0;
@@ -20052,12 +20079,12 @@ ul {
   overflow: hidden;
 }
 
-/* line 191, app/assets/stylesheets/application.css.scss */
+/* line 179, app/assets/stylesheets/application.css.scss */
 li {
   float: right;
 }
 
-/* line 195, app/assets/stylesheets/application.css.scss */
+/* line 183, app/assets/stylesheets/application.css.scss */
 input:focus,
 select:focus,
 textarea:focus,
@@ -20065,7 +20092,7 @@ button:focus {
   outline: none;
 }
 
-/* line 202, app/assets/stylesheets/application.css.scss */
+/* line 190, app/assets/stylesheets/application.css.scss */
 #account-settings-dropdown {
   position: absolute;
   top: 46px;
@@ -20075,19 +20102,19 @@ button:focus {
   background-color: #354553;
 }
 
-/* line 213, app/assets/stylesheets/application.css.scss */
+/* line 201, app/assets/stylesheets/application.css.scss */
 .account-settings-li {
   padding: 7px 10px;
 }
 
-/* line 217, app/assets/stylesheets/application.css.scss */
+/* line 205, app/assets/stylesheets/application.css.scss */
 a.account-settings-a {
   color: white;
   display: block;
   width: 100%;
 }
 
-/* line 223, app/assets/stylesheets/application.css.scss */
+/* line 211, app/assets/stylesheets/application.css.scss */
 #logout-li {
   width: 100%;
   color: white;
@@ -20095,27 +20122,27 @@ a.account-settings-a {
   text-align: left;
 }
 
-/* line 230, app/assets/stylesheets/application.css.scss */
+/* line 218, app/assets/stylesheets/application.css.scss */
 #logout-li:hover {
   cursor: pointer;
   background-color: #4f5b66;
 }
 
-/* line 235, app/assets/stylesheets/application.css.scss */
+/* line 223, app/assets/stylesheets/application.css.scss */
 li.account-settings-li {
   width: 100%;
   color: white;
   text-align: left;
 }
 
-/* line 241, app/assets/stylesheets/application.css.scss */
+/* line 229, app/assets/stylesheets/application.css.scss */
 li.account-settings-li:hover {
   cursor: pointer;
   background-color: #4f5b66;
   width: 100%;
 }
 
-/* line 247, app/assets/stylesheets/application.css.scss */
+/* line 235, app/assets/stylesheets/application.css.scss */
 #tab-panel {
   padding-top: 20px;
   margin-left: auto;
@@ -20125,7 +20152,7 @@ li.account-settings-li:hover {
   display: table;
 }
 
-/* line 256, app/assets/stylesheets/application.css.scss */
+/* line 244, app/assets/stylesheets/application.css.scss */
 ul.nav.nav-tabs {
   list-style: none;
   text-align: center;
@@ -20133,7 +20160,7 @@ ul.nav.nav-tabs {
   padding-top: 5px;
 }
 
-/* line 263, app/assets/stylesheets/application.css.scss */
+/* line 251, app/assets/stylesheets/application.css.scss */
 .colibri-app-menu {
   font-size: 1.6em;
   display: inline;
@@ -20145,163 +20172,163 @@ ul.nav.nav-tabs {
   padding-bottom: 8px;
 }
 
-/* line 274, app/assets/stylesheets/application.css.scss */
+/* line 262, app/assets/stylesheets/application.css.scss */
 li.colibri-app-menu a.nav-url {
   font-color: #4f5b66;
 }
 
-/* line 278, app/assets/stylesheets/application.css.scss */
+/* line 266, app/assets/stylesheets/application.css.scss */
 .colibri-app-menu:hover {
   cursor: pointer;
   background-color: transparent;
   border-bottom: 4px solid #ddd;
 }
 
-/* line 284, app/assets/stylesheets/application.css.scss */
+/* line 272, app/assets/stylesheets/application.css.scss */
 .nav-selected {
   border-bottom: 4px solid #5bc0de;
   font-color: #000;
 }
 
-/* line 289, app/assets/stylesheets/application.css.scss */
+/* line 277, app/assets/stylesheets/application.css.scss */
 .text-white {
   font-color: white;
 }
 
-/* line 293, app/assets/stylesheets/application.css.scss */
+/* line 281, app/assets/stylesheets/application.css.scss */
 .hide {
   display: none;
 }
 
-/* line 297, app/assets/stylesheets/application.css.scss */
+/* line 285, app/assets/stylesheets/application.css.scss */
 .btn-margin-top {
   margin-top: 10px;
 }
 
-/* line 301, app/assets/stylesheets/application.css.scss */
+/* line 289, app/assets/stylesheets/application.css.scss */
 .date-hidden {
   display: none;
 }
 
-/* line 305, app/assets/stylesheets/application.css.scss */
+/* line 293, app/assets/stylesheets/application.css.scss */
 #planning-container {
   color: #4F4F4F;
 }
 
-/* line 309, app/assets/stylesheets/application.css.scss */
+/* line 297, app/assets/stylesheets/application.css.scss */
 .fc-bgevent {
   background-color: #D46A6A !important;
 }
 
-/* line 313, app/assets/stylesheets/application.css.scss */
+/* line 301, app/assets/stylesheets/application.css.scss */
 .fc-today {
   background-color: white !important;
 }
 
-/* line 317, app/assets/stylesheets/application.css.scss */
+/* line 305, app/assets/stylesheets/application.css.scss */
 .fc-resource-cell {
   font-weight: normal !important;
 }
 
-/* line 321, app/assets/stylesheets/application.css.scss */
+/* line 309, app/assets/stylesheets/application.css.scss */
 .fc-time {
   font-size: 0.9em !important;
 }
 
-/* line 325, app/assets/stylesheets/application.css.scss */
+/* line 313, app/assets/stylesheets/application.css.scss */
 .fc-title {
   font-size: 1.7em !important;
 }
 
-/* line 329, app/assets/stylesheets/application.css.scss */
+/* line 317, app/assets/stylesheets/application.css.scss */
 .fc-header-toolbar {
   margin-bottom: 4px !important;
 }
 
-/* line 333, app/assets/stylesheets/application.css.scss */
+/* line 321, app/assets/stylesheets/application.css.scss */
 .fc-sat {
   background-color: #E9EEFA;
 }
 
-/* line 337, app/assets/stylesheets/application.css.scss */
+/* line 325, app/assets/stylesheets/application.css.scss */
 .fc-sun {
   background-color: #FFE8E8;
 }
 
-/* line 341, app/assets/stylesheets/application.css.scss */
+/* line 329, app/assets/stylesheets/application.css.scss */
 tr.clickable-row:hover {
   cursor: pointer;
 }
 
-/* line 345, app/assets/stylesheets/application.css.scss */
+/* line 333, app/assets/stylesheets/application.css.scss */
 tr.nurse-clickable-row:hover {
   cursor: pointer;
   min-height: 35px;
 }
 
-/* line 350, app/assets/stylesheets/application.css.scss */
+/* line 338, app/assets/stylesheets/application.css.scss */
 tr.patient-clickable-row:hover {
   cursor: pointer;
 }
 
-/* line 355, app/assets/stylesheets/application.css.scss */
+/* line 343, app/assets/stylesheets/application.css.scss */
 .appointment-occurrence {
   margin-bottom: 5px !important;
   display: flex !important;
 }
 
-/* line 360, app/assets/stylesheets/application.css.scss */
+/* line 348, app/assets/stylesheets/application.css.scss */
 .appointment-occurrence-date {
   font-weight: bold;
 }
 
-/* line 364, app/assets/stylesheets/application.css.scss */
+/* line 352, app/assets/stylesheets/application.css.scss */
 .fc-scroller {
   height: 57vh !important;
 }
 
-/* line 369, app/assets/stylesheets/application.css.scss */
+/* line 357, app/assets/stylesheets/application.css.scss */
 th {
   font-weight: normal;
 }
 
-/* line 373, app/assets/stylesheets/application.css.scss */
+/* line 361, app/assets/stylesheets/application.css.scss */
 .table-important-fields {
   font-weight: bold;
 }
 
-/* line 377, app/assets/stylesheets/application.css.scss */
+/* line 365, app/assets/stylesheets/application.css.scss */
 .print-only {
   display: none;
 }
 
-/* line 381, app/assets/stylesheets/application.css.scss */
+/* line 369, app/assets/stylesheets/application.css.scss */
 .small-side-margins {
   margin-left: 5px;
   margin-right: 5px;
 }
 
-/* line 386, app/assets/stylesheets/application.css.scss */
+/* line 374, app/assets/stylesheets/application.css.scss */
 .colibri-small-title {
   font-size: 1.8em;
   color: #4f5b66;
 }
 
-/* line 391, app/assets/stylesheets/application.css.scss */
+/* line 379, app/assets/stylesheets/application.css.scss */
 .colibri-xs-title {
   font-size: 1.25em;
   color: black;
   padding-bottom: 0px;
 }
 
-/* line 397, app/assets/stylesheets/application.css.scss */
+/* line 385, app/assets/stylesheets/application.css.scss */
 .appointment-section-title {
   font-size: 1.4em;
   color: #aaa;
   margin-bottom: 20px;
 }
 
-/* line 403, app/assets/stylesheets/application.css.scss */
+/* line 391, app/assets/stylesheets/application.css.scss */
 .light-blue-background {
   background: #F7F9FE;
   margin: 1px;
@@ -20309,103 +20336,117 @@ th {
   border-bottom-right-radius: 2px;
 }
 
-/* line 410, app/assets/stylesheets/application.css.scss */
+/* line 398, app/assets/stylesheets/application.css.scss */
 .required-field {
   color: red;
 }
 
-/* line 414, app/assets/stylesheets/application.css.scss */
+/* line 402, app/assets/stylesheets/application.css.scss */
 .btn-mid-light {
   background-color: #e4e4e4;
 }
 
-/* line 418, app/assets/stylesheets/application.css.scss */
+/* line 406, app/assets/stylesheets/application.css.scss */
 .btn-mid-light:hover {
   background-color: #C5C5C5;
 }
 
-/* line 422, app/assets/stylesheets/application.css.scss */
+/* line 410, app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
 
-/* line 426, app/assets/stylesheets/application.css.scss */
+/* line 414, app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar {
   width: 8px;
 }
 
-/* line 430, app/assets/stylesheets/application.css.scss */
+/* line 418, app/assets/stylesheets/application.css.scss */
 .scrollbar-custom::-webkit-scrollbar-thumb {
   border-radius: 7px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
-/* line 435, app/assets/stylesheets/application.css.scss */
+/* line 423, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-dark::-webkit-scrollbar-track {
   background-color: #606E7C;
 }
 
-/* line 439, app/assets/stylesheets/application.css.scss */
+/* line 427, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-dark::-webkit-scrollbar {
   background-color: #606E7C;
 }
 
-/* line 443, app/assets/stylesheets/application.css.scss */
+/* line 431, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-dark::-webkit-scrollbar-thumb {
   background-color: #b1b1b1;
 }
 
-/* line 447, app/assets/stylesheets/application.css.scss */
+/* line 435, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-light::-webkit-scrollbar-track {
   background-color: white;
 }
 
-/* line 451, app/assets/stylesheets/application.css.scss */
+/* line 439, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-light::-webkit-scrollbar {
   background-color: white;
 }
 
-/* line 455, app/assets/stylesheets/application.css.scss */
+/* line 443, app/assets/stylesheets/application.css.scss */
 .colibri-scrollbar-light::-webkit-scrollbar-thumb {
   background-color: #DEDDDD;
 }
 
-/* line 459, app/assets/stylesheets/application.css.scss */
+/* line 447, app/assets/stylesheets/application.css.scss */
 .fc-event {
   cursor: pointer;
 }
 
-/* line 463, app/assets/stylesheets/application.css.scss */
+/* line 451, app/assets/stylesheets/application.css.scss */
 .thick-calendar-line {
   border-top: 1.33px solid #BFC4C9;
 }
 
-/* line 467, app/assets/stylesheets/application.css.scss */
+/* line 455, app/assets/stylesheets/application.css.scss */
 .btn-warning-danger {
   background-color: #FF7007 !important;
   color: white;
   border-color: #FF7007 !important;
 }
 
-/* line 473, app/assets/stylesheets/application.css.scss */
+/* line 461, app/assets/stylesheets/application.css.scss */
 .btn-warning-danger:hover {
   background-color: #C95500 !important;
   color: white;
   border-color: #9E4300 !important;
 }
 
-/* line 479, app/assets/stylesheets/application.css.scss */
+/* line 467, app/assets/stylesheets/application.css.scss */
 .btn-colibri-light-gray {
   background-color: #85929E !important;
   border-color: #85929E !important;
   color: white;
 }
 
-/* line 485, app/assets/stylesheets/application.css.scss */
+/* line 473, app/assets/stylesheets/application.css.scss */
 .btn-colibri-light-gray:hover {
   background-color: #6C757D !important;
   border-color: #6C757D !important;
+  color: white;
+}
+
+/* line 479, app/assets/stylesheets/application.css.scss */
+.btn-colibri-light-red {
+  background-color: #fc7181 !important;
+  border-color: #fc7181 !important;
+  color: white;
+}
+
+/* line 485, app/assets/stylesheets/application.css.scss */
+.btn-colibri-light-red:hover {
+  background-color: #f15365 !important;
+  border-color: #f15365 !important;
   color: white;
 }
 

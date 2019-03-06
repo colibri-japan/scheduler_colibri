@@ -87512,6 +87512,28 @@ module.exports = function(Chart) {
         firstDay: 1
       }
     });
+    $('#toggle-switch-patients').click(function() {
+      $(this).hide();
+      $('#toggle-switch-nurses').show();
+      $('#patients-resource').hide();
+      $('#nurses-resource').show();
+    });
+    $('#toggle-switch-nurses').click(function() {
+      $(this).hide();
+      $('#toggle-switch-patients').show();
+      $('#patients-resource').show();
+      $('#nurses-resource').hide();
+    });
+    $('#toggle-switch-appointments').click(function() {
+      $(this).hide();
+      $('#toggle-switch-private-events').show();
+      window.bootstrapToggleUrl = window.createPrivateEventURL;
+    });
+    $('#toggle-switch-private-events').click(function() {
+      $(this).hide();
+      $('#toggle-switch-appointments').show();
+      window.bootstrapToggleUrl = window.createRecurringAppointmentURL;
+    });
   });
 
 }).call(this);
@@ -87588,10 +87610,6 @@ module.exports = function(Chart) {
 
 }).call(this);
 (function() {
-
-
-}).call(this);
-(function() {
   $(document).on('turbolinks:load', function() {
     $('.user-clickable-row').click(function() {
       $.getScript($(this).data('url'));
@@ -87640,22 +87658,22 @@ var myDefaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList;
 
 myDefaultWhiteList.a = ['data-remote', 'href']
 
-let setUnavailabilityTime = (start, end) => {
-  $('#unavailability_starts_at_1i').val(moment(start).format('YYYY'));
-  $('#unavailability_starts_at_2i').val(moment(start).format('M'));
-  $('#unavailability_starts_at_3i').val(moment(start).format('D'));
-  $('#unavailability_starts_at_4i').val(moment(start).format('HH'));
-  $('#unavailability_starts_at_5i').val(moment(start).format('mm'));
-  $('#unavailability_ends_at_1i').val(moment(end).format('YYYY'));
-  $('#unavailability_ends_at_2i').val(moment(end).format('M'));
-  $('#unavailability_ends_at_3i').val(moment(end).format('D'));
-  $('#unavailability_ends_at_4i').val(moment(end).format('HH'));
-  $('#unavailability_ends_at_5i').val(moment(end).format('mm'));
+let setPrivateEventTime = (start, end) => {
+  $('#private_event_starts_at_1i').val(moment(start).format('YYYY'));
+  $('#private_event_starts_at_2i').val(moment(start).format('M'));
+  $('#private_event_starts_at_3i').val(moment(start).format('D'));
+  $('#private_event_starts_at_4i').val(moment(start).format('HH'));
+  $('#private_event_starts_at_5i').val(moment(start).format('mm'));
+  $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
+  $('#private_event_ends_at_2i').val(moment(end).format('M'));
+  $('#private_event_ends_at_3i').val(moment(end).format('D'));
+  $('#private_event_ends_at_4i').val(moment(end).format('HH'));
+  $('#private_event_ends_at_5i').val(moment(end).format('mm'));
   if (window.nurseId) {
-    $("#unavailability_nurse_id").val(window.nurseId);
+    $("#private_event_nurse_id").val(window.nurseId);
   }
   if (window.patientId) {
-    $("#unavailability_patient_id").val(window.patientId);
+    $("#private_event_patient_id").val(window.patientId);
   }
 }
 
@@ -87724,14 +87742,14 @@ initialize_nurse_calendar = function(){
       selectHelper: false,
       editable: true,
       eventColor: '#7AD5DE',
-      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true},{url: window.unavailabilitiesUrl + '&master=false', cache: true}],
+      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true},{url: window.privateEventsUrl + '&master=false', cache: true}],
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);
-          setUnavailabilityTime(start, end);
+          setPrivateEventTime(start, end);
           recurringAppointmentSelectizeNursePatient();
-          unavailabilitySelectizeNursePatient();
+          privateEventSelectizeNursePatient();
         });
 
         nurse_calendar.fullCalendar('unselect');
@@ -87773,7 +87791,7 @@ initialize_nurse_calendar = function(){
           container: 'body'
         });
         element.find('.fc-title').text(function(i, t){
-          if (!event.unavailability) {
+          if (!event.private_event) {
             return event.patient.name;
           } else {
             let patient_name = event.patient.name ? ': ' + event.patient.name + '様' : ''
@@ -87813,9 +87831,9 @@ initialize_nurse_calendar = function(){
           buttons: {
             'セーブする': function () {
               let ajaxData;
-              if (event.unavailability) {
+              if (event.private_event) {
                 ajaxData = {
-                  unavailability: {
+                  private_event: {
                     starts_at: event.start.format(),
                     ends_at: event.end.format(),
                   }
@@ -87911,15 +87929,15 @@ initialize_patient_calendar = function(){
       selectable: true,
       selectHelper: false,
       editable: true,
-      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true}, {url: window.unavailabilitiesUrl + '&master=false', cache: true}],
+      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true}, {url: window.privateEventsUrl + '&master=false', cache: true}],
 
 
       select: function (start, end, jsEvent, view, resource) {
         $.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);     	         
-          setUnavailabilityTime(start, end);
+          setPrivateEventTime(start, end);
           recurringAppointmentSelectizeNursePatient();
-          unavailabilitySelectizeNursePatient();
+          privateEventSelectizeNursePatient();
         });
         patient_calendar.fullCalendar('unselect');
       },
@@ -87941,7 +87959,7 @@ initialize_patient_calendar = function(){
           container: 'body'
         });
         element.find('.fc-title').text(function(i, t){
-          if (!event.unavailability) {
+          if (!event.private_event) {
             return event.nurse.name;
           } else {
             let nurse_name = event.nurse.name ? ': ' + event.nurse.name : ''
@@ -87977,9 +87995,9 @@ initialize_patient_calendar = function(){
           buttons: {
             'セーブする': function(){
               let ajaxData;
-              if (event.unavailability) {
+              if (event.private_event) {
                 ajaxData = {
-                  unavailability: {
+                  private_event: {
                     starts_at: event.start.format(),
                     ends_at: event.end.format(), 
                   }
@@ -88127,18 +88145,16 @@ initialize_master_calendar = function() {
 
         if (view.name != 'agendaDay') {
             element.find('.fc-title').text(function(i,t){
-              if ($('#toggle-patients-nurses').is(':checked')) {
+              if (window.patientId) {
                 return event.nurse.name;
               } else {
                 return event.patient.name;
               }
             });
-
-
             return  !event.edit_requested && event.master && event.displayable ;
-          } else {
+        } else {
             return !event.edit_requested && event.master && event.displayable ;
-          }
+        }
       },
 
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
@@ -88200,7 +88216,7 @@ initialize_master_calendar = function() {
           setRecurringAppointmentTime(start, end, view);
           setHiddenRecurringAppointmentFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
-          unavailabilitySelectizeNursePatient();
+          privateEventSelectizeNursePatient();
         });
 
         master_calendar.fullCalendar('unselect');
@@ -88265,7 +88281,7 @@ initialize_calendar = function() {
           resourceAreaWidth: '10%',
           displayEventEnd: true,
           resourceColumns: [{
-            labelText: '従業員',
+            labelText: window.resourceLabel,
             field: 'title'
           }]
         },
@@ -88301,7 +88317,7 @@ initialize_calendar = function() {
         cache: true
       }, 
 
-      eventSources: [ {url: window.appointmentsURL, cache: true}, {url: window.unavailabilitiesUrl, cache: true}],
+      eventSources: [ {url: window.appointmentsURL, cache: true}, {url: window.privateEventsUrl, cache: true}],
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;
@@ -88340,7 +88356,7 @@ initialize_calendar = function() {
 
         if (view.name == 'agendaDay') {
           element.find('.fc-title').text(function(i, t){
-            if (!event.unavailability) {
+            if (!event.private_event) {
               if ($('#day-view-options-input').is(':checked')) {
                 return patient_name;
               } else {
@@ -88352,69 +88368,27 @@ initialize_calendar = function() {
           });
         } else if (view.name == 'timelineWeek') {
           element.find('.fc-title').text(function(i,t){
-            if (!event.unavailability) {
-              return patient_name;
+            if (window.resourceType == 'nurse') {
+              if (!event.private_event) {
+                return patient_name;
+              } else {
+                return event.service_type + ': ' + patient_name;
+              }
             } else {
-              return event.service_type + ': ' + patient_name;
+              if (!event.private_event) {
+                return nurse_name;
+              } else {
+                return event.service_type + ': ' + nurse_name;
+              }
             }
           })
         } else {
-          if (event.unavailability) {
+          if (event.private_event) {
             element.find('.fc-title').text(function (i, t) {
               return event.service_type;
             })
           }
         }
-
-
-        var patientFilterArray = $('#patient-filter-zentai_').val();
-        var nurseFilterArray = $('#nurse-filter-zentai_').val();
-        var editRequestFilter = $('#edit-request-filter').prop('checked');
-        if (patientFilterArray === null) {
-          patientFilterArray = ['']
-        };
-
-        if (nurseFilterArray === null) {
-          nurseFilterArray = ['']
-        };
-
-        var filterPatient = function(){
-          for (var i=0; i < patientFilterArray.length; i++) {
-            if (event.patient_id) {
-              if (['', event.patient_id.toString()].indexOf(patientFilterArray[i]) >= 0) {
-                return true
-              }
-            } else {
-              if (event.unavailability) {
-                return true
-              }
-            }
-          }
-          return false
-        }
-        var filterNurse = function() {
-          for (var i=0; i< nurseFilterArray.length; i++) {
-            if (event.nurse_id) {
-              if (['', event.nurse_id.toString()].indexOf(nurseFilterArray[i]) >= 0) {
-                return true
-              }
-            } else {
-              if (event.unavailability) {
-                return true
-              }
-            }
-          }
-          return false
-        } 
-        var filterEditRequested = function(){
-          if (editRequestFilter == false) {
-            return event.edit_requested;
-          } else {
-            return true;
-          }
-        }
-
-        return filterPatient() && filterNurse() && filterEditRequested() ;
       },
 
 
@@ -88423,18 +88397,18 @@ initialize_calendar = function() {
       select: function(start, end, jsEvent, view, resource) {
       	$.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);
-          setUnavailabilityTime(start, end);
+          setPrivateEventTime(start, end);
           setHiddenRecurringAppointmentFields(start, end);
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
-            $('#unavailability_nurse_id').val(resource.id);
+            $('#private_event_nurse_id').val(resource.id);
           } else if (view.name == 'timelineWeek') {
             $('#recurring_appointment_nurse_id').val(resource.id);
-            $('#unavailability_nurse_id').val(resource.id);
+            $('#private_event_nurse_id').val(resource.id);
           }
           recurringAppointmentSelectizeNursePatient();
-          unavailabilitySelectizeNursePatient()
+          privateEventSelectizeNursePatient()
         });
 
         calendar.fullCalendar('unselect');
@@ -88482,9 +88456,9 @@ initialize_calendar = function() {
           buttons: {
             'セーブする': function () {
               let ajaxData;
-              if (event.unavailability) {
+              if (event.private_event) {
                 ajaxData = {
-                  unavailability: {
+                  private_event: {
                     starts_at: event.start.format(),
                     ends_at: event.end.format(),
                     patient_id: newPatientId,
@@ -88579,9 +88553,9 @@ initialize_calendar = function() {
 };
 
 
-let unavailabilitySelectizeNursePatient = () => {
-  $('#unavailability_nurse_id').selectize()
-  $('#unavailability_patient_id').selectize()
+let privateEventSelectizeNursePatient = () => {
+  $('#private_event_nurse_id').selectize()
+  $('#private_event_patient_id').selectize()
 }
 
 let editAfterDate = () => {
@@ -88640,7 +88614,7 @@ let appointmentComments = () => {
   var clientEvents = calendar.fullCalendar('clientEvents');
 
   clientEvents.forEach(event => {
-    if (event.description && !event.unavailability) {
+    if (event.description && !event.private_event) {
       var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse.name + ' 利用者：' + event.patient.name + ' ' + event.description;
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }
@@ -88951,26 +88925,6 @@ let nurseMasterToSchedule = () => {
       }
     }
   })
-}
-
-let toggleDayResources = () => {
-  if ($('#day-view-options-input').is(':checked')) {
-    window.resourceUrl = window.corporationNursesUrl;
-    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false');
-    $('.calendar').fullCalendar('refetchResources');
-    $('.calendar').fullCalendar('clientEvents').forEach(function (event) {
-      event.resourceId = event.nurse_id;
-      $('.calendar').fullCalendar('updateEvent', event);
-    })
-  } else {
-    window.resourceUrl = window.corporationPatientsUrl;
-    $('.calendar').fullCalendar('option', 'resources', window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId);
-    $('.calendar').fullCalendar('refetchResources');
-    $('.calendar').fullCalendar('clientEvents').forEach(function(event){
-      event.resourceId = event.patient_id;
-      $('.calendar').fullCalendar('updateEvent', event);
-    })
-  }
 }
 
 
@@ -89378,15 +89332,6 @@ $(document).on('turbolinks:load', function(){
 
   });
 
-  $('input[type="checkbox"].toggle-service').change(function(){
-    if (window.bootstrapToggleUrl === window.createRecurringAppointmentURL) {
-      window.bootstrapToggleUrl = window.createUnavailabilityURL
-    } else {
-      window.bootstrapToggleUrl =  window.createRecurringAppointmentURL
-    }
-  });
-
-
   $('#account-settings').click(function(){
     $('#account-settings-dropdown').toggle();
   });
@@ -89395,14 +89340,11 @@ $(document).on('turbolinks:load', function(){
     window.location = $(this).data('url');
   });
 
-
   window.setTimeout(function() {
       $(".alert").fadeTo(500, 0).slideUp(500, function(){
           $(this).remove(); 
       });
   }, 4000);
-
-  
 
   $('#loader-container').hide();
 

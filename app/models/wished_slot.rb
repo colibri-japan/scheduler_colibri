@@ -11,20 +11,30 @@ class WishedSlot < ApplicationRecord
   
   validates :anchor, presence: true
   validates :frequency, presence: true
-  validates :frequency, inclusion: 0..2
+  validates :frequency, inclusion: 0..4
   validates :title, presence: true
 
-  #frequencies : 0 for weekly, 1 for biweekly, 2 for one timer
-
   def schedule
-  	@schedule ||= begin
+    @schedule ||= begin
+
+		day_of_week = anchor.wday
   		
   	schedule = IceCube::Schedule.new(now = anchor)
   		case frequency
-  		when 0
-  			schedule.add_recurrence_rule IceCube::Rule.weekly(1)
-  		when 1
-  			schedule.add_recurrence_rule IceCube::Rule.weekly(2)
+      when 0
+        #no recurrence
+      when 1
+        #weekly
+        schedule.add_recurrence_rule IceCube::Rule.weekly(1)
+      when 2
+        #every other week
+        schedule.add_recurrence_rule IceCube::Rule.weekly(2)
+      when 3
+        #monthly, first week only
+        schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week =>[1])
+      when 4
+        #monthly, last week only
+        schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week =>[-1])
       else
   		end
   		schedule

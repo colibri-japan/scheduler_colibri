@@ -2,6 +2,8 @@
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, nurse_id: @nurse.id) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
+	window.createWishedSlotUrl = "<%= j new_planning_wished_slot_url(@planning) %>"
+	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -47,8 +49,9 @@
 		          </div>
 		        </div>
 			</div>
-			<div id="activity-show-button-container" class="no-print">
-				<div class="btn btn-colibri-light-gray text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
+			<div id="planning-top-right-action-container" class="no-print">
+			  <%= render 'plannings/master_toggle_wished_slots' %>
+				<div class="btn btn-colibri-light-gray btn-sm text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
 			</div>
 		</div>
 

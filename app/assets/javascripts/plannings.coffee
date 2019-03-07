@@ -168,4 +168,16 @@ $(document).on 'turbolinks:load', ->
     window.bootstrapToggleUrl = window.createRecurringAppointmentURL
     return 
 
+  $('#toggle-switch-recurring-appointments').click ->
+    $(this).hide()
+    $('#toggle-switch-wished-slots').show()
+    window.selectActionUrl = window.createWishedSlotUrl
+    return
+
+  $('#toggle-switch-wished-slots').click -> 
+    $(this).hide()
+    $('#toggle-switch-recurring-appointments').show()
+    window.selectActionUrl = window.createRecurringAppointmentURL
+    return
+
   return

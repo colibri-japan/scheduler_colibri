@@ -593,7 +593,7 @@ initialize_master_calendar = function() {
       select: function(start, end, jsEvent, view, resource) {
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
-        $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
+        $.getScript(window.selectActionUrl + '?master=true', function() {
           setRecurringAppointmentTime(start, end, view);
           setHiddenRecurringAppointmentFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();

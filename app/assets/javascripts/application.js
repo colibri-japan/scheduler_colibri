@@ -39,6 +39,28 @@ var myDefaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList;
 
 myDefaultWhiteList.a = ['data-remote', 'href']
 
+let setWishedSlotTime = (start, end, view) => {
+  $('#wished_slot_anchor_1i').val(moment(start).format('YYYY'));
+  $('#wished_slot_anchor_2i').val(moment(start).format('M'));
+  $('#wished_slot_anchor_3i').val(moment(start).format('D'));
+  $('#wished_slot_starts_at_4i').val(moment(start).format('YYYY'));
+  $('#wished_slot_starts_at_2i').val(moment(start).format('M'));
+  $('#wished_slot_starts_at_3i').val(moment(start).format('D'));
+  $('#wished_slot_starts_at_4i').val(moment(start).format('HH'));
+  $('#wished_slot_starts_at_5i').val(moment(start).format('mm'));
+  $('#wished_slot_ends_at_1i').val(moment(end).format('YYYY'));
+  $('#wished_slot_ends_at_2i').val(moment(end).format('M'));
+  $('#wished_slot_ends_at_3i').val(moment(end).format('D'));
+  $('#wished_slot_ends_at_4i').val(moment(end).format('HH'));
+  $('#wished_slot_ends_at_5i').val(moment(end).format('mm'));
+  $('#wished_slot_end_day_1i').val(moment(end).format('YYYY'));
+  $('#wished_slot_end_day_2i').val(moment(end).format('M'));
+  $('#wished_slot_end_day_3i').val(moment(end).format('D'));
+  if (window.nurseId) {
+    $("#wished_slot_nurse_id").val(window.nurseId);
+  }
+}
+
 let setPrivateEventTime = (start, end) => {
   $('#private_event_starts_at_1i').val(moment(start).format('YYYY'));
   $('#private_event_starts_at_2i').val(moment(start).format('M'));
@@ -594,10 +616,12 @@ initialize_master_calendar = function() {
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
         $.getScript(window.selectActionUrl + '?master=true', function() {
+          setWishedSlotTime(start, end, view);
           setRecurringAppointmentTime(start, end, view);
           setHiddenRecurringAppointmentFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
+          wishedSlotsSelectize()
         });
 
         master_calendar.fullCalendar('unselect');
@@ -1332,6 +1356,10 @@ let skillsSelectize = () => {
       }
     }
   })
+}
+
+let wishedSlotsSelectize = () => {
+  $('#wished_slot_nurse_id').selectize()
 }
 
 let caveatsSelectize = () => {

@@ -15,6 +15,9 @@ class WishedSlotsController < ApplicationController
 
 	# GET /wished_slots/new
 	def new
+		set_nurses
+		
+		@wished_slot = WishedSlot.new()
 	end
 
 	# GET /wished_slots/1/edit
@@ -24,6 +27,9 @@ class WishedSlotsController < ApplicationController
 	# POST /wished_slots
 	# POST /wished_slots.json
 	def create
+		@wished_slot = WishedSlot.new(wished_slot_params)
+
+		@wished_slot.save
 	end
 
 	# PATCH/PUT /wished_slots/1
@@ -48,10 +54,14 @@ class WishedSlotsController < ApplicationController
 
 	  def set_planning
 	    @planning = Planning.find(params[:planning_id])
-	  end
+		end
+		
+    def set_nurses
+      @nurses = @corporation.nurses.all.order_by_kana
+    end
 
 	  # Never trust parameters from the scary internet, only allow the white list through.
 	  def wished_slot_params
-	    params.require(:wished_slot).permit(:title, :anchor, :description, :starts_at, :ends_at, :frequency, :nurse_id, :planning_id, :end_day)
+	    params.require(:wished_slot).permit(:title, :anchor, :rank, :description, :starts_at, :ends_at, :frequency, :nurse_id, :planning_id, :end_day)
 	  end
 end

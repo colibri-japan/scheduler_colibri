@@ -43,7 +43,7 @@ class WishedSlot < ApplicationRecord
   end
 
   def all_day_wished_slot?
-  	self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.mignight ? true : false
+  	self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
   end
 
   def wished_slot_occurrences(start_date, end_date)

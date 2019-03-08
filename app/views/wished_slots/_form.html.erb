@@ -18,17 +18,18 @@
     </div>
     <div style="width:80%">
       <div id="rank-options-container">
-        <%= form.radio_button :rank, 2, {class: "radio-inline"} %>
-        <%= label :rank_2, '希望' %>
-        <%= form.radio_button :rank, 1, {class: "radio-inline"} %>
-        <%= label :rank_1, '避けたい' %>
-        <%= form.radio_button :rank, 0, {class: "radio-inline"} %>
-        <%= label :rank_0, '不可能' %>
-      </div>
-      <div id="rank-button-container"> 
-        <div class="btn btn-colibri-light btn-sm">希望</div>
-        <div class="btn btn-colibri-light btn-sm">避けたい</div>
-        <div class="btn btn-colibri-light btn-sm">不可能</div>
+        <%= form.label :rank_2, '希望', class: 'btn btn-colibri-light btn-sm rank-button btn-colibri-light-green', id: "button_rank_2" do %>
+          <%= form.radio_button :rank, 2, {checked: 'checked', class: "radio-inline", id: "wished_slot_rank_2", style: "display:none"} %>
+          希望
+        <% end %>
+        <%= form.label :rank_1, '避けたい', class:'btn btn-colibri-light btn-sm rank-button', id: "button_rank_1" do %>
+          <%= form.radio_button :rank, 1, {class: "radio-inline", id: "wished_slot_rank_1", style: "display:none"} %>
+          避けたい
+        <% end %>
+        <%= form.label :rank_0, '不可能', class:'btn btn-colibri-light btn-sm rank-button', id: "button_rank_0" do %>
+          <%= form.radio_button :rank, 0, {class: "radio-inline", id: "wished_slot_rank_0", style: "display:none"} %>
+          不可能
+        <% end %>
       </div>
     </div>
   </div>
@@ -39,22 +40,14 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :anchor, "開始日", class: "colibri-form-label" %>
+    <%= form.label :anchor, "開始", class: "colibri-form-label" %>
     <%= form.date_select :anchor, id: :wished_slot_anchor %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :anchor, "終了日", class: "colibri-form-label" %>
-    <%= form.date_select :end_day, id: :wished_slot_anchor %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :starts_at, "開始時間", class: "colibri-form-label" %>
     <%= form.time_select :starts_at, id: :wished_slot_start %>
   </div>
 
   <div class="form-group">
-    <%= form.label :ends_at, "修了時間", class: "colibri-form-label" %>
+    <%= form.label :anchor, "終了", class: "colibri-form-label" %>
+    <%= form.date_select :end_day, id: :wished_slot_anchor %>
     <%= form.time_select :ends_at, id: :wished_slot_end %>
   </div>
 

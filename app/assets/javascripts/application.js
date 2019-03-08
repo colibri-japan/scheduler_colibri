@@ -1695,6 +1695,34 @@ let scrollPosts = () => {
   }
 }
 
+let wishedSlotRank = () => {
+  if ($('#wished_slot_rank_2').is(':checked')) {
+    $('.rank-button').removeClass('btn-colibri-light-yellow')
+    $('#button_rank_2').addClass('btn-colibri-light-green')
+  } else if ($('#wished_slot_rank_1').is(':checked')) {
+    $('.rank-button').removeClass('btn-colibri-light-green btn-colibri-light-red')
+    $('#button_rank_1').addClass('btn-colibri-light-yellow')
+  } else if ($('#wished_slot_rank_0').is(':checked')) {
+    $('.rank-button').removeClass('btn-colibri-light-yellow btn-colibri-light-green')
+    $('#button_rank_0').addClass('btn-colibri-light-red')
+  }
+}
+
+let wishedSlotRadioLayout = () => {
+  $('#button_rank_2').click(function(){
+    $('.rank-button').removeClass("btn-colibri-light-yellow btn-colibri-light-red");
+    $(this).addClass("btn-colibri-light-green")
+  })
+  $('#button_rank_1').click(function(){
+    $('.rank-button').removeClass("btn-colibri-light-green btn-colibri-light-red");
+    $(this).addClass("btn-colibri-light-yellow")
+  })
+  $('#button_rank_0').click(function(){
+    $('.rank-button').removeClass("btn-colibri-light-green btn-colibri-light-yellow");
+    $(this).addClass("btn-colibri-light-red")
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

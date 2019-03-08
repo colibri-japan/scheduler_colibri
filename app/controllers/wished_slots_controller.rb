@@ -27,7 +27,7 @@ class WishedSlotsController < ApplicationController
 	# POST /wished_slots
 	# POST /wished_slots.json
 	def create
-		@wished_slot = WishedSlot.new(wished_slot_params)
+		@wished_slot = @planning.wished_slots.new(wished_slot_params)
 
 		@wished_slot.save
 	end

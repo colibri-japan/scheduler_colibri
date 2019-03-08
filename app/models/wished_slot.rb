@@ -7,12 +7,13 @@ class WishedSlot < ApplicationRecord
   belongs_to :planning
   belongs_to :nurse, optional: true
 
+  before_validation :calculate_duration
+
   before_save :default_frequency
   
   validates :anchor, presence: true
   validates :frequency, presence: true
   validates :frequency, inclusion: 0..4
-  validates :title, presence: true
 
   def schedule
     @schedule ||= begin
@@ -56,6 +57,14 @@ class WishedSlot < ApplicationRecord
 
   def default_frequency
   	self.frequency ||=0
+  end
+
+  def calculate_duration
+		if self.end_day.present? && self.anchor.present? && self.end_day != self.anchor
+			self.duration = (self.end_day - self.anchor).to_i
+		else
+			self.duration = 0
+		end
   end
   
 end

@@ -6,6 +6,11 @@ class WishedSlotsController < ApplicationController
 	# GET /wished_slots
 	# GET /wished_slots.json
 	def index
+		@wished_slots = @planning.wished_slots 
+
+		respond_to do |format|
+			format.json
+		end
 	end
 
 	# GET /wished_slots/1

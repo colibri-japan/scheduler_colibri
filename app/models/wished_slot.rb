@@ -53,6 +53,19 @@ class WishedSlot < ApplicationRecord
   	schedule.occurrences_between(start_frequency, end_frequency)
   end
 
+  def color_from_rank
+    case self.rank 
+    when 0
+      "#fc7181"
+    when 1
+      "#FFD23F"
+    when 2
+      "#42CB89"
+    else
+      "#d5daeb"
+    end
+  end
+
   private
 
   def default_frequency

@@ -14,10 +14,6 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
     @recurring_appointments = @recurring_appointments.where(master: params[:master]) if params[:master].present? && params[:master] != 'undefined'
 
-    puts @recurring_appointments.count
-    puts params[:start]
-    puts params[:end]
-
     respond_to do |format|
       format.json
       format.js

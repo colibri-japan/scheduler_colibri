@@ -7,7 +7,8 @@ json.array! slots do |slot|
 	json.end DateTime.new(slot.year, slot.month, slot.day, wished_slot.ends_at.hour, wished_slot.ends_at.min)
 	json.allDay wished_slot.all_day_wished_slot? ? true : false
 	json.resourceId wished_slot.nurse_id
-	json.color '#D46A6A'
+	json.color wished_slot.color_from_rank
+	json.unavailability false 
 
 	json.base_url planning_wished_slot_path(@planning, wished_slot)
 	json.update_url planning_wished_slot_path(@planning, wished_slot, method: :patch)

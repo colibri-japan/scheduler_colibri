@@ -172,21 +172,23 @@ $(document).on 'turbolinks:load', ->
     $(this).hide()
     $('#toggle-switch-wished-slots').show()
     window.selectActionUrl = window.createWishedSlotUrl
-    window.eventsUrl = window.wishedSlotsUrl
+    window.eventSource2 = window.wishedSlotsUrl
     calendar = $('.master_calendar')
     calendar.fullCalendar('removeEventSources')
-    calendar.fullCalendar('addEventSource', window.eventsUrl)
+    calendar.fullCalendar('addEventSource', window.eventSource2)
     calendar.fullCalendar('refetchEvents')
     return
 
   $('#toggle-switch-wished-slots').click -> 
     $(this).hide()
     $('#toggle-switch-recurring-appointments').show()
-    window.eventsUrl = window.recurringAppointmentsUrl
+    window.eventSource1 = window.recurringAppointmentsUrl
+    window.eventSource2 = window.wishedSlotsUrl + '&background=true'
     window.selectActionUrl = window.createRecurringAppointmentURL
     calendar = $('.master_calendar')
     calendar.fullCalendar('removeEventSources')
-    calendar.fullCalendar('addEventSource', window.eventsUrl)
+    calendar.fullCalendar('addEventSource', window.eventSource1)
+    calendar.fullCalendar('addEventSource', window.eventSource2)
     calendar.fullCalendar('refetchEvents')
     return
 

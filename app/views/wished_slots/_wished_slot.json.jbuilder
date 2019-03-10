@@ -12,6 +12,7 @@ json.array! slots do |slot|
 	json.extract! wished_slot, :frequency, :rank, :nurse_id
 	json.description wished_slot.description || ''
 	json.color wished_slot.color_from_rank
+	json.backgroundColor json.color
 	json.master true
 	json.cancelled false
 	json.displayable true
@@ -24,6 +25,7 @@ json.array! slots do |slot|
 		json.name wished_slot.nurse.try(:name)
 	end
 	json.unavailability false 
+	json.rendering 'background' if params[:background] == 'true'
 
 	json.base_url planning_wished_slot_path(@planning, wished_slot)
 	json.update_url planning_wished_slot_path(@planning, wished_slot, method: :patch)

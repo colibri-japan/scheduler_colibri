@@ -39,6 +39,28 @@ var myDefaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList;
 
 myDefaultWhiteList.a = ['data-remote', 'href']
 
+let setWishedSlotTime = (start, end, view) => {
+  $('#wished_slot_anchor_1i').val(moment(start).format('YYYY'));
+  $('#wished_slot_anchor_2i').val(moment(start).format('M'));
+  $('#wished_slot_anchor_3i').val(moment(start).format('D'));
+  $('#wished_slot_starts_at_4i').val(moment(start).format('YYYY'));
+  $('#wished_slot_starts_at_2i').val(moment(start).format('M'));
+  $('#wished_slot_starts_at_3i').val(moment(start).format('D'));
+  $('#wished_slot_starts_at_4i').val(moment(start).format('HH'));
+  $('#wished_slot_starts_at_5i').val(moment(start).format('mm'));
+  $('#wished_slot_ends_at_1i').val(moment(end).format('YYYY'));
+  $('#wished_slot_ends_at_2i').val(moment(end).format('M'));
+  $('#wished_slot_ends_at_3i').val(moment(end).format('D'));
+  $('#wished_slot_ends_at_4i').val(moment(end).format('HH'));
+  $('#wished_slot_ends_at_5i').val(moment(end).format('mm'));
+  $('#wished_slot_end_day_1i').val(moment(end).format('YYYY'));
+  $('#wished_slot_end_day_2i').val(moment(end).format('M'));
+  $('#wished_slot_end_day_3i').val(moment(end).format('D'));
+  if (window.nurseId) {
+    $("#wished_slot_nurse_id").val(window.nurseId);
+  }
+}
+
 let setPrivateEventTime = (start, end) => {
   $('#private_event_starts_at_1i').val(moment(start).format('YYYY'));
   $('#private_event_starts_at_2i').val(moment(start).format('M'));
@@ -489,14 +511,7 @@ initialize_master_calendar = function() {
       editable: true,
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
-
-
-      resources: {
-        url: window.corporationNursesURL + '?include_undefined=true&master=true',
-      },
-
-      events: window.recurringAppointmentsURL + '&master=true',
-
+      events: window.eventsUrl + '&master=true',
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;
@@ -516,6 +531,7 @@ initialize_master_calendar = function() {
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
+
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -529,7 +545,9 @@ initialize_master_calendar = function() {
               if (window.patientId) {
                 return event.nurse.name;
               } else {
-                return event.patient.name;
+                if (event.rank === undefined) {
+                  return event.patient.name;
+                }
               }
             });
             return  !event.edit_requested && event.master && event.displayable ;
@@ -593,11 +611,13 @@ initialize_master_calendar = function() {
       select: function(start, end, jsEvent, view, resource) {
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
-        $.getScript(window.createRecurringAppointmentURL + '?master=true', function() {
+        $.getScript(window.selectActionUrl + '?master=true', function() {
+          setWishedSlotTime(start, end, view);
           setRecurringAppointmentTime(start, end, view);
-          setHiddenRecurringAppointmentFields(view_start, view_end);
+          setHiddenStartAndEndFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
+          wishedSlotsSelectize()
         });
 
         master_calendar.fullCalendar('unselect');
@@ -612,7 +632,7 @@ initialize_master_calendar = function() {
           $.getScript(event.edit_url + '?master=true&date=' + dateClicked, function(){
             individualMasterToGeneral()
             terminateRecurringAppointment(dateClicked, view_start, view_end)
-            setHiddenRecurringAppointmentFields(view_start, view_end);
+            setHiddenStartAndEndFields(view_start, view_end);
           })
         }
         return false;
@@ -759,7 +779,7 @@ initialize_calendar = function() {
       	$.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);
           setPrivateEventTime(start, end);
-          setHiddenRecurringAppointmentFields(start, end);
+          setHiddenStartAndEndFields(start, end);
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
@@ -1334,6 +1354,10 @@ let skillsSelectize = () => {
   })
 }
 
+let wishedSlotsSelectize = () => {
+  $('#wished_slot_nurse_id').selectize()
+}
+
 let caveatsSelectize = () => {
   $('#patient_caveat_list').selectize({
     delimiter: ',',
@@ -1571,7 +1595,7 @@ let terminateRecurringAppointment = (date, start, end) => {
   })
 } 
 
-let setHiddenRecurringAppointmentFields = (start, end) => {
+let setHiddenStartAndEndFields = (start, end) => {
   $('#start').val(start)
   $('#end').val(end)
 }
@@ -1665,6 +1689,44 @@ let scrollPosts = () => {
   if ($("#posts-container").length > 0) {
     $("#posts-container").scrollTop($("#posts-container")[0].scrollHeight)
   }
+}
+
+let wishedSlotRank = () => {
+  if ($('#wished_slot_rank_2').is(':checked')) {
+    $('.rank-button').removeClass('btn-colibri-light-yellow')
+    $('#button_rank_2').addClass('btn-colibri-light-green')
+  } else if ($('#wished_slot_rank_1').is(':checked')) {
+    $('.rank-button').removeClass('btn-colibri-light-green btn-colibri-light-red')
+    $('#button_rank_1').addClass('btn-colibri-light-yellow')
+  } else if ($('#wished_slot_rank_0').is(':checked')) {
+    $('.rank-button').removeClass('btn-colibri-light-yellow btn-colibri-light-green')
+    $('#button_rank_0').addClass('btn-colibri-light-red')
+  }
+}
+
+let wishedSlotChecked = () => {
+  if ($('#wished_slot_rank_0').is(':checked')) {
+    $('#button_rank_0').addClass('btn-colibri-light-red')
+  } else if ($('#wished_slot_rank_1').is(':checked')) {
+    $('#button_rank_1').addClass('btn-colibri-light-yellow')
+  } else if ($('#wished_slot_rank_2').is(':checked')) {
+    $('#button_rank_2').addClass('btn-colibri-light-green')
+  }
+}
+
+let wishedSlotRadioLayout = () => {
+  $('#button_rank_2').click(function(){
+    $('.rank-button').removeClass("btn-colibri-light-yellow btn-colibri-light-red");
+    $(this).addClass("btn-colibri-light-green")
+  })
+  $('#button_rank_1').click(function(){
+    $('.rank-button').removeClass("btn-colibri-light-green btn-colibri-light-red");
+    $(this).addClass("btn-colibri-light-yellow")
+  })
+  $('#button_rank_0').click(function(){
+    $('.rank-button').removeClass("btn-colibri-light-green btn-colibri-light-yellow");
+    $(this).addClass("btn-colibri-light-red")
+  })
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

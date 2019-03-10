@@ -475,15 +475,51 @@ th {
 	color: white;
 }
 
+.btn-colibri-light {
+	background-color: #f1f3f4;
+	border-color: #f1f3f4;
+	color: #5f6368;
+}
+
+.btn-colibri-light:hover {
+	background-color:#CFD9DD;
+	border-color: #CFD9DD;
+	color: #5f6368;
+}
+
 .btn-colibri-light-red {
 	background-color: #fc7181 !important;
 	border-color: #fc7181 !important;
 	color: white;	
 }
 
+.btn-colibri-light-yellow {
+	background-color: #FFD23F !important;
+	border-color: #FFD23F !important;
+	color: white;
+}
+
+.btn-colibri-light-yellow:hover {
+	background-color: #F4BE0C !important;
+	border-color: #F4BE0C !important;
+	color: white;
+}
+
 .btn-colibri-light-red:hover {
 	background-color: #f15365 !important;
 	border-color: #f15365 !important;
+	color: white;
+}
+
+.btn-colibri-light-green {
+	background-color: #42CB89 !important;
+	border-color: #42CB89 !important;
+	color: white;
+}
+
+.btn-colibri-light-green:hover {
+	background-color: #22BD72 !important;
+	border-color: #22BD72 !important;
 	color: white;
 }
 

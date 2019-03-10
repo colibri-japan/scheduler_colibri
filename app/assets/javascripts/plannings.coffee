@@ -168,4 +168,26 @@ $(document).on 'turbolinks:load', ->
     window.bootstrapToggleUrl = window.createRecurringAppointmentURL
     return 
 
+  $('#toggle-switch-recurring-appointments').click ->
+    $(this).hide()
+    $('#toggle-switch-wished-slots').show()
+    window.selectActionUrl = window.createWishedSlotUrl
+    window.eventsUrl = window.wishedSlotsUrl
+    calendar = $('.master_calendar')
+    calendar.fullCalendar('removeEventSources')
+    calendar.fullCalendar('addEventSource', window.eventsUrl)
+    calendar.fullCalendar('refetchEvents')
+    return
+
+  $('#toggle-switch-wished-slots').click -> 
+    $(this).hide()
+    $('#toggle-switch-recurring-appointments').show()
+    window.eventsUrl = window.recurringAppointmentsUrl
+    window.selectActionUrl = window.createRecurringAppointmentURL
+    calendar = $('.master_calendar')
+    calendar.fullCalendar('removeEventSources')
+    calendar.fullCalendar('addEventSource', window.eventsUrl)
+    calendar.fullCalendar('refetchEvents')
+    return
+
   return

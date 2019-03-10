@@ -7,12 +7,13 @@ class WishedSlot < ApplicationRecord
   belongs_to :planning
   belongs_to :nurse, optional: true
 
+  before_validation :calculate_duration
+
   before_save :default_frequency
   
   validates :anchor, presence: true
   validates :frequency, presence: true
   validates :frequency, inclusion: 0..4
-  validates :title, presence: true
 
   def schedule
     @schedule ||= begin
@@ -43,19 +44,52 @@ class WishedSlot < ApplicationRecord
   end
 
   def all_day_wished_slot?
-  	self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.mignight ? true : false
+  	self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
   end
 
   def wished_slot_occurrences(start_date, end_date)
   	start_frequency = start_date ? start_date.to_date : Date.today - 1.year
-  	end_frequency = end_date ? end_date.to_date : Date.today + 1.year
+    end_frequency = end_date ? end_date.to_date : Date.today + 1.year
   	schedule.occurrences_between(start_frequency, end_frequency)
+  end
+
+  def color_from_rank
+    case self.rank 
+    when 0
+      "#fc7181"
+    when 1
+      "#FFD23F"
+    when 2
+      "#42CB89"
+    else
+      "#d5daeb"
+    end
+  end
+
+  def title_from_rank
+    case self.rank 
+    when 0
+      "不可"
+    when 1
+      "微妙"
+    when 2
+      "希望"
+    else
+    end
   end
 
   private
 
   def default_frequency
   	self.frequency ||=0
+  end
+
+  def calculate_duration
+		if self.end_day.present? && self.anchor.present? && self.end_day != self.anchor
+			self.duration = (self.end_day - self.anchor).to_i
+		else
+			self.duration = 0
+		end
   end
   
 end

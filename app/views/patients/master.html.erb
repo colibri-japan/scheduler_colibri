@@ -1,7 +1,9 @@
 <%= javascript_tag do %>
-	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, patient_id: @patient.id) %>";
+	window.recurringAppointmentsUrl = "<%= j planning_recurring_appointments_url(@planning, patient_id: @patient.id) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
-	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
+	window.createWishedSlotUrl = "<%= j new_planning_wished_slot_url(@planning) %>"
+	window.createRecurringAppointmentUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
+	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -14,6 +16,7 @@
 	window.printDates = "<%= j @printing_option.print_patient_dates_in_master.to_s %>";
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 	window.masterSchedule = 'true'
+	window.eventsUrl = window.recurringAppointmentsUrl;
 <% end %>
 
 
@@ -47,8 +50,8 @@
 					</div>
 		        </div>
 			</div>
-		    <div id="activity-show-button-container" class="no-print">
-	  		    <div class="btn btn-colibri-light-gray text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
+		    <div id="planning-top-right-action-container" class="no-print">
+	  		  <div class="btn btn-colibri-light-gray btn-sm text-white" id="print-button"><i class="glyphicon glyphicon-print" style="color:white"></i> 印刷</div>
 		    </div>
 		</div>
 

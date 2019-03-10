@@ -1,5 +1,5 @@
 class WishedSlotsController < ApplicationController
-	before_action :set_recurring_unavailability, only: [:show, :edit, :update, :destroy]
+	before_action :set_wished_slot, only: [:show, :edit, :update, :destroy]
 	before_action :set_planning
 	before_action :set_corporation
 
@@ -24,7 +24,7 @@ class WishedSlotsController < ApplicationController
 	def new
 		set_nurses
 		
-		@wished_slot = WishedSlot.new()
+		@wished_slot = WishedSlot.new(rank: 2)
 	end
 
 	# GET /wished_slots/1/edit
@@ -42,11 +42,13 @@ class WishedSlotsController < ApplicationController
 	# PATCH/PUT /wished_slots/1
 	# PATCH/PUT /wished_slots/1.json
 	def update
+		@wished_slot.update(wished_slot_params)
 	end
 
 	# DELETE /wished_slots/1
 	# DELETE /wished_slots/1.json
 	def destroy
+		@wished_slot.destroy
 	end
 
 	private

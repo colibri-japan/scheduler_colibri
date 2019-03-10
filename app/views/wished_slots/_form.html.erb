@@ -18,8 +18,8 @@
     </div>
     <div style="width:80%">
       <div id="rank-options-container">
-        <%= form.label :rank_2, '希望', class: 'btn btn-colibri-light btn-sm rank-button btn-colibri-light-green', id: "button_rank_2" do %>
-          <%= form.radio_button :rank, 2, {checked: 'checked', class: "radio-inline", id: "wished_slot_rank_2", style: "display:none"} %>
+        <%= form.label :rank_2, '希望', class: 'btn btn-colibri-light btn-sm rank-button', id: "button_rank_2" do %>
+          <%= form.radio_button :rank, 2, {class: "radio-inline", id: "wished_slot_rank_2", style: "display:none"} %>
           希望
         <% end %>
         <%= form.label :rank_1, '避けたい', class:'btn btn-colibri-light btn-sm rank-button', id: "button_rank_1" do %>
@@ -36,7 +36,7 @@
 
   <div class="form-group">
     <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
-    <%= form.select(:frequency,  options_for_select([['毎週', 1], ['隔週', 3], ['第一週目', 4], ['第二週目', 5], ['その日のみ',0]]), {required: true}, id: :wished_slot_frequency) %>
+    <%= form.select(:frequency,  options_for_select([['毎週', 1], ['隔週', 2], ['第一週目', 3], ['毎月最後の週', 4], ['その日のみ',0]]), {required: true}, id: :wished_slot_frequency) %>
   </div>
 
   <div class="form-group">
@@ -51,10 +51,12 @@
     <%= form.time_select :ends_at, id: :wished_slot_end %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %>
-    <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, wished_slot.nurse_id), {}, {required: true, id: :wished_slot_nurse_id } %>
-  </div>
+  <% if wished_slot.new_record? %>
+    <div class="form-group">
+      <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %>
+      <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, wished_slot.nurse_id), {}, {required: true, id: :wished_slot_nurse_id } %>
+    </div>
+  <% end %>
 
   <div class="form-group">
     <%= form.label :description, "コメント", class: "colibri-form-label" %>
@@ -65,6 +67,7 @@
   <%= hidden_field_tag(:end, Date.today) %>
 
   <div class="actions">
-    <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
+    <%= link_to '削除', planning_wished_slot_path(@planning, wished_slot), method: :delete, remote: true, class: 'btn btn-danger' unless wished_slot.new_record? %>
+    <%= form.submit 'セーブする', class: 'btn btn-info' %>
   </div>
 <% end %>

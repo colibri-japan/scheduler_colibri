@@ -10,11 +10,6 @@ $('.modal').modal('hide');
       calendar = $('.master_calendar');
     }
 
-    console.log(calendar)
-    console.log(window.nurseId == <%= @wished_slot.nurse_id %>)
-    console.log(window.nurseId)
-    console.log(<%= @wished_slot.nurse_id %>)
-
     if (window.nurseId == <%= @wished_slot.nurse_id %>) {
         calendar.fullCalendar(
             'renderEvents',

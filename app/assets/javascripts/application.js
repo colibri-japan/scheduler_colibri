@@ -1704,6 +1704,16 @@ let wishedSlotRank = () => {
   }
 }
 
+let wishedSlotChecked = () => {
+  if ($('#wished_slot_rank_0').is(':checked')) {
+    $('#button_rank_0').addClass('btn-colibri-light-red')
+  } else if ($('#wished_slot_rank_1').is(':checked')) {
+    $('#button_rank_1').addClass('btn-colibri-light-yellow')
+  } else if ($('#wished_slot_rank_2').is(':checked')) {
+    $('#button_rank_2').addClass('btn-colibri-light-green')
+  }
+}
+
 let wishedSlotRadioLayout = () => {
   $('#button_rank_2').click(function(){
     $('.rank-button').removeClass("btn-colibri-light-yellow btn-colibri-light-red");

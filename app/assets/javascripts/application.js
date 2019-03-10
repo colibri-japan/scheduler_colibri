@@ -511,7 +511,8 @@ initialize_master_calendar = function() {
       editable: true,
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
-      events: window.eventsUrl + '&master=true',
+
+      eventSources: [window.eventSource1, window.eventSource2],
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;

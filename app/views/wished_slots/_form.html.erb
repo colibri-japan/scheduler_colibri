@@ -58,8 +58,11 @@
 
   <div class="form-group">
     <%= form.label :description, "コメント", class: "colibri-form-label" %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, id: :wished_slot_description, class: "form-control" %>
   </div>
+
+  <%= hidden_field_tag(:start, Date.today) %>
+  <%= hidden_field_tag(:end, Date.today) %>
 
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>

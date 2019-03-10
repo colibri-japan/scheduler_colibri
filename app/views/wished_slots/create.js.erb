@@ -1,1 +1,24 @@
 $('.modal').modal('hide');
+
+<% if @wished_slot.errors.any? %>
+    alert('エラーが発生したため、シフト希望がセーブされませんでした')
+<% else %>
+    if (typeof calendar === 'undefined') {
+        let calendar;
+    }
+    if ($('.master_calendar').length > 0) {
+      calendar = $('.master_calendar');
+    }
+
+    console.log(calendar)
+    console.log(window.nurseId == <%= @wished_slot.nurse_id %>)
+    console.log(window.nurseId)
+    console.log(<%= @wished_slot.nurse_id %>)
+
+    if (window.nurseId == <%= @wished_slot.nurse_id %>) {
+        calendar.fullCalendar(
+            'renderEvents',
+            jQuery.parseJSON("<%= j render(partial: 'wished_slots/wished_slot', locals: {wished_slot: @wished_slot}).html_safe %>")
+        )
+    }
+<% end %>

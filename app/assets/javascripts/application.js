@@ -614,7 +614,7 @@ initialize_master_calendar = function() {
         $.getScript(window.selectActionUrl + '?master=true', function() {
           setWishedSlotTime(start, end, view);
           setRecurringAppointmentTime(start, end, view);
-          setHiddenRecurringAppointmentFields(view_start, view_end);
+          setHiddenStartAndEndFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
           wishedSlotsSelectize()
@@ -632,7 +632,7 @@ initialize_master_calendar = function() {
           $.getScript(event.edit_url + '?master=true&date=' + dateClicked, function(){
             individualMasterToGeneral()
             terminateRecurringAppointment(dateClicked, view_start, view_end)
-            setHiddenRecurringAppointmentFields(view_start, view_end);
+            setHiddenStartAndEndFields(view_start, view_end);
           })
         }
         return false;
@@ -779,7 +779,7 @@ initialize_calendar = function() {
       	$.getScript(window.bootstrapToggleUrl, function() {
           setRecurringAppointmentTime(start, end, view);
           setPrivateEventTime(start, end);
-          setHiddenRecurringAppointmentFields(start, end);
+          setHiddenStartAndEndFields(start, end);
 
           if (view.name == 'agendaDay') {
             $('#recurring_appointment_nurse_id').val(resource.id);
@@ -1595,7 +1595,7 @@ let terminateRecurringAppointment = (date, start, end) => {
   })
 } 
 
-let setHiddenRecurringAppointmentFields = (start, end) => {
+let setHiddenStartAndEndFields = (start, end) => {
   $('#start').val(start)
   $('#end').val(end)
 }

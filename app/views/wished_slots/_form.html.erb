@@ -67,7 +67,7 @@
   <%= hidden_field_tag(:end, Date.today) %>
 
   <div class="actions">
-    <%= link_to '削除', planning_wished_slot_path(@planning, wished_slot), method: :delete, remote: true, class: 'btn btn-danger' unless wished_slot.new_record? %>
+    <%= link_to '削除', planning_wished_slot_path(@planning, wished_slot), method: :delete, remote: true, class: 'btn btn-danger', data: {confirm: 'シフト希望のすべての繰り返しがスケジュールから消えます'} unless wished_slot.new_record? %>
     <%= form.submit 'セーブする', class: 'btn btn-info' %>
   </div>
 <% end %>

@@ -1,2 +1,8 @@
-$('.nurse_calendar').fullCalendar('removeEvents', '<%= "wished_slot_#{@wished_slot.id}" %>');
 $('.modal').modal('hide');
+if (typeof calendar === 'undefined') {
+    let calendar;
+}
+if ($('.master_calendar').length > 0) {
+  calendar = $('.master_calendar');
+}
+calendar.fullCalendar('removeEvents', '<%= "wished_slot_#{@wished_slot.id}" %>');

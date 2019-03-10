@@ -1,8 +1,10 @@
 <%= javascript_tag do %>
-	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning, nurse_id: @nurse.id) %>";
+	window.recurringAppointmentsUrl = "<%= j planning_recurring_appointments_url(@planning, nurse_id: @nurse.id) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.createWishedSlotUrl = "<%= j new_planning_wished_slot_url(@planning) %>"
+	window.wishedSlotsUrl = "<%= j planning_wished_slots_path(@planning, nurse_id: @nurse.id) %>";
+	window.eventsUrl = window.recurringAppointmentsUrl;
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";

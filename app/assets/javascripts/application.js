@@ -511,14 +511,7 @@ initialize_master_calendar = function() {
       editable: true,
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
-
-
-      resources: {
-        url: window.corporationNursesURL + '?include_undefined=true&master=true',
-      },
-
-      events: window.recurringAppointmentsURL + '&master=true',
-
+      events: window.eventsUrl + '&master=true',
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;
@@ -538,6 +531,7 @@ initialize_master_calendar = function() {
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
+
         element.popover({
           title: event.service_type,
           content: event.description,
@@ -551,7 +545,9 @@ initialize_master_calendar = function() {
               if (window.patientId) {
                 return event.nurse.name;
               } else {
-                return event.patient.name;
+                if (event.rank === undefined) {
+                  return event.patient.name;
+                }
               }
             });
             return  !event.edit_requested && event.master && event.displayable ;

@@ -66,6 +66,18 @@ class WishedSlot < ApplicationRecord
     end
   end
 
+  def title_from_rank
+    case self.rank 
+    when 0
+      "不可"
+    when 1
+      "微妙"
+    when 2
+      "希望"
+    else
+    end
+  end
+
   private
 
   def default_frequency

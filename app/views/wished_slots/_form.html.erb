@@ -56,6 +56,11 @@
     <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, wished_slot.nurse_id), {}, {required: true, id: :wished_slot_nurse_id } %>
   </div>
 
+  <div class="form-group">
+    <%= form.label :description, "コメント", class: "colibri-form-label" %>
+    <%= form.text_area :description %>
+  </div>
+
   <div class="actions">
     <%= form.submit 'セーブする', class: 'btn btn-info btn-block form-control' %>
   </div>

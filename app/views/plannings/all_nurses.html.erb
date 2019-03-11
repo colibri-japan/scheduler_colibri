@@ -2,9 +2,9 @@
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning) %>";
 	window.privateEventsUrl = "<%= j planning_private_events_url(@planning) %>";
 	window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
-	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-	window.createPrivateEventURL = "<%= j new_planning_private_event_url(@planning) %>";
-	window.bootstrapToggleUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
+	window.createAppointmentUrl = "<%= j new_planning_appointment_url(@planning) %>";
+	window.createPrivateEventUrl = "<%= j new_planning_private_event_url(@planning) %>";
+	window.selectActionUrl = window.createAppointmentUrl;
 	window.defaultView = "<%= j @corporation.default_view %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
@@ -13,8 +13,8 @@
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 	window.masterSchedule = 'false';
 	window.generalPlanning = 'true';
-    window.resourceLabel = '従業員';
-    window.resourceType = 'nurse';
+  window.resourceLabel = '従業員';
+  window.resourceType = 'nurse';
 <% end %>
 
 

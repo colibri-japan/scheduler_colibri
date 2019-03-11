@@ -143,7 +143,7 @@ initialize_nurse_calendar = function(){
       eventSources: [{url: window.appointmentsURL + '&master=false', cache: true},{url: window.privateEventsUrl + '&master=false', cache: true}],
 
       select: function(start, end, jsEvent, view, resource) {
-        $.getScript(window.bootstrapToggleUrl, function() {
+        $.getScript(window.selectActionUrl, function() {
           setRecurringAppointmentTime(start, end, view);
           setPrivateEventTime(start, end);
           recurringAppointmentSelectizeNursePatient();
@@ -331,7 +331,7 @@ initialize_patient_calendar = function(){
 
 
       select: function (start, end, jsEvent, view, resource) {
-        $.getScript(window.bootstrapToggleUrl, function() {
+        $.getScript(window.selectActionUrl, function() {
           setRecurringAppointmentTime(start, end, view);     	         
           setPrivateEventTime(start, end);
           recurringAppointmentSelectizeNursePatient();
@@ -762,7 +762,7 @@ initialize_calendar = function() {
 
 
       select: function(start, end, jsEvent, view, resource) {
-      	$.getScript(window.bootstrapToggleUrl, function() {
+        $.getScript(window.selectActionUrl, function() {
           setRecurringAppointmentTime(start, end, view);
           setPrivateEventTime(start, end);
           setHiddenStartAndEndFields(start, end);

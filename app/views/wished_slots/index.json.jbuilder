@@ -8,9 +8,8 @@
         json.title wished_slot.title_from_rank
         json.extract! wished_slot, :frequency, :rank, :nurse_id
         json.description wished_slot.description || ''
-        json.color wished_slot.color_from_rank
+        json.borderColor wished_slot.color_from_rank unless params[:background] == 'true'
         json.master true
-	    json.backgroundColor json.color
         json.cancelled false
         json.displayable true
         json.start DateTime.new(slot.year, slot.month, slot.day, wished_slot.starts_at.hour, wished_slot.starts_at.min)
@@ -22,6 +21,7 @@
             json.name wished_slot.nurse.try(:name)
         end
         json.rendering 'background' if params[:background] == 'true'
+        json.className background_wished_slot_css(wished_slot)
 
         json.base_url planning_wished_slot_path(@planning, wished_slot)
         json.update_url planning_wished_slot_path(@planning, wished_slot, method: :patch)

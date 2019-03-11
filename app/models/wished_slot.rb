@@ -56,11 +56,11 @@ class WishedSlot < ApplicationRecord
   def color_from_rank
     case self.rank 
     when 0
-      "#fc7181"
+      "#FD9BA6"
     when 1
-      "#FFD23F"
+      "#FFDA62"
     when 2
-      "#42CB89"
+      "#67DCA4"
     else
       "#d5daeb"
     end

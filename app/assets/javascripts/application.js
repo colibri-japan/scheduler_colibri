@@ -509,7 +509,6 @@ initialize_master_calendar = function() {
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
       editable: true,
-      eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
 
       eventSources: [window.eventSource1, window.eventSource2],

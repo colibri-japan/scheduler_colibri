@@ -616,7 +616,6 @@ initialize_master_calendar = function() {
           setRecurringAppointmentTime(start, end, view);
           setHiddenStartAndEndFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
-          privateEventSelectizeNursePatient();
           wishedSlotsSelectize()
         });
 

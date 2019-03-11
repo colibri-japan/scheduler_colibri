@@ -38,7 +38,7 @@
 
             <div class="form-group">
                 <%= form.label :default_view, "従業員.利用者全員.チーム分けレイアウト", class: "colibri-form-label-dark" %>
-                <%= form.select :default_view, options_for_select([['日', 'agendaDay'], ['週','agendaWeek'], ['週横','timelineWeek']], @corporation.default_view), class: "form-control" %>
+                <%= form.select :default_view, options_for_select([['日', 'agendaDay'], ['週横','timelineWeek']], @corporation.default_view), class: "form-control" %>
             </div>
 
             <div class="form-group">

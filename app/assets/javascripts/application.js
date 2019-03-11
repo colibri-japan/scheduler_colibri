@@ -117,11 +117,6 @@ initialize_nurse_calendar = function(){
       defaultView: window.defaultView,
       locale: 'ja',
       views: {
-        agendaThreeDay: {
-          type: 'agenda',
-          duration: {days: 3},
-          buttonText: '３日'
-        },
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
         },
@@ -139,7 +134,7 @@ initialize_nurse_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaThreeDay,agendaDay'
+        right: 'month,agendaWeek,agendaDay'
       },
       selectable: true,
       selectHelper: false,
@@ -480,11 +475,6 @@ initialize_master_calendar = function() {
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: window.defaultView,
       views: {
-      	agendaThreeDay: {
-      		type: 'agenda',
-      		duration: {days: 3},
-      		buttonText: '３日'
-      	},
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
         },
@@ -504,7 +494,7 @@ initialize_master_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaThreeDay,agendaDay'
+        right: 'month,agendaWeek,agendaDay'
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
@@ -676,7 +666,7 @@ initialize_calendar = function() {
       views: {
         timelineWeek: {
           slotDuration: {days: 1},
-          buttonText: '横週',
+          buttonText: '週',
           slotLabelFormat: 'D日[(]ddd[)]',
           resourceAreaWidth: '10%',
           displayEventEnd: true,
@@ -687,9 +677,6 @@ initialize_calendar = function() {
         },
         agendaDay: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
-          slotDuration: '00:15:00'
-        },
-        agendaWeek: {
           slotDuration: '00:15:00'
         }
       },
@@ -703,7 +690,7 @@ initialize_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'agendaDay,agendaWeek,timelineWeek'
+        right: 'agendaDay,timelineWeek'
       },
       selectable: true,
       selectHelper: false,

@@ -671,6 +671,11 @@ span.fc-time {
 		border-width: 5px !important;
 	}
 
+	/* hide background events */
+	td.fc-bgevent, div.fc-bgevent {
+		background: transparent !important;
+	}
+
 	
 	/* making horizontal lines thicker for 9:00 12:00 15:00 18:00 */
 	.thick-calendar-line {

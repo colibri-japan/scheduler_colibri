@@ -58,19 +58,11 @@ class AppointmentsController < ApplicationController
   # POST /appointments
   # POST /appointments.json
   def create
-    @appointment = @planning.appointments.new(appointment_params)
+    @appointment = @planning.appointments.new(appointment_params) 
 
-    respond_to do |format|
-      if @appointment.save
-        @activity = @appointment.create_activity :create, owner: current_user, planning_id: @planning.id
-        format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
-        format.js
-        format.json { render :show, status: :created, location: @appointment }
-      else
-        format.html { render :new }
-        format.js
-        format.json { render json: @appointment.errors, status: :unprocessable_entity }
-      end
+    if @appointment.save 
+      @activity = @appointment.create_activity :create, owner: current_user, planning_id: @planning.id
+    else 
     end
   end
 

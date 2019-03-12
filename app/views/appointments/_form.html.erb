@@ -11,18 +11,22 @@
   </div>
   <% end %>
 
-  <div id="form-options-container">
-    <div class="appointment-section-title">簡易編集</div>
+  <% unless appointment.new_record? %>
 
-    <%= link_to "<i class='glyphicon glyphicon-th-list' style='color:white;font-size:12px'></i> #{toggle_edit_requested_text(appointment)}".html_safe, planning_appointment_toggle_edit_requested_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_request_edit_message(appointment)}, remote: true unless appointment.new_record? %>
-    <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> #{toggle_cancel_text(appointment)}".html_safe, planning_appointment_toggle_cancelled_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>
-    <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 削除'.html_safe, planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: 'サービスが削除され、スケジュールから消えます。'}, remote: true unless appointment.new_record? %>
-
-  </div>
+    <div id="form-options-container">
+      <div class="appointment-section-title">簡易編集</div>
+      <%= link_to "<i class='glyphicon glyphicon-th-list' style='color:white;font-size:12px'></i> #{toggle_edit_requested_text(appointment)}".html_safe, planning_appointment_toggle_edit_requested_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_request_edit_message(appointment)}, remote: true unless appointment.new_record? %>
+      <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> #{toggle_cancel_text(appointment)}".html_safe, planning_appointment_toggle_cancelled_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>
+      <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 削除'.html_safe, planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: 'サービスが削除され、スケジュールから消えます。'}, remote: true unless appointment.new_record? %>
+    </div>
+  
+  <% end %>
 
 
   <div class="modal-body">
-    <div class="appointment-section-title">詳細編集</div>
+    <% unless appointment.new_record? %>
+      <div class="appointment-section-title">詳細編集</div>
+    <% end %>
     
     <div class="form-group">
       <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
@@ -35,7 +39,7 @@
   　</div> 
 
     <div class="form-group">
-      <%= form.label :start_time, "スタート", class: "colibri-form-label" %>
+      <%= form.label :start_time, "開始", class: "colibri-form-label" %>
       <%= form.datetime_select :starts_at, minute_step: 5 %>
     </div>
 
@@ -75,7 +79,7 @@
 
 
     <div class="actions">
-      <%= form.submit "セーブ", class: "btn btn-info btn-block" %>
+      <%= form.submit "セーブ", class: "btn btn-info btn-block", id: "save-appointment" %>
     </div>
   </div>
 

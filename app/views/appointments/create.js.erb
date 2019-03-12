@@ -1,24 +1,55 @@
-$('.modal').modal('hide');
+$('.modal').modal('hide')
 
-if (typeof calendar === 'undefined') {
-  let calendar;
-}
-if ($('.calendar').length > 0) {
-  calendar = $('.calendar');
-} else if ($('.patient_calendar').length > 0) {
-  calendar = $('.patient_calendar');
-} else if ($('.nurse_calendar').length > 0) {
-  calendar = $('.nurse_calendar');
-} else if ($('.master_calendar').length > 0) {
-  calendar = $('.master_calendar');
-}
+<% if @appointment.errors.any? %>
+  $('#nurse-conflict-days').text("<%= j @appointment.errors[:base].first %>");
+  $('.modal').modal('hide');
+  $('#nurse-conflict-confirm').dialog({
+    resizable: false,
+    height: 'auto',
+    width: 400,
+    modal: true,
+    buttons: {
+      '登録する':function(){
+        $(this).dialog('close');
+        let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
+        let indexCount =  0;
+        appointment_ids.forEach(function(appointment_id, index, array){
+          let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+          console.log(request_edit_url)
+          indexCount++;
+          $.ajax({
+            url: request_edit_url,
+            type: 'PATCH',
+            success: function(data) {
+              if (indexCount == appointment_ids.length) {
+                $('input#save-appointment').click();
+              }
+            }
+          })
+        })
+        
+      },
+      'キャンセル':function(){
+        $(this).dialog('close');
+      }
+    }
+  })
+<% else %>
+  if (typeof calendar === 'undefined') {
+    let calendar;
+  }
+  if ($('.calendar').length > 0) {
+    calendar = $('.calendar');
+  } else if ($('.patient_calendar').length > 0) {
+    calendar = $('.patient_calendar');
+  } else if ($('.nurse_calendar').length > 0) {
+    calendar = $('.nurse_calendar');
+  } 
 
-calendar.fullCalendar(
-  'renderEvent', 
-  jQuery.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"),
-  false
-);
-
-if ($('#planning-activities').length > 0) {
-  $('#planning-activities').prepend("<%= j render partial: 'activities/activity', locals: {activity: @activity} %>");
-}
+  if (window.nurseId == <%= @appointment.nurse_id %>  || window.patientId == <%= @appointment.patient_id %> || window.generalPlanning == 'true' ) {
+    calendar.fullCalendar(
+      'renderEvent',
+      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>")
+    )
+  }
+<% end %>

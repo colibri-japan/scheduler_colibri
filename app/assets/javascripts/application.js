@@ -80,6 +80,25 @@ let setPrivateEventTime = (start, end) => {
   }
 }
 
+let setAppointmentTime = (start, end) => {
+  $('#appointment_starts_at_1i').val(moment(start).format('YYYY'));
+  $('#appointment_starts_at_2i').val(moment(start).format('M'));
+  $('#appointment_starts_at_3i').val(moment(start).format('D'));
+  $('#appointment_starts_at_4i').val(moment(start).format('HH'));
+  $('#appointment_starts_at_5i').val(moment(start).format('mm'));
+  $('#appointment_ends_at_1i').val(moment(end).format('YYYY'));
+  $('#appointment_ends_at_2i').val(moment(end).format('M'));
+  $('#appointment_ends_at_3i').val(moment(end).format('D'));
+  $('#appointment_ends_at_4i').val(moment(end).format('HH'));
+  $('#appointment_ends_at_5i').val(moment(end).format('mm'));
+  if (window.nurseId) {
+    $("#appointment_nurse_id").val(window.nurseId);
+  }
+  if (window.patientId) {
+    $("#appointment_patient_id").val(window.patientId);
+  }
+}
+
 let setRecurringAppointmentTime = (start, end, view) => {
   $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
   $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
@@ -144,9 +163,9 @@ initialize_nurse_calendar = function(){
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.selectActionUrl, function() {
-          setRecurringAppointmentTime(start, end, view);
+          setAppointmentTime(start, end);
           setPrivateEventTime(start, end);
-          recurringAppointmentSelectizeNursePatient();
+          appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
         });
 
@@ -202,7 +221,6 @@ initialize_nurse_calendar = function(){
       eventClick: function(event, jsEvent, view) {
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
         $.getScript(event.edit_url + '?date=' + dateClicked, function() {
-          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
         });
       },
 
@@ -332,9 +350,9 @@ initialize_patient_calendar = function(){
 
       select: function (start, end, jsEvent, view, resource) {
         $.getScript(window.selectActionUrl, function() {
-          setRecurringAppointmentTime(start, end, view);     	         
+          setAppointmentTime(start, end);     	         
           setPrivateEventTime(start, end);
-          recurringAppointmentSelectizeNursePatient();
+          appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
         });
         patient_calendar.fullCalendar('unselect');
@@ -435,7 +453,6 @@ initialize_patient_calendar = function(){
       eventClick: function(event, jsEvent, view) {
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
         $.getScript(event.edit_url + '?date=' + dateClicked, function() {
-          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
         });
       },
 
@@ -763,7 +780,7 @@ initialize_calendar = function() {
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.selectActionUrl, function() {
-          setRecurringAppointmentTime(start, end, view);
+          setAppointmentTime(start, end);
           setPrivateEventTime(start, end);
           setHiddenStartAndEndFields(start, end);
 
@@ -774,7 +791,7 @@ initialize_calendar = function() {
             $('#recurring_appointment_nurse_id').val(resource.id);
             $('#private_event_nurse_id').val(resource.id);
           }
-          recurringAppointmentSelectizeNursePatient();
+          appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient()
         });
 
@@ -880,7 +897,6 @@ initialize_calendar = function() {
           }
         });
         $.getScript(event.edit_url + '?date=' + dateClicked, function() {
-          appointmentEdit(event.recurring_appointment_path + '?date=' + dateClicked);
         }) 
       },
 
@@ -1136,23 +1152,6 @@ let serviceLinkClick = () => {
   })
 }
 
-let appointmentEdit = (url) => {
-  console.log(url)
-  console.log('recurring url')
-  if (url) {
-    $('#edit-options').show()
-    $('#edit-appointment-body').hide();
-    $('#one-day-edit').click(function () {
-      $('#edit-options').hide();
-      $('#edit-appointment-body').show();
-    });
-    $('#recurring-edit').click(function () {
-      $('.modal').modal('hide');
-      $('.modal-backdrop').remove();
-      $.getScript(url)
-    })
-  }
-}
 
 let sendReminder = () => {
   $('#send-email-reminder').click(function () {
@@ -1312,6 +1311,11 @@ let recurringAppointmentSelectizeNursePatient = () => {
   $('#recurring_appointment_patient_id').selectize();
 }
 
+let appointmentSelectizeNursePatient = () => {
+  $('#appointment_nurse_id').selectize();
+  $('#appointment_patient_id').selectize();
+}
+
 let appointmentSelectize = () => {
   $('#appointment_title').selectize({
     persist: false,
@@ -1322,8 +1326,6 @@ let appointmentSelectize = () => {
       }
     }
   });
-  $('#appointment_nurse_id').selectize();
-  $('#appointment_patient_id').selectize();
 }
 
 let skillsSelectize = () => {

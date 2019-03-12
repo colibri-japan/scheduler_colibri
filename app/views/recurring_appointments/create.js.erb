@@ -24,11 +24,8 @@
               success: function() {
                 indexCount++
                 if (indexCount == appointment_ids.length) {
-                  console.log('now sending the form again')
                   $('input#save-recurring-appointment').click();
-                } else {
-                  console.log(indexCount)
-                }
+                } 
               }
             });
           });

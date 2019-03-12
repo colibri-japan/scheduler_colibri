@@ -15,8 +15,8 @@ class Appointment < ApplicationRecord
 	validate :do_not_overlap
 	
 	before_create :overlapping_appointments_to_edit_requested, if: :request_edit_for_overlapping_appointments?
-	before_create :default_master
-	before_create :default_displayable
+	before_validation :default_master, on: :create
+	before_validation :default_displayable, on: :create
 
 	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
@@ -122,10 +122,7 @@ class Appointment < ApplicationRecord
 	private
 
 	def overlapping_appointments_to_edit_requested
-		puts 'requesting edit for overlapping appointments'
 		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).overlapping(self.starts_at..self.ends_at)
-		puts 'overlapping appointments count'
-		puts overlapping_appointments.count
 		overlapping_appointments.update_all(edit_requested: true, updated_at: Time.current)
 	end
 
@@ -135,11 +132,22 @@ class Appointment < ApplicationRecord
 		puts 'overlap validation on appointment'
 
 		unless nurse.name == '未定' || self.displayable == false
-			overlaps = Appointment.where(master: self.master, displayable: true, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).select(:id)
-			overlapping_ids = overlaps.map {|e| e.id}
+			puts 'start and end'
+			puts self.starts_at
+			puts self.ends_at
+			puts self.displayable
+			puts self.master 
+			puts self.edit_requested
+			puts self.cancelled 
+			puts self.archived_at 
+			puts self.planning_id 
+			overlapping_ids = Appointment.where(master: self.master, displayable: true, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
+
+			puts 'overlapping ids'
+			puts  overlapping_ids
 
 			errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 
-			errors[:base] << "その日の従業員が重複しています。" if overlaps.present?
+			errors[:base] << "その日の従業員が重複しています。" if overlapping_ids.present?
 		end
 	end
 

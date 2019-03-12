@@ -3,5 +3,6 @@ $('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "edit" %>');
 $('#edit_appointment').modal('show');
 appointmentSelectize();
+appointmentSelectizeNursePatient();
 toggleEditRequested();
 toggleCancelled();

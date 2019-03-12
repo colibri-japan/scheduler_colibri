@@ -156,18 +156,6 @@ $(document).on 'turbolinks:load', ->
     $('#nurses-resource').hide()
     return
 
-  $('#toggle-switch-appointments').click ->
-    $(this).hide()
-    $('#toggle-switch-private-events').show()
-    window.selectActionUrl = window.createPrivateEventUrl
-    return 
-
-  $('#toggle-switch-private-events').click ->
-    $(this).hide()
-    $('#toggle-switch-appointments').show()
-    window.selectActionUrl = window.createAppointmentURL
-    return 
-
   $('#toggle-switch-recurring-appointments').click ->
     $(this).hide()
     $('#toggle-switch-wished-slots').show()

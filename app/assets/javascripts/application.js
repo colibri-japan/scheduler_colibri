@@ -1717,6 +1717,21 @@ let wishedSlotRadioLayout = () => {
   })
 }
 
+let toggleCalendarEventModel = () => {
+  $('#calendar-event-appointment-button').click(function () {
+    $(this).addClass('btn-colibri-light-blue');
+    $('#calendar-event-private-event-button').removeClass('btn-colibri-light-red');
+    $('#private-event-form-container').hide();
+    $('#appointment-form-container').show();
+  });
+  $('#calendar-event-private-event-button').click(function () {
+    $(this).addClass('btn-colibri-light-red');
+    $('#calendar-event-appointment-button').removeClass('btn-colibri-light-blue');
+    $('#private-event-form-container').show();
+    $('#appointment-form-container').hide();
+  });
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

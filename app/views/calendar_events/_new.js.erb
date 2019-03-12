@@ -1,0 +1,34 @@
+<div id="new_calendar_event" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">新規サービスを作成する</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+				<div>
+					<%= label_tag :calendar_event_model, "内容", class: 'colibri-form-label' %>
+					<%= label_tag :calendar_event_model_appointment_selected, "自社サービス", class: 'btn btn-sm btn-colibri-light btn-colibri-light-blue toggle-event-model-button', id: 'calendar-event-appointment-button' do %>
+						<%= radio_button_tag :calendar_event_model, 'appointment_selected', checked=true, {class: 'radio-inline', id: 'event-model-appointment', style: "display:none"} %>
+						サービス
+					<% end %>
+					<%= label_tag :calendar_event_model_private_event_selected, "自社サービス以外", class: 'btn btn-sm btn-colibri-light toggle-event-model-button', id: 'calendar-event-private-event-button' do %>
+						<%= radio_button_tag :calendar_event_model, 'private_event_selected', checked=false, {class: 'radio-inline', id: 'event-model-private-event', style: "display:none"} %>
+						自社サービス以外
+					<% end %>
+				</div>
+			</div>
+
+
+			<div id="appointment-form-container">
+				<%= render 'appointments/form', appointment: @appointment %>
+			</div>
+
+			<div id="private-event-form-container" class="modal-body" style='display:none'>
+				<%= render 'private_events/form', private_event: @private_event %>
+			</div>
+		</div>
+	</div>
+
+</div>

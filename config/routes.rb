@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'calendar_event/new'
+
   get 'contact_form/new'
 
   get 'contact_form/create'
@@ -31,6 +33,8 @@ Rails.application.routes.draw do
   end
 
   resources :services, except: :index
+
+  resources :calendar_events, only: :new
 
   resources :recurring_appointments do
     resources :deleted_occurrences, only: [:new, :create]

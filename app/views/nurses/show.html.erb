@@ -2,11 +2,9 @@
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
-	window.createPrivateEventUrl = "<%= j new_planning_private_event_url(@planning) %>";
 	window.privateEventsUrl = "<%= j planning_private_events_url(@planning, params: {nurse_id: @nurse.id}) %>";
 	window.createAppointmentUrl = "<%= j new_planning_appointment_url(@planning) %>";
-	window.selectActionUrl = "<%= j new_planning_appointment_url(@planning) %>";
-	window.selectActionUrl = window.createAppointmentUrl;
+	window.selectActionUrl = "<%= j new_calendar_event_path %>";
 	window.defaultView = "<%= j @corporation.default_individual_view %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -50,7 +48,6 @@
 				</div>
 			</div>
 			<div id="planning-top-right-action-container" class="no-print">
-					<%= render 'plannings/private_event_toggle_switch' %>
 					<% if @nurse.phone_mail.present? %>
 						<div class="btn btn-colibri-light-gray text-white btn-sm" id="new-email-reminder" style="margin-right:5px;max-height:40px" data-reminder-url="<%= nurse_new_reminder_email_path(@nurse) %>"><span class="glyphicon glyphicon-envelope" style="color:white"></span>リマインダー</div>
 					<% end %>

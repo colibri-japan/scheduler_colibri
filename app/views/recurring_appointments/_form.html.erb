@@ -20,7 +20,6 @@
             <%= frequency_to_text(recurring_appointment) %><%= weekday_full(recurring_appointment.anchor) %>
             <%= recurring_appointment.anchor.strftime("%-m月%-d日") %> ~ <%= recurring_appointment.termination_date.strftime("%-m月%-d日") if recurring_appointment.termination_date.present? %>
           <% else %>
-            <%= @appointments.map{|appointment| appointment.starts_at.strftime("%-m月%-d日") }.to_sentence(words_connector: ' / ', last_word_connector: ' / ', two_words_connector: ' / ') %>
           <% end %>
         </div>
 

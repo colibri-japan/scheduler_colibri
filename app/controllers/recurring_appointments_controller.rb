@@ -33,8 +33,6 @@ class RecurringAppointmentsController < ApplicationController
 
   # GET /recurring_appointments/1/edit
   def edit
-    @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(starts_at: 'asc')
-    @appointments_after_first = @appointments.drop(1)
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
   end
 

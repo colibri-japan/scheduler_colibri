@@ -42,7 +42,7 @@
     <% if recurring_appointment.new_record? %>
 
       <div class="form-group">
-        <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
+        <%= form.label :frequency, "頻度", class: "colibri-form-label" %><span class='required-field'>*</span>
         <%= form.select(:frequency,  options_for_select([['毎週',0], ['隔週',7], ['その日のみ', 2], ['第一、三、五週目', 1], ['第二、四週目', 3], ['第一○曜日', 4], ['第二○曜日', 8], ['第三○曜日', 9], ['第四○曜日', 10], ['最後の週', 5], ['最後の週以外毎週', 6]], recurring_appointment.frequency || 0), id: :recurring_appointment_frequency) %>
       </div>
 
@@ -61,9 +61,14 @@
       </div>
 
       <div class="form-group">
-        <%= form.label :color, "カラー", class: "colibri-form-label" %>
-        <%= form.select(:color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], recurring_appointment.color), id: :recurring_appointment_color) %>
-      </div> 
+        <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, recurring_appointment.nurse_id), {}, {required: true, id: :recurring_appointment_nurse_id} %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {required: true, id: :recurring_appointment_patient_id}) %>
+      </div>
 
       <div class="form-group">
         <%= form.label :anchor, "開始", class: "colibri-form-label" if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
@@ -78,17 +83,12 @@
       </div>
 
       <div class="form-group">
-        <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %><span class='required-field'>*</span>
-        <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, recurring_appointment.nurse_id), {}, {required: true, id: :recurring_appointment_nurse_id} %>
-      </div>
+        <%= form.label :color, "カラー", class: "colibri-form-label" %>
+        <%= form.select(:color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], recurring_appointment.color), id: :recurring_appointment_color) %>
+      </div> 
 
       <div class="form-group">
-        <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %><span class='required-field'>*</span>
-        <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {required: true, id: :recurring_appointment_patient_id}) %>
-      </div>
-
-      <div class="form-group">
-        <%= form.label :description, "詳細・コメント", class: "colibri-form-label" %>
+        <%= form.label :description, "コメント", class: "colibri-form-label" %>
         <%= form.text_area :description, id: :recurring_appointment_description, class: "form-control" %>
       </div>
 

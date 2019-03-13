@@ -1,10 +1,8 @@
 <%= javascript_tag do %>
 	window.appointmentsURL = "<%= j planning_appointments_url(@planning, params: {patient_id: @patient.id}) %>";
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
-	window.createAppointmentUrl = "<%= j new_planning_appointment_url(@planning) %>"
-	window.createPrivateEventUrl = "<%= j new_planning_private_event_url(@planning) %>"
 	window.privateEventsUrl = "<%= j planning_private_events_url(@planning, params: {patient_id: @patient.id}) %>"
-	window.selectActionUrl = window.createAppointmentUrl;
+	window.selectActionUrl = "<%= j new_calendar_event_path %>";
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.defaultView = "<%= j @corporation.default_individual_view %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -16,9 +14,7 @@
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_patient_path(@planning, @patient), resource_master_path: planning_patient_master_path(@planning, @patient), nurse: @main_nurse} %>
-
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'patient', master_resource: false} %>
-
 
 <div id="detail-container">
 
@@ -49,7 +45,6 @@
 		        </div>
 		    </div>
 		    <div id="planning-top-right-action-container" class="no-print">
-				<%= render 'plannings/private_event_toggle_switch' %>
 			    <div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
 		    </div>
 		</div>

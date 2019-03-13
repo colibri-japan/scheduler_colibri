@@ -11,16 +11,16 @@
 
 			  <div class="form-group row">
 			    <p class='colibri-form-label col-sm-3'>従業員</p>
-				<p class=" col-sm-9" id="resource-name" style='font-size:1.1em'><%= @nurse.try(:name) %></p>
-              </div>
+				  <p class=" col-sm-9" id="resource-name" style='font-size:1.1em'><%= @nurse.try(:name) %></p>
+        </div>
 
 			  <div class="form-group row">
 			    <p class='colibri-form-label col-sm-3'>年.月</p>
-				<p class=" col-sm-9" style='font-size:1.1em'>
-				  <%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], (Date.today + 1.month).year), id: 'master-reflect-year' %>
-				  <%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], (Date.today + 1.month).month), id: 'master-reflect-month' %>
-				</p>
-              </div>
+					<p class=" col-sm-9" style='font-size:1.1em'>
+						<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], (Date.today + 1.month).year), id: 'master-reflect-year' %>
+						<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], (Date.today + 1.month).month), id: 'master-reflect-month' %>
+					</p>
+        </div>
 
 			  <div class='actions'>
 			    <div class='btn btn-info btn-block' id='submit-reflect' data-submit-url="<%= nurse_master_to_schedule_path(@nurse) %>">反映する</div>

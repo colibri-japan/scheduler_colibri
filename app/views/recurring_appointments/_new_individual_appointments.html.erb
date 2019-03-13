@@ -1,0 +1,37 @@
+<div id="new_individual_appointments" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">実績スケジュールへの反映</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+                <div id="master-save-success" style="margin-bottom:10px" class="colibri-success-notification">サービスがマスターにセーブされました！</div>
+                <div id="create-appointments-question" style="margin-bottom:10px">実績シフトへ反映する年.月を選択してください</div>
+
+                <div id="option1" style="margin-bottom:10px">
+                  <%= select_tag '年', options_for_select([['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], @recurring_appointment.anchor.year), id: 'reflect-year-1' %>
+                  <%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], @recurring_appointment.anchor.month), id: 'reflect-month-1' %>
+                </div>
+
+                <%= label_tag :second_option_selected, class: 'btn btn-colibri-light btn-sm', id: 'second-option-selected-button' do %>
+                  <%= check_box_tag :second_option_selected, 1, false, {style: "display:none"} %>
+                  +反映する月を追加
+                <% end %>
+
+                <div id="option2" style="display:none;margin-bottom:20px">
+                  <%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], (@recurring_appointment.anchor + 1.month).year), id: 'reflect-year-2' %>
+                  <%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], (@recurring_appointment.anchor + 1.month).month), id: 'reflect-month-2' %>
+                  <button class="close" style="text-align:left !important;float:none !important" id='remove-second-option-button'>&times;</button>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type='button' class='btn btn-light' data-dismiss='modal'>閉じる</button>
+                <div data-url="<%= planning_recurring_appointment_create_individual_appointments_path(@planning, @recurring_appointment) %>" class="btn btn-info" id="create-appointments-trigger">反映する</div>
+			</div>
+		</div>
+	</div>
+
+</div>

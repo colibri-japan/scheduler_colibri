@@ -1736,6 +1736,44 @@ let autoFillResource = (resourceId, resourceLabel) => {
   }
 }
 
+let selectSecondAppointmentCopyOption = () => {
+  $('#second-option-selected-button').click(function(){
+    $('#option2').show();
+    $(this).hide()
+  })
+  $('#remove-second-option-button').click(function(){
+    $('#option2').hide();
+    $('#second-option-selected-button').show()
+    $('#second_option_selected').prop('checked', false)
+  })
+}
+
+let submitAppointmentCopyOption = () => {
+  $('#create-appointments-trigger').one('click', function(event){
+    event.preventDefault();
+    $(this).prop('disabled', true);
+    let ajaxData;
+    ajaxData = {
+      option1: {
+        year: $('#reflect-year-1').val(),
+        month: $('#reflect-month-1').val()
+      },
+      option2: {
+        year: $('#reflect-year-2').val(),
+        month: $('#reflect-month-2').val()
+      },
+      option2IsSelected: $('#second_option_selected').is(':checked')
+    }
+
+    console.log(ajaxData)
+    $.ajax({
+      url: $(this).data('url'),
+      type: 'PATCH',
+      data: ajaxData
+    })
+  })
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 

@@ -39,6 +39,8 @@
 
 <% else %>
   $('.modal').modal('hide');
+  $('.modal-backdrop').remove();
+
   if (typeof calendar === 'undefined') {
     let calendar;
   }
@@ -58,7 +60,10 @@
         jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
       );
     }
-  <% else %>
-
   <% end %>
+
+  $('#remote_container').html('<%= j render "new_individual_appointments" %>');
+  $('#new_individual_appointments').modal('show');
+  selectSecondAppointmentCopyOption()
+  submitAppointmentCopyOption()
 <% end %>

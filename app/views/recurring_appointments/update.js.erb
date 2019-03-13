@@ -70,17 +70,7 @@
         )
       }
     <% else %>
-      <% @appointments.each do |appointment| %>
-        calendar.fullCalendar('removeEvents', '<%= "appointment_#{appointment.id}" %>' );
 
-        if (window.nurseId == <%= appointment.nurse_id %> || window.patientId == <%= appointment.patient_id %> || window.generalPlanning == 'true') {
-          calendar.fullCalendar(
-            'renderEvent', 
-            $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe  %>"), 
-            false
-          );
-        }
-      <% end %>
     <% end %>
 
 <% end %>

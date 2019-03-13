@@ -59,14 +59,6 @@
       );
     }
   <% else %>
-    <% @appointments.each do |appointment| %>
-      if (window.nurseId == <%= appointment.nurse_id %> || window.patientId == <%= appointment.patient_id %> || window.generalPlanning == 'true' ) {
-        calendar.fullCalendar(
-          'renderEvent', 
-          jQuery.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"),
-          false
-        );
-      }
-    <% end %>
+
   <% end %>
 <% end %>

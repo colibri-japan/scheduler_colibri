@@ -28,13 +28,11 @@ class RecurringAppointmentsController < ApplicationController
 
   # GET /recurring_appointments/new
   def new
-    from_master_planning?
     @recurring_appointment = RecurringAppointment.new
   end
 
   # GET /recurring_appointments/1/edit
   def edit
-    @master = @recurring_appointment.master
     @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, planning_id: @recurring_appointment.planning_id, master: @recurring_appointment.master, displayable: true).order(starts_at: 'asc')
     @appointments_after_first = @appointments.drop(1)
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
@@ -44,17 +42,9 @@ class RecurringAppointmentsController < ApplicationController
   # POST /recurring_appointments.json
   def create
     @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
-    add_to_master?
 
-    respond_to do |format|
-      if @recurring_appointment.save
-        @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name), new_anchor: @recurring_appointment.anchor, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at
-        @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id)
-
-        format.js
-      else
-        format.js
-      end
+    if @recurring_appointment.save 
+      @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name), new_anchor: @recurring_appointment.anchor, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at
     end
   end
 
@@ -62,13 +52,11 @@ class RecurringAppointmentsController < ApplicationController
   # PATCH/PUT /recurring_appointments/1.json
   def update    
     @recurring_appointment = RecurringAppointment.find(params[:id])
-    appointment_ids = Appointment.valid.where(recurring_appointment_id: @recurring_appointment.id).ids
     set_previous_params
       
     if @recurring_appointment.update(recurring_appointment_params)
       @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id, master: true).last if @recurring_appointment.master
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
-      @appointments = Appointment.find(appointment_ids)
     end
   end
 
@@ -76,7 +64,6 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment = RecurringAppointment.find(params[:id])
     if @recurring_appointment.update_attribute(edit_requested: !@recurring_appointment.edit_requested)
       @activity = @recurring_appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_edit_requested: !@recurring_appointment.edit_requested
-      @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
     end
   end
 
@@ -85,7 +72,6 @@ class RecurringAppointmentsController < ApplicationController
 
     if @recurring_appointment.save 
       @activity = @recurring_appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_cancelled: !@recurring_appointment.cancelled
-      @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id, displayable: true)
     end
   end
 
@@ -97,13 +83,11 @@ class RecurringAppointmentsController < ApplicationController
   end
 
   def archive
-    appointment_ids = Appointment.where(recurring_appointment_id: @recurring_appointment.id).ids
     @recurring_appointment.archive 
     @recurring_appointment.displayable = false
 
     if @recurring_appointment.save(validate: false)
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
-      @appointments = Appointment.find(appointment_ids)
     end                  
   end
 
@@ -112,7 +96,6 @@ class RecurringAppointmentsController < ApplicationController
   # DELETE /recurring_appointments/1.json
   def destroy
     @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
-    @appointments = Appointment.where(recurring_appointment_id: @recurring_appointment.id)
     @recurring_appointment.delete
   end
 
@@ -130,9 +113,6 @@ class RecurringAppointmentsController < ApplicationController
 
         format.js
       else 
-        puts 'save failed'
-        puts @new_appointment.errors.messages
-        puts @recurring_appointment.id
         format.js
       end
     end
@@ -171,14 +151,6 @@ class RecurringAppointmentsController < ApplicationController
 
     def set_planning
       @planning = Planning.find(params[:planning_id])
-    end
-
-    def from_master_planning?
-      params[:master] == 'true' ? @master = true : @master = false
-    end
-
-    def add_to_master?
-      params[:master]== 'true' ? @recurring_appointment.master = true : @recurring_appointment.master = false
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

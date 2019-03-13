@@ -783,14 +783,8 @@ initialize_calendar = function() {
           setAppointmentTime(start, end);
           setPrivateEventTime(start, end);
           setHiddenStartAndEndFields(start, end);
+          autoFillResource(resource.id, window.resourceLabel);
 
-          if (view.name == 'agendaDay') {
-            $('#recurring_appointment_nurse_id').val(resource.id);
-            $('#private_event_nurse_id').val(resource.id);
-          } else if (view.name == 'timelineWeek') {
-            $('#recurring_appointment_nurse_id').val(resource.id);
-            $('#private_event_nurse_id').val(resource.id);
-          }
           appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient()
         });
@@ -1730,6 +1724,16 @@ let toggleCalendarEventModel = () => {
     $('#private-event-form-container').show();
     $('#appointment-form-container').hide();
   });
+}
+
+let autoFillResource = (resourceId, resourceLabel) => {
+  if (resourceLabel == "利用者") {
+    $('#appointment_patient_id').val(resourceId);
+    $('#private_event_patient_id').val(resourceId);
+  } else if (resourceLabel == "従業員") {
+    $('#appointment_nurse_id').val(resourceId);
+    $('#private_event_nurse_id').val(resourceId);
+  }
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

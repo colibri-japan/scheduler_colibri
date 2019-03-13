@@ -12,7 +12,7 @@ class CopyPlanningFromMasterWorker
 	new_appointments = []
 	new_provided_services = []
 
-	recurring_appointments = planning.recurring_appointments.from_master.to_be_displayed.edit_not_requested.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', first_day)
+	recurring_appointments = planning.recurring_appointments.from_master.to_be_displayed.edit_not_requested.not_terminated_at(first_day)
 
 	recurring_appointments.find_each do |recurring_appointment|
     occurrences = recurring_appointment.appointments(first_day, last_day)

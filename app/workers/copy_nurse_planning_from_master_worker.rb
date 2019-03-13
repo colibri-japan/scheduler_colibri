@@ -13,7 +13,7 @@ class CopyNursePlanningFromMasterWorker
     new_appointments = []
     new_provided_services = []
 
-    recurring_appointments = planning.recurring_appointments.from_master.where(nurse_id: nurse.id).to_be_displayed.edit_not_requested.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', first_day)
+    recurring_appointments = planning.recurring_appointments.from_master.where(nurse_id: nurse.id).to_be_displayed.edit_not_requested.not_terminated_at(first_day)
 
     recurring_appointments.find_each do |recurring_appointment|
       occurrences = recurring_appointment.appointments(first_day, last_day)
@@ -42,7 +42,21 @@ class CopyNursePlanningFromMasterWorker
     new_appointments.each do |appointment|  
       provided_duration = appointment.ends_at - appointment.starts_at
 		  is_provided =  Time.current + 9.hours > appointment.starts_at
-      new_provided_service = ProvidedService.new(appointment_id: appointment.id, planning_id: appointment.planning_id, service_duration: provided_duration, nurse_id: appointment.nurse_id, patient_id: appointment.patient_id, cancelled: appointment.cancelled, provided: is_provided, temporary: false, title: appointment.title, hour_based_wage: corporation.hour_based_payroll, service_date: appointment.starts_at, appointment_start: appointment.starts_at, appointment_end: appointment.ends_at)
+      new_provided_service = ProvidedService.new(
+        appointment_id: appointment.id, 
+        planning_id: appointment.planning_id, 
+        service_duration: provided_duration, 
+        nurse_id: appointment.nurse_id, 
+        patient_id: appointment.patient_id, 
+        cancelled: appointment.cancelled, 
+        provided: is_provided, 
+        temporary: false, 
+        title: appointment.title, 
+        hour_based_wage: corporation.hour_based_payroll, 
+        service_date: appointment.starts_at, 
+        appointment_start: appointment.starts_at, 
+        appointment_end: appointment.ends_at
+      )
       new_provided_service.run_callbacks(:save) { false }
       new_provided_services << new_provided_service
     end

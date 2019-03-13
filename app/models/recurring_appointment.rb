@@ -47,7 +47,7 @@ class RecurringAppointment < ApplicationRecord
 	scope :duplicatable, -> { where(duplicatable: true) }
 	scope :to_be_displayed, -> { where(displayable: true).not_archived }
 	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true, duplicatable: true, edit_requested: false).where.not(frequency: 2).not_archived }
-
+	scope :not_terminated_at, -> date { where('(termination_date IS NULL) OR (termination_date > ?)', date) }
 
 	def schedule
 		@schedule ||= begin

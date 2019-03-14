@@ -92,6 +92,13 @@
         <%= form.text_area :description, id: :recurring_appointment_description, class: "form-control" %>
       </div>
 
+      <% unless recurring_appointment.new_record? %>
+        <div class="form-group">
+          <%= form.label :synchronize_appointments, "実績サービスを含めて編集する  ", class: "colibri-form-label" %>
+          <%= form.check_box :synchronize_appointments, checked: true %>
+        </div>
+      <% end %>
+
       <%= form.hidden_field :master, value: true %>
       <%= hidden_field_tag(:start, Date.today) %>
       <%= hidden_field_tag(:end, Date.today) %>

@@ -1,7 +1,7 @@
 class Appointment < ApplicationRecord
 	include PublicActivity::Common
 
-	attribute :request_edit_for_overlapping_appointments, :boolean 
+	attribute :should_request_edit_for_overlapping_appointments, :boolean 
 
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
@@ -14,7 +14,7 @@ class Appointment < ApplicationRecord
 	validates :title, presence: true
 	validate :do_not_overlap
 	
-	before_create :overlapping_appointments_to_edit_requested, if: :request_edit_for_overlapping_appointments?
+	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
 	before_validation :default_master, on: :create
 	before_validation :default_displayable, on: :create
 
@@ -30,7 +30,7 @@ class Appointment < ApplicationRecord
 	scope :from_master, -> { where(master: true) }
 	scope :to_be_displayed, -> { where(displayable: true).not_archived }
 	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true).not_archived }
-
+  scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
 
 	def all_day_appointment?
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
@@ -40,10 +40,8 @@ class Appointment < ApplicationRecord
 		!self.starts_at.on_weekday? || !self.ends_at.on_weekday? || HolidayJp.between(self.starts_at, self.ends_at).present? ? true : false
 	end
 
-	def request_edit_for_overlapping_appointments?
-		puts 'request edit for overlapping appointments?'
-		puts self.request_edit_for_overlapping_appointments
-		self.request_edit_for_overlapping_appointments
+	def should_request_edit_for_overlapping_appointments?
+		should_request_edit_for_overlapping_appointments
 	end
 
 	def self.overlapping(range)
@@ -121,8 +119,11 @@ class Appointment < ApplicationRecord
 
 	private
 
-	def overlapping_appointments_to_edit_requested
-		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).overlapping(self.starts_at..self.ends_at)
+	def request_edit_for_overlapping_appointments
+		puts 'requesting edit for overlapping appointments'
+		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
+		puts 'overlapping ids'
+		puts overlapping_appointments.ids
 		overlapping_appointments.update_all(edit_requested: true, updated_at: Time.current)
 	end
 

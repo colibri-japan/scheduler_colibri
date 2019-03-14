@@ -32,10 +32,11 @@ class CopyPlanningFromMasterWorker
         recurring_appointment_id: recurring_appointment.id,
         service_id: recurring_appointment.service_id,
         duration: recurring_appointment.duration,
+        should_request_edit_for_overlapping_appointments: true
       )
       new_appointments << new_appointment
     end
-	end
+  end
 
   Appointment.import(new_appointments)
   

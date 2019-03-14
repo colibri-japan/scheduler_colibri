@@ -32,6 +32,7 @@ class CopyNursePlanningFromMasterWorker
           recurring_appointment_id: recurring_appointment.id,
           service_id: recurring_appointment.service_id,
           duration: recurring_appointment.duration,
+          should_request_edit_for_overlapping_appointments: true
         )
         new_appointments << new_appointment 
       end
@@ -55,7 +56,7 @@ class CopyNursePlanningFromMasterWorker
         hour_based_wage: corporation.hour_based_payroll, 
         service_date: appointment.starts_at, 
         appointment_start: appointment.starts_at, 
-        appointment_end: appointment.ends_at
+        appointment_end: appointment.ends_at,
       )
       new_provided_service.run_callbacks(:save) { false }
       new_provided_services << new_provided_service

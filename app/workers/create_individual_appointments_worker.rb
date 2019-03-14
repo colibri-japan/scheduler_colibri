@@ -3,25 +3,12 @@ class CreateIndividualAppointmentsWorker
     sidekiq_options retry: false
 
     def perform(recurring_appointment_id, year1, month1, year2, month2, select_year_and_month_2)
-        puts recurring_appointment_id
-        puts year1
-        puts month1
-        puts  year2
-        puts  month2
-        puts select_year_and_month_2
-        puts select_year_and_month_2.class.name
         first_day = DateTime.new(year1.to_i, month1.to_i, 1, 0, 0, 0)
         last_day = select_year_and_month_2 == 'true' ? DateTime.new(year2.to_i, month2.to_i, -1, 23, 59, 59) : DateTime.new(year1.to_i, month1.to_i, -1, 0, 0, 0)
         recurring_appointment = RecurringAppointment.find(recurring_appointment_id.to_i)
         service = recurring_appointment.service
 
-        puts first_day
-        puts last_day
-
         occurrences = recurring_appointment.appointments(first_day, last_day)
-
-        puts 'occurrences'
-        puts occurrences
 
         new_appointments = []
         new_provided_services = []
@@ -39,7 +26,8 @@ class CreateIndividualAppointmentsWorker
                 displayable: recurring_appointment.displayable,
                 service_id: recurring_appointment.service_id,
                 recurring_appointment_id: recurring_appointment.id,
-                color: recurring_appointment.color
+                color: recurring_appointment.color,
+                should_request_edit_for_overlapping_appointments: true
             )
             new_appointments << new_appointment
         end

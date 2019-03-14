@@ -122,9 +122,7 @@ class Appointment < ApplicationRecord
 	def request_edit_for_overlapping_appointments
 		puts 'requesting edit for overlapping appointments'
 		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
-		puts 'overlapping ids'
-		puts overlapping_appointments.ids
-		overlapping_appointments.update_all(edit_requested: true, updated_at: Time.current)
+		overlapping_appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: Time.current)
 	end
 
 	def do_not_overlap

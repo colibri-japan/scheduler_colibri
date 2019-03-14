@@ -61,7 +61,7 @@ let setWishedSlotTime = (start, end, view) => {
   }
 }
 
-let setPrivateEventTime = (start, end) => {
+let setPrivateEventTime = (start, end, view) => {
   $('#private_event_starts_at_1i').val(moment(start).format('YYYY'));
   $('#private_event_starts_at_2i').val(moment(start).format('M'));
   $('#private_event_starts_at_3i').val(moment(start).format('D'));
@@ -69,9 +69,15 @@ let setPrivateEventTime = (start, end) => {
   $('#private_event_starts_at_5i').val(moment(start).format('mm'));
   $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
   $('#private_event_ends_at_2i').val(moment(end).format('M'));
-  $('#private_event_ends_at_3i').val(moment(end).format('D'));
-  $('#private_event_ends_at_4i').val(moment(end).format('HH'));
-  $('#private_event_ends_at_5i').val(moment(end).format('mm'));
+  if (view.name == 'month' || view.name == 'timelineWeek') {
+    $('#private_event_ends_at_3i').val(moment(start).format('D'));
+    $('#private_event_ends_at_4i').val('23');
+    $('#private_event_ends_at_5i').val('00');
+  } else {
+    $('#private_event_ends_at_3i').val(moment(end).format('D'));
+    $('#private_event_ends_at_4i').val(moment(end).format('HH'));
+    $('#private_event_ends_at_5i').val(moment(end).format('mm'));
+  }
   if (window.nurseId) {
     $("#private_event_nurse_id").val(window.nurseId);
   }
@@ -80,7 +86,7 @@ let setPrivateEventTime = (start, end) => {
   }
 }
 
-let setAppointmentTime = (start, end) => {
+let setAppointmentTime = (start, end, view) => {
   $('#appointment_starts_at_1i').val(moment(start).format('YYYY'));
   $('#appointment_starts_at_2i').val(moment(start).format('M'));
   $('#appointment_starts_at_3i').val(moment(start).format('D'));
@@ -88,9 +94,15 @@ let setAppointmentTime = (start, end) => {
   $('#appointment_starts_at_5i').val(moment(start).format('mm'));
   $('#appointment_ends_at_1i').val(moment(end).format('YYYY'));
   $('#appointment_ends_at_2i').val(moment(end).format('M'));
-  $('#appointment_ends_at_3i').val(moment(end).format('D'));
-  $('#appointment_ends_at_4i').val(moment(end).format('HH'));
-  $('#appointment_ends_at_5i').val(moment(end).format('mm'));
+  if (view.name == 'month' || view.name == 'timelineWeek') {
+    $('#appointment_ends_at_3i').val(moment(start).format('D'));
+    $('#appointment_ends_at_4i').val('23');
+    $('#appointment_ends_at_5i').val('00');
+  } else {
+    $('#appointment_ends_at_3i').val(moment(end).format('D'));
+    $('#appointment_ends_at_4i').val(moment(end).format('HH'));
+    $('#appointment_ends_at_5i').val(moment(end).format('mm'));
+  }
   if (window.nurseId) {
     $("#appointment_nurse_id").val(window.nurseId);
   }
@@ -163,8 +175,8 @@ initialize_nurse_calendar = function(){
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.selectActionUrl, function() {
-          setAppointmentTime(start, end);
-          setPrivateEventTime(start, end);
+          setAppointmentTime(start, end, view);
+          setPrivateEventTime(start, end, view);
           appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
         });
@@ -350,8 +362,8 @@ initialize_patient_calendar = function(){
 
       select: function (start, end, jsEvent, view, resource) {
         $.getScript(window.selectActionUrl, function() {
-          setAppointmentTime(start, end);     	         
-          setPrivateEventTime(start, end);
+          setAppointmentTime(start, end, view);     	         
+          setPrivateEventTime(start, end, view);
           appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
         });
@@ -780,8 +792,8 @@ initialize_calendar = function() {
 
       select: function(start, end, jsEvent, view, resource) {
         $.getScript(window.selectActionUrl, function() {
-          setAppointmentTime(start, end);
-          setPrivateEventTime(start, end);
+          setAppointmentTime(start, end, view);
+          setPrivateEventTime(start, end, view);
           setHiddenStartAndEndFields(start, end);
           autoFillResource(resource.id, window.resourceLabel);
 

@@ -134,8 +134,6 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_cancel_confirm
-    puts params[:edit_requested]
-    puts params[:cancelled]
   end
 
   def batch_cancel

@@ -76,6 +76,7 @@ class RecurringAppointmentsController < ApplicationController
   def terminate 
     @recurring_appointment.termination_date = params[:t_date].to_date.beginning_of_day
     if @recurring_appointment.save 
+      cancel_appointments_after_termination
       @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
     end
   end
@@ -85,6 +86,7 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.displayable = false
 
     if @recurring_appointment.save(validate: false)
+      cancel_all_appointments
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
     end                  
   end
@@ -153,6 +155,16 @@ class RecurringAppointmentsController < ApplicationController
 
     def set_planning
       @planning = Planning.find(params[:planning_id])
+    end
+
+    def cancel_appointments_after_termination
+      appointment_ids = Appointment.where(recurring_appointment_id: @recurring_appointment.id).to_be_displayed.where('starts_at > ?', params[:t_date].to_date.beginning_of_day).ids 
+      CancelAppointmentsWorker.perform_async(appointment_ids) if appointment_ids.present?
+    end
+
+    def cancel_all_appointments
+      appointment_ids = Appointment.to_be_displayed.where(recurring_appointment_id: @recurring_appointment.id).ids 
+      CancelAppointmentsWorker.perform_async(appointment_ids) if appointment_ids.present?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

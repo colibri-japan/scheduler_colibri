@@ -26,9 +26,9 @@
         <% if recurring_appointment.master %>
           <div class='btn btn-secondary btn-sm text-white' id='recurring-appointment-terminate' data-terminate-url="<%= planning_recurring_appointment_terminate_path(@planning, recurring_appointment) %>">サービス停止</div>
         <% else %>
-          <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> 全繰り返し#{toggle_cancel_text(recurring_appointment)}".html_safe, planning_recurring_appointment_toggle_cancelled_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm' %>
+          <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> 全繰り返し#{toggle_cancel_text(recurring_appointment)}".html_safe, planning_recurring_appointment_toggle_cancelled_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm', data: {confirm: '選択された日以降の繰り返しが削除されます。実績はキャンセルされます。'} %>
         <% end %>
-        <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 全繰り返し削除'.html_safe, planning_recurring_appointment_archive_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm', data: {confirm: 'サービスが削除され、全繰り返しがスケジュールから消えます。'}  %>
+        <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 全繰り返し削除'.html_safe, planning_recurring_appointment_archive_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm', data: {confirm: '全ての繰り返しが削除されます。実績は全てキャンセルされます。'}  %>
     </div>
   <% end %>
 

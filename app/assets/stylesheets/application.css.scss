@@ -56,9 +56,7 @@ html, body {
   background: #aaa; 
 }
 
-body {
-	background-color: #F7F9FE;
-}
+
 
 .glyphicon {
 	font-size: 20px;
@@ -299,10 +297,6 @@ li.colibri-app-menu a.nav-url {
 	color: #4F4F4F;
 }
 
-.fc-today {
-	background-color: white !important;
-}
-
 .fc-resource-cell {
 	font-weight: normal !important;
 }
@@ -319,12 +313,26 @@ li.colibri-app-menu a.nav-url {
 	margin-bottom: 4px !important;
 }
 
-.fc-sat { 
-	background-color: #E9EEFA;  
+.fc-day-header.fc-sat { 
+	color: blue !important;
 }
 
-.fc-sun { 
-	background-color: #FFE8E8;  
+.fc-day-header.fc-sun { 
+	color: red; 
+}
+
+.fc-today {
+	background-color: transparent !important;
+}
+
+.fc-day-header.fc-today {
+	font-weight: bold;
+	color: black;
+}
+
+.fc-day-top.fc-today {
+	font-weight: bold;
+	color: black;
 }
 
 tr.clickable-row:hover {

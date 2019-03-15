@@ -3,12 +3,11 @@ class SynchronizeAppointmentsWithRecurringAppointmentWorker
   sidekiq_options retry: false
 
 
-  def perform(appointment_ids)
+  def perform(recurring_appointment_id, appointment_ids)
     puts 'performing synchronization'
 
-    appointments = Appointment.where(id: appointment_ids)
-
-    recurring_appointment = appointments.first.recurring_appointment
+    appointments = Appointment.where(id: appointment_ids) 
+    recurring_appointment = RecurringAppointment.find(recurring_appointment_id)
 
     appointments.each do |appointment|
       appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
@@ -22,6 +21,7 @@ class SynchronizeAppointmentsWithRecurringAppointmentWorker
       appointment.should_request_edit_for_overlapping_appointments = true
       appointment.displayable = true 
       appointment.master = false 
+      appointment.recurring_appointment_id = recurring_appointment.id
 
       appointment.save
     end

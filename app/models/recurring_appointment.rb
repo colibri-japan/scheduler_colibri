@@ -140,9 +140,8 @@ class RecurringAppointment < ApplicationRecord
 			new_recurring.anchor = editing_occurrences_after
 			new_recurring.original_id = self.id
 			if new_recurring.save(validate: false) && self.synchronize_appointments
-				Appointment.to_be_displayed.where('starts_at > ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(recurring_appointment_id: new_recurring.id)
-				appointment_ids = Appointment.to_be_displayed.where('starts_at > ?', editing_occurrences_after).where(recurring_appointment_id: new_recurring.id).ids 
-				SynchronizeAppointmentsWithRecurringAppointmentWorker.perform_async(appointment_ids) if appointment_ids.present?
+				appointment_ids = Appointment.to_be_displayed.where('starts_at > ?', editing_occurrences_after).where(recurring_appointment_id: self.id).ids
+				SynchronizeAppointmentsWithRecurringAppointmentWorker.perform_async(new_recurring.id, appointment_ids) if appointment_ids.present?
 			end
 
 			editing_occurrences_after_date = self.editing_occurrences_after.to_date

@@ -140,11 +140,8 @@ class RecurringAppointment < ApplicationRecord
 			new_recurring.anchor = editing_occurrences_after
 			new_recurring.original_id = self.id
 			if new_recurring.save(validate: false) && self.synchronize_appointments
-				appointment_ids = Appointment.to_be_displayed.where('starts_at > ?', editing_occurrences_after).where(recurring_appointment_id: self.id).ids
-				new_recurring = RecurringAppointment.find(new_recurring.id)
-				puts "new_recurring was found"
-				puts new_recurring
-				SynchronizeAppointmentsWithRecurringAppointmentWorker.perform_async(new_recurring.id, appointment_ids) if appointment_ids.present?
+				appointments = Appointment.to_be_displayed.where('starts_at > ?', editing_occurrences_after).where(recurring_appointment_id: self.id)
+				synchronize_appointments_with_recurring_appointment(new_recurring, appointments) if appointments.present?
 			end
 
 			editing_occurrences_after_date = self.editing_occurrences_after.to_date
@@ -155,8 +152,8 @@ class RecurringAppointment < ApplicationRecord
 
 	def update_appointments 
 		if synchronize_appointments && editing_occurrences_after.blank?
-			appointment_ids = Appointment.to_be_displayed.where(recurring_appointment_id: self.id).ids
-			SynchronizeAppointmentsWithRecurringAppointmentWorker.perform_async(appointment_ids) if appointment_ids.present?
+			appointments = Appointment.to_be_displayed.where(recurring_appointment_id: self.id)
+			synchronize_appointments_with_recurring_appointment(self, appointments) if appointments.present?
 		end
 	end
 
@@ -272,6 +269,25 @@ class RecurringAppointment < ApplicationRecord
 		else
 			new_service = self.planning.corporation.services.create(title: self.title)
 			self.service_id = new_service.id
+		end
+	end
+
+	def synchronize_appointments_with_recurring_appointment(recurring_appointment, appointments)
+		appointments.each do |appointment|
+			appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
+			appointment.ends_at = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.ends_at.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min)
+			appointment.color = recurring_appointment.color 
+			appointment.description = recurring_appointment.description 
+			appointment.title = recurring_appointment.title 
+			appointment.nurse_id = recurring_appointment.nurse_id 
+			appointment.patient_id = recurring_appointment.patient_id 
+			appointment.service_id = recurring_appointment.service_id  
+			appointment.should_request_edit_for_overlapping_appointments = true
+			appointment.displayable = true 
+			appointment.master = false 
+			appointment.recurring_appointment_id = recurring_appointment.id
+
+			appointment.save
 		end
 	end
 

@@ -7,7 +7,7 @@ class SynchronizeAppointmentsWithRecurringAppointmentWorker
     puts 'performing synchronization'
 
     appointments = Appointment.where(id: appointment_ids) 
-    recurring_appointment = RecurringAppointment.find(recurring_appointment_id)
+    recurring_appointment = RecurringAppointment.find(recurring_appointment_id.to_i)
 
     appointments.each do |appointment|
       appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)

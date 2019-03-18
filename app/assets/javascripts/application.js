@@ -584,9 +584,9 @@ initialize_master_calendar = function() {
                     anchor: event.start.format('YYYY-MM-DD'),
                     end_day: event.end.format('YYYY-MM-DD'),
                     starts_at: event.start.format(),
-                    ends_at: event.end.format()
+                    ends_at: event.end.format(),
+                    master: true
                   },
-                  master: true
                 },
                 success: function (data) {
                   $(".popover").remove();

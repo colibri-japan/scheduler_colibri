@@ -141,7 +141,6 @@ class RecurringAppointment < ApplicationRecord
 			new_recurring.original_id = self.id
 			if new_recurring.save(validate: false) && self.synchronize_appointments
 				appointment_ids = Appointment.to_be_displayed.where('starts_at > ?', editing_occurrences_after).where(recurring_appointment_id: self.id).ids
-				byebug
 				new_recurring = RecurringAppointment.find(new_recurring.id)
 				puts "new_recurring was found"
 				puts new_recurring

@@ -10,7 +10,7 @@ class ActivitiesController < ApplicationController
 		@users = @corporation.users.all
 		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 
-		@activities = PublicActivity::Activity.where(planning_id: @planning.id).limit(40).order("created_at desc").includes({trackable: :nurse}, {trackable: :patient}, :owner)
+		@activities = PublicActivity::Activity.where(planning_id: @planning.id).limit(40).order("created_at desc").includes({trackable: :nurse}, :owner)
 
 		if params[:n].present? && @nurses.ids.include?(params[:n].to_i)
 			@nurse_id = params[:n]

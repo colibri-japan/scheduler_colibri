@@ -1711,12 +1711,28 @@ let autoFillResource = (resourceId, resourceLabel) => {
 let selectSecondAppointmentCopyOption = () => {
   $('#second-option-selected-button').click(function(){
     $('#option2').show();
-    $(this).hide()
+    $(this).hide();
+    $('#third-option-selected-button').show()
   })
   $('#remove-second-option-button').click(function(){
     $('#option2').hide();
-    $('#second-option-selected-button').show()
+    if ($('#third-option-selected-button').is(':visible')) {
+      $('#third-option-selected-button').hide()
+    }
+    $('#second-option-selected-button').show();
     $('#second_option_selected').prop('checked', false)
+  })
+  $('#third-option-selected-button').click(function(){
+    $('#option3').show();
+    $(this).hide();
+  })
+  $('#remove-third-option-button').click(function(){
+    $('#option3').hide();
+    $('#third-option-selected-button').show()
+    if ($('#second-option-selected-button').is(':visible')) {
+      $('#third-option-selected-button').hide();
+    }
+    $('#third_option_selected').prop('checked', false)
   })
 }
 
@@ -1734,7 +1750,12 @@ let submitAppointmentCopyOption = () => {
         year: $('#reflect-year-2').val(),
         month: $('#reflect-month-2').val()
       },
-      option2IsSelected: $('#second_option_selected').is(':checked')
+      option3: {
+        year: $('#reflect-year-3').val(),
+        month: $('#reflect-month-3').val()
+      },
+      option2IsSelected: $('#second_option_selected').is(':checked'),
+      option3IsSelected: $('#third_option_selected').is(':checked')
     }
 
     console.log(ajaxData)

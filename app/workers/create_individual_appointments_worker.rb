@@ -2,14 +2,29 @@ class CreateIndividualAppointmentsWorker
 	include Sidekiq::Worker
     sidekiq_options retry: false
 
-    def perform(recurring_appointment_id, year1, month1, year2, month2, select_year_and_month_2)
-        first_day = DateTime.new(year1.to_i, month1.to_i, 1, 0, 0, 0)
-        last_day = select_year_and_month_2 == 'true' ? DateTime.new(year2.to_i, month2.to_i, -1, 23, 59, 59) : DateTime.new(year1.to_i, month1.to_i, -1, 0, 0, 0)
+    def perform(recurring_appointment_id, year1, month1, year2, month2, year3, month3, select_year_and_month_2, select_year_and_month_3)
         recurring_appointment = RecurringAppointment.find(recurring_appointment_id.to_i)
         service = recurring_appointment.service
 
-        occurrences = recurring_appointment.appointments(first_day, last_day)
+        puts 'select 2nd month'
+        puts select_year_and_month_2
+        puts 'select 3rd month'
+        puts select_year_and_month_3
+        
+        month_1_occurrences = recurring_appointment.appointments(first_day_of(year1, month1), last_day_of(year1, month1))
+        month_2_occurrences = select_year_and_month_2 == 'true' ? recurring_appointment.appointments(first_day_of(year2, month2), last_day_of(year2, month2)) : []
+        month_3_occurrences = select_year_and_month_3 == 'true' ? recurring_appointment.appointments(first_day_of(year3, month3), last_day_of(year3, month3)) : []
 
+        puts 'month 1, 2, 3 occurrences'
+        puts month_1_occurrences
+        puts month_2_occurrences
+        puts month_3_occurrences
+        
+        occurrences = (month_1_occurrences + month_2_occurrences + month_3_occurrences).flatten
+
+        puts 'flattened sum of occurrences'
+        puts occurrences
+        
         new_appointments = []
         new_provided_services = []
 
@@ -57,6 +72,16 @@ class CreateIndividualAppointmentsWorker
         end
 
         ProvidedService.import new_provided_services
+    end
+
+    private 
+
+    def first_day_of(year, month)
+        DateTime.new(year.to_i, month.to_i, 1, 0, 0, 0)
+    end
+
+    def last_day_of(year, month)
+        DateTime.new(year.to_i, month.to_i, -1, 23, 59, 59)
     end
 
 end

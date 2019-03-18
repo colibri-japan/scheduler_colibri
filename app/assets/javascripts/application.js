@@ -963,7 +963,7 @@ let appointmentComments = () => {
   var clientEvents = calendar.fullCalendar('clientEvents');
 
   clientEvents.forEach(event => {
-    if (event.description && !event.private_event) {
+    if (event.description && !event.private_event && event.eventType !== 'wished_slot') {
       var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse.name + ' 利用者：' + event.patient.name + ' ' + event.description;
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }

@@ -12,6 +12,7 @@ json.array! @appointments.each do |appointment|
         
         json.resourceId appointment.nurse_id
         json.service_type appointment.title ? appointment.title : ''
+        json.eventType 'appointment'
 
         json.patient do 
             json.name appointment.patient.name 

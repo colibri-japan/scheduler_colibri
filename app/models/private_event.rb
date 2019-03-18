@@ -37,6 +37,7 @@ class PrivateEvent < ApplicationRecord
 			nurse: {
 				name: self.nurse.try(:name),
 			},
+			eventType: 'private_event',
 			patient: {
 				name: self.patient.try(:name),
 				address: self.patient.try(:address)

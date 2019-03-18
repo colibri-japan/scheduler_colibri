@@ -19,6 +19,8 @@ json.array! @private_events.each do |private_event|
         json.address private_event.patient.try(:address)
     end
 
+    json.eventType 'private_event'
+
     json.resourceId private_event.nurse_id
 
     if private_event.nurse_id.present?

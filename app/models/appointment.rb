@@ -110,6 +110,7 @@ class Appointment < ApplicationRecord
 				name: self.patient.try(:name),
 				address: self.patient.try(:address)
 			},
+			eventType: 'appointment',
 			frequency: self.recurring_appointment_frequency,
 			base_url: "/plannings/#{self.planning_id}/appointments/#{self.id}",
 			edit_url: "/plannings/#{self.planning_id}/appointments/#{self.id}/edit",

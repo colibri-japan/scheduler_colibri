@@ -26,6 +26,7 @@ if appointment.cancelled == true
 elsif appointment.edit_requested == true
     json.borderColor '#99E6BF'
 end
+json.eventType 'appointment'
 
 json.base_url planning_appointment_path(appointment.planning, appointment)
 json.edit_url edit_planning_appointment_path(appointment.planning, appointment)

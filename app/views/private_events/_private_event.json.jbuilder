@@ -17,6 +17,8 @@ json.patient do
     json.address private_event.patient.try(:address)
 end
 
+json.eventType 'private_event'
+
 json.resourceId private_event.nurse_id
 
 json.displayable true

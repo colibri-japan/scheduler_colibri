@@ -22,6 +22,7 @@
         end
         json.rendering 'background' if params[:background] == 'true'
         json.className background_wished_slot_css(wished_slot)
+        json.eventType 'wished_slot'
 
         json.base_url planning_wished_slot_path(@planning, wished_slot)
         json.update_url planning_wished_slot_path(@planning, wished_slot, method: :patch)

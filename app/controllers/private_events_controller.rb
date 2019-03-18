@@ -21,8 +21,10 @@ class PrivateEventsController < ApplicationController
 			@private_events = @private_events.overlapping(params[:start]..params[:end])
 		end
 
+		patient_resource = params[:patient_resource].present?
+
 		respond_to do |format|
-			format.json {render json: @private_events.as_json}
+			format.json {render json: @private_events.as_json(patient_resource: patient_resource)}
 		end
 	end
 

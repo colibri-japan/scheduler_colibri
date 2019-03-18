@@ -16,7 +16,7 @@ class PrivateEvent < ApplicationRecord
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
 	end
 	
-	def as_json
+	def as_json(options = {})
 		{
 			id: "private_event_#{self.id}",
 			title: "#{self.nurse.try(:name)} #{self.patient.try(:name)}:#{self.title}",
@@ -26,7 +26,7 @@ class PrivateEvent < ApplicationRecord
 			nurse_id: self.nurse_id,
 			edit_requested: self.edit_requested,
 			description: self.description || '',
-			resourceId: self.nurse_id,
+			resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
 			allDay: self.all_day_private_event?,
 			color: '#ff7777',
 			base_url: "/plannings/#{self.planning_id}/private_events/#{self.id}",

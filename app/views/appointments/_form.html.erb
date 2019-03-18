@@ -78,6 +78,7 @@
       <%= form.text_area :description, id: :appointment_description, class: "form-control" %>
     </div>
 
+    <%= hidden_field_tag :patient_resource, true if params[:patient_resource].present? %>
 
     <div class="actions">
       <%= form.submit "セーブ", class: "btn btn-info btn-block", id: "save-appointment" %>

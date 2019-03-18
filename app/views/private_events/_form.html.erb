@@ -54,6 +54,8 @@
       <%= form.text_area :description, id: :private_event_description, class: "form-control" %>
     </div>
 
+    <%= hidden_field_tag :patient_resource, true if params[:patient_resource].present? %>
+
     <div class="actions">
       <%= form.submit "セーブする", class: "btn btn-info btn-block" %>
     </div>

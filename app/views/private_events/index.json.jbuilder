@@ -21,12 +21,10 @@ json.array! @private_events.each do |private_event|
 
     json.eventType 'private_event'
 
-    json.resourceId private_event.nurse_id
+    json.resourceId params[:patient_resource].present? ? private_event.try(:patient_id) : private_event.try(:nurse_id)
 
-    if private_event.nurse_id.present?
-        json.nurse do 
-            json.name private_event.nurse.try(:name)
-        end
+    json.nurse do 
+        json.name private_event.nurse.try(:name)
     end
 
     json.color '#ff7777'

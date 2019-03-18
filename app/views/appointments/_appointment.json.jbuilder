@@ -8,7 +8,7 @@ json.extract! appointment, :color, :master, :displayable, :nurse_id, :patient_id
 json.start appointment.starts_at
 json.end appointment.ends_at
 json.description appointment.description ? appointment.description : ''
-json.resourceId appointment.nurse_id
+json.resourceId params[:patient_resource].present? ? appointment.patient_id : appointment.nurse_id
 json.nurse do 
     json.name appointment.nurse.name 
 end

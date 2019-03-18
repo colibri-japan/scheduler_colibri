@@ -314,11 +314,19 @@ li.colibri-app-menu a.nav-url {
 }
 
 .fc-day-header.fc-sat { 
-	color: blue !important;
+	color: #118df0 !important;
 }
 
 .fc-day-header.fc-sun { 
-	color: red; 
+	color: #ff304f; 
+}
+
+td.fc-sun > span.fc-day-number {
+	color: #ff304f;
+}
+
+td.fc-sat > span.fc-day-number {
+	color: #118df0;
 }
 
 .fc-today {

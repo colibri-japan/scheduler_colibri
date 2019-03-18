@@ -299,17 +299,7 @@ initialize_nurse_calendar = function(){
       },
 
       dayRender: function(date, cell) {
-        let holidays = JSON.parse(window.holidays);
-        if (holidays.length > 0) {
-          let dates = [];
-          holidays.forEach(function(holidayObject){
-            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
-          });
-          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
-            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
-            day_cells.css('background-color', '#FFE8E8')
-          }
-        }
+        colorizeHolidays(date)
       },
 
       viewRender : function(view, element) {
@@ -473,17 +463,7 @@ initialize_patient_calendar = function(){
       },
 
       dayRender: function (date, cell) {
-        let holidays = JSON.parse(window.holidays);
-        if (holidays.length > 0) {
-          let dates = [];
-          holidays.forEach(function (holidayObject) {
-            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
-          });
-          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
-            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
-            day_cells.css('background-color', '#FFE8E8')
-          }
-        }
+        colorizeHolidays(date)
       },
 
 
@@ -661,17 +641,7 @@ initialize_master_calendar = function() {
       },
 
       dayRender: function (date) {
-        let holidays = JSON.parse(window.holidays);
-        if (holidays.length > 0) {
-          let dates = [];
-          holidays.forEach(function (holidayObject) {
-            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
-          });
-          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
-            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
-            day_cells.css('background-color', '#FFE8E8')
-          }
-        }
+        colorizeHolidays(date)
       },
 
 
@@ -924,17 +894,7 @@ initialize_calendar = function() {
       },
 
       dayRender: function (date, cell) {
-        let holidays = JSON.parse(window.holidays);
-        if (holidays.length > 0) {
-          let dates = [];
-          holidays.forEach(function (holidayObject) {
-            dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
-          });
-          if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
-            let day_cells = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "]");
-            day_cells.css('background-color', '#FFE8E8')
-          }
-        }
+        colorizeHolidays(date)
       }
     });
 
@@ -1784,6 +1744,20 @@ let submitAppointmentCopyOption = () => {
       data: ajaxData
     })
   })
+}
+
+let colorizeHolidays = (date) => {
+  let holidays = JSON.parse(window.holidays);
+  if (holidays.length > 0) {
+    let dates = [];
+    holidays.forEach(function (holidayObject) {
+      dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"));
+    });
+    if (dates.indexOf(moment(date).format('YYYY-MM-DD')) > -1) {
+      let day_number = $("[data-date = " + moment(date).format('YYYY-MM-DD') + "] > span");
+      day_number.css('color', '#ff304f')
+    }
+  }
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

@@ -20,6 +20,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :title, presence: true
 	validates :nurse_id, presence: true 
 	validates :patient_id, presence: true
+	validate :ends_at_should_come_after_starts_at
 	validate :cannot_overlap_existing_appointment_create, on: :create, if: -> { nurse_id.present? }
 	validate :cannot_overlap_existing_appointment_update, on: :update, if: -> { nurse_id.present? }
 
@@ -132,6 +133,16 @@ class RecurringAppointment < ApplicationRecord
 
 
 	private
+
+	def ends_at_should_come_after_starts_at
+		start_time = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.starts_at.hour, self.starts_at.min)
+		end_time = DateTime.new(self.anchor.year, self.anchor.month, self.anchor.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i 
+
+		if end_time <= start_time 
+			puts 'changing ends_at to be 15min after starts_at'
+			self.ends_at = self.ends_at + 15.minutes
+		end
+	end
 
 	def split_recurring_appointment_before_after_update
 		if self.master == true && editing_occurrences_after.present? 

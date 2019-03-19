@@ -6,11 +6,16 @@ class Post < ApplicationRecord
   belongs_to :patient, optional: true
 
   after_commit :mark_as_read_by_author
+  before_create :add_default_publication_date
 
   private
 
   def mark_as_read_by_author
     mark_as_read! for: author 
+  end
+
+  def add_default_publication_date
+    self.published_at ||= Time.current
   end
   
 end

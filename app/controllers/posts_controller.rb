@@ -77,6 +77,6 @@ class PostsController < ApplicationController
     end
 
     def post_params
-        params.require(:post).permit(:body, :patient_id)
+        params.require(:post).permit(:published_at, :body, :patient_id)
     end
 end

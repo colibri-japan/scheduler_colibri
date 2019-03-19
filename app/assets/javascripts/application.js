@@ -1652,8 +1652,6 @@ let downloadTeamsReport = () => {
   $('#teams-report-download').click(function(){
     let range_start = $('#report_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
     let range_end = $('#report_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
-    console.log(range_start)
-    console.log(range_end)
     window.location.href = $(this).data('url') + '?range_start=' + range_start + '&range_end=' + range_end
   })
 }
@@ -1798,6 +1796,44 @@ let colorizeHolidays = (date) => {
       day_number.css('color', '#ff304f')
     }
   }
+}
+
+let postsTimePicker = () => {
+  $('#post_published_at').daterangepicker({
+    singleDatePicker: true,
+    timePicker: true,
+    timePicker24Hour: true,
+    timePickerIncrement: 5,
+    locale: {
+      format: 'M月DD日 H:mm',
+      applyLabel: "選択する",
+      cancelLabel: "取消",
+      daysOfWeek: [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土",
+      ],
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ],
+    },
+    startDate: moment().startOf('hour')
+  })
 }
 
 $(document).on('turbolinks:load', initialize_calendar); 

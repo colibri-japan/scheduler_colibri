@@ -1604,11 +1604,17 @@ let postSelectize = () => {
 }
 
 
-let clickablePost = () => {
+let clickableTableRowPost = () => {
   $('tr.post-clickable-row').click(function() {
     $.getScript($(this).data('url'));
   });
 };
+
+let clickablePost = () => {
+  $('.post-clickable').click(function(){
+    $.getScript($(this).data('url'))
+  })
+}
 
 let patientDatePicker = () => {
   $('#patient_date_of_contract').daterangepicker({
@@ -1832,7 +1838,6 @@ let postsTimePicker = () => {
         "12月",
       ],
     },
-    startDate: moment().startOf('hour')
   })
 }
 

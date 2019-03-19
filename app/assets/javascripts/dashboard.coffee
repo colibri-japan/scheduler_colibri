@@ -36,10 +36,6 @@ $(document).on 'turbolinks:load', ->
         firstDay: 1
     }
 
-  $('.post-clickable').click ->
-    $.getScript $(this).data('url')
-    return
-
   $('#query_date').on 'change', ->
     url = $(this).data('url') + '?q=' + $(this).val() + '&team_id=' + window.teamId
     $.getScript url

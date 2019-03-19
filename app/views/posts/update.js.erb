@@ -4,11 +4,11 @@ if (window.location.pathname.includes('posts')) {
   $('#post-<%= @post.id %> > .td-post-readers').html("<%= j @post_readers.join(', ') %>");
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
+  clickableTableRowPost()
 } else {
-  $('#post-<%= @post.id %> > .post-body').empty()
-  $('#post-<%= @post.id %> > .post-header > .post-author-wrapper').empty()
-  $('#post-<%= @post.id %> > .post-body').append("<%= j simple_format(@post.body) %>")
-  $('#post-<%= @post.id %> > .post-header > .post-author-wrapper').append("<%= j @post.author.name %><%= j " > #{@post.patient.name}" if @post.patient_id.present? %>")
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
+  $.getScript('/posts_widget.js');
+  scrollPosts()
+  clickablePost()
 }

@@ -1,4 +1,5 @@
-$('#posts-container').append("<%= j render partial: 'posts/post', locals: { post: @post } %>");
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
+$.getScript('/posts_widget.js')
 scrollPosts()
+clickablePost()

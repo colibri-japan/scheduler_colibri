@@ -53,6 +53,6 @@ $(document).on 'turbolinks:load', ->
       data: queryData
     return
 
-  clickablePost()
+  clickableTableRowPost()
 
   return

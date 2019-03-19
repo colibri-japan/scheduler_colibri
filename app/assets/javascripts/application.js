@@ -39,6 +39,13 @@ var myDefaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList;
 
 myDefaultWhiteList.a = ['data-remote', 'href']
 
+let setDefaultEnd = (start, end) => {
+  if (end - start <= 900000) {
+    end = moment(start).add(30, 'minutes') ;
+  }
+  return [start, end]
+}
+
 let setWishedSlotTime = (start, end, view) => {
   $('#wished_slot_anchor_1i').val(moment(start).format('YYYY'));
   $('#wished_slot_anchor_2i').val(moment(start).format('M'));
@@ -174,9 +181,12 @@ initialize_nurse_calendar = function(){
       eventSources: [{url: window.appointmentsURL + '&master=false', cache: true},{url: window.privateEventsUrl + '&master=false', cache: true}],
 
       select: function(start, end, jsEvent, view, resource) {
+        let start_and_end = setDefaultEnd(start, end);
+        let start_time = start_and_end[0];
+        let end_time = start_and_end[1];
         $.getScript(window.selectActionUrl, function() {
-          setAppointmentTime(start, end, view);
-          setPrivateEventTime(start, end, view);
+          setAppointmentTime(start_time, end_time, view);
+          setPrivateEventTime(start_time, end_time, view);
           appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
         });
@@ -351,9 +361,12 @@ initialize_patient_calendar = function(){
 
 
       select: function (start, end, jsEvent, view, resource) {
+        let start_and_end = setDefaultEnd(start, end);
+        let start_time = start_and_end[0];
+        let end_time = start_and_end[1];
         $.getScript(window.selectActionUrl, function() {
-          setAppointmentTime(start, end, view);     	         
-          setPrivateEventTime(start, end, view);
+          setAppointmentTime(start_time, end_time, view);     	         
+          setPrivateEventTime(start_time, end_time, view);
           appointmentSelectizeNursePatient();
           privateEventSelectizeNursePatient();
         });
@@ -610,9 +623,12 @@ initialize_master_calendar = function() {
       select: function(start, end, jsEvent, view, resource) {
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
+        let start_and_end = setDefaultEnd(start, end);
+        let start_time = start_and_end[0];
+        let end_time = start_and_end[1];
         $.getScript(window.selectActionUrl + '?master=true', function() {
-          setWishedSlotTime(start, end, view);
-          setRecurringAppointmentTime(start, end, view);
+          setWishedSlotTime(start_time, end_time, view);
+          setRecurringAppointmentTime(start_time, end_time, view);
           setHiddenStartAndEndFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
           wishedSlotsSelectize()
@@ -761,10 +777,13 @@ initialize_calendar = function() {
 
 
       select: function(start, end, jsEvent, view, resource) {
+        let start_and_end = setDefaultEnd(start, end);
+        let start_time = start_and_end[0];
+        let end_time = start_and_end[1];
         $.getScript(window.selectActionUrl, function() {
-          setAppointmentTime(start, end, view);
-          setPrivateEventTime(start, end, view);
-          setHiddenStartAndEndFields(start, end);
+          setAppointmentTime(start_time, end_time, view);
+          setPrivateEventTime(start_time, end_time, view);
+          setHiddenStartAndEndFields(start_time, end_time);
           autoFillResource(resource.id, window.resourceLabel);
 
           appointmentSelectizeNursePatient();

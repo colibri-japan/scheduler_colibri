@@ -653,7 +653,7 @@ span.fc-time {
 	.fc tbody,
 	.fc-row {
 	border-color: #ccc !important;
-	background: transparent !important; }
+ }
 
 
 
@@ -705,9 +705,9 @@ span.fc-time {
 		border-width: 5px !important;
 	}
 
-	/* hide background events */
+	/* do not hide background events */
 	td.fc-bgevent, div.fc-bgevent {
-		background: transparent !important;
+		-webkit-print-color-adjust: exact !important;
 	}
 
 	

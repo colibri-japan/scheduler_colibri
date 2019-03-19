@@ -8,7 +8,7 @@
 
 			<div class="modal-body">
         <div id="master-save-success" style="margin-bottom:10px" class="colibri-success-notification">サービスがマスターにセーブされました！</div>
-        <div id="create-appointments-question" style="margin-bottom:10px">実績シフトへ反映する年.月を選択してください</div>
+        <div id="create-appointments-question" style="margin-bottom:10px">今作成したサービスを実績シフトへ反映する場合は、反映したい年と月を選択してください</div>
 
         <div id="option1" style="margin-bottom:10px">
           <%= select_tag '年', options_for_select([['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], @recurring_appointment.anchor.year), id: 'reflect-year-1' %>

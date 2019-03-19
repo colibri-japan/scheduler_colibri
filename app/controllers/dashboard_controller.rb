@@ -13,11 +13,6 @@ class DashboardController < ApplicationController
       @activities = PublicActivity::Activity.where(planning_id: @planning.id).last(5)
     end
 
-    #posts
-    @posts = @corporation.cached_recent_posts
-    @unread_count = @posts.unread_by(current_user).count
-    @unread_ids = @posts.unread_by(current_user).pluck(:id)
-
     #appointments : today, upcoming two weeks, since monday
     today = Date.today 
     appointments = Appointment.valid.where(planning_id: @planning.id, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)

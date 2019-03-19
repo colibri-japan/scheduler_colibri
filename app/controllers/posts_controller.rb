@@ -6,6 +6,12 @@ class PostsController < ApplicationController
         @post = Post.new
     end
 
+    def posts_widget
+        @posts = @corporation.cached_recent_posts
+        @unread_ids = @posts.unread_by(current_user).pluck(:id)
+        @unread_count = @unread_ids.count
+    end
+
     def index
         @users = @corporation.cached_registered_users_ordered_by_kana
         @patients = @corporation.cached_active_patients_ordered_by_kana

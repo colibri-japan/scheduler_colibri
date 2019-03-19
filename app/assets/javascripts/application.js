@@ -1836,12 +1836,20 @@ let postsTimePicker = () => {
   })
 }
 
+let initializePostsWidget = () => {
+  $.getScript('/posts_widget.js')
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
 $(document).on('turbolinks:load', initialize_master_calendar);
 
 $(document).on('turbolinks:load', function(){
+
+  if ($('#posts-widget-container').length > 0) {
+    initializePostsWidget()
+  }
 
   $.fn.modal.Constructor.prototype._enforceFocus = function () { };
 

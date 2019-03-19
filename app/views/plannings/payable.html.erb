@@ -3,12 +3,11 @@
 <div id="resource-list-container" class="no-print">
   <div id="resource-container" class="scrollbar-custom">
 	<div id="nurses-resource" class="no-print">
-			<% today = Date.today %>
-			<div class="nurses-resource-subsection-title resource-title-selectable"  data-url="<%= planning_payable_path(@planning, params: {m: today.month, y: today.year}) %>">全員</div>
+			<div class="nurses-resource-subsection-title resource-title-selectable"  data-url="<%= planning_payable_path(@planning, params: {m: @selected_month, y: @selected_year}) %>">全員</div>
 			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}/payable?m=#{today.month}&y=#{today.year}" if @teams_id_by_name.present? %>'><%= group %></div>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}/payable?m=#{@selected_month}&y=#{@selected_year}" if @teams_id_by_name.present? %>'><%= group %></div>
 				<% nurses.each do |nurse| %>
-					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse, params: {m: today.month, y: today.year}) %>"><%= nurse.try(:name) %></p>
+					<p class="resource-list-element colibri-clickable-link" data-url="<%= planning_nurse_payable_path(@planning, nurse, params: {m: @selected_month, y: @selected_year}) %>"><%= nurse.try(:name) %></p>
 				<% end %>
 			<% end %>
 	</div>

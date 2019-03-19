@@ -28,6 +28,8 @@ class TeamsController < ApplicationController
     end
 
     def payable
+        set_month_and_year_params
+
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id])
         @nurse = current_user.nurse_id.present? ? current_user.nurse : @team.nurses.displayable.order_by_kana.first
@@ -97,5 +99,10 @@ class TeamsController < ApplicationController
 
     def set_teams_id_by_name
         @teams_id_by_name = @corporation.cached_team_id_by_name
+    end
+
+    def set_month_and_year_params
+        @selected_year = params[:y].present? ? params[:y] : Date.today.year
+        @selected_month = params[:m].present? ? params[:m] : Date.today.month
     end
 end

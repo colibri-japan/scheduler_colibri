@@ -109,6 +109,8 @@ class NursesController < ApplicationController
     authorize current_user, :has_access_to_provided_services?
     authorize @nurse, :is_employee?
 
+    set_month_and_year_params
+
     delete_previous_temporary_services
 
     first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
@@ -238,6 +240,11 @@ class NursesController < ApplicationController
 
   def set_printing_option
     @printing_option = @corporation.printing_option
+  end
+
+  def set_month_and_year_params
+    @selected_year = params[:y].present? ? params[:y] : Date.today.year
+    @selected_month = params[:m].present? ? params[:m] : Date.today.month
   end
 
 end

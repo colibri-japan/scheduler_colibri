@@ -32,6 +32,7 @@ class PlanningsController < ApplicationController
 	def payable
 		@nurse = @corporation.nurses.displayable.order_by_kana.first 
 
+		set_month_and_year_params
 		fetch_nurses_grouped_by_team
 
 		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
@@ -154,6 +155,11 @@ class PlanningsController < ApplicationController
 
   def set_teams_id_by_name
       @teams_id_by_name = @corporation.cached_team_id_by_name
+	end
+
+	def set_month_and_year_params
+		@selected_year = params[:y].present? ? params[:y] : Date.today.year
+    @selected_month = params[:m].present? ? params[:m] : Date.today.month
 	end
 
 end

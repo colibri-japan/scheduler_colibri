@@ -15,17 +15,17 @@ class PostsController < ApplicationController
     def index
         @users = @corporation.cached_registered_users_ordered_by_kana
         @patients = @corporation.cached_active_patients_ordered_by_kana
-                
-        
-        if params[:range_start].present? || params[:range_end].present? 
-            @posts = @corporation.posts.where('created_at BETWEEN ? AND ?', params[:range_start], params[:range_end])
+
+        if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
+            @posts = @corporation.posts.all 
+            @posts = @posts.where('published_at BETWEEN ? AND ?', params[:range_start], params[:range_end]) if params[:range_start].present? && params[:range_end].present?
             @posts = @posts.where(patient_id: params[:patient_ids]) if params[:patient_ids].present? && (params[:patient_ids].map(&:to_i) - @patients.ids).empty?
             @posts = @posts.where(author_id: params[:author_ids]) if params[:author_ids].present? && (params[:author_ids].map(&:to_i) - @users.ids).empty?
         else
             @posts = @corporation.cached_recent_posts
         end
 
-        @posts = @posts.order(created_at: 'DESC')
+        @posts = @posts.order(published_at: 'DESC')
         
         fetch_post_readers
 

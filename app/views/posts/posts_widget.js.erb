@@ -1,4 +1,4 @@
 $('#posts-widget-container').empty()
-$('#posts-widget-container').append("<%= j render partial: 'posts/posts_widget', locals: {posts: @posts, unread_count: @unread_count, unread_ids: @unread_ids} %>")
+$('#posts-widget-container').append("<%= j render partial: 'posts/posts_widget', locals: {read_posts: @read_posts, unread_posts: @unread_posts, unread_count: @unread_count, unread_ids: @unread_ids} %>")
 scrollPosts()
 clickablePost()

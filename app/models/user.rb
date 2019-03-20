@@ -45,6 +45,14 @@ class User < ApplicationRecord
     schedule_admin? || corporation_admin?
   end
 
+  def unread_posts
+    Post.where(corporation_id: self.corporation_id).unread_by(self).order(published_at: :desc)
+  end
+
+  def cached_recent_read_posts
+    Rails.cache.fetch([self, 'recent_read_posts']) { Post.includes(:author, :patient).where(corporation_id: self.corporation_id).read_by(self).order(published_at: :desc).limit(40) }
+  end
+
   private
 
   def set_default_corporation

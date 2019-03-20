@@ -7,9 +7,10 @@ class PostsController < ApplicationController
     end
 
     def posts_widget
-        @posts = @corporation.cached_recent_posts
-        @unread_ids = @posts.unread_by(current_user).pluck(:id)
-        @unread_count = @unread_ids.count
+        @read_posts = current_user.cached_recent_read_posts
+        @unread_posts = current_user.unread_posts
+        @unread_ids = @unread_posts.ids
+        @unread_count = @unread_posts.count
     end
 
     def index

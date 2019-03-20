@@ -13,8 +13,13 @@
   </div>
 </div>
 <div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container'>
-  <% posts.to_a.reverse.each do |post| %>
-    <%= render post %>
+  <% read_posts.to_a.reverse.each do |read_post| %>
+    <%= render read_post %>
+  <% end %>
+  <% if unread_posts.present? %>
+    <% unread_posts.to_a.reverse.each do |unread_post| %>
+      <%= render unread_post %>
+    <% end %>
   <% end %>
 </div>
 <div class='colibri-subcontainer-footer'>

@@ -87326,9 +87326,6 @@ module.exports = function(Chart) {
         firstDay: 1
       }
     });
-    $('.post-clickable').click(function() {
-      $.getScript($(this).data('url'));
-    });
     $('#query_date').on('change', function() {
       var url;
       url = $(this).data('url') + '?q=' + $(this).val() + '&team_id=' + window.teamId;
@@ -87355,6 +87352,9 @@ module.exports = function(Chart) {
   });
 
 }).call(this);
+document.addEventListener('turbolinks:load', function () {
+    gtag('config', 'UA-136584111-1')
+});
 (function() {
   $(document).on('turbolinks:load', function() {
     $('#resource-name-wrapper').hover(function() {
@@ -87563,34 +87563,40 @@ module.exports = function(Chart) {
     $('#posts_patient_ids_filter').selectize({
       plugins: ['remove_button']
     });
-    $('input[name="posts_date_range"]').daterangepicker({
-      timePicker: true,
-      timePicker24Hour: true,
-      timePickerIncrement: 15,
-      startDate: moment().set({
-        'hour': 6,
-        'minute': 0
-      }),
-      endDate: moment().set({
-        'hour': 21,
-        'minute': 0
-      }),
-      locale: {
-        format: 'M月DD日 H:mm',
-        applyLabel: "選択する",
-        cancelLabel: "取消",
-        fromLabel: "",
-        toLabel: "から",
-        daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
-        monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-        firstDay: 1
-      }
+    $('input[name="posts_date_range"]').focus(function() {
+      $(this).daterangepicker({
+        timePicker: true,
+        timePicker24Hour: true,
+        timePickerIncrement: 15,
+        startDate: moment().set({
+          'hour': 6,
+          'minute': 0
+        }),
+        endDate: moment().set({
+          'hour': 21,
+          'minute': 0
+        }),
+        locale: {
+          format: 'M月DD日 H:mm',
+          applyLabel: "選択する",
+          cancelLabel: "取消",
+          fromLabel: "",
+          toLabel: "から",
+          daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
+          monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+          firstDay: 1
+        }
+      });
     });
     $('#posts-search-button').click(function() {
-      var queryData;
+      var queryData, range_end, range_start;
+      if ($('#posts_date_range').data('daterangepicker')) {
+        range_start = $('#posts_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm');
+        range_end = $('#posts_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm');
+      }
       queryData = {
-        range_start: $('#posts_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
-        range_end: $('#posts_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
+        range_start: range_start,
+        range_end: range_end,
         patient_ids: $('#posts_patient_ids_filter').val(),
         author_ids: $('#posts_author_ids_filter').val()
       };
@@ -87599,7 +87605,7 @@ module.exports = function(Chart) {
         data: queryData
       });
     });
-    clickablePost();
+    clickableTableRowPost();
   });
 
 }).call(this);
@@ -89241,11 +89247,17 @@ let postSelectize = () => {
 }
 
 
-let clickablePost = () => {
+let clickableTableRowPost = () => {
   $('tr.post-clickable-row').click(function() {
     $.getScript($(this).data('url'));
   });
 };
+
+let clickablePost = () => {
+  $('.post-clickable').click(function(){
+    $.getScript($(this).data('url'))
+  })
+}
 
 let patientDatePicker = () => {
   $('#patient_date_of_contract').daterangepicker({
@@ -89289,8 +89301,6 @@ let downloadTeamsReport = () => {
   $('#teams-report-download').click(function(){
     let range_start = $('#report_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
     let range_end = $('#report_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
-    console.log(range_start)
-    console.log(range_end)
     window.location.href = $(this).data('url') + '?range_start=' + range_start + '&range_end=' + range_end
   })
 }
@@ -89437,12 +89447,56 @@ let colorizeHolidays = (date) => {
   }
 }
 
+let postsTimePicker = () => {
+  $('#post_published_at').daterangepicker({
+    singleDatePicker: true,
+    timePicker: true,
+    timePicker24Hour: true,
+    locale: {
+      format: 'YYYY-MM-DD H:mm',
+      applyLabel: "選択する",
+      cancelLabel: "取消",
+      daysOfWeek: [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土",
+      ],
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ],
+    },
+  })
+}
+
+let initializePostsWidget = () => {
+  $.getScript('/posts_widget.js')
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
 $(document).on('turbolinks:load', initialize_master_calendar);
 
 $(document).on('turbolinks:load', function(){
+
+  if ($('#posts-widget-container').length > 0) {
+    initializePostsWidget()
+  }
 
   $.fn.modal.Constructor.prototype._enforceFocus = function () { };
 

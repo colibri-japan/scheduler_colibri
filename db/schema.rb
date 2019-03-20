@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190319055839) do
+ActiveRecord::Schema.define(version: 20190320084041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20190319055839) do
     t.string "reminder_email_hour", default: "11:00"
     t.integer "weekend_reminder_option", default: 0
     t.boolean "include_description_in_nurse_mailer", default: false
+    t.string "non_master_schedule_default_url"
   end
 
   create_table "invoice_setting_nurses", force: :cascade do |t|

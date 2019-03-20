@@ -63,6 +63,7 @@ class PostsController < ApplicationController
 
     def mark_all_posts_as_read
         Post.mark_as_read! :all, for: current_user
+        current_user.touch
     end
 
     private

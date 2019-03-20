@@ -1809,7 +1809,6 @@ let postsTimePicker = () => {
     singleDatePicker: true,
     timePicker: true,
     timePicker24Hour: true,
-    timePickerIncrement: 5,
     locale: {
       format: 'M月DD日 H:mm',
       applyLabel: "選択する",

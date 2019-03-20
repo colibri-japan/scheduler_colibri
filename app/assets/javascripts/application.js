@@ -1810,7 +1810,7 @@ let postsTimePicker = () => {
     timePicker: true,
     timePicker24Hour: true,
     locale: {
-      format: 'M月DD日 H:mm',
+      format: 'YYYY-MM-DD H:mm',
       applyLabel: "選択する",
       cancelLabel: "取消",
       daysOfWeek: [

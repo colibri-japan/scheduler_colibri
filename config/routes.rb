@@ -109,6 +109,8 @@ Rails.application.routes.draw do
   get 'plannings/:id/new_master_to_schedule' => 'plannings#new_master_to_schedule', as: :new_planning_master_to_schedule
   get 'plannings/:id/all_patients' => 'plannings#all_patients', as: :planning_all_patients
   get 'plannings/:id/all_nurses' => 'plannings#all_nurses', as: :planning_all_nurses
+  get 'plannings/:id/all_patients_master' => 'plannings#all_patients_master', as: :planning_all_patients_master
+  get 'plannings/:id/all_nurses_master' => 'plannings#all_nurses_master', as: :planning_all_nurses_master
 
   #custom routes for appointments
   patch 'plannings/:planning_id/appointments/:id/toggle_cancelled' => 'appointments#toggle_cancelled', as: :planning_appointment_toggle_cancelled

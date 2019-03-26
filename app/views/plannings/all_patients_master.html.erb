@@ -1,0 +1,47 @@
+<%= javascript_tag do %>
+	window.eventSource1 = "<%= j planning_recurring_appointments_url(@planning, params: {patient_resource: true}) %>";
+	window.eventSource2 = "";
+	window.resourceUrl = "<%= j corporation_patients_url(@corporation, format: :json) %>";
+	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
+	window.defaultView = "<%= j @corporation.default_view %>";
+	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
+	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
+	window.planningId = "<%= j @planning.id.to_s %>";
+	window.firstDay = "<%= j @corporation.default_first_day.to_s %>";
+	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
+	window.masterSchedule = 'false';
+	window.generalPlanning = 'true';
+  window.resourceLabel = '利用者';
+  window.resourceType = 'patient';
+<% end %>
+
+
+<%= render partial: 'planning_left_menu', locals: {nurse: @main_nurse, resource_path: planning_all_patients_path(@planning), resource_master_path: planning_all_patients_master_path(@planning), view: 'master'} %>
+
+<%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'patient', master_resource: true} %>
+
+<div id="detail-container">
+  <div id="detail-planning-container">
+    <div style="display:flex;justify-content:space-between;margin-bottom: 15px">
+      <div id="planning-nurse-information">
+	  		<span id="resource-name-wrapper">全利用者</span>
+	  	</div>
+    </div>
+		<div id="planning-container">
+			<div class="master_calendar"></div>
+		</div>
+  </div>
+</div>
+
+<div id="drag-drop-confirm" style="display: none" title="サービス編集確認">
+	<p>下記の編集がセーブされます：</p>
+	<div id="drag-drop-content"></div>
+</div>
+
+<%= render 'plannings/nurse_conflict_days' %>
+
+<%= render 'plannings/batch_action_button' %>
+
+
+
+

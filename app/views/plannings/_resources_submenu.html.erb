@@ -11,9 +11,8 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="no-print <%= 'hide-resource' if resource_type == 'nurse' %>">
-			<% if master_resource == false %>
-				<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_all_patients_path(@planning) %>">利用者全員</div>
-			<% end %>
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= master_resource ? planning_all_patients_master_path(@planning) : planning_all_patients_path(@planning) %>">利用者全員</div>
+			
 			<% @patients_grouped_by_kana.each do |kana, patients| %>
 				<div class="nurses-resource-subsection-title"><%= kana %></div>
 				<% patients.each do |patient| %>
@@ -22,9 +21,9 @@
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="no-print <%= 'hide-resource' if resource_type == 'patient' %>">
-			<% if master_resource == false %>
-				<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_all_nurses_path(@planning) if master_resource == false %>">従業員全員</div>
-			<% end %>
+
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= master_resource ? planning_all_nurses_master_path(@planning) : planning_all_nurses_path(@planning) %>">従業員全員</div>
+
 			<% today = Date.today %>
 			<% @grouped_nurses.each do |group, nurses| %>
 				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? && master_resource == false %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}" if @teams_id_by_name.present? && master_resource == false %>'><%= group %></div>

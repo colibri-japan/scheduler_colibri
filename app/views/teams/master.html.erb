@@ -1,0 +1,47 @@
+<%= javascript_tag do %>
+  window.recurringAppointmentsUrl = "<%= j planning_recurring_appointments_url(@planning) %>";
+  window.wishedSlotsUrl = "<%= j planning_wished_slots_path(@planning, background: true) %>";
+  window.eventSource1 = window.recurringAppointmentsUrl;
+  window.eventSource2 = window.wishedSlotsUrl;
+  window.privateEventsUrl = "<%= j planning_private_events_url(@planning) %>";
+  window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json, team_id: @team.id) %>";
+  window.selectActionUrl = "<%= j new_calendar_event_path %>";
+  window.defaultView = "<%= j @corporation.default_view %>";
+  window.minTime = "<%= j current_user.corporation.business_start_hour %>";
+  window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
+  window.planningId = "<%= j @planning.id.to_s %>";
+  window.firstDay = "<%= j @corporation.default_first_day.to_s %>";
+  window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
+  window.masterSchedule = 'false';
+  window.generalPlanning = 'true';
+  window.resourceLabel = '従業員';
+  window.resourceType = 'nurse';
+<% end %>
+
+
+<%= render partial: 'plannings/planning_left_menu', locals: {nurse: @main_nurse, resource_path: planning_team_path(@planning, @team), resource_master_path: planning_team_master_path(@planning, @team), view: 'master'} %>
+<%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'nurse', master_resource: true} %>
+
+<div id="detail-container">
+  <div id="detail-planning-container">
+    <div style="display:flex;justify-content:space-between;margin-bottom:15px">
+      <div id="planning-nurse-information">
+	  		<span id="resource-name-wrapper"><%= @team.try(:team_name) %></span>
+	  	</div>
+    </div>
+    <div id="planning-container">
+      <div class="master_calendar"></div>
+    </div>
+  </div>
+</div>
+
+<div id="drag-drop-confirm" style="display: none" title="サービス編集確認">
+	<p>下記の編集がセーブされます：</p>
+	<div id="drag-drop-content"></div>
+</div>
+
+<%= render 'plannings/nurse_conflict_days' %>
+
+
+
+

@@ -27,6 +27,14 @@ class TeamsController < ApplicationController
         fetch_nurses_grouped_by_team
     end
 
+    def master 
+        @planning = Planning.find(params[:planning_id])
+        @team = Team.find(params[:id]) 
+        set_main_nurse
+        set_patients_grouped_by_kana
+        fetch_nurses_grouped_by_team
+    end
+
     def payable
         set_month_and_year_params
 

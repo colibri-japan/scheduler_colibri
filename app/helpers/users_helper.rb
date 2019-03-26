@@ -20,5 +20,16 @@ module UsersHelper
 		end
 	end
 
+	def user_default_url_options(user)
+		options = []
+		planning = user.corporation.planning
+		options << ['全従業員', planning_all_nurses_path(planning)]
+		options << ['全利用者', planning_all_patients_path(planning)]
+		options << ["#{user.nurse.try(:name)}個人シフト" ,planning_nurse_path(planning, user.nurse)] if user.nurse.present?
+		options << ["#{user.nurse.team.try(:team_name)}チームシフト" ,planning_team_path(planning, user.nurse.team)] if user.nurse.present? && user.nurse.team.present?
+
+		options
+	end
+
 
 end

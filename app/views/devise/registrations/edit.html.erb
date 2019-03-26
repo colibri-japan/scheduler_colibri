@@ -34,6 +34,11 @@
         </div>
 
         <div class="form-group">
+          <%= f.label :nurse_id, 'シフトのデフォルトページ', class: "colibri-form-label" %><br />
+          <%= f.select :schedule_default_url_option, options_for_select(user_default_url_options(resource), resource.schedule_default_url_option)  %>
+        </div>
+
+        <div class="form-group">
           <%= f.label :email, class: "colibri-form-label" %><br />
           <%= f.email_field :email, readonly: true, autocomplete: "email", class: "form-control"   %>
         </div>

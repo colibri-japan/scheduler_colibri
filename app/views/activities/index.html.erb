@@ -2,7 +2,7 @@
 	window.planningActivitiesUrl = "<%= j planning_activities_path(@planning) %>"
 <% end %>
 
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'activity', resource_path: planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), nurse: @main_nurse} %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'activity', resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), nurse: @main_nurse} %>
 
 <div id="index-container">
 	<div id="activity-filter">

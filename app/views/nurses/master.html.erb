@@ -1,5 +1,5 @@
 <%= javascript_tag do %>
-	window.recurringAppointmentsUrl = "<%= j planning_recurring_appointments_url(@planning, nurse_id: @nurse.id) %>";
+	window.recurringAppointmentsUrl = "<%= j planning_recurring_appointments_url(@planning, nurse_id: @nurse.id, master: true) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.createWishedSlotUrl = "<%= j new_planning_wished_slot_url(@planning) %>"

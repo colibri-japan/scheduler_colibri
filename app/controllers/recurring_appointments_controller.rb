@@ -8,14 +8,17 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments
   # GET /recurring_appointments.json
   def index
+    puts params[:master]
     @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).to_be_displayed.includes(:patient, :nurse)
 
     @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
     @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
     @recurring_appointments = @recurring_appointments.where(master: params[:master]) if params[:master].present? && params[:master] != 'undefined'
 
+    patient_resource = params[:patient_resource].present?
+
     respond_to do |format|
-      format.json
+      format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end], patient_resource: patient_resource).flatten!}
       format.js
     end
 

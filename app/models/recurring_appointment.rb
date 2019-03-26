@@ -102,6 +102,10 @@ class RecurringAppointment < ApplicationRecord
 		synchronize_appointments
 	end
 
+	def border_color 
+		'#FFBBA0' if edit_requested
+	end
+
 	def appointments(start_date, end_date)
 		start_frequency = start_date.to_date 
 		end_frequency = end_date.to_date 
@@ -128,6 +132,50 @@ class RecurringAppointment < ApplicationRecord
 		check_end = end_time.utc.strftime("%H:%M")
 		
 		check_start >= self_start && check_start < self_end || check_end > self_start && check_end <= self_end || check_start <= self_start && check_end >= self_end
+	end
+
+	def as_json(options = {})
+		occurrences = self.appointments(options[:start_time], options[:end_time])
+
+		returned_json_array = []
+		occurrences.each do |occurrence|
+			occurrence_object = {
+				allDay: self.all_day_recurring_appointment?,
+				date_format: self.all_day_recurring_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M',
+				id: "recurring_#{self.id}",
+				color: self.color,
+				displayable: self.displayable,
+				master: master,
+				frequency: self.frequency,
+				edit_requested: self.edit_requested,
+				description: self.description || '',
+				patient_id: self.patient_id,
+				nurse_id: self.nurse_id,
+				cancelled: self.cancelled,
+				termination_date: self.termination_date,
+				title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
+				start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min),
+				end: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i,
+				resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
+				borderColor: self.border_color,
+				private_event: false,
+				service_type: self.title,
+				patient: {
+					name: self.patient.try(:name),
+					address: self.patient.try(:address)
+				},
+				nurse: {
+					name: self.nurse.try(:name)
+				},
+				eventType: 'recurring_appointment',
+				base_url: "/plannings/#{self.planning_id}/recurring_appointments/#{self.id}",
+				edit_url: "/plannings/#{self.planning_id}/recurring_appointments/#{self.id}/edit"
+			}
+
+			returned_json_array << occurrence_object			
+		end
+
+		returned_json_array
 	end
 
 

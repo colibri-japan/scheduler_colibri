@@ -8,10 +8,12 @@ class WishedSlotsController < ApplicationController
 	def index
 		@wished_slots = @planning.wished_slots 
 
-		@wished_slots = @wished_slots.where('nurse_id = ?', params[:nurse_id]) if params[:nurse_id].present?
+		@wished_slots = @wished_slots.where('nurse_id = ?', params[:nurse_id]).includes(:nurse) if params[:nurse_id].present?
+
+		background = params[:background].present?
 
 		respond_to do |format|
-			format.json
+			format.json { render json: @wished_slots.as_json(background: background).flatten! }
 		end
 	end
 

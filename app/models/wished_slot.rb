@@ -1,5 +1,6 @@
 class WishedSlot < ApplicationRecord
   include PublicActivity::Model
+
   tracked owner: Proc.new{ |controller, model| controller.current_user }
   tracked planning_id: Proc.new{ |controller, model| model.planning_id }
 
@@ -76,6 +77,44 @@ class WishedSlot < ApplicationRecord
       "希望"
     else
     end
+  end
+
+  def as_json(options = {})
+    occurrences = self.wished_slot_occurrences(options[:start_time], options[:end_time])
+    returned_json_array = []
+
+    occurrences.each do |occurrence|
+      occurrence_object = {
+        allDay: all_day_wished_slot?,
+        date_format: all_day_wished_slot? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M',
+        id: "wished_slot_#{self.id}",
+        title: title_from_rank,
+        frequency: frequency,
+        rank: rank,
+        nurse_id: nurse_id,
+        description: description || '',
+        borderColor: color_from_rank,
+        master: true,
+        cancelled: false,
+        displayable: true,
+        start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min),
+        end: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i,
+        resourceId: nurse_id,
+        private_event: false,
+        service_type: title_from_rank,
+        eventType: 'wished_slot',
+        className: ApplicationController.helpers.background_wished_slot_css(self),
+        nurse: {
+          name: self.nurse.try(:name),
+        },
+        rendering: options[:background] == true ? 'background' : '',
+        base_url: "/plannings/#{planning_id}/wished_slots/#{id}",
+        edit_url: "/plannings/#{planning_id}/wished_slots/#{id}/edit"
+      }
+      returned_json_array << occurrence_object
+    end
+
+    returned_json_array
   end
 
   private

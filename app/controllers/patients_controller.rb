@@ -7,13 +7,11 @@ class PatientsController < ApplicationController
   before_action :set_caveats, only: [:new, :edit]
 
   def index
-    if params[:start].present? && params[:end].present? && params[:master].present? && params[:planning_id].to_i == @corporation.planning.id
-      start_time = params[:start].to_date.beginning_of_day
-      end_time = params[:end].to_date.beginning_of_day
-
-      @patients = @corporation.patients.joins(:appointments).where(appointments: {displayable: true, master: params[:master], planning_id: params[:planning_id], starts_at: start_time..end_time})
-      @patients = @patients.active.order_by_kana
-    else 
+    if params[:start].present? && params[:end].present? && params[:master] == 'false' && params[:planning_id].to_i == @corporation.planning.id
+      @patients = @corporation.patients.active.joins(:appointments).where(appointments: {displayable: true, master: false, planning_id: params[:planning_id], starts_at: params[:start].to_date.beginning_of_day..params[:end].to_date.beginning_of_day}).order_by_kana
+    elsif params[:start].present? && params[:end].present? && params[:master] == 'true' && params[:planning_id].to_i == @corporation.planning.id
+      @patients = @corporation.patients.active.joins(:recurring_appointments).where(recurring_appointments: {displayable: true, master: true, planning_id: params[:planning_id]}).where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).order_by_kana
+    else
       @patients = @corporation.patients.active.order_by_kana.group_by_kana
     end
 
@@ -139,9 +137,14 @@ class PatientsController < ApplicationController
     @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
   end
 
+  def set_teams_id_by_name
+    @teams_id_by_name = @corporation.cached_team_id_by_name
+  end
+
   def fetch_nurses_grouped_by_team
     if @corporation.teams.any?
       @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
+      set_teams_id_by_name
     else
       @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
     end

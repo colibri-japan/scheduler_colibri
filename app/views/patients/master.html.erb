@@ -6,6 +6,7 @@
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 	window.patientId = "<%= j @patient.id.to_s %>";
+	window.resourceUrl = "<%= j corporation_patients_url(@corporation, format: :json) %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 	window.defaultView = "<%= j @corporation.default_master_view %>";
@@ -18,6 +19,8 @@
 	window.masterSchedule = 'true'
 	window.eventSource1 = window.recurringAppointmentsUrl;
 	window.eventSource2 = '';
+	window.fullcalendarViewOptions = 'month,agendaWeek,agendaDayWithoutResources';
+	window.resourceType = 'patient';
 <% end %>
 
 

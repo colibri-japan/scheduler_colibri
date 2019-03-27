@@ -6,6 +6,7 @@
 	window.wishedSlotsUrl = "<%= j planning_wished_slots_path(@planning, nurse_id: @nurse.id) %>";
 	window.eventSource1 = window.recurringAppointmentsUrl;
 	window.eventSource2 = window.wishedSlotsUrl + '&background=true';
+	window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
@@ -18,7 +19,9 @@
 	window.firstDay = "<%= j @corporation.default_first_day.to_s %>";
 	window.printDates = "<%= j @printing_option.print_nurse_dates_in_master.to_s %>";
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
-	window.masterSchedule = 'true'
+	window.masterSchedule = 'true';
+	window.fullcalendarViewOptions = 'month,agendaWeek,agendaDayWithoutResources';
+	window.resourceType = 'nurse';
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>

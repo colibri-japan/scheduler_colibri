@@ -1,7 +1,7 @@
 <%= javascript_tag do %>
 	window.eventSource1 = "<%= j planning_recurring_appointments_url(@planning) %>";
-	window.eventSource2 = "<%= j planning_wished_slots_path(@planning) %>";
-	window.resourceUrl = "<%= j corporation_patients_url(@corporation, format: :json) %>";
+	window.eventSource2 = "<%= j planning_wished_slots_path(@planning, background: true) %>";
+	window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.defaultView = "<%= j @corporation.default_view %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
@@ -11,8 +11,9 @@
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 	window.masterSchedule = 'false';
 	window.generalPlanning = 'true';
-    window.resourceLabel = '利用者';
-    window.resourceType = 'patient';
+  window.resourceLabel = '従業員';
+  window.resourceType = 'nurse';
+  window.fullcalendarViewOptions = 'timelineWeek,agendaDay';
 <% end %>
 
 

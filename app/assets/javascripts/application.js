@@ -1869,7 +1869,20 @@ $(document).on('turbolinks:load', initialize_nurse_calendar);
 $(document).on('turbolinks:load', initialize_patient_calendar); 
 $(document).on('turbolinks:load', initialize_master_calendar);
 
+let initializeCalendar = () => {
+  if ($('.calendar').length > 0) {
+    initializeCalendar
+  } else if ($('.master_calendar').length > 0) {
+    initialize_master_calendar
+  } else if ($('.nurse_calendar').length > 0) {
+    initialize_nurse_calendar
+  } else if ($('.patient_calendar').length > 0) {
+    initialize_patient_calendar
+  }
+}
+
 $(document).on('turbolinks:load', function(){
+  initializeCalendar
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()

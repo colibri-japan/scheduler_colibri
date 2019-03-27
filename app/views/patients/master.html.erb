@@ -66,15 +66,11 @@
 </div>
 
 <% if current_user.has_admin_access? %>
-<div id="colibri-batch-master-action-button" class="no-print batch-action-button">
-    <div class="colibri-glyphicon-container">
-        <span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
-        <div id='batch-action-menu' style="display:none">
-		    <p id='reflect-resource' class='master-reflect-option' style='color:#606E7C ;font-size:1.2em' data-resource-name="<%= @patient.try(:name) %>"><%= link_to "#{@patient.try(:name)}様のみ", new_patient_master_to_schedule_path(@patient), remote: true  %></p>
-		    <p id='reflect-all' class='master-reflect-option' style='color:#606E7C ;font-size:1.2em'><%= link_to '全員', new_planning_master_to_schedule_path(@planning), remote: true  %></p>
-        </div>
-    </div>
-</div>
+	<div id="colibri-batch-master-action-button" class="no-print batch-action-button" data-url="<%= new_patient_master_to_schedule_path(@patient) %>">
+		<div class="colibri-glyphicon-container">
+			<span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
+		</div>
+	</div>
 <% end %>
 
 <%= render 'plannings/nurse_conflict_days' %>

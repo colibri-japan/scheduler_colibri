@@ -34,14 +34,20 @@
   </div>
 </div>
 
-<div id="drag-drop-confirm" style="display: none" title="サービス編集確認">
-	<p>下記の編集がセーブされます：</p>
-	<div id="drag-drop-content"></div>
-</div>
+<% if current_user.has_admin_access? %>
+	<div id="colibri-batch-master-action-button" class="no-print batch-action-button" data-url="<%= new_planning_master_to_schedule_path(@planning) %>">
+			<div class="colibri-glyphicon-container">
+					<span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
+			</div>
+	</div>
+<% end %>
 
 <%= render 'plannings/nurse_conflict_days' %>
 
-<%= render 'plannings/batch_action_button' %>
+<div id="drag-drop-master" style="display: none" title="サービスをコピーする">
+	<p>下記のサービスの繰り返しが新規マスターサービスとしてセーブされます：</p>
+	<div id="drag-drop-master-content"></div>
+</div>
 
 
 

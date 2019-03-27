@@ -87352,6 +87352,9 @@ module.exports = function(Chart) {
   });
 
 }).call(this);
+document.addEventListener('turbolinks:load', function () {
+    gtag('config', 'UA-136584111-1')
+});
 (function() {
   $(document).on('turbolinks:load', function() {
     $('#resource-name-wrapper').hover(function() {
@@ -87487,12 +87490,8 @@ module.exports = function(Chart) {
       trigger: 'click',
       placement: 'top'
     });
-    $('#colibri-batch-master-action-button').popover({
-      html: true,
-      title: 'マスター反映',
-      content: popoverContent,
-      trigger: 'click',
-      placement: 'top'
+    $('#colibri-batch-master-action-button').click(function() {
+      $.getScript($(this).data('url'));
     });
     $('#teams-report').click(function() {
       $('.modal').modal('hide');
@@ -88137,11 +88136,31 @@ initialize_master_calendar = function() {
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: window.defaultView,
       views: {
+        timelineWeek: {
+          slotDuration: { days: 1 },
+          buttonText: '週',
+          slotLabelFormat: 'D日[(]ddd[)]',
+          resourceAreaWidth: '10%',
+          displayEventEnd: true,
+          resourceColumns: [{
+            labelText: window.resourceLabel,
+            field: 'title'
+          }]
+        },
+        agendaDayWithoutResources: {
+          type: 'agendaDay',
+          resources: false,
+          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
         },
+        agendaWeek: {
+          resources: false
+        },
         month: {
           displayEventEnd: true,
+          resources: false
         }
       },
       lazyFetching: false,
@@ -88156,7 +88175,7 @@ initialize_master_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: window.fullcalendarViewOptions
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
@@ -88164,6 +88183,10 @@ initialize_master_calendar = function() {
       refetchResourcesOnNavigate: true,
 
       eventSources: [window.eventSource1, window.eventSource2],
+      resources: {
+        url: window.resourceUrl + '?include_undefined=true&master=true&planning_id=' + window.planningId,
+        cache: true
+      }, 
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;
@@ -88192,20 +88215,15 @@ initialize_master_calendar = function() {
           container: 'body'
         })
 
-        if (view.name != 'agendaDay') {
-            element.find('.fc-title').text(function(i,t){
-              if (window.patientId) {
-                return event.nurse.name;
-              } else {
-                if (event.rank === undefined) {
-                  return event.patient.name;
-                }
-              }
-            });
-            return  !event.edit_requested && event.master && event.displayable ;
-        } else {
-            return !event.edit_requested && event.master && event.displayable ;
-        }
+        element.find('.fc-title').text(function(){
+          if (window.resourceType == 'patient' && event.eventType !== 'wished_slot') {
+            return event.nurse.name;
+          } else if (window.resourceType == 'nurse' && event.eventType !== 'wished_slot') {
+            return event.patient.name;
+          }
+        })
+
+        return !event.edit_requested && event.master && event.displayable ;
       },
 
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
@@ -88301,9 +88319,12 @@ initialize_master_calendar = function() {
       },
 
 
-      viewRender: function () {
+      viewRender: function (view) {
         drawHourMarks();
-        makeTimeAxisPrintFriendly()
+        makeTimeAxisPrintFriendly();
+        if (view.name == 'timelineWeek') {
+          fixHeightForTimelineWeekView()
+        }
       }
     })
     
@@ -88539,16 +88560,8 @@ initialize_calendar = function() {
         drawHourMarks();
         makeTimeAxisPrintFriendly();
 
-        if (view.name == 'agendaDay') {
-          $('span#day-view-options').show();
-        } else {
-          $('span#day-view-options').hide();
-        }
-
         if (view.name == 'timelineWeek') {
-          let height = $('.fc-content').height();
-          $('td.fc-resource-area.fc-widget-header > div.fc-scroller-clip').height(height);
-          $('td.fc-time-area.fc-widget-header > div.fc-scroller-clip').height(height)
+          fixHeightForTimelineWeekView();
         }
       },
 
@@ -89449,9 +89462,8 @@ let postsTimePicker = () => {
     singleDatePicker: true,
     timePicker: true,
     timePicker24Hour: true,
-    timePickerIncrement: 5,
     locale: {
-      format: 'M月DD日 H:mm',
+      format: 'YYYY-MM-DD H:mm',
       applyLabel: "選択する",
       cancelLabel: "取消",
       daysOfWeek: [
@@ -89485,12 +89497,31 @@ let initializePostsWidget = () => {
   $.getScript('/posts_widget.js')
 }
 
+let fixHeightForTimelineWeekView = () => {
+  let height = $('.fc-content').height();
+  $('td.fc-resource-area.fc-widget-header > div.fc-scroller-clip').height(height);
+  $('td.fc-time-area.fc-widget-header > div.fc-scroller-clip').height(height)
+}
+
 $(document).on('turbolinks:load', initialize_calendar); 
 $(document).on('turbolinks:load', initialize_nurse_calendar); 
 $(document).on('turbolinks:load', initialize_patient_calendar); 
 $(document).on('turbolinks:load', initialize_master_calendar);
 
+let initializeCalendar = () => {
+  if ($('.calendar').length > 0) {
+    initializeCalendar
+  } else if ($('.master_calendar').length > 0) {
+    initialize_master_calendar
+  } else if ($('.nurse_calendar').length > 0) {
+    initialize_nurse_calendar
+  } else if ($('.patient_calendar').length > 0) {
+    initialize_patient_calendar
+  }
+}
+
 $(document).on('turbolinks:load', function(){
+  initializeCalendar
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()

@@ -13,7 +13,7 @@
 
   <% unless appointment.new_record? %>
 
-    <div id="form-options-container">
+    <div id="form-options-container" class="blue-background-form">
       <div class="appointment-section-title">簡易編集</div>
       <%= link_to "<i class='glyphicon glyphicon-th-list' style='color:white;font-size:12px'></i> #{toggle_edit_requested_text(appointment)}".html_safe, planning_appointment_toggle_edit_requested_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_request_edit_message(appointment)}, remote: true unless appointment.new_record? %>
       <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> #{toggle_cancel_text(appointment)}".html_safe, planning_appointment_toggle_cancelled_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>

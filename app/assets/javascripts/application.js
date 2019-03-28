@@ -1864,25 +1864,72 @@ let fixHeightForTimelineWeekView = () => {
   $('td.fc-time-area.fc-widget-header > div.fc-scroller-clip').height(height)
 }
 
-$(document).on('turbolinks:load', initialize_calendar); 
-$(document).on('turbolinks:load', initialize_nurse_calendar); 
-$(document).on('turbolinks:load', initialize_patient_calendar); 
-$(document).on('turbolinks:load', initialize_master_calendar);
 
 let initializeCalendar = () => {
   if ($('.calendar').length > 0) {
-    initializeCalendar
+    initialize_calendar()
   } else if ($('.master_calendar').length > 0) {
-    initialize_master_calendar
+    initialize_master_calendar()
   } else if ($('.nurse_calendar').length > 0) {
-    initialize_nurse_calendar
+    initialize_nurse_calendar()
   } else if ($('.patient_calendar').length > 0) {
-    initialize_patient_calendar
+    initialize_patient_calendar()
   }
 }
 
+let newPostReminderLayout = () => {
+  $('#show-reminder-form').click(function(){
+    $(this).hide();
+    $('#reminder-form').show();
+  });
+  $('#delete-reminder').click(function(){
+    $('#reminder-form').hide();
+    $('#form-reminder-anchor').val("");
+    $('#show-reminder-form').show();
+  });
+
+  $('#form-reminder-anchor').focus(function(){
+    $(this).daterangepicker({
+      singleDatePicker: true,
+      timePicker: true,
+      timePicker24Hour: true,
+      timePickerIncrement: 15,
+      startDate: moment().add(15, 'days').startOf('hour'),
+      locale: {
+        format: 'YYYY-MM-DD H:mm',
+        applyLabel: "選択する",
+        cancelLabel: "取消",
+        daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土"
+        ],
+        monthNames: [
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月",
+          "9月",
+          "10月",
+          "11月",
+          "12月"
+        ],
+        firstDay: 1
+      }
+    })
+  })
+}
+
 $(document).on('turbolinks:load', function(){
-  initializeCalendar
+  initializeCalendar()
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()

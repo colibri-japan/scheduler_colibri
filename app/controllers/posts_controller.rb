@@ -4,6 +4,7 @@ class PostsController < ApplicationController
 
     def new
         @post = Post.new
+        @post.reminders.build
     end
 
     def posts_widget
@@ -43,6 +44,8 @@ class PostsController < ApplicationController
         @post.corporation = @corporation 
         
         @post.save
+
+        puts @post.errors.full_messages if @post.errors.any?
     end
 
     def edit
@@ -85,6 +88,6 @@ class PostsController < ApplicationController
     end
 
     def post_params
-        params.require(:post).permit(:published_at, :body, :patient_id)
+        params.require(:post).permit(:published_at, :body, :patient_id, reminders_attributes: [:id, :anchor, :frequency, :_destroy])
     end
 end

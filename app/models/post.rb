@@ -5,6 +5,8 @@ class Post < ApplicationRecord
   belongs_to :author, class_name: 'User', touch: true
   belongs_to :patient, optional: true
 
+  has_many :reminders, as: :reminderable
+
   before_validation :add_default_publication_date
   after_commit :mark_as_read_by_author
 

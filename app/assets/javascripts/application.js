@@ -1878,6 +1878,7 @@ let initializeCalendar = () => {
 }
 
 let newPostReminderLayout = () => {
+  $('#reminder-form').hide()
   $('#show-reminder-form').click(function(){
     $(this).hide();
     $('#reminder-form').show();

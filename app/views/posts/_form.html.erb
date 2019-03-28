@@ -3,30 +3,34 @@
   <% published_at = post.new_record? ? Time.now.in_time_zone('Tokyo').strftime("%y-%m-%d %H:%M") : post.published_at.strftime("%y-%m-%d %H:%M") %>
 
 
-  <div id="reminder-form"  class="blue-background-form" style="display:none">
-    <%= form.fields_for :reminders do |reminder_form| %>
+  <% if post.new_record? %>
+    <div id="reminder-form"  class="blue-background-form">
+      <%= form.fields_for :reminders do |reminder_form| %>
 
-      <div class="form-group">
-        <%= reminder_form.label :anchor, "リマインダー日時", class: "colibri-form-label" %>
-        <%= reminder_form.text_field :anchor, class: 'form-control', id: "form-reminder-anchor" %>
-      </div>
+        <div class="form-group">
+          <%= reminder_form.label :anchor, "リマインダー日時", class: "colibri-form-label" %>
+          <%= reminder_form.text_field :anchor, class: 'form-control', id: "form-reminder-anchor" %>
+        </div>
 
-      <div class="form-group">
-        <%= reminder_form.label :frequency, "その後の繰り返し", class: "colibri-form-label" %>
-        <%= reminder_form.select :frequency, options_for_select([['その日のみ', 0], ['毎週',1], ['隔週',2], ['第一○曜日', 3], ['第二○曜日', 4], ['最後の週', 5], ['毎月', 6], ['隔月', 7], ['3ヵ月ごと', 8]]) %>
-      </div>
+        <div class="form-group">
+          <%= reminder_form.label :frequency, "その後の繰り返し", class: "colibri-form-label" %>
+          <%= reminder_form.select :frequency, options_for_select([['その日のみ', 0], ['毎週',1], ['隔週',2], ['第一○曜日', 3], ['第二○曜日', 4], ['最後の週', 5], ['毎月', 6], ['隔月', 7], ['3ヵ月ごと', 8]]) %>
+        </div>
 
-      <div class="form-group">
-        <div class='btn btn-sm btn-secondary' id="delete-reminder">リマインダー削除</div>
-        <%= reminder_form.check_box :_destroy, style: 'display:none' %>
-      </div>
+        <div class="form-group">
+          <div class='btn btn-sm btn-secondary' id="delete-reminder">リマインダー削除</div>
+          <%= reminder_form.check_box :_destroy, style: 'display:none' %>
+        </div>
 
-    <% end %>
-  </div>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class='modal-body'>
-    <div class="btn btn-colibri-light btn-sm" id="show-reminder-form" style="margin-bottom:15px"><span class="glyphicon glyphicon-bell" style="color:#5f6368;font-size:13px"></span> リマインダー追加</div>
-  
+    <% if post.new_record? %>
+      <div class="btn btn-colibri-light btn-sm" id="show-reminder-form" style="margin-bottom:15px"><span class="glyphicon glyphicon-bell" style="color:#5f6368;font-size:13px"></span> リマインダー追加</div>
+    <% end %>
+
     <div class="form-group">
       <%= form.label :published_at, "記載日時", class: "colibri-form-label" %><span class='required-field'>*</span>
       <%= form.text_field :published_at, value: published_at, required: true, class: "form-control", id: "post_published_at" %>
@@ -46,8 +50,8 @@
 
   <div class="modal-footer">
     <div class="actions">
-      <%= form.submit '共有する', class: 'btn btn-info' %>
       <%= link_to '削除する', post, method: :delete, remote: true, class: 'btn btn-danger' unless post.new_record? %>
+      <%= form.submit '共有する', class: 'btn btn-info' %>
     </div>
   </div>
 

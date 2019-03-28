@@ -44,6 +44,7 @@ class RecurringAppointment < ApplicationRecord
 	scope :to_be_displayed, -> { where(displayable: true).not_archived }
 	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true, duplicatable: true, edit_requested: false).where.not(frequency: 2).not_archived }
 	scope :not_terminated_at, -> date { where('(termination_date IS NULL) OR (termination_date > ?)', date) }
+	scope :occurs_in_range, -> range { select {|r| r.occurs_between?(range.first, range.last) } }
 
 	def schedule
 		@schedule ||= begin
@@ -107,10 +108,12 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def appointments(start_date, end_date)
-		start_frequency = start_date.to_date 
-		end_frequency = end_date.to_date 
-		end_frequency = (termination_date - 1.day) if termination_date.present? && termination_date < end_frequency
-		occurrences = schedule.occurrences_between(start_frequency, end_frequency)
+		end_date = (termination_date - 1.day) if termination_date.present? && termination_date < end_date.to_date
+		schedule.occurrences_between(start_date.to_date, end_date.to_date)
+	end
+
+	def occurs_between?(start_date, end_date)
+		schedule.occurs_between?(start_date.to_date, end_date.to_date)
 	end
 
 	def archived?
@@ -177,8 +180,6 @@ class RecurringAppointment < ApplicationRecord
 
 		returned_json_array
 	end
-
-
 
 	private
 

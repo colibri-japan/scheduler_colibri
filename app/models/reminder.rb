@@ -1,6 +1,8 @@
 class Reminder < ApplicationRecord
     belongs_to :reminderable, polymorphic: true, optional: true
 
+    scope :occurs_in_range, -> range { select {|r| r.occurs_between?(range.first, range.last)} }
+
     def schedule
         @schedule ||= begin 
 
@@ -38,6 +40,10 @@ class Reminder < ApplicationRecord
             end
             schedule
         end
+    end
+
+    def occurs_between?(start_date, end_date)
+        schedule.occurs_between?(start_date.to_date, end_date.to_date)
     end
 
 end

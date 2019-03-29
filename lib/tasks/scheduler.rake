@@ -6,3 +6,9 @@ task :send_reminders => :environment do
 	puts "Finished sending reminders"
 end
 
+task :mark_reminderable_posts_as_unread => :environment do
+	puts "Marking reminderable posts as unread"
+	Post.mark_reminderable_as_unread
+	puts "Finished marking posts as unread"
+end 
+

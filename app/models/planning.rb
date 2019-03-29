@@ -15,12 +15,4 @@ class Planning < ApplicationRecord
 		self.title = "#{self.business_month}月のスケジュール" if self.title.blank?
 	end
 
-	def self.add_title
-		plannings = Planning.where(title: nil)
-
-		plannings.each do |planning|
-			planning.title = "#{planning.business_month}月のスケジュール"
-			planning.save
-		end
-	end
 end

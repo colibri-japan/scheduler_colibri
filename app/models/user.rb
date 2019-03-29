@@ -26,17 +26,6 @@ class User < ApplicationRecord
   scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 	scope :registered, -> { where.not(name: ['', nil]) }
 
-  def self.assign_to_base_corporation
-    @corporation = Corporation.create(name: 'Colibri Trial', address: 'Paris, France', identifier: '0123456789')
-
-    @users = User.all
-
-    @users.each do |user|
-      user.corporation_id = @corporation.id
-      user.save
-    end
-  end
-
   def has_restricted_access?
     schedule_restricted?
   end

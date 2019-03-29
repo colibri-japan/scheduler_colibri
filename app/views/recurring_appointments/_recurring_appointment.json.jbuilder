@@ -8,7 +8,7 @@ json.array! appointments do |appointment|
         json.title "#{recurring_appointment.patient.try(:name)} - #{recurring_appointment.nurse.try(:name)}"
         json.start DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
         json.end DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i
-        json.resourceId recurring_appointment.nurse_id
+        json.resourceId params[:patient_resource].present? ? recurring_appointment.patient_id : recurring_appointment.nurse_id
         json.borderColor '#FFBBA0' if recurring_appointment.edit_requested == true
         json.private_event false
         json.service_type recurring_appointment.title

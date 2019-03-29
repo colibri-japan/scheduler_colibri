@@ -661,8 +661,12 @@ initialize_master_calendar = function() {
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
+        let patientResource;
+        if (window.resourceType === 'patient') {
+          patientResource = '&patient_resource=true'
+        }
         if (window.userIsAdmin == 'true') {
-          $.getScript(event.edit_url + '?master=true&date=' + dateClicked, function(){
+          $.getScript(event.edit_url + '?master=true&date=' + dateClicked + patientResource, function(){
             individualMasterToGeneral()
             terminateRecurringAppointment(dateClicked, view_start, view_end)
             setHiddenStartAndEndFields(view_start, view_end);
@@ -906,6 +910,10 @@ initialize_calendar = function() {
         var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
         var table = $(this).parent().parent().parent().parent().children();
         let dateClicked;
+        let patientResource;
+        if (window.resourceType === 'patient') {
+          patientResource = '&patient_resource=true'
+        }
         $(table).each(function () {
           // Get the thead
           if ($(this).is('thead')) {
@@ -913,7 +921,7 @@ initialize_calendar = function() {
             dateClicked = $(tds[caseNumber]).attr("data-date");
           }
         });
-        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+        $.getScript(event.edit_url + '?date=' + dateClicked + patientResource, function() {
         }) 
       },
 

@@ -101,7 +101,9 @@
 
       <%= form.hidden_field :master, value: true %>
       <%= hidden_field_tag(:start, Date.today) %>
-      <%= hidden_field_tag(:end, Date.today) %>
+      <%= hidden_field_tag(:end, Date.today) %>    
+      <%= hidden_field_tag :patient_resource, true if params[:patient_resource].present? %>
+
 
       <div class="actions">
         <%= form.submit 'セーブ', class: 'btn btn-info btn-block', id: 'save-recurring-appointment' %>

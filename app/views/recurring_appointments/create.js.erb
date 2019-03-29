@@ -54,7 +54,7 @@
     calendar = $('.master_calendar');
   }
   <% if @recurring_appointment.master == true %>
-    if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %>) {
+    if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
       calendar.fullCalendar(
         'renderEvents',
         jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")

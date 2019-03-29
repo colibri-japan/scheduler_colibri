@@ -14,6 +14,7 @@
   window.resourceLabel = '利用者';
   window.resourceType = 'patient';
   window.fullcalendarViewOptions = 'timelineWeek,agendaDay';
+	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 <% end %>
 
 

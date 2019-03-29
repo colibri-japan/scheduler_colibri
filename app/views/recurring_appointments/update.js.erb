@@ -55,7 +55,7 @@
 
     <% if @recurring_appointment.master == true %>
       calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>' );
-      if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %>) {
+      if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
         calendar.fullCalendar(
           'renderEvents',
           $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe  %>"), 
@@ -63,7 +63,7 @@
         );
       }
       <% if @new_recurring_appointment.present? %>
-        if (window.nurseId == <%= @new_recurring_appointment.nurse_id %> || window.patientId == <%= @new_recurring_appointment.patient_id %>) {
+        if (window.nurseId == <%= @new_recurring_appointment.nurse_id %> || window.patientId == <%= @new_recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
           calendar.fullCalendar(
             'renderEvents',
             $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe  %>"), 

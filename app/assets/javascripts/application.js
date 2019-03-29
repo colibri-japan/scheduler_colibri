@@ -1878,7 +1878,6 @@ let initializeCalendar = () => {
 }
 
 let newPostReminderLayout = () => {
-  $('#reminder-form').hide()
   $('#show-reminder-form').click(function(){
     $(this).hide();
     $('#reminder-form').show();
@@ -1888,6 +1887,9 @@ let newPostReminderLayout = () => {
     $('#form-reminder-anchor').val("");
     $('#show-reminder-form').show();
   });
+  $('#delete-existing-reminder').click(function(){
+    $('#reminder-form').hide()
+  })
 
   $('#form-reminder-anchor').focus(function(){
     $(this).daterangepicker({

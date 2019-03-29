@@ -44,12 +44,11 @@ class PostsController < ApplicationController
         @post.corporation = @corporation 
         
         @post.save
-
-        puts @post.errors.full_messages if @post.errors.any?
     end
 
     def edit
         @post = Post.find(params[:id])
+        @post.reminders.build if @post.reminders.none?
     end
 
     def update

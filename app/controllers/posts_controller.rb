@@ -19,7 +19,7 @@ class PostsController < ApplicationController
         @patients = @corporation.cached_active_patients_ordered_by_kana
 
         if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
-            @posts = @corporation.posts.all 
+            @posts = @corporation.posts.includes(:reminders)
             @posts = @posts.where('published_at BETWEEN ? AND ?', params[:range_start], params[:range_end]) if params[:range_start].present? && params[:range_end].present?
             @posts = @posts.where(patient_id: params[:patient_ids]) if params[:patient_ids].present? && (params[:patient_ids].map(&:to_i) - @patients.ids).empty?
             @posts = @posts.where(author_id: params[:author_ids]) if params[:author_ids].present? && (params[:author_ids].map(&:to_i) - @users.ids).empty?

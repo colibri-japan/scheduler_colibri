@@ -26,6 +26,10 @@
     background-color: #E8FFB7;
 }
 
+.post-body.unread-post.reminderable-post {
+    background-color: #fffdb7;
+}
+
 .post-clickable-row:hover {
     cursor: pointer,
 }

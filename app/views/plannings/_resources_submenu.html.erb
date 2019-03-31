@@ -26,7 +26,7 @@
 
 			<% today = Date.today %>
 			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}" %><%= "/master" if master_resource %>'><%= group %></div>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}" if @teams_id_by_name.present? %><%= "/master" if master_resource %>'><%= group %></div>
 				<% nurses.each do |nurse| %>
 					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'nurse' && nurse.id == @nurse.id %>" data-url="<%= master_resource ? planning_nurse_master_path(@planning, nurse) : planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
 				<% end %>

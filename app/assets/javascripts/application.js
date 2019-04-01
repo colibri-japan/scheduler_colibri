@@ -172,7 +172,7 @@ initialize_nurse_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaDay,agendaWeek,month'
       },
       selectable: true,
       selectHelper: false,
@@ -352,7 +352,7 @@ initialize_patient_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaDay,agendaWeek,month'
       },
       selectable: true,
       selectHelper: false,

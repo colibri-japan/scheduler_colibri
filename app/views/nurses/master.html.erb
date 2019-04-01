@@ -20,7 +20,7 @@
 	window.printDates = "<%= j @printing_option.print_nurse_dates_in_master.to_s %>";
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 	window.masterSchedule = 'true';
-	window.fullcalendarViewOptions = 'month,agendaWeek,agendaDayWithoutResources';
+	window.fullcalendarViewOptions = 'agendaDayWithoutResources,agendaWeek,month';
 	window.resourceType = 'nurse';
 <% end %>
 

@@ -1902,12 +1902,11 @@ let newPostReminderLayout = () => {
   $('#form-reminder-anchor').focus(function(){
     $(this).daterangepicker({
       singleDatePicker: true,
-      timePicker: true,
       timePicker24Hour: true,
       timePickerIncrement: 15,
-      startDate: moment().add(15, 'days').startOf('hour'),
+      startDate: moment().add(15, 'days'),
       locale: {
-        format: 'YYYY-MM-DD H:mm',
+        format: 'YYYY-MM-DD',
         applyLabel: "選択する",
         cancelLabel: "取消",
         daysOfWeek: [

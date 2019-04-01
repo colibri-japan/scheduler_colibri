@@ -6,9 +6,11 @@
   <div id="reminder-form"  class="blue-background-form" style="<%= 'display:none' unless post.reminders.exists? %>">
     <%= form.fields_for :reminders do |reminder_form| %>
     
+      <% reminder_anchor =  reminder_form.object.anchor.present? ? reminder_form.object.anchor.strftime("%Y-%-m-%-d") : '' %>
+      
       <div class="form-group">
         <%= reminder_form.label :anchor, "リマインダー日時", class: "colibri-form-label" %>
-        <%= reminder_form.text_field :anchor, class: 'form-control', id: "form-reminder-anchor" %>
+        <%= reminder_form.text_field :anchor, value: reminder_anchor, class: 'form-control', id: "form-reminder-anchor" %>
       </div>
 
       <div class="form-group">

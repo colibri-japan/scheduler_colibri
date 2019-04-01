@@ -545,7 +545,7 @@ initialize_master_calendar = function() {
 
       eventSources: [window.eventSource1, window.eventSource2],
       resources: {
-        url: window.resourceUrl + '?include_undefined=true&master=true&planning_id=' + window.planningId,
+        url: window.resourceUrl + '?master=true&planning_id=' + window.planningId,
         cache: true
       }, 
 
@@ -590,11 +590,41 @@ initialize_master_calendar = function() {
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
         $('.popover').remove();
         let frequency = humanizeFrequency(event.frequency);
-        let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
-
+        let newAppointmentDetails = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
+        let minutes = moment.duration(delta).asMinutes();
+        let previous_start = moment(event.start).subtract(minutes, "minutes");
         let start_time = moment(view.start).format('YYYY-MM-DD')
         let end_time = moment(view.end).format('YYYY-MM-DD')
-        $('#drag-drop-master-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
+        let newNurseId;
+        let newPatientId;
+        let newPatientName;
+        let newNurseName;
+        let resourceName = $("[data-resource-id='" + event.resourceId + "']").html();
+        let patientResource;
+        if (window.resourceType == 'patient') {
+          patientResource = "&patient_resource=true"
+        } else {
+          patientResource = ""
+        }
+        if (window.generalPlanning) {
+          if (window.resourceType == 'nurse') {
+            newNurseId = event.resourceId;
+            newPatientId = event.patient_id;
+            newNurseName = resourceName;
+            newPatientName = event.patient.name
+          } else if (window.resourceType == 'patient') {
+            newPatientId = event.resourceId;
+            newNurseId = event.nurse_id;
+            newPatientName = resourceName;
+            newNurseName = event.nurse.name
+          }
+        } else {
+          newNurseId = event.nurse_id;
+          newPatientId = event.patient_id;
+          newNurseName = event.nurse.name;
+          newPatientName = event.patient.name
+        }
+        $('#drag-drop-master-content').html("<p>従業員： " + newNurseName + '  / 利用者名： ' + newPatientName + "</p><p>"  + newAppointmentDetails + "</p>")
 
         $('#drag-drop-master').dialog({
           height: 'auto',
@@ -604,12 +634,12 @@ initialize_master_calendar = function() {
             'コピーする': function(){
               $(this).dialog("close");
               $.ajax({
-                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time,
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time + patientResource,
                 type: 'POST',
                 data: {
                   recurring_appointment: {
-                    nurse_id: event.nurse_id,
-                    patient_id: event.patient_id,
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
                     frequency: event.frequency,
                     title: event.service_type,
                     color: event.color,
@@ -625,6 +655,26 @@ initialize_master_calendar = function() {
                 }
               });
               revertFunc();
+            },
+            '移動する': function(){
+              $(this).dialog("close");
+              $.ajax({
+                url: event.base_url + ".js?start=" + start_time + "&end=" + end_time + patientResource,
+                type: 'PATCH',
+                data: {
+                  recurring_appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                    anchor: event.start.format('YYYY-MM-DD'),
+                    end_day: event.end.format('YYYY-MM-DD'),
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
+                    editing_occurrences_after: previous_start.format('YYYY-MM-DD'),
+                    synchronize_appointments: 1
+                  }
+                }
+              })
+              $(".popover").remove();
             },
             'キャンセル': function(){
               $(this).dialog("close");
@@ -832,6 +882,13 @@ initialize_calendar = function() {
         let newNurseId;
         let nurse_name = event.nurse.name || '';
         let patient_name = event.patient.name || '';
+        let patientResource;
+
+        if (window.resourceType == 'patient') {
+          patientResource = "&patient_resource=true"
+        } else {
+          patientResource = ""
+        }
 
         if (newResource !== myResource) {
           if (newResource.is_nurse_resource) {
@@ -881,7 +938,7 @@ initialize_calendar = function() {
                 };
               }
               $.ajax({
-                url: event.base_url + '.js?delta=' + delta,
+                url: event.base_url + '.js?delta=' + delta + patientResource,
                 type: 'PATCH',
                 data: ajaxData,
                 success: function (data) {

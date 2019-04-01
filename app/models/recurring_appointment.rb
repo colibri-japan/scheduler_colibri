@@ -197,10 +197,9 @@ class RecurringAppointment < ApplicationRecord
 		if self.master == true && editing_occurrences_after.present? 
 			puts 'spliting recurring appointment before and after update date'
 			new_recurring = self.dup 
-			new_recurring.anchor = editing_occurrences_after
 			new_recurring.original_id = self.id
 			if new_recurring.save(validate: false) && self.synchronize_appointments
-				appointments = Appointment.to_be_displayed.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id)
+				appointments = Appointment.to_be_displayed.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).order(starts_at: :asc)
 				synchronize_appointments_with_recurring_appointment(new_recurring, appointments) if appointments.present?
 			end
 
@@ -333,9 +332,15 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def synchronize_appointments_with_recurring_appointment(recurring_appointment, appointments)
+		delta = (recurring_appointment.anchor - appointments.first.starts_at.to_date).to_i
+		puts 'recurring appointment anchor and delta'
+		puts recurring_appointment.anchor 
+		puts delta
+		puts appointments.first.starts_at.to_date
+
 		appointments.each do |appointment|
-			appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
-			appointment.ends_at = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.ends_at.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min)
+			appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min) + delta.days
+			appointment.ends_at = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.ends_at.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + delta.days
 			appointment.color = recurring_appointment.color 
 			appointment.description = recurring_appointment.description 
 			appointment.title = recurring_appointment.title 

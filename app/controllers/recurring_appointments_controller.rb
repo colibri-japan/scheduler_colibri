@@ -54,6 +54,7 @@ class RecurringAppointmentsController < ApplicationController
   def update    
     @recurring_appointment = RecurringAppointment.find(params[:id])
     set_previous_params
+    redefine_anchor_if_editing_after_some_date
       
     if @recurring_appointment.update(recurring_appointment_params)
       @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id, master: true).last if @recurring_appointment.master
@@ -137,6 +138,12 @@ class RecurringAppointmentsController < ApplicationController
       @previous_anchor = @recurring_appointment.anchor
       @previous_edit_requested = @recurring_appointment.edit_requested
       @previous_title = @recurring_appointment.title
+    end
+
+    def redefine_anchor_if_editing_after_some_date
+      if recurring_appointment_params[:anchor].blank? && recurring_appointment_params[:editing_occurrences_after].present?
+        @recurring_appointment.anchor = recurring_appointment_params[:editing_occurrences_after].to_date
+      end
     end
 
     def set_recurring_appointment

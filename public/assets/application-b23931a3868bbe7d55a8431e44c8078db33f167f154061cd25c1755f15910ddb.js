@@ -87490,12 +87490,8 @@ document.addEventListener('turbolinks:load', function () {
       trigger: 'click',
       placement: 'top'
     });
-    $('#colibri-batch-master-action-button').popover({
-      html: true,
-      title: 'マスター反映',
-      content: popoverContent,
-      trigger: 'click',
-      placement: 'top'
+    $('#colibri-batch-master-action-button').click(function() {
+      $.getScript($(this).data('url'));
     });
     $('#teams-report').click(function() {
       $('.modal').modal('hide');
@@ -87815,7 +87811,7 @@ initialize_nurse_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaDay,agendaWeek,month'
       },
       selectable: true,
       selectHelper: false,
@@ -87995,7 +87991,7 @@ initialize_patient_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaDay,agendaWeek,month'
       },
       selectable: true,
       selectHelper: false,
@@ -88140,11 +88136,31 @@ initialize_master_calendar = function() {
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       defaultView: window.defaultView,
       views: {
+        timelineWeek: {
+          slotDuration: { days: 1 },
+          buttonText: '週',
+          slotLabelFormat: 'D日[(]ddd[)]',
+          resourceAreaWidth: '10%',
+          displayEventEnd: true,
+          resourceColumns: [{
+            labelText: window.resourceLabel,
+            field: 'title'
+          }]
+        },
+        agendaDayWithoutResources: {
+          type: 'agendaDay',
+          resources: false,
+          titleFormat: 'YYYY年M月D日 [(]ddd[)]',
+        },
         day: {
           titleFormat: 'YYYY年M月D日 [(]ddd[)]',
         },
+        agendaWeek: {
+          resources: false
+        },
         month: {
           displayEventEnd: true,
+          resources: false
         }
       },
       lazyFetching: false,
@@ -88159,7 +88175,7 @@ initialize_master_calendar = function() {
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: window.fullcalendarViewOptions
       },
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
@@ -88167,6 +88183,10 @@ initialize_master_calendar = function() {
       refetchResourcesOnNavigate: true,
 
       eventSources: [window.eventSource1, window.eventSource2],
+      resources: {
+        url: window.resourceUrl + '?master=true&planning_id=' + window.planningId,
+        cache: true
+      }, 
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;
@@ -88195,30 +88215,55 @@ initialize_master_calendar = function() {
           container: 'body'
         })
 
-        if (view.name != 'agendaDay') {
-            element.find('.fc-title').text(function(i,t){
-              if (window.patientId) {
-                return event.nurse.name;
-              } else {
-                if (event.rank === undefined) {
-                  return event.patient.name;
-                }
-              }
-            });
-            return  !event.edit_requested && event.master && event.displayable ;
-        } else {
-            return !event.edit_requested && event.master && event.displayable ;
-        }
+        element.find('.fc-title').text(function(){
+          if (window.resourceType == 'patient' && event.eventType !== 'wished_slot') {
+            return event.nurse.name;
+          } else if (window.resourceType == 'nurse' && event.eventType !== 'wished_slot') {
+            return event.patient.name;
+          }
+        })
+
+        return !event.edit_requested && event.master && event.displayable ;
       },
 
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
         $('.popover').remove();
         let frequency = humanizeFrequency(event.frequency);
-        let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
-
+        let newAppointmentDetails = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
+        let minutes = moment.duration(delta).asMinutes();
+        let previous_start = moment(event.start).subtract(minutes, "minutes");
         let start_time = moment(view.start).format('YYYY-MM-DD')
         let end_time = moment(view.end).format('YYYY-MM-DD')
-        $('#drag-drop-master-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
+        let newNurseId;
+        let newPatientId;
+        let newPatientName;
+        let newNurseName;
+        let resourceName = $("[data-resource-id='" + event.resourceId + "']").html();
+        let patientResource;
+        if (window.resourceType == 'patient') {
+          patientResource = "&patient_resource=true"
+        } else {
+          patientResource = ""
+        }
+        if (window.generalPlanning) {
+          if (window.resourceType == 'nurse') {
+            newNurseId = event.resourceId;
+            newPatientId = event.patient_id;
+            newNurseName = resourceName;
+            newPatientName = event.patient.name
+          } else if (window.resourceType == 'patient') {
+            newPatientId = event.resourceId;
+            newNurseId = event.nurse_id;
+            newPatientName = resourceName;
+            newNurseName = event.nurse.name
+          }
+        } else {
+          newNurseId = event.nurse_id;
+          newPatientId = event.patient_id;
+          newNurseName = event.nurse.name;
+          newPatientName = event.patient.name
+        }
+        $('#drag-drop-master-content').html("<p>従業員： " + newNurseName + '  / 利用者名： ' + newPatientName + "</p><p>"  + newAppointmentDetails + "</p>")
 
         $('#drag-drop-master').dialog({
           height: 'auto',
@@ -88228,12 +88273,12 @@ initialize_master_calendar = function() {
             'コピーする': function(){
               $(this).dialog("close");
               $.ajax({
-                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time,
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time + patientResource,
                 type: 'POST',
                 data: {
                   recurring_appointment: {
-                    nurse_id: event.nurse_id,
-                    patient_id: event.patient_id,
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
                     frequency: event.frequency,
                     title: event.service_type,
                     color: event.color,
@@ -88249,6 +88294,26 @@ initialize_master_calendar = function() {
                 }
               });
               revertFunc();
+            },
+            '移動する': function(){
+              $(this).dialog("close");
+              $.ajax({
+                url: event.base_url + ".js?start=" + start_time + "&end=" + end_time + patientResource,
+                type: 'PATCH',
+                data: {
+                  recurring_appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                    anchor: event.start.format('YYYY-MM-DD'),
+                    end_day: event.end.format('YYYY-MM-DD'),
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
+                    editing_occurrences_after: previous_start.format('YYYY-MM-DD'),
+                    synchronize_appointments: 1
+                  }
+                }
+              })
+              $(".popover").remove();
             },
             'キャンセル': function(){
               $(this).dialog("close");
@@ -88285,8 +88350,12 @@ initialize_master_calendar = function() {
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
+        let patientResource;
+        if (window.resourceType === 'patient') {
+          patientResource = '&patient_resource=true'
+        }
         if (window.userIsAdmin == 'true') {
-          $.getScript(event.edit_url + '?master=true&date=' + dateClicked, function(){
+          $.getScript(event.edit_url + '?master=true&date=' + dateClicked + patientResource, function(){
             individualMasterToGeneral()
             terminateRecurringAppointment(dateClicked, view_start, view_end)
             setHiddenStartAndEndFields(view_start, view_end);
@@ -88304,9 +88373,12 @@ initialize_master_calendar = function() {
       },
 
 
-      viewRender: function () {
+      viewRender: function (view) {
         drawHourMarks();
-        makeTimeAxisPrintFriendly()
+        makeTimeAxisPrintFriendly();
+        if (view.name == 'timelineWeek') {
+          fixHeightForTimelineWeekView()
+        }
       }
     })
     
@@ -88449,6 +88521,13 @@ initialize_calendar = function() {
         let newNurseId;
         let nurse_name = event.nurse.name || '';
         let patient_name = event.patient.name || '';
+        let patientResource;
+
+        if (window.resourceType == 'patient') {
+          patientResource = "&patient_resource=true"
+        } else {
+          patientResource = ""
+        }
 
         if (newResource !== myResource) {
           if (newResource.is_nurse_resource) {
@@ -88498,7 +88577,7 @@ initialize_calendar = function() {
                 };
               }
               $.ajax({
-                url: event.base_url + '.js?delta=' + delta,
+                url: event.base_url + '.js?delta=' + delta + patientResource,
                 type: 'PATCH',
                 data: ajaxData,
                 success: function (data) {
@@ -88527,6 +88606,10 @@ initialize_calendar = function() {
         var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
         var table = $(this).parent().parent().parent().parent().children();
         let dateClicked;
+        let patientResource;
+        if (window.resourceType === 'patient') {
+          patientResource = '&patient_resource=true'
+        }
         $(table).each(function () {
           // Get the thead
           if ($(this).is('thead')) {
@@ -88534,7 +88617,7 @@ initialize_calendar = function() {
             dateClicked = $(tds[caseNumber]).attr("data-date");
           }
         });
-        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
+        $.getScript(event.edit_url + '?date=' + dateClicked + patientResource, function() {
         }) 
       },
 
@@ -88542,16 +88625,8 @@ initialize_calendar = function() {
         drawHourMarks();
         makeTimeAxisPrintFriendly();
 
-        if (view.name == 'agendaDay') {
-          $('span#day-view-options').show();
-        } else {
-          $('span#day-view-options').hide();
-        }
-
         if (view.name == 'timelineWeek') {
-          let height = $('.fc-content').height();
-          $('td.fc-resource-area.fc-widget-header > div.fc-scroller-clip').height(height);
-          $('td.fc-time-area.fc-widget-header > div.fc-scroller-clip').height(height)
+          fixHeightForTimelineWeekView();
         }
       },
 
@@ -89487,12 +89562,80 @@ let initializePostsWidget = () => {
   $.getScript('/posts_widget.js')
 }
 
-$(document).on('turbolinks:load', initialize_calendar); 
-$(document).on('turbolinks:load', initialize_nurse_calendar); 
-$(document).on('turbolinks:load', initialize_patient_calendar); 
-$(document).on('turbolinks:load', initialize_master_calendar);
+let fixHeightForTimelineWeekView = () => {
+  let height = $('.fc-content').height();
+  $('td.fc-resource-area.fc-widget-header > div.fc-scroller-clip').height(height);
+  $('td.fc-time-area.fc-widget-header > div.fc-scroller-clip').height(height)
+}
+
+
+let initializeCalendar = () => {
+  if ($('.calendar').length > 0) {
+    initialize_calendar()
+  } else if ($('.master_calendar').length > 0) {
+    initialize_master_calendar()
+  } else if ($('.nurse_calendar').length > 0) {
+    initialize_nurse_calendar()
+  } else if ($('.patient_calendar').length > 0) {
+    initialize_patient_calendar()
+  }
+}
+
+let newPostReminderLayout = () => {
+  $('#show-reminder-form').click(function(){
+    $(this).hide();
+    $('#reminder-form').show();
+  });
+  $('#delete-reminder').click(function(){
+    $('#reminder-form').hide();
+    $('#form-reminder-anchor').val("");
+    $('#show-reminder-form').show();
+  });
+  $('#delete-existing-reminder').click(function(){
+    $('#reminder-form').hide()
+  })
+
+  $('#form-reminder-anchor').focus(function(){
+    $(this).daterangepicker({
+      singleDatePicker: true,
+      timePicker24Hour: true,
+      timePickerIncrement: 15,
+      startDate: moment().add(15, 'days'),
+      locale: {
+        format: 'YYYY-MM-DD',
+        applyLabel: "選択する",
+        cancelLabel: "取消",
+        daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土"
+        ],
+        monthNames: [
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月",
+          "9月",
+          "10月",
+          "11月",
+          "12月"
+        ],
+        firstDay: 1
+      }
+    })
+  })
+}
 
 $(document).on('turbolinks:load', function(){
+  initializeCalendar()
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()

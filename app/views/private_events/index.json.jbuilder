@@ -1,8 +1,9 @@
 json.array! @private_events.each do |private_event|
+    json.allDay private_event.all_day_private_event? ? true : false
     date_format = private_event.all_day_private_event? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M:%S'
-
+    
     json.id "private_event_#{private_event.id}"
-
+    
     json.extract! private_event, :patient_id, :nurse_id, :edit_requested
     json.start private_event.starts_at
     json.end private_event.ends_at
@@ -10,7 +11,6 @@ json.array! @private_events.each do |private_event|
     json.service_type private_event.title ? private_event.title : ''
     json.title "#{private_event.patient.try(:name)} #{private_event.nurse.try(:name)}: #{private_event.title}" 
 
-    json.allDay private_event.all_day_private_event? ? true : false
 
     json.private_event true
     json.displayable true

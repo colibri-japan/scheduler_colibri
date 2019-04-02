@@ -12,7 +12,6 @@ class Appointment < ApplicationRecord
 	has_one :provided_service, dependent: :destroy
 
 	validates :title, presence: true
-	validate :ends_at_should_come_after_starts_at
 	validate :do_not_overlap
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
@@ -34,7 +33,7 @@ class Appointment < ApplicationRecord
   scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
 
 	def all_day_appointment?
-		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
+		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
 	end
 
 	def weekend_holiday_appointment?
@@ -120,13 +119,6 @@ class Appointment < ApplicationRecord
 	end
 
 	private
-
-	def ends_at_should_come_after_starts_at
-		if self.ends_at <= self.starts_at 
-			puts 'changing ends_at to be 15min after starts_at'
-			self.ends_at = self.starts_at + 15.minutes 
-		end
-	end
 
 	def request_edit_for_overlapping_appointments
 		puts 'requesting edit for overlapping appointments'

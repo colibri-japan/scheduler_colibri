@@ -74,13 +74,15 @@ let setPrivateEventTime = (start, end, view) => {
   $('#private_event_starts_at_3i').val(moment(start).format('D'));
   $('#private_event_starts_at_4i').val(moment(start).format('HH'));
   $('#private_event_starts_at_5i').val(moment(start).format('mm'));
-  $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
-  $('#private_event_ends_at_2i').val(moment(end).format('M'));
   if (view.name == 'month' || view.name == 'timelineWeek') {
+    $('#private_event_ends_at_1i').val(moment(start).format('YYYY'));
+    $('#private_event_ends_at_2i').val(moment(start).format('M'));
     $('#private_event_ends_at_3i').val(moment(start).format('D'));
     $('#private_event_ends_at_4i').val('23');
     $('#private_event_ends_at_5i').val('00');
   } else {
+    $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
+    $('#private_event_ends_at_2i').val(moment(end).format('M'));
     $('#private_event_ends_at_3i').val(moment(end).format('D'));
     $('#private_event_ends_at_4i').val(moment(end).format('HH'));
     $('#private_event_ends_at_5i').val(moment(end).format('mm'));
@@ -99,13 +101,15 @@ let setAppointmentTime = (start, end, view) => {
   $('#appointment_starts_at_3i').val(moment(start).format('D'));
   $('#appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#appointment_starts_at_5i').val(moment(start).format('mm'));
-  $('#appointment_ends_at_1i').val(moment(end).format('YYYY'));
-  $('#appointment_ends_at_2i').val(moment(end).format('M'));
   if (view.name == 'month' || view.name == 'timelineWeek') {
+    $('#appointment_ends_at_1i').val(moment(start).format('YYYY'));
+    $('#appointment_ends_at_2i').val(moment(start).format('M'));
     $('#appointment_ends_at_3i').val(moment(start).format('D'));
     $('#appointment_ends_at_4i').val('23');
     $('#appointment_ends_at_5i').val('00');
   } else {
+    $('#appointment_ends_at_1i').val(moment(end).format('YYYY'));
+    $('#appointment_ends_at_2i').val(moment(end).format('M'));
     $('#appointment_ends_at_3i').val(moment(end).format('D'));
     $('#appointment_ends_at_4i').val(moment(end).format('HH'));
     $('#appointment_ends_at_5i').val(moment(end).format('mm'));

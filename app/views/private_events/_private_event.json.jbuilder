@@ -1,3 +1,4 @@
+json.allDay private_event.all_day_private_event? ? true : false
 date_format = private_event.all_day_private_event? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M:%S'
 
 json.id "private_event_#{private_event.id}"
@@ -9,7 +10,6 @@ json.end private_event.ends_at
 json.description private_event.description ? private_event.description : ''
 json.service_type private_event.title ? private_event.title : ''
 
-json.allDay private_event.all_day_private_event? ? true : false
 
 json.private_event true
 json.patient do 

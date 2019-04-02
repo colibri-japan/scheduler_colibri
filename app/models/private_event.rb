@@ -13,7 +13,7 @@ class PrivateEvent < ApplicationRecord
 		where('((private_events.starts_at >= ? AND private_events.starts_at < ?) OR (private_events.ends_at > ? AND private_events.ends_at <= ?)) OR (private_events.starts_at < ? AND private_events.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
 	end
 	def all_day_private_event?
-		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight ? true : false
+		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
 	end
 	
 	def as_json(options = {})

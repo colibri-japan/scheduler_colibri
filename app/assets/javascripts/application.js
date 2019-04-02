@@ -214,21 +214,17 @@ initialize_nurse_calendar = function(){
           element.addClass('colibri-edit-requested')
         }
 
-        let popover_content;
-        if (event.patient.address) {
-          popover_content = event.patient.address + '<br/>' + event.description;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
         } else {
-          popover_content = event.description;
+          popoverContent = event.description;
         }
 
-        element.popover({
-          html: true,
-          title: event.service_type,
-          content: popover_content,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        });
+        let popoverTitle = event.service_type;
+        window.popoverFocusAllowed = true;
+        setPopover(element, popoverTitle, popoverContent)
+
         element.find('.fc-title').text(function(i, t){
           if (!event.private_event) {
             return event.patient.name;
@@ -382,13 +378,17 @@ initialize_patient_calendar = function(){
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
-        element.popover({
-          title: event.service_type,
-          content: event.description,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        });
+
+        window.popoverFocusAllowed = true;
+        let popoverTitle = event.service_type;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
+        } else {
+          popoverContent = event.description;
+        }
+        setPopover(element, popoverTitle, popoverContent)
+
         element.find('.fc-title').text(function(i, t){
           if (!event.private_event) {
             return event.nurse.name;
@@ -568,13 +568,15 @@ initialize_master_calendar = function() {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
 
-        element.popover({
-          title: event.service_type,
-          content: event.description,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        })
+        window.popoverFocusAllowed = true;
+        let popoverTitle = event.service_type;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
+        } else {
+          popoverContent = event.description;
+        }
+        setPopover(element, popoverTitle, popoverContent)
 
         element.find('.fc-title').text(function(){
           if (window.resourceType == 'patient' && event.eventType !== 'wished_slot') {
@@ -823,14 +825,15 @@ initialize_calendar = function() {
         let nurse_name = event.nurse.name ? event.nurse.name : ''
         let patient_address = event.patient.address || ''
 
-        element.popover({
-          html: true,
-          title: event.service_type,
-          content: nurse_name + ' x ' + patient_name + '<br/>' + event.description + '<br/>' + patient_address,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        })
+        window.popoverFocusAllowed = true;
+        let popoverTitle = event.service_type;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
+        } else {
+          popoverContent = event.description;
+        }
+        setPopover(element, popoverTitle, popoverContent)
 
         element.find('.fc-title').text(function (i, t) {
           if (window.resourceType == 'nurse') {
@@ -1993,6 +1996,42 @@ let newPostReminderLayout = () => {
       }
     })
   })
+}
+
+$.fn.overflownY = function () { var e = this[0]; return e.scrollHeight > e.clientHeight; }
+
+let setPopover = (element, popoverTitle, popoverContent) => {
+  element.popover({
+    html: true,
+    title: popoverTitle,
+    content: popoverContent,
+    trigger: 'manual',
+    animation: false,
+    placement: 'top',
+    container: 'body'
+  }).on('mouseenter', function () {
+    if (window.popoverFocusAllowed) {
+      window.popoverFocusAllowed = false
+      var _this = this;
+      $(this).popover('show');
+      $('.popover').on('mouseleave', function () {
+        $(_this).popover('hide');
+      });
+    }
+  }).on('mouseleave', function () {
+    var _this = this;
+    var condition = $('.popover-body').overflownY();
+    if (condition) {
+      setTimeout(function () {
+        if (!$('.popover:hover').length) {
+          $(_this).popover('hide');
+        }
+      }, 300);
+    } else {
+      $(_this).popover('hide')
+    }
+    window.popoverFocusAllowed = true
+  });
 }
 
 $(document).on('turbolinks:load', function(){

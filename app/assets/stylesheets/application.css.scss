@@ -573,6 +573,11 @@ span.fc-time {
 	display: flex;
 }
 
+div.popover-body {
+	max-height: 150px !important;
+	overflow-y: auto;
+}
+
 
 @media print {
 

@@ -157,6 +157,7 @@ class Appointment < ApplicationRecord
 
 	def create_provided_service
 		puts 'adding provided service'
+		#create provided service should be made more simple
 		if self.master != true
 		  provided_duration = self.ends_at - self.starts_at
 		  is_provided =  Time.current + 9.hours > self.starts_at

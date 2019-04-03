@@ -16,7 +16,7 @@ class PostsController < ApplicationController
 
     def index
         @users = @corporation.cached_registered_users_ordered_by_kana
-        @patients = @corporation.cached_active_patients_ordered_by_kana
+        @patients = @corporation.cached_all_patients_ordered_by_kana
 
         if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
             @posts = @corporation.posts.includes(:reminders)

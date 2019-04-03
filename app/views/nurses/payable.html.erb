@@ -33,7 +33,6 @@
 
 
 	<div id="payable-charts">
-		<%# pie_chart [["現在の合計給料", @chart_wage_data[true]], ["将来の合計給料", @chart_wage_data[false]]], donut: true, colors: ['#ffc107', '#dc3545'], suffix: '¥', thousands: ',', width: '200px', height: '200px' %>
 		<% if  @total_time_pending > 0 %>
 			<div id="hours-worked-pied-container">
 				<%= pie_chart [['稼働時間', @total_time_worked], ['稼働予定時間', @total_time_pending]], donut: true,  width: '130px', height: '130px', legend: false, colors: ['#ffc107', '#e4e4e4'], library: {tooltips: {enabled: false}} %>
@@ -161,20 +160,18 @@
 				<th class="table-important-fields">提供時間</th>
 				<th class="table-important-fields">回数</th>
 				<% if current_user.corporation_admin? %>
-					<th class="table-important-fields">時給/単価</th>
 					<th class="table-important-fields">計</th>
 				<% end %>
 			</tr>
 		</thead>
 		<tbody class="text-not-bold">
-			<% @grouped_services.each do |service| %>
+			<% @grouped_services.each do |service_group| %>
 				<tr>
-					<td><%= service.title %></td>
-					<td><%= from_seconds_to_hours_minutes(service.service_duration) if service.service_duration > 0 %></td>
-					<td><%= service.service_counts %></td>
+					<td><%= service_group.title %></td>
+					<td><%= from_seconds_to_hours_minutes(service_group.sum_duration) if service_group.sum_duration > 0 %></td>
+					<td><%= service_group.count %></td>
 					<% if current_user.corporation_admin? %>
-						<td><%= service.unit_cost %></td>
-						<td><%= service.total_wage %></td>
+						<td><%= service_group.sum_total_wage %></td>
 					<% end %>
 				</tr>
 			<% end %>
@@ -183,8 +180,7 @@
 					<td class="table-important-fields">合計</td>
 					<td	class="table-important-fields"><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
 					<td	class="table-important-fields"><%= @grouped_services_sum_count %></td>
-					<td></td>
-					<td id="total-salary"><%= @total_till_now %>¥</td>
+					<td id="total-salary"><%= @grouped_services_sum_total_wage %>¥</td>
 				</tr>
 			<% end %>
 		</tbody>

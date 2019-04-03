@@ -110,29 +110,18 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
 
     set_month_and_year_params
-
-    delete_previous_temporary_services
+    fetch_nurses_grouped_by_team
 
     first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+    now_in_japan = (Time.current + 9.hours) < last_day ? (Time.current + 9.hours) : last_day
 
-    @provided_services = ProvidedService.not_archived.where(nurse_id: @nurse.id, planning_id: @planning.id, temporary: false, countable: false).where('service_date BETWEEN ? and ?', first_day, last_day)
-
-    now_in_Japan = Time.current + 9.hours
-    @services_till_now = @provided_services.where('service_date BETWEEN ? and ?', first_day, now_in_Japan).order(service_date: 'asc').includes(:appointment, :patient)
-    @services_from_now = @provided_services.where('service_date BETWEEN ? and ?', now_in_Japan, last_day).order(service_date: 'asc')
-
-    mark_services_as_provided
-
-    fetch_nurses_grouped_by_team
-
+    @services_till_now = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(first_day..now_in_japan).order(service_date: 'asc')
+    @services_from_now = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(now_in_japan..last_day).order(service_date: 'asc')
     calculate_total_wage
-    @total_time_worked = @services_till_now.sum{|e|   e.service_duration.present? ? e.service_duration : 0 } 
-    
-    @total_time_pending =  @services_from_now.sum{|e|  e.service_duration.present? ? e.service_duration : 0 } 
-    create_grouped_services
 
-    @chart_wage_data = @provided_services.group(:provided).sum(:total_wage)
+    group_services_till_now_by_title
+    fetch_time_worked_vs_time_pending
 
     respond_to do |format|
       format.html
@@ -186,43 +175,21 @@ class NursesController < ApplicationController
   end
 
   def calculate_total_wage
-    @total_till_now = @services_till_now.sum{|service| service.total_wage.present? ? service.total_wage : 0 }
-    @total_from_now = @services_from_now.sum{|service| service.total_wage.present? ? service.total_wage : 0 }
+    @total_till_now = @services_till_now.sum(:total_wage) || 0
+    @total_from_now = @services_from_now.sum(:total_wage) || 0
   end
 
-  def delete_previous_temporary_services
-    services_to_delete = ProvidedService.where(temporary: true, nurse_id: @nurse.id)
-    services_to_delete.delete_all
+  def group_services_till_now_by_title
+    countable_services = @services_till_now.where(appointments: {edit_requested: false, cancelled: false})
+    @grouped_services = ProvidedService.where(id: countable_services.ids).group(:title).select('title, sum(service_duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
+    @grouped_services_sum_duration = countable_services.sum(:service_duration)
+    @grouped_services_sum_count = countable_services.count
+    @grouped_services_sum_total_wage = countable_services.sum(:total_wage)
   end
 
-  def mark_services_as_provided
-    unprovided_services = @services_till_now.where(provided: false)
-
-    unprovided_services.update_all(provided: true) if unprovided_services.present?
-  end
-
-  def create_grouped_services
-    @grouped_services = []
-    @grouped_services_sum_duration = 0
-    @grouped_services_sum_count = 0
-
-    service_types = @services_till_now.pluck(:title).uniq
-
-    service_types.each do |service_title|
-      matching_provided_services = @services_till_now.where(title: service_title, cancelled: false).where(appointments: {edit_requested: false})
-      
-      sum_duration = matching_provided_services.sum('service_duration')
-      sum_total_wage = matching_provided_services.sum('total_wage')
-      sum_counts = matching_provided_services.sum('service_counts')
-      hour_based = matching_provided_services.first.present? ? matching_provided_services.first.hour_based_wage : false 
-
-      matching_service = @corporation.equal_salary == true ? Service.where(corporation_id: @corporation.id, title: service_title, nurse_id: nil).first : Service.where(corporation_id: @corporation.id, title: service_title, nurse_id: @nurse.id).first
-      unit_cost = matching_service.unit_wage if matching_service.present?
-      @grouped_services << ProvidedService.new(title: service_title, service_duration: sum_duration, unit_cost: unit_cost, planning_id: @planning.id, nurse_id: @nurse.id, service_counts: sum_counts, total_wage: sum_total_wage, temporary: true, hour_based_wage: hour_based)
-      @grouped_services_sum_count = @grouped_services_sum_count + sum_counts 
-      @grouped_services_sum_duration = @grouped_services_sum_duration + sum_duration
-    end
-    ProvidedService.import @grouped_services
+  def fetch_time_worked_vs_time_pending
+    @total_time_worked = @services_till_now.sum(:service_duration) || 0
+    @total_time_pending =  @services_from_now.sum(:service_duration) || 0
   end
 
   def set_teams_id_by_name

@@ -138,20 +138,19 @@ class ProvidedService < ApplicationRecord
 		self.service_duration ||= 0
 	end
 
-
 	def calculate_total_wage
-		if self.hour_based_wage == true
-		  if self.unit_cost.present? && self.service_duration.present?
-			  self.total_wage = ( self.unit_cost.to_f / 60 ) * ( self.service_duration / 60 )
-		  elsif self.service_counts.present? && self.unit_cost.present?
-			  self.total_wage = self.service_counts.to_i * self.unit_cost.to_i
-		  end
-		else
-			if self.service_counts.present? && self.unit_cost.present?
-				self.total_wage = self.unit_cost * self.service_counts
-			else 
-				self.total_wage = self.unit_cost
-			end
+		if self.appointment.present? && (self.appointment.cancelled == true || self.appointment.edit_requested == true)
+			self.total_wage = 0
+		else 
+			calculate_wage
+		end
+	end
+
+	def calculate_wage
+		if hour_based_wage == true && unit_cost.present? && service_duration.present?
+			self.total_wage = ( unit_cost.to_f / 60 ) * ( service_duration / 60 )
+		elsif hour_based_wage == false && service_counts.present? && unit_cost.present? 
+			self.total_wage = unit_cost * service_counts
 		end
 	end
 

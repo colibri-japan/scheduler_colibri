@@ -34,8 +34,7 @@ class ServicesController < ApplicationController
 
     def update
         if @service.update(service_params)
-            update_planning_provided_service
-            RecalculatePreviousWagesWorker.perform_async(@service.id, service_params['planning_id'])
+            RecalculatePreviousWagesWorker.perform_async(@service.id) if @service.recalculate_previous_wages
         end
     end
 

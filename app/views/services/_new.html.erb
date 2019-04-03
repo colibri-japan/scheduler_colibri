@@ -6,40 +6,41 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
-			<div class='modal-body'>
-              <%= form_for @service do |form| %>
-                <% if @service.errors.any? %>
-                  <div id="error_explanation">
-                    <h2>エラーが発生しました：</h2>
-                    <ul>
-                      <% @service.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% end %>
+      <%= form_for @service do |form| %>
 
-                <div class="form-group">
-                  <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
-                  <%= form.text_field :title, id: :service_title, required: true, class: "form-control" %>
-                </div>
-
-                <div class="form-group">
-                  <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label" %>
-                  <%= form.check_box :hour_based_wage, checked: @service.corporation.hour_based_payroll, id: :service_hour_based_wage %>
-                </div>
-
-                <div class="form-group">
-                  <%= form.label :equal_salary, "給与従業員別", class: "colibri-form-label" %>
-                  <%= form.check_box :equal_salary, checked: @service.corporation.equal_salary, id: :service_equal_salary %>
-                </div>
-
-                <div class="actions">
-                  <%= form.submit "セーブする", class: "btn btn-info btn-block" %>
-                </div>
-
+        <% if @service.errors.any? %>
+          <div id="error_explanation">
+            <h2>エラーが発生しました：</h2>
+            <ul>
+              <% @service.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
               <% end %>
-			</div>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
+            <%= form.text_field :title, id: :service_title, required: true, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label" %>
+            <%= form.check_box :hour_based_wage, checked: @service.corporation.hour_based_payroll, id: :service_hour_based_wage %>
+          </div>
+          <div class="form-group">
+            <%= form.label :equal_salary, "給与従業員別", class: "colibri-form-label" %>
+            <%= form.check_box :equal_salary, checked: @service.corporation.equal_salary, id: :service_equal_salary %>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="actions">
+            <%= form.submit "セーブする", class: "btn btn-info btn-block" %>
+          </div>
+        </div>
+        
+      <% end %>
 		</div>
 	</div>
 

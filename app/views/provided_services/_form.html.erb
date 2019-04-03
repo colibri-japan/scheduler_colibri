@@ -11,16 +11,15 @@
   </div>
   <% end %>
 
-  <% if provided_service.new_record? %>
-
-    <div id="form-options-container">
-      <div class="form-group">
-          <%= form.check_box :hour_based_wage, checked: current_user.corporation.hour_based_payroll , id: 'hour-based-wage-toggle' %>
-      </div>
-    </div>
-  <% end %>
 
   <div class="modal-body">
+      <% if provided_service.new_record? %>
+        <div id="form-options-container">
+          <div class="form-group">
+              <%= form.check_box :hour_based_wage, checked: current_user.corporation.hour_based_payroll , id: 'hour-based-wage-toggle' %>
+          </div>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= form.label :title, "手当タイトル", class: "colibri-form-label" %><span class='required-field'>*</span>
@@ -59,30 +58,29 @@
         <div class="form-group" id="pay-by-count-field">
           <%= form.label :service_counts, "回数", class: "colibri-form-label" %><span class='required-field'>*</span>
           <%= check_box_tag('count-input-method', 1, checked = !provided_service.new_record?) if provided_service.new_record? %>
-          <%= form.number_field :service_counts, id: :provided_service_service_counts, class: "form-control" %>
+          <%= form.number_field :service_counts, id: :provided_service_service_counts, class: "form-control", style: "margin-top:10px" %>
         </div>
 
       <% end %>
 
       <% if provided_service.new_record? %>
-
         <div class="form-group" id="target-service-from-ids">
-            <%= form.label :target_service_ids, "対象サービスタイプ", class: 'colibri-form-label' %><br/>
-            <%= form.collection_select(:target_service_ids, @services, :id, :title, {},multiple: true, id: 'chosen-target-services')  %>
-            <span id="select-all-services" class="btn btn-mid-light btn-sm">すべて選択</span>
-            <span id="unselect-all-services" class="btn btn-mid-light btn-sm">すべて消す</span>
+          <%= form.label :target_service_ids, "対象サービスタイプ", class: 'colibri-form-label' %><br/>
+          <%= form.collection_select(:target_service_ids, @services, :id, :title, {},multiple: true, id: 'chosen-target-services')  %>
+          <span id="select-all-services" class="btn btn-mid-light btn-sm">すべて選択</span>
+          <span id="unselect-all-services" class="btn btn-mid-light btn-sm">すべて消す</span>
         </div>
-      
       <% end %>
 
       <%= form.hidden_field :planning_id, value: @planning.id %>
 
+  </div>
 
-      <div class="actions">
-
-        <%= form.submit 'セーブする', class: 'btn btn-info' %>
-        <%= link_to '削除', provided_service, method: :delete, confirm: 'この手当が削除されます。', class: 'btn btn-danger' if provided_service.appointment_id.blank? && provided_service.countable == false %>
-      </div>
+  <div class="modal-footer">
+    <div class="actions">
+      <%= form.submit 'セーブする', class: 'btn btn-info' %>
+      <%= link_to '削除', provided_service, method: :delete, confirm: 'この手当が削除されます。', class: 'btn btn-danger' if provided_service.appointment_id.blank? && provided_service.countable == false %>
+    </div>
   </div>
 
 

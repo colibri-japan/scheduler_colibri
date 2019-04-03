@@ -32,7 +32,7 @@
             <td><%= service.title %></td>
             <td><%= humanize_hour_based_wage(service) %></td>
             <td><%= humanize_equal_salary(service) %></td>
-            <td><%= link_to '削除', service_path(service), method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'サービスタイプが削除されます。既存のサービスは変更されません。'} %></td>
+            <td><%= link_to '削除', service_path(service), method: :delete, class: 'btn btn-secondary btn-sm', data: { confirm: 'サービスタイプが削除されます。既存のサービスは変更されません。'} %></td>
           </tr>
         <% end %>
       </tbody>

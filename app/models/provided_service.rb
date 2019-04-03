@@ -93,18 +93,9 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def lookup_unit_cost
-		if self.service_date.present? && self.temporary == false
-			if self.planning.corporation.equal_salary == true 
-				@pricing_policy = Service.where(title: self.title, corporation_id: self.planning.corporation.id).first
-			else
-				@pricing_policy = Service.where(title: self.title, corporation_id: self.planning.corporation.id, nurse_id: self.nurse_id).first
-			end
-
-			if @pricing_policy.present?
-				self.unit_cost = self.weekend_holiday_provided_service? ? @pricing_policy.weekend_unit_wage : @pricing_policy.unit_wage
-			end
+		if self.service_salary.present?
+			self.unit_cost = self.weekend_holiday_provided_service? ? self.service_salary.weekend_unit_wage : self.service_salary.unit_wage
 		end
-
 	end
 
 	def service_counts_or_duration_from_target_services
@@ -115,7 +106,8 @@ class ProvidedService < ApplicationRecord
 				sum_hours = 0
 				services.each do |service|
 					provided_services = ProvidedService.where(planning_id: self.planning_id, title: service.title, provided: true, nurse_id: self.nurse_id, cancelled: false)
-					sum_hours = sum_hours + provided_services.sum{|provided_service| provided_service.service_duration.present? ? provided_service.service_duration : 0 }
+					provided_service_sum_duration = provided_services.sum(:service_duration) || 0
+					sum_hours = sum_hours + provided_service_sum_duration
 				end
 				self.service_duration = sum_hours
 			else
@@ -126,7 +118,6 @@ class ProvidedService < ApplicationRecord
 				end
 				self.service_counts = sum_count 
 			end
-		else
 		end
 	end
 

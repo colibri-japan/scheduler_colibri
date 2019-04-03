@@ -1081,8 +1081,8 @@ let addProvidedServiceToggle = () => {
   $('#hour-based-wage-toggle').bootstrapToggle({
     on: '時給計算',
     off: '単価計算',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 100
   });
 
@@ -1250,15 +1250,15 @@ let toggleCountFromServices = () => {
   $('#hour-input-method').bootstrapToggle({
     on: '自動',
     off: '手動',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   });
   $('#count-input-method').bootstrapToggle({
     on: '自動',
     off: '手動',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 }
@@ -1435,8 +1435,8 @@ let toggleServiceHourBasedWage = () => {
   $('#service_hour_based_wage').bootstrapToggle({
     on: '時給',
     off: '単価',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 };
@@ -1445,8 +1445,8 @@ let toggleServiceEqualSalary = () => {
   $('#service_equal_salary').bootstrapToggle({
     on: '全員同じ',
     off: '従業員別',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 }

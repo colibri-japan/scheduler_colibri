@@ -62,11 +62,7 @@ class Service < ApplicationRecord
   end
 
   def destroy_services_for_other_nurses
-    if self.nurse_id.present? 
-      other_services = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(nurse_id: self.nurse_id)
-
-      other_services.delete_all
-    end
+    Service.where(corporation_id: self.corporation_id, title: self.title).where.not(nurse_id: self.nurse_id).delete_all if self.nurse_id.present? 
   end
 
 

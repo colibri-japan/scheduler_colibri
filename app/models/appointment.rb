@@ -158,40 +158,24 @@ class Appointment < ApplicationRecord
 	def create_provided_service
 		puts 'adding provided service'
 		#create provided service should be made more simple
-		if self.master != true
+		if !self.master
 		  provided_duration = self.ends_at - self.starts_at
-		  is_provided =  Time.current + 9.hours > self.starts_at
-		  if self.planning.corporation.equal_salary
-			service_salary_id = self.service_id
-		  else
-			nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first
-			if nurse_service.nil? 
-				nurse_service = Service.create(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id)
-			end
-			service_salary_id = nurse_service.id
-		  end
-		  provided_service = ProvidedService.create!(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, cancelled: self.cancelled, provided: is_provided, temporary: false, title: self.title, hour_based_wage: self.planning.corporation.hour_based_payroll, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
+			nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first 
+			service_salary_id = nurse_service.present? ? nurse_service.id : self.service_id
+		  provided_service = ProvidedService.create(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, cancelled: self.cancelled, temporary: false, title: self.title, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
 		end
 	end
 
 	def update_provided_service
 		puts 'updating provided service'
-		if self.master != true
-			@provided_service = self.provided_service
-			if self.archived? == true 
-				@provided_service.archive!
-			else
-		      provided_duration = self.ends_at - self.starts_at
-			  is_provided = Time.current + 9.hours > self.starts_at
-			  if self.planning.corporation.equal_salary == true 
-				service_salary_id = self.service_id
-			  else 
-				nurse_service =  Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first
-				service_salary_id =  nurse_service.present? ? nurse_service.id : self.service_id
-			  end
-			   deactivate_provided =  self.displayable == false || self.archived? == true || self.cancelled == true
-			  @provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, cancelled: deactivate_provided, provided: is_provided, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
-			end
+		if !self.master
+			provided_service = self.provided_service
+
+			provided_duration = self.ends_at - self.starts_at
+			nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first
+			service_salary_id = nurse_service.present? ? nurse_service.id : self.service_id
+
+			provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, cancelled: self.cancelled, archived_at: self.archived_at, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
 		end
 	end
 
@@ -205,31 +189,4 @@ class Appointment < ApplicationRecord
 		end
 	end
 
-	def self.update_activities
-		update_activities = PublicActivity::Activity.where(key: 'appointment.update', new_start: nil, new_end: nil)
-
-		update_activities.each do |activity|
-			if activity.trackable.present?
-			  activity.new_start = activity.trackable.starts_at
-			  activity.new_end = activity.trackable.ends_at 
-			  activity.new_nurse = activity.trackable.nurse.name if activity.trackable.nurse.present? 
-			  activity.new_patient = activity.trackable.patient.name  if activity.trackable.patient.present?
-			  activity.new_edit_requested = activity.trackable.edit_requested
-
-			  activity.save! 
-			end
-		end
-	end
-
-	def self.add_or_create_service
-		appointments = Appointment.where(service_id: nil).where('starts_at > ?', Date.new(2018,10,1)) 
-
-		appointments.find_each do |appointment|
-			service = Service.where(corporation_id: appointment.planning.corporation.id, nurse_id: nil, title: appointment.title).first 
-			if service.present? 
-				appointment.service_id = service.id 
-				appointment.save(validate: false)
-			end
-		end
-	end
 end

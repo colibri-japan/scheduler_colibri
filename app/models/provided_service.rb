@@ -12,7 +12,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :second_verifier, class_name: 'User', optional: true
 
 	before_save :set_default_countable, unless: :skip_callbacks_except_calculate_total_wage
-	before_save :lookup_unit_cost, unless: :skip_callbacks_except_calculate_total_wage
+	before_save :lookup_unit_cost_and_hour_based_wage, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :service_counts_or_duration_from_target_services,　unless: :skip_callbacks_except_calculate_total_wage
 	before_save :set_default_service_counts, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
@@ -92,9 +92,10 @@ class ProvidedService < ApplicationRecord
 		self.countable ||= false 
 	end
 
-	def lookup_unit_cost
+	def lookup_unit_cost_and_hour_based_wage
 		if self.service_salary.present?
 			self.unit_cost = self.weekend_holiday_provided_service? ? self.service_salary.weekend_unit_wage : self.service_salary.unit_wage
+			self.hour_based_wage = self.service_salary.hour_based_wage
 		end
 	end
 

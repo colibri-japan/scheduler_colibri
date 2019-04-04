@@ -16,7 +16,10 @@
     <div id="planning-options" >
         <h1 class="colibri-small-title">スケジュール設定</h1>
         <%= form_for @corporation do |form| %>
-            <div class="form-group">
+          <div class="colibri-form-subsection" style="margin-top:25px">
+            <div class='colibri-form-subsection-title'>レイアウト設定</div>
+
+            <div class="form-group" style="margin-top:15px">
                 <%= form.label :business_start_hour, "日開始時間", class: "colibri-form-label-dark" %>
                 <%= form.select :business_start_hour, options_for_select([['05:00', '05:00:00'], ['06:00', '06:00:00'], ['07:00', '07:00:00'], ['08:00', '08:00:00'], ['09:00', '09:00:00'], ['10:00', '10:00:00'], ['11:00', '11:00:00']], @corporation.business_start_hour), class: "form-control" %>
             </div>
@@ -45,8 +48,11 @@
                 <%= form.label :default_first_day, "カレンダー開始曜日", class: "colibri-form-label-dark" %>
                 <%= form.select :default_first_day, options_for_select([['月曜', 1], ['日曜', 0]], @corporation.default_first_day), class: "form-control" %>
             </div>
+          </div>
 
-            <div class="form-group">
+          <div class="colibri-form-subsection" style='margin-top:25px'>
+            <div class='colibri-form-subsection-title'>リマインダー設定</div>
+            <div class="form-group" style="margin-top:15px">
                 <%= form.label :reminder_email_hour, "リマインダーメール送信時間", class: "colibri-form-label-dark" %>
                 <%= form.select :reminder_email_hour, options_for_select([['06:00', '06:00'], ['07:00', '07:00'], ['08:00', '08:00'], ['09:00', '09:00'], ['10:00', '10:00'], ['11:00', '11:00'], ['12:00', '12:00'], ['13:00', '13:00'], ['14:00', '14:00'], ['15:00', '15:00'], ['16:00', '16:00'], ['17:00', '17:00'], ['18:00', '18:00'], ['19:00', '19:00'], ['20:00', '20:00'], ['21:00', '21:00']], @corporation.reminder_email_hour), class: "form-control" %>
             </div>
@@ -75,10 +81,29 @@
                 <%= form.label :custom_email_outro_text, "リマインダーメール定型文2", class: "colibri-form-label-dark" %>
                 <%= form.text_area :custom_email_outro_text, class: "form-control" %>
             </div>
+        　</div>
 
-            <div class="actions">
-                <%= form.submit "セーブする", class: "btn btn-info btn-block form-control" %>
+          <div class="colibri-form-subsection">
+            <div class="colibri-form-subsection-title">サービス設定のデフォルト</div>
+
+            <div class="form-group">
+              <%= form.label :hour_based_payroll, "計算方法", class: "colibri-form-label-dark" %>
+              <%= form.radio_button :hour_based_payroll, true, checked: @corporation.hour_based_payroll %>
+              <%= form.label :hour_based_payroll_true, "時給" %>
+              <%= form.radio_button :hour_based_payroll, false, checked: !@corporation.hour_based_payroll %>
+              <%= form.label :hour_based_payroll_false, "単価" %>
             </div>
+
+            <div class="form-group">
+              <%= form.label :equal_salary, "全員同じ給与", class: "colibri-form-label-dark" %>
+              <%= form.check_box :equal_salary, checked: @corporation.equal_salary %>
+            </div>
+
+          </div>
+
+          <div class="actions">
+              <%= form.submit "セーブする", class: "btn btn-info btn-block form-control" %>
+          </div>
 
         <% end %>
     </div>

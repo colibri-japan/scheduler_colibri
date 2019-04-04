@@ -1,0 +1,6 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "new_merge_and_destroy" %>');
+$('#new_merge_and_destroy').modal('show');
+selectizeServiceToMerge()
+submitMerge()

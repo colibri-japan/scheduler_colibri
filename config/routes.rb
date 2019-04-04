@@ -145,6 +145,10 @@ Rails.application.routes.draw do
   patch 'users/:user_id/posts/mark_all_posts_as_read' => 'posts#mark_all_posts_as_read', as: :mark_all_posts_as_read
   get 'posts_widget' => 'posts#posts_widget', as: :posts_widget
 
+  #custom routes for services
+  get 'services/:id/new_merge_and_destroy' => 'services#new_merge_and_destroy', as: :service_new_merge_and_destroy
+  patch 'services/:id/merge_and_destroy' => 'services#merge_and_destroy', as: :service_merge_and_destroy
+
   authenticated :user do  
     root  to: 'dashboard#index', as: :authenticated_root
   end

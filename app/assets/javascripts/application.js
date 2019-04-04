@@ -2038,6 +2038,30 @@ let setPopover = (element, popoverTitle, popoverContent) => {
   });
 }
 
+let selectizeServiceToMerge = () => {
+  $('#service_to_merge').selectize()
+}
+
+let submitMerge = () => {
+  $('#merge-submit').click(function(){
+    var destination_service_id = $('#service_to_merge').val();
+    if (destination_service_id) {
+      var condition = confirm('サービスタイプが削除され、既存のサービスと実績が選択されたサービスへ合併されます')
+      if (condition) {
+        $.ajax({
+          url: $(this).data('url'),
+          data: {
+            destination_service_id: destination_service_id
+          },
+          type: 'PATCH'
+        })
+      }
+    } else {
+      alert('合併先のサービスを選択してください')
+    }
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

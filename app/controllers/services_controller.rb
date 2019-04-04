@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
     before_action :set_corporation
-    before_action :set_nurse, except: [:destroy, :index, :new, :create]
-    before_action :set_service, only: [:edit, :update, :destroy]
+    before_action :set_nurse, except: [:destroy, :index, :new, :create, :new_merge_and_destroy, :merge_and_destroy]
+    before_action :set_service, only: [:edit, :update, :destroy, :new_merge_and_destroy]
 
     def index
         if params[:nurse_id].present? 
@@ -35,6 +35,16 @@ class ServicesController < ApplicationController
         if @service.update(service_params)
             RecalculatePreviousWagesWorker.perform_async(@service.id) if @service.recalculate_previous_wages
         end
+    end
+
+    def new_merge_and_destroy
+        @services = @corporation.services.where(nurse_id: nil).where.not(id: @service.id)
+    end
+
+    def merge_and_destroy
+        puts params[:id]
+        puts params[:destination_service_id]
+        MergeAndDestroyServiceWorker.perform_async(params[:id], params[:destination_service_id])
     end
 
     def destroy

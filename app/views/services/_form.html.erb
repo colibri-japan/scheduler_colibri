@@ -29,7 +29,7 @@
     </div>
 
     <div class="form-group">
-      <%= form.label :recalculate_previous_wages, "過去の実績に反映する(数分かかる)", class:"colibri-form-label-dark" %>
+      <%= form.label :recalculate_previous_wages, "過去の実績に反映する(数秒かかります)", class:"colibri-form-label-dark" %>
       <%= form.check_box :recalculate_previous_wages, id: :service_recalculate_previous_wages, data: {toggle: 'toggle'} %>
     </div>
 
@@ -38,7 +38,7 @@
 
   <div class="modal-footer">
     <div class="actions">
-      <%= link_to '削除する', nurse_service_path(@nurse, service), method: :delete, class: 'btn btn-danger text-white', data: {confirm: "#{service.title}のサービスタイプと給与設定が削除されます。"}, remote: true unless service.new_record? %>
+      <%= link_to '戻る', nurse_services_path(@nurse, params: {planning_id: @corporation.planning.id}), remote: true, class: 'btn btn-colibri-light' %>
       <%= form.submit "セーブする", class: 'btn btn-info' %>
     </div>
   </div>

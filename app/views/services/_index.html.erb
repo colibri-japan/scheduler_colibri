@@ -1,5 +1,5 @@
 <div id="services_index" class="modal fade">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h1 class="colibri-small-title"><%= "#{@nurse.name}の給与テーブル" %></h1>
@@ -7,13 +7,15 @@
 			</div>
 
             <div class="modal-body">
+                <%= link_to '事業所のサービスタイプ管理へ', planning_services_path(@corporation.planning), class: 'btn btn-colibri-light', style: 'margin-bottom:10px' %>
                 <table class="table table-hover">
                     <thead>
                         <tr >
                             <th>サービスタイプ</th>
                             <th>時給.単価</th>
                             <th>土日.祝日</th>
-                            <th>全従業員</th>
+                            <th>計算方法</th>
+                            <th>全従業員共通</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -22,6 +24,7 @@
                                 <td><%= service.try(:title) %></td>
                                 <td><%= service.try(:unit_wage) %></td>
                                 <td><%= service.weekend_unit_wage.to_i if service.weekend_unit_wage.present? %></td>
+                                <td><%= humanize_hour_based_wage(service) %></td>
                                 <td><span class="<%= 'glyphicon glyphicon-ok' if service.equal_salary == true %>" style="color: #42B97C"></span></td>
                             </tr>
                         <% end %>

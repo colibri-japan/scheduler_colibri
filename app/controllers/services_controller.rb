@@ -1,5 +1,4 @@
 class ServicesController < ApplicationController
-
     before_action :set_corporation
     before_action :set_nurse, except: [:destroy, :index, :new, :create]
     before_action :set_service, only: [:edit, :update, :destroy]

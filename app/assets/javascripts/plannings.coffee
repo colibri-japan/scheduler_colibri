@@ -177,4 +177,8 @@ $(document).on 'turbolinks:load', ->
     calendar.fullCalendar('refetchEvents')
     return
 
+  if $('#colibri-salary-rules-index').length > 0
+    $.getScript('/salary_rules.js')
+      
+
   return

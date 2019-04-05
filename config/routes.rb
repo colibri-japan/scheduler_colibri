@@ -63,6 +63,8 @@ Rails.application.routes.draw do
 
   resources :contact_forms, only: [:new, :create]
 
+  resources :salary_rules, only: [:index]
+
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   

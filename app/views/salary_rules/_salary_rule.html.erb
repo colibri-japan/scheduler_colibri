@@ -1,0 +1,6 @@
+<tr class="salary_rule" id="salary_rule_<%= salary_rule.id %>">
+  <td><%= salary_rule.title %></td>
+  <td><%= target_all_nurses(salary_rule) %></td>
+  <td><%= target_all_services(salary_rule) %></td>
+  <td><%= salary_rule.expires_at.strftime("%y年%-m月%-d日") if salary_rule.expires_at.present? %></td>
+</tr>

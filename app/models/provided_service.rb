@@ -6,7 +6,6 @@ class ProvidedService < ApplicationRecord
 	belongs_to :nurse
 	belongs_to :patient, optional: true
 	belongs_to :planning
-	belongs_to :invoice_setting, optional: true
 	belongs_to :service_salary, class_name: 'Service', optional: true
 	belongs_to :verifier, class_name: 'User', optional: true
 	belongs_to :second_verifier, class_name: 'User', optional: true

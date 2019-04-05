@@ -4,7 +4,6 @@ class Corporation < ApplicationRecord
 	has_many :nurses
 	has_many :patients
 	has_many :services
-	has_many :invoice_settings
 	has_many :posts
 	has_many :teams
 	has_one :printing_option

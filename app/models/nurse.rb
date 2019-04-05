@@ -10,8 +10,6 @@ class Nurse < ApplicationRecord
 	has_many :appointments, dependent: :destroy
 	has_many :recurring_appointments, dependent: :destroy
 	has_many :provided_services, dependent: :destroy
-	has_many :invoice_setting_nurses
-	has_many :nurses, through: :invoice_setting_nurses
 	has_many :services
 	has_many :patients
 

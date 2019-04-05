@@ -5,8 +5,6 @@ class Service < ApplicationRecord
   attribute :planning_id, :integer
 
   belongs_to :corporation
-  has_many :invoice_setting_services
-  has_many :invoice_settings, through: :invoice_setting_services
   has_many :appointments
   has_many :recurring_appointments
   has_many :provided_services

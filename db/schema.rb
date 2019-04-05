@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190405122451) do
+ActiveRecord::Schema.define(version: 20190405175937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -314,6 +314,7 @@ ActiveRecord::Schema.define(version: 20190405122451) do
     t.date "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "hour_based"
     t.index ["corporation_id"], name: "index_salary_rules_on_corporation_id"
   end
 

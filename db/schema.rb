@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190405101319) do
+ActiveRecord::Schema.define(version: 20190405122451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -301,6 +301,22 @@ ActiveRecord::Schema.define(version: 20190405101319) do
     t.index ["reminderable_type", "reminderable_id"], name: "index_reminders_on_reminderable_type_and_reminderable_id"
   end
 
+  create_table "salary_rules", force: :cascade do |t|
+    t.string "title"
+    t.bigint "corporation_id"
+    t.boolean "target_all_nurses", default: true
+    t.text "nurse_id_list", default: [], array: true
+    t.boolean "target_all_services", default: true
+    t.text "service_title_list", default: [], array: true
+    t.integer "date_constraint", default: 0
+    t.integer "operator"
+    t.decimal "argument"
+    t.date "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["corporation_id"], name: "index_salary_rules_on_corporation_id"
+  end
+
   create_table "scans", force: :cascade do |t|
     t.bigint "planning_id"
     t.datetime "done_at"
@@ -421,6 +437,7 @@ ActiveRecord::Schema.define(version: 20190405101319) do
   add_foreign_key "provided_services", "users", column: "second_verifier_id"
   add_foreign_key "provided_services", "users", column: "verifier_id"
   add_foreign_key "recurring_appointments", "plannings"
+  add_foreign_key "salary_rules", "corporations"
   add_foreign_key "scans", "plannings"
   add_foreign_key "services", "corporations"
   add_foreign_key "teams", "corporations"

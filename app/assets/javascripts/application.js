@@ -2120,6 +2120,12 @@ let toggleServiceTitleList = () => {
   })
 }
 
+let editSalaryRuleOnClick = () => {
+  $('tr.salary_rule').click(function(){
+    $.getScript($(this).data('url'))
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

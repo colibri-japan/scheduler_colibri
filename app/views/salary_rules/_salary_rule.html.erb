@@ -1,4 +1,4 @@
-<tr class="salary_rule" id="salary_rule_<%= salary_rule.id %>">
+<tr class="salary_rule" id="salary_rule_<%= salary_rule.id %>" data-url="<%= edit_salary_rule_path(salary_rule) %>">
   <td><%= salary_rule.title %></td>
   <td><%= target_all_nurses(salary_rule) %></td>
   <td><%= target_all_services(salary_rule) %></td>

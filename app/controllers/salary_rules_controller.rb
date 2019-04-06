@@ -17,6 +17,17 @@ class SalaryRulesController < ApplicationController
       @salary_rule.save
     end
 
+    def edit 
+      set_nurses_and_services
+      @salary_rule = SalaryRule.find(params[:id])
+    end
+
+    def update  
+      @salary_rule = SalaryRule.find(params[:id])
+
+      @salary_rule.update(salary_rules_params)
+    end
+
     private
 
     def set_corporation

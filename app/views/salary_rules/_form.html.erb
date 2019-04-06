@@ -12,9 +12,9 @@
       <%= form.check_box :target_all_nurses, checked: salary_rule.target_all_nurses, id: 'all_nurses_selected_checkbox' %>
     </div>
 
-    <div class="form-group" id="form_nurse_id_list_group" style="display:none">
+    <div class="form-group" id="form_nurse_id_list_group" style="<%= 'display:none' if salary_rule.target_all_nurses %>">
       <%= form.label :nurse_id_list, "対象従業員", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select), {}, multiple: true, id: 'target-nurse-ids' %>
+      <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, salary_rule.nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
     </div>
 
     <div class="form-group">
@@ -22,7 +22,7 @@
       <%= form.check_box :target_all_services, checked: salary_rule.target_all_services, id: 'all_services_selected_checkbox' %>
     </div>
 
-    <div class="form-group" id="form_service_title_list_group" style="display:none">
+    <div class="form-group" id="form_service_title_list_group" style="<%= 'display:none' if salary_rule.target_all_services %>">
       <%= form.label :service_title_list, "対象サービス", class: "colibri-form-label" %>
       <%= form.collection_select :service_title_list, @services, :title, :title, {}, multiple: true, id: 'target-service-titles' %>
     </div>

@@ -28,6 +28,12 @@ class SalaryRulesController < ApplicationController
       @salary_rule.update(salary_rules_params)
     end
 
+    def destroy
+      @salary_rule = SalaryRule.find(params[:id])
+
+      @salary_rule.destroy
+    end
+
     private
 
     def set_corporation

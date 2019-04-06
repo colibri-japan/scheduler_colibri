@@ -46,7 +46,11 @@
 
   <div class="modal-footer">
     <div class="actions">
-      <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+      <% if salary_rule.new_record? %>
+        <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+      <% else %>
+        <%= link_to '削除する', salary_rule, method: :delete, remote: true, class: 'btn btn-secondary', data: {confirm: "カスタム手当が削除されます"} %>
+      <% end %>
       <%= form.submit 'セーブする', class: 'btn btn-info' %>
     </div>
   </div>

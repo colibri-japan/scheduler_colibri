@@ -12,3 +12,9 @@ task :mark_reminderable_posts_as_unread => :environment do
 	puts "Finished marking posts as unread"
 end 
 
+task :calculate_salaries_from_salary_rules => :environment do 
+	puts "Starting to calculate salaries from salary rules"
+	SalaryRule.calculate_salaries 
+	puts "Finished calculating salaries"
+end
+

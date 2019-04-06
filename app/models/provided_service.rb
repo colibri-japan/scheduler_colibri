@@ -9,6 +9,7 @@ class ProvidedService < ApplicationRecord
 	belongs_to :service_salary, class_name: 'Service', optional: true
 	belongs_to :verifier, class_name: 'User', optional: true
 	belongs_to :second_verifier, class_name: 'User', optional: true
+	belongs_to :salary_rule, optional: true
 
 	before_save :set_default_countable, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :lookup_unit_cost_and_hour_based_wage, unless: :skip_callbacks_except_calculate_total_wage

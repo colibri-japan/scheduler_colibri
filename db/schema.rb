@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190405175937) do
+ActiveRecord::Schema.define(version: 20190406165035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,11 +239,13 @@ ActiveRecord::Schema.define(version: 20190405175937) do
     t.bigint "verifier_id"
     t.bigint "second_verifier_id"
     t.datetime "second_verified_at"
+    t.bigint "salary_rule_id"
     t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
     t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
     t.index ["patient_id"], name: "index_provided_services_on_patient_id"
     t.index ["payable_type", "payable_id"], name: "index_provided_services_on_payable_type_and_payable_id"
     t.index ["planning_id"], name: "index_provided_services_on_planning_id"
+    t.index ["salary_rule_id"], name: "index_provided_services_on_salary_rule_id"
     t.index ["second_verifier_id"], name: "index_provided_services_on_second_verifier_id"
     t.index ["service_salary_id"], name: "index_provided_services_on_service_salary_id"
     t.index ["verifier_id"], name: "index_provided_services_on_verifier_id"

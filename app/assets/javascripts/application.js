@@ -2062,6 +2062,64 @@ let submitMerge = () => {
   })
 }
 
+let salaryRulesFormLayout = () => {
+  bootstrapToggleForAllNursesCheckbox();
+  bootstrapToggleForAllServicesCheckbox();
+  toggleNurseIdList();
+  toggleServiceTitleList()
+  $('#target-nurse-ids').selectize({
+    plugins: ['remove_button']
+  })
+  $('#target-service-titles').selectize({
+    plugins: ['remove_button']
+  })
+}
+
+
+let bootstrapToggleForAllNursesCheckbox = () => {
+  $('#all_nurses_selected_checkbox').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '全従業員対象',
+    off: '従業員選択',
+    size: 'small',
+    width: 170
+  })
+}
+
+let bootstrapToggleForAllServicesCheckbox = () => {
+  $('#all_services_selected_checkbox').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '全サービスタイプ',
+    off: 'サービスタイプ選択',
+    size: 'small',
+    width: 170
+  })
+}
+
+let toggleNurseIdList = () => {
+  $('#all_nurses_selected_checkbox').on('change', function(){
+    if ($('#all_nurses_selected_checkbox').is(':checked')) {
+      $('#form_nurse_id_list_group').hide()
+      $('#target-nurse-ids').val('')
+    } else {
+      $('#form_nurse_id_list_group').show()
+    }
+  })
+}
+
+let toggleServiceTitleList = () => {
+  $('#all_services_selected_checkbox').on('change', function(){
+    if ($('#all_services_selected_checkbox').is(':checked')) {
+      $('#form_service_title_list_group').hide()
+      $('#target-service-titles').val('')
+    } else {
+      $('#form_service_title_list_group').show()
+    }
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

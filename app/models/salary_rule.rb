@@ -7,7 +7,7 @@ class SalaryRule < ApplicationRecord
     def self.calculate_salaries
         start_of_month = (Time.current + 9.hours).beginning_of_month
         end_of_month = start_of_month.end_of_month
-        end_of_today = (Time.current + 9.hours).end_of_day
+        end_of_today = (Time.current + 9.hours).end_of_day > end_of_month ? end_of_month : (Time.current + 9.hours).end_of_day
 
         SalaryRule.all.each do |salary_rule|
             corporation = salary_rule.corporation
@@ -16,7 +16,7 @@ class SalaryRule < ApplicationRecord
 
             nurses.each do |nurse|
                 provided_services_from_rule = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_month)
-                targeted_services = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).where.not(appointment_id: nil).in_range(start_of_month..end_of_today)
+                targeted_services = ProvidedService.includes(:appointment).where(nurse_id: nurse.id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).where(appointments: {edit_requested: false}).from_appointments.in_range(start_of_month..end_of_today)
                 service_counts = targeted_services.count
                 service_duration = targeted_services.sum(:service_duration)
 

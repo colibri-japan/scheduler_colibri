@@ -18,6 +18,8 @@ class ProvidedService < ApplicationRecord
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage
 
+	after_update :recalculate_provided_services_from_salary_rules, unless: :skip_callbacks_except_calculate_total_wage
+
 	scope :provided, -> { where(provided: true) }
 	scope :is_verified, -> { where.not(verified_at: nil) }
 	scope :not_archived, -> { where(archived_at: nil) }
@@ -146,6 +148,10 @@ class ProvidedService < ApplicationRecord
 		elsif hour_based_wage == false && service_counts.present? && unit_cost.present? 
 			self.total_wage = unit_cost * service_counts
 		end
+	end
+
+	def recalculate_provided_services_from_salary_rules
+		RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(self.id)
 	end
 
 

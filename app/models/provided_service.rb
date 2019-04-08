@@ -22,6 +22,8 @@ class ProvidedService < ApplicationRecord
 	scope :is_verified, -> { where.not(verified_at: nil) }
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('service_date BETWEEN ? AND ?', range.first, range.last) }
+	scope :from_salary_rules, -> { where('salary_rule_id IS NOT NULL') }
+	scope :from_appointments, -> { where('appointment_id IS NOT NULL') }
 
 	def self.to_csv(options = {})
 		CSV.generate(options) do |csv|

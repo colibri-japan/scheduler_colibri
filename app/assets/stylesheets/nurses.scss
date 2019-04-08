@@ -63,10 +63,13 @@ p.payable-dashboard-line {
 	margin-bottom: 7px;
 }
 
-.weekend-holiday-provided-service {
-	background-color:#E9EEFA ;
+.sunday-holiday-provided-service {
+	color: #ff304f;
 }
 
+.saturday-provided-service {
+	color: #118df0;
+}
 
 .cancelled-provided-service {
 	text-align: center;
@@ -158,6 +161,13 @@ p.payable-dashboard-line {
 	cursor: pointer;
 }
 
+.colibri-payable-subtitle {
+	margin-top: 20px;
+	margin-bottom: 8px;
+	font-size: 1.2em;
+	color: black;
+	font-weight: bold;
+}
 
 @media print {
 	#payable-container {

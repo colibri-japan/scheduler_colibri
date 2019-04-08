@@ -114,11 +114,15 @@ class NursesController < ApplicationController
 
     first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
-    now_in_japan = (Time.current + 9.hours) < last_day ? (Time.current + 9.hours) : last_day
+    end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
 
-    @services_till_now = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(first_day..now_in_japan).order(service_date: 'asc')
-    @services_from_now = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(now_in_japan..last_day).order(service_date: 'asc')
+
+    @services_till_today = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(first_day..end_of_today_in_japan).order(service_date: 'asc')
+    @services_from_today = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(end_of_today_in_japan..last_day).order(service_date: 'asc')
     calculate_total_wage
+
+    @services_from_salary_rules = @services_till_today.from_salary_rules
+    @services_from_appointments = @services_till_today.from_appointments
 
     group_services_till_now_by_title
     fetch_time_worked_vs_time_pending
@@ -175,12 +179,12 @@ class NursesController < ApplicationController
   end
 
   def calculate_total_wage
-    @total_till_now = @services_till_now.sum(:total_wage) || 0
-    @total_from_now = @services_from_now.sum(:total_wage) || 0
+    @total_till_today = @services_till_today.sum(:total_wage) || 0
+    @total_from_today = @services_from_today.sum(:total_wage) || 0
   end
 
   def group_services_till_now_by_title
-    countable_services = @services_till_now.where(appointments: {edit_requested: false, cancelled: false})
+    countable_services = @services_till_today.where(appointments: {edit_requested: false, cancelled: false})
     @grouped_services = ProvidedService.where(id: countable_services.ids).group(:title).select('title, sum(service_duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
     @grouped_services_sum_duration = countable_services.sum(:service_duration)
     @grouped_services_sum_count = countable_services.count
@@ -188,8 +192,8 @@ class NursesController < ApplicationController
   end
 
   def fetch_time_worked_vs_time_pending
-    @total_time_worked = @services_till_now.sum(:service_duration) || 0
-    @total_time_pending =  @services_from_now.sum(:service_duration) || 0
+    @total_time_worked = @services_till_today.sum(:service_duration) || 0
+    @total_time_pending =  @services_from_today.sum(:service_duration) || 0
   end
 
   def set_teams_id_by_name

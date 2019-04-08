@@ -56,24 +56,24 @@
 		<% end %>
 	</div>
 
-	<div class="colibri-payable-subtitle">実績詳細</div>
+	<div class="colibri-payable-subtitle">実績.手当詳細</div>
 
 	<table class="table">
 		<thead>
 			<tr>
-				<th class="table-important-fields">日付</th>
-				<th class="table-important-fields">タイプ</th>
-				<th class="table-important-fields">利用者名</th>
-				<th class="table-important-fields">提供時間</th>
-				<th class="table-important-fields">開始~終了</th>
+				<th>日付</th>
+				<th>タイプ</th>
+				<th>利用者名</th>
+				<th>提供時間</th>
+				<th>開始~終了</th>
 				<% if current_user.corporation_admin? %>
-					<th class="table-important-fields">時給/単価</th>
+					<th>時給/単価</th>
 				<% end %>
 				<% if current_user.corporation_admin? %>
-					<th class="table-important-fields">計</th>
+					<th>計</th>
 				<% end %>
-				<th class="table-important-fields" colspan="2">ステータス</th>
-				<th class="table-important-fields">編集</th>
+				<th colspan="2">ステータス</th>
+				<th>編集</th>
 			</tr>
 			
 		</thead>
@@ -143,63 +143,67 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><span id="total-salary-label" style="font-weight:bold;float:right">実績合計：</span></td>
+					<td><span id="total-salary-label" style="font-weight:bold;float:right">実績小計：</span></td>
 					<td id="total-salary" style="font-weight:bold"><%= @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
 					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
 			<% end %>
+
+		<% @services_from_salary_rules.each do |provided_service| %>
+			<tr>
+				<td><%= provided_service.updated_at.strftime("%-m月%-d日") %></td>
+				<td><%= provided_service.hour_based_wage ? provided_service.title : provided_service_title_with_counts(provided_service) %></td>
+				<td></td>
+				<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.hour_based_wage %></td>
+				<td></td>
+				<td><%= salary_calculation(provided_service.salary_rule) %></td>
+				<td><%= "#{provided_service.total_wage}¥" %></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		<% end %>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><span style="font-weight:bold;float:right">手当小計：</span></td>
+			<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) ||0 %>¥</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><span style="font-weight:bold;float:right;margin:0">実績＋手当合計：</span></td>
+			<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) + @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+
 		</tbody>
 		
 	</table>
-
-	<div class="colibri-payable-subtitle">手当詳細</div>
-
-	<table class="table">
-		<thead>
-			<th>ラスト編集</th>
-			<th>手当タイトル</th>
-			<th>提供時間</th>
-			<th>回数</th>
-			<th>計算方法</th>
-			<th>計</th>
-		</thead>
-		<tbody>
-			<% @services_from_salary_rules.each do |provided_service| %>
-				<tr>
-					<td><%= provided_service.updated_at.strftime("%-m月%-d日") %></td>
-					<td><%= provided_service.title %></td>
-					<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.hour_based_wage %></td>
-					<td><%= provided_service.service_counts unless provided_service.hour_based_wage %></td>
-					<td><%= salary_calculation(provided_service.salary_rule) %></td>
-					<td><%= "#{provided_service.total_wage}¥" %></td>
-				</tr>
-			<% end %>
-
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td style="font-weight:bold;float:right">手当合計：</td>
-				<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) ||0 %>¥</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<div class="colibri-payable-subtitle">実績+手当合計: <%= @services_from_salary_rules.sum(:total_wage) + @services_from_appointments.sum(:total_wage) || 0 %>¥</div>
 
 
 	<div class="colibri-payable-subtitle">サービスタイプ合計</div>
 	<table class="table">
 		<thead>
 			<tr>
-				<th class="table-important-fields">タイプ</th>
-				<th class="table-important-fields">提供時間</th>
-				<th class="table-important-fields">回数</th>
+				<th>タイプ</th>
+				<th>提供時間</th>
+				<th>回数</th>
 				<% if current_user.corporation_admin? %>
-					<th class="table-important-fields">計</th>
+					<th>計</th>
 				<% end %>
 			</tr>
 		</thead>
@@ -216,7 +220,7 @@
 			<% end %>
 			<% if current_user.corporation_admin? %>
 				<tr>
-					<td class="table-important-fields">合計</td>
+					<td>合計</td>
 					<td	class="table-important-fields"><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
 					<td	class="table-important-fields"><%= @grouped_services_sum_count %></td>
 					<td id="total-salary"><%= @grouped_services_sum_total_wage %>¥</td>

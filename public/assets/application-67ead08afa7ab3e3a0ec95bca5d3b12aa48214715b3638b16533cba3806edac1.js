@@ -87548,6 +87548,9 @@ document.addEventListener('turbolinks:load', function () {
       calendar.fullCalendar('addEventSource', window.eventSource2);
       calendar.fullCalendar('refetchEvents');
     });
+    if ($('#colibri-salary-rules-index').length > 0) {
+      $.getScript('/salary_rules.js');
+    }
   });
 
 }).call(this);
@@ -87713,13 +87716,15 @@ let setPrivateEventTime = (start, end, view) => {
   $('#private_event_starts_at_3i').val(moment(start).format('D'));
   $('#private_event_starts_at_4i').val(moment(start).format('HH'));
   $('#private_event_starts_at_5i').val(moment(start).format('mm'));
-  $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
-  $('#private_event_ends_at_2i').val(moment(end).format('M'));
   if (view.name == 'month' || view.name == 'timelineWeek') {
+    $('#private_event_ends_at_1i').val(moment(start).format('YYYY'));
+    $('#private_event_ends_at_2i').val(moment(start).format('M'));
     $('#private_event_ends_at_3i').val(moment(start).format('D'));
     $('#private_event_ends_at_4i').val('23');
     $('#private_event_ends_at_5i').val('00');
   } else {
+    $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
+    $('#private_event_ends_at_2i').val(moment(end).format('M'));
     $('#private_event_ends_at_3i').val(moment(end).format('D'));
     $('#private_event_ends_at_4i').val(moment(end).format('HH'));
     $('#private_event_ends_at_5i').val(moment(end).format('mm'));
@@ -87738,13 +87743,15 @@ let setAppointmentTime = (start, end, view) => {
   $('#appointment_starts_at_3i').val(moment(start).format('D'));
   $('#appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#appointment_starts_at_5i').val(moment(start).format('mm'));
-  $('#appointment_ends_at_1i').val(moment(end).format('YYYY'));
-  $('#appointment_ends_at_2i').val(moment(end).format('M'));
   if (view.name == 'month' || view.name == 'timelineWeek') {
+    $('#appointment_ends_at_1i').val(moment(start).format('YYYY'));
+    $('#appointment_ends_at_2i').val(moment(start).format('M'));
     $('#appointment_ends_at_3i').val(moment(start).format('D'));
     $('#appointment_ends_at_4i').val('23');
     $('#appointment_ends_at_5i').val('00');
   } else {
+    $('#appointment_ends_at_1i').val(moment(end).format('YYYY'));
+    $('#appointment_ends_at_2i').val(moment(end).format('M'));
     $('#appointment_ends_at_3i').val(moment(end).format('D'));
     $('#appointment_ends_at_4i').val(moment(end).format('HH'));
     $('#appointment_ends_at_5i').val(moment(end).format('mm'));
@@ -87811,7 +87818,7 @@ initialize_nurse_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaDay,agendaWeek,month'
       },
       selectable: true,
       selectHelper: false,
@@ -87853,21 +87860,17 @@ initialize_nurse_calendar = function(){
           element.addClass('colibri-edit-requested')
         }
 
-        let popover_content;
-        if (event.patient.address) {
-          popover_content = event.patient.address + '<br/>' + event.description;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
         } else {
-          popover_content = event.description;
+          popoverContent = event.description;
         }
 
-        element.popover({
-          html: true,
-          title: event.service_type,
-          content: popover_content,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        });
+        let popoverTitle = event.service_type;
+        window.popoverFocusAllowed = true;
+        setPopover(element, popoverTitle, popoverContent)
+
         element.find('.fc-title').text(function(i, t){
           if (!event.private_event) {
             return event.patient.name;
@@ -87991,7 +87994,7 @@ initialize_patient_calendar = function(){
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'agendaDay,agendaWeek,month'
       },
       selectable: true,
       selectHelper: false,
@@ -88021,13 +88024,17 @@ initialize_patient_calendar = function(){
         } else if (event.edit_requested) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
-        element.popover({
-          title: event.service_type,
-          content: event.description,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        });
+
+        window.popoverFocusAllowed = true;
+        let popoverTitle = event.service_type;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
+        } else {
+          popoverContent = event.description;
+        }
+        setPopover(element, popoverTitle, popoverContent)
+
         element.find('.fc-title').text(function(i, t){
           if (!event.private_event) {
             return event.nurse.name;
@@ -88184,7 +88191,7 @@ initialize_master_calendar = function() {
 
       eventSources: [window.eventSource1, window.eventSource2],
       resources: {
-        url: window.resourceUrl + '?include_undefined=true&master=true&planning_id=' + window.planningId,
+        url: window.resourceUrl + '?master=true&planning_id=' + window.planningId,
         cache: true
       }, 
 
@@ -88207,13 +88214,15 @@ initialize_master_calendar = function() {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
         }
 
-        element.popover({
-          title: event.service_type,
-          content: event.description,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        })
+        window.popoverFocusAllowed = true;
+        let popoverTitle = event.service_type;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
+        } else {
+          popoverContent = event.description;
+        }
+        setPopover(element, popoverTitle, popoverContent)
 
         element.find('.fc-title').text(function(){
           if (window.resourceType == 'patient' && event.eventType !== 'wished_slot') {
@@ -88229,11 +88238,41 @@ initialize_master_calendar = function() {
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
         $('.popover').remove();
         let frequency = humanizeFrequency(event.frequency);
-        let newAppointment = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
-
+        let newAppointmentDetails = event.start.format('[(]dd[)]') + frequency + ' ' + event.start.format('LT') + ' ~ ' + event.end.format('LT')
+        let minutes = moment.duration(delta).asMinutes();
+        let previous_start = moment(event.start).subtract(minutes, "minutes");
         let start_time = moment(view.start).format('YYYY-MM-DD')
         let end_time = moment(view.end).format('YYYY-MM-DD')
-        $('#drag-drop-master-content').html("<p>従業員： " + event.nurse.name + '  / 利用者名： ' + event.patient.name + "</p><p>"  + newAppointment + "</p>")
+        let newNurseId;
+        let newPatientId;
+        let newPatientName;
+        let newNurseName;
+        let resourceName = $("[data-resource-id='" + event.resourceId + "']").html();
+        let patientResource;
+        if (window.resourceType == 'patient') {
+          patientResource = "&patient_resource=true"
+        } else {
+          patientResource = ""
+        }
+        if (window.generalPlanning) {
+          if (window.resourceType == 'nurse') {
+            newNurseId = event.resourceId;
+            newPatientId = event.patient_id;
+            newNurseName = resourceName;
+            newPatientName = event.patient.name
+          } else if (window.resourceType == 'patient') {
+            newPatientId = event.resourceId;
+            newNurseId = event.nurse_id;
+            newPatientName = resourceName;
+            newNurseName = event.nurse.name
+          }
+        } else {
+          newNurseId = event.nurse_id;
+          newPatientId = event.patient_id;
+          newNurseName = event.nurse.name;
+          newPatientName = event.patient.name
+        }
+        $('#drag-drop-master-content').html("<p>従業員： " + newNurseName + '  / 利用者名： ' + newPatientName + "</p><p>"  + newAppointmentDetails + "</p>")
 
         $('#drag-drop-master').dialog({
           height: 'auto',
@@ -88243,12 +88282,12 @@ initialize_master_calendar = function() {
             'コピーする': function(){
               $(this).dialog("close");
               $.ajax({
-                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time,
+                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time + patientResource,
                 type: 'POST',
                 data: {
                   recurring_appointment: {
-                    nurse_id: event.nurse_id,
-                    patient_id: event.patient_id,
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
                     frequency: event.frequency,
                     title: event.service_type,
                     color: event.color,
@@ -88264,6 +88303,26 @@ initialize_master_calendar = function() {
                 }
               });
               revertFunc();
+            },
+            '移動する': function(){
+              $(this).dialog("close");
+              $.ajax({
+                url: event.base_url + ".js?start=" + start_time + "&end=" + end_time + patientResource,
+                type: 'PATCH',
+                data: {
+                  recurring_appointment: {
+                    starts_at: event.start.format(),
+                    ends_at: event.end.format(),
+                    anchor: event.start.format('YYYY-MM-DD'),
+                    end_day: event.end.format('YYYY-MM-DD'),
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
+                    editing_occurrences_after: previous_start.format('YYYY-MM-DD'),
+                    synchronize_appointments: 1
+                  }
+                }
+              })
+              $(".popover").remove();
             },
             'キャンセル': function(){
               $(this).dialog("close");
@@ -88412,14 +88471,15 @@ initialize_calendar = function() {
         let nurse_name = event.nurse.name ? event.nurse.name : ''
         let patient_address = event.patient.address || ''
 
-        element.popover({
-          html: true,
-          title: event.service_type,
-          content: nurse_name + ' x ' + patient_name + '<br/>' + event.description + '<br/>' + patient_address,
-          trigger: 'hover',
-          placement: 'top',
-          container: 'body'
-        })
+        window.popoverFocusAllowed = true;
+        let popoverTitle = event.service_type;
+        let popoverContent;
+        if (event.patient && event.patient.address) {
+          popoverContent = event.patient.address + '<br/>' + event.description;
+        } else {
+          popoverContent = event.description;
+        }
+        setPopover(element, popoverTitle, popoverContent)
 
         element.find('.fc-title').text(function (i, t) {
           if (window.resourceType == 'nurse') {
@@ -88471,6 +88531,13 @@ initialize_calendar = function() {
         let newNurseId;
         let nurse_name = event.nurse.name || '';
         let patient_name = event.patient.name || '';
+        let patientResource;
+
+        if (window.resourceType == 'patient') {
+          patientResource = "&patient_resource=true"
+        } else {
+          patientResource = ""
+        }
 
         if (newResource !== myResource) {
           if (newResource.is_nurse_resource) {
@@ -88520,7 +88587,7 @@ initialize_calendar = function() {
                 };
               }
               $.ajax({
-                url: event.base_url + '.js?delta=' + delta,
+                url: event.base_url + '.js?delta=' + delta + patientResource,
                 type: 'PATCH',
                 data: ajaxData,
                 success: function (data) {
@@ -88656,8 +88723,8 @@ let addProvidedServiceToggle = () => {
   $('#hour-based-wage-toggle').bootstrapToggle({
     on: '時給計算',
     off: '単価計算',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 100
   });
 
@@ -88825,15 +88892,15 @@ let toggleCountFromServices = () => {
   $('#hour-input-method').bootstrapToggle({
     on: '自動',
     off: '手動',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   });
   $('#count-input-method').bootstrapToggle({
     on: '自動',
     off: '手動',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 }
@@ -89010,8 +89077,8 @@ let toggleServiceHourBasedWage = () => {
   $('#service_hour_based_wage').bootstrapToggle({
     on: '時給',
     off: '単価',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 };
@@ -89020,8 +89087,8 @@ let toggleServiceEqualSalary = () => {
   $('#service_equal_salary').bootstrapToggle({
     on: '全員同じ',
     off: '従業員別',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 }
@@ -89541,12 +89608,11 @@ let newPostReminderLayout = () => {
   $('#form-reminder-anchor').focus(function(){
     $(this).daterangepicker({
       singleDatePicker: true,
-      timePicker: true,
       timePicker24Hour: true,
       timePickerIncrement: 15,
-      startDate: moment().add(15, 'days').startOf('hour'),
+      startDate: moment().add(15, 'days'),
       locale: {
-        format: 'YYYY-MM-DD H:mm',
+        format: 'YYYY-MM-DD',
         applyLabel: "選択する",
         cancelLabel: "取消",
         daysOfWeek: [
@@ -89575,6 +89641,130 @@ let newPostReminderLayout = () => {
         firstDay: 1
       }
     })
+  })
+}
+
+$.fn.overflownY = function () { var e = this[0]; return e.scrollHeight > e.clientHeight; }
+
+let setPopover = (element, popoverTitle, popoverContent) => {
+  element.popover({
+    html: true,
+    title: popoverTitle,
+    content: popoverContent,
+    trigger: 'manual',
+    animation: false,
+    placement: 'top',
+    container: 'body'
+  }).on('mouseenter', function () {
+    if (window.popoverFocusAllowed) {
+      window.popoverFocusAllowed = false
+      var _this = this;
+      $(this).popover('show');
+      $('.popover').on('mouseleave', function () {
+        $(_this).popover('hide');
+      });
+    }
+  }).on('mouseleave', function () {
+    var _this = this;
+    var condition = $('.popover-body').overflownY();
+    if (condition) {
+      setTimeout(function () {
+        if (!$('.popover:hover').length) {
+          $(_this).popover('hide');
+        }
+      }, 300);
+    } else {
+      $(_this).popover('hide')
+    }
+    window.popoverFocusAllowed = true
+  });
+}
+
+let selectizeServiceToMerge = () => {
+  $('#service_to_merge').selectize()
+}
+
+let submitMerge = () => {
+  $('#merge-submit').click(function(){
+    var destination_service_id = $('#service_to_merge').val();
+    if (destination_service_id) {
+      var condition = confirm('サービスタイプが削除され、既存のサービスと実績が選択されたサービスへ合併されます')
+      if (condition) {
+        $.ajax({
+          url: $(this).data('url'),
+          data: {
+            destination_service_id: destination_service_id
+          },
+          type: 'PATCH'
+        })
+      }
+    } else {
+      alert('合併先のサービスを選択してください')
+    }
+  })
+}
+
+let salaryRulesFormLayout = () => {
+  bootstrapToggleForAllNursesCheckbox();
+  bootstrapToggleForAllServicesCheckbox();
+  toggleNurseIdList();
+  toggleServiceTitleList()
+  $('#target-nurse-ids').selectize({
+    plugins: ['remove_button']
+  })
+  $('#target-service-titles').selectize({
+    plugins: ['remove_button']
+  })
+}
+
+
+let bootstrapToggleForAllNursesCheckbox = () => {
+  $('#all_nurses_selected_checkbox').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '全従業員対象',
+    off: '従業員選択',
+    size: 'small',
+    width: 170
+  })
+}
+
+let bootstrapToggleForAllServicesCheckbox = () => {
+  $('#all_services_selected_checkbox').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '全サービスタイプ',
+    off: 'サービスタイプ選択',
+    size: 'small',
+    width: 170
+  })
+}
+
+let toggleNurseIdList = () => {
+  $('#all_nurses_selected_checkbox').on('change', function(){
+    if ($('#all_nurses_selected_checkbox').is(':checked')) {
+      $('#form_nurse_id_list_group').hide()
+      $('#target-nurse-ids').val('')
+    } else {
+      $('#form_nurse_id_list_group').show()
+    }
+  })
+}
+
+let toggleServiceTitleList = () => {
+  $('#all_services_selected_checkbox').on('change', function(){
+    if ($('#all_services_selected_checkbox').is(':checked')) {
+      $('#form_service_title_list_group').hide()
+      $('#target-service-titles').val('')
+    } else {
+      $('#form_service_title_list_group').show()
+    }
+  })
+}
+
+let editSalaryRuleOnClick = () => {
+  $('tr.salary_rule').click(function(){
+    $.getScript($(this).data('url'))
   })
 }
 

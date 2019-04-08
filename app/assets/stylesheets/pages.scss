@@ -95,12 +95,12 @@ footer {
     color: #ff9090;
 }
 
-#footer-colibri-information-container {
-    width: 70%;
+.footer-colibri-information-container {
+    width: 40%;
     padding-left: 10px;
 }
 
-#footer-colibri-information-title {
+.footer-colibri-information-title {
     font-size: 1.3em;
     margin-bottom: 10px;
 }
@@ -199,12 +199,12 @@ footer {
     font-size: 1.3em;
 }
 
-#about-colibri {
+.home-page-text-box {
     padding: 60px 10px 60px 10px;   
     width: 100%;
 }
 
-#about-colibri > div {
+.home-page-text-box > div {
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -267,7 +267,7 @@ footer {
         line-height: 2em;
     }
 
-    #about-colibri > div {
+    .home-page-text-box > div {
         font-size: 2em;
         max-width: 90%;
     }
@@ -299,7 +299,7 @@ footer {
         font-weight: bold;
     }
 
-    #footer-colibri-information-container {
+    .footer-colibri-information-container {
         font-size: 1.6em;
     }
 

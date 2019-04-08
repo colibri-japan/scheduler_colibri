@@ -192,8 +192,8 @@ class NursesController < ApplicationController
   end
 
   def fetch_time_worked_vs_time_pending
-    @total_time_worked = @services_till_today.sum(:service_duration) || 0
-    @total_time_pending =  @services_from_today.sum(:service_duration) || 0
+    @total_time_worked = @services_till_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).sum(:service_duration) || 0
+    @total_time_pending =  @services_from_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).sum(:service_duration) || 0
   end
 
   def set_teams_id_by_name

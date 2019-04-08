@@ -151,52 +151,54 @@
 				</tr>
 			<% end %>
 
-		<% @services_from_salary_rules.each do |provided_service| %>
+		<% if current_user.corporation_admin? %>
+			<% @services_from_salary_rules.each do |provided_service| %>
+				<tr>
+					<td><%= provided_service.updated_at.strftime("%-m月%-d日") %></td>
+					<td><%= provided_service.hour_based_wage ? provided_service.title : provided_service_title_with_counts(provided_service) %></td>
+					<td></td>
+					<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.hour_based_wage %></td>
+					<td></td>
+					<td><%= salary_calculation(provided_service.salary_rule) %></td>
+					<td><%= "#{provided_service.total_wage}¥" %></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			<% end %>
 			<tr>
-				<td><%= provided_service.updated_at.strftime("%-m月%-d日") %></td>
-				<td><%= provided_service.hour_based_wage ? provided_service.title : provided_service_title_with_counts(provided_service) %></td>
 				<td></td>
-				<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.hour_based_wage %></td>
 				<td></td>
-				<td><%= salary_calculation(provided_service.salary_rule) %></td>
-				<td><%= "#{provided_service.total_wage}¥" %></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><span style="font-weight:bold;float:right">手当小計：</span></td>
+				<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) ||0 %>¥</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><span style="font-weight:bold;float:right;margin:0">実績＋手当合計：</span></td>
+				<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) + @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
 				<td></td>
 				<td></td>
 				<td></td>
 			</tr>
 		<% end %>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td><span style="font-weight:bold;float:right">手当小計：</span></td>
-			<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) ||0 %>¥</td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td><span style="font-weight:bold;float:right;margin:0">実績＋手当合計：</span></td>
-			<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) + @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
 
 		</tbody>
 		
 	</table>
 
 
-	<div class="colibri-payable-subtitle">サービスタイプ合計</div>
-	<table class="table">
+	<div class="colibri-payable-subtitle">実績サービスタイプ小計</div>
+	<table class="table" style='margin-bottom:30px'>
 		<thead>
 			<tr>
 				<th>タイプ</th>
@@ -214,16 +216,16 @@
 					<td><%= from_seconds_to_hours_minutes(service_group.sum_duration) if service_group.sum_duration > 0 %></td>
 					<td><%= service_group.count %></td>
 					<% if current_user.corporation_admin? %>
-						<td><%= service_group.sum_total_wage %></td>
+						<td><%= service_group.sum_total_wage %>¥</td>
 					<% end %>
 				</tr>
 			<% end %>
 			<% if current_user.corporation_admin? %>
 				<tr>
-					<td>合計</td>
-					<td	class="table-important-fields"><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
-					<td	class="table-important-fields"><%= @grouped_services_sum_count %></td>
-					<td id="total-salary"><%= @grouped_services_sum_total_wage %>¥</td>
+					<td>実績小計</td>
+					<td><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
+					<td><%= @grouped_services_sum_count %></td>
+					<td><span style="font-weight:bold"><%= @grouped_services_sum_total_wage %>¥</span></td>
 				</tr>
 			<% end %>
 		</tbody>

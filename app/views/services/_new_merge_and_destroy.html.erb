@@ -2,7 +2,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="colibri-small-title">サービスを合併.削除する</h1>
+				<h1 class="colibri-small-title">サービスを統合.削除する</h1>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="form-group">
-                    <%= label_tag :service_to_merge, "合併先のサービス", class: "colibri-form-label-dark" %>
+                    <%= label_tag :service_to_merge, "統合先のサービス", class: "colibri-form-label-dark" %>
                     <%= select_tag :service_to_merge, options_from_collection_for_select(@services, :id, :title, {prompt: 'サービス選択'}) %>
                 </div>
 
@@ -23,7 +23,7 @@
 
             <div class="modal-footer">
                 <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
-                <div class='btn btn-info' id="merge-submit" data-url="<%= service_merge_and_destroy_path(@service) %>">合併する</div>
+                <div class='btn btn-info' id="merge-submit" data-url="<%= service_merge_and_destroy_path(@service) %>">統合する</div>
             </div>
 
 		</div>

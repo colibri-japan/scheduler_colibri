@@ -61,19 +61,20 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th>日付</th>
-				<th>タイプ</th>
-				<th>利用者名</th>
-				<th>提供時間</th>
-				<th>開始~終了</th>
+				<th style="width:10%">日付</th>
+				<th style="width:15%">タイプ</th>
+				<th style="width:11%">利用者名</th>
+				<th style="width:10%">提供時間</th>
+				<th style="width:10%">開始~終了</th>
 				<% if current_user.corporation_admin? %>
-					<th>時給/単価</th>
+					<th style="width:12%">時給/単価</th>
 				<% end %>
 				<% if current_user.corporation_admin? %>
-					<th>計</th>
+					<th style="width:8%">計</th>
 				<% end %>
-				<th colspan="2">ステータス</th>
-				<th>編集</th>
+				<th style="width:8%">確認</th>
+				<th style="width:8%"></th>
+				<th style="width:8%">編集</th>
 			</tr>
 			
 		</thead>
@@ -143,7 +144,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><span id="total-salary-label" style="font-weight:bold;float:right">実績小計：</span></td>
+					<td><span id="total-salary-label" style="font-weight:bold;float:right">実績小計</span></td>
 					<td id="total-salary" style="font-weight:bold"><%= @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
 					<td></td>
 					<td></td>
@@ -172,7 +173,7 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><span style="font-weight:bold;float:right">手当小計：</span></td>
+				<td><span style="font-weight:bold;float:right">手当小計</span></td>
 				<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) ||0 %>¥</td>
 				<td></td>
 				<td></td>
@@ -184,7 +185,7 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><span style="font-weight:bold;float:right;margin:0">実績＋手当合計：</span></td>
+				<td><span style="font-weight:bold;float:right;margin:0">実績.手当合計</span></td>
 				<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) + @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
 				<td></td>
 				<td></td>

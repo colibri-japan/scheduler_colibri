@@ -185,7 +185,7 @@ class NursesController < ApplicationController
 
   def group_services_till_now_by_title
     countable_services = @services_till_today.where(appointments: {edit_requested: false, cancelled: false})
-    @grouped_services = ProvidedService.where(id: countable_services.ids).group(:title).select('title, sum(service_duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
+    @grouped_services = ProvidedService.where(id: countable_services.ids).order(:title).group(:title).select('title, sum(service_duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
     @grouped_services_sum_duration = countable_services.sum(:service_duration)
     @grouped_services_sum_count = countable_services.count
     @grouped_services_sum_total_wage = countable_services.sum(:total_wage)

@@ -18,7 +18,10 @@ class ProvidedService < ApplicationRecord
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage
 
+	before_update :reset_verifications, unless: :verifying_provided_service
+
 	after_update :recalculate_provided_services_from_salary_rules, unless: :skip_callbacks_except_calculate_total_wage
+
 
 	scope :provided, -> { where(provided: true) }
 	scope :is_verified, -> { where.not(verified_at: nil) }
@@ -76,6 +79,10 @@ class ProvidedService < ApplicationRecord
 			update_column(:verified_at, Time.current)
 			update_column(:verifier_id, user_id)
 		end
+	end
+
+	def verifying_provided_service
+		will_save_change_to_verified_at? || will_save_change_to_second_verified_at?
 	end
 
 	def archived?
@@ -148,6 +155,13 @@ class ProvidedService < ApplicationRecord
 		elsif hour_based_wage == false && service_counts.present? && unit_cost.present? 
 			self.total_wage = unit_cost * service_counts
 		end
+	end
+
+	def reset_verifications
+		self.verified_at = nil 
+		self.verifier_id = nil 
+		self.second_verified_at = nil 
+		self.second_verifier_id = nil
 	end
 
 	def recalculate_provided_services_from_salary_rules

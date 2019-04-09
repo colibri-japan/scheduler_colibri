@@ -8,10 +8,8 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
     end_of_month = start_of_month.end_of_month
     end_of_today = (Time.current + 9.hours).end_of_day > end_of_month ? end_of_month : (Time.current + 9.hours).end_of_day
     corporation = updated_provided_service.planning.corporation
-    targeted_salary_rules = SalaryRule.where(corporation_id: corporation.id).where('target_all_nurses IS TRUE OR (target_all_nurses IS FALSE AND ? = ANY(nurse_id_list))', updated_provided_service.nurse_id.to_s).where('target_all_services IS TRUE OR ( target_all_services IS FALSE AND ? = ANY(service_title_list))', updated_provided_service.title)
+    targeted_salary_rules = SalaryRule.where(corporation_id: corporation.id).where('target_all_nurses IS TRUE OR (target_all_nurses IS FALSE AND ? = ANY(nurse_id_list))', updated_provided_service.nurse_id.to_s)
     
-    puts 'any targeted salary rules?'
-    puts targeted_salary_rules.present?
     
     targeted_salary_rules.each do |salary_rule|
         targeted_titles = salary_rule.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : salary_rule.service_title_list

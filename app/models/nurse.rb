@@ -5,7 +5,7 @@ class Nurse < ApplicationRecord
 	attribute :custom_email_days
 	attribute :custom_email_subject, :string
 
-	belongs_to :corporation
+	belongs_to :corporation, touch: true
 	belongs_to :team, optional: true
 	has_many :appointments, dependent: :destroy
 	has_many :recurring_appointments, dependent: :destroy

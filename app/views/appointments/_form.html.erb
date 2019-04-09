@@ -30,7 +30,7 @@
     
     <div class="form-group">
       <%= form.label :title, "サービスタイトル", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.select :title, options_from_collection_for_select(@corporation.services.without_nurse_id.order_by_title, 'title', 'title', appointment.title), {prompt: '検索する'}, {id: :appointment_title, required: true} %>
+      <%= form.select :title, grouped_options_for_select(@services, appointment.title), {prompt: '検索する'}, {id: :appointment_title, required: true} %>
     </div>
 
     <div class="form-group">

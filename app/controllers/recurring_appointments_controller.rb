@@ -32,11 +32,13 @@ class RecurringAppointmentsController < ApplicationController
   # GET /recurring_appointments/new
   def new
     @recurring_appointment = RecurringAppointment.new
+    @services = @corporation.cached_most_used_services_for_select
   end
 
   # GET /recurring_appointments/1/edit
   def edit
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
+    @services = @corporation.cached_most_used_services_for_select
   end
 
   # POST /recurring_appointments

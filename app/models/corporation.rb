@@ -63,6 +63,17 @@ class Corporation < ApplicationRecord
 		}
 	end
 
+	def cached_most_used_services_for_select
+		Rails.cache.fetch([self, 'most_used_services_for_select']) { 
+			titles_and_counts = self.services.without_nurse_id.includes(:appointments).group(:title).order(count: :desc).count(:appointments)
+			top_6_titles = titles_and_counts.first(6).to_h.map { |k,v| k }
+			{
+				'サービストップ6' => titles_and_counts.first(6).to_h.map { |k,v| [k,k] },
+				'その他' => self.services.without_nurse_id.where.not(title: top_6_titles).order(:title).map {|service| [service.title, service.title]}
+			}
+		}
+	end
+
 	def cached_team_id_by_name
 		Rails.cache.fetch([self, 'team_name_by_id']) {
 			teams.pluck(:team_name, :id).to_h

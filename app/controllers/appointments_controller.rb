@@ -50,6 +50,7 @@ class AppointmentsController < ApplicationController
     @nurses = @corporation.nurses.order_by_kana
     @patients = @corporation.patients.active.order_by_kana
     @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id).all
+    @services = @corporation.cached_most_used_services_for_select
     @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end
 

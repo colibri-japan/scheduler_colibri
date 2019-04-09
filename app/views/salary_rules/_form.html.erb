@@ -35,7 +35,7 @@
     <div class="form-group">
       <%= form.label :operator, "計算式", class: "colibri-form-label" %><span class='required-field'>*</span>
       <%= form.select :operator, options_for_select([['+', 0], ['x', 1]]) %>
-      <%= form.number_field :argument %>
+      <%= form.number_field :argument, {step: 0.01} %>
       <%= form.select :hour_based, options_for_select([['/時間', true], ['/回数', false]]) %>
     </div>
 

@@ -44,6 +44,7 @@ class PostsController < ApplicationController
         @post.corporation = @corporation 
         
         @post.save
+        mark_post_as_read
     end
 
     def edit
@@ -55,6 +56,7 @@ class PostsController < ApplicationController
         @post = Post.find(params[:id])
         @post.update(post_params)
         @post_readers = @corporation.users.registered.have_read(@post).pluck(:name)
+        mark_post_as_read
     end
 
     def destroy
@@ -83,6 +85,16 @@ class PostsController < ApplicationController
         @posts.each do |post|
             readers = @corporation.users.registered.have_read(post).pluck(:name)
             @posts_readers[post.id] = readers 
+        end
+    end
+
+    def mark_post_as_read
+        if @post.reminders.any? 
+            @post.corporation.users.each do |user|
+                @post.mark_as_read! for: user
+            end
+        else
+            @post.mark_as_read! for: current_user
         end
     end
 

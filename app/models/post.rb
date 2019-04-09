@@ -9,22 +9,9 @@ class Post < ApplicationRecord
   accepts_nested_attributes_for :reminders, allow_destroy: true, reject_if: lambda { |attributes| attributes['anchor'].blank? }
 
   before_validation :add_default_publication_date
-  after_commit :mark_as_read
 
 
   private
-
-  def mark_as_read 
-    if self.reminders.any?
-      puts 'marking as read for everyone'
-      author.corporation.users.each do |corporation_user|
-        mark_as_read! for: corporation_user
-      end
-    else
-      puts 'marking as not read for everyone'
-      mark_as_read! for: author 
-    end
-  end
 
   def add_default_publication_date
     self.published_at ||= Time.current

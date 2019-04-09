@@ -3,7 +3,7 @@
         <div class="post-author-wrapper"><%= post.author.name %><%=" > #{post.patient.name}" if post.patient_id.present? %></div>
         <div class="post-timestamps-wrapper"><%= post_was_published_at(post) %></div>
     </div>
-    <div class="post-body <%= 'post-clickable' if post.author_id == current_user.id %> <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(post.id) %> <%= 'reminderable-post' if post.reminders.exists? %>" data-url="<%= edit_post_path(post) %>">
+    <div class="post-body post-clickable <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(post.id) %> <%= 'reminderable-post' if post.reminders.exists? %>" data-url="<%= edit_post_path(post) %>">
         <%= simple_format(post.body) %>
     </div>
 </div>

@@ -124,7 +124,7 @@ class NursesController < ApplicationController
     @services_from_salary_rules = @services_till_today.from_salary_rules
     @services_from_appointments = @services_till_today.from_appointments
 
-    @unverified_services_count = @services_from_appointments.is_not_verified_twice.count
+    @unverified_services_count = @services_from_appointments.where(appointments: {edit_requested: false}).where(cancelled: false, archived_at: nil).is_not_verified_twice.count
 
     group_services_till_now_by_title
     fetch_time_worked_vs_time_pending

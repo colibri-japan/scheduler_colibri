@@ -2126,6 +2126,19 @@ let editSalaryRuleOnClick = () => {
   })
 }
 
+let confirmNoPatientOnSubmit = () => {
+  $('#post_form').submit(function(){
+    if (!$('#post_patient_id').val()) {
+      confirmNoPatient = confirm('利用者タグなしでセーブされます')
+      if (confirmNoPatient) {
+        return true
+      } else {
+        return false
+      }
+    }
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

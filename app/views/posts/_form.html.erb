@@ -1,4 +1,4 @@
-<%= form_with model: post, remote: true do |form| %>
+<%= form_with model: post, remote: true, id: 'post_form' do |form| %>
 
   <% published_at = post.new_record? ? Time.now.in_time_zone('Tokyo').strftime("%y-%m-%d %H:%M") : post.published_at.strftime("%y-%m-%d %H:%M") %>
 

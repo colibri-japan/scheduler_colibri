@@ -72,8 +72,7 @@
 				<% if current_user.corporation_admin? %>
 					<th style="width:8%">計</th>
 				<% end %>
-				<th style="width:8%">確認</th>
-				<th style="width:8%"></th>
+				<th style="width:16%" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @services_from_appointments.count %></span></th>
 				<th style="width:8%">編集</th>
 			</tr>
 			
@@ -93,7 +92,7 @@
 				<% if current_user.corporation_admin? %>
 					<td id="service-total-<%= provided_service.id %>"><%= "#{provided_service.total_wage}¥" %></td>
 				<% end %>
-        <td>
+        <td style="width:8%">
 				  <div style="display:flex" id='provided-service-<%= provided_service.id %>'>
 				    <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>' style="display:flex">
 					    <% if provided_service.cancelled == true %>
@@ -111,7 +110,7 @@
 				    </div>
 				  </div>
         </td>
-				<td>
+				<td style='width:8%'>
 				  <div style="display:flex" id='provided-service-second-verified-<%= provided_service.id %>'>
 				    <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>' style="display:flex">
 					    <% if provided_service.cancelled == true %>

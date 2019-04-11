@@ -86,12 +86,10 @@
 								<td>従業員別実績</td>
 								<td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_general_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
 							</tr>
-							<% if @corporation.teams.exists? %>
-								<tr>
-									<td>チーム別実績</td>
-									<td><div class="btn btn-sm btn-success text-white" id="teams-report"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
-								</tr>
-							<% end %>
+							<tr>
+								<td>チーム別実績</td>
+								<td><div class="btn btn-sm btn-success text-white" id="teams-report"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
+							</tr>
 							<tr>
 								<td>新規利用者</td>
 								<td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_recent_patients_report_path(@planning, format: :xlsx), class: 'btn btn-success btn-sm text-white' %></td>

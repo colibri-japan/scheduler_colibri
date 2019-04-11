@@ -101,22 +101,21 @@ class Corporation < ApplicationRecord
 	end
 
 	def monthly_service_counts_by_title_and_team(range_start, range_end)
-		t = self.teams.all 
 		return_hash = {}
 
 		start_date = range_start.to_date.beginning_of_day
 		end_date = range_end.to_date.end_of_day
 
-		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, provided: true, cancelled: false).pluck(:title).uniq
+		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, provided: true, cancelled: false).from_appointments.pluck(:title).uniq
 
 		teams.each do |team|
 			team_hash = {}
 
 			nurse_ids = team.nurses.all.pluck(:id)
 
-			team_provided_services = ProvidedService.includes(:appointment).where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil, provided: true).where(appointments: {edit_requested: false}).group(:title).count
-			team_provided_services_female = ProvidedService.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: true}).where(appointments: {edit_requested: false}).group(:title).count
-			team_provided_services_male = ProvidedService.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil, provided: true).where(patients: {gender: false}).where(appointments: {edit_requested: false}).group(:title).count
+			team_provided_services = ProvidedService.includes(:appointment).from_appointments.where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil).where(appointments: {edit_requested: false}).group(:title).count
+			team_provided_services_female = ProvidedService.includes(:patient, :appointment).from_appointments.where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).where(patients: {gender: true}).where(appointments: {edit_requested: false}).group(:title).count
+			team_provided_services_male = ProvidedService.includes(:patient, :appointment).from_appointments.where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).where(patients: {gender: false}).where(appointments: {edit_requested: false}).group(:title).count
 
 			titles.each do |title|
 				team_hash[title] = {
@@ -128,6 +127,33 @@ class Corporation < ApplicationRecord
 
 			return_hash[team.team_name] = team_hash
 		end
+
+		return_hash
+	end
+
+	def service_counts_by_title_in_range(range_start, range_end)
+		return_hash = {}
+		corporation_hash = {}
+
+		start_date = range_start.to_date.beginning_of_day
+		end_date = range_end.to_date.end_of_day
+		nurse_ids = self.nurses.displayable.ids
+		provided_services = ProvidedService.includes(:appointment).where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil).from_appointments.where(appointments: {edit_requested: false}).group(:title).count
+		provided_services_female = ProvidedService.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).from_appointments.where(patients: {gender: true}).where(appointments: {edit_requested: false}).group(:title).count
+		provided_services_male = ProvidedService.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).from_appointments.where(patients: {gender: false}).where(appointments: {edit_requested: false}).group(:title).count
+
+		
+		titles = ProvidedService.where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil).from_appointments.pluck(:title).uniq
+
+		titles.each do |title|
+			corporation_hash[title] = {
+				female: provided_services_female[title] || 0,
+				male: provided_services_male[title] || 0,
+				total: provided_services[title] || 0
+			}
+		end
+
+		return_hash['全従業員'] = corporation_hash
 
 		return_hash
 	end

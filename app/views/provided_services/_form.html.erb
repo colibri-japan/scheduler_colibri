@@ -72,14 +72,12 @@
         </div>
       <% end %>
 
-      <%= form.hidden_field :planning_id, value: @planning.id %>
-
   </div>
 
   <div class="modal-footer">
     <div class="actions">
+      <%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この手当が削除されます。'}, class: 'btn btn-danger' if provided_service.appointment_id.blank? && provided_service.countable == false %>
       <%= form.submit 'セーブする', class: 'btn btn-info' %>
-      <%= link_to '削除', provided_service, method: :delete, confirm: 'この手当が削除されます。', class: 'btn btn-danger' if provided_service.appointment_id.blank? && provided_service.countable == false %>
     </div>
   </div>
 

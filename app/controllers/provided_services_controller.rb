@@ -1,7 +1,6 @@
 class ProvidedServicesController < ApplicationController
 	before_action :set_provided_service, only: [:update, :destroy, :edit, :destroy, :toggle_verified, :toggle_second_verified]
 	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified]
-	before_action :set_planning, only: [:new, :edit]
 
 	def new
 		@provided_service = ProvidedService.new
@@ -10,11 +9,8 @@ class ProvidedServicesController < ApplicationController
 
 	def create
 		@provided_service = ProvidedService.new(provided_service_params)
-		@planning = Planning.find(provided_service_params[:planning_id])
-
-		@provided_service.provided = @provided_service.service_date < Time.current + 9.hours
 		@provided_service.nurse_id = params[:nurse_id]
-
+		@provided_service.planning_id = current_user.corporation.planning.id
 
 		if @provided_service.save
 		  redirect_back fallback_location: authenticated_root_path, notice: "新規手当がセーブされました"
@@ -26,7 +22,6 @@ class ProvidedServicesController < ApplicationController
 	end
 
 	def update
-		@planning = Planning.find(provided_service_params[:planning_id])
 		@provided_service.skip_callbacks_except_calculate_total_wage = true
 
 		respond_to do |format|
@@ -39,9 +34,6 @@ class ProvidedServicesController < ApplicationController
 	end
 
 	def destroy
-		@planning = Planning.find(@provided_service.planning_id)
-		@nurse = Nurse.find(@provided_service.nurse_id)
-
 		if @provided_service.delete
 			redirect_back fallback_location: authenticated_root_path, notice: '実績が削除されました'
 		end
@@ -57,10 +49,6 @@ class ProvidedServicesController < ApplicationController
 
 
 	private
-
-	def set_planning
-		@planning = Planning.find(params[:planning_id].to_i)
-	end
 
 	def set_nurse
 		@nurse = Nurse.find(params[:nurse_id])

@@ -160,11 +160,11 @@
 					<td></td>
 					<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.hour_based_wage %></td>
 					<td></td>
-					<td><%= salary_calculation(provided_service.salary_rule) %></td>
+					<td><%= salary_calculation(provided_service.salary_rule) if provided_service.salary_rule.present? %></td>
 					<td><%= "#{provided_service.total_wage}¥" %></td>
 					<td></td>
 					<td></td>
-					<td></td>
+					<td><%= link_to '編集', edit_nurse_provided_service_path(@nurse, provided_service), remote: true, class: 'btn btn-sm btn-secondary' unless provided_service.salary_rule.present? %></td>
 				</tr>
 			<% end %>
 			<tr>

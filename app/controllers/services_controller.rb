@@ -70,7 +70,7 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage, :planning_id)
+        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage, :planning_id, :category_1, :category_2, :category_ratio)
     end
 
     def update_planning_provided_service

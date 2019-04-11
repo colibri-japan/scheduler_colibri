@@ -21,9 +21,25 @@
 
         <div class="modal-body">
           <div class="form-group">
-            <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %>
+            <%= form.label :title, "サービスタイトル", class: "colibri-form-label" %>
             <%= form.text_field :title, id: :service_title, required: true, class: "form-control" %>
           </div>
+
+          <div class="form-group">
+            <%= form.label :category_1, "サービスタイプ1", class: "colibri-form-label" %>
+            <%= form.select :category_1, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障害', 3], ['PS', 4], ['看護', 5], ['医療', 6]], @service.category_1), id: :service_category_1 %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :category_2, "サービスタイプ2", class: "colibri-form-label" %>
+            <%= form.select :category_2, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障害', 3], ['PS', 4], ['看護', 5], ['医療', 6]], @service.category_1), id: :service_category_2 %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :category_ratio, "タイプ1割合", class: "colibri-form-label" %>
+            <%= form.number_field :category_ratio, step: 0.01, id: :service_category_ratio %>
+          </div>
+
           <div class="form-group">
             <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label" %>
             <%= form.check_box :hour_based_wage, checked: @service.corporation.hour_based_payroll, id: :service_hour_based_wage %>

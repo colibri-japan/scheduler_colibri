@@ -23,5 +23,9 @@ wb.styles do |s|
             sheet.add_row
         end
 
+        sheet.add_row
+        sheet.add_row ['利用者合計人数', @patients_count], style: table_cells
+
 	end
+
 end

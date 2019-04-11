@@ -117,6 +117,8 @@ class PlanningsController < ApplicationController
 			@service_counts_by_title_and_team = @corporation.service_counts_by_title_in_range(params[:range_start], params[:range_end])
 		end
 
+		@patients_count = @corporation.patients.active.count
+
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="チーム分け実績.xlsx"' }
 		end

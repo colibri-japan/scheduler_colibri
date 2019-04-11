@@ -49,22 +49,48 @@
   </div>
 
   <div class="colibri-form-group-flex">
-    <div style="width:20%">
+    <div style="width:23%">
       <%= form.label :insurance_category, "保険区分", class: "colibri-form-label-dark" %>
     </div>
-    <div style="width:80%">
-      <%= form.radio_button :insurance_category, false, {class: "radio-inline"} %>
-      <%= label :insurance_category_false, '介護' %>
-      <%= form.radio_button :insurance_category, true, {class: "radio-inline"} %>
-      <%= label :insurance_category_true, '医療' %>
+    <div style="width:77%">
+      <%= form.radio_button :insurance_category, 2, {class: "radio-inline"} %>
+      <%= label :insurance_category_2, '障害' %>
+      <%= form.radio_button :insurance_category, 0, {class: "radio-inline"} %>
+      <%= label :insurance_category_0, '介護' %>
+      <%= form.radio_button :insurance_category, 1, {class: "radio-inline"} %>
+      <%= label :insurance_category_1, '医療' %>
     </div>
   </div>
 
   <div class="colibri-form-group-flex">
-    <div style="width:20%">
+    <div style="width:23%">
+      <%= form.label :handicap_level, "障害程度区分", class: "colibri-form-label-dark" %>
+    </div>
+    <div style="width:77%">
+      <div>
+        <%= form.radio_button :handicap_level, 1, {class: "radio-inline"} %>
+        <%= label :handicap_level_1, '区分１' %>
+        <%= form.radio_button :handicap_level, 2, {class: "radio-inline"} %>
+        <%= label :handicap_level_2, '区分２' %>
+        <%= form.radio_button :handicap_level, 3, {class: "radio-inline"} %>
+        <%= label :handicap_level_3, '区分３' %>
+        <%= form.radio_button :handicap_level, 4, {class: "radio-inline"} %>
+        <%= label :handicap_level_4, '区分４' %>
+      </div>
+      <div>
+        <%= form.radio_button :handicap_level, 5, {class: "radio-inline"} %>
+        <%= label :handicap_level_5, '区分５' %>
+        <%= form.radio_button :handicap_level, 6, {class: "radio-inline"} %>
+        <%= label :handicap_level_6, '区分６' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="colibri-form-group-flex">
+    <div style="width:23%">
       <%= form.label :kaigo_level, "介護度", class: "colibri-form-label-dark" %>
     </div>
-    <div style="width:80%">
+    <div style="width:77%">
       <div>
         <%= form.radio_button :kaigo_level, 7, {class: "radio-inline"} %>
         <%= label :kaigo_level_7, '申請中' %>

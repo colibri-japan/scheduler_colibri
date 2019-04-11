@@ -152,6 +152,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :date_of_contract, :insurance_category, caveat_list:[])
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :date_of_contract, :insurance_category, caveat_list:[])
   end
 end

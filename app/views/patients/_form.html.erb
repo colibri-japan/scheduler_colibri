@@ -1,4 +1,4 @@
-<%= form_with(model: patient, remote: true) do |form| %>
+<%= form_with(model: patient, local: true, id: 'patient_form') do |form| %>
   <% if patient.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(patient.errors.count, "error") %> prohibited this patient from being saved:</h2>
@@ -10,6 +10,8 @@
     </ul>
   </div>
   <% end %>
+
+  <div class="modal-body">
 
   <div class="form-group">
     <%= form.label :name, "利用者名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
@@ -139,11 +141,13 @@
     <%= form.text_area :description, id: :patient_description, class: "form-control" %>
   </div>
 
+  </div>
 
-  <div class="actions">
-    <%= form.submit 'セーブする', class: 'btn btn-info' %>
+
+  <div class="modal-footer">
     <% unless patient.new_record? %>
       <%= link_to 'サービス停止', toggle_active_path(patient), method: :patch, data: {confirm: '将来のサービスがキャンセルされ、利用者一覧から外されます。'}, class: 'btn btn-danger text-white' %>
     <% end %>
+    <%= form.submit 'セーブする', class: 'btn btn-info' %>
   </div>
 <% end %>

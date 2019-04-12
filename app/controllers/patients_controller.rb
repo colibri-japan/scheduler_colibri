@@ -67,19 +67,19 @@ class PatientsController < ApplicationController
 
     respond_to do |format|
       if @patient.save
-        format.js 
+        format.html { redirect_to patients_path, notice: '利用者様が登録されました' }
       else
-        format.js 
+        format.html { redirect_to patients_path, alert: '利用者様の登録が失敗しました' }
       end
     end
   end
-
+  
   def update
     respond_to do |format|
       if @patient.update(patient_params)
-        format.js
+        format.html { redirect_back(fallback_location: authenticated_root_path, notice: '利用者様の情報がアップデートされました') }
       else
-        format.js 
+        format.html { redirect_back(fallback_location: authenticated_root_path, alert: '利用者様の情報のアップデートが失敗しました') }
       end
     end
   end

@@ -68,7 +68,7 @@ class NursesController < ApplicationController
       if @nurse.save
         format.html { redirect_to nurses_path, notice: '従業員が登録されました。' }
       else
-        format.html { render :new }
+        format.html { redirect_to nurses_path, alert: '従業員の登録が失敗しました。' }
       end
     end
   end
@@ -79,7 +79,7 @@ class NursesController < ApplicationController
       if @nurse.update(nurse_params)
         format.html {redirect_back(fallback_location: authenticated_root_path, notice: '従業員の情報がアップデートされました')}
       else
-        format.html {render :edit}
+        format.html {redirect_back(fallback_location: authenticated_root_path, alert: '従業員の情報のアップデートが失敗しました')}
       end
     end
   end

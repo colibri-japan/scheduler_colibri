@@ -2139,6 +2139,18 @@ let confirmNoPatientOnSubmit = () => {
   })
 }
 
+let validateKatakana = () => {
+  $('#patient_form').submit(function(){
+    kana_validation = /^[0-9１-９^[ァ-ヶー]*$/.test($('#patient_kana').val())
+    if (kana_validation) {
+      return true
+    } else {
+      alert('フリガナはカタカナで入力してください')
+      return false 
+    }
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

@@ -23,7 +23,7 @@
 
             <div class="modal-footer">
                 <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
-                <div class='btn btn-info' id="merge-submit" data-url="<%= service_merge_and_destroy_path(@service) %>">統合する</div>
+                <%= link_to '統合する', service_merge_and_destroy_path(@service), method: :patch, class: 'btn btn-info text-white', id: 'merge-submit' %>
             </div>
 
 		</div>

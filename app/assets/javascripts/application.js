@@ -2046,18 +2046,18 @@ let submitMerge = () => {
   $('#merge-submit').click(function(){
     var destination_service_id = $('#service_to_merge').val();
     if (destination_service_id) {
-      var condition = confirm('サービスタイプが削除され、既存のサービスと実績が選択されたサービスへ合併されます')
+      var condition = confirm('サービスタイプが削除され、既存のサービスと実績が選択されたサービスへ統合されます')
       if (condition) {
-        $.ajax({
-          url: $(this).data('url'),
-          data: {
-            destination_service_id: destination_service_id
-          },
-          type: 'PATCH'
+        $(this).attr('href', function(i,h){
+          return h + (h.indexOf('?') != -1 ? "&destination_service_id=" + destination_service_id : "?destination_service_id=" + destination_service_id)
         })
+        return true
+      } else {
+        return false
       }
     } else {
-      alert('合併先のサービスを選択してください')
+      alert('統合先のサービスを選択してください')
+      return false
     }
   })
 }

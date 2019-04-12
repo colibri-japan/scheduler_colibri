@@ -42,9 +42,9 @@ class ServicesController < ApplicationController
     end
 
     def merge_and_destroy
-        puts params[:id]
-        puts params[:destination_service_id]
         MergeAndDestroyServiceWorker.perform_async(params[:id], params[:destination_service_id])
+
+        redirect_back fallback_location: authenticated_root_path, notice: 'サービスの統合.削除を開始しました。数分後に終了します。'
     end
 
     def destroy

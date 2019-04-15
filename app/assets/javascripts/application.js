@@ -2151,6 +2151,12 @@ let validateKatakana = () => {
   })
 }
 
+let selectizeInsurancePolicy = () => {
+  $('#patient-insurance-policy').selectize({
+    plugins: ['remove_button']
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

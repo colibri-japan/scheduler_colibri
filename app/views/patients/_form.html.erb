@@ -52,15 +52,10 @@
 
   <div class="colibri-form-group-flex">
     <div style="width:23%">
-      <%= form.label :insurance_category, "保険区分", class: "colibri-form-label-dark" %>
+      <%= form.label :insurance_policy, "保険区分", class: "colibri-form-label-dark" %>
     </div>
     <div style="width:77%">
-      <%= form.radio_button :insurance_category, 2, {class: "radio-inline"} %>
-      <%= label :insurance_category_2, '障害' %>
-      <%= form.radio_button :insurance_category, 0, {class: "radio-inline"} %>
-      <%= label :insurance_category_0, '介護' %>
-      <%= form.radio_button :insurance_category, 1, {class: "radio-inline"} %>
-      <%= label :insurance_category_1, '医療' %>
+      <%= form.select :insurance_policy, options_for_select([['障害', 0], ['介護', 1], ['医療', 2]], patient.insurance_policy), {}, {multiple: true, id: 'patient-insurance-policy'} %>
     </div>
   </div>
 

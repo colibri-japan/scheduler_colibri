@@ -69,6 +69,7 @@ class PatientsController < ApplicationController
       if @patient.save
         format.html { redirect_to patients_path, notice: '利用者様が登録されました' }
       else
+        puts @patient.errors.full_messages
         format.html { redirect_to patients_path, alert: '利用者様の登録が失敗しました' }
       end
     end
@@ -152,6 +153,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :date_of_contract, :insurance_category, caveat_list:[])
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :date_of_contract, insurance_policy: [], caveat_list:[])
   end
 end

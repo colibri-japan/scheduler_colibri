@@ -2141,7 +2141,7 @@ let confirmNoPatientOnSubmit = () => {
 
 let validateKatakana = () => {
   $('#patient_form').submit(function(){
-    kana_validation = /^[0-9１-９^[ァ-ヶー]*$/.test($('#patient_kana').val())
+    kana_validation = /^[0-9１-９ 　^[ァ-ヶー]*$/.test($('#patient_kana').val())
     if (kana_validation) {
       return true
     } else {

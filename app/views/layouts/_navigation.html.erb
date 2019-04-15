@@ -21,7 +21,7 @@
             </li>
     	    <% else %>
     	      <li class="li-float-right"><%= link_to 'ログイン', new_user_session_path, class: 'colibri-nav-link' %></li>
-    	      <li class="li-float-right"><%= link_to '新規登録', new_user_registration_path, class: 'colibri-nav-link' %></li>
+    	      <li class="li-float-right"><%= link_to 'ホームページ', unauthenticated_root_path, class: 'colibri-nav-link' %></li>
     	    <% end %>
     	</ul>
 

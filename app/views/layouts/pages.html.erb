@@ -1,12 +1,11 @@
 <%= content_for :stylesheets do %>
   #colibri-scheduler-nav {display: none}
-
 <% end %>
 
 <%= content_for :content do %>
 <nav id="colibri-pages-nav">
     <div id="brand-container">
-      <%= image_tag 'colibri_logo_full_pink.svg', size: '55', style: 'margin-left:12px;margin-top:3px' %>
+      <%= image_tag 'colibri_logo_full_pink.svg', size: '55', id: 'colibri-logo', style: 'margin-left:12px;margin-top:3px' %>
       <div id="brand-name">Colibri</div>
     </div>
     <div id="pages-nav-right">
@@ -18,7 +17,7 @@
     	    <% else %>
     	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>
     	      <li class="li-float-right btn btn-info"><%= link_to 'お問い合わせ', new_contact_form_path, id:'nav-contact-form-link' %></li>
-            <li class="li-float-right" style="padding-top:10px"><a href="https://colibri.hatenablog.jp/" target="_blank" style="margin-right:20px;font-size:1.2em;text-decoration:underline">公式ブログ</a></li>
+            <li class="li-float-right" style="padding-top:10px" id="blog-link-container"><a href="https://colibri.hatenablog.jp/" target="_blank" id="colibri-blog-link">公式ブログ</a></li>
     	    <% end %>
     	</ul>
     <div>

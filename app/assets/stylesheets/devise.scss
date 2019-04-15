@@ -96,3 +96,36 @@
 .user-clickable-row:hover {
 	cursor: pointer;
 }
+
+@media screen and (orientation: portrait) {
+	.colibri-devise-form {
+		width: 75%;
+		margin-left: auto;
+		margin-right: auto;
+		font-size: 1.6em;
+		margin-top: 300px;
+		margin-bottom: 40px;
+		background-color: #fff;
+	}
+
+	.colibri-devise-form > div > input {
+		font-size: 2em;
+	}
+
+	#user_email {
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}
+
+	#user_password {
+		margin-bottom: 50px;
+	}
+
+	#new_user > div > input {
+		font-size: 1.2em;
+	}
+
+	#colibri-devise-links {
+		margin-top: 30px;
+	}
+}

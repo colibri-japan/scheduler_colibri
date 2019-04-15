@@ -216,14 +216,36 @@ footer {
     text-align: center;
 }
 
+#colibri-blog-link {
+    margin-right:20px;
+    font-size:1.2em;
+    text-decoration:underline;
+}
+
+
+
 @media screen and (orientation: portrait) {
     
     #colibri-pages-nav {
         font-size: 2.4em;
     }
 
+    #blog-link-container {
+        margin-top: 13px;
+        font-size: 1.4em;
+    }
+
+    #colibri-logo {
+        margin-top: 28px !important;
+        margin-right: -15px;
+    }
+
     #pages-nav-right > ul > li > a {
-        font-size: 2em;
+        font-size: 2em !important;
+    }
+
+    #top-subsection {
+        margin-top: 50px;
     }
 
     #colibri-banner-text {
@@ -308,9 +330,4 @@ footer {
         margin-top: 20px;
         margin-bottom: 40px;
     }   
-
-
-
-
-
 }

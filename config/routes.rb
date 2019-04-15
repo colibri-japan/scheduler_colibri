@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   get 'tags/index'
 
   devise_for :users, controllers: {
-    invitations: "invitations"
+    invitations: "invitations",
+    sessions: "sessions"
   }
 
   require 'sidekiq/web'

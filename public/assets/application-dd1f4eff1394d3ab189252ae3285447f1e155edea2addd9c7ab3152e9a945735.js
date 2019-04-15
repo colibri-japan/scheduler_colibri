@@ -87548,6 +87548,9 @@ document.addEventListener('turbolinks:load', function () {
       calendar.fullCalendar('addEventSource', window.eventSource2);
       calendar.fullCalendar('refetchEvents');
     });
+    if ($('#colibri-salary-rules-index').length > 0) {
+      $.getScript('/salary_rules.js');
+    }
   });
 
 }).call(this);
@@ -88720,8 +88723,8 @@ let addProvidedServiceToggle = () => {
   $('#hour-based-wage-toggle').bootstrapToggle({
     on: '時給計算',
     off: '単価計算',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 100
   });
 
@@ -88889,15 +88892,15 @@ let toggleCountFromServices = () => {
   $('#hour-input-method').bootstrapToggle({
     on: '自動',
     off: '手動',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   });
   $('#count-input-method').bootstrapToggle({
     on: '自動',
     off: '手動',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 }
@@ -89074,8 +89077,8 @@ let toggleServiceHourBasedWage = () => {
   $('#service_hour_based_wage').bootstrapToggle({
     on: '時給',
     off: '単価',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 };
@@ -89084,8 +89087,8 @@ let toggleServiceEqualSalary = () => {
   $('#service_equal_salary').bootstrapToggle({
     on: '全員同じ',
     off: '従業員別',
-    onstyle: 'success',
-    offstyle: 'info',
+    onstyle: 'secondary',
+    offstyle: 'secondary',
     width: 130
   })
 }
@@ -89676,6 +89679,139 @@ let setPopover = (element, popoverTitle, popoverContent) => {
     window.popoverFocusAllowed = true
   });
 }
+
+let selectizeServiceToMerge = () => {
+  $('#service_to_merge').selectize()
+}
+
+let submitMerge = () => {
+  $('#merge-submit').click(function(){
+    var destination_service_id = $('#service_to_merge').val();
+    if (destination_service_id) {
+      var condition = confirm('サービスタイプが削除され、既存のサービスと実績が選択されたサービスへ統合されます')
+      if (condition) {
+        $(this).attr('href', function(i,h){
+          return h + (h.indexOf('?') != -1 ? "&destination_service_id=" + destination_service_id : "?destination_service_id=" + destination_service_id)
+        })
+        return true
+      } else {
+        return false
+      }
+    } else {
+      alert('統合先のサービスを選択してください')
+      return false
+    }
+  })
+}
+
+let salaryRulesFormLayout = () => {
+  bootstrapToggleForAllNursesCheckbox();
+  bootstrapToggleForAllServicesCheckbox();
+  toggleNurseIdList();
+  toggleServiceTitleList()
+  $('#target-nurse-ids').selectize({
+    plugins: ['remove_button']
+  })
+  $('#target-service-titles').selectize({
+    plugins: ['remove_button']
+  })
+}
+
+
+let bootstrapToggleForAllNursesCheckbox = () => {
+  $('#all_nurses_selected_checkbox').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '全従業員対象',
+    off: '従業員選択',
+    size: 'small',
+    width: 170
+  })
+}
+
+let bootstrapToggleForAllServicesCheckbox = () => {
+  $('#all_services_selected_checkbox').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '全サービスタイプ',
+    off: 'サービスタイプ選択',
+    size: 'small',
+    width: 170
+  })
+}
+
+let toggleNurseIdList = () => {
+  $('#all_nurses_selected_checkbox').on('change', function(){
+    if ($('#all_nurses_selected_checkbox').is(':checked')) {
+      $('#form_nurse_id_list_group').hide()
+      $('#target-nurse-ids').val('')
+    } else {
+      $('#form_nurse_id_list_group').show()
+    }
+  })
+}
+
+let toggleServiceTitleList = () => {
+  $('#all_services_selected_checkbox').on('change', function(){
+    if ($('#all_services_selected_checkbox').is(':checked')) {
+      $('#form_service_title_list_group').hide()
+      $('#target-service-titles').val('')
+    } else {
+      $('#form_service_title_list_group').show()
+    }
+  })
+}
+
+let editSalaryRuleOnClick = () => {
+  $('tr.salary_rule').click(function(){
+    $.getScript($(this).data('url'))
+  })
+}
+
+let confirmNoPatientOnSubmit = () => {
+  $('#post_form').submit(function(){
+    if (!$('#post_patient_id').val()) {
+      confirmNoPatient = confirm('利用者タグなしでセーブされます')
+      if (confirmNoPatient) {
+        return true
+      } else {
+        return false
+      }
+    }
+  })
+}
+
+let validateKatakana = () => {
+  $('#patient_form').submit(function(){
+    kana_validation = /^[0-9１-９^[ァ-ヶー]*$/.test($('#patient_kana').val())
+    if (kana_validation) {
+      return true
+    } else {
+      alert('フリガナはカタカナで入力してください')
+      return false 
+    }
+  })
+}
+
+let selectizeInsurancePolicy = () => {
+  $('#patient-insurance-policy').selectize({
+    plugins: ['remove_button']
+  })
+}
+
+let addSecondServiceCategory = () => {
+  $('#add-second-service-type').click(function(){
+    $('#second-service-type').show()
+    $(this).hide()
+  })
+  $('#drop-second-service-category').click(function(){
+    $('#service_category_ratio').val('')
+    $('#service_category_2').val('')
+    $('#second-service-type').hide()
+    $('#add-second-service-type').show()
+  })
+}
+
 
 $(document).on('turbolinks:load', function(){
   initializeCalendar()

@@ -2157,6 +2157,19 @@ let selectizeInsurancePolicy = () => {
   })
 }
 
+let addSecondServiceCategory = () => {
+  $('#add-second-service-type').click(function(){
+    $('#second-service-type').show()
+    $(this).hide()
+  })
+  $('#drop-second-service-category').click(function(){
+    $('#service_category_ratio').val('')
+    $('#service_category_2').val('')
+    $('#second-service-type').hide()
+    $('#add-second-service-type').show()
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

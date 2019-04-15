@@ -1,4 +1,5 @@
-<%= form_with model: salary_rule, remote: true do |form| %>
+<% salary_rule_id = salary_rule.new_record? ? 'new_salary_rule' : 'edit_salary_rule' %>
+<%= form_with model: salary_rule, remote: true, id: salary_rule_id do |form| %>
 
   <div class='modal-body'>
 
@@ -34,7 +35,7 @@
 
     <div class="form-group">
       <%= form.label :operator, "計算式", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.select :operator, options_for_select([['+', 0], ['x', 1]]) %>
+      <%= form.select :operator, options_for_select([['+', 0], ['x', 1]], salary_rule.operator) %>
       <%= form.number_field :argument, {step: 0.01} %>
       <%= form.select :hour_based, options_for_select([['/時間', true], ['/回数', false]], salary_rule.hour_based) %>
     </div>
@@ -51,7 +52,8 @@
       <% else %>
         <%= link_to '削除する', salary_rule, method: :delete, remote: true, class: 'btn btn-secondary', data: {confirm: "カスタム手当が削除されます"} %>
       <% end %>
-      <%= form.submit 'セーブする', class: 'btn btn-info' %>
+      <% confirmation = salary_rule.new_record? ? nil : {confirm: '今月の手当には明日午前に反映されますが、前の月の手当には反映されません'} %>
+      <%= form.submit 'セーブする', class: 'btn btn-info', data: confirmation %>
     </div>
   </div>
 

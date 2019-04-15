@@ -2170,6 +2170,7 @@ let addSecondServiceCategory = () => {
   })
 }
 
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

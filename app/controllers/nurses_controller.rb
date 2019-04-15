@@ -126,6 +126,8 @@ class NursesController < ApplicationController
 
     @unverified_services_count = @services_from_appointments.where(appointments: {edit_requested: false}).where(cancelled: false, archived_at: nil).is_not_verified_twice.count
 
+    @total_days_worked = [[@services_till_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq] + [@services_till_today.from_salary_rules.where(salary_rule_id: nil).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq]].flatten.uniq.count
+    
     group_services_till_now_by_title
     fetch_time_worked_vs_time_pending
 

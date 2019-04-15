@@ -50,7 +50,7 @@
       <% if salary_rule.new_record? %>
         <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
       <% else %>
-        <%= link_to '削除する', salary_rule, method: :delete, remote: true, class: 'btn btn-secondary', data: {confirm: "カスタム手当が削除されます"} %>
+        <%= link_to '削除する', salary_rule, method: :delete, remote: true, class: 'btn btn-secondary', data: {confirm: "手当の計算ルールは削除されますが、既に計算された手当は削除されません。"} %>
       <% end %>
       <% confirmation = salary_rule.new_record? ? nil : {confirm: '今月の手当には明日午前に反映されますが、前の月の手当には反映されません'} %>
       <%= form.submit 'セーブする', class: 'btn btn-info', data: confirmation %>

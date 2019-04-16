@@ -98,6 +98,40 @@ class ProvidedService < ApplicationRecord
 		update_column(:archived_at, Time.current)
 	end
 
+  def self.grouped_by_weighted_category
+		return_hash = {}
+		for category in 0..7 do
+			return_hash[category] = {sum_weighted_service_duration: 0, sum_weighted_total_wage: 0, sum_count: 0}
+		end 
+
+		data_grouped_by_title = self.group(:title).select('provided_services.title, sum(provided_services.service_duration) as sum_service_duration, sum(provided_services.total_wage) as sum_total_wage, count(*)')
+
+		data_grouped_by_title.each do |grouped_service|
+			service_without_nurse = Service.where(title: grouped_service.title, nurse_id: nil, corporation_id: self.first.planning.corporation.id).first
+
+			if service_without_nurse.present?
+				argument = service_without_nurse.category_ratio.present? ? service_without_nurse.category_ratio : 1
+				puts argument
+				if service_without_nurse.category_1.present?
+					return_hash[service_without_nurse.category_1][:sum_weighted_service_duration] += (grouped_service.sum_service_duration || 0) * argument || 0
+					return_hash[service_without_nurse.category_1][:sum_weighted_total_wage] += (grouped_service.sum_total_wage || 0) * argument || 0
+					return_hash[service_without_nurse.category_1][:sum_count] += grouped_service.count || 0
+				end
+				if service_without_nurse.category_2.present?
+					return_hash[service_without_nurse.category_2][:sum_weighted_service_duration] += (grouped_service.sum_service_duration || 0)* (1 - argument) || 0
+					return_hash[service_without_nurse.category_2][:sum_weighted_total_wage] += (grouped_service.sum_total_wage || 0) * (1 - argument) || 0
+					return_hash[service_without_nurse.category_2][:sum_count] += grouped_service.count || 0
+				end 
+			end
+		end
+
+		return_hash.each do |key, value|
+			return_hash.delete(key) if return_hash[key].map {|k,v| v}.sum == 0
+		end
+
+		return_hash
+  end
+
 	private
 
 	def set_default_countable

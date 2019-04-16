@@ -36,34 +36,29 @@
 				<div class='colibri-subcontainer-header'>
 					<span class='colibri-subcontainer-title'>サービスタイプ割合</span>
 				</div>
-				<div class='colibri-subcontainer-body' id='shintai-chart-container'>
-					<div id="shintai-chart-div">
-						<%= pie_chart [['身体', @provided_services_shintai_sum], ['生活', @provided_services_seikatsu_sum]], donut: true, height: '85%', suffix: '￥', legend: 'bottom', colors: ['#F9AE1B', '#3D9BF3','#EA5D25', '#F07891', '#F9AE1B', '#EDB3F5', '#71C47A', '#ED655F', '#A3D4F5', '#A587F6', '#BBE5CE',  '#8E8CBC', '#DF788C', '#F475E1', '#ABBDC5', '#EADA6E', '#6BBEA6', '#58F4C7', '#CE73A5', '#F4B2A3', '#53A042', '#C6CBF5', '#EE7513', '#E47774', '#8BAADC', '#57B2E6', '#ED8C4C'] %>
-					</div>
-					<div id='shintai-stats-div'>
-						<table class='table table-bordered'>
-							<thead>
+				<div class='colibri-subcontainer-body'>
+					<table class='table'>
+						<thead>
+							<tr>
+								<th>タイプ</th>
+								<th>給与計</th>
+								<th>稼動時間計</th>
+								<th>時間割合</th>
+								<th>件数</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% @provided_services_grouped_by_category.each do |category_key, category_hash| %>
 								<tr>
-									<th>身体</th>
-									<th>生活</th>
+									<td><%= category_name_by_key(category_key) %></td>
+									<td><%= category_hash[:sum_weighted_total_wage].to_i %>￥</td>
+									<td><%= from_seconds_to_hours_minutes(category_hash[:sum_weighted_service_duration]) %></td>
+									<td><%= ((category_hash[:sum_weighted_service_duration].to_f / @sum_of_provided_service_duration.to_f)*100).round(2) %>%</td>
+									<td><%= category_hash[:sum_count] %></td>
 								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><%= "#{@provided_services_shintai_sum}￥" %></td>
-									<td><%= "#{@provided_services_seikatsu_sum}￥" %></td>
-								</tr>
-								<tr>
-									<td><%= "#{(@provided_services_shintai_sum.to_f / (@provided_services_shintai_sum + @provided_services_seikatsu_sum) * 100).round(1)}%" if (@provided_services_shintai_sum + @provided_services_seikatsu_sum) != 0 %></td>
-									<td><%= "#{(@provided_services_seikatsu_sum.to_f / (@provided_services_shintai_sum + @provided_services_seikatsu_sum) * 100).round(1)}%" if (@provided_services_shintai_sum + @provided_services_seikatsu_sum) != 0 %></td>
-								</tr>
-								<tr>
-									<td><%= "#{@provided_services_shintai_count}件" %></td>
-									<td><%= "#{@provided_services_seikatsu_count}件" %></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+							<% end %>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

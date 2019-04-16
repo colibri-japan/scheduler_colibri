@@ -19,4 +19,27 @@ module ProvidedServicesHelper
             "saturday-provided-service"
         end
     end
+
+    def category_name_by_key(category_key)
+        case category_key
+        when 0
+            "身体"
+        when 1
+            "生活"
+        when 2
+            "自費"
+        when 3
+            "障害"
+        when 4
+            "リハ"
+        when 5
+            "看護"
+        when 6
+            "医療"
+        when 7
+            "その他"
+        else
+            ""
+        end
+    end
 end

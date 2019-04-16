@@ -1,9 +1,9 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
-  before_action :set_patient, only: [:show, :edit, :toggle_active, :update, :master, :destroy, :new_master_to_schedule, :master_to_schedule]
-  before_action :set_planning, only: [:show, :master]
+  before_action :set_patient, except: [:index, :create, :new]
+  before_action :set_planning, only: [:show, :master, :payable]
   before_action :set_printing_option, only: [:show, :master]
-  before_action :set_main_nurse, only: [:master, :show]
+  before_action :set_main_nurse, only: [:master, :show, :payable]
   before_action :set_caveats, only: [:new, :edit]
 
   def index
@@ -108,6 +108,18 @@ class PatientsController < ApplicationController
   end
 
   def payable 
+    authorize current_user, :has_access_to_provided_services?
+    authorize @patient, :is_employee?
+
+    set_month_and_year_params
+    fetch_nurses_grouped_by_team
+    fetch_patients_grouped_by_kana
+
+    first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+    last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+    end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
+
+    @services_from_appointments = ProvidedService.not_archived.in_range(first_day..end_of_today_in_japan).from_appointments.includes(:appointment, :patient).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
   end
 
   private
@@ -139,6 +151,11 @@ class PatientsController < ApplicationController
   def set_main_nurse 
     @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
   end
+  
+  def set_month_and_year_params
+    @selected_year = params[:y].present? ? params[:y] : Date.today.year
+    @selected_month = params[:m].present? ? params[:m] : Date.today.month
+  end
 
   def set_teams_id_by_name
     @teams_id_by_name = @corporation.cached_team_id_by_name
@@ -151,6 +168,10 @@ class PatientsController < ApplicationController
     else
       @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
     end
+  end
+
+  def fetch_patients_grouped_by_kana
+    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
   end
 
   def patient_params

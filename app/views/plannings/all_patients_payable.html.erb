@@ -1,0 +1,2 @@
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_all_patients_path(@planning), resource_master_path: planning_all_patients_master_path(@planning), nurse: @main_nurse} %>
+<%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'patient', view: 'payable'} %>

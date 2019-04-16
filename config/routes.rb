@@ -98,6 +98,7 @@ Rails.application.routes.draw do
   patch 'patients/:id/toggle_active' => 'patients#toggle_active', as: :toggle_active
   patch 'patients/:id/master_to_schedule' => 'patients#master_to_schedule', as: :patient_master_to_schedule
   get 'patients/:id/new_master_to_schedule' => "patients#new_master_to_schedule", as: :new_patient_master_to_schedule
+  get 'plannings/:planning_id/patients/:id/payable' => 'patients#payable', as: :planning_patient_payable
 
   #custom routes for plannings
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report
@@ -105,7 +106,8 @@ Rails.application.routes.draw do
   get 'plannings/:id/recent_patients_report' => 'plannings#recent_patients_report', as: :planning_recent_patients_report
   get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
-  get 'plannings/:id/payable' => 'plannings#payable', as: :planning_payable
+  get 'plannings/:id/all_nurses_payable' => 'plannings#all_nurses_payable', as: :planning_all_nurses_payable
+  get 'plannings/:id/all_patients_payable' => 'plannings#all_patients_payable', as: :planning_all_patients_payable
   get 'plannings/:id/duplicate_from' => 'plannings#duplicate_from', as: :planning_duplicate_from
   patch 'plannings/:id/duplicate' => 'plannings#duplicate', as: :planning_duplicate
   patch 'plannings/:id/master_to_schedule' => 'plannings#master_to_schedule', as: :master_to_schedule

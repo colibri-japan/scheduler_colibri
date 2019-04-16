@@ -38,7 +38,7 @@ class NursesController < ApplicationController
     authorize @nurse, :is_employee?
 
     fetch_nurses_grouped_by_team
-    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
+    fetch_patients_grouped_by_kana
     @patients_with_services = Patient.joins(:provided_services).select("patients.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {nurse_id: @nurse.id}).where(active: true).group('patients.id').order('sum_service_duration DESC')
 
     @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
@@ -50,7 +50,7 @@ class NursesController < ApplicationController
     authorize @planning, :is_employee? 
 
     fetch_nurses_grouped_by_team
-    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
+    fetch_patients_grouped_by_kana
   end
 
   def edit
@@ -111,11 +111,11 @@ class NursesController < ApplicationController
 
     set_month_and_year_params
     fetch_nurses_grouped_by_team
+    fetch_patients_grouped_by_kana
 
     first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
     end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
-
 
     @services_till_today = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(first_day..end_of_today_in_japan).order(service_date: 'asc')
     @services_from_today = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(end_of_today_in_japan..last_day).order(service_date: 'asc')
@@ -211,6 +211,10 @@ class NursesController < ApplicationController
     else
       @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
     end
+  end
+
+  def fetch_patients_grouped_by_kana
+    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
   end
 
   def set_printing_option

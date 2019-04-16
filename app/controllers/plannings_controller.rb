@@ -2,7 +2,7 @@ class PlanningsController < ApplicationController
 	before_action :set_corporation
 	before_action :set_planning, except: [:recent_patients_report] 
 	before_action :set_main_nurse, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master, :settings]
-	before_action :set_patients_grouped_by_kana, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
+	before_action :fetch_patients_grouped_by_kana, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
 	before_action :fetch_nurses_grouped_by_team, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
 
 	def all_patients
@@ -34,11 +34,12 @@ class PlanningsController < ApplicationController
 	  redirect_to planning_all_nurses_path(@planning), notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
 	end
 
-	def payable
+	def all_nurses_payable
 		@nurse = @corporation.nurses.displayable.order_by_kana.first 
 
 		set_month_and_year_params
 		fetch_nurses_grouped_by_team
+		fetch_patients_grouped_by_kana
 
 		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
 		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
@@ -67,6 +68,9 @@ class PlanningsController < ApplicationController
 
     #daily provided_services to be verified
     @daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+	end
+
+	def all_patients_payable
 	end
 
 	def settings 
@@ -142,7 +146,7 @@ class PlanningsController < ApplicationController
 		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 	end
 
-	def set_patients_grouped_by_kana
+	def fetch_patients_grouped_by_kana
 		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
 	end
 

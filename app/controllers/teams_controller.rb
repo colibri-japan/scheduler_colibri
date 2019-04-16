@@ -42,6 +42,7 @@ class TeamsController < ApplicationController
         @team = Team.find(params[:id])
         @nurse = current_user.nurse_id.present? ? current_user.nurse : @team.nurses.displayable.order_by_kana.first
         fetch_nurses_grouped_by_team
+        set_patients_grouped_by_kana
 
     	#appointments : since beginning of month
         today = Date.today 

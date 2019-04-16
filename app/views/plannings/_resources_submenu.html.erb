@@ -11,24 +11,24 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="no-print <%= 'hide-resource' if resource_type == 'nurse' %>">
-			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= master_resource ? planning_all_patients_master_path(@planning) : planning_all_patients_path(@planning) %>">利用者全員</div>
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= link_to_all_patients_from_view(view, @planning, {month: @selected_month, year: @selected_year}) %>">利用者全員</div>
 			
 			<% @patients_grouped_by_kana.each do |kana, patients| %>
 				<div class="nurses-resource-subsection-title"><%= kana %></div>
 				<% patients.each do |patient| %>
-					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'patient' && patient.id == @patient.id %>" data-url="<%= master_resource ? planning_patient_master_path(@planning, patient) : planning_patient_path(@planning, patient) %>"><%= patient.try(:name) %></p>
+					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'patient' && patient.id == @patient.id %>" data-url="<%= link_to_planning_patient_from_view(view, @planning, patient, {month: @selected_month, year: @selected_year}) %>"><%= patient.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="no-print <%= 'hide-resource' if resource_type == 'patient' %>">
 
-			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= master_resource ? planning_all_nurses_master_path(@planning) : planning_all_nurses_path(@planning) %>">従業員全員</div>
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= link_to_all_nurses_from_view(view, @planning, {month: @selected_month, year: @selected_year}) %>">従業員全員</div>
 
 			<% today = Date.today %>
 			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}" if @teams_id_by_name.present? %><%= "/master" if master_resource %>'><%= group %></div>
+				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}" if @teams_id_by_name.present? %><%= case view when 'master' then '/master' when 'payable' then '/payable' else '' end %><%= "?m=#{@selected_month}&y=#{@selected_year}" if @selected_month.present? && @selected_year.present? %>'><%= group %></div>
 				<% nurses.each do |nurse| %>
-					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'nurse' && nurse.id == @nurse.id %>" data-url="<%= master_resource ? planning_nurse_master_path(@planning, nurse) : planning_nurse_path(@planning, nurse) %>"><%= nurse.try(:name) %></p>
+					<p class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'nurse' && nurse.id == @nurse.id %>" data-url="<%= link_to_planning_nurse_from_view(view, @planning, nurse, {month: @selected_month, year: @selected_year}) %>"><%= nurse.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>

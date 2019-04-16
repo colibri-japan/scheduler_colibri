@@ -5,19 +5,7 @@
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>
 
-<div id="resource-list-container" class="no-print">
-  <div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
-	<div id="nurses-resource" class="no-print">
-			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_payable_path(@planning, params: {m: @selected_month, y: @selected_year}) %>">全員</div>
-			<% @grouped_nurses.each do |group, nurses| %>
-				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}/payable?m=#{@selected_month}&y=#{@selected_year}" if @teams_id_by_name.present? %>'><%= group %></div>
-				<% nurses.each do |nurse| %>
-					<p class="resource-list-element colibri-clickable-link  <%= 'resource-selected' if nurse.id == @nurse.id %>" data-url="<%= planning_nurse_payable_path(@planning, nurse, params: {m: @selected_month, y: @selected_year}) %>"><%= nurse.try(:name) %></p>
-				<% end %>
-			<% end %>
-	</div>
-  </div>
-</div>
+<%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'nurse', view: 'payable'} %>
 
 <div id="payable-container">
 	<div id="detail-planning-title">

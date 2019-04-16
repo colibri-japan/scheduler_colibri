@@ -107,7 +107,8 @@ class PatientsController < ApplicationController
     redirect_to planning_patient_path(@planning, @patient), notice: "#{@patient.name}様のサービスの反映が始まりました。数秒後リフレッシュしてください"
   end
 
-
+  def payable 
+  end
 
   private
 

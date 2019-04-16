@@ -23,7 +23,6 @@
           <th class="table-important-fields">給与計算方法</th>
           <th class="table-important-fields">従業員別給与</th>
           <th class="table-important-fields">時給.単価</th>
-          <th class="table-important-fields"></th>
         </tr>
       </thead>
 
@@ -34,7 +33,6 @@
             <td><%= humanize_hour_based_wage(service) %></td>
             <td><%= humanize_equal_salary(service) %></td>
             <td><%= service.unit_wage if service.equal_salary %></td>
-            <td><%= link_to '統合.削除', service_new_merge_and_destroy_path(service), class: 'btn btn-secondary btn-sm', remote: true %></td>
           </tr>
         <% end %>
       </tbody>

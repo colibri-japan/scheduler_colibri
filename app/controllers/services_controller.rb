@@ -1,6 +1,5 @@
 class ServicesController < ApplicationController
     before_action :set_corporation
-    before_action :set_nurse, except: [:destroy, :index, :new, :create, :new_merge_and_destroy, :merge_and_destroy]
     before_action :set_service, only: [:edit, :update, :destroy, :new_merge_and_destroy]
 
     def index
@@ -29,11 +28,20 @@ class ServicesController < ApplicationController
     end
 
     def edit
+        set_nurse_if_present
     end
 
     def update
-        if @service.update(service_params)
-            RecalculatePreviousWagesWorker.perform_async(@service.id) if @service.recalculate_previous_wages
+        set_nurse_if_present
+        respond_to do |format|
+            if @service.update(service_params)
+                format.html { redirect_back fallback_location: authenticated_root_path, notice: 'サービスの詳細が編集されました' }
+                format.js
+                RecalculatePreviousWagesWorker.perform_async(@service.id) if @service.recalculate_previous_wages
+            else
+                format.html { redirect_back fallback_location: authenticated_root_path, alert: 'サービスの編集が失敗しました' }
+                format.js
+            end
         end
     end
 
@@ -57,8 +65,8 @@ class ServicesController < ApplicationController
     end
 
     private
-    def set_nurse
-        @nurse = params[:nurse_id].present? ? Nurse.find(params[:nurse_id]) : Nurse.find(params[:id])
+    def set_nurse_if_present
+        @nurse = Nurse.find(params[:nurse_id]) if params[:nurse_id].present? 
     end
 
     def set_corporation
@@ -70,23 +78,18 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage, :planning_id, :category_1, :category_2, :category_ratio)
+        params.require(:service).permit(:title, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage, :category_1, :category_2, :category_ratio)
     end
 
     def update_planning_provided_service
-        puts  'update method called'
         recalculate = service_params['recalculate_previous_wages'].to_i
 
         if recalculate == 1
-            puts 'evaluated recalculate'
             if @service.equal_salary == true 
-                puts 'equal salary is true'
-                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND temporary is false', service_params['planning_id'], service_params['title'])
+                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ?', @corporation.planning.id, service_params['title'])
             else
-                puts 'equal salary not true'
-                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND nurse_id = ? AND temporary is false', service_params['planning_id'], service_params['title'], @service.nurse_id)
+                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND nurse_id = ?', @corporation.planning.id, service_params['title'], @service.nurse_id)
             end
-
 
             provided_services_to_update.each do |provided_service|
                 provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? @service.weekend_unit_wage : @service.unit_wage

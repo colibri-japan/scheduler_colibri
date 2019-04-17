@@ -208,14 +208,14 @@
 					<% end %>
 				</tr>
 			<% end %>
-			<% if current_user.corporation_admin? %>
-				<tr>
-					<td>実績小計</td>
-					<td><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
-					<td><%= @grouped_services_sum_count %></td>
+			<tr>
+				<td>実績小計</td>
+				<td><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
+				<td><%= @grouped_services_sum_count %></td>
+				<% if current_user.corporation_admin? %>
 					<td><span style="font-weight:bold"><%= @grouped_services_sum_total_wage %>¥</span></td>
-				</tr>
-			<% end %>
+				<% end %>
+			</tr>
 		</tbody>
 	</table>
 	

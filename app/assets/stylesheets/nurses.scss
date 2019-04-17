@@ -109,7 +109,7 @@ p.payable-dashboard-line {
 	right: 0px;
 	top: 46px;
 	width: 400px;
-	height: calc(100% - 46px);
+	min-height: calc(100% - 46px);
 	z-index: 15;
 	padding: 15px;
 	border-left: 0.5px solid #ddd;
@@ -121,10 +121,6 @@ p.payable-dashboard-line {
 	border-bottom: 0.5px solid #ddd;
 	margin-bottom: 4px;
 	color: #4F4F4F;
-}
-
-#chart-and-details-container {
-	display: flex;
 }
 
 .details-table-head {

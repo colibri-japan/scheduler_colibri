@@ -104,16 +104,10 @@
 					</div>
 				<% end %>
 			</div>
-			<div id="service-balance-block">
-				<div class='resource-details-block-title'>身体VS生活</div>
+			<div id="service-balance-block" style="margin-bottom:25px">
+				<div class='resource-details-block-title'>サービス割合 (過去２ヵ月.稼働時間)</div>
 				<div id="chart-and-details-container">
-					<div id="chart-wrapper">
-						<%= pie_chart [['身体', @provided_services_shintai], ['生活', @provided_services_seikatsu]], donut: true, width: '100px', height: '100px', legend: false, colors: ['#ffc107', '#FF2E07'] %>
-					</div>
-					<div id="service-balance-details">
-						<div class="service-balance-line">身体：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_shintai) %></span></div>
-						<div class="service-balance-line">生活：<span class="detail-important-information"><%= from_seconds_to_hours_minutes(@provided_services_seikatsu) %> </span></div>
-					</div>
+					<%= pie_chart @provided_services_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, donut: true, suffix: '%', width: '100%', height: '100px', legend: 'right', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] if @provided_services_grouped_by_category.present? %>
 				</div>
 			</div>
 			<div id="resource-action-block">

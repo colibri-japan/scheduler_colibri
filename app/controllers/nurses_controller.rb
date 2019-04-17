@@ -41,9 +41,7 @@ class NursesController < ApplicationController
     fetch_patients_grouped_by_kana
     @patients_with_services = Patient.joins(:provided_services).select("patients.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {nurse_id: @nurse.id}).where(active: true).group('patients.id').order('sum_service_duration DESC')
 
-    @provided_services_shintai = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%身%").sum(:service_duration)
-    @provided_services_seikatsu = ProvidedService.where(planning_id: @planning.id, nurse_id: @nurse.id).where("title LIKE ?", "%生%").sum(:service_duration)
-
+    @provided_services_grouped_by_category = ProvidedService.where(nurse_id: @nurse.id, planning_id: @planning.id, cancelled: false).in_range((Date.today - 2.months)..Date.today).not_archived.from_appointments.grouped_by_weighted_category
   end
 
   def master 

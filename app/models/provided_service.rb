@@ -111,7 +111,6 @@ class ProvidedService < ApplicationRecord
 
 			if service_without_nurse.present?
 				argument = service_without_nurse.category_ratio.present? ? service_without_nurse.category_ratio : 1
-				puts argument
 				if service_without_nurse.category_1.present?
 					return_hash[service_without_nurse.category_1][:sum_weighted_service_duration] += (grouped_service.sum_service_duration || 0) * argument || 0
 					return_hash[service_without_nurse.category_1][:sum_weighted_total_wage] += (grouped_service.sum_total_wage || 0) * argument || 0

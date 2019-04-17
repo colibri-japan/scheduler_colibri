@@ -101,7 +101,7 @@ class ProvidedService < ApplicationRecord
   def self.grouped_by_weighted_category
 		return_hash = {}
 		for category in 0..7 do
-			return_hash[category] = {sum_weighted_service_duration: 0, sum_weighted_total_wage: 0, sum_count: 0}
+			return_hash[category] = {sum_weighted_service_duration: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0}
 		end 
 
 		data_grouped_by_title = self.group(:title).select('provided_services.title, sum(provided_services.service_duration) as sum_service_duration, sum(provided_services.total_wage) as sum_total_wage, count(*)')
@@ -124,11 +124,19 @@ class ProvidedService < ApplicationRecord
 				end 
 			end
 		end
-
+		
 		return_hash.each do |key, value|
 			return_hash.delete(key) if return_hash[key].map {|k,v| v}.sum == 0
 		end
 
+		total_service_duration = return_hash.sum {|k,v| v[:sum_weighted_service_duration]}
+
+		return_hash.each do |key, value|
+			value[:weighted_service_duration_percentage] = total_service_duration == 0 ? 0 : ((value[:sum_weighted_service_duration].to_f / total_service_duration.to_f) * 100).round(1)
+		end
+
+		return_hash = return_hash.sort_by{|k,v| v[:sum_weighted_service_duration]}.reverse
+		
 		return_hash
   end
 

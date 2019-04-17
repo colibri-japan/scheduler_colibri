@@ -179,6 +179,11 @@ $(document).on 'turbolinks:load', ->
 
   if $('#colibri-salary-rules-index').length > 0
     $.getScript('/salary_rules.js')
+
+  $('#see-more-service-category-data').click ->
+    $container = $(this).parent('.colibri-subcontainer-body')
+    $container.animate({scrollTop: $container[0].clientHeight}, 500 , 'swing')
+    return
       
 
   return

@@ -51,7 +51,6 @@ class PlanningsController < ApplicationController
 
 		#provided services grouped by category
 		@provided_services_grouped_by_category = ProvidedService.from_appointments.where(planning_id: @planning.id, cancelled: false, archived_at: nil).in_range(first_day..last_day).grouped_by_weighted_category
-		@sum_of_provided_service_duration = @provided_services_grouped_by_category.sum {|k,v| v[:sum_weighted_service_duration]}
 
 		#appointments : since beginning of month
 		today = Date.today 

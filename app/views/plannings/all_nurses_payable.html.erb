@@ -21,11 +21,16 @@
 					<%= area_chart @provided_services_till_today.group_by_day(:service_date).sum(:total_wage), height: '95%', width: '500px', colors: ['#17a2b8'], suffix: '￥' %>
 				</div>
 			</div>
-			<div class='colibri-dashboard-subcontainer'>
+			<div class='colibri-dashboard-subcontainer' id='category-container'>
 				<div class='colibri-subcontainer-header'>
-					<span class='colibri-subcontainer-title'>サービスタイプ割合</span>
+					<span class='colibri-subcontainer-title'>サービスタイプ割合  <span style="font-size:0.9em;color:#aaa">(<%= "#{params[:m]}月稼動時間合計より" %>)<span></span>
 				</div>
-				<div class='colibri-subcontainer-body'>
+				<div class='colibri-subcontainer-body' id='category-subcontainer'>
+
+					<div id="service-category-chart-container" style='margin-top:15px;margin-bottom:15px'>
+						<%= pie_chart @provided_services_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, width: '90%', height: '70%', legend: 'right', suffix: '%', donut: true, colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] %>
+					</div>
+					<p style='text-align:center' id='see-more-service-category-data'>↓もっと見る↓</p>
 					<table class='table'>
 						<thead>
 							<tr>
@@ -42,7 +47,7 @@
 									<td><%= category_name_by_key(category_key) %></td>
 									<td><%= category_hash[:sum_weighted_total_wage].to_i %>￥</td>
 									<td><%= from_seconds_to_hours_minutes(category_hash[:sum_weighted_service_duration]) %></td>
-									<td><%= ((category_hash[:sum_weighted_service_duration].to_f / @sum_of_provided_service_duration.to_f)*100).round(2) %>%</td>
+									<td><%= category_hash[:weighted_service_duration_percentage] %>%</td>
 									<td><%= category_hash[:sum_count] %></td>
 								</tr>
 							<% end %>

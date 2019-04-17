@@ -122,7 +122,7 @@ class NursesController < ApplicationController
     @services_from_salary_rules = @services_till_today.from_salary_rules
     @services_from_appointments = @services_till_today.from_appointments
 
-    @unverified_services_count = @services_from_appointments.where(appointments: {edit_requested: false}).where(cancelled: false, archived_at: nil).is_not_verified_twice.count
+    @unverified_services_count = @services_from_appointments.where(appointments: {edit_requested: false}).where(cancelled: false, archived_at: nil).unverified.count
 
     @total_days_worked = [[@services_till_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq] + [@services_till_today.from_salary_rules.where(salary_rule_id: nil).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq]].flatten.uniq.count
     

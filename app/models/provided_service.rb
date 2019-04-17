@@ -25,7 +25,7 @@ class ProvidedService < ApplicationRecord
 
 	scope :provided, -> { where(provided: true) }
 	scope :is_verified, -> { where.not(verified_at: nil) }
-	scope :is_not_verified_twice, -> { where('verified_at IS NULL OR second_verified_at IS NULL') }
+	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('service_date BETWEEN ? AND ?', range.first, range.last) }
 	scope :from_salary_rules, -> { where('appointment_id IS NULL') }

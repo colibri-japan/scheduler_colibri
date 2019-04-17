@@ -87551,6 +87551,13 @@ document.addEventListener('turbolinks:load', function () {
     if ($('#colibri-salary-rules-index').length > 0) {
       $.getScript('/salary_rules.js');
     }
+    $('#see-more-service-category-data').click(function() {
+      var $container;
+      $container = $(this).parent('.colibri-subcontainer-body');
+      $container.animate({
+        scrollTop: $container[0].clientHeight
+      }, 500, 'swing');
+    });
   });
 
 }).call(this);
@@ -87621,7 +87628,11 @@ document.addEventListener('turbolinks:load', function () {
 
 }).call(this);
 (function() {
-
+  $(document).on('turbolinks:load', function() {
+    $('.service-clickable-row').click(function() {
+      $.getScript($(this).data('link'));
+    });
+  });
 
 }).call(this);
 (function() {
@@ -89688,18 +89699,18 @@ let submitMerge = () => {
   $('#merge-submit').click(function(){
     var destination_service_id = $('#service_to_merge').val();
     if (destination_service_id) {
-      var condition = confirm('サービスタイプが削除され、既存のサービスと実績が選択されたサービスへ合併されます')
+      var condition = confirm('サービスタイプが削除され、既存のサービスと実績が選択されたサービスへ統合されます')
       if (condition) {
-        $.ajax({
-          url: $(this).data('url'),
-          data: {
-            destination_service_id: destination_service_id
-          },
-          type: 'PATCH'
+        $(this).attr('href', function(i,h){
+          return h + (h.indexOf('?') != -1 ? "&destination_service_id=" + destination_service_id : "?destination_service_id=" + destination_service_id)
         })
+        return true
+      } else {
+        return false
       }
     } else {
-      alert('合併先のサービスを選択してください')
+      alert('統合先のサービスを選択してください')
+      return false
     }
   })
 }
@@ -89780,6 +89791,38 @@ let confirmNoPatientOnSubmit = () => {
     }
   })
 }
+
+let validateKatakana = () => {
+  $('#patient_form').submit(function(){
+    kana_validation = /^[0-9１-９ 　^[ァ-ヶー]*$/.test($('#patient_kana').val())
+    if (kana_validation) {
+      return true
+    } else {
+      alert('フリガナはカタカナで入力してください')
+      return false 
+    }
+  })
+}
+
+let selectizeInsurancePolicy = () => {
+  $('#patient-insurance-policy').selectize({
+    plugins: ['remove_button']
+  })
+}
+
+let addSecondServiceCategory = () => {
+  $('#add-second-service-type').click(function(){
+    $('#second-service-type').show()
+    $(this).hide()
+  })
+  $('#drop-second-service-category').click(function(){
+    $('#service_category_ratio').val('')
+    $('#service_category_2').val('')
+    $('#second-service-type').hide()
+    $('#add-second-service-type').show()
+  })
+}
+
 
 $(document).on('turbolinks:load', function(){
   initializeCalendar()

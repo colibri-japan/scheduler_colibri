@@ -13,7 +13,12 @@
       <%= form.check_box :target_all_nurses, checked: salary_rule.target_all_nurses, id: 'all_nurses_selected_checkbox' %>
     </div>
 
-    <div class="form-group" id="form_nurse_id_list_group" style="<%= 'display:none' if salary_rule.target_all_nurses %>">
+    <div class="form-group" id="target_nurse_by_filter_group" style="<%= 'display:none' if salary_rule.target_all_nurses %>">
+      <%= form.label :target_nurse_by_filter, "従業員フィルタ", class: "colibri-form-label" %>
+      <%= form.select :target_nurse_by_filter, options_for_select([['稼動日数100~299', 0],['稼動日数300~499', 1], ['稼動日数500以上', 2]], salary_rule.target_nurse_by_filter), {include_blank: 'フィルタなし'}, {id: :nurse_target_filter} %>
+    </div>
+
+    <div class="form-group" id="form_nurse_id_list_group" style="<%= 'display:none' if salary_rule.target_all_nurses || salary_rule.target_nurse_by_filter.present? %>">
       <%= form.label :nurse_id_list, "対象従業員", class: "colibri-form-label" %><span class='required-field'>*</span>
       <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, salary_rule.nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
     </div>

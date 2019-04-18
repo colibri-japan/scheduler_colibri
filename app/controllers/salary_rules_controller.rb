@@ -46,7 +46,7 @@ class SalaryRulesController < ApplicationController
     end
 
     def salary_rules_params
-      params.require(:salary_rule).permit(:title, :target_all_nurses, :target_all_services, :date_constraint, :expires_at, :operator, :argument, :hour_based, nurse_id_list: [], service_title_list: [])
+      params.require(:salary_rule).permit(:title, :target_all_nurses, :target_all_services, :date_constraint, :expires_at, :operator, :argument, :hour_based, :target_nurse_by_filter, nurse_id_list: [], service_title_list: [])
     end
 
 end

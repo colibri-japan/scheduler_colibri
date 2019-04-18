@@ -24,3 +24,9 @@ task :increment_days_worked => :environment do
 	puts "finished incrementing days worked"
 end
 
+task :refresh_target_nurses_for_salary_rules => :environment do
+	puts "updating targeted nurses for salary rules with nurse filter"
+	SalaryRule.refresh_targeted_nurses
+	puts "finished updating targeted nurses"
+end
+

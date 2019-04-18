@@ -1,2 +1,13 @@
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_all_patients_path(@planning), resource_master_path: planning_all_patients_master_path(@planning), nurse: @main_nurse} %>
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'patient', view: 'payable'} %>
+
+
+<div id="payable-container">
+    <div id="coming-soon-container" style="text-align:center;margin-top:30px">
+        <h2 style="font-size:2em;margin-bottom:15px">カミング.スーン！</h2>
+        <%= image_tag('confetti.svg', width: '15%') %>
+        <p style="font-size:1.1em;margin-top:15px;margin-bottom:15px">Colibriの予定シフトと実績シフトを基に、<span style="font-weight:bold">提供表の自動作成機能</span>を準備中です！</p>
+        <p style="font-size:1.1em">提供表以外にも<span style="font-weight:bold">請求データのダウンロードと伝送</span>も準備中です。</p>
+        <p style="font-size:1.1em;margin-top:40px">お問い合わせはラインから対応いたします！</p>
+    </div>
+</div>

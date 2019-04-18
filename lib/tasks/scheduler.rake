@@ -18,3 +18,9 @@ task :calculate_salaries_from_salary_rules => :environment do
 	puts "Finished calculating salaries"
 end
 
+task :increment_days_worked => :environment do 
+	puts "incrementing days worked for nurses that have worked yesterday"
+	Nurse.increment_days_worked_if_has_worked_yesterday
+	puts "finished incrementing days worked"
+end
+

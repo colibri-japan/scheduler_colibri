@@ -87551,6 +87551,13 @@ document.addEventListener('turbolinks:load', function () {
     if ($('#colibri-salary-rules-index').length > 0) {
       $.getScript('/salary_rules.js');
     }
+    $('#see-more-service-category-data').click(function() {
+      var $container;
+      $container = $(this).parent('.colibri-subcontainer-body');
+      $container.animate({
+        scrollTop: $container[0].clientHeight
+      }, 500, 'swing');
+    });
   });
 
 }).call(this);
@@ -87621,7 +87628,11 @@ document.addEventListener('turbolinks:load', function () {
 
 }).call(this);
 (function() {
-
+  $(document).on('turbolinks:load', function() {
+    $('.service-clickable-row').click(function() {
+      $.getScript($(this).data('link'));
+    });
+  });
 
 }).call(this);
 (function() {
@@ -89742,9 +89753,29 @@ let bootstrapToggleForAllServicesCheckbox = () => {
 
 let toggleNurseIdList = () => {
   $('#all_nurses_selected_checkbox').on('change', function(){
+    $selectize = $('#target-nurse-ids').selectize()
+    selectize = $selectize[0].selectize 
     if ($('#all_nurses_selected_checkbox').is(':checked')) {
       $('#form_nurse_id_list_group').hide()
+      $('#target_nurse_by_filter_group').hide()
       $('#target-nurse-ids').val('')
+      $('#nurse_target_filter').val('')
+      selectize.clear(true)
+    } else {
+      $('#target_nurse_by_filter_group').show()
+      $('#form_nurse_id_list_group').show()
+    }
+  })
+}
+
+let applyNurseFilterToSalaryService = () => {
+  $('#nurse_target_filter').on('change', function(){
+    $selectize = $('#target-nurse-ids').selectize()
+    selectize = $selectize[0].selectize 
+    if (["0", "1", "2"].includes($(this).val())) {
+      $('#target-nurse-ids').val('')
+      $('#form_nurse_id_list_group').hide()
+      selectize.clear(true)
     } else {
       $('#form_nurse_id_list_group').show()
     }
@@ -89783,7 +89814,7 @@ let confirmNoPatientOnSubmit = () => {
 
 let validateKatakana = () => {
   $('#patient_form').submit(function(){
-    kana_validation = /^[0-9１-９^[ァ-ヶー]*$/.test($('#patient_kana').val())
+    kana_validation = /^[0-9１-９ 　^[ァ-ヶー]*$/.test($('#patient_kana').val())
     if (kana_validation) {
       return true
     } else {
@@ -89812,6 +89843,17 @@ let addSecondServiceCategory = () => {
   })
 }
 
+let submitCancellationFee = () => {
+  $('#cancellation_fee_form').submit(function(){
+    let fee = $('#cancellation-fee-field').val()
+    if (fee) {
+      return true 
+    } else {
+      alert('手当を入力してください')
+      return false
+    }
+  })
+}
 
 $(document).on('turbolinks:load', function(){
   initializeCalendar()

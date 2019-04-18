@@ -86,7 +86,7 @@
 					    <% if provided_service.cancelled == true %>
 					    	<span>キャンセル</span>
 					    <% elsif provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>
-					    	<span>調整中リスト</span>
+					    	<span>調整中</span>
 					    <% else %>
                 <% if provided_service.verified? %>
                   <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
@@ -100,8 +100,9 @@
         </td>
 				<td style='width:9%'>
 				  <div style="display:flex" id='provided-service-second-verified-<%= provided_service.id %>'>
-				    <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>' style="display:flex">
+				    <div style="display:flex">
 					    <% if provided_service.cancelled == true %>
+							  <%= link_to '+手当', provided_service_new_cancellation_fee_path(provided_service), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
 					    <% elsif provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>
 					    <% else %>
                 <% if provided_service.second_verified? %>

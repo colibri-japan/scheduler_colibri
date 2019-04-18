@@ -1,0 +1,5 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "new_cancellation_fee" %>');
+$('#new_cancellation_fee').modal('show');
+submitCancellationFee()

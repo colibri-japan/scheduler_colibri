@@ -2170,6 +2170,17 @@ let addSecondServiceCategory = () => {
   })
 }
 
+let submitCancellationFee = () => {
+  $('#cancellation_fee_form').submit(function(){
+    let fee = $('#cancellation-fee-field').val()
+    if (fee) {
+      return true 
+    } else {
+      alert('手当を入力してください')
+      return false
+    }
+  })
+}
 
 $(document).on('turbolinks:load', function(){
   initializeCalendar()

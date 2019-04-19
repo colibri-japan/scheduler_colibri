@@ -17,7 +17,7 @@
 
 
 
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), nurse: @nurse} %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), resource_payable_path: planning_nurse_payable_path(@planning, @nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'nurse', view: 'resource'} %>
 
 

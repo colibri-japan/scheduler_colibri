@@ -4,7 +4,7 @@
 			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'home' %>" data-url="<%= authenticated_root_path %>" title="ホーム.ダッシュボード"><span class="glyphicon glyphicon-home"  style="<%= view == 'home' ? 'color:white' : 'color:#94979A' %>;font-size:24px"></span></li>
 			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'resource' %>" data-url="<%= resource_path %>" title="実績シフト"><span class="glyphicon glyphicon-calendar"  style="<%= view == 'resource' ? 'color:white' : 'color:#94979A' %>;margin-left:3px;font-size:24px"></span></li>
 			<% unless current_user.has_restricted_access? %>
-				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= planning_nurse_payable_path(@planning, nurse, params: {m: Date.today.month, y: Date.today.year}) %>" title="給与管理">給</li>
+				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= resource_payable_path %>" title="給与管理">給</li>
 			<% end %>
 			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'activity' %>" data-url="<%= planning_activities_path(@planning) %>" title="編集履歴">歴</li>
 			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  resource_master_path %>" title="マスター">マ</li>

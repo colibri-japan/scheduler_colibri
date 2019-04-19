@@ -1,4 +1,4 @@
-<%= render partial: 'plannings/planning_left_menu', locals: {nurse: @main_nurse, resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), view: 'home' } %>
+<%= render partial: 'plannings/planning_left_menu', locals: {resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse), view: 'home' } %>
 
 <div id='colibri-dashboard-container'>
 

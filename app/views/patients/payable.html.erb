@@ -2,7 +2,7 @@
 	window.patientPayableUrl = "<%= j planning_patient_payable_path(@planning, @patient) %>";
 <% end %>
 
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_patient_path(@planning, @patient), resource_master_path: planning_patient_master_path(@planning, @patient), nurse: @main_nurse} %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_patient_path(@planning, @patient), resource_master_path: planning_patient_master_path(@planning, @patient), resource_payable_path: planning_patient_payable_path(@planning, @patient, params: {m: @selected_month, y: @selected_year})} %>
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'patient', view: 'payable'} %>
 
 <div id="payable-container">

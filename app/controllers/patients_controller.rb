@@ -3,7 +3,6 @@ class PatientsController < ApplicationController
   before_action :set_patient, except: [:index, :create, :new]
   before_action :set_planning, only: [:show, :master, :payable]
   before_action :set_printing_option, only: [:show, :master]
-  before_action :set_main_nurse, only: [:master, :show, :payable]
   before_action :set_caveats, only: [:new, :edit]
 
   def index
@@ -146,10 +145,6 @@ class PatientsController < ApplicationController
 
   def set_nurses
     @nurses = @corporation.nurses.displayable.order_by_kana
-  end
-
-  def set_main_nurse 
-    @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
   end
   
   def set_month_and_year_params

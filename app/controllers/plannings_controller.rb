@@ -1,7 +1,6 @@
 class PlanningsController < ApplicationController
 	before_action :set_corporation
 	before_action :set_planning, except: [:recent_patients_report] 
-	before_action :set_main_nurse, only: [:all_patients, :all_nurses, :all_patients_payable, :all_patients_master, :all_nurses_master, :settings]
 	before_action :fetch_patients_grouped_by_kana, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
 	before_action :fetch_nurses_grouped_by_team, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
 
@@ -84,6 +83,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def settings 
+		set_main_nurse
 	end
 
 	def monthly_general_report

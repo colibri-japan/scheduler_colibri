@@ -20,6 +20,12 @@ module ProvidedServicesHelper
         end
     end
 
+    def sort_link(sort_direction)
+        direction = sort_direction == "asc" ? "desc" : "asc"
+        icon = sort_direction == "asc" ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"
+        link_to "日付<span  class='#{icon}' style='color:black;font-size:12px'></span>".html_safe, {direction: direction, y: @selected_year, m: @selected_month}
+    end
+
     def category_name_by_key(category_key)
         case category_key
         when 0

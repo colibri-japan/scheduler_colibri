@@ -115,12 +115,13 @@ class NursesController < ApplicationController
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
     end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
 
-    @services_till_today = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(first_day..end_of_today_in_japan).order(service_date: 'asc')
+    @services_till_today = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(first_day..end_of_today_in_japan)
     @services_from_today = ProvidedService.not_archived.includes(:appointment, :patient).where(nurse_id: @nurse.id, planning_id: @planning.id).in_range(end_of_today_in_japan..last_day).order(service_date: 'asc')
     calculate_total_wage
 
-    @services_from_salary_rules = @services_till_today.from_salary_rules
-    @services_from_appointments = @services_till_today.from_appointments
+    set_sort_direction
+    @services_from_salary_rules = @services_till_today.from_salary_rules.order(service_date: 'asc')
+    @services_from_appointments = @services_till_today.from_appointments.order("service_date #{@sort_direction}")
 
     @unverified_services_count = @services_from_appointments.where(appointments: {edit_requested: false}).where(cancelled: false, archived_at: nil).unverified.count
 
@@ -222,6 +223,12 @@ class NursesController < ApplicationController
   def set_month_and_year_params
     @selected_year = params[:y].present? ? params[:y] : Date.today.year
     @selected_month = params[:m].present? ? params[:m] : Date.today.month
+  end
+
+  def set_sort_direction 
+    @sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
+    puts 'sort direction !!'
+    puts @sort_direction
   end
 
 end

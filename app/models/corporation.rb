@@ -158,8 +158,8 @@ class Corporation < ApplicationRecord
 		return_hash
 	end
 
-	def recent_patients(start_time, number_of_days)
-		patients.includes(:nurse).active.where('date_of_contract IS NOT NULL AND date_of_contract > ?', start_time - number_of_days.days).order(date_of_contract: :desc)
+	def patients_with_contract_starting_after(date)
+		patients.includes(:nurse).active.where('date_of_contract IS NOT NULL AND date_of_contract > ?', date).order(date_of_contract: :desc)
 	end
 
 	private

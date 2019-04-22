@@ -134,7 +134,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def recent_patients_report
-		@recent_patients = @corporation.recent_patients(Date.today, 60)
+		@recent_patients = @corporation.patients_with_contract_starting_after(Date.today - 60.days)
 
 		respond_to do |format|
 			format.xlsx {  response.headers['Content-Disposition'] = "attachment; filename=\"新規利用者#{Date.today}.xlsx\""  }

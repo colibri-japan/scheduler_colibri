@@ -42,7 +42,7 @@
   pathname = window.location.pathname;
 
   if (pathname.includes('payable')) {
-    location.reload()
+    Turbolinks.reload()
   } else {
     if (typeof calendar === 'undefined') {
       let calendar;

@@ -2204,8 +2204,25 @@ let submitCancellationFee = () => {
   })
 }
 
+
+
+let scrollPosition
+
+document.addEventListener('turbolinks:load', function () {
+  if (scrollPosition) {
+    window.scrollTo.apply(window, scrollPosition)
+    scrollPosition = null
+  }
+}, false)
+
+Turbolinks.reload = () => {
+  scrollPosition = [window.scrollX, window.scrollY]
+  Turbolinks.visit(window.location)
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
+
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()

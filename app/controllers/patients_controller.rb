@@ -12,7 +12,8 @@ class PatientsController < ApplicationController
       recurring_appointments_that_occurs_in_range = RecurringAppointment.where(planning_id: params[:planning_id]).to_be_displayed.from_master.not_terminated_at(params[:start].to_date).occurs_in_range(params[:start].to_date.beginning_of_day..(params[:end].to_date - 1.day).beginning_of_day)
       @patients = @corporation.patients.active.where(id: recurring_appointments_that_occurs_in_range.map(&:patient_id)).order_by_kana
     else
-      @patients = @corporation.patients.active.order_by_kana.group_by_kana
+      @patients = @corporation.cached_active_patients_grouped_by_kana
+      @deactivated_patients = @corporation.cached_inactive_patients_ordered_by_kana
     end
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
@@ -49,7 +50,10 @@ class PatientsController < ApplicationController
   end
 
   def toggle_active
-    if @patient.update(active: !@patient.active, toggled_active_at: Time.now)
+    @patient.toggle(:active)
+    @patient.toggled_active_at = Time.now 
+
+    if @patient.save(validate: false)
       CancelPatientAppointmentsWorker.perform_async(@patient.id)
       redirect_to patients_path, notice: '利用者のサービスが停止されました。'
     end
@@ -68,7 +72,6 @@ class PatientsController < ApplicationController
       if @patient.save
         format.html { redirect_to patients_path, notice: '利用者様が登録されました' }
       else
-        puts @patient.errors.full_messages
         format.html { redirect_to patients_path, alert: '利用者様の登録が失敗しました' }
       end
     end

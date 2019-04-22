@@ -2,14 +2,19 @@
 
   <%= link_to '+新規利用者', new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
 
+  <div id="toggle-active-patients-menu" style="display:flex;margin-top:20px;margin-bottom:20px">
+    <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px">サービス実施中 (<%= @patients.sum {|k,v| v.length} %>)</div>
+    <div id="deactivated-patients" class="toggle-active-element">サービス終了 (<%= @deactivated_patients.count %>)</div>
+  </div>
+
   <div id="index-table-container">
-    <table class="<%= @planning ? 'table table-hover' : 'table' %>">
+    <table id="active-patients-table" class="table table-hover">
       <thead>
         <tr>
-          <th class="table-important-fields">名前</th>
-          <th class="table-important-fields">電話番号</th>
-          <th class="table-important-fields">メール</th>
-          <th class="table-important-fields">住所</th>
+          <th>名前</th>
+          <th>電話番号</th>
+          <th>メール</th>
+          <th>住所</th>
         </tr>
       </thead>
 
@@ -34,6 +39,27 @@
         <% end %>
       </tbody>
     </table>
+
+    <table id="deactivated-patients-table" class="table" style="display:none">
+      <thead>
+        <th>名前</th>
+        <th>電話番号</th>
+        <th>メール</th>
+        <th>住所</th>
+      </thead>
+      <tbody>
+        <% @deactivated_patients.each do |patient| %>
+          <tr>
+            <td><%= patient.name %></td>
+            <td><%= patient.phone_number %></td>
+            <td><%= patient.phone_mail %></td>
+            <td><%= patient.address %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
   </div>
+
   
 </div>

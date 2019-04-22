@@ -35,6 +35,10 @@ class Corporation < ApplicationRecord
 		Rails.cache.fetch([self, 'active_patients_grouped_by_kana']) { patients.active.group_by_kana }
 	end
 
+	def cached_inactive_patients_ordered_by_kana
+		Rails.cache.fetch([self, 'inactive_patients_ordered_by_kana']) { patients.deactivated.order_by_kana }
+	end
+
 	def cached_active_patients_ordered_by_kana
 		Rails.cache.fetch([self, 'active_patients_ordered_by_kana']) { patients.active.order_by_kana }
 	end

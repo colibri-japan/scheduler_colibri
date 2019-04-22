@@ -14,5 +14,19 @@ $(document).on 'turbolinks:load', ->
   $('tr.patient-clickable-row').click ->
     $.getScript($(this).data('link'))
     return 
+
+  $('#deactivated-patients').click ->
+    $('.toggle-active-element').removeClass('toggle-active-selected')
+    $(this).addClass('toggle-active-selected')
+    $('#deactivated-patients-table').show()
+    $('#active-patients-table').hide()
+    return
+
+  $('#active-patients').click ->
+    $('.toggle-active-element').removeClass('toggle-active-selected')
+    $(this).addClass('toggle-active-selected')
+    $('#deactivated-patients-table').hide()
+    $('#active-patients-table').show()
+    return
     
   return

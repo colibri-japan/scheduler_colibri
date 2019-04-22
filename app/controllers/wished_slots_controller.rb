@@ -59,10 +59,6 @@ class WishedSlotsController < ApplicationController
 	    @wished_slot = WishedSlot.find(params[:id])
 	  end
 
-  	def set_corporation
-  	  @corporation = Corporation.cached_find(current_user.corporation_id)
-  	end
-
 	  def set_planning
 	    @planning = Planning.find(params[:planning_id])
 		end

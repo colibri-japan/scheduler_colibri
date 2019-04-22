@@ -27,6 +27,36 @@ class ApplicationController < ActionController::Base
     redirect_to(request.referrer || authenticated_root_path)
   end
 
+  def set_corporation
+    @corporation = Corporation.cached_find(current_user.corporation_id)
+  end
+
+  def fetch_nurses_grouped_by_team
+    if @corporation.teams.any?
+			@grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
+			reorder_nurses_grouped_by_team if current_user.nurse.team.present?
+      set_teams_id_by_name
+    else
+      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
+    end
+	end
+	
+	def reorder_nurses_grouped_by_team
+		my_team = current_user.nurse.team.team_name 
+		new_keys = [[my_team] + [@grouped_nurses.keys - [my_team]]].flatten
+		ordered_grouped_nurses = {}
+		new_keys.map { |key| ordered_grouped_nurses[key] = @grouped_nurses[key] }
+		@grouped_nurses = ordered_grouped_nurses
+	end
+
+  def set_teams_id_by_name
+      @teams_id_by_name = @corporation.cached_team_id_by_name
+  end
+
+  def fetch_patients_grouped_by_kana
+		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
+	end
+  
 end
 
 

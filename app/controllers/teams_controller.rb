@@ -22,14 +22,14 @@ class TeamsController < ApplicationController
     def show
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id]) 
-        set_patients_grouped_by_kana
+        fetch_patients_grouped_by_kana
         fetch_nurses_grouped_by_team
     end
 
     def master 
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id]) 
-        set_patients_grouped_by_kana
+        fetch_patients_grouped_by_kana
         fetch_nurses_grouped_by_team
     end
 
@@ -40,7 +40,7 @@ class TeamsController < ApplicationController
         @team = Team.find(params[:id])
         @nurse = current_user.nurse_id.present? ? current_user.nurse : @team.nurses.displayable.order_by_kana.first
         fetch_nurses_grouped_by_team
-        set_patients_grouped_by_kana
+        fetch_patients_grouped_by_kana
 
     	#appointments : since beginning of month
         today = Date.today 
@@ -81,27 +81,6 @@ class TeamsController < ApplicationController
 
     def team_params
         params.require(:team).permit(:team_name, member_ids: [])
-    end
-    
-    def set_patients_grouped_by_kana
-		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
-	end
-
-    def set_corporation
-      @corporation = Corporation.cached_find(current_user.corporation_id)
-    end
-
-    def fetch_nurses_grouped_by_team
-      if @corporation.teams.any?
-        @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
-        set_teams_id_by_name
-      else
-        @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
-      end
-    end
-
-    def set_teams_id_by_name
-        @teams_id_by_name = @corporation.cached_team_id_by_name
     end
 
     def set_month_and_year_params

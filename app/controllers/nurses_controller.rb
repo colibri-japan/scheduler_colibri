@@ -160,11 +160,7 @@ class NursesController < ApplicationController
   def set_planning
     @planning = Planning.find(params[:planning_id])
   end
-
-  def set_corporation
-    @corporation = Corporation.cached_find(current_user.corporation_id)
-  end
-
+  
   def set_planning
     @planning = Planning.find(params[:planning_id])
   end
@@ -199,22 +195,6 @@ class NursesController < ApplicationController
     @total_time_pending =  @services_from_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).sum(:service_duration) || 0
   end
 
-  def set_teams_id_by_name
-    @teams_id_by_name = @corporation.cached_team_id_by_name
-  end
-
-  def fetch_nurses_grouped_by_team
-    if @corporation.teams.any?
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
-      set_teams_id_by_name
-    else
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
-    end
-  end
-
-  def fetch_patients_grouped_by_kana
-    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
-  end
 
   def set_printing_option
     @printing_option = @corporation.printing_option

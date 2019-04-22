@@ -30,8 +30,5 @@ class ActivitiesController < ApplicationController
 
 	private
 
-	def set_corporation
-		@corporation = Corporation.cached_find(current_user.corporation_id)
-	end
 
 end

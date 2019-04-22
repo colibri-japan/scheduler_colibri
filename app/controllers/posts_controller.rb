@@ -72,10 +72,6 @@ class PostsController < ApplicationController
 
     private
 
-    def set_corporation
-        @corporation = Corporation.cached_find(current_user.corporation_id)
-    end
-
     def set_patients 
         @patients = @corporation.cached_active_patients_ordered_by_kana
     end

@@ -65,12 +65,9 @@ class ServicesController < ApplicationController
     end
 
     private
+
     def set_nurse_if_present
         @nurse = Nurse.find(params[:nurse_id]) if params[:nurse_id].present? 
-    end
-
-    def set_corporation
-      @corporation = Corporation.cached_find(current_user.corporation_id)
     end
 
     def set_service

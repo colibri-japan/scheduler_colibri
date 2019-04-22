@@ -134,10 +134,6 @@ class PatientsController < ApplicationController
     @planning = Planning.find(params[:planning_id])
   end
 
-  def set_corporation
-    @corporation = Corporation.cached_find(current_user.corporation_id)
-  end
-
   def set_caveats
     @caveats = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: {taggable_type: 'Patient', taggable_id: @corporation.patients.ids, context: 'caveats'})
   end
@@ -153,23 +149,6 @@ class PatientsController < ApplicationController
   def set_month_and_year_params
     @selected_year = params[:y].present? ? params[:y] : Date.today.year
     @selected_month = params[:m].present? ? params[:m] : Date.today.month
-  end
-
-  def set_teams_id_by_name
-    @teams_id_by_name = @corporation.cached_team_id_by_name
-  end
-
-  def fetch_nurses_grouped_by_team
-    if @corporation.teams.any?
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
-      set_teams_id_by_name
-    else
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
-    end
-  end
-
-  def fetch_patients_grouped_by_kana
-    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
   end
 
   def patient_params

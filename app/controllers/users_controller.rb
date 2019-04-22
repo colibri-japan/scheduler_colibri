@@ -25,10 +25,6 @@ class UsersController < ApplicationController
   
   private
 
-  def set_corporation
-    @corporation = Corporation.cached_find(current_user.corporation_id)
-  end
-
   def user_role_params
     params.require(:user).permit(:role)
   end

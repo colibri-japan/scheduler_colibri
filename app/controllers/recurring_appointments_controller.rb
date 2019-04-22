@@ -152,18 +152,13 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointment = RecurringAppointment.find(params[:id])
     end
 
-    def set_corporation
-      @corporation = Corporation.cached_find(current_user.corporation_id)
-    end
-
     def set_nurses
       @nurses = @corporation.nurses.all.order_by_kana
     end
 
     def set_patients
-      @patients = @corporation.patients.active.order_by_kana
+      @patients = @corporation.cached_active_patients_ordered_by_kana
     end
-
 
     def set_planning
       @planning = Planning.find(params[:planning_id])

@@ -63,10 +63,6 @@ class DashboardController < ApplicationController
 
   private
 
-  def set_corporation
-      @corporation = Corporation.cached_find(current_user.corporation_id)
-  end
-
   def set_main_nurse
     @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
   end

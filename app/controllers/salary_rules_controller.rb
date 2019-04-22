@@ -36,10 +36,6 @@ class SalaryRulesController < ApplicationController
 
     private
 
-    def set_corporation
-      @corporation = Corporation.cached_find(current_user.corporation_id)
-    end
-
     def set_nurses_and_services
       @nurses = @corporation.nurses.displayable
       @services = @corporation.services.where(nurse_id: nil)

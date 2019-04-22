@@ -144,10 +144,6 @@ class PlanningsController < ApplicationController
 
 	private
 
-  def set_corporation
-    @corporation = Corporation.cached_find(current_user.corporation_id)
-  end
-
 	def set_planning
 		@planning = Planning.find(params[:id])
 	end
@@ -156,25 +152,8 @@ class PlanningsController < ApplicationController
 		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 	end
 
-	def fetch_patients_grouped_by_kana
-		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
-	end
-
 	def planning_params
 		params.require(:planning).permit(:business_month, :business_year, :title)
-	end
-
-  def fetch_nurses_grouped_by_team
-    if @corporation.teams.any?
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
-      set_teams_id_by_name
-    else
-      @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
-    end
-  end
-
-  def set_teams_id_by_name
-      @teams_id_by_name = @corporation.cached_team_id_by_name
 	end
 
 	def set_month_and_year_params

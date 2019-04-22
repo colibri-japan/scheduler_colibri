@@ -1,7 +1,7 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "edit" %>');
-$('#edit_post').modal('show');
+$('#edit_post').modal({backdrop: 'static'});
 postSelectize()
 postsTimePicker()
 newPostReminderLayout()

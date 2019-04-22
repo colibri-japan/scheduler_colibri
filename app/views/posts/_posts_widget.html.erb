@@ -12,7 +12,7 @@
     </div>
   </div>
 </div>
-<div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container'>
+<div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container' style='flex-grow:1'>
   <% read_posts.to_a.reverse.each do |read_post| %>
     <%= render read_post %>
   <% end %>

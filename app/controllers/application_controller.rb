@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   def fetch_nurses_grouped_by_team
     if @corporation.teams.any?
 			@grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name
-			reorder_nurses_grouped_by_team if current_user.nurse.team.present?
+			reorder_nurses_grouped_by_team if current_user.nurse.present? && current_user.nurse.team.present?
       set_teams_id_by_name
     else
       @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer

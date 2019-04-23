@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'bonuses/new'
+
   get 'calendar_event/new'
 
   get 'contact_form/new'
@@ -50,6 +52,7 @@ Rails.application.routes.draw do
   resources :nurses do
     resources :provided_services
     resources :services
+    resources :bonuses, only: :new
   end
 
   resources :corporations do

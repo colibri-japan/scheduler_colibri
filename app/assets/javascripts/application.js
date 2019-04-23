@@ -2204,7 +2204,9 @@ let submitCancellationFee = () => {
   })
 }
 
-
+let newBonusForm = () => {
+  
+}
 
 let scrollPosition
 

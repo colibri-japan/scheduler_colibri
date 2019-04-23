@@ -36,7 +36,7 @@
 
 	<div id='payable-table-commands'>
 	    <div id="add-provided-service-line">
-			<%= link_to '+手当を追加する', new_nurse_provided_service_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true %>
+			<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-info text-white', remote: true %>
 			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_services_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-info text-white', remote: true if current_user.corporation_admin? %>
 		</div>
 		<% if current_user.corporation_admin? %>

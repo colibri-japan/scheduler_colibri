@@ -1,21 +1,17 @@
 class ProvidedServicesController < ApplicationController
-	before_action :set_provided_service, except: [:new, :create]
+	before_action :set_provided_service, except: [:create]
 	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified, :new_cancellation_fee, :add_cancellation_fee]
 
-	def new
-		@provided_service = ProvidedService.new
-		@services = current_user.corporation.services.without_nurse_id.order_by_title.all
-	end
 
 	def create
 		@provided_service = ProvidedService.new(provided_service_params)
 		@provided_service.nurse_id = params[:nurse_id]
 		@provided_service.planning_id = current_user.corporation.planning.id
+		@provided_service.skip_calculate_total_wage_callback = true
 
 		if @provided_service.save
 		  redirect_back fallback_location: authenticated_root_path, notice: "新規手当がセーブされました"
 		end
-
 	end
 
 	def edit
@@ -70,7 +66,7 @@ class ProvidedServicesController < ApplicationController
 	end
 
 	def provided_service_params
-		params.require(:provided_service).permit(:unit_cost, :service_counts, :title, :planning_id, :service_date, :hour_based_wage, :service_duration, :nurse_id, target_service_ids: [])
+		params.require(:provided_service).permit(:title, :service_date, :total_wage)
 	end
 
 	def cancellation_fee_params

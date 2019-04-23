@@ -2205,7 +2205,18 @@ let submitCancellationFee = () => {
 }
 
 let newBonusForm = () => {
-  
+  $('#bonus-provided-service-button').click(function () {
+    $('.toggle-model-button').removeClass('btn-colibri-light-blue');
+    $(this).addClass('btn-colibri-light-blue');
+    $('#salary-rule-form-container').hide();
+    $('#provided-service-form-container').show();
+  });
+  $('#bonus-salary-rule-button').click(function () {
+    $('.toggle-model-button').removeClass('btn-colibri-light-blue');
+    $(this).addClass('btn-colibri-light-blue');
+    $('#salary-rule-form-container').show();
+    $('#provided-service-form-container').hide();
+  });
 }
 
 let scrollPosition

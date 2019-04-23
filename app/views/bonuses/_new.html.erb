@@ -6,12 +6,12 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
-			<div id="new-bonus-type-selection" class="modal-body">
-				<%= label_tag :bonus_with_provided_service, "簡易作成", class: 'btn btn-sm btn-colibri-light btn-colibri-light-blue toggle-event-model-button', id: 'bonus-provided-service-button' do %>
+			<div id="new-bonus-type-selection" class="modal-body" style='margin-bottom:0px'>
+				<%= label_tag :bonus_with_provided_service, "簡易作成", class: 'btn btn-sm btn-colibri-light btn-colibri-light-blue toggle-model-button', id: 'bonus-provided-service-button' do %>
 					<%= radio_button_tag :bonus_model, 'provided_service_selected', checked=true, {class: 'radio-inline', id: 'bonus-model-provided-service', style: "display:none"} %>
 					簡易作成
 				<% end %>
-				<%= label_tag :bonus_with_salary_rule, "詳細作成", class: 'btn btn-sm btn-colibri-light toggle-event-model-button', id: 'bonus-salary-rule-button' do %>
+				<%= label_tag :bonus_with_salary_rule, "詳細作成", class: 'btn btn-sm btn-colibri-light toggle-model-button', id: 'bonus-salary-rule-button' do %>
 					<%= radio_button_tag :bonus_model, 'salary_rule_selected', checked=false, {class: 'radio-inline', id: 'bonus-model-salary-rule', style: "display:none"} %>
 					詳細作成
 				<% end %>
@@ -24,6 +24,7 @@
             <div id="salary-rule-form-container" style='display:none'>
                 <%= render 'salary_rules/form', salary_rule: @salary_rule %>
             </div>
+
 		</div>
 	</div>
 

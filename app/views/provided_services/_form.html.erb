@@ -13,70 +13,30 @@
 
 
   <div class="modal-body">
-      <% if provided_service.new_record? %>
-        <div id="form-options-container">
-          <div class="form-group">
-              <%= form.check_box :hour_based_wage, checked: current_user.corporation.hour_based_payroll , id: 'hour-based-wage-toggle' %>
-          </div>
-        </div>
-      <% end %>
 
       <div class="form-group">
-        <%= form.label :title, "手当タイトル", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :title, "タイトル", class: "colibri-form-label-dark" %>
         <%= form.text_field :title, id: :provided_service_title, required: true, class: "form-control" %>
       </div>
 
-      <% unit_cost_title = provided_service.new_record? || provided_service.hour_based_wage == true ? "時給" : "単価" %>
-
       <div class="form-group">
-        <%= form.label :unit_cost, unit_cost_title, class: "colibri-form-label" %><span class='required-field'>*</span>
-        <%= form.number_field :unit_cost, id: :provided_service_unit_cost, class: "form-control" %>
-      </div>
-
-      <% if provided_service.new_record? %>
-
-      <div class="form-group">
-        <%= form.label :service_date, "日付", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :service_date, "日付", class: "colibri-form-label-dark" %>
         <%= form.date_select :service_date, id: :provided_service_service_date, class: "form-control" %>
       </div>
 
-      <% end %>
-
-      <% if  provided_service.hour_based_wage == true || provided_service.new_record?  %>
-
-        <div class="form-group"  id="pay-by-hour-field"><span class='required-field'>*</span>
-          <%= form.label :service_duration, "提供時間", class: "colibri-form-label" %>
-
-          <%= check_box_tag('hour-input-method', 1, checked = !provided_service.new_record?, class: 'form-control') if provided_service.new_record? %>
-
-          <%= form.select(:service_duration, options_for_select([['15分', 900],['30分', 1800],['45分', 2700], ['1時間', 3600],['1時間15分', 4500], ['1時間半', 5400],['1時間45分', 6300], ['2時間', 7200], ['2時間15分', 8100], ['2時間半', 9000], ['2時間45分', 9900], ['3時間', 10800], ['3時間15分', 11700], ['3時間半', 12600],['3時間45分', 13500], ['4時間', 14400]], provided_service.service_duration), prompt: '提供時間を選択する', class: 'form-control')  %>
-        </div>
-      <% end %>
-
-      <% if  provided_service.hour_based_wage == false || provided_service.new_record? %>
-
-        <div class="form-group" id="pay-by-count-field">
-          <%= form.label :service_counts, "回数", class: "colibri-form-label" %><span class='required-field'>*</span>
-          <%= check_box_tag('count-input-method', 1, checked = !provided_service.new_record?) if provided_service.new_record? %>
-          <%= form.number_field :service_counts, id: :provided_service_service_counts, class: "form-control", style: "margin-top:10px" %>
-        </div>
-
-      <% end %>
-
-      <% if provided_service.new_record? %>
-        <div class="form-group" id="target-service-from-ids">
-          <%= form.label :target_service_ids, "対象サービスタイプ", class: 'colibri-form-label' %><br/>
-          <%= form.collection_select(:target_service_ids, @services, :id, :title, {},multiple: true, id: 'chosen-target-services')  %>
-          <span id="select-all-services" class="btn btn-mid-light btn-sm">すべて選択</span>
-          <span id="unselect-all-services" class="btn btn-mid-light btn-sm">すべて消す</span>
-        </div>
-      <% end %>
+      <div class="form-group">
+        <%= form.label :total_wage, "合計額", class: "colibri-form-label-dark" %>
+        <%= form.number_field :total_wage, {step: 1, id: :provided_service_total_wage, class: "form-control"} %>
+      </div>
 
   </div>
 
   <div class="modal-footer">
     <div class="actions">
-      <%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この手当が削除されます。'}, class: 'btn btn-danger' if provided_service.appointment_id.blank? && provided_service.countable == false %>
+      <% if provided_service.new_record? %>
+        <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+      <% end %>
+      <%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この手当が削除されます。'}, class: 'btn btn-danger' unless provided_service.new_record? %>
       <%= form.submit 'セーブする', class: 'btn btn-info' %>
     </div>
   </div>

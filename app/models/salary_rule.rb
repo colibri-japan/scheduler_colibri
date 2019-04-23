@@ -16,8 +16,21 @@ class SalaryRule < ApplicationRecord
             nurses.each do |nurse|
                 provided_services_from_rule = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_today)
                 targeted_services = ProvidedService.includes(:appointment).where(nurse_id: nurse.id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).where(appointments: {edit_requested: false}).from_appointments.in_range(start_of_month..end_of_today)
+                
+                #further targeting services from date condition
+                case salary_rule.date_constraint
+                when 1
+                    #holidays
+                    targeted_services = targeted_services.where('DATE(provided_services.service_date) IN (?)', HolidayJp.between(start_of_month, end_of_today).map(&:date)) 
+                when 2
+                    #sundays
+                    targeted_services = targeted_services.where('EXTRACT(dow from provided_services.service_date) = 0')
+                else
+                end
+                
                 service_counts = targeted_services.count
                 service_duration = targeted_services.sum(:service_duration)
+
 
                 puts nurse.name
                 puts targeted_services.map &:title 

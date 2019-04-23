@@ -35,7 +35,7 @@
 
     <div class="form-group">
       <%= form.label :date_constraint, "日時条件", class: "colibri-form-label" %>
-      <%= form.select :date_constraint, options_for_select([['条件なし', 0], ['祝日',1], ['日曜',2]]), id: 'all_nurses_selected_checkbox' %>
+      <%= form.select :date_constraint, options_for_select([['条件なし', 0], ['祝日',1], ['日曜',2]], salary_rule.date_constraint), id: 'all_nurses_selected_checkbox' %>
     </div>
 
     <div class="form-group">

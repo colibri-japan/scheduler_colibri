@@ -15,6 +15,17 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         targeted_titles = salary_rule.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : salary_rule.service_title_list
         provided_service_from_rule = ProvidedService.where(nurse_id: updated_provided_service.nurse_id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_month)
         targeted_services = ProvidedService.includes(:appointment).where(nurse_id: updated_provided_service.nurse_id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).from_appointments.where(appointments: {edit_requested: false}).in_range(start_of_month..end_of_today)
+        
+        case salary_rule.date_constraint
+        when 1
+            #holidays
+            targeted_services = targeted_services.where('DATE(provided_services.service_date) IN (?)', HolidayJp.between(start_of_month, end_of_today).map(&:to_date))
+        when 2
+            #sunday
+            targeted_services = targeted_services.where('EXTRACT(dow from provided_services.service_date) = 0')
+        else
+        end
+        
         service_counts = targeted_services.count 
         service_duration = targeted_services.sum(:service_duration)
 

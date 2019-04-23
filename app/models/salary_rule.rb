@@ -1,6 +1,12 @@
 class SalaryRule < ApplicationRecord
+    attribute :one_time_salary_rule, :boolean 
+    attribute :service_date_range_start, :datetime
+    attribute :service_date_range_end, :datetime
+
     belongs_to :corporation
     has_many :provided_services
+
+    scope :not_expired_at, -> date { where('expires_at IS NULL OR expires_at > ?', date) }
 
     private
 

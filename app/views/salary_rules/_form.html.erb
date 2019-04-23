@@ -4,51 +4,71 @@
   <div class='modal-body'>
 
     <div class="form-group">
-      <%= form.label :title, "手当名", class: "colibri-form-label" %><span class='required-field'>*</span>
+      <%= form.label :title, "タイトル", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
       <%= form.text_field :title, required: true, class: "form-control" %>
     </div>
 
+  </div>
+
+  <div class='blue-background-form'>
+    <div class="modal-subsection-title">従業員フィルタ</div>
+
     <div class="form-group">
-      <%= form.label :target_all_nurses, "全従業員対象", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.check_box :target_all_nurses, checked: salary_rule.target_all_nurses, id: 'all_nurses_selected_checkbox' %>
+      <%= form.check_box :target_all_nurses, checked: salary_rule.target_all_nurses && !@nurse.present?, id: 'all_nurses_selected_checkbox' %>
     </div>
 
-    <div class="form-group" id="target_nurse_by_filter_group" style="<%= 'display:none' if salary_rule.target_all_nurses %>">
-      <%= form.label :target_nurse_by_filter, "従業員フィルタ", class: "colibri-form-label" %>
+    <% nurse_id_list = @nurse.present? ? @nurse.id : salary_rule.nurse_id_list %>
+
+    <div class="form-group" id="form_nurse_id_list_group">
+      <%= form.label :nurse_id_list, "選択する", class: "colibri-form-label-dark" %>
+      <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
+    </div>
+
+    <div class="form-group" id="target_nurse_by_filter_group">
+      <%= form.label :target_nurse_by_filter, "稼動日数フィルタ", class: "colibri-form-label-dark" %>
       <%= form.select :target_nurse_by_filter, options_for_select([['稼動日数100~299', 0],['稼動日数300~499', 1], ['稼動日数500以上', 2]], salary_rule.target_nurse_by_filter), {include_blank: 'フィルタなし'}, {id: :nurse_target_filter} %>
     </div>
+  </div>
 
-    <div class="form-group" id="form_nurse_id_list_group" style="<%= 'display:none' if salary_rule.target_all_nurses || salary_rule.target_nurse_by_filter.present? %>">
-      <%= form.label :nurse_id_list, "対象従業員", class: "colibri-form-label" %><span class='required-field'>*</span>
-      <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, salary_rule.nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :target_all_services, "全サービスタイプ対象", class: "colibri-form-label" %>
-      <%= form.check_box :target_all_services, checked: salary_rule.target_all_services, id: 'all_services_selected_checkbox' %>
-    </div>
-
-    <div class="form-group" id="form_service_title_list_group" style="<%= 'display:none' if salary_rule.target_all_services %>">
-      <%= form.label :service_title_list, "対象サービス", class: "colibri-form-label" %>
-      <%= form.collection_select :service_title_list, @services, :title, :title, {}, multiple: true, id: 'target-service-titles' %>
-    </div>
+  <div class='modal-body'>
+    <div class="modal-subsection-title">サービスフィルタ</div>
+    <% if @nurse.present? %>
+      <div class="form-group">
+        <%= form.label :service_date_range_start, "期間", class: "colibri-form-label-dark" %><span class='required-field'>*</span><br/>
+        <%= form.text_field :service_date_range_start, id: 'salary_rule_service_date_range_start' %> ~ 
+        <%= form.text_field :service_date_range_end, id: 'salary_rule_service_date_range_end' %>
+      </div>
+    <% end %>
 
     <div class="form-group">
-      <%= form.label :date_constraint, "日時条件", class: "colibri-form-label" %>
+      <%= form.label :date_constraint, "日時条件", class: "colibri-form-label-dark" %>
       <%= form.select :date_constraint, options_for_select([['条件なし', 0], ['祝日',1], ['日曜',2]], salary_rule.date_constraint), id: 'all_nurses_selected_checkbox' %>
     </div>
 
     <div class="form-group">
-      <%= form.label :operator, "計算式", class: "colibri-form-label" %><span class='required-field'>*</span>
+      <%= form.label :target_all_services, "対象タイプ", class: "colibri-form-label-dark" %>
+      <%= form.check_box :target_all_services, checked: salary_rule.target_all_services, id: 'all_services_selected_checkbox' %>
+    </div>
+
+    <div class="form-group" id="form_service_title_list_group" style="<%= 'display:none' if salary_rule.target_all_services %>">
+      <%= form.label :service_title_list, "サービスタイプを選択する", class: "colibri-form-label-dark" %>
+      <%= form.collection_select :service_title_list, @services, :title, :title, {}, multiple: true, id: 'target-service-titles' %>
+    </div>
+
+  </div>
+
+  <div class='blue-background-form'>
+    <div class="modal-subsection-title">手当計算式</div>
+
+    <div class="form-group">
       <%= form.select :operator, options_for_select([['+', 0], ['x', 1]], salary_rule.operator) %>
       <%= form.number_field :argument, {step: 0.01} %>
       <%= form.select :hour_based, options_for_select([['/時間', true], ['/回数', false]], salary_rule.hour_based) %>
     </div>
-
-    <div class="form-group">
-    </div>
-
   </div>
+    <% if @nurse.present? %>
+      <%= form.hidden_field :one_time_salary_rule, value: true %>
+    <% end %>
 
   <div class="modal-footer">
     <div class="actions">

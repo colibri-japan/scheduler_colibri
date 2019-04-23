@@ -11,22 +11,22 @@
   </div>
   <% end %>
 
-
+  <div class="modal-body">
   <div class="colibri-form-group-flex">
     <div style="width:20%">
-      <%= form.label :rank, "タイプ", class: "colibri-form-label" %>
+      <%= form.label :rank, "タイプ", class: "colibri-form-label-dark" %>
     </div>
     <div style="width:80%">
       <div id="rank-options-container">
-        <%= form.label :rank_2, '希望', class: 'btn btn-colibri-light btn-sm rank-button', id: "button_rank_2" do %>
+        <%= form.label :rank_2, ' 希望 ', class: 'btn btn-colibri-light btn-sm rank-button', id: "button_rank_2" do %>
           <%= form.radio_button :rank, 2, {class: "radio-inline", id: "wished_slot_rank_2", style: "display:none"} %>
           希望
         <% end %>
-        <%= form.label :rank_1, '微妙', class:'btn btn-colibri-light btn-sm rank-button', id: "button_rank_1" do %>
+        <%= form.label :rank_1, ' 微妙 ', class:'btn btn-colibri-light btn-sm rank-button', id: "button_rank_1" do %>
           <%= form.radio_button :rank, 1, {class: "radio-inline", id: "wished_slot_rank_1", style: "display:none"} %>
           微妙
         <% end %>
-        <%= form.label :rank_0, '不可', class:'btn btn-colibri-light btn-sm rank-button', id: "button_rank_0" do %>
+        <%= form.label :rank_0, ' 不可 ', class:'btn btn-colibri-light btn-sm rank-button', id: "button_rank_0" do %>
           <%= form.radio_button :rank, 0, {class: "radio-inline", id: "wished_slot_rank_0", style: "display:none"} %>
           不可
         <% end %>
@@ -35,38 +35,43 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :frequency, "頻度", class: "colibri-form-label" %>
+    <%= form.label :frequency, "頻度", class: "colibri-form-label-dark" %>
     <%= form.select(:frequency,  options_for_select([['毎週', 1], ['隔週', 2], ['第一週目', 3], ['毎月最後の週', 4], ['その日のみ',0]]), {required: true}, id: :wished_slot_frequency) %>
   </div>
 
   <div class="form-group">
-    <%= form.label :anchor, "開始", class: "colibri-form-label" %>
+    <%= form.label :anchor, "開始", class: "colibri-form-label-dark" %>
     <%= form.date_select :anchor, id: :wished_slot_anchor %> ー
     <%= form.time_select :starts_at, id: :wished_slot_start %>
   </div>
 
   <div class="form-group">
-    <%= form.label :anchor, "終了", class: "colibri-form-label" %>
+    <%= form.label :anchor, "終了", class: "colibri-form-label-dark" %>
     <%= form.date_select :end_day, id: :wished_slot_anchor %> ー
     <%= form.time_select :ends_at, id: :wished_slot_end %>
   </div>
 
   <% if wished_slot.new_record? %>
     <div class="form-group">
-      <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %>
+      <%= form.label :nurse_id, "従業員名", class: "colibri-form-label-dark" %>
       <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, wished_slot.nurse_id), {}, {required: true, id: :wished_slot_nurse_id } %>
     </div>
   <% end %>
 
   <div class="form-group">
-    <%= form.label :description, "コメント", class: "colibri-form-label" %>
+    <%= form.label :description, "コメント", class: "colibri-form-label-dark" %>
     <%= form.text_area :description, id: :wished_slot_description, class: "form-control" %>
+  </div>
+
   </div>
 
   <%= hidden_field_tag(:start, Date.today) %>
   <%= hidden_field_tag(:end, Date.today) %>
 
-  <div class="actions">
+  <div class="modal-footer">
+    <% if wished_slot.new_record? %>
+      <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+    <% end %>
     <%= link_to '削除', planning_wished_slot_path(@planning, wished_slot), method: :delete, remote: true, class: 'btn btn-danger', data: {confirm: 'シフト希望のすべての繰り返しがスケジュールから消えます'} unless wished_slot.new_record? %>
     <%= form.submit 'セーブする', class: 'btn btn-info' %>
   </div>

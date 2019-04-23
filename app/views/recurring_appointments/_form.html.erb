@@ -13,9 +13,9 @@
 
   <% unless recurring_appointment.new_record? %>
     <div id="form-options-container" class="blue-background-form">
-      <div class="appointment-section-title">簡易編集</div>
+      <div class="modal-subsection-title">簡易編集</div>
         <div class="form-group">
-          <span class='colibri-form-label'>繰り返し/期間</span>
+          <span class='colibri-form-label-dark'>繰り返し/期間</span>
           <% if recurring_appointment.master %>
             <%= frequency_to_text(recurring_appointment) %><%= weekday_full(recurring_appointment.anchor) %>
             <%= recurring_appointment.anchor.strftime("%-m月%-d日") %> ~ <%= recurring_appointment.termination_date.strftime("%-m月%-d日") if recurring_appointment.termination_date.present? %>
@@ -36,13 +36,13 @@
 
   <div class="modal-body">
     <% unless recurring_appointment.new_record? %>
-      <div class="appointment-section-title">詳細編集</div>
+      <div class="modal-subsection-title">詳細編集</div>
     <% end %>
     
     <% if recurring_appointment.new_record? %>
 
       <div class="form-group">
-        <%= form.label :frequency, "頻度", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :frequency, "頻度", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
         <%= form.select(:frequency,  options_for_select([['毎週',0], ['隔週',7], ['その日のみ', 2], ['第一、三、五週目', 1], ['第二、四週目', 3], ['第一○曜日', 4], ['第二○曜日', 8], ['第三○曜日', 9], ['第四○曜日', 10], ['最後の週', 5], ['最後の週以外毎週', 6]], recurring_appointment.frequency || 0), id: :recurring_appointment_frequency) %>
       </div>
 
@@ -50,51 +50,51 @@
 
       <% unless recurring_appointment.new_record? %>
         <div class="form-group">
-          <%= form.label :editing_occurrences_after, '編集するサービス', class: "colibri-form-label" %><span class='required-field'>*</span>
+          <%= form.label :editing_occurrences_after, '編集するサービス', class: "colibri-form-label-dark" %><span class='required-field'>*</span>
           <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'}, {id: :recurring_appointment_editing_occurrences_after} %>
         </div>
       <% end %>
 
       <div class="form-group">
-        <%= form.label :title, "サービスタイプ", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :title, "サービスタイプ", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
         <%= form.select :title, grouped_options_for_select(@services, recurring_appointment.title), {prompt: '検索する'}, {required: true, id: :recurring_appointment_title} %>
       </div>
 
       <div class="form-group">
-        <%= form.label :nurse_id, "従業員名", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :nurse_id, "従業員名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
         <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, recurring_appointment.nurse_id), {}, {required: true, id: :recurring_appointment_nurse_id} %>
       </div>
 
       <div class="form-group">
-        <%= form.label :patient_id, "利用者名", class: "colibri-form-label" %><span class='required-field'>*</span>
+        <%= form.label :patient_id, "利用者名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
         <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: '利用者選択'}, {required: true, id: :recurring_appointment_patient_id}) %>
       </div>
 
       <div class="form-group">
-        <%= form.label :anchor, "開始", class: "colibri-form-label" if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
+        <%= form.label :anchor, "開始", class: "colibri-form-label-dark" if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
         <%= form.date_select :anchor, id: :recurring_appointment_anchor, class: "form-control" if recurring_appointment.new_record? %> <%= "ー" if recurring_appointment.new_record? %>
         <%= form.time_select :starts_at, {minute_step: 5} if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
       </div>
 
       <div class="form-group">
-        <%= form.label :end_day, "終了", class: "colibri-form-label" if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
+        <%= form.label :end_day, "終了", class: "colibri-form-label-dark" if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
         <%= form.date_select :end_day, id: :recurring_appointment_anchor, class: "form-control" if recurring_appointment.new_record? %> <%= "ー" if recurring_appointment.new_record? %>
         <%= form.time_select :ends_at, {minute_step: 5} if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
       </div>
 
       <div class="form-group">
-        <%= form.label :color, "カラー", class: "colibri-form-label" %>
+        <%= form.label :color, "カラー", class: "colibri-form-label-dark" %>
         <%= form.select(:color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], recurring_appointment.color), id: :recurring_appointment_color) %>
       </div> 
 
       <div class="form-group">
-        <%= form.label :description, "コメント", class: "colibri-form-label" %>
+        <%= form.label :description, "コメント", class: "colibri-form-label-dark" %>
         <%= form.text_area :description, id: :recurring_appointment_description, class: "form-control" %>
       </div>
 
       <% unless recurring_appointment.new_record? %>
         <div class="form-group">
-          <%= form.label :synchronize_appointments, "実績サービスを含めて編集する  ", class: "colibri-form-label" %>
+          <%= form.label :synchronize_appointments, "実績サービスを含めて編集する  ", class: "colibri-form-label-dark" %>
           <%= form.check_box :synchronize_appointments, checked: true %>
         </div>
       <% end %>

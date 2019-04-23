@@ -6,8 +6,7 @@ class SalaryRule < ApplicationRecord
 
     def self.calculate_salaries
         start_of_month = (Time.current + 9.hours).beginning_of_month
-        end_of_month = start_of_month.end_of_month
-        end_of_today = (Time.current + 9.hours).end_of_day > end_of_month ? end_of_month : (Time.current + 9.hours).end_of_day
+        end_of_today = (Time.current + 9.hours).end_of_day
 
         SalaryRule.all.each do |salary_rule|
             corporation = salary_rule.corporation
@@ -15,21 +14,29 @@ class SalaryRule < ApplicationRecord
             targeted_titles = salary_rule.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : salary_rule.service_title_list
 
             nurses.each do |nurse|
-                provided_services_from_rule = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_month)
+                provided_services_from_rule = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_today)
                 targeted_services = ProvidedService.includes(:appointment).where(nurse_id: nurse.id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).where(appointments: {edit_requested: false}).from_appointments.in_range(start_of_month..end_of_today)
                 service_counts = targeted_services.count
                 service_duration = targeted_services.sum(:service_duration)
+
+                puts nurse.name
+                puts targeted_services.map &:title 
+                puts 'provided service  from rule id'
+                puts provided_services_from_rule.map &:id
+
+                puts service_counts
+                puts service_duration
 
                 #substract previous career bonus
                 case salary_rule.target_nurse_by_filter
                 when 1
                     previous_career_rule = SalaryRule.where(corporation_id: corporation.id, target_nurse_by_filter: 0).first
-                    previous_career_bonus = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_month).first
+                    previous_career_bonus = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_today).first
                     service_counts -= previous_career_bonus.service_counts  unless previous_career_bonus.nil?
                     service_duration -= previous_career_bonus.service_duration unless previous_career_bonus.nil?
                 when 2
                     previous_career_rule = SalaryRule.where(corporation_id: corporation.id, target_nurse_by_filter: 1).first
-                    previous_career_bonus = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_month).first
+                    previous_career_bonus = ProvidedService.where(nurse_id: nurse.id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_today).first
                     service_counts -= previous_career_bonus.service_counts unless previous_career_bonus.nil?
                     service_duration -= previous_career_bonus.service_duration unless previous_career_bonus.nil?
                 else
@@ -54,8 +61,10 @@ class SalaryRule < ApplicationRecord
 
                 #creating/updating provided service
                 if provided_services_from_rule.present?
-                    provided_services_from_rule.first.update(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage)
+                    puts "found provided service from rule"
+                    provided_services_from_rule.first.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage)
                 else
+                    puts 'creating new provided service'
                     ProvidedService.create(nurse_id: nurse.id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: (Time.current + 9.hours), title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts)
                 end
             end

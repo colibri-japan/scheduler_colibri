@@ -18,6 +18,11 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         service_counts = targeted_services.count 
         service_duration = targeted_services.sum(:service_duration)
 
+        puts "provided service from rule"
+        puts provided_service_from_rule.first.inspect
+        puts service_counts
+        puts service_duration
+
         if salary_rule.operator == 0
             #addition
             if salary_rule.hour_based
@@ -32,8 +37,10 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         end
         
         if provided_service_from_rule.present? 
-            provided_service_from_rule.first.update(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, skip_callbacks_except_calculate_total_wage: true)
+            puts 'updating existing service'
+            provided_service_from_rule.first.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage)
         else
+            puts 'creating new service'
             ProvidedService.create(nurse_id: updated_provided_service.nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true)
         end
     end

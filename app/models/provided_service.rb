@@ -207,7 +207,9 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def recalculate_provided_services_from_salary_rules
-		RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(self.id)
+		if self.appointment_id.present?
+			RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(self.id)
+		end
 	end
 
 

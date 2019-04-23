@@ -2088,7 +2088,7 @@ let serviceDaterangepicker = () => {
       timePickerIncrement: 15,
       startDate: moment().subtract(15, 'days'),
       locale: {
-        format: 'YYYY-MM-DD M:mm',
+        format: 'YYYY-MM-DD H:mm',
         applyLabel: "選択する",
         cancelLabel: "取消",
         daysOfWeek: [
@@ -2126,7 +2126,7 @@ let serviceDaterangepicker = () => {
       timePickerIncrement: 15,
       startDate: moment(),
       locale: {
-        format: 'YYYY-MM-DD h:mm',
+        format: 'YYYY-MM-DD H:mm',
         applyLabel: "選択する",
         cancelLabel: "取消",
         daysOfWeek: [

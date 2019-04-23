@@ -1,6 +1,10 @@
-$('.modal').modal('hide');
-$('.modal-backdrop').remove();
-$('#salary-rules-table').append("<%= j render partial: 'salary_rules/salary_rule', locals: {salary_rule: @salary_rule} %>")
-$('tr#salary_rule_<%= @salary_rule.id %>').click(function(){
-    $.getScript($(this).data('url'))
-})
+<% if @provided_service.present? %>
+    Turbolinks.reload()
+<% else %>
+    $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+    $('#salary-rules-table').append("<%= j render partial: 'salary_rules/salary_rule', locals: {salary_rule: @salary_rule} %>")
+    $('tr#salary_rule_<%= @salary_rule.id %>').click(function(){
+        $.getScript($(this).data('url'))
+    })
+<% end %>

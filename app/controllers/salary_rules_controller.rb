@@ -14,7 +14,15 @@ class SalaryRulesController < ApplicationController
     def create 
       @salary_rule = @corporation.salary_rules.new(salary_rules_params)
 
-      @salary_rule.save
+      respond_to do |format|
+        if @salary_rule.save 
+          format.js 
+          format.html { redirect_back fallback_location: authenticated_root_path, notice: "手当が計算され、セーブされました" }
+        else
+          format.js
+          format.html { redirect_back fallback_location: authenticated_root_path, notice: "手当の計算が失敗しました" }
+        end
+      end
     end
 
     def edit 
@@ -42,7 +50,7 @@ class SalaryRulesController < ApplicationController
     end
 
     def salary_rules_params
-      params.require(:salary_rule).permit(:title, :target_all_nurses, :target_all_services, :date_constraint, :expires_at, :operator, :argument, :hour_based, :target_nurse_by_filter, nurse_id_list: [], service_title_list: [])
+      params.require(:salary_rule).permit(:title, :target_all_nurses, :target_all_services, :service_date_range_start, :service_date_range_end, :date_constraint, :expires_at, :operator, :argument, :hour_based, :target_nurse_by_filter, :one_time_salary_rule, nurse_id_list: [], service_title_list: [])
     end
 
 end

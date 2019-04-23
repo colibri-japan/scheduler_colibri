@@ -147,8 +147,6 @@ class ProvidedService < ApplicationRecord
 		end
 	end
 
-
-
 	def set_default_service_counts
 	    self.service_counts ||= 1 
 	end

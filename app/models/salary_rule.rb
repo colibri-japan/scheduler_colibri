@@ -8,7 +8,46 @@ class SalaryRule < ApplicationRecord
 
     scope :not_expired_at, -> date { where('expires_at IS NULL OR expires_at > ?', date) }
 
+    after_create :create_provided_service, if: :one_time_salary_rule
+
     private
+
+    def create_provided_service
+        corporation = self.corporation
+        targeted_nurses = self.target_all_nurses ? self.corporation.nurses.displayable : Nurse.where(id: self.nurse_id_list, corporation_id: corporation.id)
+        targeted_titles = self.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : self.service_title_list
+        start_of_range = self.service_date_range_start.to_datetime || Date.today.beginning_of_day
+        end_of_range = self.service_date_range_end.to_datetime || Date.today.end_of_day
+        
+        targeted_nurses.each do |nurse|
+            targeted_provided_services = ProvidedService.includes(:appointment).from_appointments.where(nurse_id: nurse.id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).where(appointments: {edit_requested: false}).in_range(start_of_range..end_of_range)
+            
+            case self.date_constraint
+            when 1
+                targeted_provided_services = targeted_provided_services.where('DATE(provided_services.service_date) IN (?)', HolidayJp.between(start_of_range, end_of_range))
+            when 2
+                targeted_provided_services = targeted_provided_services.where('EXTRACT(dow from provided_services.service_date) = 0')
+            else
+            end
+
+            service_counts = targeted_provided_services.count || 0
+            service_duration = targeted_provided_services.sum(:service_duration) || 0
+
+            if self.operator == 0
+                if self.hour_based 
+                    total_wage = (service_duration / 60) * (self.argument.to_f / 60) || 0
+                else
+                    total_wage = service_counts * self.argument.to_f || 0
+                end
+            elsif self.operator == 1
+                total_wage = targeted_provided_services.sum(:total_wage) * self.argument.to_f || 0
+            else
+                total_wage = 0
+            end
+
+            ProvidedService.create(nurse_id: nurse.id, planning_id: corporation.planning.id, service_date: (Time.current + 9.hours), title: self.title, hour_based_wage: self.hour_based, service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, skip_callbacks_except_calculate_total_wage: true, skip_calculate_total_wage_callback: true)
+        end
+    end
 
     def self.calculate_salaries
         start_of_month = (Time.current + 9.hours).beginning_of_month
@@ -36,15 +75,6 @@ class SalaryRule < ApplicationRecord
                 
                 service_counts = targeted_services.count
                 service_duration = targeted_services.sum(:service_duration)
-
-
-                puts nurse.name
-                puts targeted_services.map &:title 
-                puts 'provided service  from rule id'
-                puts provided_services_from_rule.map &:id
-
-                puts service_counts
-                puts service_duration
 
                 #substract previous career bonus
                 case salary_rule.target_nurse_by_filter

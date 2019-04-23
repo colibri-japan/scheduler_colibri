@@ -1,5 +1,7 @@
 <% salary_rule_id = salary_rule.new_record? ? 'new_salary_rule' : 'edit_salary_rule' %>
-<%= form_with model: salary_rule, remote: true, id: salary_rule_id do |form| %>
+
+<% local = @nurse.present? ? true : false %>
+<%= form_with model: salary_rule, local: local, id: salary_rule_id do |form| %>
 
   <div class='modal-body'>
 
@@ -24,10 +26,12 @@
       <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
     </div>
 
-    <div class="form-group" id="target_nurse_by_filter_group">
-      <%= form.label :target_nurse_by_filter, "稼動日数フィルタ", class: "colibri-form-label-dark" %>
-      <%= form.select :target_nurse_by_filter, options_for_select([['稼動日数100~299', 0],['稼動日数300~499', 1], ['稼動日数500以上', 2]], salary_rule.target_nurse_by_filter), {include_blank: 'フィルタなし'}, {id: :nurse_target_filter} %>
-    </div>
+    <% unless  @nurse.present? %>
+      <div class="form-group" id="target_nurse_by_filter_group">
+        <%= form.label :target_nurse_by_filter, "稼動日数フィルタ", class: "colibri-form-label-dark" %>
+        <%= form.select :target_nurse_by_filter, options_for_select([['稼動日数100~299', 0],['稼動日数300~499', 1], ['稼動日数500以上', 2]], salary_rule.target_nurse_by_filter), {include_blank: 'フィルタなし'}, {id: :nurse_target_filter} %>
+      </div>
+    <% end %>
   </div>
 
   <div class='modal-body'>

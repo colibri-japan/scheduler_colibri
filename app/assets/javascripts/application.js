@@ -2327,6 +2327,18 @@ let validateBonusForm = () => {
   })
 }
 
+let completionFormLayout = () => {
+  $('#completion_details_washing_details').selectize({
+    plugins: ['remove_button'],
+  })
+  $('#completion_report_activities_done_with_the_patient').selectize({
+    plugins: ['remove_button'],
+  })
+  $('#completion_report_cleanup').selectize({
+    plugins: ['remove_button'],
+  })
+}
+
 let scrollPosition
 
 document.addEventListener('turbolinks:load', function () {

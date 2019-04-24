@@ -18,6 +18,18 @@ module AppointmentsHelper
 
 	def toggle_edit_requested_text(record)
 		record.edit_requested ? '調整中解除' : '調整中リストへ'
-	end
+    end
+    
+    def completion_report_url_helper(appointment)
+        if appointment.completion_report.present?
+            edit_appointment_completion_report_path(appointment, appointment.completion_report)
+        else
+            new_appointment_completion_report_path(appointment)
+        end
+    end
+
+    def completion_report_text(appointment)
+        appointment.completion_report.present? ? "実施記録へ" :  "+実施記録"
+    end
 
 end

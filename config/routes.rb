@@ -49,6 +49,10 @@ Rails.application.routes.draw do
 
   resources :posts
 
+  resources :appointments do
+    resources :completion_reports, only: [:new, :create, :edit, :update]
+  end
+
   resources :nurses do
     resources :provided_services
     resources :services

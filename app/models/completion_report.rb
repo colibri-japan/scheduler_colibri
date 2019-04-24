@@ -1,0 +1,2 @@
+class CompletionReport < ApplicationRecord
+end

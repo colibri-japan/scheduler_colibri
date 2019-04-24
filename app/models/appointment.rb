@@ -10,6 +10,7 @@ class Appointment < ApplicationRecord
 	belongs_to :recurring_appointment, optional: true
 	belongs_to :service, optional: true
 	has_one :provided_service, dependent: :destroy
+	has_one :completion_report, dependent: :destroy
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
 	before_validation :default_master, on: :create

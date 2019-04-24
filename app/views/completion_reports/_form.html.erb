@@ -2,6 +2,23 @@
 
     <div class="blue-background-form">
         <div class="modal-subsection-title">サービス情報</div>
+
+        <div class="form-row">
+            <div class="col">
+              利用者名：<%= @appointment.patient.try(:name) %>様
+            </div>
+            <div class="col">
+              内容：<%= @appointment.title %>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col ">
+              従業員：<%= @appointment.nurse.try(:name) %>
+            </div>
+            <div class="col">
+              稼働時間：<%= from_seconds_to_hours_minutes(@appointment.ends_at - @appointment.starts_at) %>
+            </div>
+        </div>
     </div>
 
     <div class="modal-body">

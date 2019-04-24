@@ -1,5 +1,5 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "new" %>');
-$('#new_completion_report').modal('show');
+$('#new_completion_report').modal({backdrop: 'static'});
 completionFormLayout()

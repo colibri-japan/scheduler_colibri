@@ -9,6 +9,7 @@ class CompletionReportsController < ApplicationController
 
   def create
     @completion_report = CompletionReport.new(completion_report_params)
+    @completion_report.appointment_id = @appointment.id
 
     @completion_report.save 
   end

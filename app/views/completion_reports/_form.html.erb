@@ -9,12 +9,12 @@
         <div class="form-row">
           <div class="form-group col-md-5">
             <%= form.label :patient_looked_good, "顔色", style: 'margin-right:7px' %>
-            <%= form.label :patient_looked_good_1, "良", class: 'colibri-form-label-dark' do %>
-                <%= form.radio_button :patient_looked_good, 1, {class: 'radio-inline'} %>
+            <%= form.label :patient_looked_good_true, "良", class: 'colibri-form-label-dark' do %>
+                <%= form.radio_button :patient_looked_good, true, {class: 'radio-inline'} %>
                 良
             <% end %>
-            <%= form.label :patient_looked_good_0, "不良", class: 'colibri-form-label-dark' do %>
-                <%= form.radio_button :patient_looked_good, 0, {class: 'radio-inline'} %>
+            <%= form.label :patient_looked_good_false, "不良", class: 'colibri-form-label-dark' do %>
+                <%= form.radio_button :patient_looked_good, false, {class: 'radio-inline'} %>
                 不良
             <% end %>
           </div>
@@ -34,7 +34,7 @@
         <div class="form-row">
           <div class="form-group col-md-5">
             <%= form.label :body_temperature, "体温" %>
-            <%= form.number_field :body_temperature, {step: 1, style: 'width:60px;font-size:0.9em'} %> °C
+            <%= form.number_field :body_temperature, {step: 0.1, style: 'width:60px;font-size:0.9em'} %> °C
           </div>
           <div class="form-group col-md-7">
             <%= form.label :blood_pressure_systolic, "血圧"  %>
@@ -128,11 +128,11 @@
           </div>
           <div class="form-group col-md-6">
             <%= form.label :wiped_patient, "排便", class: 'colibri-form-label-dark' do  %>
-                <%= form.check_box :wiped_patient %>
-                排便
+              <%= form.check_box :wiped_patient %>
+              排便
             <% end %>
             <%= form.number_field :defecation_count, {step: 1, style: 'width:50px'} %>回
-            (性状 <%= form.number_field :visual_aspect_of_feces, style: 'width:50px' %> )
+            (性状 <%= form.text_field :visual_aspect_of_feces, style: 'width:50px' %> )
           </div>
         </div>
 

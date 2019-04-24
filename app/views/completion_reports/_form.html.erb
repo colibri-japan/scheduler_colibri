@@ -1,11 +1,11 @@
 <%= form_with model: completion_report, url: [@appointment, completion_report] do |form| %>
 
     <div class="blue-background-form">
-        <div class="modal-subsection-title-sm">サービス情報</div>
+        <div class="modal-subsection-title">サービス情報</div>
     </div>
 
     <div class="modal-body">
-        <div class="modal-subsection-title-sm">事前チェック</div>
+        <div class="modal-subsection-title">事前チェック</div>
         <div class="form-row">
           <div class="form-group col-md-5">
             <%= form.label :patient_looked_good, "顔色", style: 'margin-right:7px' %>
@@ -33,11 +33,11 @@
 
         <div class="form-row">
           <div class="form-group col-md-5">
-            <%= form.label :body_temperature, "体温" %>
+            <%= form.label :body_temperature, "体温", class: 'colibri-form-label-dark' %>
             <%= form.number_field :body_temperature, {step: 0.1, style: 'width:60px;font-size:0.9em'} %> °C
           </div>
           <div class="form-group col-md-7">
-            <%= form.label :blood_pressure_systolic, "血圧"  %>
+            <%= form.label :blood_pressure_systolic, "血圧", class: 'colibri-form-label-dark'  %>
             <%= form.number_field :blood_pressure_systolic, {step: 1, style: 'width:60px'} %>/
             <%= form.number_field :blood_pressure_diastolic, {step: 1, style: 'width:60px'} %>
           </div>
@@ -73,7 +73,8 @@
     </div>
 
     <div class="blue-background-form">
-        <div class="modal-subsection-title-sm">身体介護</div>
+        <div class="modal-subsection-title">身体介護</div>
+        <div class="modal-subsection-title-sm">排泄</div>
 
         <div class="form-row">
           <div class="col">
@@ -136,6 +137,8 @@
           </div>
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">食事</div>
 
         <div class="form-row">
           <div class="form-group col-md-3">
@@ -181,13 +184,15 @@
         </div>
         <div class="form-row">
           <div class="from-group col-md-3">
-            <%= form.label :meal_specificities, "特段の調理" %>
+            <%= form.label :meal_specificities, "特段の調理", class: 'colibri-form-label-dark' %>
           </div>
           <div class="from-group col-md-9">
             <%= form.text_field :meal_specificities, style: 'width:100%' %>
           </div>
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">清拭.入浴</div>
         <div class="form-row">
           <div class="col">
             <%= form.label :full_or_partial_body_wash, "清拭" %>
@@ -219,14 +224,16 @@
           </div>
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">身体整容</div>
         <div class="form-row">
           <div class="from-group col-md-6">
-            <%= form.label :bath_or_shower, "全身浴", class: 'colibri-form-label-dark' %>
-            <%= form.label :bath_or_shower_1, "入浴" do %>
+            <%= form.label :bath_or_shower, "全身浴" %>
+            <%= form.label :bath_or_shower_1, "入浴", class: 'colibri-form-label-dark' do %>
                 <%= form.radio_button :bath_or_shower, 1, {class: 'radio-inline'} %>
                 入浴
             <% end %>
-            <%= form.label :bath_or_shower_0, "シャワー" do %>
+            <%= form.label :bath_or_shower_0, "シャワー", class: 'colibri-form-label-dark' do %>
                 <%= form.radio_button :bath_or_shower, 0, {class: 'radio-inline'} %>
                 シャワー
             <% end %>
@@ -259,6 +266,8 @@
           </div>
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">移動</div>
         <div class="form-row">
           <div class="from-group col-md-3">
             <%= form.label :assisted_patient_to_change_body_posture, "体位変更", class: 'colibri-form-label-dark' do  %>
@@ -302,6 +311,8 @@
           </div>
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">起床就寝</div>
         <div class="form-row">
           <div class="from-group col-md-3">
             <%= form.label :assisted_patient_to_go_out_of_bed, "起床介助", class: 'colibri-form-label-dark' do  %>
@@ -319,7 +330,7 @@
     </div>
 
     <div class="modal-body">
-        <div class="modal-subsection-title-sm">医療</div>
+        <div class="modal-subsection-title">医療</div>
 
         <div class="form-row">
           <div class="from-group col-md-4">
@@ -363,10 +374,10 @@
     </div>
 
     <div class="blue-background-form">
-        <div class="modal-subsection-title-sm">自立支援</div>
+        <div class="modal-subsection-title">自立支援</div>
 
         <div class="form-group">
-            <%= form.label :activities_done_with_the_patient, "共に行う" %>
+            <%= form.label :activities_done_with_the_patient, "共に行う", class: 'colibri-form-label-dark' %>
             <%= form.select :activities_done_with_the_patient, options_for_select([['掃除', 0], ['洗濯', 1],['衣類整理', 2],['調理', 3],['買い物', 4]], completion_report.activities_done_with_the_patient), {prompt: '選択する'}, {multiple: true, id: 'completion_report_activities_done_with_the_patient'} %>
         </div>
 
@@ -398,8 +409,9 @@
     </div>
 
     <div class="modal-body">
-        <div class="modal-subsection-title-sm">生活援助</div>
+        <div class="modal-subsection-title">生活援助</div>
         
+        <div class="modal-subsection-title-sm">掃除</div>
         <div class="form-row">
           <div class="form-group col-md-2">
             <%= form.label :clean_up, "清掃", class: 'colibri-form-label-dark' %>
@@ -415,6 +427,8 @@
           </div>
         </div>
         
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">洗濯</div>
         <div class="form-row">
           <div class="form-group col-md-3">
             <%= form.label :washed_clothes, "洗濯", class: 'colibri-form-label-dark' do  %>
@@ -442,6 +456,8 @@
           </div>
         </div>
         
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">ベッドメイク</div>
         <div class="form-row">
           <div  class="form-group col-md-3">
             <%= form.label :changed_bed_sheets, "シーツ交換", class: 'colibri-form-label-dark' do  %>
@@ -458,7 +474,8 @@
           </div>
         </div>
 
-
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">衣類.寝具</div>
         <div class="form-row">
           <div class="form-group col-md-3">
             <%= form.label :rearranged_clothes, "衣類の整理", class: 'colibri-form-label-dark' do  %>
@@ -481,6 +498,8 @@
 
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">調理</div>
         <div class="form-row">
           <div class="form-group col-md-3">
             <%= form.label :set_the_table, "下拵え", class: 'colibri-form-label-dark' do  %>
@@ -507,6 +526,8 @@
             <%= form.text_field :remarks_around_cooking, class: 'form-control' %>
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">買い物など</div>
         <div class="form-row">
           <div class="form-group col-md-5">
             <%= form.label :grocery_shopping, "日常品などの買い物", class: 'colibri-form-label-dark' do  %>
@@ -543,13 +564,15 @@
           </div>
         </div>
 
+        <div class="colibri-form-subsection-separator"></div>
+        <div class="modal-subsection-title-sm">備考.確認</div>
         <div class="form-group">
             <%= form.label :general_comment, "ご利用者の言葉及び観察したこと：", class: 'colibri-form-label-dark' %>
             <%= form.text_area :general_comment, class: 'form-control' %>
         </div>
 
         <div class="form-group">
-            退室確認
+            <div class='colibri-form-label-dark'>退室確認</div>
 
             <div class="form-row">
             <%= form.label :checked_gas_when_leaving, "火元", class: 'colibri-form-label-dark col-md-2' do  %>

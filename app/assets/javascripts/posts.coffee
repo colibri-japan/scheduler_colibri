@@ -59,6 +59,8 @@ $(document).on 'turbolinks:load', ->
       data: queryData
     return
 
-  clickableTableRowPost()
+  if $('#index-container').length > 0
+    clickableTableRowPost() 
+
 
   return

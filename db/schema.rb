@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190426132948) do
+ActiveRecord::Schema.define(version: 20190426134310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -242,6 +242,13 @@ ActiveRecord::Schema.define(version: 20190426132948) do
     t.bigint "nurse_id"
     t.integer "handicap_level"
     t.text "insurance_policy", default: [], array: true
+    t.string "insurance_id"
+    t.date "birthday"
+    t.date "kaigo_certification_validity_start"
+    t.date "kaigo_certification_validity_end"
+    t.integer "ratio_paid_by_patient"
+    t.string "public_assistance_id_1"
+    t.string "public_assistance_id_2"
     t.index ["corporation_id"], name: "index_patients_on_corporation_id"
     t.index ["nurse_id"], name: "index_patients_on_nurse_id"
   end

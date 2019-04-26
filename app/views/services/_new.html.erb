@@ -21,12 +21,22 @@
 
         <div class="modal-body">
           <div class="form-group">
-            <%= form.label :title, "サービスタイトル", class: "colibri-form-label" %>
+            <%= form.label :title, "サービスタイトル", class: "colibri-form-label-dark" %>
             <%= form.text_field :title, id: :service_title, required: true, class: "form-control" %>
           </div>
 
           <div class="form-group">
-            <%= form.label :category_1, "サービス種類1", class: "colibri-form-label" %>
+            <%= form.label :official_title, "サービス正式名称", class: "colibri-form-label-dark" %>
+            <%= form.text_field :official_title, id: :service_official_title, required: true, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :service_code, "サービスコード", class: "colibri-form-label-dark" %>
+            <%= form.text_field :service_code, id: :service_service_code, required: true, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :category_1, "サービス種類1", class: "colibri-form-label-dark" %>
             <%= form.select :category_1, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障害', 3], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_1 %>
           </div>
 
@@ -34,12 +44,12 @@
 
           <div id="second-service-type" style='display:none'>
             <div class="form-group">
-              <%= form.label :category_2, "サービス種類2", class: "colibri-form-label" %>
+              <%= form.label :category_2, "サービス種類2", class: "colibri-form-label-dark" %>
               <%= form.select :category_2, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障害', 3], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_2 %>
             </div>
 
             <div class="form-group">
-              <%= form.label :category_ratio, "サービス種類1割合", class: "colibri-form-label" %>
+              <%= form.label :category_ratio, "サービス種類1割合", class: "colibri-form-label-dark" %>
               <%= form.number_field :category_ratio, step: 0.01, id: :service_category_ratio %>
             </div>
 
@@ -47,23 +57,28 @@
           </div>
 
           <div class="form-group">
-            <%= form.label :equal_salary, "給与従業員別", class: "colibri-form-label" %>
+            <%= form.label :equal_salary, "給与従業員別", class: "colibri-form-label-dark" %>
             <%= form.check_box :equal_salary, checked: @service.corporation.equal_salary, id: :service_equal_salary %>
           </div>
 
           <div class="form-group">
-            <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label" %>
+            <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label-dark" %>
             <%= form.check_box :hour_based_wage, checked: @service.corporation.hour_based_payroll, id: :service_hour_based_wage %>
           </div>
 
           <div class="form-group">
-            <%= form.label :unit_wage, "デフォルト平日給与", class: "colibri-form-label" %>
+            <%= form.label :unit_wage, "デフォルト平日給与", class: "colibri-form-label-dark" %>
             <%= form.number_field :unit_wage, step: 1, id: :service_unit_wage, class: 'form-control' %>
           </div>
 
           <div class="form-group">
-            <%= form.label :weekend_unit_wage, "デフォルト週末.祝日給与", class: "colibri-form-label" %>
+            <%= form.label :weekend_unit_wage, "デフォルト週末.祝日給与", class: "colibri-form-label-dark" %>
             <%= form.number_field :weekend_unit_wage, step: 1, id: :service_weekend_unit_wage, class: 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :unit_credits, "単位数", class: "colibri-form-label-dark" %>
+            <%= form.number_field :unit_credits, step: 1, id: :service_unit_credits, class: 'form-control' %>
           </div>
 
         </div>

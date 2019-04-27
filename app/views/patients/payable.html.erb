@@ -27,8 +27,10 @@
 				<th style="width:11%">従業員</th>
 				<th style="width:10%">提供時間</th>
 				<th style="width:10%">開始~終了</th>
-				<th style="width:11%">単位/回</th>
-                <th style="width:8%">計</th>
+                <% if current_user.corporation_admin? %>
+                    <th style="width:11%">単位</th>
+                    <th style="width:8%">計</th>
+                <% end %>
 				<th style="width:18%" colspan="2">確認<span style="font-weight:bold"></span></th>
 				<th style="width:8%">編集</th>
 			</tr>
@@ -42,8 +44,10 @@
                     <td><%= provided_service.nurse.try(:name) %> </td>
                     <td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.service_duration.present? %></td>
                     <td><%= "#{provided_service.appointment_start.strftime('%H:%M')}~#{provided_service.appointment_end.strftime('%H:%M')}"  if provided_service.appointment_start.present? && provided_service.appointment_end.present? %></td>
-                    <td></td>
-                    <td></td>
+                    <% if current_user.corporation_admin? %>
+                        <td><%= provided_service.total_credits %></td>
+                        <td><%= provided_service.invoiced_total %>¥</td>
+                    <% end %>
                     <td style="width:9%">
                         <div style="display:flex" id='provided-service-<%= provided_service.id %>'>
                             <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>' style="display:flex">
@@ -89,9 +93,9 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td></td>
-					<td><span id="total-salary-label" style="font-weight:bold;float:right">合計単位</span></td>
-					<td id="total-salary" style="font-weight:bold"></td>
+					<td><span id="total-salary-label" style="font-weight:bold;float:right">合計</span></td>
+					<td style="font-weight:bold"><%= @services_from_appointments.sum(:total_credits) %>単位</td>
+					<td id="total-salary" style="font-weight:bold"><%= @services_from_appointments.sum(:invoiced_total) %>¥</td>
 					<td></td>
 					<td></td>
 					<td></td>

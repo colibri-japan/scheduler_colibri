@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190426152032) do
+ActiveRecord::Schema.define(version: 20190427103814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 20190426152032) do
     t.integer "weekend_reminder_option", default: 0
     t.boolean "include_description_in_nurse_mailer", default: false
     t.string "non_master_schedule_default_url"
+    t.decimal "credits_to_jpy_ratio"
   end
 
   create_table "nurses", force: :cascade do |t|
@@ -484,6 +485,7 @@ ActiveRecord::Schema.define(version: 20190426152032) do
     t.string "team_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "credits_to_jpy_ratio"
     t.index ["corporation_id"], name: "index_teams_on_corporation_id"
   end
 

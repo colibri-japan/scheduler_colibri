@@ -16,6 +16,7 @@ class ProvidedService < ApplicationRecord
 	before_save :set_default_service_counts, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :calculate_total_wage, unless: :skip_calculate_total_wage_callback
+	before_save :calculate_credits_and_invoiced_amount
 
 	before_update :reset_verifications, unless: :verifying_provided_service
 
@@ -168,6 +169,21 @@ class ProvidedService < ApplicationRecord
 			self.total_wage = ( unit_cost.to_f / 60 ) * ( service_duration / 60 )
 		elsif hour_based_wage == false && service_counts.present? && unit_cost.present? 
 			self.total_wage = unit_cost * service_counts
+		end
+	end
+
+	def calculate_credits_and_invoiced_amount
+		if self.service_salary.present?
+			self.total_credits = self.service_salary.unit_credits || 0
+			calculate_invoiced_amount
+		end
+	end
+
+	def calculate_invoiced_amount
+		if self.nurse.present? && self.nurse.team.present? 
+			self.invoiced_total = (self.total_credits * (self.nurse.team.credits_to_jpy_ratio || self.planning.corporation.credits_to_jpy_ratio || 0)).floor
+		else
+			self.invoiced_total = (self.total_credits * (self.planning.corporation.credits_to_jpy_ratio || 0)).floor
 		end
 	end
 

@@ -1480,13 +1480,13 @@ let batchActionFormButton = () => {
 
   if ($('#new-batch-request-edit-submit').length > 0) {
     actionButton = $('#new-batch-request-edit-submit');
-    actionUrl = '/appointments/batch_request_edit_confirm.js'
+    actionUrl = '/batch_request_edit_confirm/appointments.js'
   } else if ($('#new-batch-cancel-submit').length > 0) {
     actionButton = $('#new-batch-cancel-submit');
-    actionUrl = '/appointments/batch_cancel_confirm.js'
+    actionUrl = '/batch_cancel_confirm/appointments.js'
   } else if ($('#new-batch-archive-submit').length > 0) {
     actionButton = $('#new-batch-archive-submit');
-    actionUrl = '/appointments/batch_archive_confirm.js'
+    actionUrl = '/batch_archive_confirm/appointments.js'
   }
 
   actionButton.click(function(){

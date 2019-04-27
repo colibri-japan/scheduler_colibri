@@ -131,15 +131,15 @@ Rails.application.routes.draw do
   patch 'plannings/:planning_id/appointments/:id/toggle_cancelled' => 'appointments#toggle_cancelled', as: :planning_appointment_toggle_cancelled
   patch 'plannings/:planning_id/appointments/:id/toggle_edit_requested' => 'appointments#toggle_edit_requested', as: :planning_appointment_toggle_edit_requested
   patch 'plannings/:planning_id/appointments/:id/archive' => 'appointments#archive', as: :planning_appointment_archive
-  get 'appointments/new_batch_archive' => 'appointments#new_batch_archive', as: :new_appointments_batch_archive
-  get 'appointments/batch_archive_confirm' => 'appointments#batch_archive_confirm', as: :appointments_batch_archive_confirm
-  patch 'appointments/batch_archive' => 'appointments#batch_archive', as: :appointments_batch_archive
-  get 'appointments/new_batch_cancel' => 'appointments#new_batch_cancel', as: :new_appointments_batch_cancel
-  get 'appointments/batch_cancel_confirm' => 'appointments#batch_cancel_confirm', as: :appointments_batch_cancel_confirm
-  patch 'appointments/batch_cancel' => 'appointments#batch_cancel', as: :appointments_batch_cancel
-  get 'appointments/new_batch_request_edit' => 'appointments#new_batch_request_edit', as: :new_appointments_batch_request_edit
-  get 'appointments/batch_request_edit_confirm' => 'appointments#batch_request_edit_confirm', as: :appointments_batch_request_edit_confirm
-  patch 'appointments/batch_request_edit' => 'appointments#batch_request_edit', as: :appointments_batch_request_edit 
+  get 'new_batch_archive/appointments' => 'appointments#new_batch_archive', as: :new_appointments_batch_archive
+  get 'batch_archive_confirm/appointments' => 'appointments#batch_archive_confirm', as: :appointments_batch_archive_confirm
+  patch 'batch_archive/appointments' => 'appointments#batch_archive', as: :appointments_batch_archive
+  get 'new_batch_cancel/appointments' => 'appointments#new_batch_cancel', as: :new_appointments_batch_cancel
+  get 'batch_cancel_confirm/appointments' => 'appointments#batch_cancel_confirm', as: :appointments_batch_cancel_confirm
+  patch 'batch_cancel/appointments' => 'appointments#batch_cancel', as: :appointments_batch_cancel
+  get 'new_batch_request_edit/appointments' => 'appointments#new_batch_request_edit', as: :new_appointments_batch_request_edit
+  get 'batch_request_edit_confirm/appointments' => 'appointments#batch_request_edit_confirm', as: :appointments_batch_request_edit_confirm
+  patch 'batch_request_edit/appointments' => 'appointments#batch_request_edit', as: :appointments_batch_request_edit 
   
   #custom routes for recurring_appointments
   patch 'plannings/:planning_id/recurring_appointments/:id/toggle_edit_requested' => 'recurring_appointments#toggle_edit_requested', as: :planning_recurring_appointment_toggle_edit_requested

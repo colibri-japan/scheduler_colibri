@@ -8,9 +8,14 @@ class SalaryRule < ApplicationRecord
 
     scope :not_expired_at, -> date { where('expires_at IS NULL OR expires_at > ?', date) }
 
+    before_create :set_expiry, if: :one_time_salary_rule
     after_create :create_provided_service, if: :one_time_salary_rule
 
     private
+
+    def set_expiry
+        self.expires_at = Time.current
+    end
 
     def create_provided_service
         corporation = self.corporation
@@ -50,10 +55,11 @@ class SalaryRule < ApplicationRecord
     end
 
     def self.calculate_salaries
-        start_of_month = (Time.current + 9.hours).beginning_of_month
-        end_of_today = (Time.current + 9.hours).end_of_day
+        now_in_japan = Time.current + 9.hours
+        start_of_month = now_in_japan.beginning_of_month
+        end_of_today = now_in_japan.end_of_day
 
-        SalaryRule.all.each do |salary_rule|
+        SalaryRule.not_expired_at(now_in_japan).all.each do |salary_rule|
             corporation = salary_rule.corporation
             nurses = salary_rule.target_all_nurses ? corporation.nurses.displayable : Nurse.where(id: salary_rule.nurse_id_list, corporation_id: corporation.id)
             targeted_titles = salary_rule.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : salary_rule.service_title_list

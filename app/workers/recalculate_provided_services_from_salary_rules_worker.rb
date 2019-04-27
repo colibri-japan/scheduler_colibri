@@ -3,12 +3,13 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
   sidekiq_options retry: false
 
   def perform(updated_provided_service_id)
+    now_in_japan = Time.current + 9.hours
     updated_provided_service = ProvidedService.find(updated_provided_service_id)
     start_of_month = updated_provided_service.service_date.beginning_of_month
     end_of_month = start_of_month.end_of_month
-    end_of_today = (Time.current + 9.hours).end_of_day > end_of_month ? end_of_month : (Time.current + 9.hours).end_of_day
+    end_of_today = now_in_japan.end_of_day > end_of_month ? end_of_month : now_in_japan.end_of_day
     corporation = updated_provided_service.planning.corporation
-    targeted_salary_rules = SalaryRule.where(corporation_id: corporation.id).where('target_all_nurses IS TRUE OR (target_all_nurses IS FALSE AND ? = ANY(nurse_id_list))', updated_provided_service.nurse_id.to_s)
+    targeted_salary_rules = SalaryRule.where(corporation_id: corporation.id).where('target_all_nurses IS TRUE OR (target_all_nurses IS FALSE AND ? = ANY(nurse_id_list))', updated_provided_service.nurse_id.to_s).not_expired_at(now_in_japan)
     
     
     targeted_salary_rules.each do |salary_rule|
@@ -28,11 +29,6 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         
         service_counts = targeted_services.count 
         service_duration = targeted_services.sum(:service_duration)
-
-        puts "provided service from rule"
-        puts provided_service_from_rule.first.inspect
-        puts service_counts
-        puts service_duration
 
         if salary_rule.operator == 0
             #addition

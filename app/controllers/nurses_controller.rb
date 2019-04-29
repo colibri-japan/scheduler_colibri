@@ -25,14 +25,9 @@ class NursesController < ApplicationController
     @nurses = full_timers + part_timers
 
     if params[:include_undefined] == 'true'
-      puts 'indefined params present'
       undisplayable = nurses.where(displayable: false)
       @nurses =  undisplayable + @nurses
     end
-
-    puts 'count'
-    puts @nurses.count
-
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
 

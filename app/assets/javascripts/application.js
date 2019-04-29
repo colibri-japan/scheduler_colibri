@@ -546,9 +546,11 @@ initialize_master_calendar = function() {
       selectHelper: false,
       editable: true,
       eventSources: [window.eventSource1, window.eventSource2],
-      resources: function(callback){
+      refetchResourcesOnNavigate: true,
+
+      resources: function(callback, start, end, timezone){
         let concatChar = window.resourceUrl.includes('?') ? '&' : '?'
-        let ajaxUrl = window.resourceUrl + concatChar + 'master=true&planning_id=' + window.planningId + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        let ajaxUrl = window.resourceUrl + concatChar + 'master=true&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
         $.ajax({
           url: ajaxUrl,
           type: 'GET',
@@ -802,9 +804,10 @@ initialize_calendar = function() {
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
+      refetchResourcesOnNavigate: true,
 
-      resources: function(callback){
-        let ajaxUrl = window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId + '&nurse_ids=' + $('#nurse_resource_filter').val()
+      resources: function(callback, start, end, timezone){
+        let ajaxUrl = window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
         $.ajax({
           url: ajaxUrl,
           type: 'GET',
@@ -812,6 +815,7 @@ initialize_calendar = function() {
             alert('従業員の検索中にエラーが発生しました')
           },
           success: function(response) {
+            console.log(response)
             callback(response)
           }
         })

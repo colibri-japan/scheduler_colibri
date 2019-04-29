@@ -10,6 +10,8 @@ class PlanningsController < ApplicationController
 	
 	def all_nurses
 		authorize @planning, :is_employee?
+
+		@nurses = @corporation.nurses.displayable
 	end
 
 	def all_patients_master

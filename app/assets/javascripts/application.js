@@ -794,11 +794,19 @@ initialize_calendar = function() {
       editable: true,
       eventLimit: true,
       eventColor: '#7AD5DE',
-      refetchResourcesOnNavigate: true,
 
-      resources: {
-        url: window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId,
-        cache: true
+      resources: function(callback){
+        let ajaxUrl = window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        $.ajax({
+          url: ajaxUrl,
+          type: 'GET',
+          error: function(){
+            alert('従業員の検索中にエラーが発生しました')
+          },
+          success: function(response) {
+            callback(response)
+          }
+        })
       }, 
 
       eventSources: [ {url: window.appointmentsURL, cache: true}, {url: window.privateEventsUrl, cache: true}],
@@ -832,8 +840,8 @@ initialize_calendar = function() {
         window.popoverFocusAllowed = true;
         let popoverTitle = event.service_type;
         let popoverContent;
-        if (event.patient && event.patient.address) {
-          popoverContent = event.patient.address + '<br/>' + event.description;
+        if (event.patient && patient_address) {
+          popoverContent = patient_address + '<br/>' + event.description;
         } else {
           popoverContent = event.description;
         }
@@ -854,6 +862,11 @@ initialize_calendar = function() {
             }
           }
         })
+
+        if ($('#nurse_resource_filter').val()) {
+          let nurseId = event.nurse_id + ''
+          return $('#nurse_resource_filter').val().includes(nurseId)
+        }
       },
 
 
@@ -2355,6 +2368,7 @@ let completionFormLayout = () => {
     plugins: ['remove_button'],
   })
 }
+
 
 let scrollPosition
 

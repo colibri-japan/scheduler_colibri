@@ -15,14 +15,25 @@ class NursesController < ApplicationController
       nurses = nurses.where(id: nurse_ids)
     end
 
+    if params[:nurse_ids].present? && params[:nurse_ids] != "null"
+      ids = params[:nurse_ids].split(',')
+      nurses = nurses.where(id: ids)
+    end
+
     full_timers = nurses.where(full_timer: true, displayable: true).order_by_kana
     part_timers = nurses.where(full_timer: false, displayable: true).order_by_kana
     @nurses = full_timers + part_timers
 
     if params[:include_undefined] == 'true'
+      puts 'indefined params present'
       undisplayable = nurses.where(displayable: false)
       @nurses =  undisplayable + @nurses
     end
+
+    puts 'count'
+    puts @nurses.count
+
+
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
 
     if stale?(nurses)

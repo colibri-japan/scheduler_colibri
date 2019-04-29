@@ -184,6 +184,13 @@ $(document).on 'turbolinks:load', ->
     $container = $(this).parent('.colibri-subcontainer-body')
     $container.animate({scrollTop: $container[0].clientHeight}, 500 , 'swing')
     return
+
+  if $('#nurse_resource_filter').length > 0
+    $('#nurse_resource_filter').selectize
+      plugins: ['remove_button']
+    $('#nurse_resource_filter').on 'change', ->
+      window.selected_resource_ids = $(this).val()
+      $('.calendar').fullCalendar('refetchResources')
       
 
   return

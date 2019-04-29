@@ -547,7 +547,8 @@ initialize_master_calendar = function() {
       editable: true,
       eventSources: [window.eventSource1, window.eventSource2],
       resources: function(callback){
-        let ajaxUrl = window.resourceUrl + '?master=true&planning_id=' + window.planningId + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        let concatChar = window.resourceUrl.includes('?') ? '&' : '?'
+        let ajaxUrl = window.resourceUrl + concatChar + 'master=true&planning_id=' + window.planningId + '&nurse_ids=' + $('#nurse_resource_filter').val()
         $.ajax({
           url: ajaxUrl,
           type: 'GET',

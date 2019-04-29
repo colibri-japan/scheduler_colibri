@@ -15,7 +15,7 @@ class NursesController < ApplicationController
       nurses = nurses.where(id: nurse_ids)
     end
 
-    if params[:nurse_ids].present? && params[:nurse_ids] != "null"
+    if params[:nurse_ids].present? && params[:nurse_ids] != "null" && params[:nurse_ids] != "undefined"
       ids = params[:nurse_ids].split(',')
       nurses = nurses.where(id: ids)
     end

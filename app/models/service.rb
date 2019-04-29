@@ -1,5 +1,6 @@
 class Service < ApplicationRecord
   attribute :recalculate_previous_wages, :boolean
+  attribute :recalculate_previous_credits_and_invoice, :boolean
   attribute :skip_create_nurses_callback, :boolean
   attribute :skip_update_nurses_callback, :boolean
   attribute :planning_id, :integer
@@ -15,6 +16,7 @@ class Service < ApplicationRecord
 
   after_create :create_nurse_services, unless: :skip_create_nurses_callback
   after_update :update_nurse_services, unless: :skip_update_nurses_callback
+  after_update :calculate_credits_and_invoice, if: :recalculate_previous_credits_and_invoice
   before_destroy :destroy_services_for_other_nurses
 
   scope :order_by_title, -> { order(:title) }
@@ -50,6 +52,13 @@ class Service < ApplicationRecord
         services_to_update_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(id: self.id).ids 
         UpdateServicesWorker.perform_async(self.id, services_to_update_ids)
       end
+    end
+  end
+
+  def calculate_credits_and_invoice
+    if self.saved_change_to_unit_credits?
+      puts 'will call worker'
+      ReflectCreditsToProvidedServicesWorker.perform_async(self.id)
     end
   end
 

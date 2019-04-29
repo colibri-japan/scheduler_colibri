@@ -2381,6 +2381,15 @@ let completionFormLayout = () => {
   })
 }
 
+let toggleRecalculateCredits = () => {
+  $('#service_recalculate_previous_credits_and_invoice').bootstrapToggle({
+    on: '過去の実績に反映する',
+    off: '反映なし',
+    onstyle: 'info',
+    offstyle: 'secondary',
+    width: 220
+  })
+}
 
 let scrollPosition
 

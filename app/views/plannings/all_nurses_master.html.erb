@@ -28,6 +28,9 @@
       <div id="planning-nurse-information">
 	  		<span id="resource-name-wrapper">全従業員</span>
 	  	</div>
+			<div>
+				<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
+			</div>
     </div>
 		<div id="planning-container">
 			<div class="master_calendar"></div>

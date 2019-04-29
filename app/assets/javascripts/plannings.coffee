@@ -191,6 +191,7 @@ $(document).on 'turbolinks:load', ->
     $('#nurse_resource_filter').on 'change', ->
       window.selected_resource_ids = $(this).val()
       $('.calendar').fullCalendar('refetchResources')
+      $('.master_calendar').fullCalendar('refetchResources')
       
 
   return

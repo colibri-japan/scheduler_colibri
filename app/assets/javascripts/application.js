@@ -545,13 +545,20 @@ initialize_master_calendar = function() {
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
       editable: true,
-      refetchResourcesOnNavigate: true,
-
       eventSources: [window.eventSource1, window.eventSource2],
-      resources: {
-        url: window.resourceUrl + '?master=true&planning_id=' + window.planningId,
-        cache: true
-      }, 
+      resources: function(callback){
+        let ajaxUrl = window.resourceUrl + '?master=true&planning_id=' + window.planningId + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        $.ajax({
+          url: ajaxUrl,
+          type: 'GET',
+          error: function () {
+            alert('従業員の検索中にエラーが発生しました')
+          },
+          success: function (response) {
+            callback(response)
+          }
+        })
+      },
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;

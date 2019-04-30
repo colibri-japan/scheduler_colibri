@@ -87572,6 +87572,16 @@ document.addEventListener('turbolinks:load', function () {
         scrollTop: $container[0].clientHeight
       }, 500, 'swing');
     });
+    if ($('#nurse_resource_filter').length > 0) {
+      $('#nurse_resource_filter').selectize({
+        plugins: ['remove_button']
+      });
+      $('#nurse_resource_filter').on('change', function() {
+        window.selected_resource_ids = $(this).val();
+        $('.calendar').fullCalendar('refetchResources');
+        return $('.master_calendar').fullCalendar('refetchResources');
+      });
+    }
   });
 
 }).call(this);
@@ -88214,13 +88224,23 @@ initialize_master_calendar = function() {
       selectable: (window.userIsAdmin == 'true') ? true : false,
       selectHelper: false,
       editable: true,
+      eventSources: [window.eventSource1, window.eventSource2],
       refetchResourcesOnNavigate: true,
 
-      eventSources: [window.eventSource1, window.eventSource2],
-      resources: {
-        url: window.resourceUrl + '?master=true&planning_id=' + window.planningId,
-        cache: true
-      }, 
+      resources: function(callback, start, end, timezone){
+        let concatChar = window.resourceUrl.includes('?') ? '&' : '?'
+        let ajaxUrl = window.resourceUrl + concatChar + 'master=true&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        $.ajax({
+          url: ajaxUrl,
+          type: 'GET',
+          error: function () {
+            alert('従業員の検索中にエラーが発生しました')
+          },
+          success: function (response) {
+            callback(response)
+          }
+        })
+      },
 
       eventDragStart: function (event, jsEvent, ui, view) {
         window.eventDragging = true;
@@ -88465,9 +88485,19 @@ initialize_calendar = function() {
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
 
-      resources: {
-        url: window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId,
-        cache: true
+      resources: function(callback, start, end, timezone){
+        let ajaxUrl = window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        $.ajax({
+          url: ajaxUrl,
+          type: 'GET',
+          error: function(){
+            alert('従業員の検索中にエラーが発生しました')
+          },
+          success: function(response) {
+            console.log(response)
+            callback(response)
+          }
+        })
       }, 
 
       eventSources: [ {url: window.appointmentsURL, cache: true}, {url: window.privateEventsUrl, cache: true}],
@@ -88501,8 +88531,8 @@ initialize_calendar = function() {
         window.popoverFocusAllowed = true;
         let popoverTitle = event.service_type;
         let popoverContent;
-        if (event.patient && event.patient.address) {
-          popoverContent = event.patient.address + '<br/>' + event.description;
+        if (event.patient && patient_address) {
+          popoverContent = patient_address + '<br/>' + event.description;
         } else {
           popoverContent = event.description;
         }
@@ -88523,6 +88553,11 @@ initialize_calendar = function() {
             }
           }
         })
+
+        if ($('#nurse_resource_filter').val()) {
+          let nurseId = event.nurse_id + ''
+          return $('#nurse_resource_filter').val().includes(nurseId)
+        }
       },
 
 
@@ -89963,18 +89998,6 @@ let addSecondServiceCategory = () => {
   })
 }
 
-let submitCancellationFee = () => {
-  $('#cancellation_fee_form').submit(function(){
-    let fee = $('#cancellation-fee-field').val()
-    if (fee) {
-      return true 
-    } else {
-      alert('手当を入力してください')
-      return false
-    }
-  })
-}
-
 let newBonusForm = () => {
   validateBonusForm()
   $('#bonus-provided-service-button').click(function () {
@@ -90022,6 +90045,65 @@ let completionFormLayout = () => {
   })
   $('#completion_report_cleanup').selectize({
     plugins: ['remove_button'],
+  })
+}
+
+let toggleRecalculateCredits = () => {
+  $('#service_recalculate_previous_credits_and_invoice').bootstrapToggle({
+    on: '過去の実績に反映する',
+    off: '反映なし',
+    onstyle: 'info',
+    offstyle: 'secondary',
+    width: 220
+  })
+}
+
+let reloadWhenDismissedInPayable = () => {
+  $('.reload-page-when-dismissed-in-payable').click(function(){
+    if (window.location.pathname.includes('payable')) {
+      Turbolinks.reload()
+    } else {
+      $('.modal').modal('hide');
+      $('.modal-backdrop').remove();
+    }
+  })
+}
+
+let endOfContractDate = () => {
+  $('#patient_end_of_contract').focus(function(){
+    $(this).daterangepicker({
+      singleDatePicker: true,
+      startDate: moment(),
+      locale: {
+        format: 'YYYY-MM-DD',
+        applyLabel: "選択する",
+        cancelLabel: "取消",
+        daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土"
+        ],
+        monthNames: [
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月",
+          "9月",
+          "10月",
+          "11月",
+          "12月"
+        ],
+        firstDay: 1
+      }
+    })
   })
 }
 

@@ -67,7 +67,7 @@
       </div>
     <% end %>
 
-    <% unless @master%>
+    <% if false %>
       <div class="form-group">
         <%= form.label :cancelled, "キャンセル", class: "colibri-form-label-dark" %>
         <%= form.check_box :cancelled, class: "cancelled-toggle", data: {cancelled: appointment.cancelled} %>

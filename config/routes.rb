@@ -92,7 +92,6 @@ Rails.application.routes.draw do
   patch 'provided_services/:id/toggle_verified' => 'provided_services#toggle_verified', as: :toggle_verified_provided_service
   patch 'provided_services/:id/toggle_second_verified' => 'provided_services#toggle_second_verified', as: :toggle_second_verified_provided_service
   get 'provided_services/:id/new_cancellation_fee' => 'provided_services#new_cancellation_fee', as: :provided_service_new_cancellation_fee
-  patch 'provided_services/:id/add_cancellation_fee' => 'provided_services#add_cancellation_fee', as: :provided_service_add_cancellation_fee
 
   #custom routes for nurses
   get 'plannings/:planning_id/nurses/:id/payable' => 'nurses#payable', as: :planning_nurse_payable

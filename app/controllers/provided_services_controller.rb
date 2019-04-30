@@ -1,6 +1,6 @@
 class ProvidedServicesController < ApplicationController
 	before_action :set_provided_service, except: [:create]
-	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified, :new_cancellation_fee, :add_cancellation_fee]
+	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified, :new_cancellation_fee]
 
 
 	def create
@@ -47,14 +47,6 @@ class ProvidedServicesController < ApplicationController
 	def new_cancellation_fee
 	end
 
-	def add_cancellation_fee
-		if @provided_service.update_columns(total_wage: cancellation_fee_params[:total_wage].to_i, updated_at: Time.current)
-			redirect_back fallback_location: authenticated_root_path, notice: 'キャンセル手当が登録されました'
-		else
-			redirect_back fallback_location: authenticated_root_path, alert: 'キャンセル手当の登録が失敗しました'
-		end
-	end
-
 
 	private
 
@@ -69,11 +61,7 @@ class ProvidedServicesController < ApplicationController
 	def provided_service_params
 		params.require(:provided_service).permit(:title, :service_date, :total_wage, :invoiced_total, :skip_wage_credits_and_invoice_calculations)
 	end
-
-	def cancellation_fee_params
-		params.require(:provided_service).permit(:total_wage)
-	end
-
+	
 	def self.add_service_date
 		provided_services = ProvidedService.where(service_date: nil).where.not(appointment_id: nil)
 

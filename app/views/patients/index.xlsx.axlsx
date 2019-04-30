@@ -1,0 +1,33 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+	title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+	thick_border = s.add_style border: { style: :thick, color: 'FF000000'  }, sz: 12, alignment: {horizontal: :center, vertical: :center }
+	align_right = s.add_style alignment: {horizontal: :right}
+	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
+	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+
+	wb.add_worksheet(name: "サービス実施中") do |sheet|
+
+        sheet.add_row ['利用者名', '契約期間', '電話番号', '住所']
+        @patients.each do |kana, patients|
+            sheet.add_row [kana, '', '', ''], style: table_header
+            patients.each do |patient|
+                contract_start = patient.date_of_contract.present? ? patient.date_of_contract.strftime('%Y年%-m月%-d日') : ''
+                contract_end = patient.end_of_contract.present? ? patient.end_of_contract.strftime('%Y年%-m月%-d日') : '' 
+                sheet.add_row [patient.name, "#{contract_start} ~ #{contract_end}", patient.phone_number, patient.address], style: table_cells
+            end
+        end
+	end
+
+	wb.add_worksheet(name: "サービス終了") do |sheet|
+        sheet.add_row ['利用者名', '契約期間', '電話番号', '住所'], style: table_header
+        @deactivated_patients.each do |patient|
+            contract_start = patient.date_of_contract.present? ? patient.date_of_contract.strftime('%Y年%-m月%-d日') : ''
+            contract_end = patient.end_of_contract.present? ? patient.end_of_contract.strftime('%Y年%-m月%-d日') : '' 
+            sheet.add_row [patient.name, "#{contract_start} ~ #{contract_end}", patient.phone_number, patient.address], style: table_cells
+        end
+
+	end
+end

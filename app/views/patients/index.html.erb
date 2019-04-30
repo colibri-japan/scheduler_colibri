@@ -1,10 +1,14 @@
 <div id="index-container">
-
   <%= link_to '+新規利用者', new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
-
-  <div id="toggle-active-patients-menu" style="display:flex;margin-top:20px;margin-bottom:20px">
-    <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px">サービス実施中 (<%= @patients.sum {|k,v| v.length} %>)</div>
-    <div id="deactivated-patients" class="toggle-active-element">サービス終了 (<%= @deactivated_patients.count %>)</div>
+  
+  <div style="display:flex;justify-content:space-between;margin-top:30px">
+    <div id="toggle-active-patients-menu" style="display:flex">
+      <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px">サービス実施中 (<%= @patients.sum {|k,v| v.length} %>)</div>
+      <div id="deactivated-patients" class="toggle-active-element">サービス終了 (<%= @deactivated_patients.count %>)</div>
+    </div>
+    <div>
+      <%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:15px"></i> エクセル'.html_safe, patients_path(format: :xlsx), class: 'btn btn-colibri-light-gray' %>
+    </div>
   </div>
 
   <div id="index-table-container">

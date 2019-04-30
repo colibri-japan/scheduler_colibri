@@ -1,7 +1,3 @@
-<% if @patient.errors.any? %>
-  alert("セーブできません：<%= @patient.errors.messages.map {|key, value| value }.join('、') %>")
-<% else %>
-  $('.modal').modal('hide');
-  $('#flash').append("<div class='alert alert-notice'><%= @patient.name %>様の情報がアップデートされました</div>")
-  location.reload().delay(200)
-<% end %>
+$('.modal').modal('hide');
+$('#<%= @patient.id %>').empty()
+$('#<%= @patient.id %>').html("<%= j render 'patient_row', patient: @patient %>")

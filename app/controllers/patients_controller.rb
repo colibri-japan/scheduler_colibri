@@ -80,6 +80,7 @@ class PatientsController < ApplicationController
   def update
     respond_to do |format|
       if @patient.update(patient_params)
+        format.js
         format.html { redirect_back(fallback_location: authenticated_root_path, notice: '利用者様の情報がアップデートされました') }
       else
         format.html { redirect_back(fallback_location: authenticated_root_path, alert: '利用者様の情報のアップデートが失敗しました') }

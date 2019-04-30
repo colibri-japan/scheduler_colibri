@@ -47,7 +47,8 @@
   if (pathname.includes('payable')) {
     <% if @provided_service.present? && @provided_service.cancelled && @corporation.detailed_cancellation_options %>
       $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
-      $('#cancellation_options').modal('show');
+      $('#cancellation_options').modal({backdrop: 'static'});
+      reloadWhenDismissedInPayable()
     <% else %>
       Turbolinks.reload()
     <% end %>
@@ -76,6 +77,7 @@
     <% if @provided_service.present? && @provided_service.cancelled && @corporation.detailed_cancellation_options %>
       $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
       $('#cancellation_options').modal('show');
+      reloadWhenDismissedInPayable()
     <% end %>
   }
 

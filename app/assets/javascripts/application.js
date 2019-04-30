@@ -2379,6 +2379,17 @@ let toggleRecalculateCredits = () => {
   })
 }
 
+let reloadWhenDismissedInPayable = () => {
+  $('.reload-page-when-dismissed-in-payable').click(function(){
+    if (window.location.pathname.includes('payable')) {
+      Turbolinks.reload()
+    } else {
+      $('.modal').modal('hide');
+      $('.modal-backdrop').remove();
+    }
+  })
+}
+
 let scrollPosition
 
 document.addEventListener('turbolinks:load', function () {

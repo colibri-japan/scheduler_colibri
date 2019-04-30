@@ -13,178 +13,190 @@
 
   <div class="modal-body">
 
-  <div class="form-group">
-    <%= form.label :name, "利用者名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
-    <%= form.text_field :name, id: :patient_name, required: true, class: "form-control" %>
-  </div>
+    <div class="form-group">
+      <%= form.label :name, "利用者名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+      <%= form.text_field :name, id: :patient_name, required: true, class: "form-control" %>
+    </div>
 
-  <div class="form-group">
-    <%= form.label :kana, "フリガナ", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
-    <%= form.text_field :kana, id: :patient_kana, required: true, class: "form-control" %>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-2">
-      <%= form.label :birthday, "生年月日", class: "colibri-form-label-dark" %>
+    <div class="form-group">
+      <%= form.label :kana, "フリガナ", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+      <%= form.text_field :kana, id: :patient_kana, required: true, class: "form-control" %>
     </div>
-    <div class="form-group col-md-5">
-      <%= form.date_field :birthday, id: :patient_birthday, class: "form-control" %>
-    </div>
-    <div class="form-group col-md-2">
-      <%= form.label :gender, '性別', class: 'colibri-form-label-dark', style: 'text-align:right!important' %>
-    </div>
-    <div class="form-group col-md-3">
-      <%= form.radio_button :gender, true, checked: patient.new_record? || patient.gender %>
-      <%= form.label :gender, '女', value: true %>
-      <%= form.radio_button :gender, false %>
-      <%= form.label :gender, '男', value: false %>
-    </div>
-  </div>
+    
+    <% if patient.active %>
 
 
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <%= form.label :phone_number, "電話番号", class: "colibri-form-label-dark" %>
-      <%= form.text_field :phone_number, id: :patient_phone_number, class: "form-control" %>
-    </div>
-    <div class="form-group col-md-6">
-      <%= form.label :phone_mail, "携帯メールアドレス", class: "colibri-form-label-dark" %>
-      <%= form.text_field :phone_mail, id: :patient_phone_mail, class: "form-control" %>
-    </div>
-  </div>
-
-  <div class="form-group">
-  </div>
-
-  <div class="form-group">
-    <%= form.label :address, "住所", class: "colibri-form-label-dark" %>
-    <%= form.text_area :address, id: :patient_address, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :date_of_contract, "契約日", class: "colibri-form-label-dark" %>
-    <%= form.text_field :date_of_contract, id: :patient_date_of_contract, class: "form-control" %>
-  </div>
-
-  <div class="colibri-form-group-flex">
-    <div style="width:23%">
-      <%= form.label :insurance_policy, "保険区分", class: "colibri-form-label-dark" %>
-    </div>
-    <div style="width:77%">
-      <%= form.select :insurance_policy, options_for_select([['障害', 0], ['介護', 1], ['医療', 2]], patient.insurance_policy), {}, {multiple: true, id: 'patient-insurance-policy'} %>
-    </div>
-  </div>
-
-  <div class="colibri-form-group-flex">
-    <div style="width:23%">
-      <%= form.label :handicap_level, "障害程度区分", class: "colibri-form-label-dark" %>
-    </div>
-    <div style="width:77%">
-      <div>
-        <%= form.radio_button :handicap_level, 1, {class: "radio-inline"} %>
-        <%= label :handicap_level_1, '区分１' %>
-        <%= form.radio_button :handicap_level, 2, {class: "radio-inline"} %>
-        <%= label :handicap_level_2, '区分２' %>
-        <%= form.radio_button :handicap_level, 3, {class: "radio-inline"} %>
-        <%= label :handicap_level_3, '区分３' %>
-        <%= form.radio_button :handicap_level, 4, {class: "radio-inline"} %>
-        <%= label :handicap_level_4, '区分４' %>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <%= form.label :birthday, "生年月日", class: "colibri-form-label-dark" %>
+        </div>
+        <div class="form-group col-md-5">
+          <%= form.date_field :birthday, id: :patient_birthday, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-2">
+          <%= form.label :gender, '性別', class: 'colibri-form-label-dark', style: 'text-align:right!important' %>
+        </div>
+        <div class="form-group col-md-3">
+          <%= form.radio_button :gender, true, checked: patient.new_record? || patient.gender %>
+          <%= form.label :gender, '女', value: true %>
+          <%= form.radio_button :gender, false %>
+          <%= form.label :gender, '男', value: false %>
+        </div>
       </div>
-      <div>
-        <%= form.radio_button :handicap_level, 5, {class: "radio-inline"} %>
-        <%= label :handicap_level_5, '区分５' %>
-        <%= form.radio_button :handicap_level, 6, {class: "radio-inline"} %>
-        <%= label :handicap_level_6, '区分６' %>
+
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <%= form.label :phone_number, "電話番号", class: "colibri-form-label-dark" %>
+          <%= form.text_field :phone_number, id: :patient_phone_number, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-6">
+          <%= form.label :phone_mail, "携帯メールアドレス", class: "colibri-form-label-dark" %>
+          <%= form.text_field :phone_mail, id: :patient_phone_mail, class: "form-control" %>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="colibri-form-group-flex">
-    <div style="width:23%">
-      <%= form.label :kaigo_level, "介護度", class: "colibri-form-label-dark" %>
-    </div>
-    <div style="width:77%">
-      <div>
-        <%= form.radio_button :kaigo_level, 7, {class: "radio-inline"} %>
-        <%= label :kaigo_level_7, '申請中' %>
-        <%= form.radio_button :kaigo_level, 0, {class: "radio-inline"} %>
-        <%= label :kaigo_level_0, '要支援1' %>
-        <%= form.radio_button :kaigo_level, 1, {class: "radio-inline"} %>
-        <%= label :kaigo_level_1, '要支援2' %>
-        <%= form.radio_button :kaigo_level, 2, {class: "radio-inline"} %>
-        <%= label :kaigo_level_2, '要介護1' %>
+      <div class="form-group">
       </div>
-      <div>
-        <%= form.radio_button :kaigo_level, 3, {class: "radio-inline"} %>
-        <%= label :kaigo_level_3, '要介護2' %>
-        <%= form.radio_button :kaigo_level, 4, {class: "radio-inline"} %>
-        <%= label :kaigo_level_4, '要介護3' %>
-        <%= form.radio_button :kaigo_level, 5, {class: "radio-inline"} %>
-        <%= label :kaigo_level_5, '要介護4' %>
-        <%= form.radio_button :kaigo_level, 6, {class: "radio-inline"} %>
-        <%= label :kaigo_level_6, '要介護5' %>
+
+      <div class="form-group">
+        <%= form.label :address, "住所", class: "colibri-form-label-dark" %>
+        <%= form.text_area :address, id: :patient_address, class: "form-control" %>
       </div>
-    </div>
-  </div>
 
-　<div class="form-group">
-    <%= form.label :kaigo_certification_validity_start, "認定機関", class: "colibri-form-label-dark" %>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <%= form.text_field :kaigo_certification_validity_start, id: :patient_kaigo_certification_validity_start, class: "form-control" %>
+      <div class="form-group">
+        <%= form.label :date_of_contract, "契約日", class: "colibri-form-label-dark" %>
+        <%= form.text_field :date_of_contract, id: :patient_date_of_contract, class: "form-control" %>
       </div>
-      <div class="form-group col-md-6">
-        <%= form.text_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end, class: "form-control" %>
+
+      <div class="colibri-form-group-flex">
+        <div style="width:23%">
+          <%= form.label :insurance_policy, "保険区分", class: "colibri-form-label-dark" %>
+        </div>
+        <div style="width:77%">
+          <%= form.select :insurance_policy, options_for_select([['障害', 0], ['介護', 1], ['医療', 2]], patient.insurance_policy), {}, {multiple: true, id: 'patient-insurance-policy'} %>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="form-group">
-    <%= form.label :insurance_id, "被保険者番号", class: "colibri-form-label-dark" %>
-    <%= form.text_field :insurance_id, id: :patient_insurance_id, class: "form-control" %>
-  </div>
+      <div class="colibri-form-group-flex">
+        <div style="width:23%">
+          <%= form.label :handicap_level, "障害程度区分", class: "colibri-form-label-dark" %>
+        </div>
+        <div style="width:77%">
+          <div>
+            <%= form.radio_button :handicap_level, 1, {class: "radio-inline"} %>
+            <%= label :handicap_level_1, '区分１' %>
+            <%= form.radio_button :handicap_level, 2, {class: "radio-inline"} %>
+            <%= label :handicap_level_2, '区分２' %>
+            <%= form.radio_button :handicap_level, 3, {class: "radio-inline"} %>
+            <%= label :handicap_level_3, '区分３' %>
+            <%= form.radio_button :handicap_level, 4, {class: "radio-inline"} %>
+            <%= label :handicap_level_4, '区分４' %>
+          </div>
+          <div>
+            <%= form.radio_button :handicap_level, 5, {class: "radio-inline"} %>
+            <%= label :handicap_level_5, '区分５' %>
+            <%= form.radio_button :handicap_level, 6, {class: "radio-inline"} %>
+            <%= label :handicap_level_6, '区分６' %>
+          </div>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <%= form.label :ratio_paid_by_patient, '利用者負担', class: "colibri-form-label-dark" %>
-    <%= form.select :ratio_paid_by_patient, options_for_select([['１割', 1], ['２割', 2], ['３割', 3]], patient.ratio_paid_by_patient) %>
-  </div>
+      <div class="colibri-form-group-flex">
+        <div style="width:23%">
+          <%= form.label :kaigo_level, "介護度", class: "colibri-form-label-dark" %>
+        </div>
+        <div style="width:77%">
+          <div>
+            <%= form.radio_button :kaigo_level, 7, {class: "radio-inline"} %>
+            <%= label :kaigo_level_7, '申請中' %>
+            <%= form.radio_button :kaigo_level, 0, {class: "radio-inline"} %>
+            <%= label :kaigo_level_0, '要支援1' %>
+            <%= form.radio_button :kaigo_level, 1, {class: "radio-inline"} %>
+            <%= label :kaigo_level_1, '要支援2' %>
+            <%= form.radio_button :kaigo_level, 2, {class: "radio-inline"} %>
+            <%= label :kaigo_level_2, '要介護1' %>
+          </div>
+          <div>
+            <%= form.radio_button :kaigo_level, 3, {class: "radio-inline"} %>
+            <%= label :kaigo_level_3, '要介護2' %>
+            <%= form.radio_button :kaigo_level, 4, {class: "radio-inline"} %>
+            <%= label :kaigo_level_4, '要介護3' %>
+            <%= form.radio_button :kaigo_level, 5, {class: "radio-inline"} %>
+            <%= label :kaigo_level_5, '要介護4' %>
+            <%= form.radio_button :kaigo_level, 6, {class: "radio-inline"} %>
+            <%= label :kaigo_level_6, '要介護5' %>
+          </div>
+        </div>
+      </div>
 
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <%= form.label :public_assistance_id_1, '第一公費番号', class: "colibri-form-label-dark" %>
-      <%= form.text_field :public_assistance_id_1, class: 'form-control' %>
-    </div>
-    <div class="form-group col-md-6">
-      <%= form.label :public_assistance_id_2, '第二公費番号', class: "colibri-form-label-dark" %>
-      <%= form.text_field :public_assistance_id_2, class: 'form-control' %>
-    </div>
-  </div>
+    　<div class="form-group">
+        <%= form.label :kaigo_certification_validity_start, "認定機関", class: "colibri-form-label-dark" %>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <%= form.text_field :kaigo_certification_validity_start, id: :patient_kaigo_certification_validity_start, class: "form-control" %>
+          </div>
+          <div class="form-group col-md-6">
+            <%= form.text_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end, class: "form-control" %>
+          </div>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <%= form.label :nurse_id, "担当従業員", class: "colibri-form-label-dark" %>
-    <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, patient.nurse_id), {prompt: '検索する'}, {id: :patient_nurse_id}  %>
-  </div>
+      <div class="form-group">
+        <%= form.label :insurance_id, "被保険者番号", class: "colibri-form-label-dark" %>
+        <%= form.text_field :insurance_id, id: :patient_insurance_id, class: "form-control" %>
+      </div>
 
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <%= form.label :care_manager_name, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
-      <%= form.text_field :care_manager_name, id: :patient_care_manager_name, class: "form-control" %>
-    </div>
-    <div class="form-group col-md-6">
-      <%= form.label :doctor_name, "主治医", class: "colibri-form-label-dark" %>
-      <%= form.text_field :doctor_name, id: :patient_doctor_name, class: "form-control" %>
-    </div>
-  </div>
+      <div class="form-group">
+        <%= form.label :ratio_paid_by_patient, '利用者負担', class: "colibri-form-label-dark" %>
+        <%= form.select :ratio_paid_by_patient, options_for_select([['１割', 1], ['２割', 2], ['３割', 3]], patient.ratio_paid_by_patient) %>
+      </div>
 
-  <div class="form-group">
-    <%= form.label :caveat_list, "特徴タグ", class: "colibri-form-label-dark" %>
-    <%= form.select :caveat_list, options_from_collection_for_select(@caveats, 'name', 'name', patient.caveat_list), {}, {multiple: true, id: "patient_caveat_list"} %>
-  </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <%= form.label :public_assistance_id_1, '第一公費番号', class: "colibri-form-label-dark" %>
+          <%= form.text_field :public_assistance_id_1, class: 'form-control' %>
+        </div>
+        <div class="form-group col-md-6">
+          <%= form.label :public_assistance_id_2, '第二公費番号', class: "colibri-form-label-dark" %>
+          <%= form.text_field :public_assistance_id_2, class: 'form-control' %>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <%= form.label :description, "備考", class: "colibri-form-label-dark" %>
-    <%= form.text_area :description, id: :patient_description, class: "form-control" %>
-  </div>
+      <div class="form-group">
+        <%= form.label :nurse_id, "担当従業員", class: "colibri-form-label-dark" %>
+        <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, patient.nurse_id), {prompt: '検索する'}, {id: :patient_nurse_id}  %>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <%= form.label :care_manager_name, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
+          <%= form.text_field :care_manager_name, id: :patient_care_manager_name, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-6">
+          <%= form.label :doctor_name, "主治医", class: "colibri-form-label-dark" %>
+          <%= form.text_field :doctor_name, id: :patient_doctor_name, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :caveat_list, "特徴タグ", class: "colibri-form-label-dark" %>
+        <%= form.select :caveat_list, options_from_collection_for_select(@caveats, 'name', 'name', patient.caveat_list), {}, {multiple: true, id: "patient_caveat_list"} %>
+      </div>
+    
+    <% else%>
+
+      <div class="form-group">
+        <%= form.label :end_of_contract, "契約終了日", class: "colibri-form-label-dark" %>
+        <%= form.text_field :end_of_contract, class: 'form-control', id: :patient_end_of_contract %>
+      </div>
+
+    <% end %>
+
+      <div class="form-group">
+        <%= form.label :description, "備考", class: "colibri-form-label-dark" %>
+        <%= form.text_area :description, id: :patient_description, class: "form-control" %>
+      </div>
 
   </div>
 

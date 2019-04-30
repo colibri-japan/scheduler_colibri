@@ -28,10 +28,14 @@
 	<div class="day-group" style="margin-bottom:10px">
 	  <% events_array.each do |event| %>
 	    <div class="appointment-line">
-		  <%= event.class.name == 'PrivateEvent' ? event.try(:title) : "#{event.patient.try(:name)}様" %>: 
-			<%= event.starts_at.strftime("%-d日") %><%= weekday(event.starts_at) %>  
-			<%= event.starts_at.strftime("%-H:%M") %>~<%= event.ends_at.strftime("%-H:%M") %>  
-			<%= event.try(:description) if @corporation.include_description_in_nurse_mailer %>
+				<%= event.class.name == 'PrivateEvent' ? event.try(:title) : "#{event.patient.try(:name)}様" %>: 
+				<% if event.class.name == 'Appointment' && event.cancelled %>
+					(キャンセル)
+				<% else %>
+					<%= event.starts_at.strftime("%-d日") %><%= weekday(event.starts_at) %>  
+					<%= event.starts_at.strftime("%-H:%M") %>~<%= event.ends_at.strftime("%-H:%M") %>  
+					<%= event.try(:description) if @corporation.include_description_in_nurse_mailer %>
+				<% end %>
 	    </div>
 	  <% end %>
 	</div>

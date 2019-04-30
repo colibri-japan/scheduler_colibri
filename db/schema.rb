@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190427103814) do
+ActiveRecord::Schema.define(version: 20190430085604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 20190427103814) do
     t.boolean "include_description_in_nurse_mailer", default: false
     t.string "non_master_schedule_default_url"
     t.decimal "credits_to_jpy_ratio"
+    t.boolean "detailed_cancellation_options", default: true
   end
 
   create_table "nurses", force: :cascade do |t|

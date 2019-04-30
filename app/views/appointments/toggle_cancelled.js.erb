@@ -45,7 +45,7 @@
   $('.modal-backdrop').remove();
 
   if (pathname.includes('payable')) {
-    <% if @provided_service.present? %>
+    <% if @provided_service.present? && @provided_service.cancelled && @corporation.detailed_cancellation_options %>
       $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
       $('#cancellation_options').modal('show');
     <% else %>
@@ -73,7 +73,7 @@
       false
     );
 
-    <% if @provided_service.present? %>
+    <% if @provided_service.present? && @provided_service.cancelled && @corporation.detailed_cancellation_options %>
       $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
       $('#cancellation_options').modal('show');
     <% end %>

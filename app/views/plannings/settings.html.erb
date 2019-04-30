@@ -87,6 +87,11 @@
             <div class="colibri-form-subsection-title">サービス設定のデフォルト</div>
 
             <div class="form-group">
+                <%= form.label :detailed_cancellation_options, "キャンセル後の手当.請求オプション", class: 'colibri-form-label-dark' %>
+                <%= form.check_box :detailed_cancellation_options, checked: @corporation.detailed_cancellation_options %>
+            </div>
+
+            <div class="form-group">
               <%= form.label :hour_based_payroll, "計算方法", class: "colibri-form-label-dark" %>
               <%= form.radio_button :hour_based_payroll, true, checked: @corporation.hour_based_payroll %>
               <%= form.label :hour_based_payroll_true, "時給" %>

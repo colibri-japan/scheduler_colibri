@@ -41,8 +41,16 @@
   }
   pathname = window.location.pathname;
 
+  $('.modal').modal('hide');
+  $('.modal-backdrop').remove();
+
   if (pathname.includes('payable')) {
-    Turbolinks.reload()
+    <% if @provided_service.present? %>
+      $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
+      $('#cancellation_options').modal('show');
+    <% else %>
+      Turbolinks.reload()
+    <% end %>
   } else {
     if (typeof calendar === 'undefined') {
       let calendar;
@@ -56,9 +64,6 @@
     } else if ($('.master_calendar').length > 0) {
       calendar = $('.master_calendar');
     }
-    
-    $('.modal').modal('hide');
-    $('.modal-backdrop').remove();
 
     calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
 

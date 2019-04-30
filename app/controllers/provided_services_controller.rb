@@ -7,7 +7,7 @@ class ProvidedServicesController < ApplicationController
 		@provided_service = ProvidedService.new(provided_service_params)
 		@provided_service.nurse_id = params[:nurse_id]
 		@provided_service.planning_id = current_user.corporation.planning.id
-		@provided_service.skip_calculate_total_wage_callback = true
+		@provided_service.skip_wage_credits_and_invoice_calculations = true
 
 		if @provided_service.save
 		  redirect_back fallback_location: authenticated_root_path, notice: "新規手当がセーブされました"
@@ -22,6 +22,7 @@ class ProvidedServicesController < ApplicationController
 
 		respond_to do |format|
 			if @provided_service.update(provided_service_params)
+				format.js
 				format.html {redirect_back fallback_location: authenticated_root_path, notice: '実績がアップデートされました' }
 			else
 				format.html {redirect_back fallback_location: authenticated_root_path, notice: '実績のアップデートが失敗しました' }
@@ -58,7 +59,7 @@ class ProvidedServicesController < ApplicationController
 	private
 
 	def set_nurse
-		@nurse = Nurse.find(params[:nurse_id])
+		@nurse = Nurse.find(params[:nurse_id]) if params[:nurse_id].present?
 	end
 
 	def set_provided_service
@@ -66,7 +67,7 @@ class ProvidedServicesController < ApplicationController
 	end
 
 	def provided_service_params
-		params.require(:provided_service).permit(:title, :service_date, :total_wage)
+		params.require(:provided_service).permit(:title, :service_date, :total_wage, :invoiced_total, :skip_wage_credits_and_invoice_calculations)
 	end
 
 	def cancellation_fee_params

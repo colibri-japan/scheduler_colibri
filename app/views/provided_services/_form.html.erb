@@ -1,4 +1,4 @@
-<%= form_for [@nurse, provided_service], local: true do |form| %>
+<%= form_with model: provided_service, url: [@nurse, provided_service] do |form| %>
   <% if provided_service.errors.any? %>
   <div id="error_explanation">
     <h2>エラーが発生しました：</h2>

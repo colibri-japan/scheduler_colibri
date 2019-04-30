@@ -58,6 +58,7 @@
     }
     
     $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
 
     calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
 
@@ -66,6 +67,11 @@
       $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
       false
     );
+
+    <% if @provided_service.present? %>
+      $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
+      $('#cancellation_options').modal('show');
+    <% end %>
   }
 
 <% end %>

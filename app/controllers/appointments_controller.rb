@@ -83,6 +83,7 @@ class AppointmentsController < ApplicationController
     validate = !@appointment.cancelled
 
     if @appointment.save(validate: validate)
+      @provided_service = @appointment.provided_service
       @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_cancelled: !@appointment.cancelled
     end
   end

@@ -1,7 +1,7 @@
 class ProvidedService < ApplicationRecord
 	attribute :target_service_ids
 	attribute :skip_callbacks_except_calculate_total_wage, :boolean
-	attribute :skip_calculate_total_wage_callback, :boolean
+	attribute :skip_wage_credits_and_invoice_calculations, :boolean
 
 	belongs_to :appointment, optional: true
 	belongs_to :nurse
@@ -15,8 +15,8 @@ class ProvidedService < ApplicationRecord
 	before_save :lookup_unit_cost_and_hour_based_wage, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :set_default_service_counts, unless: :skip_callbacks_except_calculate_total_wage
 	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
-	before_save :calculate_total_wage, unless: :skip_calculate_total_wage_callback
-	before_save :calculate_credits_and_invoiced_amount
+	before_save :calculate_total_wage, unless: :skip_wage_credits_and_invoice_calculations
+	before_save :calculate_credits_and_invoiced_amount, unless: :skip_wage_credits_and_invoice_calculations
 
 	before_update :reset_verifications, unless: :verifying_provided_service
 
@@ -173,9 +173,14 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def calculate_credits_and_invoiced_amount
-		if self.service_salary.present?
-			self.total_credits = self.service_salary.unit_credits || 0
-			calculate_invoiced_amount
+		if self.appointment.present? && (self.appointment.cancelled || self.appointment.edit_requested)
+			self.total_credits = 0
+			self.invoiced_total = 0
+		else
+			if self.service_salary.present?
+				self.total_credits = self.service_salary.unit_credits || 0
+				calculate_invoiced_amount
+			end
 		end
 	end
 

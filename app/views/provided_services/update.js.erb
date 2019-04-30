@@ -1,17 +1,11 @@
-$("#service-total-<%= @provided_service.id %>").text("<%= @provided_service.total_wage %>¥");
+if (typeof pathname === 'undefined') {
+  let pathname
+}
+pathname = window.location.pathname;
 
-var old_total = $("#total-salary").text().replace(/\D/g,'');
-if (old_total == "") {
-	old_total == "0";
-};
-
-var old_salary = "<%= @old_salary %>";
-if (old_salary == "") {
-	old_salary == "0";
-};
-
-var new_salary = "<%= @provided_service.total_wage %>"
-
-var new_total = parseInt(old_total) - parseInt(old_salary) + parseInt(new_salary);
-
-$("#total-salary").text(new_total + '¥');
+if (pathname.includes('payable')) {
+  Turbolinks.reload()
+} else {
+	$('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+}

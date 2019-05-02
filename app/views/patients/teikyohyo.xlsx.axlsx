@@ -1,0 +1,61 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+	title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+	thick_border = s.add_style border: { style: :thick, color: 'FF000000'  }, sz: 12, alignment: {horizontal: :center, vertical: :center }
+	align_right = s.add_style alignment: {horizontal: :right}
+	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
+	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+
+	wb.add_worksheet(name: "提供表") do |sheet|
+
+        sheet.add_row do |row|
+            row.add_cell '提供時間帯', style: table_cells
+            row.add_cell 'サービス内容', style: table_cells
+            row.add_cell 'サービス事業者名', style: table_cells
+            row.add_cell '日付', style: table_cells
+            (@first_day..@last_day_in_month).each do |date|
+                row.add_cell date.day.to_s, style: table_cells
+            end
+            row.add_cell '合計回数'
+        end
+
+        sheet.add_row do |row|
+            row.add_cell ''
+            row.add_cell ''
+            row.add_cell ''
+            row.add_cell '曜日'
+            (@first_day..@last_day_in_month).each do |date|
+                row.add_cell %w(日 月 火 水 木 金 土)[date.wday], style: table_cells
+            end
+        end
+
+        @service_and_provided_dates.each do |service_header, provided_dates|
+            occurrences =  service_header[4].present? ? service_header[4].appointments(@first_day, @last_day_in_month).map(&:to_date) : []
+            sheet.add_row do |row|
+                row.add_cell "#{service_header[1]} ~ #{service_header[2]}"
+                row.add_cell service_header[0]
+                row.add_cell @corporation.name 
+                row.add_cell ""
+                (@first_day..@last_day_in_month).each do |date|
+                    previsional_service = occurrences.include?(date.to_date) ? '1' : ''
+                    row.add_cell previsional_service
+                end
+            end
+            sheet.add_row do |row|
+                row.add_cell ""
+                row.add_cell ""
+                row.add_cell ""
+                row.add_cell ""
+                (@first_day..@last_day_in_month).each do |date|
+                    effective_service = provided_dates.include?(date) ? '1' : ''
+                    row.add_cell effective_service
+                end
+            end
+        end
+
+
+	end
+
+end

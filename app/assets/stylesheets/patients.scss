@@ -23,3 +23,19 @@
 	color: #5f6368;
 	cursor: pointer;
 }
+
+.patient-dashboard-panel {
+	border: 0.5px solid #ccc;
+	border-radius: 3px;
+	height: 150px;
+}
+
+.patient-dashboard-panel-title {
+	margin: 3px;
+	border-bottom: 0.5px solid #ccc;
+}
+
+.patient-dashboard-panel-body {
+	overflow-y: scroll;
+	margin: 3px
+}

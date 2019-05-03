@@ -131,7 +131,7 @@ class PatientsController < ApplicationController
     @last_day_in_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
     @last_day = (Time.current + 9.hours).end_of_day < @last_day_in_month ? (Time.current + 9.hours).end_of_day : @last_day_in_month
 
-    service_header = ProvidedService.in_range(@first_day..@last_day_in_month).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(archived_at: nil).where(patient_id: @patient.id).pluck(:title, :appointment_start, :appointment_end)
+    service_header = ProvidedService.in_range(@first_day..@last_day_in_month).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(archived_at: nil).where(patient_id: @patient.id).order(:title).pluck(:title, :appointment_start, :appointment_end)
     service_header.map {|a| a[1] = a[1].strftime("%H:%M:%S")}
     service_header.map {|a| a[2] = a[2].strftime("%H:%M:%S")}
     service_header.uniq!

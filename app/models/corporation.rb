@@ -110,7 +110,7 @@ class Corporation < ApplicationRecord
 		start_date = range_start.to_date.beginning_of_day
 		end_date = range_end.to_date.end_of_day
 
-		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, provided: true, cancelled: false).from_appointments.pluck(:title).uniq
+		titles = ProvidedService.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, cancelled: false).from_appointments.pluck(:title).uniq
 
 		teams.each do |team|
 			team_hash = {}

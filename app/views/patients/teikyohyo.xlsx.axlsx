@@ -6,7 +6,8 @@ wb.styles do |s|
 	align_right = s.add_style alignment: {horizontal: :right}
 	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
 	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
-	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+    table_cells= s.add_style border: {style: :thin, color: 'FF000000'}, alignment: {horizontal: :center, vertical: :center, wrap_text: true}
+    table_cells_previsional = s.add_style border_bottom: {style: :dotted, color: 'FF000000'}
 
 	wb.add_worksheet(name: "提供表") do |sheet|
 
@@ -18,40 +19,62 @@ wb.styles do |s|
             (@first_day..@last_day_in_month).each do |date|
                 row.add_cell date.day.to_s, style: table_cells
             end
-            row.add_cell '合計回数'
+            row.add_cell '合計回数', style: table_cells
         end
 
         sheet.add_row do |row|
-            row.add_cell ''
-            row.add_cell ''
-            row.add_cell ''
-            row.add_cell '曜日'
+            row.add_cell '', style: table_cells
+            row.add_cell '', style: table_cells
+            row.add_cell '', style: table_cells
+            row.add_cell '曜日', style: table_cells
             (@first_day..@last_day_in_month).each do |date|
                 row.add_cell %w(日 月 火 水 木 金 土)[date.wday], style: table_cells
             end
+            row.add_cell '', style: table_cells
+            row.cells[0].merge sheet.rows[(sheet.rows.index(row))-1].cells[0]
+            row.cells[1].merge sheet.rows[(sheet.rows.index(row))-1].cells[1]
+            row.cells[2].merge sheet.rows[(sheet.rows.index(row))-1].cells[2]
+            row.cells[-1].merge sheet.rows[(sheet.rows.index(row))-1].cells[-1]
         end
 
         @service_and_provided_dates.each do |service_header, provided_dates|
-            occurrences =  service_header[4].present? ? service_header[4].appointments(@first_day, @last_day_in_month).map(&:to_date) : []
+            occurrences =  service_header[3].present? ? service_header[3].map{|r| r.appointments(@first_day, @last_day_in_month).map(&:to_date)}.flatten : []
             sheet.add_row do |row|
-                row.add_cell "#{service_header[1]} ~ #{service_header[2]}"
-                row.add_cell service_header[0]
-                row.add_cell @corporation.name 
-                row.add_cell ""
+                previsional_count = 0
+                row.add_cell "#{service_header[1][0...-3]} ~ #{service_header[2][0...-3]}", style: table_cells
+                row.add_cell service_header[0], style: table_cells
+                row.add_cell @corporation.name, style: table_cells
+                row.add_cell "予定", style: table_cells
                 (@first_day..@last_day_in_month).each do |date|
-                    previsional_service = occurrences.include?(date.to_date) ? '1' : ''
-                    row.add_cell previsional_service
+                    if occurrences.include?(date.to_date)
+                        previsional_service = '1'
+                        previsional_count += 1
+                    else
+                        previsional_service = ''
+                    end
+                    row.add_cell previsional_service, style: table_cells
                 end
+                row.add_cell previsional_count, style: table_cells
             end
             sheet.add_row do |row|
-                row.add_cell ""
-                row.add_cell ""
-                row.add_cell ""
-                row.add_cell ""
+                provided_count = 0
+                row.add_cell "", style: table_cells
+                row.add_cell "", style: table_cells
+                row.add_cell "", style: table_cells
+                row.add_cell "実績", style: table_cells
                 (@first_day..@last_day_in_month).each do |date|
-                    effective_service = provided_dates.include?(date) ? '1' : ''
-                    row.add_cell effective_service
+                    if provided_dates.include?(date.to_date)
+                        service_provided = '1'
+                        provided_count += 1
+                    else
+                        service_provided = ''
+                    end
+                    row.add_cell service_provided, style: table_cells
                 end
+                row.add_cell provided_count, style: table_cells
+                row.cells[0].merge sheet.rows[sheet.rows.index(row) - 1].cells[0]
+                row.cells[1].merge sheet.rows[sheet.rows.index(row) - 1].cells[1]
+                row.cells[2].merge sheet.rows[sheet.rows.index(row) - 1].cells[2]
             end
         end
 

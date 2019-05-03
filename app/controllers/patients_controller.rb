@@ -132,20 +132,21 @@ class PatientsController < ApplicationController
     @last_day = (Time.current + 9.hours).end_of_day < @last_day_in_month ? (Time.current + 9.hours).end_of_day : @last_day_in_month
 
     service_header = ProvidedService.in_range(@first_day..@last_day_in_month).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(archived_at: nil).where(patient_id: @patient.id).pluck(:title, :appointment_start, :appointment_end)
-    service_header.map {|a| a[3] = a[1].wday}
     service_header.map {|a| a[1] = a[1].strftime("%H:%M:%S")}
     service_header.map {|a| a[2] = a[2].strftime("%H:%M:%S")}
-    service_header.map {|a| a[4] = RecurringAppointment.where(patient_id: @patient.id, title: a[0]).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ? AND extract(dow from anchor) = ?', a[1], a[2], a[3]).not_terminated_at(@first_day).first }
-    puts service_header
+    service_header.uniq!
+    service_header.map {|a| a[3] = RecurringAppointment.from_master.where(patient_id: @patient.id, title: a[0]).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', a[1], a[2]).not_terminated_at(@first_day) }
 
     @service_and_provided_dates = {}
 
     service_header.each do |header|
-      @service_and_provided_dates[header] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: header[0], patient_id: @patient.id, cancelled: false, archived_at: nil).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ? AND extract(dow from appointment_start) = ?', header[1], header[2], header[3]).pluck(:appointment_start)
-      @service_and_provided_dates[header].map {|e| e.to_date}
+      @service_and_provided_dates[header] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: header[0], patient_id: @patient.id, cancelled: false, archived_at: nil).in_range(@first_day..@last_day).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', header[1], header[2]).pluck(:appointment_start)
+      @service_and_provided_dates[header].map! {|e| e.to_date}
+      puts @service_and_provided_dates[header]
     end
 
     puts @service_and_provided_dates
+
     #@recurring_appointments = RecurringAppointment.includes(:appointments).where(appointments: {edit_requested: false, cancelled: false, archived_at: nil}).where(patient_id: @patient.id).not_archived.from_master.occurs_in_range(@first_day..@last_day)
   end
 

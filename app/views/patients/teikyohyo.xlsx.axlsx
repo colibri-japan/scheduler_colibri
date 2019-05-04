@@ -15,19 +15,20 @@ wb.styles do |s|
 	wb.add_worksheet(name: "提供表") do |sheet|
 
         sheet.add_row ['保険者番号', '', '', '保険者名'] + Array.new(9, '') + ['居宅介護事業者'] + Array.new(11, '') + ['作成年月日'] + Array.new(3, '') + [Date.today.strftime('%Jf')] + Array.new(5, ''), style: table_cells
-        sheet.add_row Array.new(13, '') + ['事業者担当者名'] + Array.new(21,''), style: table_cells
+        sheet.add_row Array.new(13, '') + ['事業者担当者名', '', '', '', "#{@corporation.name}/#{@patient.nurse.try(:name)}"] + Array.new(17,''), style: table_cells
         sheet.merge_cells "A1:A2"
         sheet.merge_cells "B1:C2"
         sheet.merge_cells "D1:F2"
         sheet.merge_cells "G1:M2"
         sheet.merge_cells "N1:Q1"
         sheet.merge_cells "N2:Q2"
-        sheet.merge_cells "R1:Y2"
+        sheet.merge_cells "R1:Y1"
+        sheet.merge_cells "R2:Y2"
         sheet.merge_cells "Z1:AC2"
         sheet.merge_cells "AD1:AI2"
 
-        sheet.add_row ['被保険者番号', '', '', 'フリガナ', '', '', '', '', '', '', '', '', '', '保険者確認印', '', '', '', '', '', '', '', '', '', '', '', '届出年月日', '', '', '', '', '', '', '', '', ''], style: table_cells
-        sheet.add_row ['', '', '', '被保険者氏名'] + Array.new(30, ''), style: table_cells
+        sheet.add_row ['被保険者番号', @patient.try(:insurance_id), '', 'フリガナ', '', '', @patient.try(:kana), '', '', '', '', '', '', '保険者確認印', '', '', '', '', '', '', '', '', '', '', '', '届出年月日', '', '', '', '', '', '', '', '', ''], style: table_cells
+        sheet.add_row ['', '', '', '被保険者氏名', '', '', @patient.try(:name)] +Array.new(27, ''), style: table_cells
         sheet.merge_cells "A3:A4"
         sheet.merge_cells "B3:C4"
         sheet.merge_cells "D3:F3"
@@ -40,8 +41,8 @@ wb.styles do |s|
         sheet.merge_cells "AD3:AI4"
 
         
-        sheet.add_row ['生年月日', '', '性別', '要介護状態区分'] + Array.new(9, '') + ['区分支給限度基準額'] + Array.new(7, '') + ['限度額適用期間'] + Array.new(8, '') + ['前月までの短期入所利用日数'] + Array.new(4, ''), style: table_cells
-        sheet.add_row ['', '', '', '変更後要介護状態区分'] + Array.new(31, ''), style: table_cells
+        sheet.add_row ['生年月日', @patient.birthday.try(:strftime, "%Jf"), '性別', '要介護状態区分', '', '', kaigo_level_text(@patient)] + Array.new(6, '') + ['区分支給限度基準額', '', '', maximum_budget(@patient)] + Array.new(4, '') + ['限度額適用期間', '', '', '', kaigo_certification_validity(@patient)] + Array.new(4, '') + ['前月までの短期入所利用日数'] + Array.new(4, ''), style: table_cells
+        sheet.add_row ['', '', gender_text(@patient), '変更後要介護状態区分'] + Array.new(31, ''), style: table_cells
         sheet.add_row Array.new(35, ''), style: table_cells
         sheet.merge_cells "A5:A7"
         sheet.merge_cells "B5:B7"

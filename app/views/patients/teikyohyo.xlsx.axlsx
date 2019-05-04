@@ -14,52 +14,58 @@ wb.styles do |s|
 
 	wb.add_worksheet(name: "提供表") do |sheet|
 
+        sheet.add_row ["#{Date.new(params[:y].to_i, params[:m].to_i, 1).strftime('%Jy年%Jm月')}サービス提供表"] + Array.new(35, ''), style: title_style
+        sheet.add_row Array.new(36, '')
+        sheet.merge_cells "A1:AJ1"
+        sheet.merge_cells "A2:AJ2"
+
         sheet.add_row ['保険者番号', '', '', '保険者名'] + Array.new(9, '') + ['居宅介護事業者'] + Array.new(12, '') + ['作成年月日'] + Array.new(3, '') + [Date.today.strftime('%Jf')] + Array.new(5, ''), style: table_cells
         sheet.add_row Array.new(13, '') + ['事業者担当者名', '', '', '', "#{@corporation.name}/#{@patient.nurse.try(:name)}"] + Array.new(18,''), style: table_cells
-        sheet.merge_cells "A1:A2"
-        sheet.merge_cells "B1:C2"
-        sheet.merge_cells "D1:F2"
-        sheet.merge_cells "G1:M2"
-        sheet.merge_cells "N1:Q1"
-        sheet.merge_cells "N2:Q2"
-        sheet.merge_cells "R1:Z1"
-        sheet.merge_cells "R2:Z2"
-        sheet.merge_cells "AA1:AD2"
-        sheet.merge_cells "AE1:AJ2"
+        sheet.merge_cells "A3:A4"
+        sheet.merge_cells "B3:C4"
+        sheet.merge_cells "D3:F4"
+        sheet.merge_cells "G3:M4"
+        sheet.merge_cells "N3:Q3"
+        sheet.merge_cells "N4:Q4"
+        sheet.merge_cells "R3:Z3"
+        sheet.merge_cells "R4:Z4"
+        sheet.merge_cells "AA3:AD4"
+        sheet.merge_cells "AE3:AJ4"
 
         sheet.add_row ['被保険者番号', @patient.try(:insurance_id), '', 'フリガナ', '', '', @patient.try(:kana), '', '', '', '', '', '', '保険者確認印', '', '', '', '', '', '', '', '', '', '', '','', '届出年月日', '', '', '', '', '', '', '', '', ''], style: table_cells
         sheet.add_row ['', '', '', '被保険者氏名', '', '', @patient.try(:name)] +Array.new(28, ''), style: table_cells
-        sheet.merge_cells "A3:A4"
-        sheet.merge_cells "B3:C4"
-        sheet.merge_cells "D3:F3"
-        sheet.merge_cells "D4:F4"
-        sheet.merge_cells "G3:M3"
-        sheet.merge_cells "G4:M4"
-        sheet.merge_cells "N3:Q4"
-        sheet.merge_cells "R3:Z4"
-        sheet.merge_cells "AA3:AD4"
-        sheet.merge_cells "AE3:AJ4"
+        sheet.merge_cells "A5:A6"
+        sheet.merge_cells "B5:C6"
+        sheet.merge_cells "D5:F5"
+        sheet.merge_cells "D6:F6"
+        sheet.merge_cells "G5:M5"
+        sheet.merge_cells "G6:M6"
+        sheet.merge_cells "N5:Q6"
+        sheet.merge_cells "R5:Z6"
+        sheet.merge_cells "AA5:AD6"
+        sheet.merge_cells "AE5:AJ6"
 
         
         sheet.add_row ['生年月日', @patient.birthday.try(:strftime, "%Jf"), '性別', '要介護状態区分', '', '', kaigo_level_text(@patient)] + Array.new(6, '') + ['区分支給限度基準額', '', '', '', maximum_budget(@patient)] + Array.new(4, '') + ['限度額適用期間', '', '', '', kaigo_certification_validity(@patient)] + Array.new(4, '') + ['前月までの短期入所利用日数'] + Array.new(4, ''), style: table_cells
         sheet.add_row ['', '', gender_text(@patient), '変更後要介護状態区分'] + Array.new(32, ''), style: table_cells
         sheet.add_row Array.new(36, ''), style: table_cells
-        sheet.merge_cells "A5:A7"
-        sheet.merge_cells "B5:B7"
-        sheet.merge_cells "C6:C7"
-        sheet.merge_cells "D5:F5"
-        sheet.merge_cells "D6:F7"
-        sheet.merge_cells "G5:M5"
-        sheet.merge_cells "G6:M6"
+        sheet.merge_cells "A7:A9"
+        sheet.merge_cells "B7:B9"
+        sheet.merge_cells "C8:C9"
+        sheet.merge_cells "D7:F7"
+        sheet.merge_cells "D8:F9"
         sheet.merge_cells "G7:M7"
-        sheet.merge_cells "N5:Q7"
-        sheet.merge_cells "R5:V7"
-        sheet.merge_cells "W5:Z7"
-        sheet.merge_cells "AA5:AE7"
-        sheet.merge_cells "AF5:AJ6"
-        sheet.merge_cells "AF7:AJ7"
+        sheet.merge_cells "G8:M8"
+        sheet.merge_cells "G9:M9"
+        sheet.merge_cells "N7:Q9"
+        sheet.merge_cells "R7:V9"
+        sheet.merge_cells "W7:Z9"
+        sheet.merge_cells "AA7:AE9"
+        sheet.merge_cells "AF7:AJ8"
+        sheet.merge_cells "AF9:AJ9"
 
         sheet.add_row
+        sheet.merge_cells "A10:AJ10"
 
         sheet.add_row do |row|
             row.add_cell '提供時間帯', style: table_cells

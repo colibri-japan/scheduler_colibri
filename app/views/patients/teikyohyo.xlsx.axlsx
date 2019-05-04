@@ -14,21 +14,21 @@ wb.styles do |s|
 
 	wb.add_worksheet(name: "提供表") do |sheet|
 
-        sheet.add_row ['保険者番号', '', '', '保険者名'] + Array.new(9, '') + ['居宅介護事業者'] + Array.new(11, '') + ['作成年月日'] + Array.new(3, '') + [Date.today.strftime('%Jf')] + Array.new(5, ''), style: table_cells
-        sheet.add_row Array.new(13, '') + ['事業者担当者名', '', '', '', "#{@corporation.name}/#{@patient.nurse.try(:name)}"] + Array.new(17,''), style: table_cells
+        sheet.add_row ['保険者番号', '', '', '保険者名'] + Array.new(9, '') + ['居宅介護事業者'] + Array.new(12, '') + ['作成年月日'] + Array.new(3, '') + [Date.today.strftime('%Jf')] + Array.new(5, ''), style: table_cells
+        sheet.add_row Array.new(13, '') + ['事業者担当者名', '', '', '', "#{@corporation.name}/#{@patient.nurse.try(:name)}"] + Array.new(18,''), style: table_cells
         sheet.merge_cells "A1:A2"
         sheet.merge_cells "B1:C2"
         sheet.merge_cells "D1:F2"
         sheet.merge_cells "G1:M2"
         sheet.merge_cells "N1:Q1"
         sheet.merge_cells "N2:Q2"
-        sheet.merge_cells "R1:Y1"
-        sheet.merge_cells "R2:Y2"
-        sheet.merge_cells "Z1:AC2"
-        sheet.merge_cells "AD1:AI2"
+        sheet.merge_cells "R1:Z1"
+        sheet.merge_cells "R2:Z2"
+        sheet.merge_cells "AA1:AD2"
+        sheet.merge_cells "AE1:AJ2"
 
-        sheet.add_row ['被保険者番号', @patient.try(:insurance_id), '', 'フリガナ', '', '', @patient.try(:kana), '', '', '', '', '', '', '保険者確認印', '', '', '', '', '', '', '', '', '', '', '', '届出年月日', '', '', '', '', '', '', '', '', ''], style: table_cells
-        sheet.add_row ['', '', '', '被保険者氏名', '', '', @patient.try(:name)] +Array.new(27, ''), style: table_cells
+        sheet.add_row ['被保険者番号', @patient.try(:insurance_id), '', 'フリガナ', '', '', @patient.try(:kana), '', '', '', '', '', '', '保険者確認印', '', '', '', '', '', '', '', '', '', '', '','', '届出年月日', '', '', '', '', '', '', '', '', ''], style: table_cells
+        sheet.add_row ['', '', '', '被保険者氏名', '', '', @patient.try(:name)] +Array.new(28, ''), style: table_cells
         sheet.merge_cells "A3:A4"
         sheet.merge_cells "B3:C4"
         sheet.merge_cells "D3:F3"
@@ -36,14 +36,14 @@ wb.styles do |s|
         sheet.merge_cells "G3:M3"
         sheet.merge_cells "G4:M4"
         sheet.merge_cells "N3:Q4"
-        sheet.merge_cells "R3:Y4"
-        sheet.merge_cells "Z3:AC4"
-        sheet.merge_cells "AD3:AI4"
+        sheet.merge_cells "R3:Z4"
+        sheet.merge_cells "AA3:AD4"
+        sheet.merge_cells "AE3:AJ4"
 
         
-        sheet.add_row ['生年月日', @patient.birthday.try(:strftime, "%Jf"), '性別', '要介護状態区分', '', '', kaigo_level_text(@patient)] + Array.new(6, '') + ['区分支給限度基準額', '', '', maximum_budget(@patient)] + Array.new(4, '') + ['限度額適用期間', '', '', '', kaigo_certification_validity(@patient)] + Array.new(4, '') + ['前月までの短期入所利用日数'] + Array.new(4, ''), style: table_cells
-        sheet.add_row ['', '', gender_text(@patient), '変更後要介護状態区分'] + Array.new(31, ''), style: table_cells
-        sheet.add_row Array.new(35, ''), style: table_cells
+        sheet.add_row ['生年月日', @patient.birthday.try(:strftime, "%Jf"), '性別', '要介護状態区分', '', '', kaigo_level_text(@patient)] + Array.new(6, '') + ['区分支給限度基準額', '', '', '', maximum_budget(@patient)] + Array.new(4, '') + ['限度額適用期間', '', '', '', kaigo_certification_validity(@patient)] + Array.new(4, '') + ['前月までの短期入所利用日数'] + Array.new(4, ''), style: table_cells
+        sheet.add_row ['', '', gender_text(@patient), '変更後要介護状態区分'] + Array.new(32, ''), style: table_cells
+        sheet.add_row Array.new(36, ''), style: table_cells
         sheet.merge_cells "A5:A7"
         sheet.merge_cells "B5:B7"
         sheet.merge_cells "C6:C7"
@@ -52,12 +52,12 @@ wb.styles do |s|
         sheet.merge_cells "G5:M5"
         sheet.merge_cells "G6:M6"
         sheet.merge_cells "G7:M7"
-        sheet.merge_cells "N5:P7"
-        sheet.merge_cells "Q5:U7"
-        sheet.merge_cells "V5:Y7"
-        sheet.merge_cells "Z5:AD7"
-        sheet.merge_cells "AE5:AI6"
-        sheet.merge_cells "AE7:AI7"
+        sheet.merge_cells "N5:Q7"
+        sheet.merge_cells "R5:V7"
+        sheet.merge_cells "W5:Z7"
+        sheet.merge_cells "AA5:AE7"
+        sheet.merge_cells "AF5:AJ6"
+        sheet.merge_cells "AF7:AJ7"
 
         sheet.add_row
 
@@ -69,6 +69,9 @@ wb.styles do |s|
             (@first_day..@last_day_in_month).each do |date|
                 row.add_cell date.day.to_s, style: table_cells
             end
+            (31 - (@first_day..@last_day_in_month).count).times do
+                row.add_cell '', style: table_cells
+            end
             row.add_cell '合計回数', style: table_cells
         end
 
@@ -79,6 +82,9 @@ wb.styles do |s|
             row.add_cell '曜日', style: table_cells
             (@first_day..@last_day_in_month).each do |date|
                 row.add_cell %w(日 月 火 水 木 金 土)[date.wday], style: table_cells
+            end
+            (31 - (@first_day..@last_day_in_month).count).times do
+                row.add_cell '', style: table_cells
             end
             row.add_cell '', style: table_cells
             row.cells[0].merge sheet.rows[(sheet.rows.index(row))-1].cells[0]
@@ -107,6 +113,9 @@ wb.styles do |s|
                     end
                     row.add_cell previsional_service, style: service_style
                 end
+                (31 - (@first_day..@last_day_in_month).count).times do 
+                    row.add_cell '', style: service_style
+                end
                 row.add_cell previsional_count, style: service_style
             end
 
@@ -125,6 +134,9 @@ wb.styles do |s|
                     end
                     row.add_cell service_provided, style: service_style
                 end
+                (31 - (@first_day..@last_day_in_month).count).times do
+                    row.add_cell '', style: service_style
+                end
                 provided_style = provided_count == previsional_count ? service_style : service_style_red
                 row.add_cell provided_count, style: provided_style
                 row.cells[0].merge sheet.rows[sheet.rows.index(row) - 1].cells[0]
@@ -135,13 +147,8 @@ wb.styles do |s|
             odd_counter += 1
         end
 
-        width_vals = [20,20,20,8]
-        width_vals += Array.new((@first_day..@last_day_in_month).count, 4)
-        width_vals += [8]
-
+        width_vals = [18,18,18,7] + Array.new(31, 4) + [8]
         sheet.column_widths *width_vals
-
-
 	end
 
 end

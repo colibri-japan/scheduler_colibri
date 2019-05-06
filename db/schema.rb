@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190506144412) do
+ActiveRecord::Schema.define(version: 20190506173335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -428,16 +428,6 @@ ActiveRecord::Schema.define(version: 20190506144412) do
     t.index ["corporation_id"], name: "index_salary_rules_on_corporation_id"
   end
 
-  create_table "scans", force: :cascade do |t|
-    t.bigint "planning_id"
-    t.datetime "done_at"
-    t.datetime "cancelled_at"
-    t.string "teikyohyo"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["planning_id"], name: "index_scans_on_planning_id"
-  end
-
   create_table "services", force: :cascade do |t|
     t.string "title"
     t.bigint "corporation_id"
@@ -557,7 +547,6 @@ ActiveRecord::Schema.define(version: 20190506144412) do
   add_foreign_key "provided_services", "users", column: "verifier_id"
   add_foreign_key "recurring_appointments", "plannings"
   add_foreign_key "salary_rules", "corporations"
-  add_foreign_key "scans", "plannings"
   add_foreign_key "services", "corporations"
   add_foreign_key "teams", "corporations"
 end

@@ -1,7 +1,0 @@
-<% if @scan.errors.any? %>
-    alert(<%= @scan.errors %>)
-<% else %>
-    $('.modal').modal('hide');
-    $('.modal-backdrop').remove();
-    alert('提供表の読み込みが開始されました')
-<% end %>

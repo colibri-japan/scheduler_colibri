@@ -8,6 +8,7 @@ class Corporation < ApplicationRecord
 	has_many :teams
 	has_one :printing_option
 	has_many :salary_rules
+	has_many :care_manager_corporations
 
 	validates :weekend_reminder_option, inclusion: 0..2
 

@@ -10,11 +10,9 @@
             <li class="li-float-right" id="account-settings">
                 <p class="colibri-nav-link colibri-nav-username"><%= current_user.name %><span id='account-dropdown-icon' class='glyphicon glyphicon-chevron-down' style="color:white;font-size:0.7em"></span></p>
             </li>
-            <% if false %>
             <li class="li-float-right">
               <%= link_to 'ケアマネ', care_manager_corporations_path, title: 'ケアマネ一覧', class: 'colibri-nav-link' %>  
             </li>
-            <% end %>
             <li class="li-float-right">
               <%= link_to '利用者', patients_path, title: '利用者一覧', class: 'colibri-nav-link' %>  
             </li>

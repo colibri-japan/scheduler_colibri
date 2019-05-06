@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   resources :services, except: :index
 
+  resources :care_manager_corporations
+
   resources :calendar_events, only: :new
 
   resources :recurring_appointments do

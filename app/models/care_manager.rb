@@ -1,0 +1,2 @@
+class CareManager < ApplicationRecord
+end

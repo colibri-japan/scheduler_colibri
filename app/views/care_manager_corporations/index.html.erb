@@ -6,11 +6,20 @@
       <tbody>
         <% @care_manager_corporations.each do |care_manager_corporation| %>
           <tr class="nurse-clickable-row" data-link="<%= edit_care_manager_corporation_path(care_manager_corporation, format: :js) %>">
-            <td><%= care_manager_corporation.name %></td>
-            <td><%= care_manager_corporation.phone_number %></td>
-            <td><%= care_manager_corporation.address %></td>
+            <td class="table-important-fields"><%= care_manager_corporation.name %></td>
+            <td class="table-important-fields"><%= care_manager_corporation.phone_number %></td>
+            <td class="table-important-fields"><%= care_manager_corporation.address %></td>
+            <td class="table-important-fields"><%= care_manager_corporation.address %></td>
           </tr>
+          <% care_manager_corporation.care_managers.each do |care_manager| %>
+            <tr class="nurse-clickable-row" data-link="<%= edit_care_manager_path(care_manager) %>">
+              <td><%= care_manager.name %></td>
+              <td><%= care_manager.phone_number %></td>
+              <td></td>
+            </tr>
+          <% end %>
         <% end %>
+
       </tbody>
     </table>
   </div>

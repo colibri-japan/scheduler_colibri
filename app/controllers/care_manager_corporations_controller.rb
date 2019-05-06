@@ -24,8 +24,12 @@ class CareManagerCorporationsController < ApplicationController
 
   def edit 
     @care_manager_corporation = CareManagerCorporation.find(params[:id])
+  end
 
-    @care_manager_corporation.udpate(care_manager_corporations_params)
+  def update 
+    @care_manager_corporation = CareManagerCorporation.find(params[:id])
+
+    @care_manager_corporation.update(care_manager_corporations_params)
   end
 
   private 

@@ -4,6 +4,7 @@ class Patient < ApplicationRecord
 
 	belongs_to :corporation, touch: true
 	belongs_to :nurse, optional: true
+	belongs_to :care_manager, optional: true
 	has_many :appointments
 	has_many :recurring_appointments
 	has_many :private_events

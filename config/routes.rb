@@ -37,7 +37,10 @@ Rails.application.routes.draw do
 
   resources :services, except: :index
 
-  resources :care_manager_corporations
+  resources :care_manager_corporations do
+    resources :care_managers
+  end
+
 
   resources :calendar_events, only: :new
 

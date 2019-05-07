@@ -1,0 +1,28 @@
+<%= form_with model: care_manager, url: [care_manager_corporation, care_manager], local: care_manager.new_record? do |form| %>
+
+    <div class="modal-body">
+        <%= form.label :name, "名前", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+        <%= form.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="modal-body">
+        <%= form.label :kana, "フリガナ", class: "colibri-form-label-dark" %>
+        <%= form.text_field :kana, class: "form-control" %>
+    </div>
+
+    <div class="modal-body">
+        <%= form.label :phone_number, "電話番号", class: "colibri-form-label-dark" %>
+        <%= form.text_field :phone_number, class: "form-control" %>
+    </div>
+
+    <div class="modal-body">
+        <%= form.label :registration_id, "介護支援専門員番号", class: "colibri-form-label-dark" %>
+        <%= form.text_field :registration_id, class: "form-control" %>
+    </div>
+
+    <div class="modal-footer">
+        <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+        <%= form.submit "セーブする", class: 'btn btn-info' %>
+    </div>
+
+<% end %>

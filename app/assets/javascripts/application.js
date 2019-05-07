@@ -2428,6 +2428,10 @@ let endOfContractDate = () => {
   })
 }
 
+let patientCaremanagerSelectize = () => {
+  $('#patient_care_manager').selectize()
+}
+
 let scrollPosition
 
 document.addEventListener('turbolinks:load', function () {

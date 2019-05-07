@@ -171,8 +171,8 @@
 
       <div class="form-row">
         <div class="form-group col-md-6">
-          <%= form.label :care_manager_name, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
-          <%= form.text_field :care_manager_name, id: :patient_care_manager_name, class: "form-control" %>
+          <%= form.label :care_manager_id, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
+          <%= form.select :care_manager_id, options_for_select(@care_managers.pluck(:name, :id), patient.care_manager_id), {prompt: "ケアマネジャー"}, id: :patient_care_manager %>
         </div>
         <div class="form-group col-md-6">
           <%= form.label :doctor_name, "主治医", class: "colibri-form-label-dark" %>

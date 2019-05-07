@@ -48,6 +48,7 @@ class PatientsController < ApplicationController
 
   def edit
     set_nurses
+    set_care_managers
   end
 
   def toggle_active
@@ -63,6 +64,7 @@ class PatientsController < ApplicationController
   def new
     @patient = Patient.new
     set_nurses
+    set_care_managers
   end
 
   def create
@@ -170,6 +172,11 @@ class PatientsController < ApplicationController
 
   def set_nurses
     @nurses = @corporation.nurses.displayable.order_by_kana
+  end
+
+  def set_care_managers
+    care_manager_corporation_ids = @corporation.care_manager_corporations.ids
+    @care_managers = CareManager.where(id: care_manager_corporation_ids)
   end
   
   def set_month_and_year_params

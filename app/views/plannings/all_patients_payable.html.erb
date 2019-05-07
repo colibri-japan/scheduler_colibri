@@ -3,11 +3,35 @@
 
 
 <div id="payable-container">
-    <div id="coming-soon-container" style="text-align:center;margin-top:30px">
-        <h2 style="font-size:2em;margin-bottom:15px">カミング.スーン！</h2>
-        <%= image_tag('confetti.svg', width: '15%') %>
-        <p style="font-size:1.1em;margin-top:15px;margin-bottom:15px">Colibriの予定シフトと実績シフトを基に、<span style="font-weight:bold">提供表の自動作成機能</span>を準備中です！</p>
-        <p style="font-size:1.1em">提供表以外にも<span style="font-weight:bold">請求データのダウンロードと伝送</span>も準備中です。</p>
-        <p style="font-size:1.1em;margin-top:40px">お問い合わせはラインから対応いたします！</p>
+    	
+	<div class='colibri-xs-title no-print' style='margin-left:5px'>請求.実績</div>
+	<div class='no-print'>
+		<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
+		<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
+		<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
+	</div>
+    <div class='colibri-dashboard-container-row no-print'>
+    	<div class='colibri-dashboard-subcontainer'>
+			<div class='colibri-subcontainer-header'>
+				<span class='colibri-subcontainer-title'>提供表</span>
+			</div>
+			<div class='colibri-subcontainer-body'>
+              <table class="table">
+				<% @care_manager_corporations.each do |care_manager_corporation| %>
+                    <tr>
+                        <td><%= care_manager_corporation.name %></td>
+                        <td><%= link_to 'Pdf', care_manager_corporation_teikyohyo_path(care_manager_corporation), class: 'btn btn-sm btn-success' %></td>
+                    </tr>
+                <% end %>
+              </table>
+			</div>
+		</div>
+    	<div class='colibri-dashboard-subcontainer'>
+			<div class='colibri-subcontainer-header'>
+				<span class='colibri-subcontainer-title'>明細書</span>
+			</div>
+			<div class='colibri-subcontainer-body'>
+			</div>
+		</div>
     </div>
 </div>

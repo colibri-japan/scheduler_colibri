@@ -82,6 +82,8 @@ class PlanningsController < ApplicationController
 		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
 		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
 		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
+		
+		@care_manager_corporations = @corporation.care_manager_corporations
 	end
 
 	def settings 

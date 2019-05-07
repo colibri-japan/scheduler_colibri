@@ -28,8 +28,14 @@ class CareManagerCorporationsController < ApplicationController
 
   def update 
     @care_manager_corporation = CareManagerCorporation.find(params[:id])
-
+    
     @care_manager_corporation.update(care_manager_corporations_params)
+  end
+  
+  def teikyohyo
+    @care_manager_corporation = CareManagerCorporation.find(params[:id])
+    
+    @patients_with_services_and_dates = @care_manager_corporation.teikyohyo_data
   end
 
   private 

@@ -168,6 +168,10 @@ Rails.application.routes.draw do
   get 'services/:id/new_merge_and_destroy' => 'services#new_merge_and_destroy', as: :service_new_merge_and_destroy
   patch 'services/:id/merge_and_destroy' => 'services#merge_and_destroy', as: :service_merge_and_destroy
 
+
+  #custom routes for care manager corporations
+  get 'care_manager_corporations/:id/teikyohyo' => 'care_manager_corporations#teikyohyo', as: :care_manager_corporation_teikyohyo
+
   authenticated :user do  
     root  to: 'dashboard#index', as: :authenticated_root
   end

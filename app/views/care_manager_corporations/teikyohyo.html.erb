@@ -114,6 +114,45 @@
     </div>
 
     <div class="teikyohyo-container" id="teikyohyo_2_<%= patient.id %>">
+        <div class="teikyohyo_title">サービス提供表別表</div>
+        <div class="teikyohyo_subtitle">区分支給限度管理.利用者負担計算</div>
+        <div class="teikyohyo_2_subcontainer">
+            <table class="table table-bordered table-teikyohyo">
+                <tbody>
+                  <tr>
+                    <td rowspan="2">事業所名</td>
+                    <td rowspan="2">事業所番号</td>
+                    <td rowspan="2">サービス内容.種類</td>
+                    <td rowspan="2">サービスコード</td>
+                    <td rowspan="2">単位数</td>
+                    <td colspan="2">割引適用後</td>
+                    <td rowspan="2">回数</td>
+                    <td rowspan="2">単位.金額</td>
+                    <td rowspan="2">種類支給限度基準を超える単位数</td>
+                    <td rowspan="2">種類支給限度基準内単位数</td>
+                    <td rowspan="2">区分支給限度基準を超える単位数</td>
+                    <td rowspan="2">区分支給限度基準内単位数</td>
+                    <td rowspan="2">単位数単価</td>
+                    <td rowspan="2">利用総額</td>
+                    <td rowspan="2">給付率</td>
+                    <td rowspan="2">保険給付額</td>
+                    <td rowspan="2">利用者負担（保険対象分）</td>
+                    <td rowspan="2">全額負担分</td>
+                  </tr>
+                  <tr>
+                    <td>％</td>
+                    <td>単位数</td>
+                  </tr>
+                    <% array_of_services_hashes.each do |service_hash| %>
+
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="teikyohyo_subtitle">種類別支給限度管理</div>
+        <div class="teikyohyo_subtitle">要介護認定期間中の短期入所利用日数</div>
+
     </div>
 
     <br/>

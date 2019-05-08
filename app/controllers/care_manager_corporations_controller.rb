@@ -35,11 +35,10 @@ class CareManagerCorporationsController < ApplicationController
   def teikyohyo
     if params[:m].present? && params[:y].present?
       @care_manager_corporation = CareManagerCorporation.find(params[:id])
-      first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0, 0)
-      last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
+      @first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0, 0)
+      @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
       
-      @patients_with_services_and_dates = @care_manager_corporation.teikyohyo_data(first_day, last_day)
-      puts @patients_with_services_and_dates
+      @patients_with_services_and_dates = @care_manager_corporation.teikyohyo_data(@first_day, @last_day)
     else
       redirect_back fallback_location: authenticated_root_path
     end

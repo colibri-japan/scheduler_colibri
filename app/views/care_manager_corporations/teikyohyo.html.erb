@@ -1,23 +1,121 @@
 <% @patients_with_services_and_dates.each do |patient, array_of_services_hashes| %>
     <div class="teikyohyo-container" id="teikyohyo_1_<%= patient.id %>">
+        <div class="teikyohyo_title">サービス提供表</div>
         <div class="teikyohyo_1_header">
-            <table style='width:100%'>
+            <table class="table table-bordered">
+                <tr>
+                    <td rowspan="2">保険者番号</td>
+                    <td colspan="2" rowspan="2"></td>
+                    <td rowspan="2">保険者名</td>
+                    <td rowspan="2"></td>
+                    <td>居宅介護事業所</td>
+                    <td colspan="2"><%= patient.care_manager.care_manager_corporation.name %></td>
+                    <td rowspan="2">作成年月日</td>
+                    <td rowspan="2"><%= Date.today.strftime('%Jf') %></td>
+                </tr>
+                <tr>
+                    <td>事業者担当者名</td>
+                    <td><%= patient.care_manager.name %></td>
+                </tr>
+                <tr>
+                    <td rowspan="2">被保険者番号</td>
+                    <td rowspan="2" colspan="2"><%= patient.insurance_id %></td>
+                    <td >フリガナ</td>
+                    <td><%= patient.kana %></td>
+                    <td rowspan="2">保険者確認印</td>
+                    <td rowspan="2" colspan="2"></td>
+                    <td rowspan="2">届出年月日</td>
+                    <td rowspan="2"></td>
+                </tr>
+                <tr>
+                    <td>被保険者氏名</td>
+                    <td><%= patient.name %></td>
+                </tr>
+                <tr>
+                    <td rowspan="3">生年月日</td>
+                    <td rowspan="3"><%= "#{patient.birthday_era}#{patient.birthday.try(:strftime, '%y年%m月%d日')}" %></td>
+                    <td>性別</td>
+                    <td>要介護状態区分</td>
+                    <td><%= kaigo_level_text(patient) %></td>
+                    <td rowspan="3">区分支給限度基準額</td>
+                    <td rowspan="3"><%= maximum_budget(patient) %></td>
+                    <td rowspan="3">限度額適用期間</td>
+                    <td rowspan="3"><%= "#{patient.date_of_contract.try(:strftime, "%Jf")}#{patient.end_of_contract.try(:strftime, '%Jf')}" %></td>
+                    <td rowspan="2">前月までの短期入所利用日数</td>
+                </tr>
+                <tr>
+                    <td rowspan="2"><%= gender_text(patient) %></td>
+                    <td rowspan="2">変更後要介護状態区分</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+
             </table>
         </div>
 
         <div class="teikyohyo_1_body">
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td rowspan="2">提供時間帯</td>
+                    <td rowspan="2">サービス内容</td>
+                    <td rowspan="2">サービス事業者名</td>
+                    <td>日付</td>
+                    <% (@first_day..@last_day).each do |date| %>
+                        <td><%= date.day %></td>
+                    <% end %>
+                    <% (31 - (@first_day..@last_day).count).times do %>
+                        <td></td>
+                    <% end %>
+                    <td rowspan="2">合計回数</td>
+                  </tr>
+                  <tr>
+                    <td>曜日</td>
+                    <% (@first_day..@last_day).each do |date| %>
+                        <td><%= %w(日 月 火 水 木 金 土)[date.wday] %></td>
+                    <% end %>
+                    <% (31 - (@first_day..@last_day).count).times do %>
+                        <td></td>
+                    <% end %>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% array_of_services_hashes.each do |service_hash| %>
+                        <tr>
+                            <td rowspan="2"><%= "#{service_hash[:start_time]} ~ #{service_hash[:end_time]}" %></td>
+                            <td rowspan="2"><%= service_hash[:official_title] || service_hash[:title] %></td>
+                            <td rowspan="2"><%= @corporation.name %></td>
+                            <td>予定</td>
+                            <% (@first_day..@last_day).each do |date| %>
+                                <td><%= service_hash[:previsional].include?(date.to_date) ? '1' : '' %></td>
+                            <% end %>
+                            <% (31 - (@first_day..@last_day).count).times do  %>
+                                <td></td>
+                            <% end %>
+                            <td><%= service_hash[:previsional].count %></td>
+                        </tr>
+                        <tr>
+                            <td>実績</td>
+                            <% (@first_day..@last_day).each do |date| %>
+                                <td><%= service_hash[:provided].include?(date.to_date) ? '1' : '' %></td>
+                            <% end %>
+                            <% (31 - (@first_day..@last_day).count).times do  %>
+                                <td></td>
+                            <% end %>
+                            <td><%= service_hash[:provided].count %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <div class="teikyohyo-container" id="teikyohyo_2_<%= patient.id %>">
     </div>
-    <% if false%>
-        <%= patient.inspect %><br/>
-        <% array_of_services_hashes.each do |service_hash| %>
-            <%= service_hash %><br/>
-            <br/>
-        <% end %>
-    <% end %>
+
     <br/>
     <br/>
 <% end %>

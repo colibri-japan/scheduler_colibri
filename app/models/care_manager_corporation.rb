@@ -5,59 +5,72 @@ class CareManagerCorporation < ApplicationRecord
 
     def teikyohyo_data(first_day, last_day)
         patients = Patient.where(care_manager_id: self.care_managers.ids).still_active_at(first_day.to_date)
-        event_and_services_by_patient = {}
+
+        services_and_shifts_per_patient = {}
 
         patients.each do |patient|
-            events_array = ProvidedService.where(patient_id: patient.id).not_archived.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(first_day..last_day).order(:title).pluck(:title, :appointment_start, :appointment_end)
-            formatted_events_array = extract_start_and_end_time(events_array)
-            event_hash = format_to_hash(formatted_events_array)
+            array_of_service_shifts_hashes = []
 
-            event_and_services_by_patient[patient] = get_previsional_and_provided_dates_for(event_hash, patient, first_day..last_day)
+            array_of_services_hash = build_array_of_services_hash(patient, first_day..last_day)
+
+            array_of_services_hash.each do |service_hash|
+                shifts_by_service_hash = {}
+                shifts_by_service_hash[:service_hash] = service_hash
+                shifts_by_service_hash[:shifts_hash] = build_array_of_shifts(patient, service_hash[:title], first_day..last_day)                
+                array_of_service_shifts_hashes << shifts_by_service_hash
+            end
+            services_and_shifts_per_patient[patient] = array_of_service_shifts_hashes
         end
 
-        event_and_services_by_patient
+        services_and_shifts_per_patient
     end
 
     private
 
-    def extract_start_and_end_time(events_array)
-        events_array.map {|e| e[1] = e[1].strftime('%H:%M:%S')}
-        events_array.map {|e| e[2] = e[2].strftime('%H:%M:%S')}
-        events_array.uniq!
-        events_array = keep_only_formatted_kaigo_insured_services(events_array)
-    end
+    def build_array_of_services_hash(patient, date_range)
+        array_of_services_hashes = []
+        provided_services_titles = ProvidedService.where(patient: patient.id, archived_at: nil).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).pluck(:title).uniq
 
-    def keep_only_formatted_kaigo_insured_services(events_array)
-        formatted_array = []
-        events_array.each do |service_array|
-            original_service = Service.where(nurse_id: nil, title: service_array[0]).first 
-            if original_service.unit_credits.present?
-                formatted_array << [service_array[0], original_service.official_title || '', original_service.service_code || '', original_service.unit_credits || 0, service_array[1], service_array[2]]
+        provided_services_titles.each do |title|
+            service_type = Service.where(nurse_id: nil, title: title, corporation_id: patient.corporation_id).first
+            service_hash = {}
+            if service_type.present? && service_type.official_title.present?
+                provided_services = ProvidedService.where(patient: patient.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range)
+                service_hash[:title] = title
+                service_hash[:official_title] = service_type.official_title if service_type.present?
+                service_hash[:service_code] = service_type.service_code if service_type.present?
+                service_hash[:unit_credits] = service_type.unit_credits if service_type.present?
+                service_hash[:sum_total_credits] = provided_services.sum(:total_credits)
+                service_hash[:sum_invoiced_total] = provided_services.sum(:invoiced_total)
+                service_hash[:count] = provided_services.count
+
+                array_of_services_hashes << service_hash
             end
         end
-        puts formatted_array
-        formatted_array
+        array_of_services_hashes
     end
 
-    def format_to_hash(formatted_events_array)
-        keys = [:title, :official_title, :service_code, :unit_credits, :start_time, :end_time]
-        array = formatted_events_array.map {|service_array| service_array.map {|el| [keys[service_array.index(el)], el]} }
-        formatted_hash = array.map(&:to_h)
-    end
+    def build_array_of_shifts(patient, service_title, date_range)
+        array_of_shifts = []
 
-    def get_previsional_and_provided_dates_for(array_of_hashes, patient, date_range)
-        previsional_and_provided_by_services = {}
+        shift_dates = ProvidedService.where(patient_id: patient.id, title: service_title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).not_archived.in_range(date_range).pluck(:appointment_start, :appointment_end)
 
-        array_of_hashes.each do |event_hash|
-            recurring_appointments = RecurringAppointment.from_master.where(patient_id: patient.id, title: event_hash[:title]).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', event_hash[:start_time], event_hash[:end_time]).not_terminated_at(date_range.first)
-            
-            event_hash[:previsional] = recurring_appointments.map {|r| r.appointments(date_range.first, date_range.last).map(&:to_date)}.flatten
-            event_hash[:provided] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: event_hash[:title], patient_id: patient.id, cancelled: false, archived_at: nil).in_range(date_range).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', event_hash[:start_time], event_hash[:end_time]).pluck(:appointment_start).map(&:to_date)
+        shift_dates.map {|e| e[0] = e[0].strftime("%H:%M:%S")}
+        shift_dates.map {|e| e[1] = e[1].strftime("%H:%M:%S")}
+        shift_dates.uniq!
 
-            event_hash[:provided_sum_credits] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: event_hash[:title], patient_id: patient.id, cancelled: false, archived_at: nil).in_range(date_range).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', event_hash[:start_time], event_hash[:end_time]).sum(:total_credits)
+
+        shift_dates.each do |start_and_end|
+            shift_hash = {}
+            shift_hash[:start_time] = start_and_end[0]
+            shift_hash[:end_time] = start_and_end[1]
+            recurring_appointments = RecurringAppointment.from_master.where(patient_id: patient.id, title: service_title).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).not_terminated_at(date_range.first)
+            shift_hash[:previsional] = recurring_appointments.map {|r| r.appointments(date_range.first, date_range.last).map(&:to_date) }.flatten
+            shift_hash[:provided] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: service_title, patient_id: patient.id, cancelled: false, archived_at: nil).in_range(date_range).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', start_and_end[0], start_and_end[1]).pluck(:appointment_start).map(&:to_date)
+            array_of_shifts << shift_hash
         end
 
-        array_of_hashes
+        array_of_shifts
     end
 
 end

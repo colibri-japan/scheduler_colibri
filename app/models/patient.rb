@@ -17,6 +17,7 @@ class Patient < ApplicationRecord
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 	scope :active, -> { where(active: true) }
 	scope :deactivated, -> { where(active: false) }
+	scope :still_active_at, -> date { where('active IS TRUE OR (active IS FALSE AND end_of_contract > ?)', date) }
 
 	def self.group_by_kana
 		{

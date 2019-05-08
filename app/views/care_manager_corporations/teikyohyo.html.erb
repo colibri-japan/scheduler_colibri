@@ -1,0 +1,23 @@
+<% @patients_with_services_and_dates.each do |patient, array_of_services_hashes| %>
+    <div class="teikyohyo-container" id="teikyohyo_1_<%= patient.id %>">
+        <div class="teikyohyo_1_header">
+            <table style='width:100%'>
+            </table>
+        </div>
+
+        <div class="teikyohyo_1_body">
+        </div>
+    </div>
+
+    <div class="teikyohyo-container" id="teikyohyo_2_<%= patient.id %>">
+    </div>
+    <% if false%>
+        <%= patient.inspect %><br/>
+        <% array_of_services_hashes.each do |service_hash| %>
+            <%= service_hash %><br/>
+            <br/>
+        <% end %>
+    <% end %>
+    <br/>
+    <br/>
+<% end %>

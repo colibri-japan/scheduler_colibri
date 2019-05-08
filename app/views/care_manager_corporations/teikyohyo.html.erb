@@ -2,7 +2,7 @@
     <div class="teikyohyo-container" id="teikyohyo_1_<%= patient.id %>">
         <div class="teikyohyo_title">サービス提供表</div>
         <div class="teikyohyo_1_header">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-teikyohyo">
                 <tr>
                     <td rowspan="2">保険者番号</td>
                     <td colspan="2" rowspan="2"></td>
@@ -15,7 +15,7 @@
                 </tr>
                 <tr>
                     <td>事業者担当者名</td>
-                    <td><%= patient.care_manager.name %></td>
+                    <td colspan="2"><%= patient.care_manager.name %></td>
                 </tr>
                 <tr>
                     <td rowspan="2">被保険者番号</td>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="teikyohyo_1_body">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-teikyohyo">
                 <thead>
                   <tr>
                     <td rowspan="2">提供時間帯</td>

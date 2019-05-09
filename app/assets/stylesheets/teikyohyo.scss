@@ -1,0 +1,36 @@
+.teikyohyo-container {
+    page-break-after: always;
+    font-size: 0.9em;
+}
+
+.table.table-bordered {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table.table-teikyohyo > thead > tr > td, .table.table-teikyohyo > tbody > tr > td {
+    border: 0.5px solid black;
+    padding: 1px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.teikyohyo_title {
+    font-weight: bold;
+    font-size: 1.3em;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.teikyohyo-container {
+    padding: 5px;
+}
+
+.teikyohyo_1_body {
+    margin-top: 15px;
+}
+
+.gray_row {
+    background-color: #eee;
+}

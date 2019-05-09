@@ -4,14 +4,14 @@
         <div class="teikyohyo_1_header">
             <table class="table table-bordered table-teikyohyo">
                 <tr>
-                    <td rowspan="2">保険者番号</td>
-                    <td colspan="2" rowspan="2"></td>
-                    <td rowspan="2">保険者名</td>
-                    <td rowspan="2"></td>
-                    <td>居宅介護事業所</td>
-                    <td colspan="2"><%= patient.care_manager.care_manager_corporation.name %></td>
-                    <td rowspan="2">作成年月日</td>
-                    <td rowspan="2"><%= Date.today.strftime('%Jf') %></td>
+                    <td rowspan="2" style="width:8%">保険者番号</td>
+                    <td colspan="2" rowspan="2" style="width:13%"></td>
+                    <td rowspan="2" style="width:13%">保険者名</td>
+                    <td rowspan="2" style="width:8%"></td>
+                    <td style="width:10%">居宅介護事業所</td>
+                    <td colspan="2" style="width:20%"><%= patient.care_manager.care_manager_corporation.name %></td>
+                    <td rowspan="2" style="width:8%">作成年月日</td>
+                    <td rowspan="2" style="width:15%"><%= Date.today.strftime('%Jf') %></td>
                 </tr>
                 <tr>
                     <td>事業者担当者名</td>
@@ -38,15 +38,15 @@
                     <td>要介護状態区分</td>
                     <td><%= kaigo_level_text(patient) %></td>
                     <td rowspan="3">区分支給限度基準額</td>
-                    <td rowspan="3"><%= maximum_budget(patient) %></td>
-                    <td rowspan="3">限度額適用期間</td>
+                    <td rowspan="3" style="width:10%"><%= maximum_budget(patient) %></td>
+                    <td rowspan="3" style="width:10%">限度額適用期間</td>
                     <td rowspan="3"><%= "#{patient.date_of_contract.try(:strftime, "%Jf")}#{patient.end_of_contract.try(:strftime, '%Jf')}" %></td>
                     <td rowspan="2">前月までの短期入所利用日数</td>
                 </tr>
                 <tr>
                     <td rowspan="2"><%= gender_text(patient) %></td>
                     <td rowspan="2">変更後要介護状態区分</td>
-                    <td></td>
+                    <td style="min-height:15px"></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -83,9 +83,10 @@
                   </tr>
                 </thead>
                 <tbody>
+                    <% count = 0 %>
                     <% service_shift_array.each do |hash_of_service_and_shifts| %>
                       <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
-                        <tr>
+                        <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
                             <td rowspan="2"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
                             <td rowspan="2"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
                             <td rowspan="2"><%= @corporation.name %></td>
@@ -98,7 +99,7 @@
                             <% end %>
                             <td><%= shift[:previsional].count %></td>
                         </tr>
-                        <tr>
+                        <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
                             <td>実績</td>
                             <% (@first_day..@last_day).each do |date| %>
                                 <td><%= shift[:provided].include?(date.to_date) ? '1' : '' %></td>
@@ -108,6 +109,7 @@
                             <% end %>
                             <td><%= shift[:provided].count %></td>
                         </tr>
+                        <% count += 1 %>
                       <% end %>
                     <% end %>
                 </tbody>

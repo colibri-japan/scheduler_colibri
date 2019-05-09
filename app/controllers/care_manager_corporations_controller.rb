@@ -46,6 +46,7 @@ class CareManagerCorporationsController < ApplicationController
           render pdf: "#{@care_manager_corporation.name}様_提供表_#{@first_day.strftime('%Jy年%Jm月')}分",
           page_size: 'A4',
           template: 'care_manager_corporations/teikyohyo.html.erb',
+          layout: 'pdf.html',
           orientation: 'landscape',
           encoding: 'UTF-8',
           zoom: 1,

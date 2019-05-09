@@ -161,10 +161,11 @@
                             <td></td>
                             <td><%= hash_of_service_and_shifts[:service_hash][:sum_total_credits] %></td>
                             <td><%= @corporation.credits_to_jpy_ratio %></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:sum_invoiced_total] %></td>
+                            <td><%= invoiced_total = hash_of_service_and_shifts[:service_hash][:sum_invoiced_total] %></td>
                             <td><%= (100 - (patient.ratio_paid_by_patient || 1).to_i * 10) %></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:sum_invoiced_total].to_f * (1 - (patient.ratio_paid_by_patient || 1) * 0.1) %></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:sum_invoiced_total].to_f * ((patient.ratio_paid_by_patient || 1) * 0.1) %></td>
+                            <% patient_invoice = (hash_of_service_and_shifts[:service_hash][:sum_invoiced_total].to_f * ((patient.ratio_paid_by_patient || 1) * 0.1)).floor %>
+                            <td><%= invoiced_total - patient_invoice %></td>
+                            <td><%= patient_invoice  %></td>
                             <td></td>
                         </tr>
                     <% end %>

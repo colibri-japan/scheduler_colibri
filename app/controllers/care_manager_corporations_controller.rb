@@ -39,6 +39,19 @@ class CareManagerCorporationsController < ApplicationController
       @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
       
       @patients_with_services_and_dates = @care_manager_corporation.teikyohyo_data(@first_day, @last_day)
+
+      respond_to do |format|
+        format.html 
+        format.pdf do
+          render pdf: "#{@care_manager_corporation.name}様_提供表_#{@first_day.strftime('%Jy年%Jm月')}分",
+          page_size: 'A4',
+          template: 'care_manager_corporations/teikyohyo.html.erb',
+          orientation: 'landscape',
+          encoding: 'UTF-8',
+          zoom: 1,
+          dpi: 75
+        end 
+      end
     else
       redirect_back fallback_location: authenticated_root_path
     end

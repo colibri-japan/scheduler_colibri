@@ -122,6 +122,12 @@ gem 'connection_pool'
 #gem that handles unread/read records
 gem 'unread'
 
+#webkit html to pdf
+gem 'wicked_pdf'
+
+group :production do 
+  gem 'wkhtmltopdf-heroku'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

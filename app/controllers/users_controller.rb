@@ -3,6 +3,8 @@ class UsersController < ApplicationController
 
   def index
     authorize current_user, :has_admin_access?
+    @planning = @corporation.planning 
+    set_main_nurse
     
     @users = @corporation.users.all.order_by_kana
   end

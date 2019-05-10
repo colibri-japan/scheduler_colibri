@@ -1,16 +1,7 @@
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'settings', resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
 
-<div id="settings-menu-container" class="no-print">
+<%= render 'plannings/settings_submenu', view: "schedule_settings" %>
 
-	<div id="settings-menu-list">
-        <ul id="settings-list">
-            <li id="settings-options" class="settings-list-element settings-list-element-selected">スケジュールオプション</li>
-            <li id="settings-services" class="settings-list-element"><%= link_to 'サービスタイプ一覧', planning_services_path(@planning), class: 'settings-list-url' %></li>
-            <li id="settings-printing-options" class="settings-list-element"><%= link_to '印刷オプション', planning_printing_option_path(@planning, @corporation.printing_option), class: 'settings-list-url' %></li>
-        </ul>
-	</div>
-
-</div>
 
 <div id="settings-container">
     <div id="planning-options" >

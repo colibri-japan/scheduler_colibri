@@ -297,7 +297,7 @@ ul.chosen-results {
 	cursor: pointer;
 }
 
-.settings-list-element-selected {
+.settings-list-element.settings-list-element-selected > .settings-list-url {
 	color: white !important;
 }
 

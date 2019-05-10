@@ -3,6 +3,8 @@ class CareManagerCorporationsController < ApplicationController
   before_action :set_corporation
 
   def index 
+    @planning = @corporation.planning
+    set_main_nurse
     @care_manager_corporations = @corporation.care_manager_corporations.includes(:care_managers)
   end
 

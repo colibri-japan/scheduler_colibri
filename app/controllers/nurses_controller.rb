@@ -6,6 +6,9 @@ class NursesController < ApplicationController
   before_action :set_skills, only: [:new, :edit]
 
   def index
+    @planning = @corporation.planning 
+    set_main_nurse
+    
     nurses = @corporation.nurses
     
     if params[:team_id].present? 

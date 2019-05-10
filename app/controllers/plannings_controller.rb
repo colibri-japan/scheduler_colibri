@@ -152,10 +152,6 @@ class PlanningsController < ApplicationController
 		@planning = Planning.find(params[:id])
 	end
 
-	def set_main_nurse
-		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
-	end
-
 	def planning_params
 		params.require(:planning).permit(:business_month, :business_year, :title)
 	end

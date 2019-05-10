@@ -1,39 +1,30 @@
-<div id="account-update-container">
-  <div id="account-update-menu">
-    <div class="account-menu-item account-menu-selected">
-      ユーザー招待.権限
-    </div>
-    <div class="account-menu-item" >
-      <%= link_to 'チーム管理', teams_path %> 
-    </div>
-  </div>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'settings', resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
 
-  <div id="account-update-body">
-    <div id="users-index-container">
-      <%= link_to '+事業所内のメンバーを招待する', new_user_invitation_path, class: 'btn btn-info text-white btn-margin-top' %>
+<%= render 'plannings/settings_submenu', view: 'users' %>
 
-      <div id="index-table-container">
-        <table class="table <%= 'table-hover' if current_user.corporation_admin? %>">
-          <thead>
-            <tr>
-              <th>名前</th>
-              <th>メール</th>
-              <th>権限</th>
-            </tr>
-          </thead>
+<div id="settings-container">
+  <%= link_to '+事業所内のメンバーを招待する', new_user_invitation_path, class: 'btn btn-info text-white btn-margin-top' %>
 
-          <tbody>
-            <% @users.each do |user| %>
-              <tr class="<%= 'user-clickable-row' if current_user.corporation_admin? %>" data-url="<%= edit_user_role_path(user) %>">
-                <td><%= user.name %></td>
-                <td><%= user.email %></td>
-                <td><%= user_role(user) %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div id="index-table-container">
+    <table class="table <%= 'table-hover' if current_user.corporation_admin? %>">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>メール</th>
+          <th>権限</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @users.each do |user| %>
+          <tr class="<%= 'user-clickable-row' if current_user.corporation_admin? %>" data-url="<%= edit_user_role_path(user) %>">
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user_role(user) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
 

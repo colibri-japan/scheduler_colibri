@@ -6,7 +6,6 @@
 			<% unless current_user.has_restricted_access? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= resource_payable_path %>" title="給与管理">給</li>
 			<% end %>
-			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'activity' %>" data-url="<%= planning_activities_path(@planning) %>" title="編集履歴">歴</li>
 			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  resource_master_path %>" title="マスター">マ</li>
 			<% if current_user.has_admin_access? %>
 				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%=  planning_settings_path(@planning) %>" title="設定"><span class='glyphicon glyphicon-cog' style="<%= view == 'settings' ? 'color:white' : 'color:#94979A' %>;font-size:25px"></span></li>

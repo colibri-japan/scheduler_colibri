@@ -1,43 +1,32 @@
-<div id="account-update-container">
-  <div id="account-update-menu">
-    <div class="account-menu-item">
-      <%= link_to 'ユーザー招待.権限', users_path %> 
-    </div>
-    <div class="account-menu-item account-menu-selected" >
-      チーム管理
-    </div>
-  </div>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'settings', resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
 
-  <div id="account-update-body">
-    <div id="users-index-container">
-      <%= link_to '+新規チームを作る', new_team_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
+<%= render partial: 'plannings/settings_submenu', locals: {view: 'teams'} %>
 
-      <div id="index-table-container">
-        <table class="table <%= 'table-hover' if current_user.has_admin_access? %>">
-          <thead>
-            <tr>
-              <th style="width: 30%">チーム名</th>
-              <th style="width: 70%">従業員名</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% @teams.each do |team| %>
-              <tr class="<%= 'user-clickable-row' if current_user.has_admin_access? %>" data-url="<%= edit_team_path(team) %>">
-                <td><%= team.team_name %></td>
-                <td>
-                    <%= team.nurses.displayable.map {|nurse| nurse.name}.join(', ') %>
-                </td>
-              </tr>
-            <% end %>
-            <tr>
-              <td>チーム所属無し</td>
-              <td><%= @nurses_without_any_team.map {|nurse| nurse.name }.join(', ') %></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div id="settings-container">
+  <%= link_to '+新規チームを作る', new_team_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
+  <div id="index-table-container">
+    <table class="table <%= 'table-hover' if current_user.has_admin_access? %>">
+      <thead>
+        <tr>
+          <th style="width: 30%">チーム名</th>
+          <th style="width: 70%">従業員名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @teams.each do |team| %>
+          <tr class="<%= 'user-clickable-row' if current_user.has_admin_access? %>" data-url="<%= edit_team_path(team) %>">
+            <td><%= team.team_name %></td>
+            <td>
+                <%= team.nurses.displayable.map {|nurse| nurse.name}.join(', ') %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td>チーム所属無し</td>
+          <td><%= @nurses_without_any_team.map {|nurse| nurse.name }.join(', ') %></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

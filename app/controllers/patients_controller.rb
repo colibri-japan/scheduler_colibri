@@ -14,6 +14,8 @@ class PatientsController < ApplicationController
     else
       @patients = @corporation.cached_active_patients_grouped_by_kana
       @deactivated_patients = @corporation.cached_inactive_patients_ordered_by_kana
+      @planning = @corporation.planning
+      set_main_nurse
     end
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?

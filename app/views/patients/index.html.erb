@@ -1,4 +1,8 @@
-<div id="index-container">
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'patients', resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
+
+<%= render 'plannings/settings_submenu', view: 'patients' %>
+
+<div id="settings-container">
   <%= link_to '+新規利用者', new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
   
   <div style="display:flex;justify-content:space-between;margin-top:30px">
@@ -33,7 +37,10 @@
           <% patients.each do |patient| %>
             <% cache patient do %>
               <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>" id="<%= patient.id %>">
-                <%= render 'patient_row', patient: patient %>
+                <td><%= patient.name %></td>
+                <td><%= "#{patient.date_of_contract.strftime("%Y年%-m月%-d日")} ~ " if patient.date_of_contract.present? %><%= patient.end_of_contract.strftime("%Y年%-m月%-d日") if patient.end_of_contract.present? %></td>
+                <td><%= patient.phone_number %></td>
+                <td><%= patient.address %></td>
               </tr>
             <% end %>
           <% end %>

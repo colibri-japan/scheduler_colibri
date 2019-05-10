@@ -53,6 +53,10 @@ class ApplicationController < ActionController::Base
       @teams_id_by_name = @corporation.cached_team_id_by_name
   end
 
+  def set_main_nurse
+		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
+  end
+  
   def fetch_patients_grouped_by_kana
 		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
 	end

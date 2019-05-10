@@ -2,20 +2,19 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
-  def perform(updated_provided_service_id)
+  def perform(nurse_id, year, month)
     now_in_japan = Time.current + 9.hours
-    updated_provided_service = ProvidedService.find(updated_provided_service_id)
-    start_of_month = updated_provided_service.service_date.beginning_of_month
+    start_of_month = DateTime.new(year.to_i, month.to_i, 1,0,0,0).beginning_of_month
     end_of_month = start_of_month.end_of_month
     end_of_today = now_in_japan.end_of_day > end_of_month ? end_of_month : now_in_japan.end_of_day
-    corporation = updated_provided_service.planning.corporation
-    targeted_salary_rules = SalaryRule.where(corporation_id: corporation.id).where('target_all_nurses IS TRUE OR (target_all_nurses IS FALSE AND ? = ANY(nurse_id_list))', updated_provided_service.nurse_id.to_s).not_expired_at(now_in_japan)
+    corporation = Nurse.find(nurse_id).corporation
+    targeted_salary_rules = SalaryRule.where(corporation_id: corporation.id).where('target_all_nurses IS TRUE OR (target_all_nurses IS FALSE AND ? = ANY(nurse_id_list))', nurse_id.to_s).not_expired_at(now_in_japan)
     
     
     targeted_salary_rules.each do |salary_rule|
         targeted_titles = salary_rule.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : salary_rule.service_title_list
-        provided_service_from_rule = ProvidedService.where(nurse_id: updated_provided_service.nurse_id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_month)
-        targeted_services = ProvidedService.includes(:appointment).where(nurse_id: updated_provided_service.nurse_id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).from_appointments.where(appointments: {edit_requested: false}).in_range(start_of_month..end_of_today)
+        provided_service_from_rule = ProvidedService.where(nurse_id: nurse_id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_month)
+        targeted_services = ProvidedService.includes(:appointment).where(nurse_id: nurse_id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).from_appointments.where(appointments: {edit_requested: false}).in_range(start_of_month..end_of_today)
         
         case salary_rule.date_constraint
         when 1
@@ -48,7 +47,7 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
             provided_service_from_rule.first.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage)
         else
             puts 'creating new service'
-            ProvidedService.create(nurse_id: updated_provided_service.nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
+            ProvidedService.create(nurse_id: nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
         end
     end
   end

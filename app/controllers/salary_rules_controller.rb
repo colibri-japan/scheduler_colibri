@@ -2,7 +2,7 @@ class SalaryRulesController < ApplicationController
     before_action :set_corporation
 
     def index
-      @salary_rules = @corporation.salary_rules
+      @salary_rules = @corporation.salary_rules.not_expired_at(Time.current)
     end
 
     def new 

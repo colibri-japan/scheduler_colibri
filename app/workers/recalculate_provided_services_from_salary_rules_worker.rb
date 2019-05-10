@@ -20,7 +20,7 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         case salary_rule.date_constraint
         when 1
             #holidays
-            targeted_services = targeted_services.where('DATE(provided_services.service_date) IN (?)', HolidayJp.between(start_of_month, end_of_today).map(&:to_date))
+            targeted_services = targeted_services.where('DATE(provided_services.service_date) IN (?)', HolidayJp.between(start_of_month, end_of_today).map(&:date))
         when 2
             #sunday
             targeted_services = targeted_services.where('EXTRACT(dow from provided_services.service_date) = 0')
@@ -48,7 +48,7 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
             provided_service_from_rule.first.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage)
         else
             puts 'creating new service'
-            ProvidedService.create(nurse_id: updated_provided_service.nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true)
+            ProvidedService.create(nurse_id: updated_provided_service.nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
         end
     end
   end

@@ -143,7 +143,7 @@
 		<% if current_user.corporation_admin? %>
 			<% @services_from_salary_rules.each do |provided_service| %>
 				<tr>
-					<td><%= provided_service.salary_rule.present? ? provided_service.updated_at.strftime("%-m月%-d日") : provided_service.service_date.strftime("%-m月%-d日") %></td>
+					<td><%= provided_service.service_date.strftime("%-m月%-d日") %></td>
 					<td><%= provided_service.hour_based_wage ? provided_service.title : provided_service_title_with_counts(provided_service) %></td>
 					<td></td>
 					<td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.hour_based_wage %></td>

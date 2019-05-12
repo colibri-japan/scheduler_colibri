@@ -166,7 +166,7 @@ li.planning-menu-selected {
 
 #settings-menu-container {
 	height: 100%;
-	width: 230px;
+	width: 200px;
 	position: fixed;
 	z-index: 0;
 	top: 0;
@@ -301,6 +301,14 @@ ul.chosen-results {
 	color: white !important;
 }
 
+.settings-list-element-selected::after {
+	content: '•';
+	color: #17a2b8;
+	position: absolute;
+	margin-left: 2px;
+	font-size: 1.1em;
+}
+
 .settings-list-url {
 	color: #ccc !important;
 }
@@ -316,7 +324,6 @@ ul.chosen-results {
 
 .settings-list-element {
 	width: 100%;
-	border-bottom: solid #ccc 0.5px;
 }
 
 #settings-menu-list {
@@ -325,9 +332,18 @@ ul.chosen-results {
 }
 
 #settings-container {
-	width: calc(100% - 300px);
+	width: calc(100% - 270px);
 	margin-left: auto;
-	margin-top: 30px;	
+	margin-top: 20px;	
+}
+
+.settings-list-header {
+	font-size: 1.5em;
+	color: #ccc;
+	border-bottom: solid #ccc 0.5px;
+	margin-bottom: 7px;
+	padding-bottom: 7px;
+	width: 100%;
 }
 
 #planning-options {

@@ -1,0 +1,43 @@
+/* line 1, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo-container {
+  page-break-after: always;
+  font-size: 0.9em;
+}
+
+/* line 6, app/assets/stylesheets/teikyohyo.scss */
+.table.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* line 11, app/assets/stylesheets/teikyohyo.scss */
+.table.table-teikyohyo > thead > tr > td, .table.table-teikyohyo > tbody > tr > td {
+  border: 0.5px solid black;
+  padding: 1px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* line 18, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo_title {
+  font-weight: bold;
+  font-size: 1.3em;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+/* line 26, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo-container {
+  padding: 5px;
+}
+
+/* line 30, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo_1_body {
+  margin-top: 15px;
+}
+
+/* line 34, app/assets/stylesheets/teikyohyo.scss */
+.gray_row {
+  background-color: #eee;
+}

@@ -2446,9 +2446,18 @@ Turbolinks.reload = () => {
   Turbolinks.visit(window.location)
 }
 
+let resourceScroll
+
+document.addEventListener('turbolinks:load', function() {
+  menu_presence_condition = $('#resource-container').length > 0
+  if (window.resourceScroll && menu_presence_condition) {
+    $('#resource-container').scrollTop(window.resourceScroll);
+    window.resourceSroll = null
+  }
+})
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
-
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()

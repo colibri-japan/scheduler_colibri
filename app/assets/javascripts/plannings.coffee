@@ -44,7 +44,11 @@ $(document).on 'turbolinks:load', ->
 
 
   $('.colibri-clickable-link').click ->
-    window.location = $(this).data('url')
+    if $('#resource-container').length > 0
+      window.resourceScroll = $('#resource-container')[0].scrollTop
+    else
+      window.resourceScroll = null
+    Turbolinks.visit($(this).data('url'))
     return
   
   $('#toggle-patients-nurses').bootstrapToggle

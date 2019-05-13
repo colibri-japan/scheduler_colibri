@@ -71,8 +71,9 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
     store_original_params
     @appointment.recurring_appointment_id = nil
-
-    if @appointment.update(appointment_params)
+    
+    if @appointment.update(appointment_params)      
+      @provided_service = @appointment.provided_service if @previous_cancelled != appointment_params[:cancelled]
       @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_start: @appointment.starts_at, new_end: @appointment.ends_at, new_edit_requested: @appointment.edit_requested, new_nurse: @appointment.nurse.try(:name), new_patient: @appointment.patient.try(:name), new_title: @appointment.title, new_color: @appointment.color
     end
   end
@@ -209,6 +210,7 @@ class AppointmentsController < ApplicationController
       @previous_end = @appointment.ends_at
       @previous_nurse = @appointment.nurse.try(:name)
       @previous_edit_requested = @appointment.edit_requested
+      @previous_cancelled = @appointment.edit_requested
       @previous_title = @appointment.title
     end
 

@@ -62,8 +62,16 @@ pathname = window.location.pathname;
   }
 
 <% else %>
+  $('.modal').modal('hide');
+  $('.modal-backdrop').remove();
   if (pathname.includes('payable')) {
-    Turbolinks.reload()
+    <% if @provided_service.present? && @appointment.cancelled && @corporation.detailed_cancellation_options %>
+      $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
+      $('#cancellation_options').modal({backdrop: 'static'});
+      reloadWhenDismissedInPayable()
+    <% else %>
+      Turbolinks.reload()
+    <% end %>
   } else {
     if (typeof calendar === 'undefined') {
       let calendar;
@@ -78,17 +86,19 @@ pathname = window.location.pathname;
 
     calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
 
-    $('.modal').modal('hide');
-
     if (window.nurseId == <%= @appointment.nurse_id %> || window.patientId == <%= @appointment.patient_id %> || window.generalPlanning == 'true' ) {
       calendar.fullCalendar(
         'renderEvent', 
         $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
         false
       );
-    } else {
-    }
+    } 
 
+    <% if @provided_service.present? && @provided_service.cancelled && @corporation.detailed_cancellation_options %>
+      $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
+      $('#cancellation_options').modal('show');
+      reloadWhenDismissedInPayable()
+    <% end %>
 
     <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
       if ($('.calendar').length > 0) {

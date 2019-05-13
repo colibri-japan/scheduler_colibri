@@ -20,7 +20,7 @@
 				<% @care_manager_corporations.each do |care_manager_corporation| %>
                     <tr>
                         <td><%= care_manager_corporation.name %></td>
-                        <td><%= link_to 'Pdf', care_manager_corporation_teikyohyo_path(care_manager_corporation, params: {m: @selected_month, y: @selected_year}, format: :pdf), target: :_blank, class: 'btn btn-sm btn-success text-white' if false %></td>
+                        <td><%= link_to 'Pdf', care_manager_corporation_teikyohyo_path(care_manager_corporation, params: {m: @selected_month, y: @selected_year}, format: :pdf), target: :_blank, class: 'btn btn-sm btn-success text-white' %></td>
                     </tr>
                 <% end %>
               </table>

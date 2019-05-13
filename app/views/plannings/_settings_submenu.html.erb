@@ -5,14 +5,16 @@
             <li id="patients" class="settings-list-element <%= "settings-list-element-selected" if view == "patients" %>"><%= link_to '利用者一覧', patients_path, class: 'settings-list-url' %></li>
             <li id="nurses" class="settings-list-element <%= "settings-list-element-selected" if view == "nurses" %>"><%= link_to '従業員一覧', nurses_path, class: 'settings-list-url' %></li>
             <li id="care-managers" class="settings-list-element <%= "settings-list-element-selected" if view == "care_manager_corporations" %>"><%= link_to 'ケアマネ一覧', care_manager_corporations_path, class: 'settings-list-url' %></li>
-          <li class="settings-list-header" style="margin-top:15px">事業所設定</li>
-            <li id="teams" class="settings-list-element <%= "settings-list-element-selected" if view == "teams" %>"><%= link_to 'チーム管理', teams_path, class: 'settings-list-url' %></li>
-            <li id="users" class="settings-list-element <%= "settings-list-element-selected" if view == "users" %>"><%= link_to 'ユーザー招待.権限', users_path, class: 'settings-list-url' %></li>
-            <li id="services" class="settings-list-element <%= "settings-list-element-selected" if view == "services" %>"><%= link_to 'サービスタイプ一覧', planning_services_path(@planning), class: 'settings-list-url' %></li>
-          <li class="settings-list-header" style="margin-top:15px">設定.履歴</li>
-            <li id="activities" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to '編集履歴', planning_activities_path(@planning), class: 'settings-list-url' %></li>
-            <li id="settings" class="settings-list-element <%= "settings-list-element-selected" if view == "schedule_settings" %>"><%= link_to 'スケジュール設定', planning_settings_path(@planning), class: 'settings-list-url' %></li>
-            <li id="printing-options" class="settings-list-element <%= "settings-list-element-selected" if view == "printing_options" %>"><%= link_to '印刷オプション', planning_printing_option_path(@planning, @corporation.printing_option), class: 'settings-list-url' %></li>
+          <% if current_user.has_admin_access? %>
+            <li class="settings-list-header" style="margin-top:15px">事業所設定</li>
+              <li id="teams" class="settings-list-element <%= "settings-list-element-selected" if view == "teams" %>"><%= link_to 'チーム管理', teams_path, class: 'settings-list-url' %></li>
+              <li id="users" class="settings-list-element <%= "settings-list-element-selected" if view == "users" %>"><%= link_to 'ユーザー招待.権限', users_path, class: 'settings-list-url' %></li>
+              <li id="services" class="settings-list-element <%= "settings-list-element-selected" if view == "services" %>"><%= link_to 'サービスタイプ一覧', planning_services_path(@planning), class: 'settings-list-url' %></li>
+            <li class="settings-list-header" style="margin-top:15px">設定.履歴</li>
+              <li id="activities" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to '編集履歴', planning_activities_path(@planning), class: 'settings-list-url' %></li>
+              <li id="settings" class="settings-list-element <%= "settings-list-element-selected" if view == "schedule_settings" %>"><%= link_to 'スケジュール設定', planning_settings_path(@planning), class: 'settings-list-url' %></li>
+              <li id="printing-options" class="settings-list-element <%= "settings-list-element-selected" if view == "printing_options" %>"><%= link_to '印刷オプション', planning_printing_option_path(@planning, @corporation.printing_option), class: 'settings-list-url' %></li>
+          <% end %>
         </ul>
 	</div>
 </div>

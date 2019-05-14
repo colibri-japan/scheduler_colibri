@@ -59,15 +59,25 @@
 					<h1 class="colibri-xs-title"><%= @patient.name %>の詳細</h1>
 					<span class="close" value="閉じる" onclick="$('#resource-details-panel').toggle()">&times;</span>
 				</div>
-				<table>
-					<tr>
-						<td class="details-table-head">担当</td>
+				<table class="resource-detail-table">
+					<tr style='margin-top:6px'>
+						<td class="details-table-head">サ責</td>
 						<td><%= @patient.nurse.try(:name) %></td>
 					</tr>
 					<tr>
-						<td class="details-table-head">メール</td>
-						<td><%= @patient.phone_mail %></td>
+						<td class="details-table-head">CM</td>
+						<td><%= @patient.care_manager.try(:name) %></td>
 					</tr>
+					<tr>
+						<td class="details-table-head">CM電話</td>
+						<td><%= @patient.care_manager.try(:phone_number) %></td>
+					</tr>
+					<% if @patient.phone_mail.present? %>
+						<tr>
+							<td class="details-table-head">メール</td>
+							<td><%= @patient.phone_mail %></td>
+						</tr>
+					<% end %>
 					<tr>
 						<td class="details-table-head">電話</td>
 						<td><%= @patient.phone_number %></td>
@@ -76,14 +86,18 @@
 						<td class="details-table-head">住所</td>
 						<td><%= @patient.address %></td>
 					</tr>
-					<tr>
-						<td class="details-table-head">特徴</td>
-						<td><%= @patient.caveat_list %></td>
-					</tr>
-					<tr>
-						<td class="details-table-head">備考</td>
-						<td><%= @patient.description %></td>
-					</tr>
+					<% if @patient.caveat_list %>
+						<tr>
+							<td class="details-table-head">特徴</td>
+							<td><%= @patient.caveat_list %></td>
+						</tr>
+					<% end %>
+					<% if @patient.description.present? %>
+						<tr>
+							<td class="details-table-head">備考</td>
+							<td><%= @patient.description %></td>
+						</tr>
+					<% end %>
 				</table>
 			</div>
 

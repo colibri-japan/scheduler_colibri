@@ -124,7 +124,15 @@ p.payable-dashboard-line {
 }
 
 .details-table-head {
-	width: 55px;
+	width: 17%;
+}
+
+.resource-detail-table {
+	width: 100%;
+}
+
+.resource-detail-table > tr {
+	width: 100%;
 }
 
 #resource-action-block {

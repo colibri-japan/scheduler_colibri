@@ -12,8 +12,8 @@
         json.master true
         json.cancelled false
         json.displayable true
-        json.start DateTime.new(slot.year, slot.month, slot.day, wished_slot.starts_at.hour, wished_slot.starts_at.min)
-        json.end DateTime.new(slot.year, slot.month, slot.day, wished_slot.ends_at.hour, wished_slot.ends_at.min) + wished_slot.duration.to_i
+        json.start DateTime.new(slot.year, slot.month, slot.day, wished_slot.starts_at.hour, wished_slot.starts_at.min).strftime(date_format)
+        json.end (DateTime.new(slot.year, slot.month, slot.day, wished_slot.ends_at.hour, wished_slot.ends_at.min) + wished_slot.duration.to_i).strftime(date_format)
         json.resourceId wished_slot.nurse_id
         json.private_event false
         json.service_type wished_slot.title_from_rank

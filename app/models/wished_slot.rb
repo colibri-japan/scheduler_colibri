@@ -82,11 +82,11 @@ class WishedSlot < ApplicationRecord
   def as_json(options = {})
     occurrences = self.wished_slot_occurrences(options[:start_time], options[:end_time])
     returned_json_array = []
+    date_format = self.all_day_wished_slot? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M',
 
     occurrences.each do |occurrence|
       occurrence_object = {
         allDay: all_day_wished_slot?,
-        date_format: all_day_wished_slot? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M',
         id: "wished_slot_#{self.id}",
         title: title_from_rank,
         frequency: frequency,
@@ -97,8 +97,8 @@ class WishedSlot < ApplicationRecord
         master: true,
         cancelled: false,
         displayable: true,
-        start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min),
-        end: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i,
+        start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min).strftime(date_format),
+        end: (DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i).strftime(date_format),
         resourceId: nurse_id,
         private_event: false,
         service_type: title_from_rank,

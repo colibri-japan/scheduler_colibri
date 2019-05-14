@@ -7,8 +7,8 @@
         json.id "recurring_#{recurring_appointment.id}"
         json.extract! recurring_appointment, :color, :master, :displayable, :frequency, :edit_requested, :patient_id, :nurse_id, :cancelled, :termination_date
         json.title "#{recurring_appointment.patient.try(:name)} - #{recurring_appointment.nurse.try(:name)}"
-        json.start DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
-        json.end DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i
+        json.start DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min).strftime(date_format)
+        json.end (DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i).strftime(date_format)
         json.resourceId recurring_appointment.nurse_id
         json.borderColor '#FFBBA0' if recurring_appointment.edit_requested == true
         json.private_event false

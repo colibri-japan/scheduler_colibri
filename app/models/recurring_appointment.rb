@@ -138,12 +138,12 @@ class RecurringAppointment < ApplicationRecord
 
 	def as_json(options = {})
 		occurrences = self.appointments(options[:start_time], options[:end_time])
+		date_format = self.all_day_recurring_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
 		returned_json_array = []
 		occurrences.each do |occurrence|
 			occurrence_object = {
 				allDay: self.all_day_recurring_appointment?,
-				date_format: self.all_day_recurring_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M',
 				id: "recurring_#{self.id}",
 				color: self.color,
 				displayable: self.displayable,
@@ -156,8 +156,8 @@ class RecurringAppointment < ApplicationRecord
 				cancelled: self.cancelled,
 				termination_date: self.termination_date,
 				title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
-				start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min),
-				end: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i,
+				start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min).strftime(date_format),
+				end: (DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i).strftime(date_format),
 				resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
 				borderColor: self.border_color,
 				private_event: false,

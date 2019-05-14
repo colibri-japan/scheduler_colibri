@@ -5,8 +5,8 @@ date_format = json.allDay ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 json.id "appointment_#{appointment.id}"
 json.title "#{appointment.patient.try(:name)} - #{appointment.nurse.try(:name)}"
 json.extract! appointment, :color, :master, :displayable, :nurse_id, :patient_id, :edit_requested, :cancelled
-json.start appointment.starts_at
-json.end appointment.ends_at
+json.start appointment.starts_at.try(:strftime, date_format)
+json.end appointment.ends_at.try(:strftime, date_format)
 json.description appointment.description ? appointment.description : ''
 json.resourceId params[:patient_resource].present? ? appointment.patient_id : appointment.nurse_id
 json.nurse do 

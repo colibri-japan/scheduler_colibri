@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190507161455) do
+ActiveRecord::Schema.define(version: 20190515083610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,6 +225,9 @@ ActiveRecord::Schema.define(version: 20190507161455) do
     t.string "non_master_schedule_default_url"
     t.decimal "credits_to_jpy_ratio"
     t.boolean "detailed_cancellation_options", default: true
+    t.decimal "invoicing_bonus_ratio", default: "1.0"
+    t.date "invoicing_bonus_ratio_start_date"
+    t.decimal "previous_invoicing_bonus_ratio"
   end
 
   create_table "nurses", force: :cascade do |t|

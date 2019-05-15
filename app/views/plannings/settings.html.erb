@@ -97,6 +97,12 @@
 
           </div>
 
+          <div class="colibri-form-subsection">
+                <div class="colibri-form-subsection-title">請求設定</div>
+                <%= form.label :invoicing_bonus_ratio, "処遇改善加算", class: "colibri-form-label-dark" %>
+                <%= form.select :invoicing_bonus_ratio, options_for_select([['加算I - 13.7%', 1.137], ['加算Ⅱ - 10%', 1.1], ['加算Ⅲ - 5.5%', 1.055]], @corporation.invoicing_bonus_ratio),  {include_blank: "選択する"} %>
+          </div>
+
           <div class="actions">
               <%= form.submit "セーブする", class: "btn btn-info btn-block form-control" %>
           </div>

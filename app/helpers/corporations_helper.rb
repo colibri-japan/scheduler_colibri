@@ -13,4 +13,32 @@ module CorporationsHelper
         else
         end
     end
+
+    def corporation_bonus_official_text(corporation)
+        case corporation.invoicing_bonus_ratio
+        when 1
+            ""
+        when 1.055
+            "訪問介護処遇改善加算I"
+        when 1.1
+            "訪問介護処遇改善加算II"
+        when 1.137
+            "訪問介護処遇改善加算III"
+        else
+        end
+    end
+
+    def corporation_bonus_service_code(corporation)
+        case corporation.invoicing_bonus_ratio
+        when 1
+            ""
+        when 1.055
+            "116275"
+        when 1.1
+            "116275"
+        when 1.137
+            "116275"
+        else
+        end
+    end
 end

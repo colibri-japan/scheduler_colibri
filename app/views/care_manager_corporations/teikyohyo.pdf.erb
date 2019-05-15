@@ -43,10 +43,10 @@
                     <td rowspan="3"><%= "#{patient.date_of_contract.try(:strftime, "%Jf")}#{patient.end_of_contract.try(:strftime, '%Jf')}" %></td>
                     <td rowspan="2">前月までの短期入所利用日数</td>
                 </tr>
-                <tr>
+                <tr style="min-height:15px">
                     <td rowspan="2"><%= gender_text(patient) %></td>
                     <td rowspan="2">変更後要介護状態区分</td>
-                    <td style="min-height:15px"></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -112,6 +112,30 @@
                         <% count += 1 %>
                       <% end %>
                     <% end %>
+                    
+                    <% if service_shift_array.sum {|hash_of_services_and_shifts| hash_of_services_and_shifts[:shifts_hash].count} < 10 %>
+                        <% (10 - service_shift_array.sum {|hash_of_services_and_shifts| hash_of_services_and_shifts[:shifts_hash].count}).times do %>
+                            <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                                <td rowspan="2"></td>
+                                <td rowspan="2"></td>
+                                <td rowspan="2"></td>
+                                <td>予定</td>
+                                <% 31.times do %>
+                                    <td></td>
+                                <% end %>
+                                <td></td>
+                            </tr>
+                            <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                                <td>実績</td>
+                                <% 31.times do %>
+                                    <td></td>
+                                <% end %>
+                                <td></td>
+                            </tr>
+                            <% count += 1 %>
+                        <% end %>
+                    <% end %>
+                    
                 </tbody>
             </table>
         </div>
@@ -161,16 +185,60 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:sum_total_credits] %></td>
-                            <td><%= @corporation.credits_to_jpy_ratio %></td>
-                            <td><%= invoiced_total = hash_of_service_and_shifts[:service_hash][:sum_invoiced_total] %></td>
-                            <td><%= (100 - (patient.ratio_paid_by_patient || 1).to_i * 10) %></td>
-                            <% patient_invoice = (hash_of_service_and_shifts[:service_hash][:sum_invoiced_total].to_f * ((patient.ratio_paid_by_patient || 1) * 0.1)).floor %>
-                            <td><%= invoiced_total - patient_invoice %></td>
-                            <td><%= patient_invoice  %></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
                     <% end %>
+                    <% sum_of_credits = service_shift_array.sum {|hash_of_service_and_shifts| hash_of_service_and_shifts[:service_hash][:sum_total_credits] }  %>
+                    <% if service_shift_array.count > 0 && @corporation.invoicing_bonus_ratio.present? %>
+                        <tr>
+                            <td><%= @corporation.name %></td>
+                            <td><%= @corporation.identifier %></td>
+                            <td><%= corporation_bonus_official_text(@corporation) %></td>
+                            <td><%= corporation_bonus_service_code(@corporation) %></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>1</td>
+                            <td>(<%= bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round %>)</td>
+                            <td></td>
+                            <td>(<%= bonus_credits %>)</td>
+                            <td></td>
+                            <td>(<%= bonus_credits %>)</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    <% end %>
+                    <tr>
+                        <td><%= @corporation.name %></td>
+                        <td><%= @corporation.identifier %></td>
+                        <td>訪問介護合計</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
+                        <td></td>
+                        <td><%= sum_of_credits %></td>
+                        <td></td>
+                        <td><%= sum_of_credits %></td>
+                        <td><%= @corporation.credits_to_jpy_ratio %></td>
+                        <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
+                        <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
+                        <td><%= paid_by_insurance = (total_invoiced * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
+                        <td><%= paid_by_patient = total_invoiced - paid_by_insurance %></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

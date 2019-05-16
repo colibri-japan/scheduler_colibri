@@ -128,6 +128,13 @@ class PatientsController < ApplicationController
     @end_of_today_in_japan = (Time.current + 9.hours).end_of_day < @last_day ? (Time.current + 9.hours).end_of_day : @last_day
 
     @services_from_appointments = ProvidedService.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :patient).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
+    
+    calculate_invoice
+
+    respond_to do |format|
+      format.html 
+      format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"請求書_#{@patient.try(:name)}様_#{params[:y]}年#{params[:m]}月.xlsx\""}
+    end
   end
 
   def teikyohyo
@@ -146,10 +153,8 @@ class PatientsController < ApplicationController
     service_header.each do |header|
       @service_and_provided_dates[header] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: header[0], patient_id: @patient.id, cancelled: false, archived_at: nil).in_range(@first_day..@last_day).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', header[1], header[2]).pluck(:appointment_start)
       @service_and_provided_dates[header].map! {|e| e.to_date}
-      puts @service_and_provided_dates[header]
     end
 
-    puts @service_and_provided_dates
 
     #@recurring_appointments = RecurringAppointment.includes(:appointments).where(appointments: {edit_requested: false, cancelled: false, archived_at: nil}).where(patient_id: @patient.id).not_archived.from_master.occurs_in_range(@first_day..@last_day)
   end
@@ -184,6 +189,15 @@ class PatientsController < ApplicationController
   def set_month_and_year_params
     @selected_year = params[:y].present? ? params[:y] : Date.today.year
     @selected_month = params[:m].present? ? params[:m] : Date.today.month
+  end
+
+  def calculate_invoice
+    @sum_of_service_credits = @services_from_appointments.sum(:total_credits)
+    @bonus_credits = (@sum_of_service_credits * (@corporation.invoicing_bonus_ratio - 1)).round
+    @total_credits = @sum_of_service_credits + @bonus_credits
+    @grand_total_amount = (@total_credits * (@corporation.credits_to_jpy_ratio || 0)).floor
+    @amount_paid_by_insurance = (@grand_total_amount * ((10 - (@patient.ratio_paid_by_patient || 0)) * 0.1)).floor
+    @amount_paid_by_patient = @grand_total_amount - @amount_paid_by_insurance
   end
 
   def patient_params

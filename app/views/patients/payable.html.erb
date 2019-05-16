@@ -17,14 +17,15 @@
 		</p>
 	</div>
 
-    <% if false %>
     <div id="patient-dashboard" style='display:flex'>
         <div class="patient-dashboard-panel" style='width:calc(66% - 5px);margin-right:5px'>
             <div class="patient-dashboard-panel-title">
                 <%= @selected_month %>月のまとめ
             </div>
             <div class="patient-dashboard-panel-body">
-
+                利用者負担額：<%= @amount_paid_by_patient %>¥<br/>
+                保険請求額：<%= @amount_paid_by_insurance %>¥<br/>
+                合計：<%= @grand_total_amount %>¥<br/>
             </div>
         </div>
         <div  class="patient-dashboard-panel" style="width:34%">
@@ -34,8 +35,8 @@
             <div class="patient-dashboard-panel-body">
                 <table class="table">
                     <tr>
-                        <td>提供表.xlsx</td>
-                        <td><%= link_to 'エクセル'.html_safe, patient_teikyohyo_path(@patient, {m: @selected_month, y: @selected_year,format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
+                        <td>請求書.xlsx</td>
+                        <td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> エクセル'.html_safe, planning_patient_payable_path(@planning, @patient, {m: @selected_month, y: @selected_year, format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -46,7 +47,7 @@
         </div>
 
     </div>
-    <% end %>
+
 
 	<div class="colibri-payable-subtitle">実績詳細</div>
 
@@ -124,7 +125,7 @@
 					<td></td>
 					<td></td>
 					<td><span id="total-salary-label" style="font-weight:bold;float:right">単位小計</span></td>
-					<td style="font-weight:bold"><%= service_credits = @services_from_appointments.sum(:total_credits) %>単位</td>
+					<td style="font-weight:bold"><%= @sum_of_service_credits %>単位</td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -137,7 +138,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><%= bonus_credits = (service_credits * (@corporation.invoicing_bonus_ratio - 1)).round  %></td>
+					<td><%= @bonus_credits  %></td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -148,8 +149,8 @@
 					<td></td>
 					<td></td>
 					<td><span style="font-weight:bold;float:right">合計</span></td>
-					<td><span style="font-weight:bold;float:right"><%= total_credits = service_credits + bonus_credits %>単位</span></td>
-					<td><span style="font-weight:bold;float:right"><%= grand_total_amount = (total_credits * (@corporation.credits_to_jpy_ratio || 0)).floor %>¥</span></td>
+					<td><span style="font-weight:bold;float:right"><%= @total_credits %>単位</span></td>
+					<td><span style="font-weight:bold;float:right"><%= @grand_total_amount %>¥</span></td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -160,7 +161,7 @@
 					<td></td>
 					<td></td>
 					<td><span style="font-weight:bold;float:right">利用者負担(<%= @patient.ratio_paid_by_patient %>割)</span></td>
-					<td><span style="font-weight:bold;float:right"><%= (grand_total_amount * ((@patient.ratio_paid_by_patient || 0) * 0.1)).floor %>¥</span></td>
+					<td><span style="font-weight:bold;float:right"><%= @amount_paid_by_patient %>¥</span></td>
 					<td></td>
 					<td></td>
 				</tr>

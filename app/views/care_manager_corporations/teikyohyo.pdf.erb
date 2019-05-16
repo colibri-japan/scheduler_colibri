@@ -1,6 +1,6 @@
 <% @patients_with_services_and_dates.each do |patient, service_shift_array| %>
     <div class="teikyohyo-container" id="teikyohyo_1_<%= patient.id %>">
-        <div class="teikyohyo_title">サービス提供表</div>
+        <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="teikyohyo_1_header">
             <table class="table table-bordered table-teikyohyo">
                 <tr>
@@ -142,7 +142,7 @@
     </div>
 
     <div class="teikyohyo-container" id="teikyohyo_2_<%= patient.id %>">
-        <div class="teikyohyo_title">サービス提供表別表</div>
+        <div class="teikyohyo_title">サービス提供票別表 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="teikyohyo_subtitle">区分支給限度管理.利用者負担計算</div>
         <div class="teikyohyo_2_subcontainer">
             <table class="table table-bordered table-teikyohyo">

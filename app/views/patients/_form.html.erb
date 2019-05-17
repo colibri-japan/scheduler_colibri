@@ -32,9 +32,9 @@
         </div>
         <div class="form-group col-md-7">
           <%= form.select :birthday_era, options_for_select(wareki_era, patient.birthday_era), {prompt: '選択'} %>
-          <%= form.select "birthday(1i)", options_for_select(wareki_years, patient.birthday.try(:year)) %>年
-          <%= form.select "birthday(2i)", options_for_select(month_options, patient.birthday.try(:month)), id: :patient_birthday_2i %>月
-          <%= form.select "birthday(3i)", options_for_select(day_options, patient.birthday.try(:day)) %>日
+          <%= form.text_field :birthday_year, value: patient.birthday.try(:year), style: "width:25px;height:25px", placeholder: 'yy' %>年
+          <%= form.text_field :birthday_month, value: patient.birthday.try(:month), id: :patient_birthday_2i, style: "width:25px;height:25px", placeholder: 'mm' %>月
+          <%= form.text_field :birthday_day, value: patient.birthday.try(:day), style: "width:25px;height:25px", placeholder: 'dd' %>日
         </div>
         <div class="form-group col-md-3">
           <%= form.label :gender, '性別', class: 'colibri-form-label-dark', style: 'text-align:right!important' %>
@@ -141,6 +141,16 @@
             <%= form.text_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end, class: "form-control" %>
           </div>
         </div>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :issuing_administration_number, "保険者番号", class: "colibri-form-label-dark" %>
+        <%= form.text_field :issuing_administration_number, id: :patient_issuing_administration_number, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :issuing_administration_name, "保険者名", class: "colibri-form-label-dark" %>
+        <%= form.text_field :issuing_administration_name, id: :patient_issuing_administration_name, class: "form-control" %>
       </div>
 
       <div class="form-group">

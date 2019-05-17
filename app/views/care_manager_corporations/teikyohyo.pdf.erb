@@ -255,9 +255,81 @@
             </table>
         </div>
 
-        <div class="teikyohyo_subtitle">種類別支給限度管理</div>
-        <div class="teikyohyo_subtitle">要介護認定期間中の短期入所利用日数</div>
+        <div style="margin-top:20px;display:-webkit-box;display:-webkit-flex;display:flex">
+            <div style="width:45%;margin-right:10%">
+                <div class="teikyohyo_subtitle">種類別支給限度管理</div>
+                <table class="table table-bordered table-teikyohyo">
+                    <thead>
+                      <tr>
+                        <td>サービス種類</td>
+                        <td style="font-size:0.8em">種類支給限度基準額(単位)</td>
+                        <td>合計単位</td>
+                        <td style="font-size:0.8em">種類支給限度基準を超える単位</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% 4.times do %>
+                        <tr>
+                          <td><span style="color:white">/</span></td>
+                          <td><span style="color:white">/</span></td>
+                          <td><span style="color:white">/</span></td>
+                          <td><span style="color:white">/</span></td>
+                        </tr>
+                      <% end %>
+                        <tr>
+                          <td>合計</td>
+                          <td colspan="3"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="width:45%">
+                <div class="teikyohyo_subtitle">利用者負担表</div>
+                <table class="table table-bordered table-teikyohyo">
+                    <thead>
+                        <tr>
+                            <td>事業所名</td>
+                            <td style="font-size:0.8em">利用者負担分保険対象分</td>
+                            <td>第一公費</td>
+                            <td>第二公費</td>
+                            <td>利用者負担分</td>
+                            <td style="font-size:0.8em">利用者総支払額</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= @corporation.name %></td>
+                            <td><%= paid_by_patient %></td>
+                            <td></td>
+                            <td></td>
+                            <td><%= paid_by_patient %></td>
+                            <td><%= paid_by_patient %></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">ご利用者負担</td>
+                            <td colspan="2"><%= paid_by_patient %>円</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
+        <div style="width:35%;margin-top:20px">
+            <div class="teikyohyo_subtitle">要介護認定期間中の短期入所利用日数</div>
+            <table class="table table-bordered table-teikyohyo">
+                <thead>
+                    <td>前月までの利用日数</td>
+                    <td>当月の計画利用日数</td>
+                    <td>累積利用日数</td>
+                </thead>
+                <tbody>
+                    <td><span style="color:white">/</span></td>
+                    <td><span style="color:white">/</span></td>
+                    <td><span style="color:white">/</span></td>
+                <tbody>
+            </table>
+        </div>
+        
     </div>
 
     <br/>

@@ -149,24 +149,24 @@
             <table class="table table-bordered table-teikyohyo">
                 <tbody>
                   <tr>
-                    <td rowspan="2">事業所名</td>
-                    <td rowspan="2">事業所番号</td>
-                    <td rowspan="2">サービス内容.種類</td>
-                    <td rowspan="2">サービスコード</td>
-                    <td rowspan="2">単位数</td>
-                    <td colspan="2">割引適用後</td>
-                    <td rowspan="2">回数</td>
-                    <td rowspan="2">単位.金額</td>
-                    <td rowspan="2">種類支給限度基準を超える単位数</td>
-                    <td rowspan="2">種類支給限度基準内単位数</td>
-                    <td rowspan="2">区分支給限度基準を超える単位数</td>
-                    <td rowspan="2">区分支給限度基準内単位数</td>
-                    <td rowspan="2">単位数単価</td>
-                    <td rowspan="2">利用総額</td>
-                    <td rowspan="2">給付率</td>
-                    <td rowspan="2">保険給付額</td>
-                    <td rowspan="2">利用者負担（保険対象分）</td>
-                    <td rowspan="2">全額負担分</td>
+                    <td rowspan="2" style="width:11%">事業所名</td>
+                    <td rowspan="2" style="width:8%">事業所番号</td>
+                    <td rowspan="2" style="width:11%">サービス内容.種類</td>
+                    <td rowspan="2" style="width:5%">サービスコード</td>
+                    <td rowspan="2" style="width:3%">単位数</td>
+                    <td colspan="2" style="width:5%">割引適用後</td>
+                    <td rowspan="2" style="width:3%">回数</td>
+                    <td rowspan="2" style="width:5%">単位.金額</td>
+                    <td rowspan="2" style="width:5%;font-size:0.8em">種類支給限度基準を超える単位数</td>
+                    <td rowspan="2" style="width:5%;font-size:0.8em">種類支給限度基準内単位数</td>
+                    <td rowspan="2" style="width:5%;font-size:0.8em">区分支給限度基準を超える単位数</td>
+                    <td rowspan="2" style="width:5%;font-size:0.8em">区分支給限度基準内単位数</td>
+                    <td rowspan="2" style="width:4%">単位数単価</td>
+                    <td rowspan="2" style="width:7%">利用総額</td>
+                    <td rowspan="2" style="width:3%">給付率</td>
+                    <td rowspan="2" style="width:5%">保険給付額</td>
+                    <td rowspan="2" style="width:5%;font-size:0.8em">利用者負担（保険対象分）</td>
+                    <td rowspan="2" style="width:5%">全額負担分</td>
                   </tr>
                   <tr>
                     <td>％</td>
@@ -239,6 +239,17 @@
                         <td><%= paid_by_insurance = (total_invoiced * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
                         <td><%= paid_by_patient = total_invoiced - paid_by_insurance %></td>
                         <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">区分支給限度基準: <%= maximum_budget(patient) %></td>
+                        <td colspan="4">合計：<%= sum_of_credits %></td>
+                        <td>0</td>
+                        <td><%= sum_of_credits %></td>
+                        <td>0</td>
+                        <td colspan="2"><%= sum_of_credits %></td>
+                        <td colspan="2"><%= total_invoiced %></td>
+                        <td><%= paid_by_insurance %></td>
+                        <td colspan="2"><%= paid_by_patient %></td>
                     </tr>
                 </tbody>
             </table>

@@ -5,13 +5,13 @@
             <table class="table table-bordered table-teikyohyo">
                 <tr>
                     <td rowspan="2" style="width:8%">保険者番号</td>
-                    <td colspan="2" rowspan="2" style="width:13%"></td>
-                    <td rowspan="2" style="width:13%">保険者名</td>
-                    <td rowspan="2" style="width:8%"></td>
+                    <td colspan="2" rowspan="2" style="width:13%"><%= patient.try(:issuing_administration_number) %></td>
+                    <td rowspan="2" style="width:11%">保険者名</td>
+                    <td rowspan="2" style="width:10%"><%= patient.try(:issuing_administration_name) %></td>
                     <td style="width:10%">居宅介護事業所</td>
                     <td colspan="2" style="width:20%"><%= patient.care_manager.care_manager_corporation.name %></td>
-                    <td rowspan="2" style="width:8%">作成年月日</td>
-                    <td rowspan="2" style="width:15%"><%= Date.today.strftime('%Jf') %></td>
+                    <td rowspan="2" style="width:11%">作成年月日</td>
+                    <td rowspan="2" style="width:12%"><%= Date.today.strftime('%Jf') %></td>
                 </tr>
                 <tr>
                     <td>事業者担当者名</td>
@@ -36,21 +36,22 @@
                     <td rowspan="3"><%= "#{patient.birthday_era}#{patient.birthday.try(:strftime, '%y年%m月%d日')}" %></td>
                     <td>性別</td>
                     <td>要介護状態区分</td>
-                    <td><%= kaigo_level_text(patient) %></td>
+                    <% kaigo_level_has_changed = patient.previous_kaigo_level.present? && (@first_day..@last_day).include?(patient.kaigo_certification_validity_start) %>
+                    <td><%= kaigo_level_has_changed ? kaigo_level_text(patient.previous_kaigo_level) : kaigo_level_text(patient.kaigo_level) %></td>
                     <td rowspan="3">区分支給限度基準額</td>
                     <td rowspan="3" style="width:10%"><%= maximum_budget(patient) %></td>
                     <td rowspan="3" style="width:10%">限度額適用期間</td>
-                    <td rowspan="3"><%= "#{patient.date_of_contract.try(:strftime, "%Jf")}#{patient.end_of_contract.try(:strftime, '%Jf')}" %></td>
+                    <td rowspan="3"><%= "#{patient.kaigo_certification_validity_start.try(:strftime, "%Jf")}" %><br/>~<br/><%= "#{patient.kaigo_certification_validity_end.try(:strftime, '%Jf')}" %></td>
                     <td rowspan="2">前月までの短期入所利用日数</td>
                 </tr>
-                <tr style="min-height:15px">
+                <tr>
                     <td rowspan="2"><%= gender_text(patient) %></td>
                     <td rowspan="2">変更後要介護状態区分</td>
-                    <td></td>
+                    <td><%= kaigo_level_has_changed ? kaigo_level_text(patient.kaigo_level) : ''  %></td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td><%= kaigo_level_has_changed ? patient.kaigo_certification_validity_start.strftime("%Jf") : '' %></td>
+                    <td><span style="color:white">//</span></td>
                 </tr>
 
             </table>

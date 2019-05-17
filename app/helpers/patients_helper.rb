@@ -26,8 +26,8 @@ module PatientsHelper
         end
     end
 
-    def kaigo_level_text(patient)
-        case patient.kaigo_level
+    def kaigo_level_text(kaigo_level)
+        case kaigo_level
         when 7
             '申請中'
         when 0
@@ -45,6 +45,7 @@ module PatientsHelper
         when 6
             '要介護5'
         else 
+            ''
         end
     end
 

@@ -19,11 +19,11 @@ module CorporationsHelper
         when 1
             ""
         when 1.055
-            "訪問介護処遇改善加算I"
+            "訪問介護処遇改善加算III"
         when 1.1
             "訪問介護処遇改善加算II"
         when 1.137
-            "訪問介護処遇改善加算III"
+            "訪問介護処遇改善加算I"
         else
         end
     end

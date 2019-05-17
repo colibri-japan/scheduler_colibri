@@ -367,7 +367,7 @@ DEPENDENCIES
   wareki
   web-console (>= 3.3.0)
   wicked_pdf
-  wkhtmltopdf-heroku
+  wkhtmltopdf-heroku (= 2.12.4)
 
 BUNDLED WITH
    1.16.1

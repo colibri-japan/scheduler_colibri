@@ -2,10 +2,6 @@ class Patient < ApplicationRecord
 	acts_as_taggable
 	acts_as_taggable_on :caveats
 
-	attribute :birthday_year, :integer
-	attribute :birthday_month, :integer
-	attribute :birthday_day, :integer
-
 	belongs_to :corporation, touch: true
 	belongs_to :nurse, optional: true
 	belongs_to :care_manager, optional: true
@@ -18,7 +14,6 @@ class Patient < ApplicationRecord
 	validates :kana, presence: true, format: { with: /\A[\p{katakana}\p{blank}\0-9１-９}ー－]+\z/, message: 'フリガナはカタカナで入力してください' }
 	validate :name_uniqueness
 
-	before_save :build_birthday
 	before_save :save_previous_kaigo_level, if: :will_save_change_to_kaigo_level?
 	
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
@@ -51,11 +46,6 @@ class Patient < ApplicationRecord
 	end
 
 	private 
-
-	def build_birthday
-		date = Date.new(self.birthday_year.to_i, self.birthday_month.to_i, self.birthday_day.to_i) rescue nil
-		self.birthday = date if date.present?
-	end
 
 	def save_previous_kaigo_level
 		self.previous_kaigo_level = self.kaigo_level_was

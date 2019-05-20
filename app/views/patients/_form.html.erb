@@ -27,21 +27,22 @@
 
 
       <div class="form-row">
-        <div class="form-group col-md-2">
-          <%= form.label :birthday, "生年月日", class: "colibri-form-label-dark" %>
-        </div>
-        <div class="form-group col-md-7">
-          <%= form.select :birthday_era, options_for_select(wareki_era, patient.birthday_era), {prompt: '選択'} %>
-          <%= form.text_field :birthday_year, value: patient.birthday.try(:year), style: "width:25px;height:25px", placeholder: 'yy' %>年
-          <%= form.text_field :birthday_month, value: patient.birthday.try(:month), id: :patient_birthday_2i, style: "width:25px;height:25px", placeholder: 'mm' %>月
-          <%= form.text_field :birthday_day, value: patient.birthday.try(:day), style: "width:25px;height:25px", placeholder: 'dd' %>日
-        </div>
         <div class="form-group col-md-3">
           <%= form.label :gender, '性別', class: 'colibri-form-label-dark', style: 'text-align:right!important' %>
           <%= form.radio_button :gender, true, checked: patient.new_record? || patient.gender %>
           <%= form.label :gender, '女', value: true %>
           <%= form.radio_button :gender, false %>
           <%= form.label :gender, '男', value: false %>
+        </div>
+        <div class="form-group col-md-2">
+          <%= form.label :birthday, "生年月日", class: "colibri-form-label-dark" %>
+        </div>
+        <div class="form-group col-md-7">
+          <%= form.hidden_field :birthday, id: :patient_birthday %>
+          <%= select_tag :birthday_era, options_for_select(wareki_era, patient.birthday.try(:strftime, '%Je')), {prompt: '選択', id: :patient_birthday_era} %>
+          <%= text_field_tag :birthday_year, value = patient.birthday.try(:strftime, '%Jg'), {style: "width:28px;height:25px", placeholder: 'yy', id: :patient_birthday_year} %>年
+          <%= text_field_tag :birthday_month, value = patient.birthday.try(:month), {style: "width:28px;height:25px", placeholder: 'mm', id: :patient_birthday_month} %>月
+          <%= text_field_tag :birthday_day, value = patient.birthday.try(:day), {style: "width:28px;height:25px", placeholder: 'dd', id: :patient_birthday_day} %>日
         </div>
       </div>
 
@@ -135,10 +136,18 @@
         <%= form.label :kaigo_certification_validity_start, "認定期間", class: "colibri-form-label-dark" %>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <%= form.text_field :kaigo_certification_validity_start, id: :patient_kaigo_certification_validity_start, class: "form-control" %>
+            <%= form.hidden_field :kaigo_certification_validity_start, id: :patient_kaigo_certification_validity_start %>
+            <%= select_tag :kaigo_certification_validity_start_era, options_for_select(wareki_era, patient.kaigo_certification_validity_start.try(:strftime, '%Je')), {prompt: '選択', id: :patient_kaigo_certification_validity_start_era} %>
+            <%= text_field_tag :kaigo_certification_validity_start_year, value = patient.kaigo_certification_validity_start.try(:strftime, '%Jg'), {style: "width:28px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_start_year} %>年
+            <%= text_field_tag :kaigo_certification_validity_start_month, value = patient.kaigo_certification_validity_start.try(:month), {style: "width:28px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_start_month }%>月
+            <%= text_field_tag :kaigo_certification_validity_start_day, value = patient.kaigo_certification_validity_start.try(:day), {style: "width:28px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_start_day} %>日 ~
           </div>
           <div class="form-group col-md-6">
-            <%= form.text_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end, class: "form-control" %>
+            <%= form.hidden_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end %>
+            <%= select_tag :kaigo_certification_validity_end_era, options_for_select(wareki_era, patient.kaigo_certification_validity_end.try(:strftime, '%Je')), {prompt: '選択', id: :patient_kaigo_certification_validity_end_era} %>
+            <%= text_field_tag :kaigo_certification_validity_end_year, value = patient.kaigo_certification_validity_end.try(:strftime, '%Jg'), {style: "width:28px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_end_year} %>年
+            <%= text_field_tag :kaigo_certification_validity_end_month, value = patient.kaigo_certification_validity_end.try(:month), {style: "width:28px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_end_month }%>月
+            <%= text_field_tag :kaigo_certification_validity_end_day, value = patient.kaigo_certification_validity_end.try(:day), {style: "width:28px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_end_day} %>日
           </div>
         </div>
       </div>

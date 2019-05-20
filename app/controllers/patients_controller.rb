@@ -70,7 +70,10 @@ class PatientsController < ApplicationController
   end
 
   def create
-    @patient = Patient.new(patient_params)
+    params = patient_params
+    params = convert_wareki_dates(params) 
+
+    @patient = Patient.new(params)
     @patient.corporation_id = @corporation.id
 
     respond_to do |format|
@@ -83,8 +86,11 @@ class PatientsController < ApplicationController
   end
   
   def update
+    params = patient_params
+    params = convert_wareki_dates(params)
+
     respond_to do |format|
-      if @patient.update(patient_params)
+      if @patient.update(params)
         format.js
         format.html { redirect_back(fallback_location: authenticated_root_path, notice: '利用者様の情報がアップデートされました') }
       else
@@ -200,7 +206,17 @@ class PatientsController < ApplicationController
     @amount_paid_by_patient = @grand_total_amount - @amount_paid_by_insurance
   end
 
+  def convert_wareki_dates(params)
+    parsed_end = Date.parse(params[:kaigo_certification_validity_end]) rescue nil
+    parsed_start = Date.parse(params[:kaigo_certification_validity_start]) rescue nil
+    parsed_birthday = Date.parse(params[:birthday]) rescue nil
+    params[:kaigo_certification_validity_end] = parsed_end
+    params[:kaigo_certification_validity_start] = parsed_start
+    params[:birthday] = parsed_birthday
+    params
+  end
+
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :date_of_contract, :insurance_id, :birthday_year, :birthday_month, :birthday_day, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :birthday_era, :issuing_administration_number, :issuing_administration_name, insurance_policy: [], caveat_list:[])
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :date_of_contract, :insurance_id, :birthday, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :issuing_administration_number, :issuing_administration_name, insurance_policy: [], caveat_list:[])
   end
 end

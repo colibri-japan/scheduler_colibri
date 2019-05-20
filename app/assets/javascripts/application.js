@@ -1762,22 +1762,6 @@ let patientDatePicker = () => {
       locale: datepickerlocale
     })
   })
-  $('#patient_kaigo_certification_validity_start').focus(function(){
-    $(this).daterangepicker({
-      singleDatePicker: true,
-      showDropDowns: true,
-      startDate: moment(),
-      locale: datepickerlocale
-    })
-  })
-  $('#patient_kaigo_certification_validity_end').focus(function(){
-    $(this).daterangepicker({
-      singleDatePicker: true,
-      showDropDowns: true,
-      startDate: moment().add(1, 'year'),
-      locale: datepickerlocale
-    })
-  })
 }
 
 let nursePatientSelectize = () => {
@@ -2432,6 +2416,78 @@ let patientCaremanagerSelectize = () => {
   $('#patient_care_manager').selectize()
 }
 
+let patientWarekiFields = () => {
+  $('#patient_kaigo_certification_validity_start_era').change(function(){
+    set_kaigo_certification_validity_start()
+  })
+  $('#patient_kaigo_certification_validity_start_year').change(function(){
+    set_kaigo_certification_validity_start()
+  })
+  $('#patient_kaigo_certification_validity_start_month').change(function(){
+    set_kaigo_certification_validity_start()
+  })
+  $('#patient_kaigo_certification_validity_start_day').change(function(){
+    set_kaigo_certification_validity_start()
+  })
+  $('#patient_kaigo_certification_validity_end_era').change(function(){
+    set_kaigo_certification_validity_end()
+  })
+  $('#patient_kaigo_certification_validity_end_year').change(function(){
+    set_kaigo_certification_validity_end()
+  })
+  $('#patient_kaigo_certification_validity_end_month').change(function(){
+    set_kaigo_certification_validity_end()
+  })
+  $('#patient_kaigo_certification_validity_end_day').change(function(){
+    set_kaigo_certification_validity_end()
+  })
+  $('#patient_birthday_era').change(function(){
+    set_birthday()
+  })
+  $('#patient_birthday_year').change(function(){
+    set_birthday()
+  })
+  $('#patient_birthday_month').change(function(){
+    set_birthday()
+  })
+  $('#patient_birthday_day').change(function(){
+    set_birthday()
+  })
+}
+
+let set_kaigo_certification_validity_end = () => {
+  let era = $('#patient_kaigo_certification_validity_end_era').val() || ''
+  let year = $('#patient_kaigo_certification_validity_end_year').val() || ''
+  let month = $('#patient_kaigo_certification_validity_end_month').val() || ''
+  let day = $('#patient_kaigo_certification_validity_end_day').val() || ''
+  let wareki_date = era + year + '年' + month + '月' + day + '日'
+  console.log(wareki_date)
+  $('#patient_kaigo_certification_validity_end').val(wareki_date)
+  console.log($('#patient_kaigo_certification_validity_end').val())
+}
+
+let set_kaigo_certification_validity_start = () => {
+  let era = $('#patient_kaigo_certification_validity_start_era').val() || ''
+  let year = $('#patient_kaigo_certification_validity_start_year').val() || ''
+  let month = $('#patient_kaigo_certification_validity_start_month').val() || ''
+  let day = $('#patient_kaigo_certification_validity_start_day').val() || ''
+  let wareki_date = era + year + '年' + month + '月' + day + '日'
+  console.log(wareki_date)
+  $('#patient_kaigo_certification_validity_start').val(wareki_date)
+  console.log($('#patient_kaigo_certification_validity_start').val())
+}
+
+let set_birthday = () => {
+  let era = $('#patient_birthday_era').val() || ''
+  let year = $('#patient_birthday_year').val() || ''
+  let month = $('#patient_birthday_month').val() || ''
+  let day = $('#patient_birthday_day').val() || ''
+  let wareki_date = era + year + '年' + month + '月' + day + '日'
+  console.log(wareki_date)
+  $('#patient_birthday').val(wareki_date)
+  console.log($('#patient_birthday').val())
+}
+
 let scrollPosition
 
 document.addEventListener('turbolinks:load', function () {
@@ -2455,6 +2511,44 @@ document.addEventListener('turbolinks:load', function() {
     window.resourceSroll = null
   }
 })
+
+let patientBirthdayHelper = () => {
+  $('#patient_birthday_era').change(function(){
+    $('#patient_birthday_year').focus()
+  })
+  let valid_years = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64"]
+  let valid_months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+  let valid_days = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
+  $('#patient_birthday_year').on('input', function(){
+    if ($(this).val().length > 1) {
+      if (valid_years.includes($(this).val())) {
+        $('#patient_birthday_month').focus()
+      } else {
+        alert('年が間違ってます')
+        $(this).val('')
+      }
+    }
+  })
+  $('#patient_birthday_month').on('input', function(){
+    if ($(this).val().length > 1) {
+      if (valid_months.includes($(this).val())) {
+        $('#patient_birthday_day').focus()
+      } else {
+        alert('月が間違ってます')
+        $(this).val('')
+      }
+    }
+  })
+  $('#patient_birthday_day').on('input' ,function(){
+    if ($(this).val().length > 1) {
+      if (valid_days.includes($(this).val())) {
+      } else {
+        alert('日が間違ってます')
+        $(this).val('')
+      }
+    }
+  })
+}
 
 $(document).on('turbolinks:load', function(){
   initializeCalendar()

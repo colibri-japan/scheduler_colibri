@@ -541,47 +541,57 @@ p.payable-dashboard-line {
 
 /* line 126, app/assets/stylesheets/nurses.scss */
 .details-table-head {
-  width: 55px;
+  width: 20%;
 }
 
 /* line 130, app/assets/stylesheets/nurses.scss */
+.resource-detail-table {
+  width: 100%;
+}
+
+/* line 134, app/assets/stylesheets/nurses.scss */
+.resource-detail-table > tr {
+  width: 100%;
+}
+
+/* line 138, app/assets/stylesheets/nurses.scss */
 #resource-action-block {
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
-/* line 135, app/assets/stylesheets/nurses.scss */
+/* line 143, app/assets/stylesheets/nurses.scss */
 .btn-light-custom {
   border: 0.5px solid #eee;
 }
 
-/* line 139, app/assets/stylesheets/nurses.scss */
+/* line 147, app/assets/stylesheets/nurses.scss */
 #resource-detail-header {
   border-bottom: 0.5px solid #ddd;
 }
 
-/* line 143, app/assets/stylesheets/nurses.scss */
+/* line 151, app/assets/stylesheets/nurses.scss */
 .close-button-span:hover {
   cursor: pointer;
 }
 
-/* line 147, app/assets/stylesheets/nurses.scss */
+/* line 155, app/assets/stylesheets/nurses.scss */
 #payable-query {
   font-size: 0.7em;
 }
 
-/* line 151, app/assets/stylesheets/nurses.scss */
+/* line 159, app/assets/stylesheets/nurses.scss */
 .refresh-button {
   margin-bottom: 3px;
   background-color: #bbb;
 }
 
-/* line 156, app/assets/stylesheets/nurses.scss */
+/* line 164, app/assets/stylesheets/nurses.scss */
 .refresh-button:hover {
   cursor: pointer;
 }
 
-/* line 160, app/assets/stylesheets/nurses.scss */
+/* line 168, app/assets/stylesheets/nurses.scss */
 .colibri-payable-subtitle {
   margin-top: 20px;
   margin-bottom: 8px;
@@ -591,7 +601,7 @@ p.payable-dashboard-line {
 }
 
 @media print {
-  /* line 169, app/assets/stylesheets/nurses.scss */
+  /* line 177, app/assets/stylesheets/nurses.scss */
   #payable-container {
     margin: 0px;
     height: auto !important;
@@ -1010,6 +1020,7 @@ footer {
   overflow-y: scroll;
   margin: 3px;
 }
+@charset "UTF-8";
 /* line 6, app/assets/stylesheets/plannings.scss */
 #planning-view-container {
   display: flex;
@@ -1192,7 +1203,7 @@ li.planning-menu-selected {
 /* line 167, app/assets/stylesheets/plannings.scss */
 #settings-menu-container {
   height: 100%;
-  width: 230px;
+  width: 200px;
   position: fixed;
   z-index: 0;
   top: 0;
@@ -1346,53 +1357,71 @@ ul.chosen-results {
 }
 
 /* line 304, app/assets/stylesheets/plannings.scss */
+.settings-list-element-selected::after {
+  content: '•';
+  color: #17a2b8;
+  position: absolute;
+  margin-left: 2px;
+  font-size: 1.1em;
+}
+
+/* line 312, app/assets/stylesheets/plannings.scss */
 .settings-list-url {
   color: #ccc !important;
 }
 
-/* line 308, app/assets/stylesheets/plannings.scss */
+/* line 316, app/assets/stylesheets/plannings.scss */
 .settings-list-url:hover {
   color: white !important;
 }
 
-/* line 312, app/assets/stylesheets/plannings.scss */
+/* line 320, app/assets/stylesheets/plannings.scss */
 #settings-list {
   margin-right: 20px;
   margin-left: 20px;
 }
 
-/* line 317, app/assets/stylesheets/plannings.scss */
+/* line 325, app/assets/stylesheets/plannings.scss */
 .settings-list-element {
   width: 100%;
-  border-bottom: solid #ccc 0.5px;
 }
 
-/* line 322, app/assets/stylesheets/plannings.scss */
+/* line 329, app/assets/stylesheets/plannings.scss */
 #settings-menu-list {
   text-align: right;
   margin-top: 15px;
 }
 
-/* line 327, app/assets/stylesheets/plannings.scss */
+/* line 334, app/assets/stylesheets/plannings.scss */
 #settings-container {
-  width: calc(100% - 300px);
+  width: calc(100% - 270px);
   margin-left: auto;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
-/* line 333, app/assets/stylesheets/plannings.scss */
+/* line 340, app/assets/stylesheets/plannings.scss */
+.settings-list-header {
+  font-size: 1.5em;
+  color: #ccc;
+  border-bottom: solid #ccc 0.5px;
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+  width: 100%;
+}
+
+/* line 349, app/assets/stylesheets/plannings.scss */
 #planning-options {
   max-width: 500px;
   margin-bottom: 30px;
 }
 
-/* line 338, app/assets/stylesheets/plannings.scss */
+/* line 354, app/assets/stylesheets/plannings.scss */
 #printing-options {
   max-width: 340px;
   margin-bottom: 30px;
 }
 
-/* line 343, app/assets/stylesheets/plannings.scss */
+/* line 359, app/assets/stylesheets/plannings.scss */
 .colibri-xs-title {
   color: #4F4F4F;
   font-size: 1.15em;
@@ -1400,13 +1429,13 @@ ul.chosen-results {
   padding-bottom: 5px;
 }
 
-/* line 350, app/assets/stylesheets/plannings.scss */
+/* line 366, app/assets/stylesheets/plannings.scss */
 #resource-detail-header {
   display: flex;
   justify-content: space-between;
 }
 
-/* line 355, app/assets/stylesheets/plannings.scss */
+/* line 371, app/assets/stylesheets/plannings.scss */
 #resource-name-wrapper {
   font-weight: bold;
   font-size: 1.5em;
@@ -1415,18 +1444,18 @@ ul.chosen-results {
   padding-top: 10px;
 }
 
-/* line 363, app/assets/stylesheets/plannings.scss */
+/* line 379, app/assets/stylesheets/plannings.scss */
 .resource-title-selectable:hover {
   cursor: pointer;
   color: #D6D9DC;
 }
 
-/* line 368, app/assets/stylesheets/plannings.scss */
+/* line 384, app/assets/stylesheets/plannings.scss */
 #nurse-conflict-confirm {
   display: none;
 }
 
-/* line 372, app/assets/stylesheets/plannings.scss */
+/* line 388, app/assets/stylesheets/plannings.scss */
 #appointment-comments-container {
   width: 100%;
   margin-left: 0px;
@@ -1435,32 +1464,32 @@ ul.chosen-results {
   font-size: 1.1em;
 }
 
-/* line 380, app/assets/stylesheets/plannings.scss */
+/* line 396, app/assets/stylesheets/plannings.scss */
 #appointment-comments {
   margin-left: 0px;
 }
 
-/* line 384, app/assets/stylesheets/plannings.scss */
+/* line 400, app/assets/stylesheets/plannings.scss */
 .appointment-comments-title {
   font-weight: bold;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
-/* line 390, app/assets/stylesheets/plannings.scss */
+/* line 406, app/assets/stylesheets/plannings.scss */
 #description-container {
   margin-bottom: 0px;
   padding-bottom: 0px;
 }
 
-/* line 395, app/assets/stylesheets/plannings.scss */
+/* line 411, app/assets/stylesheets/plannings.scss */
 .colibri-form-subsection {
   width: 100%;
   margin-bottom: 10px;
   margin-top: 5px;
 }
 
-/* line 402, app/assets/stylesheets/plannings.scss */
+/* line 418, app/assets/stylesheets/plannings.scss */
 .colibri-form-subsection-title {
   margin-top: 15px;
   padding-bottom: 5px;
@@ -1470,12 +1499,12 @@ ul.chosen-results {
   color: black;
 }
 
-/* line 411, app/assets/stylesheets/plannings.scss */
+/* line 427, app/assets/stylesheets/plannings.scss */
 .report-download-wrapper {
   margin-top: 5px;
 }
 
-/* line 415, app/assets/stylesheets/plannings.scss */
+/* line 431, app/assets/stylesheets/plannings.scss */
 .batch-action-button {
   position: fixed;
   text-align: center;
@@ -1490,36 +1519,36 @@ ul.chosen-results {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
-/* line 429, app/assets/stylesheets/plannings.scss */
+/* line 445, app/assets/stylesheets/plannings.scss */
 .batch-action-button:hover {
   background: #f15365;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-/* line 435, app/assets/stylesheets/plannings.scss */
+/* line 451, app/assets/stylesheets/plannings.scss */
 span.glyphicon.glyphicon-pencil.batch-action-pencil {
   color: white;
   line-height: 40px;
 }
 
-/* line 440, app/assets/stylesheets/plannings.scss */
+/* line 456, app/assets/stylesheets/plannings.scss */
 .master-reflect-option:hover {
   cursor: pointer;
   color: black !important;
 }
 
-/* line 445, app/assets/stylesheets/plannings.scss */
+/* line 461, app/assets/stylesheets/plannings.scss */
 p.master-reflect-option {
   margin-bottom: 5px;
 }
 
-/* line 450, app/assets/stylesheets/plannings.scss */
+/* line 466, app/assets/stylesheets/plannings.scss */
 .glyphicon-action-button {
   color: #85929E;
   font-size: 1.2em;
 }
 
-/* line 455, app/assets/stylesheets/plannings.scss */
+/* line 471, app/assets/stylesheets/plannings.scss */
 .colibri-toggle-switch {
   display: flex;
   padding: 0px !important;
@@ -1527,7 +1556,7 @@ p.master-reflect-option {
   height: 40px;
 }
 
-/* line 462, app/assets/stylesheets/plannings.scss */
+/* line 478, app/assets/stylesheets/plannings.scss */
 .colibri-toggle-handle {
   padding: 0px !important;
   height: 92%;
@@ -1535,41 +1564,41 @@ p.master-reflect-option {
   margin: -2px 1px 1px 1px;
 }
 
-/* line 469, app/assets/stylesheets/plannings.scss */
+/* line 485, app/assets/stylesheets/plannings.scss */
 .colibri-handle-left {
   border-radius: 4px 2px 2px 4px !important;
 }
 
-/* line 473, app/assets/stylesheets/plannings.scss */
+/* line 489, app/assets/stylesheets/plannings.scss */
 .colibri-handle-right {
   border-radius: 2px 4px 4px 2px !important;
 }
 
-/* line 477, app/assets/stylesheets/plannings.scss */
+/* line 493, app/assets/stylesheets/plannings.scss */
 .colibri-toggle-text-left {
   margin: 6px 12px 6px 18px;
 }
 
-/* line 481, app/assets/stylesheets/plannings.scss */
+/* line 497, app/assets/stylesheets/plannings.scss */
 .colibri-toggle-text-right {
   margin: 6px 18px 6px 12px;
 }
 
-/* line 485, app/assets/stylesheets/plannings.scss */
+/* line 501, app/assets/stylesheets/plannings.scss */
 .colibri-bg-green {
   background: linear-gradient(90deg, white 1.5px, transparent 1%) center, linear-gradient(white 1.5px, transparent 1%) center, #67DCA4 !important;
   background-size: 2.5px 2.5px !important;
   opacity: 1 !important;
 }
 
-/* line 494, app/assets/stylesheets/plannings.scss */
+/* line 510, app/assets/stylesheets/plannings.scss */
 .colibri-bg-yellow {
   background: linear-gradient(90deg, white 1.5px, transparent 1%) center, linear-gradient(white 1.5px, transparent 1%) center, #FFDA62 !important;
   background-size: 2.5px 2.5px !important;
   opacity: 1 !important;
 }
 
-/* line 503, app/assets/stylesheets/plannings.scss */
+/* line 519, app/assets/stylesheets/plannings.scss */
 .colibri-bg-red {
   background: linear-gradient(90deg, white 1.5px, transparent 1%) center, linear-gradient(white 1.5px, transparent 1%) center, #FD9BA6 !important;
   background-size: 2.5px 2.5px !important;
@@ -1577,34 +1606,34 @@ p.master-reflect-option {
 }
 
 @media print {
-  /* line 513, app/assets/stylesheets/plannings.scss */
+  /* line 529, app/assets/stylesheets/plannings.scss */
   #index-container {
     width: 95%;
   }
-  /* line 517, app/assets/stylesheets/plannings.scss */
+  /* line 533, app/assets/stylesheets/plannings.scss */
   #index-table-container {
     margin: 0px;
   }
 }
 
 @media screen and (orientation: portrait) {
-  /* line 525, app/assets/stylesheets/plannings.scss */
+  /* line 541, app/assets/stylesheets/plannings.scss */
   div .fc-scroller {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 530, app/assets/stylesheets/plannings.scss */
+  /* line 546, app/assets/stylesheets/plannings.scss */
   #detail-planning-container, #detail-container, #planning-container {
     overflow: visible !important;
     height: auto !important;
   }
-  /* line 535, app/assets/stylesheets/plannings.scss */
+  /* line 551, app/assets/stylesheets/plannings.scss */
   #colibri-batch-action-button, #colibri-batch-master-action-button {
     height: 90px;
     width: 90px;
     border-radius: 90px;
   }
-  /* line 541, app/assets/stylesheets/plannings.scss */
+  /* line 557, app/assets/stylesheets/plannings.scss */
   span.glyphicon.glyphicon-pencil.batch-action-pencil {
     line-height: 74px;
     font-size: 1.7em;
@@ -1816,6 +1845,7 @@ label {
 .new-scan {
   margin-bottom: 7px;
 }
+@charset "UTF-8";
 /* line 1, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo-container {
   page-break-after: always;
@@ -1823,12 +1853,17 @@ label {
 }
 
 /* line 6, app/assets/stylesheets/teikyohyo.scss */
+html {
+  font-family: 'IPAexゴシック', 'IPA Pゴシック', 'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+}
+
+/* line 10, app/assets/stylesheets/teikyohyo.scss */
 .table.table-bordered {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* line 11, app/assets/stylesheets/teikyohyo.scss */
+/* line 15, app/assets/stylesheets/teikyohyo.scss */
 .table.table-teikyohyo > thead > tr > td, .table.table-teikyohyo > tbody > tr > td {
   border: 0.5px solid black;
   padding: 1px;
@@ -1836,7 +1871,7 @@ label {
   vertical-align: middle;
 }
 
-/* line 18, app/assets/stylesheets/teikyohyo.scss */
+/* line 22, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo_title {
   font-weight: bold;
   font-size: 1.3em;
@@ -1845,17 +1880,17 @@ label {
   margin-bottom: 15px;
 }
 
-/* line 26, app/assets/stylesheets/teikyohyo.scss */
+/* line 30, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo-container {
   padding: 5px;
 }
 
-/* line 30, app/assets/stylesheets/teikyohyo.scss */
+/* line 34, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo_1_body {
   margin-top: 15px;
 }
 
-/* line 34, app/assets/stylesheets/teikyohyo.scss */
+/* line 38, app/assets/stylesheets/teikyohyo.scss */
 .gray_row {
   background-color: #eee;
 }

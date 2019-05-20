@@ -62,7 +62,7 @@ gem 'pundit'
 gem 'miyabi'
 
 #japanese dates
-gem 'wareki'
+gem 'wareki', '0.4.0'
 
 #create excel templates with axlsx
 gem 'rubyzip', '>= 1.2.2'

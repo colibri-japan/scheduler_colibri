@@ -45,6 +45,35 @@ class Patient < ApplicationRecord
 		}
 	end
 
+	def current_kaigo_level
+		if self.kaigo_certification_validity_start.present? && (Date.today.beginning_of_month..Date.today.end_of_month).include?(self.kaigo_certification_validity_start)
+			(kaigo_level || 0) >= (self.previous_kaigo_level || 0) ? self.kaigo_level : self.previous_kaigo_level
+		else
+			kaigo_level
+		end
+	end
+
+	def current_max_credits
+		case current_kaigo_level
+		when 0
+			5003
+		when 1
+			10473
+		when 2
+			16692
+		when 3
+			19616
+		when 4
+			26931
+		when 5
+			30806
+		when 6
+			36065
+		else
+			0
+		end
+	end
+
 	private 
 
 	def save_previous_kaigo_level

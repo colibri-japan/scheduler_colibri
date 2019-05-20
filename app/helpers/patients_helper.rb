@@ -4,8 +4,8 @@ module PatientsHelper
         patient.gender ? '女' : '男'
     end
 
-    def maximum_budget(patient)
-        case patient.kaigo_level
+    def maximum_budget(kaigo_level)
+        case kaigo_level
         when 7
             ''
         when 0

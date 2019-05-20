@@ -39,9 +39,9 @@
                     <% kaigo_level_has_changed = patient.previous_kaigo_level.present? && (@first_day..@last_day).include?(patient.kaigo_certification_validity_start) %>
                     <td><%= kaigo_level_has_changed ? kaigo_level_text(patient.previous_kaigo_level) : kaigo_level_text(patient.kaigo_level) %></td>
                     <td rowspan="3">区分支給限度基準額</td>
-                    <td rowspan="3" style="width:10%"><%= maximum_budget(patient) %></td>
+                    <td rowspan="3" style="width:10%"><%= maximum_budget(patient.current_kaigo_level) %></td>
                     <td rowspan="3" style="width:10%">限度額適用期間</td>
-                    <td rowspan="3"><%= "#{patient.kaigo_certification_validity_start.try(:strftime, "%Jf")}" %><br/>~<br/><%= "#{patient.kaigo_certification_validity_end.try(:strftime, '%Jf')}" %></td>
+                    <td rowspan="3"><%= "#{patient.kaigo_certification_validity_start.try(:strftime, "%Jy年%Jm月")}" %><br/>~<br/><%= "#{patient.kaigo_certification_validity_end.try(:strftime, '%Jy年%Jm月')}" %></td>
                     <td rowspan="2">前月までの短期入所利用日数</td>
                 </tr>
                 <tr>
@@ -241,7 +241,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="5">区分支給限度基準: <%= maximum_budget(patient) %></td>
+                        <td colspan="5">区分支給限度基準: <%= maximum_budget(patient.current_kaigo_level) %></td>
                         <td colspan="4">合計：<%= sum_of_credits %></td>
                         <td>0</td>
                         <td><%= sum_of_credits %></td>

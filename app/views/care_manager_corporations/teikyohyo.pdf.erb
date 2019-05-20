@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td rowspan="3">生年月日</td>
-                    <td rowspan="3"><%= "#{patient.birthday_era}#{patient.birthday.try(:strftime, '%y年%m月%d日')}" %></td>
+                    <td rowspan="3"><%= "#{patient.birthday.try(:strftime, '%Jf')}" %></td>
                     <td>性別</td>
                     <td>要介護状態区分</td>
                     <% kaigo_level_has_changed = patient.previous_kaigo_level.present? && (@first_day..@last_day).include?(patient.kaigo_certification_validity_start) %>

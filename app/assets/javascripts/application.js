@@ -2513,33 +2513,33 @@ document.addEventListener('turbolinks:load', function() {
 })
 
 let patientBirthdayHelper = () => {
-  $('#patient_birthday_era').change(function(){
-    $('#patient_birthday_year').focus()
+  $('.wareki_era').change(function(){
+    $(this).next('.wareki_year').focus()
   })
   let valid_years = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64"]
   let valid_months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
   let valid_days = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
-  $('#patient_birthday_year').on('input', function(){
+  $('.wareki_year').on('input', function(){
     if ($(this).val().length > 1) {
       if (valid_years.includes($(this).val())) {
-        $('#patient_birthday_month').focus()
+        $(this).next('.wareki_month').focus()
       } else {
         alert('年が間違ってます')
         $(this).val('')
       }
     }
   })
-  $('#patient_birthday_month').on('input', function(){
+  $('.wareki_month').on('input', function(){
     if ($(this).val().length > 1) {
       if (valid_months.includes($(this).val())) {
-        $('#patient_birthday_day').focus()
+        $(this).next('.wareki_day').focus()
       } else {
         alert('月が間違ってます')
         $(this).val('')
       }
     }
   })
-  $('#patient_birthday_day').on('input' ,function(){
+  $('.wareki_day').on('input' ,function(){
     if ($(this).val().length > 1) {
       if (valid_days.includes($(this).val())) {
       } else {

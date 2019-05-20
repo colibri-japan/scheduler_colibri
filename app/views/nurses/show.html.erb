@@ -84,10 +84,18 @@
 						<td class="details-table-head">スキル</td>
 						<td><%= @nurse.skill_list %></td>
 					</tr>
-					<tr>
-						<td class="details-table-head">備考</td>
-						<td><%= @nurse.description %></td>
-					</tr>
+					<% if @nurse.days_worked.present? %>
+						<tr>
+							<td class="details-table-head">稼動日数</td>
+							<td><%= @nurse.days_worked %>日</td>
+						</tr>
+					<% end %>
+					<% if @nurse.description.present? %>
+						<tr>
+							<td class="details-table-head">備考</td>
+							<td><%= @nurse.description %></td>
+						</tr>
+					<% end %>
 				</table>
 			</div>
 			<div id="service-history-block">

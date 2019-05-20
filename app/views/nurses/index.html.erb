@@ -12,8 +12,9 @@
           <th class="table-important-fields">名前</th>
           <th class="table-important-fields">電話番号</th>
           <th class="table-important-fields">メール</th>
+          <th class="table-important-fields">稼動日数</th>
           <th class="table-important-fields">正社員</th>
-          <th class="table-important-fields">リマインダーを送る</th>
+          <th class="table-important-fields">リマインダー</th>
         </tr>
       </thead>
 
@@ -24,6 +25,7 @@
               <td><%= nurse.name %></td>
               <td><%= nurse.phone_number %></td>
               <td><%= nurse.phone_mail %></td>
+              <td><%= "#{nurse.days_worked}日" if nurse.days_worked.present? %></td>
               <td>
                 <% if nurse.full_timer == true %>
                   <span class="glyphicon glyphicon-ok" style="color: #42B97C"></span>

@@ -50,7 +50,7 @@ class SalaryRule < ApplicationRecord
                 total_wage = 0
             end
 
-            ProvidedService.create(nurse_id: nurse.id, planning_id: corporation.planning.id, service_date: (Time.current + 9.hours), title: self.title, hour_based_wage: self.hour_based, service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, skip_callbacks_except_calculate_total_wage: true, skip_calculate_total_wage_callback: true)
+            ProvidedService.create(nurse_id: nurse.id, planning_id: corporation.planning.id, service_date: (Time.current + 9.hours), title: self.title, hour_based_wage: self.hour_based, service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
         end
     end
 

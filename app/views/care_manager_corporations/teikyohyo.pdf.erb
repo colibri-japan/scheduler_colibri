@@ -88,7 +88,7 @@
                     <% service_shift_array.each do |hash_of_service_and_shifts| %>
                       <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
                         <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
-                            <td rowspan="2"><%= "#{shift[:start_time][0..-4]} ~ #{shift[:end_time][0..-4]}" %></td>
+                            <td rowspan="2"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
                             <td rowspan="2"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
                             <td rowspan="2"><%= @corporation.name %></td>
                             <td>予定</td>

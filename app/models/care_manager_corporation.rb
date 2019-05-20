@@ -55,10 +55,10 @@ class CareManagerCorporation < ApplicationRecord
 
         shift_dates = ProvidedService.where(patient_id: patient.id, title: service_title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).not_archived.in_range(date_range).pluck(:appointment_start, :appointment_end)
 
-        shift_dates.map {|e| e[0] = e[0].strftime("%H:%M:%S")}
-        shift_dates.map {|e| e[1] = e[1].strftime("%H:%M:%S")}
+        shift_dates.map {|e| e[0] = e[0].strftime("%H:%M")}
+        shift_dates.map {|e| e[1] = e[1].strftime("%H:%M")}
         shift_dates.uniq!
-
+        shift_dates.sort! {|a,b| [a[0], a[1]] <=> [b[0], b[1]] }
 
         shift_dates.each do |start_and_end|
             shift_hash = {}

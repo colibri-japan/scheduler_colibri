@@ -5,25 +5,12 @@ class CreateIndividualAppointmentsWorker
     def perform(recurring_appointment_id, year1, month1, year2, month2, year3, month3, select_year_and_month_2, select_year_and_month_3)
         recurring_appointment = RecurringAppointment.find(recurring_appointment_id.to_i)
         service = recurring_appointment.service
-
-        puts 'select 2nd month'
-        puts select_year_and_month_2
-        puts 'select 3rd month'
-        puts select_year_and_month_3
         
         month_1_occurrences = recurring_appointment.appointments(first_day_of(year1, month1), last_day_of(year1, month1))
         month_2_occurrences = select_year_and_month_2 == 'true' ? recurring_appointment.appointments(first_day_of(year2, month2), last_day_of(year2, month2)) : []
         month_3_occurrences = select_year_and_month_3 == 'true' ? recurring_appointment.appointments(first_day_of(year3, month3), last_day_of(year3, month3)) : []
 
-        puts 'month 1, 2, 3 occurrences'
-        puts month_1_occurrences
-        puts month_2_occurrences
-        puts month_3_occurrences
-        
         occurrences = (month_1_occurrences + month_2_occurrences + month_3_occurrences).flatten
-
-        puts 'flattened sum of occurrences'
-        puts occurrences
         
         new_appointments = []
         new_provided_services = []
@@ -50,6 +37,7 @@ class CreateIndividualAppointmentsWorker
         Appointment.import new_appointments 
 
         new_appointments.each do |appointment|
+            service_salary_id = Service.where(title: appointment.title, nurse_id: appointment.nurse_id).first.id rescue nil
             provided_duration = appointment.ends_at - appointment.starts_at
             new_provided_service = ProvidedService.new(
                 appointment_id: appointment.id, 
@@ -63,7 +51,8 @@ class CreateIndividualAppointmentsWorker
                 hour_based_wage: service.hour_based_wage, 
                 service_date: appointment.starts_at, 
                 appointment_start: appointment.starts_at, 
-                appointment_end: appointment.ends_at
+                appointment_end: appointment.ends_at,
+                service_salary_id: service_salary_id
             )
             new_provided_service.run_callbacks(:save) { false } 
             new_provided_services << new_provided_service

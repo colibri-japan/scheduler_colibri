@@ -43,6 +43,7 @@ class CopyPatientPlanningFromMasterWorker
 
     new_appointments.each do |appointment|
       if appointment.id.present?
+        service_salary_id = Service.where(title: appointment.title.first, nurse_id: appointment.nurse_id).first.present? ? Service.where(title: appointment.title.first, nurse_id: appointment.nurse_id).first : appointment.service_id
         provided_duration = appointment.ends_at - appointment.starts_at
         new_provided_service = ProvidedService.new(
           appointment_id: appointment.id, 
@@ -57,6 +58,7 @@ class CopyPatientPlanningFromMasterWorker
           service_date: appointment.starts_at, 
           appointment_start: appointment.starts_at, 
           appointment_end: appointment.ends_at,
+          service_salary_id: service_salary_id
         )
         new_provided_service.run_callbacks(:save) { false }
         new_provided_services << new_provided_service

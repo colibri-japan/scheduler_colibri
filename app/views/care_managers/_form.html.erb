@@ -16,7 +16,11 @@
     </div>
 
     <div class="modal-footer">
-        <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+        <% if care_manager.new_record? %>
+            <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+        <% else %>
+            <%= link_to '削除', care_manager_corporation_care_manager_path(care_manager_corporation, care_manager), method: :delete, class: 'btn btn-danger', data: {confirm: 'ケアマネジャーが削除され、担当されていた利用者様からケアマネジャーが外されます。'} %>
+        <% end %>
         <%= form.submit "セーブする", class: 'btn btn-info' %>
     </div>
 

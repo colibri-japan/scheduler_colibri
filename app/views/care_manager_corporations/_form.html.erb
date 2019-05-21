@@ -24,7 +24,11 @@
     </div>
 
     <div class="modal-footer">
-        <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+        <% if care_manager_corporation.new_record? %>
+            <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+        <% else %>
+            <%= link_to '削除', care_manager_corporation, method: :delete, class: 'btn btn-danger', data: {confirm: '居宅介護支援事業所と同時にケアマネジャーが削除されます。担当されていた利用者様からケアマネジャーが外されます。'} %>
+        <% end %>
         <%= form.submit 'セーブする', class: "btn btn-info" %>
     </div>
 <% end %>

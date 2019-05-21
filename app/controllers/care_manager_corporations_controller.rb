@@ -33,6 +33,18 @@ class CareManagerCorporationsController < ApplicationController
     
     @care_manager_corporation.update(care_manager_corporations_params)
   end
+
+  def destroy
+    @care_manager_corporation = CareManagerCorporation.find(params[:id])
+
+    respond_to do |format|
+      if @care_manager_corporation.destroy 
+        format.html { redirect_to care_manager_corporations_path, notice: '居宅介護支援事業所が削除されました' }
+      else
+        format.html { redirect_to care_manager_corporations_path, alert: '居宅介護支援事業所の削除が失敗しました' }
+      end
+    end
+  end
   
   def teikyohyo
     if params[:m].present? && params[:y].present?

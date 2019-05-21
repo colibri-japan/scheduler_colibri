@@ -28,6 +28,18 @@ class CareManagersController < ApplicationController
     @care_manager.update(care_manager_params)
   end
 
+  def destroy
+    @care_manager = CareManager.find(params[:id])
+
+    respond_to do |format|
+      if @care_manager.destroy
+        format.html {redirect_to care_manager_corporations_path, notice: 'ケアマネが削除されました'}
+      else
+        format.html {redirect_to care_manager_corporations_path, alert: 'ケアマネの削除が失敗しました'}
+      end
+    end 
+  end
+
   private 
 
   def set_care_manager_corporation

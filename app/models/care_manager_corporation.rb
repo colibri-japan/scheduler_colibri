@@ -1,7 +1,7 @@
 class CareManagerCorporation < ApplicationRecord
 
     belongs_to :corporation
-    has_many :care_managers
+    has_many :care_managers, dependent: :destroy
 
     def teikyohyo_data(first_day, last_day)
         patients = Patient.where(care_manager_id: self.care_managers.ids).still_active_at(first_day.to_date)

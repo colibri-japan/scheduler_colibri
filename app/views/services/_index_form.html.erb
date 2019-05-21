@@ -53,6 +53,11 @@
     </div>
 
     <div class="form-group">
+      <%= form.label :credit_calculation_method, "単位計算方法", class:"colibri-form-label-dark" %>
+      <%= form.select :credit_calculation_method, options_for_select([['稼動回数 x 単位数', 0], ['単位数 x 1 /月', 1], ['日数 x 単位数（日割り）', 2]], service.credit_calculation_method), id: :service_credit_calculation_method %>
+    </div>
+
+    <div class="form-group">
       <%= form.check_box :recalculate_previous_credits_and_invoice, checked: true, id: :service_recalculate_previous_credits_and_invoice %>
     </div>
     

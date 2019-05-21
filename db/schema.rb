@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190520103020) do
+ActiveRecord::Schema.define(version: 20190521203707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -477,6 +477,7 @@ ActiveRecord::Schema.define(version: 20190520103020) do
     t.string "official_title"
     t.integer "unit_credits"
     t.string "service_code"
+    t.integer "credit_calculation_method", default: 0
     t.index ["corporation_id"], name: "index_services_on_corporation_id"
     t.index ["nurse_id"], name: "index_services_on_nurse_id"
   end

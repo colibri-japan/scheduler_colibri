@@ -35,14 +35,20 @@ class CareManagerCorporation < ApplicationRecord
             service_type = Service.where(nurse_id: nil, title: title, corporation_id: patient.corporation_id).first
             service_hash = {}
             if service_type.present? && service_type.official_title.present?
-                provided_services = ProvidedService.where(patient: patient.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range)
+                provided_services = ProvidedService.where(patient: patient.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).order(:appointment_start)
                 service_hash[:title] = title
                 service_hash[:official_title] = service_type.official_title if service_type.present?
                 service_hash[:service_code] = service_type.service_code if service_type.present?
                 service_hash[:unit_credits] = service_type.unit_credits if service_type.present?
-                service_hash[:sum_total_credits] = provided_services.sum(:total_credits)
+                if service_type.credit_calculation_method == 0
+                    service_hash[:sum_total_credits] = provided_services.sum(:total_credits)
+                elsif service_type.credit_calculation_method == 1
+                    service_hash[:sum_total_credits] = service_type.unit_credits
+                elsif service_type.credit_calculation_method == 2
+                    service_hash[:sum_total_credits] = ((provided_services.first.service_date.to_date)..(date_range.last.to_date)).count * service_type.unit_credits
+                end
                 service_hash[:sum_invoiced_total] = provided_services.sum(:invoiced_total)
-                service_hash[:count] = provided_services.count
+                service_hash[:count] = service_type.credit_calculation_method == 2 ? ((provided_services.first.service_date.to_date)..(date_range.last.to_date)).count : provided_services.count
 
                 array_of_services_hashes << service_hash
             end

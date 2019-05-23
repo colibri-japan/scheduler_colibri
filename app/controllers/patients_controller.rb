@@ -135,7 +135,9 @@ class PatientsController < ApplicationController
 
     @services_from_appointments = ProvidedService.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :patient).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
     
-    @provided_service_summary = @patient.provided_service_summary(@first_day..@end_of_today_in_japan)
+    @provided_service_summary = @patient.provided_service_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
+    @provided_service_summary_without_insurance = @patient.provided_service_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
+    @cancelled_but_invoiceable_appointments = @services_from_appointments.where(cancelled: true).where.not(invoiced_total: [nil, 0, ''])
 
     respond_to do |format|
       format.html 

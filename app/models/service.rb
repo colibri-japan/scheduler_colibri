@@ -22,6 +22,11 @@ class Service < ApplicationRecord
   scope :order_by_title, -> { order(:title) }
   scope :without_nurse_id, -> { where(nurse_id: nil) }
 
+
+  def invoiced_to_insurance?
+    service_code.present? && official_title.present?
+  end
+
   private 
 
   def default_hour_based_wage

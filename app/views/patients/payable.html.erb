@@ -99,9 +99,31 @@
                 <td><%= credits_exceeding_max_budget = total_credits - credits_within_max_budget %></td>
                 <td><%= amount_invoiced_exceeding_max_budget = total_invoiced - amount_invoiced_within_max_budget %>¥</td>
             </tr>
+            <% @provided_service_summary_without_insurance.each do |service_summary_hash| %>
+                <tr style="<%= 'border-top:2px solid #ddd !important' if @provided_service_summary_without_insurance.index(service_summary_hash) == 0 %>">
+                    <td><%= service_summary_hash[:title] %></td>
+                    <td><%= service_summary_hash[:unit_credits] %></td>
+                    <td><%= service_summary_hash[:count] %></td>
+                    <td></td>
+                    <td><%= service_summary_hash[:sum_invoiced_total] %>¥</td>
+                </tr>
+            <% end %>
+            <% @cancelled_but_invoiceable_appointments.where(cancelled: true).each do |cancelled_appointment| %>
+                <tr style="<%= 'border-top:2px solid #ddd !important' if !@provided_service_summary_without_insurance.present? && @cancelled_but_invoiceable_appointments.index(cancelled_appointment) == 0 %>">
+                    <td><%= "#{cancelled_appointment.title}(#{cancelled_appointment.starts_as.strftime('%Jf')}キャンセル)" %></td>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                    <td><%= cancelled_appointment.total_invoiced %>¥</td>
+                </tr>
+            <% end %>
+            <tr>
+                <td colspan="4">保険対象外合計</td>
+                <td><%= total_invoiced_outside_insurance_scope = @provided_service_summary_without_insurance.sum {|hash| hash[:sum_invoiced_total]} %>¥</td>
+            </tr>
             <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
                 <td colspan="4">合計</td>
-                <td><%= total_invoiced_to_patient = amount_invoiced_to_patient_within_max_budget + amount_invoiced_exceeding_max_budget %>¥</td>
+                <td><%= total_invoiced_to_patient = amount_invoiced_to_patient_within_max_budget + amount_invoiced_exceeding_max_budget + total_invoiced_outside_insurance_scope %>¥</td>
             </tr>
         </tbody>
     </table>

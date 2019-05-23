@@ -74,14 +74,19 @@ class Patient < ApplicationRecord
 		end
 	end
 
-	def provided_service_summary(date_range)
+	def provided_service_summary(date_range, options = {})
+		inside_or_outside_insurance_scope = options[:within_insurance_scope] || false 
+		
 		array_of_service_summary = []
 		provided_services_titles = ProvidedService.where(patient: self.id, archived_at: nil).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).pluck(:title).uniq
 
         provided_services_titles.each do |title|
             service_type = Service.where(nurse_id: nil, title: title, corporation_id: self.corporation_id).first
-            service_hash = {}
-            if service_type.present? && service_type.official_title.present?
+			service_hash = {}
+			
+			service_is_valid = service_type.invoiced_to_insurance? == inside_or_outside_insurance_scope
+
+            if service_type.present? && service_is_valid
                 provided_services = ProvidedService.where(patient: self.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).order(:appointment_start)
                 service_hash[:title] = title
                 service_hash[:official_title] = service_type.try(:official_title)
@@ -94,7 +99,6 @@ class Patient < ApplicationRecord
                 elsif service_type.credit_calculation_method == 2
                     service_hash[:sum_total_credits] = ((provided_services.first.service_date.to_date)..(date_range.last.to_date)).count * (service_type.try(:unit_credits) || 0)
 				end
-				#may not need sum_invoiced_total
                 service_hash[:sum_invoiced_total] = provided_services.sum(:invoiced_total)
                 service_hash[:count] = service_type.credit_calculation_method == 2 ? ((provided_services.first.service_date.to_date)..(date_range.last.to_date)).count : provided_services.count
 

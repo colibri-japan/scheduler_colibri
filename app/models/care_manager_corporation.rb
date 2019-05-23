@@ -11,7 +11,7 @@ class CareManagerCorporation < ApplicationRecord
         patients.each do |patient|
             array_of_service_shifts_hashes = []
 
-            array_of_services_hash = patient.provided_service_summary(first_day..last_day)
+            array_of_services_hash = patient.provided_service_summary(first_day..last_day, within_insurance_scope: true)
 
             array_of_services_hash.each do |service_hash|
                 shifts_by_service_hash = {}

@@ -33,18 +33,16 @@
                 <%= @selected_month %>月の書類
             </div>
             <div class="patient-dashboard-panel-body">
-                <% if false %>
                 <table class="table">
                     <tr>
-                        <td>請求書.xlsx</td>
-                        <td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> エクセル'.html_safe, planning_patient_payable_path(@planning, @patient, {m: @selected_month, y: @selected_year, format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
+                        <td style='width:60%'>請求書.xlsx</td>
+                        <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> エクセル'.html_safe, planning_patient_payable_path(@planning, @patient, {m: @selected_month, y: @selected_year, format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
                     </tr>
                 </table>
-                <% end %>
             </div>
         </div>
 

@@ -17,7 +17,7 @@ wb.styles do |s|
 	wb.add_worksheet(name: "請求書") do |sheet|
         sheet.sheet_view.show_grid_lines = false
 
-        sheet.add_row ["ご請求書"] + Array.new(9, ''), style: title_style
+        sheet.add_row ["ご請求書"] + Array.new(9, ''), style: title_style, height: 35
         sheet.merge_cells "A1:J1"
         sheet.add_row
         sheet.merge_cells "A2:J2"
@@ -30,22 +30,24 @@ wb.styles do |s|
         sheet.merge_cells "A5:J5"
 
         sheet.add_row ['利用者指名', @patient.name, '', '', '', '', '', '', '発行日', Date.today.strftime('%Jf')]
-        sheet.merge_cells "B6:E6"
+        sheet.merge_cells "B6:G6"
         sheet.add_row ['住所', @patient.address, '', '', '','', '', '', '利用年月', "#{Date.new(@selected_year.to_i, @selected_month.to_i, 1).strftime('%Jy年%Jm月')}"]
-        sheet.merge_cells "B7:E7"
-        sheet.add_row ['居宅介護支援事業所', @patient.care_manager.care_manager_corporation.name,'', '', '', '', '', '', '', '']
-        sheet.merge_cells "B8:E8"
+        sheet.merge_cells "B7:G7"
+        care_manager_corporation_name = @patient.care_manager.care_manager_corporation.name if @patient.care_manager.present? && @patient.care_manager.care_manager_corporation.present?
+        sheet.add_row ['居宅介護支援事業所', care_manager_corporation_name,'', '', '', '', '', '', '', '']
+        sheet.merge_cells "B8:G8"
         sheet.add_row
         sheet.merge_cells "A9:J9"
 
 
-        sheet.add_row ['ご請求金額','', '', '','', '', '', '', '', @amount_paid_by_patient], style: total_amount_line
-
+        sheet.add_row ['','', '', '','', '', 'ご請求金額', '', '', @amount_paid_by_patient], style: total_amount_line, height: 25
+        sheet.merge_cells "G10:H10"
+        sheet.merge_cells "I10:J10"
         sheet.add_row
 
         sheet.add_row ['介護保険給付金額明細']
         title_1_row = sheet.add_row ['介護保険サービス', '地域単価', '限度内単位数', '限度内利用金額', '限度越単位数', '利用者負担額内訳', '', '', '', '利用者負担額合計'], style: table_header
-        title_2_row = sheet.add_row ['', '', '', '', '', '限度内負担額', '限度越負担額', '特定入所者介護サービス', '公費本人負担額', ''], style: table_header
+        title_2_row = sheet.add_row ['', '', '', '', '', '限度内負担額', '限度越負担額', '特定入所者介護サービス', '公費本人負担額', ''], style: table_header, height: 30
         sheet.merge_cells title_1_row.cells[(5..8)]
         title_2_row.cells[0].merge title_1_row.cells[0]
         title_2_row.cells[1].merge title_1_row.cells[1]
@@ -73,6 +75,6 @@ wb.styles do |s|
         sheet.add_row Array.new(6, '')
         sheet.add_row Array.new(6, '')
 
-
+        sheet.column_widths 20,10,12,14,13,10,10,12,10,15
 	end
 end

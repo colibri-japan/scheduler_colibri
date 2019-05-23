@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
@@ -18,6 +18,18 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+
+#Upgrade action view for security reasons
+gem 'actionview', '>= 5.1.6.2'
+
+# Upgrade nokogiri
+gem 'nokogiri', '>= 1.8.5'
+
+# Upgrade ffi
+gem 'ffi', '>= 1.9.24'
+
+# Upgrade loofah
+gem 'loofah', '>= 2.2.3'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -41,13 +53,13 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'ice_cube'
 
 #user session and registration management
-gem 'devise'
+gem 'devise', '>= 4.6.0'
 
 #add invitable to devise
 gem 'devise_invitable'
 
 #activity tracker
-gem 'public_activity'
+gem 'public_activity', '>= 1.6.3'
 
 #translations for devise
 gem 'devise-i18n'
@@ -70,7 +82,7 @@ gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 
 #charting library
-gem "chartkick"
+gem 'chartkick'
 
 #glyphicons
 gem 'bootstrap-glyphicons', '~> 0.0.1'

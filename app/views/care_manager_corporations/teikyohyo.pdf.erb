@@ -231,25 +231,27 @@
                         <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
                         <td></td>
                         <td><%= sum_of_credits %></td>
-                        <td></td>
-                        <td><%= sum_of_credits %></td>
+                        <td><%= credits_exceeding_max_budget = total_credits > patient.current_max_credits ? total_credits - patient.current_max_credits : 0 %></td>
+                        <% credits_within_max_budget = total_credits - credits_exceeding_max_budget %>
+                        <td><%= sum_of_credits_within_max_budget = sum_of_credits - credits_exceeding_max_budget %></td>
                         <td><%= @corporation.credits_to_jpy_ratio %></td>
                         <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
                         <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
-                        <td><%= paid_by_insurance = (total_invoiced * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
-                        <td><%= paid_by_patient = total_invoiced - paid_by_insurance %></td>
-                        <td></td>
+                        <% total_invoiced_within_budget = (credits_within_max_budget * @corporation.credits_to_jpy_ratio).floor %>
+                        <td><%= amount_paid_by_insurance = (total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
+                        <td><%= amount_within_insurance_paid_by_patient = total_invoiced_within_budget - amount_paid_by_insurance %></td>
+                        <td><%= amount_in_excess_paid_by_patient = total_invoiced - total_invoiced_within_budget %></td>
                     </tr>
                     <tr>
-                        <td colspan="5">区分支給限度基準: <%= maximum_budget(patient.current_kaigo_level) %></td>
+                        <td colspan="5">区分支給限度基準: <%= maximum_budget = maximum_budget(patient.current_kaigo_level) %></td>
                         <td colspan="4">合計：<%= sum_of_credits %></td>
                         <td>0</td>
                         <td><%= sum_of_credits %></td>
                         <td>0</td>
                         <td colspan="2"><%= sum_of_credits %></td>
                         <td colspan="2"><%= total_invoiced %></td>
-                        <td><%= paid_by_insurance %></td>
-                        <td colspan="2"><%= paid_by_patient %></td>
+                        <td><%= amount_paid_by_insurance %></td>
+                        <td colspan="2"><%= total_paid_by_patient = amount_within_insurance_paid_by_patient + amount_in_excess_paid_by_patient %></td>
                     </tr>
                 </tbody>
             </table>
@@ -299,15 +301,15 @@
                     <tbody>
                         <tr>
                             <td><%= @corporation.name %></td>
-                            <td><%= paid_by_patient %></td>
+                            <td><%= amount_within_insurance_paid_by_patient %></td>
                             <td></td>
                             <td></td>
-                            <td><%= paid_by_patient %></td>
-                            <td><%= paid_by_patient %></td>
+                            <td><%= amount_in_excess_paid_by_patient %></td>
+                            <td><%= total_paid_by_patient %></td>
                         </tr>
                         <tr>
                             <td colspan="4">ご利用者負担</td>
-                            <td colspan="2"><%= paid_by_patient %>円</td>
+                            <td colspan="2"><%= total_paid_by_patient %>円</td>
                         </tr>
                     </tbody>
                 </table>

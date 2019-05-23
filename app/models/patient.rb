@@ -70,7 +70,7 @@ class Patient < ApplicationRecord
 		when 6
 			36065
 		else
-			0
+			9999999
 		end
 	end
 

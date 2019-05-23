@@ -23,9 +23,9 @@
                 <%= @selected_month %>月のまとめ
             </div>
             <div class="patient-dashboard-panel-body">
-                利用者負担額：<%= @amount_paid_by_patient %>¥<br/>
-                保険請求額：<%= @amount_paid_by_insurance %>¥<br/>
-                合計：<%= @grand_total_amount %>¥<br/>
+                利用者負担額：<%=  %>¥<br/>
+                保険請求額：<%=  %>¥<br/>
+                合計：<%=  %>¥<br/>
             </div>
         </div>
         <div  class="patient-dashboard-panel" style="width:34%">
@@ -50,8 +50,64 @@
 
     </div>
 
+	<div class="colibri-payable-subtitle">請求の詳細</div>
 
-	<div class="colibri-payable-subtitle">実績詳細</div>
+    <table class="table">
+        <thead>
+            <th>サービス内容</th>
+            <th>単位数</th>
+            <th>回数</th>
+            <th>単位計</th>
+            <th>額</th>
+        </thead>
+        <tbody>
+            <% @provided_service_summary.each do |service_summary_hash| %>
+                <tr>
+                    <td><%= service_summary_hash[:official_title] %></td>
+                    <td><%= service_summary_hash[:unit_credits] %></td>
+                    <td><%= service_summary_hash[:count] %></td>
+                    <td><%= service_summary_hash[:sum_total_credits] %></td>
+                    <td></td>
+                </tr>
+            <% end %>
+            <% if @provided_service_summary.count > 0 && @corporation.invoicing_bonus_ratio.present? %>
+                <tr>
+                    <td><%= corporation_bonus_official_text(@corporation) %></td>
+                    <td></td>
+                    <td></td>
+                    <% sum_of_credits = @provided_service_summary.sum {|hash| hash[:sum_total_credits]} %>
+                    <td><%= bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round %></td>
+                    <td></td>
+                </tr>
+            <% end %>
+            <tr>
+                <td colspan="3">訪問介護合計</td>
+                <td><%= total_credits = bonus_credits.present? ? sum_of_credits + bonus_credits : (sum_of_credits || 0) %></td>
+                <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %>¥</td>
+            </tr>
+            <tr style='border-top:2px solid #ddd !important'>
+                <td colspan="3">区分支給限度額内</td>
+                <td><%= credits_within_max_budget = total_credits > @patient.current_max_credits ? @patient.current_max_credits : total_credits %></td>
+                <td><%= amount_invoiced_within_max_budget = (credits_within_max_budget * @corporation.credits_to_jpy_ratio).floor %>¥</td>
+            </tr>
+            <tr>
+                <td colspan="4">区分支給限度額内の利用者請求額</td>
+                <td><%= amount_invoiced_to_patient_within_max_budget = (amount_invoiced_within_max_budget * ((@patient.ratio_paid_by_patient || 0) * 0.1)).floor %>¥</td>
+            </tr>
+            <tr>
+                <td colspan="3">区分支給限度額を超える単位</td>
+                <td><%= credits_exceeding_max_budget = total_credits - credits_within_max_budget %></td>
+                <td><%= amount_invoiced_exceeding_max_budget = total_invoiced - amount_invoiced_within_max_budget %>¥</td>
+            </tr>
+            <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
+                <td colspan="4">合計</td>
+                <td><%= total_invoiced_to_patient = amount_invoiced_to_patient_within_max_budget + amount_invoiced_exceeding_max_budget %>¥</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+	<div class="colibri-payable-subtitle" style='margin-top:50px'>実績詳細</div>
 
 	<table class="table" style='margin-bottom:100px'>
 		<thead>
@@ -61,9 +117,6 @@
 				<th style="width:11%">従業員</th>
 				<th style="width:10%">提供時間</th>
 				<th style="width:10%">開始~終了</th>
-                <% if current_user.corporation_admin? %>
-                    <th style="width:11%">単位</th>
-                <% end %>
 				<th style="width:18%" colspan="2">確認<span style="font-weight:bold"></span></th>
 				<th style="width:8%">編集</th>
 			</tr>
@@ -77,9 +130,6 @@
                     <td><%= provided_service.nurse.try(:name) %> </td>
                     <td><%= from_seconds_to_hours_minutes(provided_service.service_duration) if provided_service.service_duration.present? %></td>
                     <td><%= "#{provided_service.appointment_start.strftime('%H:%M')}~#{provided_service.appointment_end.strftime('%H:%M')}"  if provided_service.appointment_start.present? && provided_service.appointment_end.present? %></td>
-                    <% if current_user.corporation_admin? %>
-                        <td><%= provided_service.total_credits %></td>
-                    <% end %>
                     <td style="width:9%">
                         <div style="display:flex" id='provided-service-<%= provided_service.id %>'>
                             <div class='<%= 'cancelled-provided-service' if provided_service.cancelled == true %> <%= 'edit-requested-provided-service' if provided_service.appointment.present? && provided_service.appointment.edit_requested == true %>' style="display:flex">
@@ -119,54 +169,6 @@
                         <%= link_to '編集', edit_planning_appointment_path(@planning, provided_service.appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white'  if provided_service.appointment.present? %>
                     </td>
                 </tr>
-			<% end %>
-			<% if current_user.corporation_admin? %>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><span id="total-salary-label" style="font-weight:bold;float:right">単位小計</span></td>
-					<td style="font-weight:bold"><%= @sum_of_service_credits %>単位</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			<% end %>
-			<% if @corporation.invoicing_bonus_ratio.present? %>
-				<tr>
-					<td><%= @end_of_today_in_japan.strftime('%-m月%-d日') %></td>
-					<td><%= corporation_bonus_text(@corporation) %></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><%= @bonus_credits  %></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><span style="font-weight:bold;float:right">合計</span></td>
-					<td><span style="font-weight:bold;float:right"><%= @total_credits %>単位</span></td>
-					<td><span style="font-weight:bold;float:right"><%= @grand_total_amount %>¥</span></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><span style="font-weight:bold;float:right">利用者負担(<%= @patient.ratio_paid_by_patient %>割)</span></td>
-					<td><span style="font-weight:bold;float:right"><%= @amount_paid_by_patient %>¥</span></td>
-					<td></td>
-					<td></td>
-				</tr>
 			<% end %>
 		</tbody>
 	</table>

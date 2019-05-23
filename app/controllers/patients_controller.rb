@@ -135,7 +135,7 @@ class PatientsController < ApplicationController
 
     @services_from_appointments = ProvidedService.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :patient).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
     
-    calculate_invoice
+    @provided_service_summary = @patient.provided_service_summary(@first_day..@end_of_today_in_japan)
 
     respond_to do |format|
       format.html 
@@ -195,15 +195,6 @@ class PatientsController < ApplicationController
   def set_month_and_year_params
     @selected_year = params[:y].present? ? params[:y] : Date.today.year
     @selected_month = params[:m].present? ? params[:m] : Date.today.month
-  end
-
-  def calculate_invoice
-    @sum_of_service_credits = @services_from_appointments.sum(:total_credits)
-    @bonus_credits = (@sum_of_service_credits * (@corporation.invoicing_bonus_ratio - 1)).round
-    @total_credits = @sum_of_service_credits + @bonus_credits
-    @grand_total_amount = (@total_credits * (@corporation.credits_to_jpy_ratio || 0)).floor
-    @amount_paid_by_insurance = (@grand_total_amount * ((10 - (@patient.ratio_paid_by_patient || 0)) * 0.1)).floor
-    @amount_paid_by_patient = @grand_total_amount - @amount_paid_by_insurance
   end
 
   def convert_wareki_dates(params)

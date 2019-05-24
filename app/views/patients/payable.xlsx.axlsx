@@ -40,7 +40,7 @@ wb.styles do |s|
         sheet.merge_cells "A9:J9"
 
 
-        sheet.add_row ['','', '', '','', '', 'ご請求金額', '', '', @amount_paid_by_patient], style: total_amount_line, height: 25
+        sheet.add_row ['','', '', '','', '', 'ご請求金額', '', @total_invoiced_to_patient, ''], style: total_amount_line, height: 25
         sheet.merge_cells "G10:H10"
         sheet.merge_cells "I10:J10"
         sheet.add_row
@@ -56,7 +56,7 @@ wb.styles do |s|
         title_2_row.cells[4].merge title_1_row.cells[4]
         title_2_row.cells[9].merge title_1_row.cells[9]
 
-        sheet.add_row ['訪問介護', @corporation.credits_to_jpy_ratio, @total_credits, @grand_total_amount, 0, @amount_paid_by_patient, 0, 0, 0, @amount_paid_by_patient], style: table_cells
+        sheet.add_row ['訪問介護', @corporation.credits_to_jpy_ratio, @credits_within_max_budget, @total_invoiced_inside_insurance_scope, @credits_exceeding_max_budget, @amount_invoiced_to_patient_within_max_budget, @amount_invoiced_exceeding_max_budget, 0, 0, @total_invoiced_to_patient_inside_insurance_scope], style: table_cells
         sheet.add_row
 
         sheet.add_row ['その他金額明細']

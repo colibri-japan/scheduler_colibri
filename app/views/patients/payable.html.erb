@@ -17,36 +17,36 @@
 		</p>
 	</div>
 
-    <div id="patient-dashboard" style='display:flex'>
-        <div class="patient-dashboard-panel" style='width:calc(66% - 5px);margin-right:5px'>
-            <div class="patient-dashboard-panel-title">
-                <%= @selected_month %>月のまとめ
+    <% if current_user.corporation_admin? %>
+        <div id="patient-dashboard" style='display:flex'>
+            <div class="patient-dashboard-panel" style='width:calc(66% - 5px);margin-right:5px'>
+                <div class="patient-dashboard-panel-title">
+                    <%= @selected_month %>月のまとめ
+                </div>
+                <div class="patient-dashboard-panel-body">
+                    請求額：<%= @total_invoiced_to_patient %>¥<br/>
+                    総売り上げ：<%= @total_sales %>¥<br/>
+                </div>
             </div>
-            <div class="patient-dashboard-panel-body">
-                利用者負担額：<%=  %>¥<br/>
-                保険請求額：<%=  %>¥<br/>
-                合計：<%=  %>¥<br/>
+            <div  class="patient-dashboard-panel" style="width:34%">
+                <div class="patient-dashboard-panel-title">
+                    <%= @selected_month %>月の書類
+                </div>
+                <div class="patient-dashboard-panel-body">
+                    <table class="table">
+                        <tr>
+                            <td style='width:60%'>請求書.xlsx</td>
+                            <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> エクセル'.html_safe, planning_patient_payable_path(@planning, @patient, {m: @selected_month, y: @selected_year, format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
-        <div  class="patient-dashboard-panel" style="width:34%">
-            <div class="patient-dashboard-panel-title">
-                <%= @selected_month %>月の書類
-            </div>
-            <div class="patient-dashboard-panel-body">
-                <table class="table">
-                    <tr>
-                        <td style='width:60%'>請求書.xlsx</td>
-                        <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> エクセル'.html_safe, planning_patient_payable_path(@planning, @patient, {m: @selected_month, y: @selected_year, format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-    </div>
+    <% end %>
 
 	<div class="colibri-payable-subtitle">請求の詳細</div>
 
@@ -73,29 +73,29 @@
                     <td><%= corporation_bonus_official_text(@corporation) %></td>
                     <td></td>
                     <td></td>
-                    <% sum_of_credits = @provided_service_summary.sum {|hash| hash[:sum_total_credits]} %>
-                    <td><%= bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round %></td>
+                    <% @sum_of_credits %>
+                    <td><%= @bonus_credits %></td>
                     <td></td>
                 </tr>
             <% end %>
             <tr>
                 <td colspan="3">訪問介護合計</td>
-                <td><%= total_credits = bonus_credits.present? ? sum_of_credits + bonus_credits : (sum_of_credits || 0) %></td>
-                <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %>¥</td>
+                <td><%= @total_credits %></td>
+                <td><%= @total_invoiced_inside_insurance_scope %>¥</td>
             </tr>
             <tr style='border-top:2px solid #ddd !important'>
                 <td colspan="3">区分支給限度額内</td>
-                <td><%= credits_within_max_budget = total_credits > @patient.current_max_credits ? @patient.current_max_credits : total_credits %></td>
-                <td><%= amount_invoiced_within_max_budget = (credits_within_max_budget * @corporation.credits_to_jpy_ratio).floor %>¥</td>
+                <td><%= @credits_within_max_budget %></td>
+                <td><%= @amount_invoiced_within_max_budget %>¥</td>
             </tr>
             <tr>
                 <td colspan="4">区分支給限度額内の利用者請求額</td>
-                <td><%= amount_invoiced_to_patient_within_max_budget = (amount_invoiced_within_max_budget * ((@patient.ratio_paid_by_patient || 0) * 0.1)).floor %>¥</td>
+                <td><%= @amount_invoiced_to_patient_within_max_budget  %>¥</td>
             </tr>
             <tr>
                 <td colspan="3">区分支給限度額を超える単位</td>
-                <td><%= credits_exceeding_max_budget = total_credits - credits_within_max_budget %></td>
-                <td><%= amount_invoiced_exceeding_max_budget = total_invoiced - amount_invoiced_within_max_budget %>¥</td>
+                <td><%= @credits_exceeding_max_budget %></td>
+                <td><%= @amount_invoiced_exceeding_max_budget %>¥</td>
             </tr>
             <% @provided_service_summary_without_insurance.each do |service_summary_hash| %>
                 <tr style="<%= 'border-top:2px solid #ddd !important' if @provided_service_summary_without_insurance.index(service_summary_hash) == 0 %>">
@@ -106,22 +106,22 @@
                     <td><%= service_summary_hash[:sum_invoiced_total] %>¥</td>
                 </tr>
             <% end %>
-            <% @cancelled_but_invoiceable_appointments.where(cancelled: true).each do |cancelled_appointment| %>
+            <% @cancelled_but_invoiceable_services.each do |cancelled_provided_service| %>
                 <tr style="<%= 'border-top:2px solid #ddd !important' if !@provided_service_summary_without_insurance.present? && @cancelled_but_invoiceable_appointments.index(cancelled_appointment) == 0 %>">
-                    <td><%= "#{cancelled_appointment.title}(#{cancelled_appointment.starts_as.strftime('%Jf')}キャンセル)" %></td>
+                    <td><%= "#{cancelled_provided_service.title} (#{cancelled_provided_service.service_date.to_date.strftime('%-m月%-d日')} キャンセル)" %></td>
                     <td></td>
                     <td>1</td>
                     <td></td>
-                    <td><%= cancelled_appointment.total_invoiced %>¥</td>
+                    <td><%= cancelled_provided_service.invoiced_total %>¥</td>
                 </tr>
             <% end %>
             <tr>
                 <td colspan="4">保険対象外合計</td>
-                <td><%= total_invoiced_outside_insurance_scope = @provided_service_summary_without_insurance.sum {|hash| hash[:sum_invoiced_total]} %>¥</td>
+                <td><%= @total_invoiced_outside_insurance_scope %>¥</td>
             </tr>
             <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
                 <td colspan="4">合計</td>
-                <td><%= total_invoiced_to_patient = amount_invoiced_to_patient_within_max_budget + amount_invoiced_exceeding_max_budget + total_invoiced_outside_insurance_scope %>¥</td>
+                <td><%= @total_invoiced_to_patient %>¥</td>
             </tr>
         </tbody>
     </table>

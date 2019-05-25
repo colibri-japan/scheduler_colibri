@@ -19,14 +19,47 @@
     </div>
 
     <div class="form-group">
-      <%= form.label :official_title, "サービス正式名称", class: "colibri-form-label-dark" %>
-      <%= form.text_field :official_title, id: :service_official_title, class: "form-control" %>
+      <%= form.label :insurance_category_1, "保険区分", class: "colibri-form-label-dark" %>
+      <%= form.select :insurance_category_1, options_for_select([['介護保険', 0], ['保険外.自費', 1]], @service.insurance_category_1), {}, id: :service_insurance_category_1 %>
     </div>
 
-    <div class="form-group">
-      <%= form.label :service_code, "サービスコード", class: "colibri-form-label-dark" %>
-      <%= form.text_field :service_code, id: :service_service_code, class: "form-control" %>
+  </div>
+
+  <div id="service_invoice_fields" class="blue-background-form">
+    <div class="modal-subsection-title">請求情報</div>
+
+    <div id="fields_for_kaigo_invoicing" style="<%= 'display:none' if @service.insurance_category_1 == 1 %>">
+      <div class="form-group">
+        <%= form.label :official_title, "サービス正式名称", class: "colibri-form-label-dark" %>
+        <%= form.text_field :official_title, id: :service_official_title, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :service_code, "サービスコード", class: "colibri-form-label-dark" %>
+        <%= form.text_field :service_code, id: :service_service_code, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :unit_credits, "単位数", class: "colibri-form-label-dark" %>
+        <%= form.number_field :unit_credits, step: 1, id: :service_unit_credits, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :credit_calculation_method, "単位計算方法", class:"colibri-form-label-dark" %>
+        <%= form.select :credit_calculation_method, options_for_select([['稼動回数 x 単位数', 0], ['単位数 x 1 /月', 1], ['日数 x 単位数（日割り）', 2]], service.credit_calculation_method), id: :service_credit_calculation_method %>
+      </div>
     </div>
+
+    <div id="fields_for_invoicing_without_insurance" style="<%= 'display:none' if @service.insurance_category_1 == 0 %>">
+      <div class="form-group">
+        <%= form.label :invoiced_amount, '請求額', class: "colibri-form-label-dark" %>
+        <%= form.number_field :invoiced_amount, step: 1, class: 'form-control', id: :service_invoiced_amount %>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="service_payroll_fields" class="modal-body">
 
     <div class="form-group">
       <%= form.label :category_1, "サービス種類1", class: "colibri-form-label-dark" %>
@@ -45,16 +78,6 @@
         <%= form.number_field :category_ratio, step: 0.01, id: :service_category_ratio %>
       </div>
       <div class="btn btn-sm btn-colibri-light" id="drop-second-service-category" style="margin-bottom:15px"><i class="glyphicon glyphicon-trash" style="color:#5f6368;font-size:12px"></i> サービス種類2の取り消し</div>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :unit_credits, "単位数", class: "colibri-form-label-dark" %>
-      <%= form.number_field :unit_credits, step: 1, id: :service_unit_credits, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :credit_calculation_method, "単位計算方法", class:"colibri-form-label-dark" %>
-      <%= form.select :credit_calculation_method, options_for_select([['稼動回数 x 単位数', 0], ['単位数 x 1 /月', 1], ['日数 x 単位数（日割り）', 2]], service.credit_calculation_method), id: :service_credit_calculation_method %>
     </div>
 
     <div class="form-group">

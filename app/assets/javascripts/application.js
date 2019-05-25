@@ -2512,6 +2512,22 @@ document.addEventListener('turbolinks:load', function() {
   }
 })
 
+let adaptServiceInvoiceFields = () => {
+  $('#service_insurance_category_1').change(function(){
+    if ($(this).val() === "0") {
+      $('#fields_for_kaigo_invoicing').show()
+      $('#service_invoiced_amount').val('')
+      $('#fields_for_invoicing_without_insurance').hide()
+    } else if ($(this).val() === "1") {
+      $('#service_official_title').val('')
+      $('#service_service_code').val('')
+      $('#service_unit_credits').val('')
+      $('#fields_for_kaigo_invoicing').hide()
+      $('#fields_for_invoicing_without_insurance').show()
+    }
+  })
+}
+
 let patientBirthdayHelper = () => {
   $('.wareki_era').change(function(){
     $(this).next('.wareki_year').focus()

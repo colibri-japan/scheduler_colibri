@@ -184,10 +184,13 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def calculate_invoiced_amount
-		if self.nurse.present? && self.nurse.team.present? 
-			self.invoiced_total = (self.total_credits * (self.nurse.team.credits_to_jpy_ratio || self.planning.corporation.credits_to_jpy_ratio || 0)).floor
+		case self.service_salary.insurance_category_1
+		when 0
+			credits_to_jpy_ratio = (self.nurse.present? && self.nurse.team.present?) ? (self.nurse.team.credits_to_jpy_ratio || self.planning.corporation.credits_to_jpy_ratio || 0) : (self.planning.corporation.credits_to_jpy_ratio || 0)
+			self.invoiced_total = ((self.total_credits || 0) * credits_to_jpy_ratio).floor
+		when 1
+			self.invoiced_total = self.service_salary.invoiced_amount
 		else
-			self.invoiced_total = (self.total_credits * (self.planning.corporation.credits_to_jpy_ratio || 0)).floor
 		end
 	end
 

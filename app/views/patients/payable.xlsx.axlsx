@@ -65,14 +65,26 @@ wb.styles do |s|
         sheet.merge_cells header_row.cells[(5..6)]
         sheet.merge_cells header_row.cells[(7..8)]
 
+        summary_row = sheet.add_row ['訪問介護合計', '', '', '', '', @total_credits, '', @credits_within_max_budget, '', @credits_exceeding_max_budget], style: table_cells
+        sheet.merge_cells summary_row.cells[(0..2)]
+        sheet.merge_cells summary_row.cells[(5..6)]
+        sheet.merge_cells summary_row.cells[(7..8)]
+
+
         @provided_service_summary.each do |service_hash|
             service_row = sheet.add_row [service_hash[:official_title], '', '', service_hash[:unit_credits], service_hash[:count], service_hash[:sum_total_credits], '', '', '', ''], style: table_cells
             sheet.merge_cells service_row.cells[(0..2)]
             sheet.merge_cells service_row.cells[(5..6)]
             sheet.merge_cells service_row.cells[(7..8)]
         end
-        
 
+        if @provided_service_summary.count > 0 && @corporation.invoicing_bonus_ratio.present?
+            bonus_row = sheet.add_row [corporation_bonus_official_text(@corporation), '', '', '', 1, @bonus_credits, '', '', '', ''], style: table_cells
+            sheet.merge_cells bonus_row.cells[(0..2)]
+            sheet.merge_cells bonus_row.cells[(5..6)]
+            sheet.merge_cells bonus_row.cells[(7..8)]
+        end
+        
         sheet.add_row
         sheet.add_row ['その他金額明細']
         title_3_row = sheet.add_row ['項目名','', '', '単価','', '数量','', '計',''], style: table_header

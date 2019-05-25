@@ -541,47 +541,57 @@ p.payable-dashboard-line {
 
 /* line 126, app/assets/stylesheets/nurses.scss */
 .details-table-head {
-  width: 55px;
+  width: 20%;
 }
 
 /* line 130, app/assets/stylesheets/nurses.scss */
+.resource-detail-table {
+  width: 100%;
+}
+
+/* line 134, app/assets/stylesheets/nurses.scss */
+.resource-detail-table > tr {
+  width: 100%;
+}
+
+/* line 138, app/assets/stylesheets/nurses.scss */
 #resource-action-block {
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
-/* line 135, app/assets/stylesheets/nurses.scss */
+/* line 143, app/assets/stylesheets/nurses.scss */
 .btn-light-custom {
   border: 0.5px solid #eee;
 }
 
-/* line 139, app/assets/stylesheets/nurses.scss */
+/* line 147, app/assets/stylesheets/nurses.scss */
 #resource-detail-header {
   border-bottom: 0.5px solid #ddd;
 }
 
-/* line 143, app/assets/stylesheets/nurses.scss */
+/* line 151, app/assets/stylesheets/nurses.scss */
 .close-button-span:hover {
   cursor: pointer;
 }
 
-/* line 147, app/assets/stylesheets/nurses.scss */
+/* line 155, app/assets/stylesheets/nurses.scss */
 #payable-query {
   font-size: 0.7em;
 }
 
-/* line 151, app/assets/stylesheets/nurses.scss */
+/* line 159, app/assets/stylesheets/nurses.scss */
 .refresh-button {
   margin-bottom: 3px;
   background-color: #bbb;
 }
 
-/* line 156, app/assets/stylesheets/nurses.scss */
+/* line 164, app/assets/stylesheets/nurses.scss */
 .refresh-button:hover {
   cursor: pointer;
 }
 
-/* line 160, app/assets/stylesheets/nurses.scss */
+/* line 168, app/assets/stylesheets/nurses.scss */
 .colibri-payable-subtitle {
   margin-top: 20px;
   margin-bottom: 8px;
@@ -591,7 +601,7 @@ p.payable-dashboard-line {
 }
 
 @media print {
-  /* line 169, app/assets/stylesheets/nurses.scss */
+  /* line 177, app/assets/stylesheets/nurses.scss */
   #payable-container {
     margin: 0px;
     height: auto !important;
@@ -1835,6 +1845,7 @@ label {
 .new-scan {
   margin-bottom: 7px;
 }
+@charset "UTF-8";
 /* line 1, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo-container {
   page-break-after: always;
@@ -1842,12 +1853,17 @@ label {
 }
 
 /* line 6, app/assets/stylesheets/teikyohyo.scss */
+html {
+  font-family: 'IPAexゴシック', 'IPA Pゴシック', 'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+}
+
+/* line 10, app/assets/stylesheets/teikyohyo.scss */
 .table.table-bordered {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* line 11, app/assets/stylesheets/teikyohyo.scss */
+/* line 15, app/assets/stylesheets/teikyohyo.scss */
 .table.table-teikyohyo > thead > tr > td, .table.table-teikyohyo > tbody > tr > td {
   border: 0.5px solid black;
   padding: 1px;
@@ -1855,7 +1871,7 @@ label {
   vertical-align: middle;
 }
 
-/* line 18, app/assets/stylesheets/teikyohyo.scss */
+/* line 22, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo_title {
   font-weight: bold;
   font-size: 1.3em;
@@ -1864,17 +1880,17 @@ label {
   margin-bottom: 15px;
 }
 
-/* line 26, app/assets/stylesheets/teikyohyo.scss */
+/* line 30, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo-container {
   padding: 5px;
 }
 
-/* line 30, app/assets/stylesheets/teikyohyo.scss */
+/* line 34, app/assets/stylesheets/teikyohyo.scss */
 .teikyohyo_1_body {
   margin-top: 15px;
 }
 
-/* line 34, app/assets/stylesheets/teikyohyo.scss */
+/* line 38, app/assets/stylesheets/teikyohyo.scss */
 .gray_row {
   background-color: #eee;
 }
@@ -9876,6 +9892,10 @@ pre code {
   color: #6c757d;
   opacity: 1;
 }
+.form-control::-moz-placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
 .form-control:-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
@@ -13107,8 +13127,10 @@ input[type="button"].btn-block {
   /* line 238, ../../../../../RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/bootstrap-4.3.1/assets/stylesheets/bootstrap/_card.scss */
   .card-columns {
     -webkit-column-count: 3;
+       -moz-column-count: 3;
             column-count: 3;
     -webkit-column-gap: 1.25rem;
+       -moz-column-gap: 1.25rem;
             column-gap: 1.25rem;
     orphans: 1;
     widows: 1;

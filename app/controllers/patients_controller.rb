@@ -133,7 +133,7 @@ class PatientsController < ApplicationController
     @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
     @end_of_today_in_japan = (Time.current + 9.hours).end_of_day < @last_day ? (Time.current + 9.hours).end_of_day : @last_day
 
-    @services_from_appointments = ProvidedService.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :patient).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
+    @services_from_appointments = ProvidedService.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :nurse).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
     
     @provided_service_summary = @patient.provided_service_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
     @provided_service_summary_without_insurance = @patient.provided_service_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)

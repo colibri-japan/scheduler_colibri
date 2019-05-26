@@ -107,7 +107,7 @@
                 </tr>
             <% end %>
             <% @cancelled_but_invoiceable_services.each do |cancelled_provided_service| %>
-                <tr style="<%= 'border-top:2px solid #ddd !important' if !@provided_service_summary_without_insurance.present? && @cancelled_but_invoiceable_appointments.index(cancelled_provided_service) == 0 %>">
+                <tr style="<%= 'border-top:2px solid #ddd !important' if !@provided_service_summary_without_insurance.present? && @cancelled_but_invoiceable_services.index(cancelled_provided_service) == 0 %>">
                     <td><%= "#{cancelled_provided_service.title} (#{cancelled_provided_service.service_date.to_date.strftime('%-m月%-d日')} キャンセル)" %></td>
                     <td></td>
                     <td>1</td>

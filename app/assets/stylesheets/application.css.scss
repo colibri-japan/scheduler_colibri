@@ -284,6 +284,10 @@ li.colibri-app-menu a.nav-url {
 	display: none;
 }
 
+.colibri-toggle-switch:hover {
+	cursor: pointer;
+}
+
 .btn-margin-top {
 	margin-top: 10px;
 }
@@ -445,7 +449,7 @@ th {
 }
 
 .colibri-scrollbar-dark::-webkit-scrollbar-thumb {
-	background-color: #b1b1b1; 
+	background-color: #97A0A8; 
 }
 
 .colibri-scrollbar-light::-webkit-scrollbar-track {
@@ -489,14 +493,14 @@ th {
 }
 
 .btn-colibri-light-gray {
-	background-color: #85929E !important;
-	border-color: #85929E !important;
+	background-color: #97A0A8 !important;
+	border-color: #97A0A8 !important;
 	color: white;
 }
 
 .btn-colibri-light-gray:hover {
-	background-color: #6C757D !important;
-	border-color: #6C757D !important;
+	background-color: #748390 !important;
+	border-color: #748390 !important;
 	color: white;
 }
 

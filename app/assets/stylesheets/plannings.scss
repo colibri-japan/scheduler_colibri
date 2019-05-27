@@ -50,7 +50,7 @@ li.planning-menu-items {
 	display: inline;
 	padding-top: 13px;
 	padding-bottom: 13px;
-	color: #94979A;
+	color: #97A0A8;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
@@ -217,32 +217,7 @@ li.planning-menu-selected {
 	color: white;
 }
 
-.master-list-element.master-element-selected {
-	background-color: #39ACCD;
-	color: white;
-}
 
-
-.master-list-element:hover {
-	cursor: pointer; 
-	color: white;	
-}
-
-#nurse-filter-zentai_ {
-	width: 400px;
-}
-
-#patient-filter-zentai_ {
-	width: 400px;
-}
-
-#master-nurse-filter-zentai_ {
-	width: 400px;
-}
-
-#master-patient-filter-zentai_ {
-	width: 400px;
-}
 
 #duplicate-button-wrapper {
 	margin-top: 10px;
@@ -262,11 +237,6 @@ li.planning-menu-selected {
 .appointment-comment {
 	margin-bottom: 4px;
 	font-size: 1em;
-}
-
-
-#patient_filter_zentai__chosen, #nurse_filter_zentai__chosen{
-	width: 250px !important;
 }
 
 .chosen-container {

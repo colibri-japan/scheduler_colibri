@@ -40,7 +40,7 @@ wb.styles do |s|
         sheet.merge_cells "A9:J9"
 
 
-        sheet.add_row ['','', '', '','', '', 'ご請求金額', '', @total_invoiced_to_patient, ''], style: total_amount_line, height: 25
+        sheet.add_row ['','', '', '','', '', 'ご請求金額', '', "#{@total_invoiced_to_patient}¥", ''], style: total_amount_line, height: 25
         sheet.merge_cells "G10:H10"
         sheet.merge_cells "I10:J10"
         sheet.add_row
@@ -56,7 +56,7 @@ wb.styles do |s|
         title_2_row.cells[4].merge title_1_row.cells[4]
         title_2_row.cells[9].merge title_1_row.cells[9]
 
-        sheet.add_row ['訪問介護', @corporation.credits_to_jpy_ratio, @credits_within_max_budget, @total_invoiced_inside_insurance_scope, @credits_exceeding_max_budget, @amount_invoiced_to_patient_within_max_budget, @amount_invoiced_exceeding_max_budget, 0, 0, @total_invoiced_to_patient_inside_insurance_scope], style: table_cells
+        sheet.add_row ['訪問介護', @corporation.credits_to_jpy_ratio, @credits_within_max_budget, @total_invoiced_inside_insurance_scope, @credits_exceeding_max_budget, @amount_invoiced_to_patient_within_max_budget, @amount_invoiced_exceeding_max_budget, 0, 0, "#{@total_invoiced_to_patient_inside_insurance_scope}¥"], style: table_cells
         sheet.add_row
 
         sheet.add_row ['介護保険単位数明細']
@@ -106,7 +106,7 @@ wb.styles do |s|
             sheet.merge_cells new_row.cells[(5..6)]
             sheet.merge_cells new_row.cells[(7..8)]
         end
-        total_row = sheet.add_row ['合計'] + Array.new(6, '') + [@total_invoiced_outside_insurance_scope, ''], style: table_cells
+        total_row = sheet.add_row ['合計'] + Array.new(6, '') + ["#{@total_invoiced_outside_insurance_scope}¥", ''], style: table_cells
         sheet.merge_cells total_row.cells[(0..6)]
         sheet.merge_cells total_row.cells[(7..8)]
 

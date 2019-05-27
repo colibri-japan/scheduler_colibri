@@ -125,12 +125,21 @@ p.colibri-nav-link {
 	margin-left: 3px;
 }
 
-.alert {
-	position: absolute !important;
-	top: 46px !important;
-	z-index: 6;
-	width: 100%;
+#flash {
+	position: fixed !important;
+	top: 39px !important;
+	z-index: 35;
 	text-align: center;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.alert {
+	padding-left: 80px;
+	padding-right: 80px;
+	padding-top: 7px;
+	padding-bottom: 8px;
 }
 
 .alert.alert-notice {
@@ -143,14 +152,6 @@ p.colibri-nav-link {
 	background-color: #FFE878 !important;
 	border: none;
 }
-
-.colibri-success-notification {
-	  background-color:#BAF4C1;
-    color: #106F1C;
-    padding:4px 10px;
-    border-radius:3px;
-}
-
 
 .main-page {
 	padding-top: 46px;

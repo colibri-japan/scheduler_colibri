@@ -2604,7 +2604,7 @@ $(document).on('turbolinks:load', function(){
       $(".alert").fadeTo(500, 0).slideUp(500, function(){
           $(this).remove(); 
       });
-  }, 4000);
+  }, 2000);
 
   $('#loader-container').hide();
 

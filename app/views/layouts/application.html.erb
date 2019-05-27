@@ -28,7 +28,11 @@
 
     <div id="flash" class="no-print">
       <% flash.each do |key, value| %>
-        <% if value.length > 0 %><div class="alert alert-<%= key %>"><%= value %></div><% end %>
+        <% if value.length > 0 %>
+          <div style="width:100%">
+              <span class="alert alert-<%= key %>"><%= value %></span>
+          </div>
+        <% end %>
       <% end %>
     </div>
 

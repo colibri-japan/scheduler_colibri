@@ -136,15 +136,17 @@ p.colibri-nav-link {
 }
 
 .alert {
-	padding-left: 80px;
-	padding-right: 80px;
+	padding-left: 100px;
+	padding-right: 100px;
 	padding-top: 7px;
 	padding-bottom: 8px;
+	display: inline-block;
+	min-width: 400px;
 }
 
 .alert.alert-notice {
-	background-color: #8DE698 !important;
-	color: #106F1C !important;
+	background-color: #BEFFB7 !important;
+	color: rgb(6, 37, 10) !important;
 	border: none;
 }
 

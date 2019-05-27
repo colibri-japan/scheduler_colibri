@@ -7,8 +7,8 @@
       <% end %>
     </div>
     <div id="posts-widget-action-container">
-      <%= link_to '既読にする', mark_all_posts_as_read_path(current_user), method: :patch, remote: true, id: 'mark-posts-as-read-button', class: 'btn btn-sm btn-success' if unread_count > 0 %>
-      <%= link_to '検索する', posts_path, class: 'btn btn-sm btn-info text-white' %>
+      <%= link_to '<i class="glyphicon glyphicon-flag" style="color:white;font-size:0.9em"></i> 既読にする'.html_safe, mark_all_posts_as_read_path(current_user), method: :patch, remote: true, id: 'mark-posts-as-read-button', class: 'btn btn-sm btn-info' if unread_count > 0 %>
+      <%= link_to '<i class="glyphicon glyphicon-search" style="color:white;font-size:0.9em"></i>  検索'.html_safe, posts_path, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
     </div>
   </div>
 </div>

@@ -117,10 +117,10 @@ class SalaryRule < ApplicationRecord
                 #creating/updating provided service
                 if provided_services_from_rule.present?
                     puts "found provided service from rule"
-                    provided_services_from_rule.first.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage)
+                    provided_services_from_rule.first.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, updated_at: Time.current, service_date: end_of_today.beginning_of_day)
                 else
                     puts 'creating new provided service'
-                    ProvidedService.create(nurse_id: nurse.id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: (Time.current + 9.hours), title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_wage_credits_and_invoice_calculations: true, skip_callbacks_except_calculate_total_wage: true)
+                    ProvidedService.create(nurse_id: nurse.id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_wage_credits_and_invoice_calculations: true, skip_callbacks_except_calculate_total_wage: true)
                 end
             end
         end

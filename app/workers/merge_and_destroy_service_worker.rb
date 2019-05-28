@@ -5,8 +5,9 @@ class MergeAndDestroyServiceWorker
   def perform(service_id_to_delete, service_id_to_copy)
     service_to_delete = Service.find(service_id_to_delete)
     destination_service = Service.find(service_id_to_copy)
-    planning_id = service_to_delete.corporation.planning.id
-    nurses = service_to_delete.corporation.nurses
+    corporation = service_to_delete.corporation
+    planning_id = corporation.planning.id
+    nurses = corporation.nurses
 
     Appointment.where(title: service_to_delete.title, planning_id: planning_id).update_all(service_id: destination_service.id, title: destination_service.title, updated_at: Time.current)
     RecurringAppointment.where(title: service_to_delete.title, planning_id: planning_id).update_all(service_id: destination_service.id, title: destination_service.title, updated_at: Time.current)
@@ -35,5 +36,6 @@ class MergeAndDestroyServiceWorker
     end
 
     Service.where(title: service_to_delete.title).delete_all
+    corporation.touch
   end
 end

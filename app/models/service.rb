@@ -5,7 +5,7 @@ class Service < ApplicationRecord
   attribute :skip_update_nurses_callback, :boolean
   attribute :planning_id, :integer
 
-  belongs_to :corporation
+  belongs_to :corporation, touch: true
   has_many :appointments
   has_many :recurring_appointments
   has_many :provided_services

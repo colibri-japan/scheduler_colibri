@@ -84,9 +84,7 @@ class Patient < ApplicationRecord
             service_type = Service.where(nurse_id: nil, title: title, corporation_id: self.corporation_id).first
 			service_hash = {}
 			
-			service_is_valid = service_type.invoiced_to_insurance? == inside_or_outside_insurance_scope
-
-            if service_type.present? && service_is_valid
+            if service_type.present? && service_type.invoiced_to_insurance? == inside_or_outside_insurance_scope
                 provided_services = ProvidedService.where(patient: self.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).order(:appointment_start)
                 service_hash[:title] = title
                 service_hash[:official_title] = service_type.try(:official_title)

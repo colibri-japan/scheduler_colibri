@@ -35,7 +35,7 @@ class MergeAndDestroyServiceWorker
 
     end
 
-    Service.where(title: service_to_delete.title).delete_all
+    Service.where(corporation_id: corporation.id, title: service_to_delete.title).delete_all
     corporation.touch
   end
 end

@@ -42,6 +42,10 @@ class User < ApplicationRecord
     Rails.cache.fetch([self, 'recent_read_posts']) { Post.includes(:author, :patient).where(corporation_id: self.corporation_id).read_by(self).order(published_at: :desc).limit(40) }
   end
 
+  def active_for_authentication?
+    super && self.is_active?
+  end
+
   private
 
   def set_default_corporation

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190525170244) do
+ActiveRecord::Schema.define(version: 20190603200830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -547,6 +547,7 @@ ActiveRecord::Schema.define(version: 20190525170244) do
     t.integer "role", default: 1
     t.bigint "nurse_id"
     t.string "schedule_default_url_option"
+    t.boolean "is_active", default: true
     t.index ["corporation_id"], name: "index_users_on_corporation_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

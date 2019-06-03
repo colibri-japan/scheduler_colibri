@@ -60,22 +60,8 @@ class RecurringAppointmentsController < ApplicationController
       
     if @recurring_appointment.update(recurring_appointment_params)
       @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id, master: true).last if @recurring_appointment.master
+      recalculate_bonus
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
-    end
-  end
-
-  def toggle_edit_requested
-    @recurring_appointment = RecurringAppointment.find(params[:id])
-    if @recurring_appointment.update_attribute(edit_requested: !@recurring_appointment.edit_requested)
-      @activity = @recurring_appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_edit_requested: !@recurring_appointment.edit_requested
-    end
-  end
-
-  def toggle_cancelled
-    @recurring_appointment.cancelled = !@recurring_appointment.cancelled
-
-    if @recurring_appointment.save 
-      @activity = @recurring_appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_cancelled: !@recurring_appointment.cancelled
     end
   end
 
@@ -83,6 +69,7 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.termination_date = params[:t_date].to_date.beginning_of_day
     if @recurring_appointment.save 
       cancel_appointments_after_termination
+      recalculate_bonus
       @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
     end
   end
@@ -94,11 +81,13 @@ class RecurringAppointmentsController < ApplicationController
     if @recurring_appointment.save(validate: false)
       cancel_all_appointments
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
+      recalculate_bonus
     end                  
   end
 
   def create_individual_appointments
     CreateIndividualAppointmentsWorker.perform_async(@recurring_appointment.id, params[:option1][:year], params[:option1][:month], params[:option2][:year], params[:option2][:month], params[:option3][:year], params[:option3][:month], params[:option2IsSelected], params[:option3IsSelected])
+    recalculate_bonus
   end
 
 
@@ -109,31 +98,11 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.delete
   end
 
-  # PATCH /recurring_appointments/1/from_master_to_general
-  def from_master_to_general 
-    @new_appointment = @recurring_appointment.dup
-    @new_appointment.master = false 
-    @new_appointment.original_id = false 
-
-    @nurse= Nurse.find(@recurring_appointment.nurse_id)
-
-    respond_to do |format|
-      if @new_appointment.save 
-        @activity = @new_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @new_appointment.nurse_id, patient_id: @new_appointment.patient_id , new_nurse: @new_appointment.nurse.try(:name), new_patient: @new_appointment.patient.try(:name), new_anchor: @new_appointment.anchor, new_start: @new_appointment.starts_at, new_end: @new_appointment.ends_at
-
-        format.js
-      else 
-        format.js
-      end
-    end
-  end
-
-
-
   private
 
     def set_previous_params
       @previous_nurse = @recurring_appointment.nurse.try(:name)
+      @previous_nurse_id = @recurring_appointment.nurse_id
       @previous_patient = @recurring_appointment.patient.try(:name)
       @previous_start = @recurring_appointment.starts_at
       @previous_end = @recurring_appointment.ends_at
@@ -172,6 +141,24 @@ class RecurringAppointmentsController < ApplicationController
     def cancel_all_appointments
       appointment_ids = Appointment.to_be_displayed.where(recurring_appointment_id: @recurring_appointment.id).ids 
       CancelAppointmentsWorker.perform_async(appointment_ids) if appointment_ids.present?
+    end
+
+    def recalculate_bonus
+      if @recurring_appointment.editing_occurrences_after.present?
+        year_and_months = [{year: @recurring_appointment.editing_occurrences_after.year, month: @recurring_appointment.editing_occurrences_after.month}]
+      else
+        year_and_months = Appointment.where(recurring_appointment_id: @recurring_appointment.id).to_be_displayed.pluck(:starts_at).map{|d| {year: d.year, month: d.month}}.uniq
+      end
+
+      year_and_months.each do |year_and_month|
+        puts 'year and month '
+        puts year_and_month
+        puts 'nurse_id'
+        puts @recurring_appointment.nurse_id
+        puts @previous_nurse_id if @previous_nurse_id.present?
+        RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month])
+        RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@previous_nurse_id, year_and_month[:year], year_and_month[:month]) if @previous_nurse_id.present?
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

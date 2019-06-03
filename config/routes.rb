@@ -147,10 +147,7 @@ Rails.application.routes.draw do
   patch 'batch_request_edit/appointments' => 'appointments#batch_request_edit', as: :appointments_batch_request_edit 
   
   #custom routes for recurring_appointments
-  patch 'plannings/:planning_id/recurring_appointments/:id/toggle_edit_requested' => 'recurring_appointments#toggle_edit_requested', as: :planning_recurring_appointment_toggle_edit_requested
   patch 'planning/:planning_id/recurring_appointments/:id/archive' => 'recurring_appointments#archive', as: :planning_recurring_appointment_archive
-  patch 'plannings/:planning_id/recurring_appointment/:id/from_master_to_general' => 'recurring_appointments#from_master_to_general', as: :from_master_to_general
-  patch 'plannings/:planning_id/recurring_appointments/:id/toggle_cancelled' => 'recurring_appointments#toggle_cancelled', as: :planning_recurring_appointment_toggle_cancelled
   patch 'plannings/:planning_id/recurring_appointments/:id/terminate' => 'recurring_appointments#terminate', as: :planning_recurring_appointment_terminate 
   patch 'plannings/:planning_id/recurring_appointments/:id/create_individual_appointments' => 'recurring_appointments#create_individual_appointments', as: :planning_recurring_appointment_create_individual_appointments
 

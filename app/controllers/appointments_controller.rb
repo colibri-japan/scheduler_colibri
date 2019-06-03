@@ -75,6 +75,7 @@ class AppointmentsController < ApplicationController
     if @appointment.update(appointment_params)      
       @provided_service = @appointment.provided_service if @previous_cancelled != appointment_params[:cancelled]
       @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_start: @appointment.starts_at, new_end: @appointment.ends_at, new_edit_requested: @appointment.edit_requested, new_nurse: @appointment.nurse.try(:name), new_patient: @appointment.patient.try(:name), new_title: @appointment.title, new_color: @appointment.color
+      recalculate_bonus
     end
   end
 
@@ -86,6 +87,7 @@ class AppointmentsController < ApplicationController
     if @appointment.save(validate: validate)
       @provided_service = @appointment.provided_service
       @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_cancelled: !@appointment.cancelled
+      recalculate_bonus
     end
   end
 
@@ -95,6 +97,7 @@ class AppointmentsController < ApplicationController
 
     if @appointment.save(validate: false)
       @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:name), previous_start: @appointment.starts_at, previous_end: @appointment.ends_at
+      recalculate_bonus
     end
   end
 
@@ -104,6 +107,7 @@ class AppointmentsController < ApplicationController
 
     if @appointment.save(validate: false)
       @activity = @appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@appointment.edit_requested
+      recalculate_bonus
     end
   end
 
@@ -112,6 +116,7 @@ class AppointmentsController < ApplicationController
   def destroy
     @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:patient), previous_end: @appointment.ends_at, previous_start: @appointment.starts_at
     @appointment.delete
+    recalculate_bonus
   end
 
   def new_batch_archive
@@ -124,11 +129,13 @@ class AppointmentsController < ApplicationController
     planning_id = @corporation.planning.id
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
     @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
-
+    
     now = Time.current
-
+    
     @appointments.update_all(archived_at: now, updated_at: now)
     @provided_services.update_all(archived_at: now, updated_at: now)
+
+    batch_recalculate_bonus
   end  
 
   def new_batch_cancel
@@ -147,6 +154,8 @@ class AppointmentsController < ApplicationController
     @appointments.update_all(cancelled: true, updated_at: now)
     @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
     @provided_services.update_all(cancelled: true, updated_at: now)
+
+    batch_recalculate_bonus
   end
 
   def new_batch_request_edit
@@ -164,6 +173,8 @@ class AppointmentsController < ApplicationController
 
     @appointments.update_all(edit_requested: true, updated_at: now)
     @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
+
+    batch_recalculate_bonus
   end
 
 
@@ -209,6 +220,7 @@ class AppointmentsController < ApplicationController
       @previous_start = @appointment.starts_at
       @previous_end = @appointment.ends_at
       @previous_nurse = @appointment.nurse.try(:name)
+      @previous_nurse_id = @appointment.nurse_id
       @previous_edit_requested = @appointment.edit_requested
       @previous_cancelled = @appointment.edit_requested
       @previous_title = @appointment.title
@@ -216,6 +228,22 @@ class AppointmentsController < ApplicationController
 
     def set_planning
       @planning = Planning.find(params[:planning_id])
+    end
+
+    def recalculate_bonus
+      RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@appointment.nurse_id, @appointment.starts_at.year, @appointment.starts_at.month)
+      RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@previous_nurse_id, @appointment.starts_at.year, @appointment.starts_at.month) if @previous_nurse_id.present? && @previous_nurse_id != @appointment.nurse_id
+    end
+
+    def batch_recalculate_bonus
+      nurse_ids = @provided_services.pluck(:nurse_id).uniq
+      year_and_months = @provided_services.pluck(:service_date).map{|d| {year: d.year, month: d.month}}.uniq
+
+      nurse_ids.each do |nurse_id|
+        year_and_months.each do |year_and_month|
+          RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(nurse_id, year_and_month[:year], year_and_month[:month])
+        end
+      end
     end
 
     def from_master_planning?

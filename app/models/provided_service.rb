@@ -20,9 +20,6 @@ class ProvidedService < ApplicationRecord
 
 	before_update :reset_verifications, unless: :verifying_provided_service
 
-	after_update :recalculate_provided_services_from_salary_rules, unless: :skip_callbacks_except_calculate_total_wage
-
-
 	scope :is_verified, -> { where.not(verified_at: nil) }
 	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
 	scope :not_archived, -> { where(archived_at: nil) }
@@ -201,11 +198,11 @@ class ProvidedService < ApplicationRecord
 		self.second_verifier_id = nil
 	end
 
-	def recalculate_provided_services_from_salary_rules
-		if self.appointment_id.present?
-			RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(self.nurse_id, self.service_date.year, self.service_date.month)
-		end
-	end
+	#def recalculate_provided_services_from_salary_rules
+	#	if self.appointment_id.present?
+	#		RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(self.nurse_id, self.service_date.year, self.service_date.month)
+	#	end
+	#end
 
 
 end

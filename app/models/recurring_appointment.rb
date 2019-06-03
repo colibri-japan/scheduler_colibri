@@ -322,10 +322,6 @@ class RecurringAppointment < ApplicationRecord
 
 	def synchronize_appointments_with_recurring_appointment(recurring_appointment, appointments)
 		delta = (recurring_appointment.anchor - appointments.first.starts_at.to_date).to_i
-		puts 'recurring appointment anchor and delta'
-		puts recurring_appointment.anchor 
-		puts delta
-		puts appointments.first.starts_at.to_date
 
 		appointments.each do |appointment|
 			appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min) + delta.days

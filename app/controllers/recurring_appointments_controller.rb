@@ -66,7 +66,8 @@ class RecurringAppointmentsController < ApplicationController
   end
 
   def terminate 
-    @recurring_appointment.termination_date = params[:t_date].to_date.beginning_of_day
+    @termination_date = params[:t_date].to_date.beginning_of_day
+    @recurring_appointment.termination_date = @termination_date
     if @recurring_appointment.save 
       cancel_appointments_after_termination
       recalculate_bonus
@@ -87,7 +88,6 @@ class RecurringAppointmentsController < ApplicationController
 
   def create_individual_appointments
     CreateIndividualAppointmentsWorker.perform_async(@recurring_appointment.id, params[:option1][:year], params[:option1][:month], params[:option2][:year], params[:option2][:month], params[:option3][:year], params[:option3][:month], params[:option2IsSelected], params[:option3IsSelected])
-    recalculate_bonus
   end
 
 
@@ -102,7 +102,6 @@ class RecurringAppointmentsController < ApplicationController
 
     def set_previous_params
       @previous_nurse = @recurring_appointment.nurse.try(:name)
-      @previous_nurse_id = @recurring_appointment.nurse_id
       @previous_patient = @recurring_appointment.patient.try(:name)
       @previous_start = @recurring_appointment.starts_at
       @previous_end = @recurring_appointment.ends_at
@@ -144,20 +143,26 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def recalculate_bonus
-      if @recurring_appointment.editing_occurrences_after.present?
-        year_and_months = [{year: @recurring_appointment.editing_occurrences_after.year, month: @recurring_appointment.editing_occurrences_after.month}]
+      if @new_recurring_appointment.present?
+        puts 'presence of new recurring appointment'
+        year_and_months = [{year: @new_recurring_appointment.anchor.year, month: @new_recurring_appointment.anchor.month}]
+      elsif @termination_date.present?
+        puts 'presence of termination date'
+        year_and_months = [{year: @termination_date.year, month: @termination_date.month}]
       else
+        puts  'general case'
         year_and_months = Appointment.where(recurring_appointment_id: @recurring_appointment.id).to_be_displayed.pluck(:starts_at).map{|d| {year: d.year, month: d.month}}.uniq
       end
 
+      puts 'nurse id'
+      puts @recurring_appointment.nurse_id
+      puts @new_recurring_appointment.nurse_id if @new_recurring_appointment.present?
+      puts 'years months'
+      puts year_and_months
+
       year_and_months.each do |year_and_month|
-        puts 'year and month '
-        puts year_and_month
-        puts 'nurse_id'
-        puts @recurring_appointment.nurse_id
-        puts @previous_nurse_id if @previous_nurse_id.present?
         RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month])
-        RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@previous_nurse_id, year_and_month[:year], year_and_month[:month]) if @previous_nurse_id.present?
+        RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@new_recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month]) if @new_recurring_appointment.present? && @new_recurring_appointment.nurse_id != @recurring_appointment.nurse_id
       end
     end
 

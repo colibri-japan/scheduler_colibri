@@ -48,83 +48,87 @@
         </div>
     <% end %>
 
-	<div class="colibri-payable-subtitle">請求の詳細</div>
+    <% if current_user.has_admin_access? %>
 
-    <table class="table">
-        <thead>
-            <th>サービス内容</th>
-            <th>単位数</th>
-            <th>回数</th>
-            <th>単位計</th>
-            <th>額</th>
-        </thead>
-        <tbody>
-            <% @provided_service_summary.each do |service_summary_hash| %>
+        <div class="colibri-payable-subtitle">請求の詳細</div>
+
+        <table class="table">
+            <thead>
+                <th>サービス内容</th>
+                <th>単位数</th>
+                <th>回数</th>
+                <th>単位計</th>
+                <th>額</th>
+            </thead>
+            <tbody>
+                <% @provided_service_summary.each do |service_summary_hash| %>
+                    <tr>
+                        <td><%= service_summary_hash[:official_title] %></td>
+                        <td><%= service_summary_hash[:unit_credits] %></td>
+                        <td><%= service_summary_hash[:count] %></td>
+                        <td><%= service_summary_hash[:sum_total_credits] %></td>
+                        <td></td>
+                    </tr>
+                <% end %>
+                <% if @provided_service_summary.count > 0 && @corporation.invoicing_bonus_ratio.present? %>
+                    <tr>
+                        <td><%= corporation_bonus_official_text(@corporation) %></td>
+                        <td></td>
+                        <td></td>
+                        <% @sum_of_credits %>
+                        <td><%= @bonus_credits %></td>
+                        <td></td>
+                    </tr>
+                <% end %>
                 <tr>
-                    <td><%= service_summary_hash[:official_title] %></td>
-                    <td><%= service_summary_hash[:unit_credits] %></td>
-                    <td><%= service_summary_hash[:count] %></td>
-                    <td><%= service_summary_hash[:sum_total_credits] %></td>
-                    <td></td>
+                    <td colspan="3">訪問介護合計</td>
+                    <td><%= @total_credits %></td>
+                    <td><%= @total_invoiced_inside_insurance_scope %>¥</td>
                 </tr>
-            <% end %>
-            <% if @provided_service_summary.count > 0 && @corporation.invoicing_bonus_ratio.present? %>
+                <tr style='border-top:2px solid #ddd !important'>
+                    <td colspan="3">区分支給限度額内</td>
+                    <td><%= @credits_within_max_budget %></td>
+                    <td><%= @amount_invoiced_within_max_budget %>¥</td>
+                </tr>
                 <tr>
-                    <td><%= corporation_bonus_official_text(@corporation) %></td>
-                    <td></td>
-                    <td></td>
-                    <% @sum_of_credits %>
-                    <td><%= @bonus_credits %></td>
-                    <td></td>
+                    <td colspan="4">区分支給限度額内の利用者請求額</td>
+                    <td><%= @amount_invoiced_to_patient_within_max_budget  %>¥</td>
                 </tr>
-            <% end %>
-            <tr>
-                <td colspan="3">訪問介護合計</td>
-                <td><%= @total_credits %></td>
-                <td><%= @total_invoiced_inside_insurance_scope %>¥</td>
-            </tr>
-            <tr style='border-top:2px solid #ddd !important'>
-                <td colspan="3">区分支給限度額内</td>
-                <td><%= @credits_within_max_budget %></td>
-                <td><%= @amount_invoiced_within_max_budget %>¥</td>
-            </tr>
-            <tr>
-                <td colspan="4">区分支給限度額内の利用者請求額</td>
-                <td><%= @amount_invoiced_to_patient_within_max_budget  %>¥</td>
-            </tr>
-            <tr>
-                <td colspan="3">区分支給限度額を超える単位</td>
-                <td><%= @credits_exceeding_max_budget %></td>
-                <td><%= @amount_invoiced_exceeding_max_budget %>¥</td>
-            </tr>
-            <% @provided_service_summary_without_insurance.each do |service_summary_hash| %>
-                <tr style="<%= 'border-top:2px solid #ddd !important' if @provided_service_summary_without_insurance.index(service_summary_hash) == 0 %>">
-                    <td><%= service_summary_hash[:title] %></td>
-                    <td><%= service_summary_hash[:unit_credits] %></td>
-                    <td><%= service_summary_hash[:count] %></td>
-                    <td></td>
-                    <td><%= service_summary_hash[:sum_invoiced_total] %>¥</td>
+                <tr>
+                    <td colspan="3">区分支給限度額を超える単位</td>
+                    <td><%= @credits_exceeding_max_budget %></td>
+                    <td><%= @amount_invoiced_exceeding_max_budget %>¥</td>
                 </tr>
-            <% end %>
-            <% @cancelled_but_invoiceable_services.each do |cancelled_provided_service| %>
-                <tr style="<%= 'border-top:2px solid #ddd !important' if !@provided_service_summary_without_insurance.present? && @cancelled_but_invoiceable_services.index(cancelled_provided_service) == 0 %>">
-                    <td><%= "#{cancelled_provided_service.title} (#{cancelled_provided_service.service_date.to_date.strftime('%-m月%-d日')} キャンセル)" %></td>
-                    <td></td>
-                    <td>1</td>
-                    <td></td>
-                    <td><%= cancelled_provided_service.invoiced_total %>¥</td>
+                <% @provided_service_summary_without_insurance.each do |service_summary_hash| %>
+                    <tr style="<%= 'border-top:2px solid #ddd !important' if @provided_service_summary_without_insurance.index(service_summary_hash) == 0 %>">
+                        <td><%= service_summary_hash[:title] %></td>
+                        <td><%= service_summary_hash[:unit_credits] %></td>
+                        <td><%= service_summary_hash[:count] %></td>
+                        <td></td>
+                        <td><%= service_summary_hash[:sum_invoiced_total] %>¥</td>
+                    </tr>
+                <% end %>
+                <% @cancelled_but_invoiceable_services.each do |cancelled_provided_service| %>
+                    <tr style="<%= 'border-top:2px solid #ddd !important' if !@provided_service_summary_without_insurance.present? && @cancelled_but_invoiceable_services.index(cancelled_provided_service) == 0 %>">
+                        <td><%= "#{cancelled_provided_service.title} (#{cancelled_provided_service.service_date.to_date.strftime('%-m月%-d日')} キャンセル)" %></td>
+                        <td></td>
+                        <td>1</td>
+                        <td></td>
+                        <td><%= cancelled_provided_service.invoiced_total %>¥</td>
+                    </tr>
+                <% end %>
+                <tr>
+                    <td colspan="4">保険対象外合計</td>
+                    <td><%= @total_invoiced_outside_insurance_scope %>¥</td>
                 </tr>
-            <% end %>
-            <tr>
-                <td colspan="4">保険対象外合計</td>
-                <td><%= @total_invoiced_outside_insurance_scope %>¥</td>
-            </tr>
-            <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
-                <td colspan="4">合計</td>
-                <td><%= @total_invoiced_to_patient %>¥</td>
-            </tr>
-        </tbody>
-    </table>
+                <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
+                    <td colspan="4">合計</td>
+                    <td><%= @total_invoiced_to_patient %>¥</td>
+                </tr>
+            </tbody>
+        </table>
+
+    <% end %>
 
 
 	<div class="colibri-payable-subtitle" style='margin-top:50px'>実績詳細</div>

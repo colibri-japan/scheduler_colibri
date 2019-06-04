@@ -47,6 +47,8 @@ class CareManagerCorporationsController < ApplicationController
   end
   
   def teikyohyo
+    authorize current_user, :has_admin_access?
+    
     if params[:m].present? && params[:y].present?
       @care_manager_corporation = CareManagerCorporation.find(params[:id])
       @first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0, 0)

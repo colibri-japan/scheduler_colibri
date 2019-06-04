@@ -4,6 +4,9 @@ class ActivitiesController < ApplicationController
 
 	def index
 		@planning = Planning.find(params[:planning_id])
+		authorize @planning, :same_corporation_as_current_user?
+		authorize current_user, :has_admin_access?
+
 		employee_ids = @corporation.users.ids
 		@nurses = @corporation.nurses.all
 		@patients = @corporation.patients.all
@@ -14,17 +17,17 @@ class ActivitiesController < ApplicationController
 
 		if params[:n].present? && @nurses.ids.include?(params[:n].to_i)
 			@nurse_id = params[:n]
-			@activities = @activities.where(nurse_id: params[:n])
+			@activities = @activities.where('nurse_id = ?', params[:n])
 		end
 
 		if params[:pat].present? && @patients.ids.include?(params[:pat].to_i)
 			@patient_id = params[:pat]
-			@activities = @activities.where(patient_id: params[:pat])
+			@activities = @activities.where('patient_id = ?', params[:pat])
 		end
 
 		if params[:us].present? && @users.ids.include?(params[:us].to_i)
 			@user_id = params[:us]
-			@activities = @activities.where(owner_id: @user_id)
+			@activities = @activities.where('owner_id = ?', @user_id)
 		end
 	end
 

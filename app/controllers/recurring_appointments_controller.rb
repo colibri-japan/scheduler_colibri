@@ -5,8 +5,7 @@ class RecurringAppointmentsController < ApplicationController
   before_action :set_nurses, only: [:new, :edit]
   before_action :set_patients, only: [:new, :edit]
 
-  # GET /recurring_appointments
-  # GET /recurring_appointments.json
+
   def index
     puts params[:master]
     @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).to_be_displayed.includes(:patient, :nurse)
@@ -24,48 +23,53 @@ class RecurringAppointmentsController < ApplicationController
 
   end
 
-  # GET /recurring_appointments/1
-  # GET /recurring_appointments/1.json
   def show
   end
 
-  # GET /recurring_appointments/new
   def new
+    authorize current_user, :has_admin_access?
+    
     @recurring_appointment = RecurringAppointment.new
     @services = @corporation.cached_most_used_services_for_select
   end
-
-  # GET /recurring_appointments/1/edit
+  
   def edit
+    authorize current_user, :has_admin_access?
+    
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: @recurring_appointment.id).all
     @services = @corporation.cached_most_used_services_for_select
   end
-
-  # POST /recurring_appointments
-  # POST /recurring_appointments.json
+  
   def create
+    authorize current_user, :has_admin_access?
+    authorize @planning, :same_corporation_as_current_user?
+    
     @recurring_appointment = @planning.recurring_appointments.new(recurring_appointment_params)
-
+    
     if @recurring_appointment.save 
       @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name), new_anchor: @recurring_appointment.anchor, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at
     end
   end
-
-  # PATCH/PUT /recurring_appointments/1
-  # PATCH/PUT /recurring_appointments/1.json
+  
   def update    
+    authorize current_user, :has_admin_access?
+    authorize @planning, :same_corporation_as_current_user?
+    
     @recurring_appointment = RecurringAppointment.find(params[:id])
     set_previous_params
     redefine_anchor_if_editing_after_some_date
-      
+    
     if @recurring_appointment.update(recurring_appointment_params)
       @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id, master: true).last if @recurring_appointment.master
       recalculate_bonus
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
     end
   end
-
+  
   def terminate 
+    authorize current_user, :has_admin_access?
+    authorize @planning, :same_corporation_as_current_user?
+    
     @termination_date = params[:t_date].to_date.beginning_of_day
     @recurring_appointment.termination_date = @termination_date
     if @recurring_appointment.save 
@@ -74,26 +78,29 @@ class RecurringAppointmentsController < ApplicationController
       @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
     end
   end
-
+  
   def archive
+    authorize current_user, :has_admin_access?
+    authorize @planning, :same_corporation_as_current_user?
+    
     @recurring_appointment.archive 
     @recurring_appointment.displayable = false
-
+    
     if @recurring_appointment.save(validate: false)
       cancel_all_appointments
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
       recalculate_bonus
     end                  
   end
-
+  
   def create_individual_appointments
     CreateIndividualAppointmentsWorker.perform_async(@recurring_appointment.id, params[:option1][:year], params[:option1][:month], params[:option2][:year], params[:option2][:month], params[:option3][:year], params[:option3][:month], params[:option2IsSelected], params[:option3IsSelected])
   end
-
-
-  # DELETE /recurring_appointments/1
-  # DELETE /recurring_appointments/1.json
+  
   def destroy
+    authorize current_user, :has_admin_access?
+    authorize @planning, :same_corporation_as_current_user?
+
     @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
     @recurring_appointment.delete
   end
@@ -144,21 +151,12 @@ class RecurringAppointmentsController < ApplicationController
 
     def recalculate_bonus
       if @new_recurring_appointment.present?
-        puts 'presence of new recurring appointment'
         year_and_months = [{year: @new_recurring_appointment.anchor.year, month: @new_recurring_appointment.anchor.month}]
       elsif @termination_date.present?
-        puts 'presence of termination date'
         year_and_months = [{year: @termination_date.year, month: @termination_date.month}]
       else
-        puts  'general case'
         year_and_months = Appointment.where(recurring_appointment_id: @recurring_appointment.id).to_be_displayed.pluck(:starts_at).map{|d| {year: d.year, month: d.month}}.uniq
       end
-
-      puts 'nurse id'
-      puts @recurring_appointment.nurse_id
-      puts @new_recurring_appointment.nurse_id if @new_recurring_appointment.present?
-      puts 'years months'
-      puts year_and_months
 
       year_and_months.each do |year_and_month|
         RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month])
@@ -166,7 +164,6 @@ class RecurringAppointmentsController < ApplicationController
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def recurring_appointment_params
       params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after, :edit_requested, :cancelled, :service_id, :synchronize_appointments)
     end

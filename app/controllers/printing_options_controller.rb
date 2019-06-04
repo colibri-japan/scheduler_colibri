@@ -1,6 +1,8 @@
 class PrintingOptionsController < ApplicationController
 
     def show
+        authorize current_user, :has_admin_access?
+        
         @corporation = current_user.corporation
         @planning = Planning.find(params[:planning_id])
         @printing_option = PrintingOption.find(params[:id])
@@ -8,8 +10,10 @@ class PrintingOptionsController < ApplicationController
 
         fresh_when etag: @printing_option, last_modified: @printing_option.updated_at
     end
-
+    
     def update
+        authorize current_user, :has_admin_access?
+        
         @printing_option = PrintingOption.find(params[:id])
 
         if @printing_option.update(printing_option_params)

@@ -1,10 +1,12 @@
 class CorporationsController < ApplicationController
 
     def update
+        authorize current_user, :has_admin_access?
+        
         @corporation = Corporation.find(params[:id])
 
         if @corporation.update(corporation_params)
-            redirect_back(fallback_location: authenticated_root_path, notice: '情報がセーブされました。')
+            redirect_back(fallback_location: authenticated_root_path, notice: '設定がセーブされました')
         end
     end
 

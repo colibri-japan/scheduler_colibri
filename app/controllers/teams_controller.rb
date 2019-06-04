@@ -10,36 +10,53 @@ class TeamsController < ApplicationController
     end
 
     def new 
+        authorize current_user, :has_admin_access?
+        
         @team = Team.new()
     end
-
+    
     def create
+        authorize current_user, :has_admin_access?
+        
         @team = @corporation.teams.new(team_params)
-
+        
         if @team.save 
             redirect_to teams_path, notice: '新規チームが登録されました'
         end
     end
-
+    
     def show
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id]) 
+
+        authorize @planning, :same_corporation_as_current_user?
+        authorize @team, :same_corporation_as_current_user?
+        
         fetch_patients_grouped_by_kana
         fetch_nurses_grouped_by_team
     end
-
+    
     def master 
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id]) 
+        
+        authorize @planning, :same_corporation_as_current_user?
+        authorize @team, :same_corporation_as_current_user?
+
         fetch_patients_grouped_by_kana
         fetch_nurses_grouped_by_team
     end
 
     def payable
-        set_month_and_year_params
-
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id])
+
+        authorize current_user, :has_access_to_provided_services?
+        authorize @planning, :same_corporation_as_current_user?
+        authorize @team, :same_corporation_as_current_user?
+
+        set_month_and_year_params
+
         @nurse = current_user.nurse_id.present? ? current_user.nurse : @team.nurses.displayable.order_by_kana.first
         fetch_nurses_grouped_by_team
         fetch_patients_grouped_by_kana
@@ -64,11 +81,15 @@ class TeamsController < ApplicationController
     end
 
     def edit
+        authorize current_user, :has_admin_access?
+
         @team = Team.find(params[:id])
     end
 
 
     def update
+        authorize current_user, :has_admin_access?
+
         @team = Team.find(params[:id])
 
         if @team.update(team_params)

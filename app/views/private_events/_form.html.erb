@@ -12,7 +12,7 @@
   <% end %>
 
   <% unless private_event.new_record? %>
-    <div id="form-options-container">
+    <div id="form-options-container" class="blue-background-form">
       <div class="modal-subsection-title">簡易編集</div>
       <%= link_to "<i class='glyphicon glyphicon-trash' style='color:white;font-size:12px'></i> 削除".html_safe, planning_private_event_path(@planning, private_event), method: :delete, class: 'btn btn-secondary btn-sm', data: {confirm: '自社サービス以外の予定が削除されます'}, remote: true unless private_event.new_record? %>
     </div>
@@ -40,12 +40,12 @@
 
     <div class="form-group">
       <%= form.label :start_time, "開始日時", class: "colibri-form-label-dark" %>
-      <%= form.datetime_select :starts_at, id: :private_event_start_time, class: "form-control" %>
+      <%= form.datetime_select :starts_at, id: :private_event_start_time, class: "form-control", minute_step: 5 %>
     </div>
 
     <div class="form-group">
       <%= form.label :end_time, "終了日時", class: "colibri-form-label-dark" %>
-      <%= form.datetime_select :ends_at, id: :private_event_end_time, class: "form-control" %>
+      <%= form.datetime_select :ends_at, id: :private_event_end_time, class: "form-control", minute_step: 5 %>
     </div>
 
 

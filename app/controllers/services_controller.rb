@@ -1,6 +1,6 @@
 class ServicesController < ApplicationController
     before_action :set_corporation
-    before_action :set_service, only: [:edit, :update, :destroy, :new_merge_and_destroy]
+    before_action :set_service, only: [:edit, :update, :new_merge_and_destroy]
 
     def index
         if params[:nurse_id].present? 
@@ -16,22 +16,32 @@ class ServicesController < ApplicationController
     end
 
     def new
+        authorize current_user, :has_admin_access?
+        
         @service = @corporation.services.new
     end
-
+    
     def create
+        authorize current_user, :has_admin_access?
+        
         @service = @corporation.services.new(service_params)
-
+        
         if @service.save
             redirect_back fallback_location: authenticated_root_path, notice: 'サービスタイプが登録されました'
         end
     end
-
+    
     def edit
+        authorize current_user, :has_admin_access?
+        authorize @service, :same_corporation_as_current_user?
+        
         set_nurse_if_present
     end
-
+    
     def update
+        authorize current_user, :has_admin_access?
+        authorize @service, :same_corporation_as_current_user?
+
         set_nurse_if_present
         respond_to do |format|
             if @service.update(service_params)
@@ -46,22 +56,22 @@ class ServicesController < ApplicationController
     end
 
     def new_merge_and_destroy
+        authorize current_user, :has_admin_access?
+        authorize @service, :same_corporation_as_current_user?
+        
         @services = @corporation.services.where(nurse_id: nil).where.not(id: @service.id)
     end
-
+    
     def merge_and_destroy
+        authorize current_user, :has_admin_access?
+        @merged_service = Service.find(params[:id])
+        @destination_service = Service.find(params[:destination_service_id])
+        authorize @merged_service, :same_corporation_as_current_user?
+        authorize @destination_service, :same_corporation_as_current_user?
+
         MergeAndDestroyServiceWorker.perform_async(params[:id], params[:destination_service_id])
 
         redirect_back fallback_location: authenticated_root_path, notice: 'サービスの統合.削除を開始しました。数分後に終了します。'
-    end
-
-    def destroy
-        respond_to do |format|
-            if @service.destroy 
-                format.js
-                format.html { redirect_back fallback_location: authenticated_root_path, notice: 'サービスタイプが削除されました'  }
-            end
-        end
     end
 
     private

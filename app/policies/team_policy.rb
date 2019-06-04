@@ -1,5 +1,5 @@
 class TeamPolicy < ApplicationPolicy
-    def belongs_to_current_user_corporation?
+    def same_corporation_as_current_user?
         record.corporation_id == user.corporation_id
     end
 end

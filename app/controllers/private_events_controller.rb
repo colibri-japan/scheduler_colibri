@@ -5,8 +5,7 @@ class PrivateEventsController < ApplicationController
 	before_action :set_nurses, only: [:new, :edit]
 	before_action :set_patients, only: [:new, :edit]
 
-	# GET /private_events
-	# GET /private_events.json
+
 	def index
 		if params[:nurse_id].present?
 			@nurse = Nurse.find(params[:nurse_id])
@@ -28,25 +27,20 @@ class PrivateEventsController < ApplicationController
 		end
 	end
 
-	# GET /private_events/1
-	# GET /private_events/1.json
 	def show
 	end
 
-	# GET /private_events/new
 	def new
 	  @private_event = PrivateEvent.new
 	end
 
-	# GET /private_events/1/edit
 	def edit
 	end
 
-	# POST /private_events
-	# POST /private_events.json
 	def create
+		authorize @planning, :same_corporation_as_current_user?
 	  @private_event = @planning.private_events.new(private_event_params)
-
+		
 	  respond_to do |format|
 	    if @private_event.save
 	      @activity = @private_event.create_activity :create, owner: current_user, planning_id: @planning.id, patient_id: @private_event.patient_id
@@ -56,24 +50,24 @@ class PrivateEventsController < ApplicationController
 	    end
 	  end
 	end
-
-	# PATCH/PUT /private_events/1
-	# PATCH/PUT /private_events/1.json
+	
 	def update
+		authorize @planning, :same_corporation_as_current_user?
+		
 	  respond_to do |format|
 	    if @private_event.update(private_event_params)
 	      @activity = @private_event.create_activity :update, owner: current_user, planning_id: @planning.id, patient_id: @private_event.patient_id
-
+				
 	      format.js
 	    else
 	      format.js
 	    end
 	  end
 	end
-
-	# DELETE /private_events/1
-	# DELETE /private_events/1.json
+	
 	def destroy
+		authorize @planning, :same_corporation_as_current_user?
+
 	  @activity = @private_event.create_activity :destroy, owner: current_user, planning_id: @planning.id, patient_id: @private_event.patient_id
 
 	  @private_event.destroy
@@ -85,7 +79,7 @@ class PrivateEventsController < ApplicationController
 	end
 
 	private
-	  # Use callbacks to share common setup or constraints between actions.
+
 	  def set_private_event
 	    @private_event = PrivateEvent.find(params[:id])
 	  end
@@ -102,7 +96,6 @@ class PrivateEventsController < ApplicationController
 			@patients = @corporation.cached_active_patients_ordered_by_kana
 		end
 
-	  # Never trust parameters from the scary internet, only allow the white list through.
 	  def private_event_params
 	    params.require(:private_event).permit(:title, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id)
 	  end

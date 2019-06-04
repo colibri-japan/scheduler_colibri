@@ -6,14 +6,18 @@ class SalaryRulesController < ApplicationController
     end
 
     def new 
+      authorize current_user, :has_admin_access?
+      
       set_nurses_and_services
-
+      
       @salary_rule = @corporation.salary_rules.new
     end
-
+    
     def create 
+      authorize current_user, :has_admin_access?
+      
       @salary_rule = @corporation.salary_rules.new(salary_rules_params)
-
+      
       respond_to do |format|
         if @salary_rule.save 
           format.js 
@@ -24,19 +28,23 @@ class SalaryRulesController < ApplicationController
         end
       end
     end
-
+    
     def edit 
+      authorize current_user, :has_admin_access?
+      
       set_nurses_and_services
       @salary_rule = SalaryRule.find(params[:id])
     end
-
+    
     def update  
+      authorize current_user, :has_admin_access?
       @salary_rule = SalaryRule.find(params[:id])
-
+      
       @salary_rule.update(salary_rules_params)
     end
-
+    
     def destroy
+      authorize current_user, :has_admin_access?
       @salary_rule = SalaryRule.find(params[:id])
 
       @salary_rule.destroy

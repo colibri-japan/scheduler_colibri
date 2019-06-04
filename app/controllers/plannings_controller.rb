@@ -5,20 +5,20 @@ class PlanningsController < ApplicationController
 	before_action :fetch_nurses_grouped_by_team, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
 
 	def all_patients
-		authorize @planning, :is_employee?
+		authorize @planning, :same_corporation_as_current_user?
 	end
 	
 	def all_nurses
-		authorize @planning, :is_employee?
+		authorize @planning, :same_corporation_as_current_user?
 		@nurses = @corporation.nurses.displayable
 	end
 	
 	def all_patients_master
-		authorize @planning, :is_employee?
+		authorize @planning, :same_corporation_as_current_user?
 	end
 	
 	def all_nurses_master
-		authorize @planning, :is_employee?
+		authorize @planning, :same_corporation_as_current_user?
 		@nurses = @corporation.nurses.displayable
 	end
 
@@ -27,7 +27,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def master_to_schedule
-		authorize @planning, :is_employee?
+		authorize @planning, :same_corporation_as_current_user?
 		authorize current_user, :has_admin_access?
 
 		CopyPlanningFromMasterWorker.perform_async(@planning.id, params[:month], params[:year])

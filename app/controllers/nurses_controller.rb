@@ -13,7 +13,7 @@ class NursesController < ApplicationController
     
     if params[:team_id].present? 
       team = Team.find(params[:team_id])
-      authorize team, :belongs_to_current_user_corporation?
+      authorize team, :same_corporation_as_current_user?
       nurse_ids = team.nurses.pluck(:id)
       nurses = nurses.where(id: nurse_ids)
     end
@@ -44,7 +44,7 @@ class NursesController < ApplicationController
   end
 
   def show
-    authorize @nurse, :is_employee?
+    authorize @nurse, :same_corporation_as_current_user?
 
     fetch_nurses_grouped_by_team
     fetch_patients_grouped_by_kana
@@ -54,7 +54,7 @@ class NursesController < ApplicationController
   end
 
   def master 
-    authorize @planning, :is_employee? 
+    authorize @planning, :same_corporation_as_current_user? 
 
     fetch_nurses_grouped_by_team
     fetch_patients_grouped_by_kana
@@ -81,7 +81,7 @@ class NursesController < ApplicationController
   end
 
   def update
-    authorize @nurse, :is_employee?
+    authorize @nurse, :same_corporation_as_current_user?
     respond_to do |format|
       if @nurse.update(nurse_params)
         format.html {redirect_back(fallback_location: authenticated_root_path, notice: '従業員の情報がアップデートされました')}
@@ -92,7 +92,7 @@ class NursesController < ApplicationController
   end
 
   def destroy
-    authorize @nurse, :is_employee?
+    authorize @nurse, :same_corporation_as_current_user?
     @nurse.destroy
     respond_to do |format|
       format.html { redirect_to nurses_url, notice: '従業員が削除されました' }
@@ -114,7 +114,7 @@ class NursesController < ApplicationController
 
   def payable
     authorize current_user, :has_access_to_provided_services?
-    authorize @nurse, :is_employee?
+    authorize @nurse, :same_corporation_as_current_user?
 
     set_month_and_year_params
     fetch_nurses_grouped_by_team
@@ -216,8 +216,6 @@ class NursesController < ApplicationController
 
   def set_sort_direction 
     @sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
-    puts 'sort direction !!'
-    puts @sort_direction
   end
 
 end

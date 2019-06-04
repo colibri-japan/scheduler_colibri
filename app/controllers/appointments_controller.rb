@@ -8,8 +8,7 @@ class AppointmentsController < ApplicationController
   # GET /appointments
   # GET /appointments.json
   def index
-    authorize @planning, :is_employee?
-
+    authorize @planning, :same_corporation_as_current_user?
 
     if params[:nurse_id].present? && params[:master].present?
       @appointments = @planning.appointments.to_be_displayed.where(nurse_id: params[:nurse_id], master: params[:master]).includes(:patient, :nurse, :recurring_appointment)
@@ -40,6 +39,8 @@ class AppointmentsController < ApplicationController
 
   # GET /appointments/new
   def new
+    authorize @planning, :same_corporation_as_current_user?
+
     @appointment = Appointment.new
     @nurses = @corporation.nurses.all 
     @patients = @corporation.patients.all
@@ -47,9 +48,11 @@ class AppointmentsController < ApplicationController
 
   # GET /appointments/1/edit
   def edit  
+    authorize @planning, :same_corporation_as_current_user?
+
     @nurses = @corporation.nurses.order_by_kana
     @patients = @corporation.patients.active.order_by_kana
-    @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id).all
+    @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).all
     @services = @corporation.cached_most_used_services_for_select
     @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end
@@ -57,6 +60,8 @@ class AppointmentsController < ApplicationController
   # POST /appointments
   # POST /appointments.json
   def create
+    authorize @planning, :same_corporation_as_current_user?
+
     @appointment = @planning.appointments.new(appointment_params) 
 
     if @appointment.save 
@@ -68,6 +73,8 @@ class AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1
   # PATCH/PUT /appointments/1.json
   def update
+    authorize @planning, :same_corporation_as_current_user?
+
     @appointment = Appointment.find(params[:id])
     store_original_params
     @appointment.recurring_appointment_id = nil
@@ -80,11 +87,12 @@ class AppointmentsController < ApplicationController
   end
 
   def toggle_cancelled
+    authorize @planning, :same_corporation_as_current_user?
+
     @appointment.cancelled = !@appointment.cancelled
     @appointment.recurring_appointment_id = nil 
-    validate = !@appointment.cancelled
 
-    if @appointment.save(validate: validate)
+    if @appointment.save(validate: !@appointment.cancelled)
       @provided_service = @appointment.provided_service
       @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_cancelled: !@appointment.cancelled
       recalculate_bonus
@@ -92,6 +100,8 @@ class AppointmentsController < ApplicationController
   end
 
   def archive
+    authorize @planning, :same_corporation_as_current_user?
+
     @appointment.archive 
     @appointment.recurring_appointment_id = nil 
 
@@ -102,6 +112,8 @@ class AppointmentsController < ApplicationController
   end
 
   def toggle_edit_requested
+    authorize @planning, :same_corporation_as_current_user?
+
     @appointment.edit_requested = !@appointment.edit_requested
     @appointment.recurring_appointment_id = nil
 
@@ -114,6 +126,8 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1
   # DELETE /appointments/1.json
   def destroy
+    authorize @planning, :same_corporation_as_current_user?
+
     @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:patient), previous_end: @appointment.ends_at, previous_start: @appointment.starts_at
     @appointment.delete
     recalculate_bonus
@@ -131,7 +145,6 @@ class AppointmentsController < ApplicationController
     @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
     
     now = Time.current
-    
     @appointments.update_all(archived_at: now, updated_at: now)
     @provided_services.update_all(archived_at: now, updated_at: now)
 
@@ -150,7 +163,6 @@ class AppointmentsController < ApplicationController
     @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
-
     @appointments.update_all(cancelled: true, updated_at: now)
     @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
     @provided_services.update_all(cancelled: true, updated_at: now)
@@ -170,7 +182,6 @@ class AppointmentsController < ApplicationController
     @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
-
     @appointments.update_all(edit_requested: true, updated_at: now)
     @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
 
@@ -244,10 +255,6 @@ class AppointmentsController < ApplicationController
           RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(nurse_id, year_and_month[:year], year_and_month[:month])
         end
       end
-    end
-
-    def from_master_planning?
-      params[:q] == 'master' ? @master = true : @master = false
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

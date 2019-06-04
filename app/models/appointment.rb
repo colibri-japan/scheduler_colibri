@@ -18,6 +18,7 @@ class Appointment < ApplicationRecord
 	
 	validates :title, presence: true
 	validate :do_not_overlap
+	validate :nurse_patient_and_planning_from_same_corporation
 	
 	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
@@ -123,13 +124,18 @@ class Appointment < ApplicationRecord
 	private
 
 	def request_edit_for_overlapping_appointments
-		puts 'requesting edit for overlapping appointments'
 		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
 		overlapping_appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: Time.current)
 	end
 
+	def nurse_patient_and_planning_from_same_corporation
+		if self.patient.corporation_id.present? && self.nurse.corporation_id.present? && self.planning.corporation_id.present?
+			corporation_id_is_matching = self.patient.corporation_id == self.planning.corporation_id && self.nurse.corporation_id == self.planning.corporation_id
+			errors.add(:planning_id, "ご自身の事業所と、利用者様と従業員の事業所が異なってます。") unless corporation_id_is_matching
+		end
+	end
+
 	def do_not_overlap
-		puts 'overlap validation on appointment'
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
@@ -140,26 +146,20 @@ class Appointment < ApplicationRecord
 		end
 	end
 
-
 	def default_master
-		puts 'setting default master'
 		self.master ||= false
 	end
 
 	def default_displayable
-		puts 'setting default displayable'
 		self.displayable = true if self.displayable.nil?
 	end
 
 	def request_edit_if_undefined_nurse
-		puts 'request edit if undefined nurse'
 		nurse = Nurse.find(self.nurse_id)
 		self.edit_requested = true if nurse.name === '未定'
 	end
 
 	def create_provided_service
-		puts 'adding provided service'
-		#create provided service should be made more simple
 		if !self.master
 		  provided_duration = self.ends_at - self.starts_at
 			nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first 
@@ -169,7 +169,6 @@ class Appointment < ApplicationRecord
 	end
 
 	def update_provided_service
-		puts 'updating provided service'
 		if !self.master
 			provided_service = self.provided_service
 

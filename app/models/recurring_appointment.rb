@@ -20,6 +20,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :title, presence: true
 	validates :nurse_id, presence: true 
 	validates :patient_id, presence: true
+	validate :nurse_patient_and_planning_from_same_corporation
 	validate :cannot_overlap_existing_appointment_create, on: :create, if: -> { nurse_id.present? }
 	validate :cannot_overlap_existing_appointment_update, on: :update, if: -> { nurse_id.present? }
 
@@ -235,6 +236,13 @@ class RecurringAppointment < ApplicationRecord
 
 	def calculate_end_day
 		self.end_day = self.anchor + duration
+	end
+
+	def nurse_patient_and_planning_from_same_corporation
+		if self.patient.corporation_id.present? && self.nurse.corporation_id.present? && self.planning.corporation_id.present?
+			corporation_id_is_matching = self.patient.corporation_id == self.planning.corporation_id && self.nurse.corporation_id == self.planning.corporation_id
+			errors.add(:planning_id, "ご自身の事業所と、利用者様と従業員の事業所が異なってます。") unless corporation_id_is_matching
+		end
 	end
 
 	def cannot_overlap_existing_appointment_create

@@ -6,7 +6,7 @@
 <div id="payable-container">
 	<% if current_user.corporation_admin? %>
 	
-		<div class='colibri-xs-title no-print' style='margin-left:5px'>給与統計</div>
+		<div class='colibri-xs-title no-print' style='margin-left:5px'>統計.データ</div>
 		<div class='no-print'>
 			<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
 			<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
@@ -15,10 +15,31 @@
 		<div class='colibri-dashboard-container-row no-print'>
 			<div class='colibri-dashboard-subcontainer'>
 				<div class='colibri-subcontainer-header'>
-					<span class='colibri-subcontainer-title'>給与推移</span>
+					<span class='colibri-subcontainer-title'>データをダウンロードする</span>
 				</div>
 				<div class='colibri-subcontainer-body'>
-					<%= area_chart @provided_services_till_today.group_by_day(:service_date).sum(:total_wage), height: '95%', width: '500px', colors: ['#17a2b8'], suffix: '￥' %>
+					<table class='table'>
+						<thead>
+							<tr>
+								<th>レポート名</th>
+								<th>アクション</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>従業員別実績</td>
+								<td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_general_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
+							</tr>
+							<tr>
+								<td>チーム別実績</td>
+								<td><div class="btn btn-sm btn-success text-white" id="teams-report"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
+							</tr>
+							<tr>
+								<td>新規利用者</td>
+								<td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_recent_patients_report_path(@planning, format: :xlsx), class: 'btn btn-success btn-sm text-white' %></td>
+							</tr>
+						</tbody>
+					</table>				
 				</div>
 			</div>
 			<div class='colibri-dashboard-subcontainer' id='category-container'>
@@ -57,38 +78,6 @@
 			</div>
 		</div>
 
-		<div class='colibri-dashboard-container-row no-print'>
-			<div class='colibri-dashboard-subcontainer'>
-				<div class='colibri-subcontainer-header'>
-					<span class='colibri-subcontainer-title'>データをダウンロードする</span>
-				</div>
-				<div class='colibri-subcontainer-body'>
-					<table class='table'>
-						<thead>
-							<tr>
-								<th>レポート名</th>
-								<th>アクション</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>従業員別実績</td>
-								<td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_general_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
-							</tr>
-							<tr>
-								<td>チーム別実績</td>
-								<td><div class="btn btn-sm btn-success text-white" id="teams-report"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
-							</tr>
-							<tr>
-								<td>新規利用者</td>
-								<td><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_recent_patients_report_path(@planning, format: :xlsx), class: 'btn btn-success btn-sm text-white' %></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-
-		</div>
 	
 		<div class='colibri-xs-title no-print' style='margin-left:5px;margin-top:20px'>カスタム手当</div>
 

@@ -29,7 +29,11 @@ class Nurse < ApplicationRecord
 		}
 	end
 
-	def available_as_master_in_range?(range)
+	def self.available_as_master_in_range(range)
+		select {|r| r.is_available_as_master_in_range?(range)}
+	end
+
+	def is_available_as_master_in_range?(range)
 		nurse_shifts = RecurringAppointment.valid.from_master.where(nurse_id: self.id).not_terminated_at(range.first).occurs_in_range(range).select {|r| r.overlapping_hours(range.first, range.last)}.pluck(:starts_at, :ends_at)
 		return true if nurse_shifts.blank?
 

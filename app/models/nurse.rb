@@ -29,6 +29,23 @@ class Nurse < ApplicationRecord
 		}
 	end
 
+	def available_as_master_in_range?(range)
+		nurse_shifts = RecurringAppointment.valid.from_master.where(nurse_id: self.id).not_terminated_at(range.first).occurs_in_range(range).select {|r| r.overlapping_hours(range.first, range.last)}.pluck(:starts_at, :ends_at)
+		return true if nurse_shifts.blank?
+
+		nurse_shifts.map! {|array| {starts_at: DateTime.new(range.first.year, range.first.month, range.first.day, array[0].hour, array[0].min), ends_at: DateTime.new(range.first.year, range.first.month, range.first.day, array[1].hour, array[1].min)}}
+		nurse_shifts.sort_by! {|hash| hash[:starts_at]}
+
+		return true if ((nurse_shifts.first[:starts_at] - range.first) * 24 * 60 * 60).to_i >= 3600
+		return true if ((range.last - nurse_shifts.last[:ends_at]) * 24 * 60 * 60).to_i >= 3600
+
+		nurse_shifts.each_with_index do |nurse_shift, index|
+			return true if index + 1 < nurse_shifts.length && ((nurse_shifts[index + 1][:starts_at] - nurse_shift[:ends_at]) * 24 * 60 * 60 ).to_i >= 3600
+		end	
+		
+		false
+	end
+
 	def as_json
 		{
 			id: id, 

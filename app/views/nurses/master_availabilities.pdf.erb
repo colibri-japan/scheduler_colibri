@@ -1,3 +1,6 @@
+<div style='margin-bottom:35px;font-size:2.5em;font-weight:bold;text-align:center'><%= @corporation.try(:name) %>空き情報</div>
+<div style='margin-bottom:20px;font-size:2em'>電話番号：<%= @corporation.try(:phone_number) %></div> 
+
 <table class='table table-bordered table-teikyohyo'>
     <thead>
         <th style="width:25%"></th>
@@ -11,12 +14,14 @@
     </thead>
     <tbody>
         <% @master_availabilities.each do |slot, availabilities_per_day| %>
-            <tr>
-                <td><%= "#{slot[:slot_start]}:00 ~ #{slot[:slot_end]}:00" %></td>
+            <tr style="height:45px">
+                <td style='height:45px'><%= "#{slot[:slot_start]}:00 ~ #{slot[:slot_end]}:00" %></td>
                 <% availabilities_per_day.each do |day, count| %>
-                    <td><%= count %></td>
+                    <td style='color:black !important;height:45px;font-size:1.2em'><%= nurse_availability_icon(count) %></td>
                 <% end %>
             </tr>
         <% end %>
     </tbody>
 </table>
+
+<div style='margin-top:30px;border:0.5px solid black'><%= simple_format(@text) if @text.present? %></div>

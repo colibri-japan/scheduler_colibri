@@ -205,10 +205,8 @@ $(document).on 'turbolinks:load', ->
   $('#confirm-availabilities-print').click -> 
     date = $('#availabilities_date').val()
     text = $('#availabilities_text').val()
-    console.log(date)
-    console.log(text)
     if date
-      window.open($(this).data('link') + '?date=' + date + 'text=' + text, '_blank')
+      window.open($(this).data('link') + '?date=' + date + '&text=' + text, '_blank')
     else
       alert('期間を選択してください')
     return

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190603200830) do
+ActiveRecord::Schema.define(version: 20190606174318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -228,6 +228,7 @@ ActiveRecord::Schema.define(version: 20190603200830) do
     t.decimal "invoicing_bonus_ratio", default: "1.0"
     t.date "invoicing_bonus_ratio_start_date"
     t.decimal "previous_invoicing_bonus_ratio"
+    t.string "phone_number"
   end
 
   create_table "nurses", force: :cascade do |t|

@@ -34,7 +34,7 @@ class Nurse < ApplicationRecord
 		days_of_week = [monday, monday + 1.day, monday + 2.days, monday + 3.days, monday + 4.days, monday + 5.days, monday + 6.days]
 
 		return_hash = {}
-		slots = [{slot_start: 9, slot_end: 12}, {slot_start: 12, slot_end: 15}, {slot_start: 15, slot_end: 16}]
+		slots = [{slot_start: 9, slot_end: 12}, {slot_start: 12, slot_end: 15}, {slot_start: 15, slot_end: 18}]
 		slots.each do |slot|
 			slot_hash = {}
 			days_of_week.each do |day|

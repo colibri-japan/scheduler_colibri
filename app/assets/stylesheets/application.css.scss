@@ -609,6 +609,10 @@ div.popover-body {
 	border-bottom: 1px solid #ddd;
 }
 
+.btn-pointer:hover {
+	cursor: pointer;
+}
+
 @media print {
 
 	@page {

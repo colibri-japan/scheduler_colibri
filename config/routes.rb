@@ -105,7 +105,8 @@ Rails.application.routes.draw do
   patch 'nurses/:id/send_reminder_email' => 'nurses#send_reminder_email', as: :nurse_send_reminder_email
   patch 'nurses/:id/master_to_schedule' => 'nurses#master_to_schedule', as: :nurse_master_to_schedule
   get 'nurses/:id/new_master_to_schedule' => "nurses#new_master_to_schedule", as: :new_nurse_master_to_schedule
-  
+  get 'master_availabilities/nurses' => 'nurses#master_availabilities', as: :nurses_master_availabilities
+
   #custom routes for patients
   get 'plannings/:planning_id/patients/:id/master' => 'patients#master', as: :planning_patient_master
   patch 'patients/:id/toggle_active' => 'patients#toggle_active', as: :toggle_active

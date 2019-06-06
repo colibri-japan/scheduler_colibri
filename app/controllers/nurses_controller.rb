@@ -1,6 +1,6 @@
 class NursesController < ApplicationController
   before_action :set_corporation
-  before_action :set_nurse, except: [:index, :new, :create]
+  before_action :set_nurse, except: [:index, :new, :create, :master_availabilities]
   before_action :set_planning, only: [:show, :master, :payable]
   before_action :set_printing_option, only: [:show, :master]
   before_action :set_skills, only: [:new, :edit]
@@ -157,6 +157,25 @@ class NursesController < ApplicationController
     CopyNursePlanningFromMasterWorker.perform_async(@nurse.id, params[:month], params[:year])
 
     redirect_to planning_nurse_path(@planning, @nurse), notice: "#{@nurse.name}のサービスの反映が始まりました。数秒後にリフレッシュしてください。"
+  end
+
+  def master_availabilities
+    query_day = params[:date].to_date rescue nil
+    @text = params[:text]
+
+    @master_availabilities = query_day.present? ? @corporation.nurses.displayable.master_availabilities_per_slot_and_wday(query_day) : []
+
+    respond_to do |format|
+      format.pdf do 
+        render pdf: '空き情報',
+        page_size: 'A4',
+        layout: 'pdf.html',
+        orientation: 'landscape',
+        encoding: 'UTF-8',
+        zoom: 1,
+        dpi: 75
+      end
+    end
   end
 
 

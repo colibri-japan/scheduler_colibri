@@ -55,21 +55,21 @@ class PlanningsController < ApplicationController
 
 		#appointments : since beginning of month
 		today = Date.today 
-    appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
+    	appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
 
-	  #daily summary
-    @daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
-    @female_patients_ids = @corporation.patients.where(gender: true).ids
-    @male_patients_ids = @corporation.patients.where(gender: false).ids
+	  　#daily summary
+    	@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
+    	@female_patients_ids = @corporation.patients.where(gender: true).ids
+    	@male_patients_ids = @corporation.patients.where(gender: false).ids
 		
-    #weekly summary, from monday to today
-    @weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
+    	#weekly summary, from monday to today
+    	@weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
 
 		#monthly summary, until end of today
 		@monthly_appointments = appointments
 
-    #daily provided_services to be verified
-    @daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+    	#daily provided_services to be verified
+    	@daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
 	end
 
 	def all_patients_payable

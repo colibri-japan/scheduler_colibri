@@ -1,0 +1,22 @@
+<table class='table table-bordered table-teikyohyo'>
+    <thead>
+        <th style="width:25%"></th>
+        <th>月</th>
+        <th>火</th>
+        <th>水</th>
+        <th>木</th>
+        <th>金</th>
+        <th>土</th>
+        <th>日</th>
+    </thead>
+    <tbody>
+        <% @master_availabilities.each do |slot, availabilities_per_day| %>
+            <tr>
+                <td><%= "#{slot[:slot_start]}:00 ~ #{slot[:slot_end]}:00" %></td>
+                <% availabilities_per_day.each do |day, count| %>
+                    <td><%= count %></td>
+                <% end %>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

@@ -29,8 +29,25 @@ class Nurse < ApplicationRecord
 		}
 	end
 
+	def self.master_availabilities_per_slot_and_wday(date)
+		monday = date.to_date.beginning_of_week
+		days_of_week = [monday, monday + 1.day, monday + 2.days, monday + 3.days, monday + 4.days, monday + 5.days, monday + 6.days]
+
+		return_hash = {}
+		slots = [{slot_start: 9, slot_end: 12}, {slot_start: 12, slot_end: 15}, {slot_start: 15, slot_end: 16}]
+		slots.each do |slot|
+			slot_hash = {}
+			days_of_week.each do |day|
+				slot_hash[day.wday] = self.available_as_master_in_range(DateTime.new(day.year, day.month, day.day, slot[:slot_start], slot[:slot_end])..DateTime.new(day.year, day.month, day.day, slot[:slot_start], slot[:slot_end])).count
+			end
+			return_hash[slot] = slot_hash
+		end
+
+		return_hash
+	end
+
 	def self.available_as_master_in_range(range)
-		select {|r| r.is_available_as_master_in_range?(range)}
+		select {|n| n.is_available_as_master_in_range?(range)}
 	end
 
 	def is_available_as_master_in_range?(range)

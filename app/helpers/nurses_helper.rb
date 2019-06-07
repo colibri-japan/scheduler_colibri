@@ -16,7 +16,7 @@ module NursesHelper
         when count == 2
             '○'
         when count >= 3
-            '○○'
+            '◎'
         else
             ''
         end

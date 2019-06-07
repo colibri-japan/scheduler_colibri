@@ -38,7 +38,9 @@ class Nurse < ApplicationRecord
 		slots.each do |slot|
 			slot_hash = {}
 			days_of_week.each do |day|
-				slot_hash[day.wday] = self.available_as_master_in_range(DateTime.new(day.year, day.month, day.day, slot[:slot_start], slot[:slot_end])..DateTime.new(day.year, day.month, day.day, slot[:slot_start], slot[:slot_end])).count
+				range_start = DateTime.new(day.year, day.month, day.day, slot[:slot_start], 0)
+				range_end = DateTime.new(day.year, day.month, day.day, slot[:slot_end], 0)
+				slot_hash[day.wday] = self.available_as_master_in_range(range_start..range_end).count
 			end
 			return_hash[slot] = slot_hash
 		end

@@ -93,6 +93,7 @@ let setPrivateEventTime = (start, end, view) => {
   if (window.patientId) {
     $("#private_event_patient_id").val(window.patientId);
   }
+
 }
 
 let setAppointmentTime = (start, end, view) => {
@@ -122,7 +123,7 @@ let setAppointmentTime = (start, end, view) => {
   }
 }
 
-let setRecurringAppointmentTime = (start, end, view) => {
+let setRecurringAppointmentTime = (start, end, resource, view) => {
   $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
   $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
   $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
@@ -146,6 +147,16 @@ let setRecurringAppointmentTime = (start, end, view) => {
   }
   if (window.patientId) {
     $('#recurring_appointment_patient_id').val(window.patientId);
+  }
+  if (resource) {
+    console.log('resource present')
+    if (window.resourceType === 'nurse') {
+      console.log('nurse id')
+      $("#recurring_appointment_nurse_id").val(resource.id);
+    } else if (window.resourceType === 'patient') {
+      console.log('patient id')
+      $('#recurring_appointment_patient_id').val(resource.id)
+    }
   }
 }
 
@@ -713,7 +724,7 @@ initialize_master_calendar = function() {
         let end_time = start_and_end[1];
         $.getScript(window.selectActionUrl + '?master=true', function() {
           setWishedSlotTime(start_time, end_time, view);
-          setRecurringAppointmentTime(start_time, end_time, view);
+          setRecurringAppointmentTime(start_time, end_time, resource, view);
           setHiddenStartAndEndFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
           wishedSlotsSelectize()

@@ -49,7 +49,28 @@ class Nurse < ApplicationRecord
 	end
 
 	def self.available_as_master_in_range(range)
-		select {|n| n.is_available_as_master_in_range?(range)}
+		return_array = Nurse.where(id: self.ids).to_a 
+		recurring_appointments = RecurringAppointment.valid.from_master.where(nurse_id: self.ids).not_terminated_at(range.first).occurs_in_range(range).select {|r| r.overlapping_hours(range.first, range.last)}
+		return return_array if recurring_appointments.blank?
+
+		nurses_with_appointments = self.where(id: recurring_appointments.map(&:nurse_id).uniq)
+
+		nurses_with_appointments.each do |nurse|
+			nurse_recurring_appointments = recurring_appointments.select {|r| r.nurse_id == nurse.id }
+			nurse_shifts = nurse_recurring_appointments.map {|r| {starts_at: DateTime.new(range.first.year, range.first.month, range.first.day, r.starts_at.hour, r.starts_at.min), ends_at: DateTime.new(range.first.year, range.first.month, range.first.day, r.ends_at.hour, r.ends_at.min)} }
+			nurse_shifts.sort_by! {|hash| hash[:starts_at]}
+
+			next if ((nurse_shifts.first[:starts_at] - range.first) * 24 * 60 * 60).to_i >= 3600
+			next if ((range.last - nurse_shifts.last[:ends_at]) * 24 * 60 * 60).to_i >= 3600
+
+			nurse_shifts.each_with_index do |nurse_shift, index|
+				break if index + 1 < nurse_shifts.length && ((nurse_shifts[index + 1][:starts_at] - nurse_shift[:ends_at]) * 24 * 60 * 60 ).to_i >= 3600
+			end
+
+			return_array.delete(nurse)
+		end
+
+		return_array
 	end
 
 	def is_available_as_master_in_range?(range)
@@ -57,7 +78,7 @@ class Nurse < ApplicationRecord
 		return true if nurse_shifts.blank?
 
 		nurse_shifts.map! {|array| {starts_at: DateTime.new(range.first.year, range.first.month, range.first.day, array[0].hour, array[0].min), ends_at: DateTime.new(range.first.year, range.first.month, range.first.day, array[1].hour, array[1].min)}}
-		nurse_shifts.sort_by! {|hash| hash[:starts_at]}
+		nurse_shifts.sort_by! {|hash| hash[:starts_at]}	
 
 		return true if ((nurse_shifts.first[:starts_at] - range.first) * 24 * 60 * 60).to_i >= 3600
 		return true if ((range.last - nurse_shifts.last[:ends_at]) * 24 * 60 * 60).to_i >= 3600
@@ -92,7 +113,9 @@ class Nurse < ApplicationRecord
 		end
 	end
 
-
+	def get_shifts_per_nurse(recurring_appointments)
+		# hash with array of shifts (val) per nurse_id (key)
+	end
 
 	def self.service_reminder
 		Nurse.where(reminderable: true, displayable: true).find_each do |nurse|

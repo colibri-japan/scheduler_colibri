@@ -73,10 +73,10 @@
           <tbody>
             <% @commented_appointments.each do |appointment| %>
             <tr>
-              <td style="width:15%"><%= "#{appointment.patient.name }様"%></td>
-              <td style="width:15%"><%= "#{appointment.nurse.name }"%></td>
-              <td style="width:15%"><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
-              <td style="width:55%"><%= appointment.description %></td>
+              <td style="width:15%"><%= "#{appointment.patient.try(:name) }様"%></td>
+              <td style="width:15%"><%= "#{appointment.nurse.try(:name) }"%></td>
+              <td style="width:15%"><%= appointment.starts_at.try(:strftime, "%-m月%-d日") %></td>
+              <td style="width:55%"><%= appointment.try(:description) %></td>
             </tr>
             <% end %>
           </tbody>

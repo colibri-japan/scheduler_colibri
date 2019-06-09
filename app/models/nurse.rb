@@ -29,6 +29,12 @@ class Nurse < ApplicationRecord
 		}
 	end
 
+	def self.without_unavailabilities(range)
+		unavailable_nurse_ids = WishedSlot.unavailabilities.where(nurse_id: self.ids).occurs_in_range(range).select {|w| w.overlapping_hours(range.first, range.last)}.map(&:nurse_id).uniq
+
+		where.not(id: unavailable_nurse_ids)
+	end
+
 	def self.master_availabilities_per_slot_and_wday(date)
 		monday = date.to_date.beginning_of_week
 		days_of_week = [monday, monday + 1.day, monday + 2.days, monday + 3.days, monday + 4.days, monday + 5.days, monday + 6.days]
@@ -49,7 +55,8 @@ class Nurse < ApplicationRecord
 	end
 
 	def self.available_as_master_in_range(range)
-		return_array = Nurse.where(id: self.ids).to_a 
+		return_array = self.without_unavailabilities(range).to_a
+		
 		recurring_appointments = RecurringAppointment.valid.from_master.where(nurse_id: self.ids).not_terminated_at(range.first).occurs_in_range(range).select {|r| r.overlapping_hours(range.first, range.last)}
 		return return_array if recurring_appointments.blank?
 
@@ -67,7 +74,7 @@ class Nurse < ApplicationRecord
 				break if index + 1 < nurse_shifts.length && ((nurse_shifts[index + 1][:starts_at] - nurse_shift[:ends_at]) * 24 * 60 * 60 ).to_i >= 3600
 			end
 
-			return_array.delete(nurse)
+			return_array.delete(nurse) if return_array.class.name == 'Array'
 		end
 
 		return_array

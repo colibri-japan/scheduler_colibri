@@ -16,6 +16,9 @@ class WishedSlot < ApplicationRecord
   validates :frequency, presence: true
   validates :frequency, inclusion: 0..4
 
+  scope :unavailabilities, -> { where(rank: 0) }
+	scope :occurs_in_range, -> range { select {|w| w.occurs_between?(range.first, range.last) } }
+
   def schedule
     @schedule ||= begin
 
@@ -53,6 +56,29 @@ class WishedSlot < ApplicationRecord
     end_frequency = end_date ? end_date.to_date : Date.today + 1.year
   	schedule.occurrences_between(start_frequency, end_frequency)
   end
+
+
+  def occurs_between?(range_start, range_end)
+    puts 'occurs between'
+    puts schedule.occurs_between?(range_start.to_date, range_end.to_date)
+		schedule.occurs_between?(range_start.to_date, range_end.to_date)
+  end
+
+	def overlapping_hours(start_time, end_time)
+		self_start = self.starts_at.utc.strftime("%H:%M")
+		self_end = self.all_day_wished_slot? ? "23:59" : self.ends_at.utc.strftime("%H:%M")
+		check_start = start_time.utc.strftime("%H:%M")
+    check_end = end_time.utc.strftime("%H:%M")
+    
+    puts 'overlapping hours'
+    puts self_start
+    puts self_end
+    puts check_start
+    puts check_end
+    puts check_start >= self_start && check_start < self_end || check_end > self_start && check_end <= self_end || check_start <= self_start && check_end >= self_end
+    
+    check_start >= self_start && check_start < self_end || check_end > self_start && check_end <= self_end || check_start <= self_start && check_end >= self_end
+	end
 
   def color_from_rank
     case self.rank 

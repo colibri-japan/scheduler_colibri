@@ -54,11 +54,11 @@ class PlanningsController < ApplicationController
 		@provided_services_grouped_by_category = ProvidedService.from_appointments.where(planning_id: @planning.id, cancelled: false, archived_at: nil).in_range(first_day..last_day).grouped_by_weighted_category
 
 		#appointments : since beginning of month
-		today = Date.today 
-    	appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
-
-	  　#daily summary
-    	@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
+		today = Date.today
+		appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
+		
+		#daily summary
+		@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
     	@female_patients_ids = @corporation.patients.where(gender: true).ids
     	@male_patients_ids = @corporation.patients.where(gender: false).ids
 		

@@ -204,7 +204,7 @@ $(document).on 'turbolinks:load', ->
     
   $('#confirm-availabilities-print').click -> 
     date = $('#availabilities_date').val()
-    text = $('#availabilities_text').val()
+    text = $('#availabilities_text').val().replace(/\n/g, '<br />')
     if date
       window.open($(this).data('link') + '?date=' + date + '&text=' + text, '_blank')
     else

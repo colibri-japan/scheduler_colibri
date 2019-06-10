@@ -24,7 +24,7 @@ class PrintingOptionsController < ApplicationController
     private
 
     def printing_option_params
-        params.require(:printing_option).permit(:print_patient_comments, :print_nurse_comments, :print_patient_comments_in_master, :print_nurse_comments_in_master, :print_patient_dates, :print_nurse_dates, :print_patient_dates_in_master, :print_nurse_dates_in_master, :print_patient_description, :print_nurse_description, :print_patient_description_in_master, :print_nurse_description_in_master)
+        params.require(:printing_option).permit(:print_patient_comments, :print_nurse_comments, :print_patient_comments_in_master, :print_nurse_comments_in_master, :print_patient_dates, :print_nurse_dates, :print_patient_dates_in_master, :print_nurse_dates_in_master, :print_patient_description, :print_nurse_description, :print_patient_description_in_master, :print_nurse_description_in_master, :print_saturday_availabilities, :print_sunday_availabilities)
     end
 
 

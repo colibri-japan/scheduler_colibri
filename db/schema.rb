@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190606174318) do
+ActiveRecord::Schema.define(version: 20190610142858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -331,6 +331,8 @@ ActiveRecord::Schema.define(version: 20190606174318) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "print_nurse_description_in_master", default: false
+    t.boolean "print_sunday_availabilities", default: true
+    t.boolean "print_saturday_availabilities", default: true
     t.index ["corporation_id"], name: "index_printing_options_on_corporation_id"
   end
 

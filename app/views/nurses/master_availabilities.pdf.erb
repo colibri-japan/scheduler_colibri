@@ -1,5 +1,6 @@
 <div style='margin-bottom:35px;font-size:2.5em;font-weight:bold;text-align:center'><%= @corporation.try(:name) %>空き情報</div>
-<div style='margin-bottom:20px;font-size:2em'>電話番号：<%= @corporation.try(:phone_number) %></div> 
+<div style='margin-bottom:10px;font-size:2em'>電話番号：<%= @corporation.try(:phone_number) %></div> 
+<div style='margin-bottom:20px;font-size:2em'>FAX　　：<%= @corporation.try(:fax_number) %></div> 
 
 <table class='table table-bordered table-teikyohyo'>
     <thead>

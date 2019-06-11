@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190610142858) do
+ActiveRecord::Schema.define(version: 20190611082022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 20190610142858) do
     t.date "invoicing_bonus_ratio_start_date"
     t.decimal "previous_invoicing_bonus_ratio"
     t.string "phone_number"
+    t.string "fax_number"
   end
 
   create_table "nurses", force: :cascade do |t|
@@ -519,6 +520,8 @@ ActiveRecord::Schema.define(version: 20190610142858) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "credits_to_jpy_ratio"
+    t.string "fax_number"
+    t.string "phone_number"
     t.index ["corporation_id"], name: "index_teams_on_corporation_id"
   end
 

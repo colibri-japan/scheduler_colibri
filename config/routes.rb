@@ -118,7 +118,6 @@ Rails.application.routes.draw do
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report
   get 'plannings/:id/teams_report' => 'plannings#teams_report', as: :planning_teams_report
   get 'plannings/:id/recent_patients_report' => 'plannings#recent_patients_report', as: :planning_recent_patients_report
-  get 'plannings/:id/settings' => 'plannings#settings', as: :planning_settings
   get 'plannings/:id/master' => 'plannings#master', as: :planning_master
   get 'plannings/:id/all_nurses_payable' => 'plannings#all_nurses_payable', as: :planning_all_nurses_payable
   get 'plannings/:id/all_patients_payable' => 'plannings#all_patients_payable', as: :planning_all_patients_payable

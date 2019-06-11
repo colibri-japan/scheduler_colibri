@@ -4,7 +4,7 @@ class Team < ApplicationRecord
   belongs_to :corporation, touch: true
   has_many :nurses
 
-  after_save :update_members, if: :member_ids_changed?
+  after_save :update_members, if: :saved_change_to_member_ids?
 
   private
 

@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
     @corporation = Corporation.cached_find(current_user.corporation_id)
   end
 
+  def set_planning
+    @planning = @corporation.planning
+  end
+
   def fetch_nurses_grouped_by_team
     if @corporation.teams.any?
 			@grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_team_name

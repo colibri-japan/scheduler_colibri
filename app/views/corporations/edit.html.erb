@@ -5,8 +5,38 @@
 
 <div id="settings-container">
     <div id="planning-options" >
-        <h1 class="colibri-small-title">スケジュール設定</h1>
+        <h1 class="colibri-small-title">事業所設定</h1>
         <%= form_for @corporation do |form| %>
+          <div class="colibri-form-subsection" style="margin-top:25px">
+            <div class='colibri-form-subsection-title'>基本情報</div>
+
+            <div class="form-group" style="margin-top:15px">
+                <%= form.label :name, "事業所名", class:"colibri-form-label-dark" %>
+                <%= form.text_field :name, class: "form-control" %>
+            </div>
+
+            <div class="form-group" style="margin-top:15px">
+                <%= form.label :identifier, "登録番号", class:"colibri-form-label-dark" %>
+                <%= form.text_field :identifier, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+                <%= form.label :address, "住所", class: "colibri-form-label-dark" %>
+                <%= form.text_area :address, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+                <%= form.label :phone_number, "電話番号", class: "colibri-form-label-dark" %>
+                <%= form.text_field :phone_number, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+                <%= form.label :fax_number, "FAX番号", class: "colibri-form-label-dark" %>
+                <%= form.text_field :fax_number, class: "form-control" %>
+            </div>
+            
+          </div>
+
           <div class="colibri-form-subsection" style="margin-top:25px">
             <div class='colibri-form-subsection-title'>レイアウト設定</div>
 
@@ -99,8 +129,16 @@
 
           <div class="colibri-form-subsection">
                 <div class="colibri-form-subsection-title">請求設定</div>
-                <%= form.label :invoicing_bonus_ratio, "処遇改善加算", class: "colibri-form-label-dark" %>
-                <%= form.select :invoicing_bonus_ratio, options_for_select([['加算I - 13.7%', 1.137], ['加算Ⅱ - 10%', 1.1], ['加算Ⅲ - 5.5%', 1.055]], @corporation.invoicing_bonus_ratio),  {include_blank: "選択する"} %>
+
+                <div class="form-group">
+                    <%= form.label :invoicing_bonus_ratio, "処遇改善加算", class: "colibri-form-label-dark" %>
+                    <%= form.select :invoicing_bonus_ratio, options_for_select([['加算I - 13.7%', 1.137], ['加算Ⅱ - 10%', 1.1], ['加算Ⅲ - 5.5%', 1.055]], @corporation.invoicing_bonus_ratio),  {include_blank: "選択する"} %>
+                </div>
+
+                <div class="form-group">
+                    <%= form.label :credits_to_jpy_ratio, "単位数.単価", class: "colibri-form-label-dark" %>
+                    <%= form.number_field :credits_to_jpy_ratio, step: 0.01, class: "form-control" %>
+                </div>
           </div>
 
           <div class="actions">

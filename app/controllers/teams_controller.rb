@@ -103,7 +103,7 @@ class TeamsController < ApplicationController
     private
 
     def team_params
-        params.require(:team).permit(:team_name, member_ids: [])
+        params.require(:team).permit(:team_name, :phone_number, :fax_number, member_ids: [])
     end
 
     def set_month_and_year_params

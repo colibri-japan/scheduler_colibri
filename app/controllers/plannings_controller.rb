@@ -86,10 +86,6 @@ class PlanningsController < ApplicationController
 		@care_manager_corporations = @corporation.care_manager_corporations
 	end
 
-	def settings 
-		set_main_nurse
-	end
-
 	def monthly_general_report
 		start_date = Date.new(params[:y].to_i, params[:m].to_i, 1).beginning_of_day
 		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day

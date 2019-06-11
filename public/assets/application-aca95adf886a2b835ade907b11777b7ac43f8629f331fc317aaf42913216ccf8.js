@@ -87670,6 +87670,20 @@ document.addEventListener('turbolinks:load', function () {
         return $('.master_calendar').fullCalendar('refetchResources');
       });
     }
+    $('#availabilities-print').click(function() {
+      $('#availabilities-form').modal();
+      availabilitiesDate();
+    });
+    $('#confirm-availabilities-print').click(function() {
+      var date, text;
+      date = $('#availabilities_date').val();
+      text = $('#availabilities_text').val().replace(/\n/g, '<br />');
+      if (date) {
+        window.open($(this).data('link') + '?date=' + date + '&text=' + text, '_blank');
+      } else {
+        alert('期間を選択してください');
+      }
+    });
   });
 
 }).call(this);
@@ -87860,6 +87874,7 @@ let setPrivateEventTime = (start, end, view) => {
   if (window.patientId) {
     $("#private_event_patient_id").val(window.patientId);
   }
+
 }
 
 let setAppointmentTime = (start, end, view) => {
@@ -87889,7 +87904,7 @@ let setAppointmentTime = (start, end, view) => {
   }
 }
 
-let setRecurringAppointmentTime = (start, end, view) => {
+let setRecurringAppointmentTime = (start, end, resource, view) => {
   $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
   $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
   $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
@@ -87913,6 +87928,16 @@ let setRecurringAppointmentTime = (start, end, view) => {
   }
   if (window.patientId) {
     $('#recurring_appointment_patient_id').val(window.patientId);
+  }
+  if (resource) {
+    console.log('resource present')
+    if (window.resourceType === 'nurse') {
+      console.log('nurse id')
+      $("#recurring_appointment_nurse_id").val(resource.id);
+    } else if (window.resourceType === 'patient') {
+      console.log('patient id')
+      $('#recurring_appointment_patient_id').val(resource.id)
+    }
   }
 }
 
@@ -88361,9 +88386,9 @@ initialize_master_calendar = function() {
 
         element.find('.fc-title').text(function(){
           if (window.resourceType == 'patient' && event.eventType !== 'wished_slot') {
-            return event.nurse.name;
+            return event.nurse.name || '';
           } else if (window.resourceType == 'nurse' && event.eventType !== 'wished_slot') {
-            return event.patient.name;
+            return event.patient.name || '';
           }
         })
 
@@ -88480,7 +88505,7 @@ initialize_master_calendar = function() {
         let end_time = start_and_end[1];
         $.getScript(window.selectActionUrl + '?master=true', function() {
           setWishedSlotTime(start_time, end_time, view);
-          setRecurringAppointmentTime(start_time, end_time, view);
+          setRecurringAppointmentTime(start_time, end_time, resource, view);
           setHiddenStartAndEndFields(view_start, view_end);
           recurringAppointmentSelectizeNursePatient();
           wishedSlotsSelectize()
@@ -88582,7 +88607,6 @@ initialize_calendar = function() {
             alert('従業員の検索中にエラーが発生しました')
           },
           success: function(response) {
-            console.log(response)
             callback(response)
           }
         })
@@ -90333,6 +90357,39 @@ let patientBirthdayHelper = () => {
   })
 }
 
+let availabilitiesDate = () => {
+  $('#availabilities_date').daterangepicker({
+    singleDatePicker: true,
+    locale: {
+      format: 'YYYY-MM-DD',
+      daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土",
+      ],
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ],
+      firstDay: 1
+    }
+  })
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 
@@ -90371,7 +90428,7 @@ $(document).on('turbolinks:load', function(){
       $(".alert").fadeTo(500, 0).slideUp(500, function(){
           $(this).remove(); 
       });
-  }, 2000);
+  }, 2500);
 
   $('#loader-container').hide();
 

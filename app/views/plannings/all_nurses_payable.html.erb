@@ -49,7 +49,7 @@
 				<div class='colibri-subcontainer-body' id='category-subcontainer'>
 
 					<div id="service-category-chart-container" style='margin-top:15px;margin-bottom:15px'>
-						<%= pie_chart @provided_services_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, width: '90%', height: '70%', legend: 'right', suffix: '%', donut: true, colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#FFAC71', '#BEA9EF', '#9CAFB7'] %>
+						<%= pie_chart @provided_services_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, width: '90%', height: '70%', legend: 'right', suffix: '%', donut: true, colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#FFAC71', '#BEA9EF', '#9CAFB7', '#7D4600'] %>
 					</div>
 					<p style='text-align:center' id='see-more-service-category-data'>↓もっと見る↓</p>
 					<table class='table'>

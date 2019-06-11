@@ -35,7 +35,7 @@ module ProvidedServicesHelper
         when 2
             "自費"
         when 3
-            "障害"
+            "障身"
         when 4
             "リハ"
         when 5
@@ -44,6 +44,8 @@ module ProvidedServicesHelper
             "医療"
         when 7
             "その他"
+        when 8
+            "障家"
         else
             ""
         end

@@ -96,7 +96,7 @@ class ProvidedService < ApplicationRecord
 
   def self.grouped_by_weighted_category
 		return_hash = {}
-		for category in 0..7 do
+		for category in 0..8 do
 			return_hash[category] = {sum_weighted_service_duration: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0}
 		end 
 

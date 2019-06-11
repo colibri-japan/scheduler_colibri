@@ -605,9 +605,9 @@ initialize_master_calendar = function() {
 
         element.find('.fc-title').text(function(){
           if (window.resourceType == 'patient' && event.eventType !== 'wished_slot') {
-            return event.nurse.name;
+            return event.nurse.name || '';
           } else if (window.resourceType == 'nurse' && event.eventType !== 'wished_slot') {
-            return event.patient.name;
+            return event.patient.name || '';
           }
         })
 
@@ -826,7 +826,6 @@ initialize_calendar = function() {
             alert('従業員の検索中にエラーが発生しました')
           },
           success: function(response) {
-            console.log(response)
             callback(response)
           }
         })

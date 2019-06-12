@@ -137,6 +137,10 @@ gem 'unread'
 #webkit html to pdf
 gem 'wicked_pdf'
 
+#memory use management
+gem 'derailed_benchmarks', group: :development
+gem 'scout_apm', group: :production
+
 group :production do 
   gem 'wkhtmltopdf-heroku', '2.12.4'
 end

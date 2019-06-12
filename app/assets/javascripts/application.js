@@ -1642,7 +1642,6 @@ let confirmBatchAction = () => {
   $('.appointment_row').map(function(){
     array.push($(this).attr('id'))
   })
-  console.log(array)
   appointment_ids = {
     appointment_ids: array
   }
@@ -1679,13 +1678,15 @@ let terminateRecurringAppointment = (date, start, end) => {
     start: start,
     end: end
   };
-  console.log(data)
   $('#recurring-appointment-terminate').click(function(){
-    $.ajax({
-      url: $(this).data('terminate-url'),
-      data: data,
-      type: 'PATCH'
-    })
+    let message = confirm('サービスの繰り返しが' + moment(date).format('M月DD日') + '以降削除されます' )
+    if (message) {
+      $.ajax({
+        url: $(this).data('terminate-url'),
+        data: data,
+        type: 'PATCH'
+      })
+    }
   })
 } 
 

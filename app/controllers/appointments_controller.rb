@@ -145,8 +145,8 @@ class AppointmentsController < ApplicationController
     @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
     
     now = Time.current
-    @appointments.update_all(archived_at: now, updated_at: now)
-    @provided_services.update_all(archived_at: now, updated_at: now)
+    @appointments.update_all(archived_at: now, recurring_appointment_id: nil, updated_at: now)
+    @provided_services.update_all(archived_at: now, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
     batch_recalculate_bonus
   end  
@@ -163,9 +163,8 @@ class AppointmentsController < ApplicationController
     @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
-    @appointments.update_all(cancelled: true, updated_at: now)
-    @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
-    @provided_services.update_all(cancelled: true, updated_at: now)
+    @appointments.update_all(cancelled: true, recurring_appointment_id: nil, updated_at: now)
+    @provided_services.update_all(cancelled: true, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
     batch_recalculate_bonus
   end
@@ -182,8 +181,8 @@ class AppointmentsController < ApplicationController
     @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
-    @appointments.update_all(edit_requested: true, updated_at: now)
-    @appointments.update_all(recurring_appointment_id: nil, updated_at: now)
+    @appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: now)
+    @provided_services.update_all(total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
     batch_recalculate_bonus
   end

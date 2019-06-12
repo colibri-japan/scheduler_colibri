@@ -138,7 +138,6 @@ gem 'unread'
 gem 'wicked_pdf'
 
 #memory use management
-gem 'derailed_benchmarks', group: :development
 gem 'scout_apm', group: :production
 
 group :production do 

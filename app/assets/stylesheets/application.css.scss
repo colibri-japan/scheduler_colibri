@@ -251,32 +251,6 @@ ul.nav.nav-tabs {
 	padding-top: 5px;
 }
 
-.colibri-app-menu {
-	font-size: 1.6em;
-	display: inline;
-	font-color: #4f5b66;
-	width: 8.5em;
-	margin-left: 5px;
-	margin-right: 5px;
-	padding-right: 0px;
-	padding-bottom: 8px;
-}
-
-li.colibri-app-menu a.nav-url {
-	font-color: #4f5b66;
-}
-
-.colibri-app-menu:hover {
-	cursor: pointer;
-	background-color: transparent;
-	border-bottom: 4px solid #ddd;
-}
-
-.nav-selected {
-	border-bottom: 4px solid #5bc0de;
-	font-color: #000;
-}
-
 .text-white {
 	font-color: white;
 }
@@ -293,9 +267,6 @@ li.colibri-app-menu a.nav-url {
 	margin-top: 10px;
 }
 
-.date-hidden {
-	display: none;
-}
 
 #planning-container {
 	color: #4F4F4F;

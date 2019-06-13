@@ -15,18 +15,6 @@ $(document).on 'turbolinks:load', ->
     onstyle: 'primary',
     offstyle: 'secondary',
     width: 55
-  
-  $('#nurse-filter-zentai_').chosen
-    no_results_text: "ヘルパーが見つかりません"
-
-  $('#patient-filter-zentai_').chosen
-    no_results_text: "利用者が見つかりません"
-
-  $('#master-nurse-filter-zentai_').chosen
-    no_results_text: "ヘルパーが見つかりません"
-
-  $('#master-patient-filter-zentai_').chosen
-    no_results_text: "利用者が見つかりません"
 
   $('#nurse-filter-zentai_').on 'change', ->
     $('.calendar').fullCalendar('rerenderEvents')

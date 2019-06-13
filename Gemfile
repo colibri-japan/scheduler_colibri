@@ -79,7 +79,7 @@ gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 
 #charting library
-gem 'chartkick'
+gem 'chartkick', '>= 3.2.0'
 
 #glyphicons
 gem 'bootstrap-glyphicons', '~> 0.0.1'

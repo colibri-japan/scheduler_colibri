@@ -18,7 +18,6 @@
 //= require bootstrap
 //= require bootstrap4-toggle.min
 //= require moment.min
-//= require chosen.jquery
 //= require popper
 //= require fullcalendar
 //= require locale-all
@@ -744,7 +743,6 @@ initialize_master_calendar = function() {
         }
         if (window.userIsAdmin == 'true') {
           $.getScript(event.edit_url + '?master=true&date=' + dateClicked + patientResource, function(){
-            individualMasterToGeneral()
             terminateRecurringAppointment(dateClicked, view_start, view_end)
             setHiddenStartAndEndFields(view_start, view_end);
           })
@@ -1058,36 +1056,6 @@ let editAfterDate = () => {
   });
 }
 
-
-
-let toggleProvidedServiceForm = () => {
-  if ($('#hour-based-wage-toggle').is(':checked') && $('#hour-input-method').is(':checked')) {
-    $("label[for='provided_service_unit_cost']").text('時給');
-    $('#pay-by-hour-field').show();
-    $('#pay-by-count-field').hide();
-    $('#provided_service_service_duration').hide();
-    $('#target-service-from-ids').show();
-  } else if ($('#hour-based-wage-toggle').is(':checked') && !$('#hour-input-method').is(':checked')) {
-    $("label[for='provided_service_unit_cost']").text('時給');
-    $('#pay-by-hour-field').show();
-    $('#pay-by-count-field').hide();
-    $('#provided_service_service_duration').show();
-    $('#target-service-from-ids').hide();
-  } else if (!$('#hour-based-wage-toggle').is(':checked') && $('#count-input-method').is(':checked')) {
-    $("label[for='provided_service_unit_cost']").text('単価');
-    $('#pay-by-hour-field').hide();
-    $('#pay-by-count-field').show();
-    $('#target-service-from-ids').show();
-    $('#provided_service_service_counts').hide();
-  } else if (!$('#hour-based-wage-toggle').is(':checked') && !$('#count-input-method').is(':checked')) {
-    $("label[for='provided_service_unit_cost']").text('単価');
-    $('#pay-by-hour-field').hide();
-    $('#pay-by-count-field').show();
-    $('#target-service-from-ids').hide();
-    $('#provided_service_service_counts').show();
-  }
-}
-
 let appointmentComments = () => {
   $('#appointment-comments').empty();
   if ($('.master_calendar').length) {
@@ -1107,58 +1075,6 @@ let appointmentComments = () => {
       var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse.name + ' 利用者：' + event.patient.name + ' ' + event.description;
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }
-  })
-  
-}
-
-
-let addProvidedServiceToggle = () => {
-  $('#hour-based-wage-toggle').bootstrapToggle({
-    on: '時給計算',
-    off: '単価計算',
-    onstyle: 'secondary',
-    offstyle: 'secondary',
-    width: 100
-  });
-
-  toggleProvidedServiceForm();
-
-  $('#hour-based-wage-toggle').change(function(){
-    toggleProvidedServiceForm();
-  });
-
-  $('#hour-input-method').change(function(){
-    toggleProvidedServiceForm();
-  });
-
-  $('#count-input-method').change(function(){
-    toggleProvidedServiceForm();
-  })
-
-  $('#chosen-target-services').chosen({
-    no_results_text: 'サービスが見つかりません',
-    placeholder_text_multiple: 'サービスを選択してください'
-  });
-};
-
-
-let individualMasterToGeneral = () => {
-  var copyState;
-  $('#individual-from-master-to-general').click(function () {
-    var target_url = $(this).data('master-to-general-url');
-    if (copyState !== 1) {
-      var message = confirm('選択中の繰り返しサービスが全体スケジュールへ反映されます。現在の全体スケジュールは削除されません。');
-      if (message) {
-        copyState = 1;
-        $.ajax({
-          url: target_url,
-          type: 'PATCH',
-        });
-      }
-    } else {
-      alert('サービスがコピーされてます、少々お待ちください');
-    }
-
   })
 }
 
@@ -1200,17 +1116,6 @@ let phoneMailRequirement = () => {
 }
 
 
-let providedServicesChosenOptions = () => {
-  $('#select-all-services').click(function(){
-    $('#chosen-target-services > option').prop('selected', true);
-    $('#chosen-target-services').trigger('chosen:updated');
-  });
-
-  $('#unselect-all-services').click(function(){
-    $('#chosen-target-services > option').prop('selected', false);
-    $('#chosen-target-services').trigger('chosen:updated');
-  })
-}
 
 let toggleEditRequested = () => {
   let $this  = $('.edit-requested-toggle')
@@ -1260,8 +1165,11 @@ let serviceLinkClick = () => {
 
 
 let sendReminder = () => {
-  $('#send-email-reminder').click(function () {
+  $('#custom-email-days').selectize({
+    plugins: ['remove_button'],
+  })
 
+  $('#send-email-reminder').click(function () {
     let customSubject = $('#nurse_custom_email_subject').val();
     let customMessage = $('#nurse_custom_email_message').val();
     let customDays = $('#chosen-custom-email-days').val();
@@ -1278,23 +1186,6 @@ let sendReminder = () => {
         }
       },
     })
-  })
-}
-
-let toggleCountFromServices = () => {
-  $('#hour-input-method').bootstrapToggle({
-    on: '自動',
-    off: '手動',
-    onstyle: 'secondary',
-    offstyle: 'secondary',
-    width: 130
-  });
-  $('#count-input-method').bootstrapToggle({
-    on: '自動',
-    off: '手動',
-    onstyle: 'secondary',
-    offstyle: 'secondary',
-    width: 130
   })
 }
 

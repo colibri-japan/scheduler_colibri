@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
     @planning = @corporation.planning
 
     #activity module
-    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:owner , trackable: [:nurse, :patient]).limit(15)
+    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:owner).limit(15)
     @unseen_activity_count = @activities.count
     if @unseen_activity_count == 0
       @activities = PublicActivity::Activity.where(planning_id: @planning.id).last(5)

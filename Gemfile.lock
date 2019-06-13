@@ -83,7 +83,7 @@ GEM
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
-    chartkick (3.0.2)
+    chartkick (3.2.0)
     childprocess (1.0.1)
       rake (< 13.0)
     coffee-rails (4.2.2)
@@ -308,7 +308,7 @@ DEPENDENCIES
   byebug
   capybara (~> 2.13)
   carrierwave
-  chartkick
+  chartkick (>= 3.2.0)
   coffee-rails (~> 4.2)
   connection_pool
   dalli

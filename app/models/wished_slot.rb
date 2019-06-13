@@ -59,8 +59,6 @@ class WishedSlot < ApplicationRecord
 
 
   def occurs_between?(range_start, range_end)
-    puts 'occurs between'
-    puts schedule.occurs_between?(range_start.to_date, range_end.to_date)
 		schedule.occurs_between?(range_start.to_date, range_end.to_date)
   end
 
@@ -69,13 +67,6 @@ class WishedSlot < ApplicationRecord
 		self_end = self.all_day_wished_slot? ? "23:59" : self.ends_at.utc.strftime("%H:%M")
 		check_start = start_time.utc.strftime("%H:%M")
     check_end = end_time.utc.strftime("%H:%M")
-    
-    puts 'overlapping hours'
-    puts self_start
-    puts self_end
-    puts check_start
-    puts check_end
-    puts check_start >= self_start && check_start < self_end || check_end > self_start && check_end <= self_end || check_start <= self_start && check_end >= self_end
     
     check_start >= self_start && check_start < self_end || check_end > self_start && check_end <= self_end || check_start <= self_start && check_end >= self_end
 	end
@@ -130,9 +121,6 @@ class WishedSlot < ApplicationRecord
         service_type: title_from_rank,
         eventType: 'wished_slot',
         className: ApplicationController.helpers.background_wished_slot_css(self),
-        nurse: {
-          name: self.nurse.try(:name),
-        },
         rendering: options[:background] == true ? 'background' : '',
         base_url: "/plannings/#{planning_id}/wished_slots/#{id}",
         edit_url: "/plannings/#{planning_id}/wished_slots/#{id}/edit"

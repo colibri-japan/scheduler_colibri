@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
     @planning = @corporation.planning
 
     #activity module
-    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:trackable).limit(15)
+    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:owner , trackable: [:nurse, :patient]).limit(15)
     @unseen_activity_count = @activities.count
     if @unseen_activity_count == 0
       @activities = PublicActivity::Activity.where(planning_id: @planning.id).last(5)
@@ -15,15 +15,15 @@ class DashboardController < ApplicationController
 
     #appointments : today, upcoming two weeks, since monday
     today = Date.today 
-    appointments = Appointment.valid.where(planning_id: @planning.id, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day).includes(:patient, :nurse)
+    appointments = Appointment.valid.where(planning_id: @planning.id, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day)
 
     #edit requested appointments for next two weeks
     @current_user_team = Team.find(current_user.nurse.team_id) if current_user.nurse.present? && current_user.nurse.team.present?
 
-    @edit_requested_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day, edit_requested: true).order(starts_at: :asc)
+    @edit_requested_appointments = appointments.includes(:patient, :nurse).where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day, edit_requested: true).order(starts_at: :asc)
     @edit_requested_appointments = @edit_requested_appointments.where(nurse_id: @current_user_team.nurses.ids) if @current_user_team.present?
     #appointments with comments for the next two weeks
-    @commented_appointments = appointments.where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day).where.not(description: [nil, '']).order(starts_at: :asc)
+    @commented_appointments = appointments.includes(:patient, :nurse).where(starts_at: today.beginning_of_day..(today + 15.days).beginning_of_day).where.not(description: [nil, '']).order(starts_at: :asc)
 
     respond_to do |format|
       format.html

@@ -70,9 +70,6 @@ gem 'rails-i18n', '~> 5.1'
 #authorizations
 gem 'pundit'
 
-#japanese text conversions
-gem 'miyabi'
-
 #japanese dates
 gem 'wareki', '0.4.0'
 

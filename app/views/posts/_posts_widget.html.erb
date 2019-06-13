@@ -14,11 +14,27 @@
 </div>
 <div class='colibri-subcontainer-body-with-footer scrollbar-custom colibri-scrollbar-light' id='posts-container' style='flex-grow:1'>
   <% read_posts.to_a.reverse.each do |read_post| %>
-    <%= render read_post %>
+    <div class="post-container" id="post-<%= read_post.id %>">
+        <div class="post-header">
+            <div class="post-author-wrapper"><%= read_post.author.name %><%=" > #{read_post.patient.name}" if read_post.patient_id.present? %></div>
+            <div class="post-timestamps-wrapper"><%= post_was_published_at(read_post) %></div>
+        </div>
+        <div class="post-body post-clickable <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(read_post.id) %> <%= 'reminderable-post' if read_post.reminders.present? %>" data-url="<%= edit_post_path(read_post) %>">
+            <%= simple_format(read_post.body) %>
+        </div>
+    </div>
   <% end %>
   <% if unread_posts.present? %>
     <% unread_posts.to_a.reverse.each do |unread_post| %>
-      <%= render unread_post %>
+      <div class="post-container" id="post-<%= unread_post.id %>">
+          <div class="post-header">
+              <div class="post-author-wrapper"><%= post.author.name %><%=" > #{unread_post.patient.name}" if unread_post.patient_id.present? %></div>
+              <div class="post-timestamps-wrapper"><%= post_was_published_at(unread_post) %></div>
+          </div>
+          <div class="post-body post-clickable <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(unread_post.id) %> <%= 'reminderable-post' if unread_post.reminders.present? %>" data-url="<%= edit_post_path(unread_post) %>">
+              <%= simple_format(unread_post.body) %>
+          </div>
+      </div>
     <% end %>
   <% end %>
 </div>

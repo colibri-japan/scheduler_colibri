@@ -1172,7 +1172,7 @@ let sendReminder = () => {
   $('#send-email-reminder').click(function () {
     let customSubject = $('#nurse_custom_email_subject').val();
     let customMessage = $('#nurse_custom_email_message').val();
-    let customDays = $('#chosen-custom-email-days').val();
+    let customDays = $('#custom-email-days').val();
     let ajaxUrl = $(this).data('send-reminder-url');
 
     $.ajax({
@@ -1232,63 +1232,7 @@ let humanizeFrequency = (frequency) => {
     default:
   }
 }
-let allMasterToSchedule = () => {
-  var copyMasterState;
-  $('#copy-master').click(function () {
-    if (copyMasterState == 1) {
-      alert('マスターを全体へコピーしてます、少々お待ちください');
-    } else {
-      var message = confirm('全体のサービスが削除され、マスターのサービスがすべて全体へ反映されます！！数十秒かかる可能性があります。');
-      if (message && copyMasterState != 1) {
-        var second_message = confirm('全体と個別の利用者.従業員すべての今までの編集が削除され、マスターのサービスが反映されます！');
-        if (second_message) {
-          copyMasterState = 1;
-          $.ajax({
-            url: window.masterToSchedule,
-            type: 'PATCH',
-          })
-        }
-      }
-    }
-  });
-}
 
-
-let patientMasterToSchedule = () => {
-  let copyPatientMasterState;
-  $('#copy-master-patient').click(function(){
-    if (copyPatientMasterState == 1) {
-      alert('利用者のサービスを全体へコピーしてます、少々お待ちください');
-    } else {
-      var message = confirm('利用者の「全体」のサービスが削除され、マスターのサービスがすべて全体へ反映されます！');
-      if (message && copyPatientMasterState != 1) {
-        copyPatientMasterState = 1;
-        $.ajax({
-          url: window.patientMasterToSchedule,
-          type: 'PATCH',
-        })
-      }
-    }
-  })
-}
-
-let nurseMasterToSchedule = () => {
-  let copyNurseMasterState;
-  $('#copy-master-nurse').click(function () {
-    if (copyNurseMasterState == 1) {
-      alert('ヘルパーのサービスを全体へコピーしてます、少々お待ちください');
-    } else {
-      var message = confirm('ヘルパーの「全体」のサービスが削除され、マスターのサービスがすべて全体へ反映されます！');
-      if (message && copyNurseMasterState != 1) {
-        copyNurseMasterState = 1;
-        $.ajax({
-          url: window.nurseMasterToSchedule,
-          type: 'PATCH',
-        })
-      }
-    }
-  })
-}
 
 
 let recurringAppointmenSelectizeTitle = () => {
@@ -1586,15 +1530,6 @@ let setHiddenStartAndEndFields = (start, end) => {
   $('#end').val(end)
 }
 
-let getParameterByName = (name, url) => {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, '\\$&');
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
 
 let submitReflect = () => {
   $('#submit-reflect').one('click', function(event){
@@ -2510,23 +2445,6 @@ $(document).on('turbolinks:load', function(){
 
   $.fn.modal.Constructor.prototype._enforceFocus = function () { };
 
-  $('#trigger-duplication').click(function(){
-  	var $this = $(this);
-    var template_id = $('#duplicate-from').val() ;
-    if (template_id && $this.data('submitted') !== true) {
-      $.ajax({
-        url: window.duplicateUrl + '?template_id=' + template_id,
-        type: 'PATCH',
-      });
-      $this.data('submitted', true);
-    } else if (template_id && $this.data('submitted') === true) {
-    	alert('スケジュールの反映中です、少々お待ちください');
-    } else {
-      alert('反映したいスケジュールを選択してください');
-    }
-
-  });
-
   $('#account-settings').click(function(){
     $('#account-settings-dropdown').toggle();
   });
@@ -2540,19 +2458,6 @@ $(document).on('turbolinks:load', function(){
           $(this).remove(); 
       });
   }, 2500);
-
-  $('#loader-container').hide();
-
-  $('#master-options').click(function(){
-    $('.modal').modal('hide');
-    $('.modal-backdrop').remove();
-    $('#remote_container').html($('#modal-master-options'));
-    $('#modal-master-options').modal('show');
-    allMasterToSchedule();
-    patientMasterToSchedule();
-    nurseMasterToSchedule();
-  });
-
 
   $('.colibri-nav-username').hover(function(){
     $('#account-dropdown-icon').css({'color':'black', 'cursor':'pointer'})

@@ -7,18 +7,17 @@ class PrivateEventsController < ApplicationController
 
 
 	def index
-		if params[:nurse_id].present?
-			@nurse = Nurse.find(params[:nurse_id])
-			@private_events = @planning.private_events.where(nurse_id: params[:nurse_id])
-		elsif params[:patient_id].present?
-			@private_events = @planning.private_events.where(patient_id: params[:patient_id])
-		else
-			@private_events = @planning.private_events.all
+		if params[:start].present? && params[:end].present? 
+			@private_events = @planning.private_events.includes(:patient, :nurse).overlapping(params[:start]..params[:end])
 		end
 
-		if params[:start].present? && params[:end].present? 
-			@private_events = @private_events.overlapping(params[:start]..params[:end])
+		if params[:nurse_id].present?
+			@nurse = Nurse.find(params[:nurse_id])
+			@private_events = @private_events.where(nurse_id: params[:nurse_id])
+		elsif params[:patient_id].present?
+			@private_events = @private_events.where(patient_id: params[:patient_id])
 		end
+
 
 		patient_resource = params[:patient_resource].present?
 

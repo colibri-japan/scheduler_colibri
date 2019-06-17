@@ -279,8 +279,7 @@ class RecurringAppointment < ApplicationRecord
 						self_occurrences = self.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
 						competing_occurrences = r.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
 						overlapping_ids << r.id if (self_occurrences - competing_occurrences).length != self_occurrences.length 
-						overlapping_days << (self_occurrences & competing_occurrences).map! {|e| e.strftime("
-						%-m月%-d日")} if (self_occurrences - competing_occurrences).length != self_occurrences.length 
+						overlapping_days << (self_occurrences & competing_occurrences).map! {|e| e.strftime("%-m月%-d日")} if (self_occurrences - competing_occurrences).length != self_occurrences.length 
 					end
 				end
 				errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 

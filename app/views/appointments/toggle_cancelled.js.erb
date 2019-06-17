@@ -1,40 +1,47 @@
 <% if @appointment.errors.any? %>
-    $('#nurse-conflict-days').text("<%= j @appointment.errors[:base].first %>");
-    $('.modal').modal('hide');
-    $('#nurse-conflict-confirm').dialog({
-      resizable: false,
-      height: 'auto',
-      width: 400,
-      modal: true,
-      buttons: {
-        '登録する':function(){
-          $(this).dialog('close');
-          let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
-          let indexCount =  0;
-          appointment_ids.forEach(function(appointment_id, index, array){
-            let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-            indexCount++;
+  $('.modal').modal('hide');
+  $('.modal-backdrop').remove();
+  
+  $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
 
-            $.ajax({
-              url: request_edit_url,
-              type: 'PATCH',
-              beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-              success: function(data) {
-                if (indexCount == appointment_ids.length) {
-                  $.ajax({
-                    url: '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + <%= @appointment.id %> + '/toggle_cancelled',
-                    type: 'PATCH'
-                  })
-                }
+  $('#nurse-overlap-modal').modal({ backdrop: 'static' })
+
+  $('#nurse-overlap-override').one('click', function(){
+    let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
+    let indexCount =  0;
+    appointment_ids.forEach(function(appointment_id, index, array){
+      let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+      indexCount++;
+      $.ajax({
+        url: request_edit_url,
+        type: 'PATCH',
+        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        success: function(data) {
+          if (indexCount == appointment_ids.length) {
+            let appointment_data;
+            appointment_data = {
+              appointment: {
+                starts_at: "<%= @appointment.starts_at %>",
+                ends_at: "<%= @appointment.ends_at %>",
+                nurse_id: "<%= @appointment.nurse_id %>",
+                patient_id: "<%= @appointment.patient_id %>",
+                color: "<%= @appointment.color %>",
+                title: "<%= @appointment.title %>",
+                description: "<%= @appointment.description %>"
               }
+            };
+            let appointment_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + <%= @appointment.id %> + '/toggle_cancelled';
+            $.ajax({
+              url: appointment_url,
+              type: 'PATCH',
+              data: appointment_data
             })
-          })
-        },
-        'キャンセル':function(){
-          $(this).dialog('close');
+          }
         }
-      }
+      })
     })
+  })
+
 <% else %>
   if (typeof pathname === 'undefined') {
     let pathname

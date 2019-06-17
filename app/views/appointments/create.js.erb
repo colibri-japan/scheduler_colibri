@@ -1,39 +1,31 @@
 $('.modal').modal('hide')
 
 <% if @appointment.errors.any? %>
-  $('#nurse-conflict-days').text("<%= j @appointment.errors[:base].first %>");
   $('.modal').modal('hide');
-  $('#nurse-conflict-confirm').dialog({
-    resizable: false,
-    height: 'auto',
-    width: 400,
-    modal: true,
-    buttons: {
-      '登録する':function(){
-        $(this).dialog('close');
-        let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
-        let indexCount =  0;
-        appointment_ids.forEach(function(appointment_id, index, array){
-          let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-          console.log(request_edit_url)
-          indexCount++;
-          $.ajax({
-            url: request_edit_url,
-            type: 'PATCH',
-            success: function(data) {
-              if (indexCount == appointment_ids.length) {
-                $('input#save-appointment').click();
-              }
-            }
-          })
-        })
-        
-      },
-      'キャンセル':function(){
-        $(this).dialog('close');
-      }
-    }
+  $('.modal-backdrop').remove();
+
+  $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
+  $('#nurse-overlap-modal').modal({ backdrop: 'static' })
+
+  $('#nurse-overlap-override').one('click', function(){
+    let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
+    let indexCount =  0;
+    appointment_ids.forEach(function(appointment_id, index, array){
+      let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+      indexCount++;
+      $.ajax({
+        url: request_edit_url,
+        type: 'PATCH',
+        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+        success: function(data) {
+          if (indexCount == appointment_ids.length) {
+            $('input#save-appointment').click();
+          }
+        }
+      })
+    })
   })
+
 <% else %>
   if (typeof calendar === 'undefined') {
     let calendar;

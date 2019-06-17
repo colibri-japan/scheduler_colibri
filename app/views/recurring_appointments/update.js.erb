@@ -2,43 +2,12 @@
   <% if @recurring_appointment.master == true %>
     alert("<%= j @recurring_appointment.errors[:base].join('、') + 'の従業員が重複してます。' %>")
   <% else %>
-    $('#nurse-conflict-days').text("<%= j @recurring_appointment.errors[:base].join('、') + 'の従業員が重複してます。' %>")
     $('.modal').modal('hide');
-    $('#nurse-conflict-confirm').dialog({
-      resizable: false,
-      height: 'auto',
-      width: 400,
-      modal: true,
-      buttons: {
-        '登録する':function(){
-          $(this).dialog('close');
-          let appointment_ids = <%=  @recurring_appointment.errors[:nurse_id].flatten %>;
-          console.log(appointment_ids)
-          let indexCount =  0;
-          appointment_ids.forEach(function(appointment_id, index, array){
-            let request_edit_url = '/plannings/' + <%= @recurring_appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-            indexCount++;
-
-            $.ajax({
-              url: request_edit_url,
-              type: 'PATCH',
-              beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-              success: function(data) {
-                if (indexCount == appointment_ids.length) {
-                  $('input#save-recurring-appointment').click();
-                }
-              }
-            })
-          })
-        },
-        'キャンセル':function(){
-          $(this).dialog('close');
-        }
-      }
-    })
+    $('.modal-backdrop').remove();
   <% end %>
 <% else %>
     $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
 
     if (typeof calendar === 'undefined') {
       let calendar;

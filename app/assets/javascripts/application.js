@@ -272,49 +272,41 @@ initialize_nurse_calendar = function(){
         let patient_name = event.patient.name
 
         $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').dialog({
-          height: 'auto',
-          width: 400,
-          modal: true,
-          buttons: {
-            'セーブする': function () {
-              let ajaxData;
-              if (event.private_event) {
-                ajaxData = {
-                  private_event: {
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(),
-                  }
-                };
-              } else {
-                ajaxData = {
-                  appointment: {
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(),
-                  }
-                };
+        
+        $('#drag-drop-modal').modal({backdrop: 'static'})
+        $('.close-drag-drop-modal').click(function(){
+          revertFunc()
+          $('.modal').modal('hide');
+          $('.modal-backdrop').remove();
+        })
+        $('#drag-drop-save').one('click', function(){
+          let ajaxData;
+          if (event.private_event) {
+            ajaxData = {
+              private_event: {
+                starts_at: event.start.format(),
+                ends_at: event.end.format()
               }
-              $.ajax({
-                url: event.base_url + '.js?delta=' + delta,
-                type: 'PATCH',
-                data: ajaxData,
-                success: function (data) {
-                  $(".popover").remove();
-                  if (data.includes("その日のヘルパーが重複しています")) {
-                    revertFunc();
-                  }
-                }
-              });
-              $(this).dialog("close")
-            },
-            "キャンセル": function () {
-              $(this).dialog("close");
-              revertFunc()
+            }
+          } else {
+            ajaxData = {
+              appointment: {
+                starts_at: event.start.format(),
+                ends_at: event.end.format(),
+              }
             }
           }
-        })
-        $('.ui-dialog-titlebar-close').click(function(){
-          revertFunc();
+          $.ajax({
+            url: event.base_url + '.js?delta=' + delta,
+            type: 'PATCH',
+            data: ajaxData,
+            success: function (data) {
+              $(".popover").remove();
+              if (data.includes("その日のヘルパーが重複しています")) {
+                revertFunc();
+              }
+            }
+          })
         })
       },
 
@@ -433,50 +425,42 @@ initialize_patient_calendar = function(){
         let patient_name = event.patient.name || '';
 
         $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
-        $('#drag-drop-confirm').dialog({
-          height: 'auto',
-          width: 400,
-          modal: true,
-          buttons: {
-            'セーブする': function(){
-              let ajaxData;
-              if (event.private_event) {
-                ajaxData = {
-                  private_event: {
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(), 
-                  }
-                }
-              } else {
-                ajaxData = {
-                  appointment: {
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(),
-                  }
-                };
+    
+        $('#drag-drop-modal').modal({ backdrop: 'static' })
+        $('.close-drag-drop-modal').click(function () {
+          revertFunc()
+          $('.modal').modal('hide');
+          $('.modal-backdrop').remove();
+        })
+        $('#drag-drop-save').one('click', function () {
+          let ajaxData;
+          if (event.private_event) {
+            ajaxData = {
+              private_event: {
+                starts_at: event.start.format(),
+                ends_at: event.end.format()
               }
-              $.ajax({
-                url: event.base_url + '.js?delta=' + delta,
-                type: 'PATCH',
-                data: ajaxData,
-                success: function(data) {
-                  $(".popover").remove();
-                  if(data.includes("その日のヘルパーが重複しています")) {
-                    revertFunc();
-                  } 
-                }
-              });
-              $(this).dialog("close")
-            },
-            "キャンセル": function() {
-              $(this).dialog("close");
-              revertFunc()
+            }
+          } else {
+            ajaxData = {
+              appointment: {
+                starts_at: event.start.format(),
+                ends_at: event.end.format(),
+              }
             }
           }
+          $.ajax({
+            url: event.base_url + '.js?delta=' + delta,
+            type: 'PATCH',
+            data: ajaxData,
+            success: function (data) {
+              $(".popover").remove();
+              if (data.includes("その日のヘルパーが重複しています")) {
+                revertFunc();
+              }
+            }
+          })
         })
-        $('.ui-dialog-titlebar-close').click(function () {
-          revertFunc();
-        })    
       },
          
       eventClick: function(event, jsEvent, view) {
@@ -951,55 +935,45 @@ initialize_calendar = function() {
         }
 
         $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
-        $('#drag-drop-confirm').dialog({
-          height: 'auto',  
-          width: 400,
-          modal: true,
-          buttons: {
-            'セーブする': function () {
-              let ajaxData;
-              if (event.private_event) {
-                ajaxData = {
-                  private_event: {
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(),
-                    patient_id: newPatientId,
-                    nurse_id: newNurseId,
-                  }               
-                }
-              } else {
-                ajaxData = {
-                  appointment: {
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(),
-                    patient_id: newPatientId,
-                    nurse_id: newNurseId,
-                  }
-                };
+        
+        $('#drag-drop-modal').modal({ backdrop: 'static' })
+        $('.close-drag-drop-modal').click(function () {
+          revertFunc()
+          $('.modal').modal('hide');
+          $('.modal-backdrop').remove();
+        })
+        $('#drag-drop-save').one('click', function () {
+          let ajaxData;
+          if (event.private_event) {
+            ajaxData = {
+              private_event: {
+                starts_at: event.start.format(),
+                ends_at: event.end.format(),
+                patient_id: newPatientId,
+                nurse_id: newNurseId,
               }
-              $.ajax({
-                url: event.base_url + '.js?delta=' + delta + patientResource,
-                type: 'PATCH',
-                data: ajaxData,
-                success: function (data) {
-                  $(".popover").remove();
-                  if (data.includes("その日の従業員が重複しています")) {
-                    revertFunc();
-                  }
-                }
-              });
-
-              $('.calendar').fullCalendar('')
-              $(this).dialog("close")
-            },
-            "キャンセル": function () {
-              $(this).dialog("close");
-              revertFunc()
+            }
+          } else {
+            ajaxData = {
+              appointment: {
+                starts_at: event.start.format(),
+                ends_at: event.end.format(),
+                patient_id: newPatientId,
+                nurse_id: newNurseId,
+              }
             }
           }
-        })
-        $('.ui-dialog-titlebar-close').click(function () {
-          revertFunc();
+          $.ajax({
+            url: event.base_url + '.js?delta=' + delta + patientResource,
+            type: 'PATCH',
+            data: ajaxData,
+            success: function (data) {
+              $(".popover").remove();
+              if (data.includes("その日の従業員が重複しています")) {
+                revertFunc();
+              }
+            }
+          });
         })
       },
          

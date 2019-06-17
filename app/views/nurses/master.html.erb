@@ -67,7 +67,7 @@
 	</div>
 </div>
 
-
+<%= render 'plannings/master_drag_drop' %>
 
 <% if current_user.has_admin_access? %>
 	<div id="colibri-batch-master-action-button" class="no-print batch-action-button" data-url="<%= new_nurse_master_to_schedule_path(@nurse) %>">
@@ -79,7 +79,3 @@
 
 <%= render 'plannings/nurse_conflict_days' %>
 
-<div id="drag-drop-master" style="display: none" title="サービスのコピー.移動">
-	<p>新規データ：</p>
-	<div id="drag-drop-master-content"></div>
-</div>

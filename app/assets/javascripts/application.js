@@ -636,66 +636,54 @@ initialize_master_calendar = function() {
         }
         $('#drag-drop-master-content').html("<p>従業員： " + newNurseName + '  / 利用者名： ' + newPatientName + "</p><p>"  + newAppointmentDetails + "</p>")
 
-        $('#drag-drop-master').dialog({
-          height: 'auto',
-          width: 400,
-          modal: true,
-          buttons: {
-            'コピーする': function(){
-              $(this).dialog("close");
-              $.ajax({
-                url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time + patientResource,
-                type: 'POST',
-                data: {
-                  recurring_appointment: {
-                    nurse_id: newNurseId,
-                    patient_id: newPatientId,
-                    frequency: event.frequency,
-                    title: event.service_type,
-                    color: event.color,
-                    anchor: event.start.format('YYYY-MM-DD'),
-                    end_day: event.end.format('YYYY-MM-DD'),
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(),
-                    master: true
-                  },
-                },
-                success: function (data) {
-                  $(".popover").remove();
-                }
-              });
-              revertFunc();
-            },
-            '移動する': function(){
-              $(this).dialog("close");
-              $.ajax({
-                url: event.base_url + ".js?start=" + start_time + "&end=" + end_time + patientResource,
-                type: 'PATCH',
-                data: {
-                  recurring_appointment: {
-                    starts_at: event.start.format(),
-                    ends_at: event.end.format(),
-                    anchor: event.start.format('YYYY-MM-DD'),
-                    end_day: event.end.format('YYYY-MM-DD'),
-                    nurse_id: newNurseId,
-                    patient_id: newPatientId,
-                    editing_occurrences_after: previous_start.format('YYYY-MM-DD'),
-                    synchronize_appointments: 1
-                  }
-                }
-              })
-              $(".popover").remove();
-            },
-            'キャンセル': function(){
-              $(this).dialog("close");
-              revertFunc();
-            }
-          }
-        });
 
-        $('.ui-dialog-titlebar-close').click(function () {
+        $('#drag-drop-master').modal({ backdrop: 'static' })
+        $('.close-drag-drop-modal').click(function(){
+          revertFunc()
+        })
+        $('#master-drag-copy').one('click', function(){
+          $.ajax({
+            url: "/plannings/" + window.planningId + "/recurring_appointments.js?start=" + start_time + "&end=" + end_time + patientResource,
+            type: 'POST',
+            data: {
+              recurring_appointment: {
+                nurse_id: newNurseId,
+                patient_id: newPatientId,
+                frequency: event.frequency,
+                title: event.service_type,
+                color: event.color,
+                anchor: event.start.format('YYYY-MM-DD'),
+                end_day: event.end.format('YYYY-MM-DD'),
+                starts_at: event.start.format(),
+                ends_at: event.end.format(),
+                master: true
+              },
+            },
+            success: function (data) {
+              $(".popover").remove();
+            }
+          });
           revertFunc();
-        })  
+        })
+        $('#master-drag-move').one('click', function(){
+          $.ajax({
+            url: event.base_url + ".js?start=" + start_time + "&end=" + end_time + patientResource,
+            type: 'PATCH',
+            data: {
+              recurring_appointment: {
+                starts_at: event.start.format(),
+                ends_at: event.end.format(),
+                anchor: event.start.format('YYYY-MM-DD'),
+                end_day: event.end.format('YYYY-MM-DD'),
+                nurse_id: newNurseId,
+                patient_id: newPatientId,
+                editing_occurrences_after: previous_start.format('YYYY-MM-DD'),
+                synchronize_appointments: 1
+              }
+            }
+          })
+          $(".popover").remove();
+        })
       },
 
 

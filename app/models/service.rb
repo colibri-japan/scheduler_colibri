@@ -27,6 +27,10 @@ class Service < ApplicationRecord
     service_code.present? && official_title.present?
   end
 
+  def self.delivered_in_range(range)
+    joins('left join provided_services on provided_services.service_salary_id = services.id').joins('left join appointments on provided_services.appointment_id = appointments.id').where(provided_services: {cancelled: false, archived_at: nil, service_date: range}).where(appointments: {edit_requested: false})
+  end
+
   private 
 
   def default_hour_based_wage

@@ -90,29 +90,9 @@ class PlanningsController < ApplicationController
 		start_date = Date.new(params[:y].to_i, params[:m].to_i, 1).beginning_of_day
 		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day
 		
-		@provided_services = @planning.provided_services.where(archived_at: nil, cancelled: false, service_date: start_date..end_date).from_appointments.includes(:nurse, :appointment).where(appointments: {edit_requested: false})
-		
-		@service_names = @provided_services.order(:title).map(&:title).uniq
+		@service_hour_based_hash = @corporation.services.delivered_in_range(start_date..end_date).order(:title).pluck(:title, :hour_based_wage).uniq.to_h
 
-		@nurses = @corporation.nurses.displayable
-		@service_counts_grouped_by_nurse = {}
-
-		@nurses.each do |nurse|
-			sub_hash = {}
-			@service_names.each do |service_name|
-				if @provided_services.where(nurse_id: nurse.id, title: service_name).exists?
-					if @provided_services.where(nurse_id: nurse.id, title: service_name).first.hour_based_wage == true 
-						sum_duration = @provided_services.where(nurse_id: nurse.id, title: service_name).sum(:service_duration)
-						sub_hash[service_name] = sum_duration.to_f / (60 * 60)
-					else
-						sub_hash[service_name] = @provided_services.where(nurse_id: nurse.id, title: service_name).count
-					end
-				else
-					sub_hash[service_name] = 0
-				end
-			end
-			@service_counts_grouped_by_nurse[nurse.name] = sub_hash
-		end
+		@provided_services_count_and_sum_duration_by_nurse = @corporation.nurses.displayable.provided_services_count_and_sum_duration_for(start_date..end_date)
 		
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}

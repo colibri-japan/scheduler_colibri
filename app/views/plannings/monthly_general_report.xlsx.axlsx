@@ -12,16 +12,25 @@ wb.styles do |s|
 
 		sheet.add_row do |row|
 			row.add_cell '従業員', style: table_header
-			@service_names.each do |service_name|
+			@service_hour_based_hash.each do |service_name, hour_based|
 				row.add_cell service_name, style: table_header
 			end
 		end
 
-		@service_counts_grouped_by_nurse.each do |nurse_name, count_per_service_title|
+		@provided_services_count_and_sum_duration_by_nurse.each do |nurse_name, provided_service_hash|
 			sheet.add_row do |row|
 				row.add_cell nurse_name, style: table_cells
-				count_per_service_title.each do |service_title, count|
-					row.add_cell count, style: table_cells
+				@service_hour_based_hash.each do |service_name, hour_based|
+					if provided_service_hash.present?
+						if provided_service_hash[service_name].present?
+							val = hour_based ? provided_service_hash[service_name][:sum_service_duration] : provided_service_hash[service_name][:count]
+						else 
+							val = 0
+						end
+					else
+						val = 0
+					end
+					row.add_cell val, style: table_cells
 				end
 			end
 		end

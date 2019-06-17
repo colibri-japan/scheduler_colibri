@@ -13,7 +13,6 @@
 //= require rails-ujs
 //= require jquery
 //= require turbolinks
-//= require jquery-ui
 //= require popper
 //= require bootstrap
 //= require bootstrap4-toggle.min

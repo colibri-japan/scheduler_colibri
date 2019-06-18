@@ -171,7 +171,7 @@ class PatientsController < ApplicationController
 
   def set_care_managers
     care_manager_corporation_ids = @corporation.care_manager_corporations.ids
-    @care_managers = CareManager.where(care_manager_corporation_id: care_manager_corporation_ids).includes(:care_manager_corporation)
+    @care_managers = CareManager.where(care_manager_corporation_id: care_manager_corporation_ids).includes(:care_manager_corporation).order(:care_manager_corporation_id)
   end
   
   def set_month_and_year_params

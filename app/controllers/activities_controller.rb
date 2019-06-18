@@ -8,8 +8,8 @@ class ActivitiesController < ApplicationController
 		authorize current_user, :has_admin_access?
 
 		employee_ids = @corporation.users.ids
-		@nurses = @corporation.nurses.all
-		@patients = @corporation.patients.all
+		@nurses = @corporation.nurses.order_by_kana
+		@patients = @corporation.cached_all_patients_ordered_by_kana
 		@users = @corporation.users.all
 		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 

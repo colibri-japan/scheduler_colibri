@@ -136,6 +136,7 @@ gem 'wicked_pdf'
 
 #memory use management
 gem 'scout_apm', group: :production
+gem 'memory_profiler'
 
 group :production do 
   gem 'wkhtmltopdf-heroku', '2.12.4'

@@ -63,7 +63,7 @@
 
     <div class="form-group">
       <%= form.label :category_1, "サービス種類1", class: "colibri-form-label-dark" %>
-      <%= form.select :category_1, options_for_select([['身体', 0], ['生活', 1], ['自費', 2],  ['障身', 3], ['障家', 8], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_1 %>
+      <%= form.select :category_1, options_for_select([['身体', 0], ['生活', 1], ['自費', 2],  ['障身', 3], ['障家', 8], ['総合', 9], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_1 %>
     </div>
 
     <div class="btn btn-colibri-light btn-sm" id="add-second-service-type" style="margin-bottom:15px<%= ';display:none' if service.category_2.present? %>">+サービス種類追加</div>
@@ -71,7 +71,7 @@
     <div id="second-service-type" style="<%= 'display:none' unless service.category_2.present? %>">
       <div class="form-group">
         <%= form.label :category_2, "サービス種類2", class: "colibri-form-label-dark" %>
-        <%= form.select :category_2, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障身', 3], ['障家', 8], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_2), {include_blank: '選択する'}, {id: :service_category_2} %>
+        <%= form.select :category_2, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障身', 3], ['障家', 8], ['総合', 9], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_2), {include_blank: '選択する'}, {id: :service_category_2} %>
       </div>
       <div class="form-group">
         <%= form.label :category_ratio, "サービス種類1割合", class: "colibri-form-label-dark" %>

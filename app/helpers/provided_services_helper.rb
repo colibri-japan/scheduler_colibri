@@ -46,6 +46,8 @@ module ProvidedServicesHelper
             "その他"
         when 8
             "障家"
+        when 9
+            "総合"
         else
             ""
         end

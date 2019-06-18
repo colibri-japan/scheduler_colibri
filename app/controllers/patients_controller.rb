@@ -197,16 +197,14 @@ class PatientsController < ApplicationController
   end
 
   def convert_wareki_dates(params)
-    parsed_end = Date.parse(params[:kaigo_certification_validity_end]) rescue nil
-    parsed_start = Date.parse(params[:kaigo_certification_validity_start]) rescue nil
-    parsed_birthday = Date.parse(params[:birthday]) rescue nil
-    params[:kaigo_certification_validity_end] = parsed_end
-    params[:kaigo_certification_validity_start] = parsed_start
-    params[:birthday] = parsed_birthday
+    params[:kaigo_certification_date] = Date.parse(params[:kaigo_certification_date]) rescue nil
+    params[:kaigo_certification_validity_end] = Date.parse(params[:kaigo_certification_validity_end]) rescue nil
+    params[:kaigo_certification_validity_start] = Date.parse(params[:kaigo_certification_validity_start]) rescue nil
+    params[:birthday] = Date.parse(params[:birthday]) rescue nil
     params
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :date_of_contract, :insurance_id, :birthday, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :issuing_administration_number, :issuing_administration_name, insurance_policy: [], caveat_list:[])
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :date_of_contract, :insurance_id, :birthday, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :issuing_administration_number, :issuing_administration_name, insurance_policy: [], caveat_list:[])
   end
 end

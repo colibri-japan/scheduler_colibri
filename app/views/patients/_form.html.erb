@@ -132,6 +132,15 @@
         </div>
       </div>
 
+      <div>
+        <%= form.label :kaigo_certification_date, "認定日", class: "colibri-form-label-dark" %>
+        <%= form.hidden_field :kaigo_certification_date, id: :patient_kaigo_certification_date %>
+        <%= select_tag :kaigo_certification_date_era, options_for_select(wareki_era, patient.kaigo_certification_date.try(:strftime, '%Je')), {prompt: '選択', id: :patient_kaigo_certification_date_era, class: :wareki_era} %>
+        <%= text_field_tag :kaigo_certification_date_era_year, value = patient.kaigo_certification_date.try(:strftime, '%Jg'), {style: "width:28px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_date_year, class: :wareki_year} %>年
+        <%= text_field_tag :kaigo_certification_date_era_month, value = patient.kaigo_certification_date.try(:month), {style: "width:28px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_date_month , class: :wareki_month}%>月
+        <%= text_field_tag :kaigo_certification_date_era_day, value = patient.kaigo_certification_date.try(:day), {style: "width:28px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_date_day, class: :wareki_day} %>日
+      </div>
+
     　<div class="form-group">
         <%= form.label :kaigo_certification_validity_start, "認定期間", class: "colibri-form-label-dark" %>
         <div class="form-row">
@@ -235,6 +244,7 @@
 
   <div class="modal-footer">
     <% unless patient.new_record? %>
+      <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
       <%= link_to 'サービス停止', toggle_active_path(patient), method: :patch, data: {confirm: '将来のサービスがキャンセルされ、利用者一覧から外されます。'}, class: 'btn btn-danger text-white' %>
     <% end %>
     <%= form.submit 'セーブする', class: 'btn btn-info' %>

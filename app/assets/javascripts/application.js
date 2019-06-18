@@ -2227,6 +2227,18 @@ let patientWarekiFields = () => {
   $('#patient_kaigo_certification_validity_start_day').change(function(){
     set_kaigo_certification_validity_start()
   })
+  $('#patient_kaigo_certification_date_era').change(function(){
+    set_kaigo_certification_date()
+  })
+  $('#patient_kaigo_certification_date_year').change(function(){
+    set_kaigo_certification_date()
+  })
+  $('#patient_kaigo_certification_date_month').change(function(){
+    set_kaigo_certification_date()
+  })
+  $('#patient_kaigo_certification_date_day').change(function(){
+    set_kaigo_certification_date()
+  })
   $('#patient_kaigo_certification_validity_end_era').change(function(){
     set_kaigo_certification_validity_end()
   })
@@ -2259,9 +2271,7 @@ let set_kaigo_certification_validity_end = () => {
   let month = $('#patient_kaigo_certification_validity_end_month').val() || ''
   let day = $('#patient_kaigo_certification_validity_end_day').val() || ''
   let wareki_date = era + year + '年' + month + '月' + day + '日'
-  console.log(wareki_date)
   $('#patient_kaigo_certification_validity_end').val(wareki_date)
-  console.log($('#patient_kaigo_certification_validity_end').val())
 }
 
 let set_kaigo_certification_validity_start = () => {
@@ -2270,9 +2280,16 @@ let set_kaigo_certification_validity_start = () => {
   let month = $('#patient_kaigo_certification_validity_start_month').val() || ''
   let day = $('#patient_kaigo_certification_validity_start_day').val() || ''
   let wareki_date = era + year + '年' + month + '月' + day + '日'
-  console.log(wareki_date)
   $('#patient_kaigo_certification_validity_start').val(wareki_date)
-  console.log($('#patient_kaigo_certification_validity_start').val())
+}
+
+let set_kaigo_certification_date = () => {
+  let era = $('#patient_kaigo_certification_date_era').val() || ''
+  let year = $('#patient_kaigo_certification_date_year').val() || ''
+  let month = $('#patient_kaigo_certification_date_month').val() || ''
+  let day = $('#patient_kaigo_certification_date_day').val() || ''
+  let wareki_date = era + year + '年' + month + '月' + day + '日'
+  $('#patient_kaigo_certification_date').val(wareki_date)
 }
 
 let set_birthday = () => {
@@ -2281,9 +2298,7 @@ let set_birthday = () => {
   let month = $('#patient_birthday_month').val() || ''
   let day = $('#patient_birthday_day').val() || ''
   let wareki_date = era + year + '年' + month + '月' + day + '日'
-  console.log(wareki_date)
   $('#patient_birthday').val(wareki_date)
-  console.log($('#patient_birthday').val())
 }
 
 let scrollPosition

@@ -19,6 +19,7 @@ class Nurse < ApplicationRecord
 
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 	scope :displayable, -> { where(displayable: true) }
+	scope :reminderable, -> { where(reminderable: true) }
 	scope :full_timers, -> { where(full_timer: true) }
 	scope :part_timers, -> { where(full_timer: false) }
 

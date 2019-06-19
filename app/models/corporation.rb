@@ -167,7 +167,29 @@ class Corporation < ApplicationRecord
 		patients.includes(:nurse).active.where('date_of_contract IS NOT NULL AND date_of_contract > ?', date).order(date_of_contract: :desc)
 	end
 
+	def self.send_service_reminder
+		now_in_japan = Time.current.in_time_zone('Tokyo')
+		weekend_reminder_option = possible_values_for_weekend_reminder_option(now_in_japan.wday)
+		hour = now_in_japan.strftime("%H:00")
+		self.includes(:nurses).where(nurses: {reminderable: true}).where(reminder_email_hour: hour, weekend_reminder_option: weekend_reminder_option).each do |corporation|
+			selected_days = corporation.reminder_email_days(now_in_japan)
+			corporation.nurses.displayable.reminderable.pluck(:id).each do |nurse_id|
+				SendNurseReminderWorker.perform_async(nurse_id, selected_days)
+			end
+		end
+	end
+
 	private
+
+	def possible_values_for_weekend_reminder_option(weekday)
+		if [1,2,3,4,5].include?(weekday)
+			[0,1,2]
+		elsif weekday == 6
+			[2,1]
+		elsif weekday == 0
+			2
+		end
+	end
 
 	def flush_cache 
 		Rails.cache.delete([self.class.name, id])

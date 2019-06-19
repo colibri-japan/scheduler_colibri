@@ -14,7 +14,14 @@ end
 
 task :calculate_salaries_from_salary_rules => :environment do 
 	puts "Starting to calculate salaries from salary rules"
-	SalaryRule.calculate_salaries 
+	now_in_Japan = Time.current + 9.hours
+	corporation_ids = SalaryRule.not_expired_at(now_in_Japan).pluck(:corporation_id).uniq
+	nurse_ids = Nurse.displayable.where(corporation_id: corporation_ids).pluck(:id)
+	year = now_in_Japan.year
+	month = now_in_Japan.month
+	nurse_ids.each do |nurse_id|
+		RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(nurse_id, year, month)
+	end
 	puts "Finished calculating salaries"
 end
 

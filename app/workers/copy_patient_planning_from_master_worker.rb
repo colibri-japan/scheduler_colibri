@@ -3,6 +3,7 @@ class CopyPatientPlanningFromMasterWorker
   sidekiq_options retry: false
 
   def perform(patient_id, month, year)
+    MemoryProfiler.start
     patient = Patient.find(patient_id)
     corporation = patient.corporation
     planning = corporation.planning
@@ -14,9 +15,7 @@ class CopyPatientPlanningFromMasterWorker
     new_appointments = []
     new_provided_services = []
 
-    recurring_appointments = planning.recurring_appointments.from_master.where(patient_id: patient.id).to_be_displayed.edit_not_requested.not_terminated_at(first_day)
-
-    recurring_appointments.find_each do |recurring_appointment|
+    planning.recurring_appointments.from_master.where(patient_id: patient.id).to_be_displayed.edit_not_requested.not_terminated_at(first_day).find_each do |recurring_appointment|
       occurrences = recurring_appointment.appointments(first_day, last_day)
       occurrences.each do |occurrence|
         new_appointment = Appointment.new(
@@ -43,8 +42,8 @@ class CopyPatientPlanningFromMasterWorker
 
     new_appointments.each do |appointment|
       if appointment.id.present?
-        nurse_service = Service.where(title: appointment.title, corporation_id: corporation.id, nurse_id: appointment.nurse_id).first
-        service_salary_id = nurse_service.present? ? nurse_service.id : appointment.service_id
+        nurse_service_id = Service.where(title: appointment.title, corporation_id: corporation.id, nurse_id: appointment.nurse_id).first.id
+        service_salary_id = nurse_service_id || appointment.service_id
         provided_duration = appointment.ends_at - appointment.starts_at
         new_provided_service = ProvidedService.new(
           appointment_id: appointment.id, 
@@ -67,5 +66,8 @@ class CopyPatientPlanningFromMasterWorker
     end
 
     ProvidedService.import(new_provided_services)
+
+    report = MemoryProfiler.stop 
+    report.pretty_print(to_file: 'profile.txt')
   end
 end

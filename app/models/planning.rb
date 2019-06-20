@@ -1,11 +1,10 @@
 class Planning < ApplicationRecord
 	belongs_to :corporation
-	has_many :appointments, dependent: :destroy
-	has_many :recurring_appointments, dependent: :destroy
-	has_many :private_events, dependent: :destroy
-	has_many :wished_slots, dependent: :destroy
-	has_many :provided_services, dependent: :destroy
-	has_many :scans, dependent: :destroy
+	has_many :appointments
+	has_many :recurring_appointments
+	has_many :private_events
+	has_many :wished_slots
+	has_many :provided_services
 
 	before_save :default_title
 

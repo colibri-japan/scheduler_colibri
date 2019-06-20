@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :toggle_edit_requested]
+  before_action :set_appointment, only: [:show, :edit, :archive, :toggle_cancelled, :toggle_edit_requested]
   before_action :set_planning, except: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit, :batch_archive_confirm, :batch_cancel_confirm, :batch_request_edit_confirm, :batch_archive, :batch_cancel, :batch_request_edit]
   before_action :set_corporation
   before_action :new_batch_action, only: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit]

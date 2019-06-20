@@ -1,5 +1,5 @@
 class RecurringAppointmentsController < ApplicationController
-  before_action :set_recurring_appointment, only: [:show, :edit, :destroy, :archive, :toggle_cancelled, :from_master_to_general, :terminate, :create_individual_appointments]
+  before_action :set_recurring_appointment, only: [:show, :edit, :archive, :toggle_cancelled, :from_master_to_general, :terminate, :create_individual_appointments]
   before_action :set_planning
   before_action :set_corporation
   before_action :set_nurses, only: [:new, :edit]

@@ -22,8 +22,8 @@ Rails.application.routes.draw do
 
 
   resources :plannings do
-  	resources :appointments
-  	resources :recurring_appointments
+  	resources :appointments, except: :destroy
+  	resources :recurring_appointments, except: :destroy
     resources :private_events
     resources :wished_slots
     resources :nurses
@@ -44,17 +44,13 @@ Rails.application.routes.draw do
 
   resources :calendar_events, only: :new
 
-  resources :recurring_appointments do
-    resources :deleted_occurrences, only: [:new, :create]
-  end
-
   resources :provided_services, only: [:update, :destroy]
 
   resources :patients
 
   resources :posts
 
-  resources :appointments do
+  resources :appointments, except: :destroy do
     resources :completion_reports, only: [:new, :create, :edit, :update]
   end
 

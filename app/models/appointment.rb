@@ -26,13 +26,15 @@ class Appointment < ApplicationRecord
 	after_create :create_provided_service
 	after_update :update_provided_service
 
+	before_destroy :record_delete_activity
+
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :valid, -> { where(cancelled: false, displayable: true).not_archived }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
 	scope :from_master, -> { where(master: true) }
 	scope :to_be_displayed, -> { where(displayable: true).not_archived }
 	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true).not_archived }
-  scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
+    scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
 
 	def all_day_appointment?
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
@@ -188,6 +190,10 @@ class Appointment < ApplicationRecord
 			new_service = self.planning.corporation.services.create(title: self.title)
 			self.service_id = new_service.id
 		end
+	end
+
+	def record_delete_activity
+		self.create_activity :destroy, previous_patient: self.patient.try(:name), previous_nurse: self.nurse.try(:name), previous_start: self.starts_at, previous_end: self.ends_at, nurse_id: self.nurse_id, patient_id: self.patient_id
 	end
 
 end

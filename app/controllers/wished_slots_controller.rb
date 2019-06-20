@@ -59,19 +59,19 @@ class WishedSlotsController < ApplicationController
 
 	private
 
-	  def set_wished_slot
+	def set_wished_slot
 	    @wished_slot = WishedSlot.find(params[:id])
-	  end
+	end
 
-	  def set_planning
+	def set_planning
 	    @planning = Planning.find(params[:planning_id])
-		end
+	end
 		
     def set_nurses
-      @nurses = @corporation.nurses.all.order_by_kana
+        @nurses = @corporation.nurses.all.order_by_kana
     end
 
-	  def wished_slot_params
+	def wished_slot_params
 	    params.require(:wished_slot).permit(:title, :anchor, :rank, :description, :starts_at, :ends_at, :frequency, :nurse_id, :planning_id, :end_day)
-	  end
+	end
 end

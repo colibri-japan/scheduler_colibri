@@ -96,14 +96,6 @@ class RecurringAppointmentsController < ApplicationController
   def create_individual_appointments
     CreateIndividualAppointmentsWorker.perform_async(@recurring_appointment.id, params[:option1][:year], params[:option1][:month], params[:option2][:year], params[:option2][:month], params[:option3][:year], params[:option3][:month], params[:option2IsSelected], params[:option3IsSelected])
   end
-  
-  def destroy
-    authorize current_user, :has_admin_access?
-    authorize @planning, :same_corporation_as_current_user?
-
-    @activity = @recurring_appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
-    @recurring_appointment.delete
-  end
 
   private
 

@@ -123,15 +123,6 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  # DELETE /appointments/1
-  # DELETE /appointments/1.json
-  def destroy
-    authorize @planning, :same_corporation_as_current_user?
-
-    @activity = @appointment.create_activity :destroy, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:patient), previous_end: @appointment.ends_at, previous_start: @appointment.starts_at
-    @appointment.delete
-    recalculate_bonus
-  end
 
   def new_batch_archive
   end

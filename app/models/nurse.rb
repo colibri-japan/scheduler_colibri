@@ -138,14 +138,12 @@ class Nurse < ApplicationRecord
 		# hash with array of shifts (val) per nurse_id (key)
 	end
 
-	def self.service_reminder
-		Nurse.where(reminderable: true, displayable: true).find_each do |nurse|
-			if nurse.corporation.can_send_reminder_today?(Time.current.in_time_zone('Tokyo')) && nurse.corporation.can_send_reminder_now?(Time.current.in_time_zone('Tokyo'))
-				puts 'sending email'
-				selected_days = nurse.corporation.reminder_email_days(Time.current.in_time_zone('Tokyo'))
+	def self.send_service_reminder
+		now_in_japan = Time.current.in_time_zone('Tokyo')
+		Nurse.where(reminderable: true, displayable: true).includes(:corporation).find_each do |nurse|
+			if nurse.corporation.can_send_reminder_today?(now_in_japan) && nurse.corporation.can_send_reminder_now?(now_in_japan)
+				selected_days = nurse.corporation.reminder_email_days(now_in_japan)
 				SendNurseReminderWorker.perform_async(nurse.id, selected_days)
-			else 
-				puts 'will not send email'
 			end
 		end
 	end

@@ -1,8 +1,7 @@
 desc "Heroku scheduler tasks"
 
 task :send_reminders => :environment do 
-	Corporation.send_service_reminder
-	#Nurse.service_reminder 
+	Nurse.send_service_reminder 
 end
 
 task :mark_reminderable_posts_as_unread => :environment do

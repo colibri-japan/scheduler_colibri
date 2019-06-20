@@ -134,10 +134,6 @@ class Nurse < ApplicationRecord
 		end
 	end
 
-	def get_shifts_per_nurse(recurring_appointments)
-		# hash with array of shifts (val) per nurse_id (key)
-	end
-
 	def self.send_service_reminder
 		now_in_japan = Time.current.in_time_zone('Tokyo')
 		Nurse.where(reminderable: true, displayable: true).includes(:corporation).find_each do |nurse|

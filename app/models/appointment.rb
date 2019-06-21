@@ -127,7 +127,7 @@ class Appointment < ApplicationRecord
 
 	def request_edit_for_overlapping_appointments
 		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
-		overlapping_appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: Time.current)
+		overlapping_appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: Time.current) if overlapping_appointments.present?
 	end
 
 	def nurse_patient_and_planning_from_same_corporation

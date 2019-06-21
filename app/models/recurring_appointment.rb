@@ -194,22 +194,28 @@ class RecurringAppointment < ApplicationRecord
 			puts 'spliting recurring appointment before and after update date'
 			new_recurring = self.dup 
 			new_recurring.original_id = self.id
-			if new_recurring.save(validate: false) && self.synchronize_appointments
-				appointments = Appointment.to_be_displayed.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).order(starts_at: :asc)
-				synchronize_appointments_with_recurring_appointment(new_recurring, appointments) if appointments.present?
-			end
 
-			editing_occurrences_after_date = self.editing_occurrences_after.to_date
-			self.restore_attributes
-			self.updated_at = Time.current
-			self.termination_date = editing_occurrences_after_date - 1.day
+			if new_recurring.save 
+				Appointment.to_be_displayed.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
+				editing_occurrences_after_date = self.editing_occurrences_after.to_date
+				self.restore_attributes
+				self.updated_at = Time.current
+				self.editing_occurrences_after = editing_occurrences_after_date
+				self.termination_date = editing_occurrences_after_date - 1.day
+
+				UpdateIndividualAppointmentsWorker.perform_async(new_recurring.id)
+			else
+				puts 'new recurring did not save'
+				puts new_recurring.errors.inspect
+				self.errors[:base] << new_recurring.errors[:base]
+				raise ActiveRecord::Rollback
+			end
 		end
 	end
 
 	def update_appointments 
 		if synchronize_appointments && editing_occurrences_after.blank?
-			appointments = Appointment.to_be_displayed.where(recurring_appointment_id: self.id)
-			synchronize_appointments_with_recurring_appointment(self, appointments) if appointments.present?
+			UpdateIndividualAppointmentsWorker.perform_async(self.id)
 		end
 	end
 
@@ -253,10 +259,14 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def cannot_overlap_existing_appointment_create
+		puts 'called overlap on create'
 		nurse = Nurse.find(self.nurse_id) rescue nil
 
 		if nurse.present? && self.master
-			competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).not_terminated_at(self.anchor.beginning_of_day).where.not(id: self.id).overlapping_hours(self.starts_at, self.ends_at)
+			competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).not_terminated_at(self.anchor.beginning_of_day).where.not(id: [self.id, self.original_id]).overlapping_hours(self.starts_at, self.ends_at)
+
+			puts 'competing rec'
+			puts competing_recurring_appointments.map(&:id)
 
 			overlapping_ids = []
 			overlapping_days = []

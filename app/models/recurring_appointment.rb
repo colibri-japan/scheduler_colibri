@@ -31,7 +31,7 @@ class RecurringAppointment < ApplicationRecord
 	before_save :match_title_to_service
 
 	before_update :split_recurring_appointment_before_after_update
-	after_update :update_appointments
+	after_commit :update_appointments, on: :update
 
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
@@ -197,16 +197,14 @@ class RecurringAppointment < ApplicationRecord
 
 			if new_recurring.save 
 				Appointment.to_be_displayed.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
+				synchronize_appointments = self.synchronize_appointments
 				editing_occurrences_after_date = self.editing_occurrences_after.to_date
 				self.restore_attributes
 				self.updated_at = Time.current
 				self.editing_occurrences_after = editing_occurrences_after_date
+				self.synchronize_appointments = synchronize_appointments
 				self.termination_date = editing_occurrences_after_date - 1.day
-
-				UpdateIndividualAppointmentsWorker.perform_async(new_recurring.id)
 			else
-				puts 'new recurring did not save'
-				puts new_recurring.errors.inspect
 				self.errors[:base] << new_recurring.errors[:base]
 				raise ActiveRecord::Rollback
 			end
@@ -214,8 +212,16 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def update_appointments 
+		puts 'called after commit on update'
+		puts synchronize_appointments
+		puts editing_occurrences_after
 		if synchronize_appointments && editing_occurrences_after.blank?
 			UpdateIndividualAppointmentsWorker.perform_async(self.id)
+		elsif synchronize_appointments && editing_occurrences_after.present? 
+			puts 'current id'
+			puts self.id 
+			new_recurring_id = RecurringAppointment.where(original_id: self.id).last.id
+			UpdateIndividualAppointmentsWorker.perform_async(new_recurring_id)
 		end
 	end
 
@@ -265,9 +271,6 @@ class RecurringAppointment < ApplicationRecord
 		if nurse.present? && self.master
 			competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).not_terminated_at(self.anchor.beginning_of_day).where.not(id: [self.id, self.original_id]).overlapping_hours(self.starts_at, self.ends_at)
 
-			puts 'competing rec'
-			puts competing_recurring_appointments.map(&:id)
-
 			overlapping_ids = []
 			overlapping_days = []
 
@@ -297,25 +300,5 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
-	def synchronize_appointments_with_recurring_appointment(recurring_appointment, appointments)
-		delta = (recurring_appointment.anchor - appointments.first.starts_at.to_date).to_i
-
-		appointments.each do |appointment|
-			appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min) + delta.days
-			appointment.ends_at = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.ends_at.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + delta.days
-			appointment.color = recurring_appointment.color 
-			appointment.description = recurring_appointment.description 
-			appointment.title = recurring_appointment.title 
-			appointment.nurse_id = recurring_appointment.nurse_id 
-			appointment.patient_id = recurring_appointment.patient_id 
-			appointment.service_id = recurring_appointment.service_id  
-			appointment.should_request_edit_for_overlapping_appointments = true
-			appointment.displayable = true 
-			appointment.master = false 
-			appointment.recurring_appointment_id = recurring_appointment.id
-
-			appointment.save
-		end
-	end
 
 end

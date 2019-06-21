@@ -21,7 +21,7 @@ class RecurringAppointment < ApplicationRecord
 	validates :nurse_id, presence: true 
 	validates :patient_id, presence: true
 	validate :nurse_patient_and_planning_from_same_corporation
-	validate :cannot_overlap_existing_appointment_create, on: :create, if: -> { nurse_id.present? }
+	validate :cannot_overlap_existing_appointment_create, on: :create
 
 	before_create :default_frequency
 	before_create :default_master
@@ -125,6 +125,13 @@ class RecurringAppointment < ApplicationRecord
 
 	def archive! 
 		self.update_column(:archived_at, Time.current)
+	end
+
+	def self.overlapping_hours(start_time, end_time)
+		check_start = start_time.utc.strftime("%H:%M")
+		check_end = end_time.utc.strftime("%H:%M")
+		
+		select { |r| check_start >= r.starts_at.utc.strftime("%H:%M") && check_start < r.ends_at.utc.strftime("%H:%M") || check_end > r.starts_at.utc.strftime("%H:%M") && check_end <= r.ends_at.utc.strftime("%H:%M") || check_start <= r.starts_at.utc.strftime("%H:%M") && check_end >= r.ends_at.utc.strftime("%H:%M") }
 	end
 
 	def overlapping_hours(start_time, end_time)
@@ -246,27 +253,23 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def cannot_overlap_existing_appointment_create
-		nurse = Nurse.find(self.nurse_id)
+		nurse = Nurse.find(self.nurse_id) rescue nil
 
-		unless nurse.name == '未定' || self.displayable == false
-			if self.master == true 
-				puts 'validates master'
-				competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).where('(termination_date IS NULL) OR (termination_date > ?)', self.anchor.beginning_of_day).where.not(id: self.id)
+		if nurse.present? && self.master
+			competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).not_terminated_at(self.anchor.beginning_of_day).where.not(id: self.id).overlapping_hours(self.starts_at, self.ends_at)
 
-				overlapping_ids = []
-				overlapping_days = []
+			overlapping_ids = []
+			overlapping_days = []
 
-				competing_recurring_appointments.each do |r|
-					if self.overlapping_hours(r.starts_at, r.ends_at)
-						self_occurrences = self.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
-						competing_occurrences = r.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
-						overlapping_ids << r.id if (self_occurrences - competing_occurrences).length != self_occurrences.length 
-						overlapping_days << (self_occurrences & competing_occurrences).map! {|e| e.strftime("%-m月%-d日")} if (self_occurrences - competing_occurrences).length != self_occurrences.length 
-					end
-				end
-				errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 
-				errors[:base] << overlapping_days if overlapping_days.present?
+			self_occurrences = self.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
+			competing_recurring_appointments.each do |r|
+				competing_occurrences = r.appointments(anchor.beginning_of_day, anchor.beginning_of_day + 2.months)
+				is_overlapping = (self_occurrences - competing_occurrences).length != self_occurrences.length 
+				overlapping_ids << r.id if is_overlapping 
+				overlapping_days << (self_occurrences & competing_occurrences).map! {|e| e.strftime("%-m月%-d日")} if is_overlapping
 			end
+			errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 
+			errors[:base] << overlapping_days if overlapping_days.present?
 		end
 
 	end

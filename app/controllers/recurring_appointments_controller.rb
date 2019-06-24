@@ -61,7 +61,6 @@ class RecurringAppointmentsController < ApplicationController
     
     if @recurring_appointment.update(recurring_appointment_params)
       @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id, master: true).last if @recurring_appointment.master
-      recalculate_bonus
       @activity = @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_anchor: @previous_anchor, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_title: @recurring_appointment.title, new_edit_requested: @recurring_appointment.edit_requested, new_start: @recurring_appointment.starts_at, new_end: @recurring_appointment.ends_at, new_anchor: @recurring_appointment.anchor, new_nurse: @recurring_appointment.nurse.try(:name), new_patient: @recurring_appointment.patient.try(:name)
     end
   end
@@ -74,7 +73,6 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.termination_date = @termination_date
     if @recurring_appointment.save 
       cancel_appointments_after_termination
-      recalculate_bonus
       @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
     end
   end
@@ -89,7 +87,6 @@ class RecurringAppointmentsController < ApplicationController
     if @recurring_appointment.save(validate: false)
       cancel_all_appointments
       @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
-      recalculate_bonus
     end                  
   end
   

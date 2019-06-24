@@ -34,7 +34,6 @@ class RecurringAppointment < ApplicationRecord
 	after_commit :update_appointments, on: :update
 
 	scope :not_archived, -> { where(archived_at: nil) }
-	scope :in_range, -> range { where('(from BETWEEN ? AND ?)', range.first, range.last) }
 	scope :exclude_self, -> id { where.not(id: id) }
 	scope :valid, -> { where(cancelled: false, displayable: true).not_archived }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
@@ -212,14 +211,11 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def update_appointments 
-		puts 'called after commit on update'
-		puts synchronize_appointments
-		puts editing_occurrences_after
 		if synchronize_appointments && editing_occurrences_after.blank?
+			puts 'will update appointments'
 			UpdateIndividualAppointmentsWorker.perform_async(self.id)
 		elsif synchronize_appointments && editing_occurrences_after.present? 
-			puts 'current id'
-			puts self.id 
+			puts 'will update appointments'
 			new_recurring_id = RecurringAppointment.where(original_id: self.id).last.id
 			UpdateIndividualAppointmentsWorker.perform_async(new_recurring_id)
 		end

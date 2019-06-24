@@ -6,7 +6,7 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
     now_in_japan = Time.current + 9.hours
     start_of_month = DateTime.new(year.to_i, month.to_i, 1,0,0,0).beginning_of_month
     end_of_month = start_of_month.end_of_month
-    end_of_today = now_in_japan.end_of_day > end_of_month ? end_of_month : now_in_japan.end_of_day
+    end_of_today = now_in_japan.month != month.to_i ? end_of_month : now_in_japan.end_of_day
     corporation = Nurse.find(nurse_id).corporation
     targeted_salary_rules = SalaryRule.where(corporation_id: corporation.id).where('target_all_nurses IS TRUE OR (target_all_nurses IS FALSE AND ? = ANY(nurse_id_list))', nurse_id.to_s).not_expired_at(now_in_japan)
     
@@ -67,6 +67,8 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
             puts salary_rule.inspect
             puts start_of_month..end_of_month
             puts nurse_id
+            puts 'end of today'
+            puts end_of_today
             ProvidedService.create(nurse_id: nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
         end
     end

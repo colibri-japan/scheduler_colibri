@@ -194,6 +194,8 @@ class RecurringAppointment < ApplicationRecord
 			new_recurring.original_id = self.id
 
 			if new_recurring.save 
+				puts 'new recurring has been saved with id:'
+				puts new_recurring.id
 				Appointment.to_be_displayed.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
 				synchronize_appointments = self.synchronize_appointments
 				editing_occurrences_after_date = self.editing_occurrences_after.to_date
@@ -214,6 +216,8 @@ class RecurringAppointment < ApplicationRecord
 			UpdateIndividualAppointmentsWorker.perform_async(self.id)
 		elsif synchronize_appointments && editing_occurrences_after.present? 
 			new_recurring_id = RecurringAppointment.where(original_id: self.id).last.id
+			puts 'found new recurring'
+			puts new_recurring_id
 			UpdateIndividualAppointmentsWorker.perform_async(new_recurring_id)
 		end
 	end

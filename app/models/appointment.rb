@@ -175,7 +175,7 @@ class Appointment < ApplicationRecord
 
 		if provided_service.present?
 			provided_duration = self.ends_at - self.starts_at
-			nurse_service_id = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first.id
+			nurse_service_id = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first.try(:id)
 			service_salary_id = nurse_service_id || self.service_id
 
 			provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, cancelled: self.cancelled, archived_at: self.archived_at, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)

@@ -8,9 +8,11 @@ class UpdateIndividualAppointmentsWorker
         appointments = Appointment.to_be_displayed.where(recurring_appointment_id: recurring_appointment_id).order(starts_at: :asc)
 
         if appointments.present?
-            delta = (recurring_appointment.anchor - appointments.first.starts_at.to_date).to_i
+
+            delta = (recurring_appointment.anchor - appointments.first.starts_at.to_date).to_i.remainder(7)
 
             appointments.each do |appointment|
+
                 appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min) + delta.days
                 appointment.ends_at = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.ends_at.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + delta.days
                 appointment.color = recurring_appointment.color 

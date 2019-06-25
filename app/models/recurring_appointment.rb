@@ -190,7 +190,6 @@ class RecurringAppointment < ApplicationRecord
 
 	def split_recurring_appointment_before_after_update
 		if self.master == true && editing_occurrences_after.present? 
-			puts 'spliting recurring appointment before and after update date'
 			new_recurring = self.dup 
 			new_recurring.original_id = self.id
 
@@ -212,10 +211,8 @@ class RecurringAppointment < ApplicationRecord
 
 	def update_appointments 
 		if synchronize_appointments && editing_occurrences_after.blank?
-			puts 'will update appointments'
 			UpdateIndividualAppointmentsWorker.perform_async(self.id)
 		elsif synchronize_appointments && editing_occurrences_after.present? 
-			puts 'will update appointments'
 			new_recurring_id = RecurringAppointment.where(original_id: self.id).last.id
 			UpdateIndividualAppointmentsWorker.perform_async(new_recurring_id)
 		end
@@ -261,7 +258,6 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def cannot_overlap_existing_appointment_create
-		puts 'called overlap on create'
 		nurse = Nurse.find(self.nurse_id) rescue nil
 
 		if nurse.present? && self.master
@@ -285,7 +281,6 @@ class RecurringAppointment < ApplicationRecord
 
 
 	def match_title_to_service
-		puts 'match title to services'
 		first_service = Service.where(corporation_id: self.planning.corporation.id, title: self.title, nurse_id: nil).first
 		
 		if first_service.present? 

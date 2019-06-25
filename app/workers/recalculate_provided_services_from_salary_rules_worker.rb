@@ -56,19 +56,11 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         else
             total_wage = 0
         end
-
-        puts 'verify presence of salary rule'
         
         #creating/updating provided service
         if provided_service_from_rule.present? 
             provided_service_from_rule.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, updated_at: Time.current, service_date: end_of_today.beginning_of_day)
         else
-            puts 'no salary rule for'
-            puts salary_rule.inspect
-            puts start_of_month..end_of_month
-            puts nurse_id
-            puts 'end of today'
-            puts end_of_today
             ProvidedService.create(nurse_id: nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
         end
     end

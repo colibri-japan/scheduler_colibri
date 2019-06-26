@@ -65,6 +65,5 @@ class CopyNursePlanningFromMasterWorker
     end
 
     ProvidedService.import(new_provided_services)
-
   end
 end

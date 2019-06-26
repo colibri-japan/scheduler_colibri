@@ -156,6 +156,8 @@ class NursesController < ApplicationController
 
     CopyNursePlanningFromMasterWorker.perform_async(@nurse.id, params[:month], params[:year])
 
+    @planning.create_activity :reflect_nurse_master, owner: current_user, planning_id: @planning.id, parameters: {year: params[:year].to_i, month: params[:month].to_i, nurse_name: @nurse.try(:name), nurse_id: @nurse.id}
+
     redirect_to planning_nurse_path(@planning, @nurse), notice: "#{@nurse.name}のサービスの反映が始まりました。数秒後にリフレッシュしてください。"
   end
 

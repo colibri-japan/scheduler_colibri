@@ -32,7 +32,9 @@ class PlanningsController < ApplicationController
 
 		CopyPlanningFromMasterWorker.perform_async(@planning.id, params[:month], params[:year])
 
-	  redirect_to planning_all_nurses_path(@planning), notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
+		@planning.create_activity :reflect_all_master, owner: current_user, planning_id: @planning.id, parameters: {year: params[:year].to_i, month: params[:month].to_i}
+		
+	    redirect_to planning_all_nurses_path(@planning), notice: 'マスタースケジュールが全体へ反映されてます。数秒後にリフレッシュしてください'
 	end
 
 	def all_nurses_payable

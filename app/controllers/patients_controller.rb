@@ -118,6 +118,8 @@ class PatientsController < ApplicationController
     @planning = @corporation.planning
     CopyPatientPlanningFromMasterWorker.perform_async(@patient.id, params[:month], params[:year])
 
+    @planning.create_activity :reflect_patient_master, owner: current_user, planning_id: @planning.id, parameters: {year: params[:year].to_i, month: params[:month].to_i, patient_id: @patient.id, patient_name: @patient.try(:name)}
+
     redirect_to planning_patient_path(@planning, @patient), notice: "#{@patient.name}様のサービスの反映が始まりました。数秒後リフレッシュしてください"
   end
 

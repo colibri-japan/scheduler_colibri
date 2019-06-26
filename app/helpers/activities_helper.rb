@@ -21,6 +21,12 @@ module ActivitiesHelper
 			'cancel_32px.png'
 		elsif activity_key.include? "batch_archive"
 			'destroy_32px.png'
+		elsif activity_key.include? "reflect_all_master"
+			'duplicate_32px.png'
+		elsif activity_key.include? "reflect_nurse_master"
+			'duplicate_32px.png'
+		elsif activity_key.include? "reflect_patient_master"
+			'duplicate_32px.png'
 		else
 			' '
 		end

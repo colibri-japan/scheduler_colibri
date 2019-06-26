@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190618095536) do
+ActiveRecord::Schema.define(version: 20190626213411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(version: 20190618095536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "planning_id"
-    t.string "previous_patient"
-    t.string "previous_nurse"
+    t.string "previous_patient_name"
+    t.string "previous_nurse_name"
     t.datetime "previous_start"
     t.datetime "previous_end"
     t.date "previous_anchor"
@@ -43,17 +43,21 @@ ActiveRecord::Schema.define(version: 20190618095536) do
     t.datetime "new_start"
     t.datetime "new_end"
     t.date "new_anchor"
-    t.string "new_nurse"
-    t.string "new_patient"
+    t.string "nurse_name"
+    t.string "patient_name"
     t.string "new_title"
     t.string "new_color"
     t.boolean "new_edit_requested"
     t.boolean "previous_cancelled"
+    t.bigint "previous_patient_id"
+    t.bigint "previous_nurse_id"
     t.index ["nurse_id"], name: "index_activities_on_nurse_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
     t.index ["patient_id"], name: "index_activities_on_patient_id"
     t.index ["planning_id"], name: "index_activities_on_planning_id"
+    t.index ["previous_nurse_id"], name: "index_activities_on_previous_nurse_id"
+    t.index ["previous_patient_id"], name: "index_activities_on_previous_patient_id"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
     t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"

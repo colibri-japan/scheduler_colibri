@@ -1,7 +1,7 @@
 <% if activity.trackable.present? %>
-	が<span class="activity-important-fields"><%= "#{activity.new_patient}様" if activity.new_patient %></span>のサービスをアップデートしました（繰り返し）<br/>
+	が<span class="activity-important-fields"><%= "#{activity.patient_name}様" if activity.patient_name.present? %></span>のサービスをアップデートしました（繰り返し）<br/>
 	<span class="activity-before-update-state">
-		<%= "#{activity.try(:previous_nurse)}" %>
+		<%= "#{activity.try(:previous_nurse_name)}" %>
 		<%= weekday(activity.try(:previous_anchor)) %><%= activity.previous_start.strftime("-%H:%M") if activity.previous_start.present? %><%= "~" if activity.previous_start.present? && activity.previous_end.present? %> <%= activity.previous_end.strftime("%-H:%M") if activity.previous_end.present? %> 
 			
 	</span><br/>

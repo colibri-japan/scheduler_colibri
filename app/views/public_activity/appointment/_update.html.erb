@@ -1,11 +1,11 @@
 <% if activity.trackable.present? %>
-	が<span class="activity-important-fields"><%= activity.try(:new_patient) %>様</span>のサービスをアップデートしました<br/>
+	が<span class="activity-important-fields"><%= activity.try(:patient_name) %>様</span>のサービスをアップデートしました<br/>
 	<span class="activity-before-update-state">
-		<%= "#{activity.try(:previous_nurse)}" if activity.previous_nurse.present? %>
+		<%= "#{activity.try(:previous_nurse_name)}" if activity.previous_nurse_name.present? %>
 		<%= "#{activity.previous_start.strftime("%-m月%-d日#{weekday(activity.try(:previous_start))} %-H:%M")} ~ #{activity.previous_end.strftime("%-H:%M")}"  if activity.previous_start.present? && activity.previous_end.present? %>
 		<%= activity.previous_title if activity.previous_title.present? && activity.previous_title != activity.try(:new_title) %>
 	</span><br/>
-	<span class="activity-important-fields"><%= "#{activity.try(:new_nurse)}" %></span>
+	<span class="activity-important-fields"><%= "#{activity.try(:nurse_name)}" %></span>
 	<%= activity.try(:new_start).strftime("%-m月%-d日#{weekday(activity.try(:new_start))} %-H:%M") %> ~ <%= activity.try(:new_end).strftime("%-H:%M") %>
 	<%= activity.new_title if activity.new_title.present? && activity.new_title != activity.previous_title %>
 	<% if !activity.previous_edit_requested.nil? && !activity.new_edit_requested.nil? && activity.previous_edit_requested != activity.new_edit_requested %>

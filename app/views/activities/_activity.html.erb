@@ -1,6 +1,6 @@
 <div class="activity-wrapper">
 	<div class="activity-icon-container">
-		<%= image_tag(activity_icon(activity)) %>
+		<%= image_tag(activity_icon(activity.try(:key))) %>
 	</div>
 	<div class="activity-body">
 		<span class="activity-datetime"><%= resource_creation_date(activity) %></span><br/>

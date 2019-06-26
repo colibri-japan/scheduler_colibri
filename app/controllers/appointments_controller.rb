@@ -1,7 +1,7 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :archive, :toggle_cancelled, :toggle_edit_requested]
-  before_action :set_planning, except: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit, :batch_archive_confirm, :batch_cancel_confirm, :batch_request_edit_confirm, :batch_archive, :batch_cancel, :batch_request_edit]
   before_action :set_corporation
+  before_action :set_planning, except: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit, :batch_archive_confirm, :batch_cancel_confirm, :batch_request_edit_confirm]
   before_action :new_batch_action, only: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit]
   before_action :confirm_batch_action, only: [:batch_cancel_confirm, :batch_archive_confirm, :batch_request_edit_confirm]
 
@@ -139,6 +139,8 @@ class AppointmentsController < ApplicationController
     @appointments.update_all(archived_at: now, recurring_appointment_id: nil, updated_at: now)
     @provided_services.update_all(archived_at: now, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
+    @planning.create_activity :batch_archive, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
+
     batch_recalculate_bonus
   end  
 
@@ -149,14 +151,14 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_cancel
-    planning_id = @corporation.planning.id
-    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
-    @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
+    @provided_services = ProvidedService.where(planning_id: @planning.id, appointment_id: @appointments.ids)
 
     now = Time.current
     @appointments.update_all(cancelled: true, recurring_appointment_id: nil, updated_at: now)
     @provided_services.update_all(cancelled: true, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
+    @planning.create_activity :batch_cancel, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
     batch_recalculate_bonus
   end
 
@@ -174,6 +176,8 @@ class AppointmentsController < ApplicationController
     now = Time.current
     @appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: now)
     @provided_services.update_all(total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
+
+    @planning.create_activity :batch_request_edit, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
 
     batch_recalculate_bonus
   end
@@ -225,10 +229,6 @@ class AppointmentsController < ApplicationController
       @previous_edit_requested = @appointment.edit_requested
       @previous_cancelled = @appointment.edit_requested
       @previous_title = @appointment.title
-    end
-
-    def set_planning
-      @planning = Planning.find(params[:planning_id])
     end
 
     def recalculate_bonus

@@ -13,7 +13,9 @@ class ActivitiesController < ApplicationController
 		@users = @corporation.users.all
 		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 
-		@activities = PublicActivity::Activity.where(planning_id: @planning.id).limit(40).order("created_at desc").includes({trackable: :nurse}, :owner)
+		appointment_activities = PublicActivity::Activity.where(planning_id: @planning.id, trackable_type: ['Appointment', 'RecurringAppointment']).limit(25).order("created_at desc").includes({trackable: [:nurse, :patient]}, :owner)
+		other_activities = PublicActivity::Activity.where(planning_id: @planning.id).where.not(trackable_type: ['Appointment', 'RecurringAppointment']).limit(10).order("created_at desc").includes(:owner)
+		@activities = (appointment_activities + other_activities).sort {|a| a.created_at}
 
 		if params[:n].present? && @nurses.ids.include?(params[:n].to_i)
 			@nurse_id = params[:n]

@@ -1,6 +1,4 @@
+が<span class="activity-important-fields"><%= activity.nurse_name %></span>のシフト希望を編集しました。<br/>
 <% if activity.trackable.present? %>
-	が<span class="activity-important-fields"><%= activity.try(:new_nurse) %></span>のシフト希望を編集しました。<br/>
 	<%= activity.trackable.starts_at.strftime("%-m月%-d日以降 #{weekday(activity.trackable.anchor)} %-H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%-H:%M") %>
-<% else %>
-	シフトの希望を編集しました。
 <% end %>

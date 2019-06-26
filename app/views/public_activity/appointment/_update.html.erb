@@ -9,8 +9,6 @@
 	<%= activity.try(:new_start).strftime("%-m月%-d日#{weekday(activity.try(:new_start))} %-H:%M") %> ~ <%= activity.try(:new_end).strftime("%-H:%M") %>
 	<%= activity.new_title if activity.new_title.present? && activity.new_title != activity.previous_title %>
 	<% if !activity.previous_edit_requested.nil? && !activity.new_edit_requested.nil? && activity.previous_edit_requested != activity.new_edit_requested %>
-		<%= activity.previous_edit_requested == true ? ">> 調整中リストから出す" :  ">> 調整中リストへ追加"  %> 
+		<%= changed_edit_requested_text(activity.previous_edit_requested) %> 
 	<% end %>
-<% else %>
-	がその後削除されたサービスをアップデートしました
 <% end %>

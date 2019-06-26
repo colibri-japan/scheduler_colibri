@@ -1,4 +1,4 @@
 がサービスを削除しました<br/>
 <span class="activity-important-fields"><%= "#{activity.previous_patient_name}様" if activity.previous_patient_name.present? %></span>
-<span class="activity-important-fields"><%= activity.previous_nurse_name if activity.previous_nurse_name.present? %></span>
+<span class="activity-important-fields"><%= activity.previous_nurse_name %></span>
 <%= weekday(activity.try(:previous_start) ) %><%= activity.try(:previous_start).strftime("%-m月%-d日 %-H:%M") %> ~ <%= activity.try(:previous_end).strftime("%-H:%M") %>

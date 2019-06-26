@@ -1,15 +1,10 @@
-<% if activity.trackable.present? %>
-	が<span class="activity-important-fields"><%= "#{activity.patient_name}様" if activity.patient_name.present? %></span>のサービスをアップデートしました（繰り返し）<br/>
-	<span class="activity-before-update-state">
-		<%= "#{activity.try(:previous_nurse_name)}" %>
-		<%= weekday(activity.try(:previous_anchor)) %><%= activity.previous_start.strftime("-%H:%M") if activity.previous_start.present? %><%= "~" if activity.previous_start.present? && activity.previous_end.present? %> <%= activity.previous_end.strftime("%-H:%M") if activity.previous_end.present? %> 
-			
-	</span><br/>
-	<span class="activity-important-fields"><%= "#{activity.try(:new_nurse)}"  %></span>
-	<%= weekday(activity.try(:new_anchor)) %><%= activity.try(:new_start).strftime("%-H:%M") %> ~ <%= activity.try(:new_end).strftime("%-H:%M") %>
-    <% if activity.previous_edit_requested.present? && activity.new_edit_requested.present? && activity.try(:previous_edit_requested) != activity.try(:new_edit_requested) %>
-		<%= activity.previous_edit_requested == true ? ">> 調整中リストから出す" :  ">> 調整中リストへ追加"  %> 
-	<% end %>
-<% else %>
-	がその後削除されたサービスをアップデートしました（繰り返し）
+が<span class="activity-important-fields"><%= "#{activity.patient_name}様" if activity.patient_name.present? %></span>のサービスをアップデートしました（繰り返し）<br/>
+<span class="activity-before-update-state">
+	<%= "#{activity.try(:previous_nurse_name)}" %>
+	<%= weekday(activity.try(:previous_anchor)) %><%= activity.previous_start.strftime("-%H:%M") if activity.previous_start.present? %><%= "~" if activity.previous_start.present? && activity.previous_end.present? %> <%= activity.previous_end.strftime("%-H:%M") if activity.previous_end.present? %> 	
+</span><br/>
+<span class="activity-important-fields"><%= "#{activity.try(:new_nurse)}"  %></span>
+<%= weekday(activity.try(:new_anchor)) %><%= activity.try(:new_start).strftime("%-H:%M") %> ~ <%= activity.try(:new_end).strftime("%-H:%M") %>
+<% if activity.previous_edit_requested.present? && activity.new_edit_requested.present? && activity.try(:previous_edit_requested) != activity.try(:new_edit_requested) %>
+	<%= changed_edit_requested_text(activity.previous_edit_requested) %> 
 <% end %>

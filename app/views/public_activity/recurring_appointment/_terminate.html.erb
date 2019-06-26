@@ -1,8 +1,7 @@
 がサービスを削除しました（繰り返し）<br/>
+<span class="activity-important-fields"><%= "#{activity.patient_name}様" if activity.patient_name.present? %></span>
+<span class="activity-important-fields"><%= activity.nurse_name if activity.nurse_name.present? %></span>
 <% if activity.trackable.present? %>
-<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) if activity.trackable.patient.present? %><%= '様' if activity.trackable.patient.present? && activity.trackable.patient.name.present?  %></span>
-<span class="activity-important-fields"><%= activity.trackable.nurse.try(:name) if activity.trackable.nurse.present? %></span>
 <%= weekday(activity.trackable.try(:anchor) ) %><%= activity.trackable.try(:starts_at).strftime("%-H:%M") %> ~ <%= activity.trackable.try(:ends_at).strftime("%-H:%M") %>
 <%= activity.trackable.termination_date.strftime("%-m月%-d日") %>以降
-
 <% end %>

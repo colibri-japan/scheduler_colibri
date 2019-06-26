@@ -1,7 +1,6 @@
 がサービスを削除しました（繰り返し）<br/>
-<% if activity.trackable.present? %>
 <span class="activity-important-fields"><%= "#{activity.previous_patient_name}様" if activity.previous_patient_name.present? %></span>
 <span class="activity-important-fields"><%= activity.try(:previous_nurse) %></span>
-<%= activity.try(:previous_start).strftime("%H:%M") %> ~ <%= activity.try(:previous_end).strftime("%H:%M") %>
-
+<% if activity.trackable.present? %>
+    <%= activity.try(:previous_start).strftime("%H:%M") %> ~ <%= activity.try(:previous_end).strftime("%H:%M") %>
 <% end %>

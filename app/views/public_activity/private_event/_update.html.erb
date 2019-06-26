@@ -1,7 +1,5 @@
+が自社サービス以外の予定をアップデートしました<br/>
+<span class="activity-important-fields"><%= "従業員：#{activity.try(:nurse_name)} "  if activity.nurse_name.present? %><%= " 利用者：#{activity.patient_name}様" if activity.patient_name.present? %></span>
 <% if activity.trackable.present? %>
-	が自社サービス以外の予定をアップデートしました<br/>
-	<span class="activity-important-fields"><%= activity.trackable.nurse.present? ? "#{activity.trackable.nurse.try(:name)  }" : "#{activity.trackable.patient.try(:name)}様"  %></span>
 	<%= activity.trackable.starts_at.strftime("%-m月%-d日#{weekday(activity.trackable.try(:starts_at))} %-H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%-H:%M") %>
-<% else %>
-	がその後削除された自社サービス以外の予定をアップデートしました
 <% end %>

@@ -1,7 +1,5 @@
+が<span class="activity-important-fields"><%= "#{activity.patient_name}様" %></span>のサービスを編集リストへ追加しました<br/>
+<span class="activity-important-fields"><%= activity.nurse_name %></span>
 <% if activity.trackable.present? %>
-	が<span class="activity-important-fields"><%= activity.trackable.patient.try(:name) %>様</span>のサービスを編集リストへ追加しました<br/>
-	<span class="activity-important-fields"><%= "#{activity.trackable.nurse.try(:name)   }"  %></span>
 	<%= activity.trackable.starts_at.strftime("%-m月%-d#{weekday(activity.trackable.starts_at)} %H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%H:%M") %>
-<% else %>
-	がその後削除されたサービスを編集リストへしました
 <% end %>

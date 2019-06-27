@@ -1,5 +1,0 @@
-が<span class="activity-important-fields"><%= activity.patient_name if activity.patient_name.present? %>様</span>のサービスを編集リストへ追加しました<br/>
-<span class="activity-important-fields"><%= activity.nurse_name if activity.nurse_name.present? %></span>
-<% if activity.trackable.present? %>
-	<%= weekday(activity.trackable.anchor) %><%= activity.trackable.starts_at.strftime("%-H:%M") %> ~ <%= activity.trackable.ends_at.strftime("%-H:%M") %>
-<% end %>

@@ -73,7 +73,7 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment.termination_date = @termination_date
     if @recurring_appointment.save 
       cancel_appointments_after_termination
-      @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id
+      @activity = @recurring_appointment.create_activity :terminate, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, parameters: {nurse_name: @recurring_appointment.nurse.try(:name), patient_name: @recurring_appointment.patient.try(:name), anchor: @recurring_appointment.anchor, starts_at: @recurring_appointment.starts_at, ends_at: @recurring_appointment.ends_at, title: @recurring_appointment.title, termination_date: @recurring_appointment.termination_date}
     end
   end
   
@@ -86,7 +86,7 @@ class RecurringAppointmentsController < ApplicationController
     
     if @recurring_appointment.save(validate: false)
       cancel_all_appointments
-      @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, previous_anchor: @recurring_appointment.anchor, previous_start: @recurring_appointment.starts_at, previous_end: @recurring_appointment.ends_at, previous_nurse: @recurring_appointment.nurse.try(:name), previous_patient: @recurring_appointment.patient.try(:name)
+      @activity = @recurring_appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, parameters: {nurse_name: @recurring_appointment.nurse.try(:name), patient_name: @recurring_appointment.patient.try(:name), anchor: @recurring_appointment.anchor, starts_at: @recurring_appointment.starts_at, ends_at: @recurring_appointment.ends_at, title: @recurring_appointment.title}
     end                  
   end
   

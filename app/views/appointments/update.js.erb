@@ -87,7 +87,7 @@ pathname = window.location.pathname;
       reloadWhenDismissedInPayable()
     <% end %>
 
-    <% if Patient.find(@activity.patient_id).name != @activity.previous_patient %>
+    <% if @activity.parameters["patient_id"].present? %>
       if ($('.calendar').length > 0) {
         let view = $('.calendar').fullCalendar('getView');
         if (!$('#day-view-options-input').is(':checked') && view.name === 'agendaDay') {

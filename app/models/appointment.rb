@@ -138,12 +138,12 @@ class Appointment < ApplicationRecord
 	end
 
 	def do_not_overlap
+		puts 'validating overlap'
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.displayable == false
 			overlapping_ids = Appointment.where(master: self.master, displayable: true, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
 
-			errors.add(:nurse_id, overlapping_ids) if overlapping_ids.present? 
 			errors[:base] << "その日の従業員が重複しています。" if overlapping_ids.present?
 		end
 	end

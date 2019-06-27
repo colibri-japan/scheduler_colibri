@@ -52,7 +52,7 @@ class AppointmentsController < ApplicationController
 
     @nurses = @corporation.nurses.order_by_kana
     @patients = @corporation.patients.active.order_by_kana
-    @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).all
+    @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).includes(:owner)
     @services = @corporation.cached_most_used_services_for_select
     @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end
@@ -65,8 +65,7 @@ class AppointmentsController < ApplicationController
     @appointment = @planning.appointments.new(appointment_params) 
 
     if @appointment.save 
-      @activity = @appointment.create_activity :create, owner: current_user, planning_id: @planning.id
-    else 
+      @activity = @appointment.create_activity :create, owner: current_user, planning_id: @planning.id, parameters: {patient_name: @appointment.patient.try(:name), nurse_name: @appointment.nurse.try(:name), starts_at: @appointment.starts_at, ends_at: @appointment.ends_at}
     end
   end
 
@@ -76,12 +75,11 @@ class AppointmentsController < ApplicationController
     authorize @planning, :same_corporation_as_current_user?
 
     @appointment = Appointment.find(params[:id])
-    store_original_params
     @appointment.recurring_appointment_id = nil
     
     if @appointment.update(appointment_params)      
       @provided_service = @appointment.provided_service if @previous_cancelled != appointment_params[:cancelled]
-      @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @previous_nurse, previous_patient: @previous_patient, previous_start: @previous_start, previous_end: @previous_end, previous_edit_requested: @previous_edit_requested, previous_title: @previous_title, new_start: @appointment.starts_at, new_end: @appointment.ends_at, new_edit_requested: @appointment.edit_requested, new_nurse: @appointment.nurse.try(:name), new_patient: @appointment.patient.try(:name), new_title: @appointment.title, new_color: @appointment.color
+      create_activity_for_update
       recalculate_bonus
     end
   end
@@ -94,7 +92,7 @@ class AppointmentsController < ApplicationController
 
     if @appointment.save(validate: !@appointment.cancelled)
       @provided_service = @appointment.provided_service
-      @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_cancelled: !@appointment.cancelled
+      @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_cancelled: !@appointment.cancelled, patient_name: @appointment.patient.try(:name), nurse_name: @appointment.nurse.try(:name)}
       recalculate_bonus
     end
   end
@@ -106,7 +104,7 @@ class AppointmentsController < ApplicationController
     @appointment.recurring_appointment_id = nil 
 
     if @appointment.save(validate: false)
-      @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse: @appointment.nurse.try(:name), previous_patient: @appointment.patient.try(:name), previous_start: @appointment.starts_at, previous_end: @appointment.ends_at
+      @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, previous_nurse_id: @appointment.nurse_id, previous_patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_nurse_name: @appointment.nurse.try(:name), previous_patient_name: @appointment.patient.try(:name)}
       recalculate_bonus
     end
   end
@@ -117,8 +115,8 @@ class AppointmentsController < ApplicationController
     @appointment.edit_requested = !@appointment.edit_requested
     @appointment.recurring_appointment_id = nil
 
-    if @appointment.save(validate: false)
-      @activity = @appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_edit_requested: !@appointment.edit_requested
+    if @appointment.save(validate: !@appointment.edit_requested)
+      @activity = @appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_edit_requested: !@appointment.edit_requested, patient_name: @appointment.patient.try(:name), nurse_name: @appointment.nurse.try(:name)} 
       recalculate_bonus
     end
   end
@@ -220,15 +218,19 @@ class AppointmentsController < ApplicationController
       end
     end
 
-    def store_original_params
-      @previous_patient = @appointment.patient.try(:name)
-      @previous_start = @appointment.starts_at
-      @previous_end = @appointment.ends_at
-      @previous_nurse = @appointment.nurse.try(:name)
-      @previous_nurse_id = @appointment.nurse_id
-      @previous_edit_requested = @appointment.edit_requested
-      @previous_cancelled = @appointment.edit_requested
-      @previous_title = @appointment.title
+    def create_activity_for_update
+      parameters = @appointment.previous_changes
+      parameters["previous_nurse_name"] = Nurse.find(parameters["nurse_id"][0]).try(:name) if parameters["nurse_id"].present?
+      parameters["previous_patient_name"] = Patient.find(parameters["patient_id"][0]).try(:name) if parameters["patient_id"].present? 
+      parameters["nurse_name"] = @appointment.nurse.try(:name)
+      parameters["patient_name"] = @appointment.patient.try(:name)
+      parameters["starts_at"] = [@appointment.starts_at, nil]  unless parameters["starts_at"].present?
+      parameters["ends_at"] = [@appointment.ends_at, nil]  unless parameters["ends_at"].present?
+      previous_nurse_id = parameters["nurse_id"].present? ? parameters["nurse_id"][0] : nil
+      previous_patient_id = parameters["patient_id"].present? ? parameters["patient_id"][0] : nil
+      parameters.delete("updated_at")
+
+      @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse_id: previous_nurse_id, previous_patient_id: previous_patient_id, parameters: parameters
     end
 
     def recalculate_bonus

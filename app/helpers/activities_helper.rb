@@ -36,8 +36,12 @@ module ActivitiesHelper
 		was_cancelled ? 'サービスのキャンセルを解除しました' : 'サービスをキャンセルしました'
 	end
 
+	def changed_cancelled_text(was_cancelled)
+		was_cancelled ? '> キャンセル解除' : '> キャンセル'
+	end
+
 	def changed_edit_requested_text(edit_was_requested)
-		edit_was_requested ? ">> 調整中リストから出す" :  ">> 調整中リストへ追加"
+		edit_was_requested ? "> 調整中リストから出す" :  "> 調整中リストへ追加"
 	end
 
 end

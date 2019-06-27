@@ -1,14 +1,22 @@
-<% if activity.trackable.present? %>
-	が<span class="activity-important-fields"><%= activity.try(:patient_name) %>様</span>のサービスをアップデートしました<br/>
-	<span class="activity-before-update-state">
-		<%= "#{activity.try(:previous_nurse_name)}" if activity.previous_nurse_name.present? %>
-		<%= "#{activity.previous_start.strftime("%-m月%-d日#{weekday(activity.try(:previous_start))} %-H:%M")} ~ #{activity.previous_end.strftime("%-H:%M")}"  if activity.previous_start.present? && activity.previous_end.present? %>
-		<%= activity.previous_title if activity.previous_title.present? && activity.previous_title != activity.try(:new_title) %>
-	</span><br/>
-	<span class="activity-important-fields"><%= "#{activity.try(:nurse_name)}" %></span>
-	<%= activity.try(:new_start).strftime("%-m月%-d日#{weekday(activity.try(:new_start))} %-H:%M") %> ~ <%= activity.try(:new_end).strftime("%-H:%M") %>
-	<%= activity.new_title if activity.new_title.present? && activity.new_title != activity.previous_title %>
-	<% if !activity.previous_edit_requested.nil? && !activity.new_edit_requested.nil? && activity.previous_edit_requested != activity.new_edit_requested %>
-		<%= changed_edit_requested_text(activity.previous_edit_requested) %> 
-	<% end %>
+が<span class="activity-important-fields"><%= "#{activity.parameters["previous_patient_name"] || activity.parameters["patient_name"]}様" %></span>のサービスをアップデートしました<br/>
+
+<span class="activity-before-update-state">
+	編集前：
+	<%= activity.parameters['previous_nurse_name'] || activity.parameters['nurse_name'] %>
+	<%= " #{activity.parameters['starts_at'][0].try(:strftime, "%-m月%-d日#{weekday(activity.parameters['starts_at'][0])} %-H:%M")}" if activity.parameters['starts_at'].present? && activity.parameters['starts_at'][0].present?  %>
+	<%= "~ #{activity.parameters['ends_at'][0].strftime("%H:%M")}"  if activity.parameters['ends_at'].present? %>
+	<%= activity.parameters['title'][0] if activity.parameters['title'].present? %>
+</span>
+<br/>
+
+編集内容：
+<span class="activity-important-fields"><%= "新規従業員：#{activity.parameters['nurse_name']} " if activity.parameters['nurse_id'].present? %></span>
+<span class="activity-important-fields"><%= "新規利用者：#{activity.parameters['patient_name']}" if activity.parameters['patient_id'].present? %></span>
+<% if activity.parameters['starts_at'][1].present? || activity.parameters['ends_at'][1].present? %>
+	<%= activity.parameters['starts_at'][1].present? ? activity.parameters['starts_at'][1].strftime("%-m月%-d日#{weekday(activity.parameters['starts_at'][1])} %-H:%M") : activity.parameters['starts_at'][0].strftime("%-m月%-d日#{weekday(activity.parameters['starts_at'][0])} %-H:%M") %>
+	~ <%= activity.parameters["ends_at"][1].present? ? activity.parameters['ends_at'][1].strftime("%H:%M") : activity.parameters['ends_at'][0].strftime("%H:%M") %>
 <% end %>
+<%= activity.parameters['title'][1] if activity.parameters['title'].present? %>
+<%= "<br/>#{changed_edit_requested_text(activity.parameters['edit_requested'][0])}".html_safe if activity.parameters['edit_requested'].present? %> 
+<%= "<br/>#{changed_cancelled_text(activity.parameters['cancelled'][0])}".html_safe if activity.parameters['cancelled'].present? %> 
+<%= "<br/>> コメント追加".html_safe if activity.parameters['description'].present? %>

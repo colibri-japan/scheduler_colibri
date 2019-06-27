@@ -11,7 +11,7 @@
 					<%= render 'form', appointment: @appointment %>
 				</div>
 
-				<% unless @activities.empty? %>
+				<% if @activities.present? %>
 					<div class="modal-body light-blue-background">
 						<div class="appointment-section-title">編集履歴</div>
 						<% @activities.each do |activity| %>

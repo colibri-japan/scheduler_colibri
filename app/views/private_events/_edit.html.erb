@@ -9,6 +9,15 @@
 			<div>
 				<%= render 'form', private_event: @private_event %>
 			</div>
+
+			<% if @activities.present? %>
+				<div class="modal-body light-blue-background">
+					<div class="appointment-section-title">編集履歴</div>
+					<% @activities.each do |activity| %>
+						<%= render partial: 'activities/activity', locals: {activity: activity}  %>
+					<% end %>
+				</div>
+			<% end %>
 		</div>
 	</div>
 

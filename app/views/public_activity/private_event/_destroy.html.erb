@@ -1,1 +1,4 @@
-が自社サービス以外の予定を削除しました
+が自社サービス以外の予定を削除しました。<br/>
+内容：<span class="activity-important-fields"><%= "#{activity.parameters[:title]}" %></span>
+<%= " 従業員：<span class='activity-important-fields'>#{activity.parameters[:nurse_name]}</span>".html_safe if activity.parameters[:nurse_name].present? %>
+<%= " 利用者: <span class='activity-important-fields'>#{activity.parameters[:patient_name]}</span>".html_safe if activity.parameters[:patient_name].present? %>

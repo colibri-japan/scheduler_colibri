@@ -1,10 +1,18 @@
-が<span class="activity-important-fields"><%= "#{activity.patient_name}様" if activity.patient_name.present? %></span>のサービスをアップデートしました（繰り返し）<br/>
+が<%= "<span class='activity-important-fields'>#{activity.parameters["previous_patient_name"]}様</span>の".html_safe if activity.parameters["previous_patient_name"].present? %></span>サービスをアップデートしました（繰り返し）<br/>
 <span class="activity-before-update-state">
-	<%= "#{activity.try(:previous_nurse_name)}" %>
-	<%= weekday(activity.try(:previous_anchor)) %><%= activity.previous_start.strftime("-%H:%M") if activity.previous_start.present? %><%= "~" if activity.previous_start.present? && activity.previous_end.present? %> <%= activity.previous_end.strftime("%-H:%M") if activity.previous_end.present? %> 	
-</span><br/>
-<span class="activity-important-fields"><%= "#{activity.try(:new_nurse)}"  %></span>
-<%= weekday(activity.try(:new_anchor)) %><%= activity.try(:new_start).strftime("%-H:%M") %> ~ <%= activity.try(:new_end).strftime("%-H:%M") %>
-<% if activity.previous_edit_requested.present? && activity.new_edit_requested.present? && activity.try(:previous_edit_requested) != activity.try(:new_edit_requested) %>
-	<%= changed_edit_requested_text(activity.previous_edit_requested) %> 
+	<%= "#{activity.parameters["previous_nurse_name"]}" %>
+	<%= weekday(activity.parameters["anchor"][0]) if activity.parameters["anchor"].present? %><%= activity.parameters['starts_at'][0].try(:strftime, "%-H:%M ~ ") %><%= activity.parameters['ends_at'][0].try(:strftime, "%-H:%M") %> 	
+	<%= activity.parameters['title'][0] if activity.parameters['title'].present? %>
+</span>
+<br/>
+
+編集内容：
+<span class="activity-important-fields"><%= "新規従業員：#{activity.parameters['nurse_name']} " if activity.parameters['nurse_name'].present? %></span>
+<span class="activity-important-fields"><%= "新規利用者：#{activity.parameters['patient_name']}" if activity.parameters['patient_name'].present? %></span>
+<% if activity.parameters["anchor"][1].present? || activity.parameters["starts_at"][1].present? || activity.parameters["ends_at"][1].present? %>
+	<%= weekday(activity.parameters["anchor"][1]) if activity.parameters["anchor"].present? && activity.parameters["anchor"][1] %>
+	<%= activity.parameters["starts_at"][1].present? ? activity.parameters["starts_at"][1].strftime("%-H:%M") : activity.parameters["starts_at"][0].strftime("%-H:%M") %> 
+	~ <%= activity.parameters["ends_at"][1].present? ? activity.parameters["ends_at"][1].strftime("%-H:%M") : activity.parameters["ends_at"][0].strftime("%-H:%M") %>
 <% end %>
+<%= activity.parameters['title'][1] if activity.parameters['title'].present? %>
+<%= "<br/>> コメント追加".html_safe if activity.parameters['description'].present? %>

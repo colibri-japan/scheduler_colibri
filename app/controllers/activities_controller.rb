@@ -13,18 +13,16 @@ class ActivitiesController < ApplicationController
 		@users = @corporation.users.all
 		@main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
 
-		appointment_activities = PublicActivity::Activity.where(planning_id: @planning.id, trackable_type: ['Appointment', 'RecurringAppointment']).limit(25).order("created_at desc").includes({trackable: [:nurse, :patient]}, :owner)
-		other_activities = PublicActivity::Activity.where(planning_id: @planning.id).where.not(trackable_type: ['Appointment', 'RecurringAppointment']).limit(10).order("created_at desc").includes(:owner)
-		@activities = (appointment_activities + other_activities).sort {|a| a.created_at}
+		@activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner, :trackable).limit(35).order("created_at desc")
 
 		if params[:n].present? && @nurses.ids.include?(params[:n].to_i)
 			@nurse_id = params[:n]
-			@activities = @activities.where('nurse_id = ?', params[:n])
+			@activities = @activities.where('nurse_id = ? OR previous_nurse_id = ?', params[:n], params[:n])
 		end
 
 		if params[:pat].present? && @patients.ids.include?(params[:pat].to_i)
 			@patient_id = params[:pat]
-			@activities = @activities.where('patient_id = ?', params[:pat])
+			@activities = @activities.where('patient_id = ? OR previous_patient_id = ?', params[:pat], params[:pat])
 		end
 
 		if params[:us].present? && @users.ids.include?(params[:us].to_i)

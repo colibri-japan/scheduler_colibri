@@ -33,6 +33,21 @@ class ActivitiesController < ApplicationController
 		end
 	end
 
+	def activities_widget
+		set_planning
+
+    	@activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:owner).limit(10)
+
+		@unseen_activity_count = @activities.count
+    	if @unseen_activity_count == 0
+    	  @activities = PublicActivity::Activity.where(planning_id: @planning.id).includes(:owner).last(5)
+		end
+		
+		respond_to do |format|
+			format.js
+		end
+	end
+
 	private
 
 

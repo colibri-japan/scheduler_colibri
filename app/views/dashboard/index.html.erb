@@ -37,10 +37,9 @@
 
       <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
         <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"><%= "   ログアウト以降：#{@unseen_activity_count}" %></span>
+          <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"></span>
         </div>
-        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light' >
-          <%= render partial: 'activities/activity', collection: @activities, cached: true %>
+        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light' id='activities-widget-container' >
         </div>
       </div>
 

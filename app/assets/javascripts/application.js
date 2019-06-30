@@ -1756,6 +1756,10 @@ let initializePostsWidget = () => {
   $.getScript('/posts_widget.js')
 }
 
+let initializeActivitiesWidget = () => {
+  $.getScript('/activities_widget.js')
+}
+
 let fixHeightForTimelineWeekView = () => {
   let height = $('.fc-content').height();
   $('td.fc-resource-area.fc-widget-header > div.fc-scroller-clip').height(height);
@@ -2417,6 +2421,10 @@ $(document).on('turbolinks:load', function(){
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()
+  }
+
+  if ($('#activities-widget-container').length > 0) {
+    initializeActivitiesWidget()
   }
 
   $.fn.modal.Constructor.prototype._enforceFocus = function () { };

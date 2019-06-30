@@ -1,0 +1,4 @@
+$('span.unseen-activity-count').empty()
+$('span.unseen-activity-count').append('<%= j "   ログアウト以降：#{@unseen_activity_count}" %>')
+$('#activities-widget-container').empty()
+$('#activities-widget-container').html("<%= j render(partial: 'activities/activity', collection: @activities).html_safe %>")

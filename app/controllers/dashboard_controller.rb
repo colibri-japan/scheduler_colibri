@@ -6,13 +6,6 @@ class DashboardController < ApplicationController
   def index
     @planning = @corporation.planning
 
-    #activity module
-    @activities = PublicActivity::Activity.where(planning_id: @planning.id, created_at: current_user.last_sign_in_at..current_user.current_sign_in_at).includes(:owner).limit(15)
-    @unseen_activity_count = @activities.count
-    if @unseen_activity_count == 0
-      @activities = PublicActivity::Activity.where(planning_id: @planning.id).last(5)
-    end
-
     #appointments : today, upcoming two weeks, since monday
     today = Date.today 
     appointments = Appointment.valid.where(planning_id: @planning.id, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day)

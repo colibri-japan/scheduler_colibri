@@ -4,7 +4,7 @@
 	編集前：
 	<%= activity.parameters['previous_nurse_name'] || activity.parameters['nurse_name'] %>
 	<%= " #{activity.parameters['starts_at'][0].try(:strftime, "%-m月%-d日#{weekday(activity.parameters['starts_at'][0])} %-H:%M")}" if activity.parameters['starts_at'].present? && activity.parameters['starts_at'][0].present?  %>
-	<%= "~ #{activity.parameters['ends_at'][0].strftime("%H:%M")}"  if activity.parameters['ends_at'].present? %>
+	<%= "~ #{activity.parameters['ends_at'][0].try(:strftime, "%H:%M")}"  if activity.parameters['ends_at'].present? %>
 	<%= activity.parameters['title'][0] if activity.parameters['title'].present? %>
 </span>
 <br/>
@@ -14,7 +14,7 @@
 <span class="activity-important-fields"><%= "新規利用者：#{activity.parameters['patient_name']}" if activity.parameters['patient_id'].present? %></span>
 <% if activity.parameters['starts_at'].present? && activity.parameters['ends_at'].present? && (activity.parameters['starts_at'][1].present? || activity.parameters['ends_at'][1].present?) %>
 	<%= activity.parameters['starts_at'][1].present? ? activity.parameters['starts_at'][1].strftime("%-m月%-d日#{weekday(activity.parameters['starts_at'][1])} %-H:%M") : activity.parameters['starts_at'][0].strftime("%-m月%-d日#{weekday(activity.parameters['starts_at'][0])} %-H:%M") %>
-	~ <%= activity.parameters["ends_at"][1].present? ? activity.parameters['ends_at'][1].strftime("%H:%M") : activity.parameters['ends_at'][0].strftime("%H:%M") %>
+	~ <%= activity.parameters["ends_at"][1].present? ? activity.parameters['ends_at'][1].strftime("%H:%M") : activity.parameters['ends_at'][0].try(:strftime, "%H:%M") %>
 <% end %>
 <%= activity.parameters['title'][1] if activity.parameters['title'].present? %>
 <%= "<br/>#{changed_edit_requested_text(activity.parameters['edit_requested'][0])}".html_safe if activity.parameters['edit_requested'].present? %> 

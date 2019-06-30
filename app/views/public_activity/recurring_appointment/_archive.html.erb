@@ -2,4 +2,4 @@
 <span class="activity-important-fields"><%= "#{activity.parameters[:patient_name]}様" if activity.parameters[:patient_name].present? %></span>
 <span class="activity-important-fields"><%= activity.parameters[:nurse_name] %></span>
 <%= "#{activity.parameters[:title]} " %>
-<%= weekday(activity.parameters[:anchor]) if activity.parameters[:anchor].present? %><%= activity.parameters[:starts_at].strftime("%-H:%M") %> ~ <%= activity.parameters[:ends_at].strftime('%-H:%M') %>
+<%= weekday(activity.parameters[:anchor]) if activity.parameters[:anchor].present? %><%= activity.parameters[:starts_at].try(:strftime, "%-H:%M") %> ~ <%= activity.parameters[:ends_at].try(:strftime, '%-H:%M') %>

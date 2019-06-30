@@ -1,7 +1,7 @@
 が<%= "<span class='activity-important-fields'>#{activity.parameters["previous_patient_name"]}様</span>の".html_safe if activity.parameters["previous_patient_name"].present? %></span>サービスをアップデートしました（繰り返し）<br/>
 <span class="activity-before-update-state">
 	<%= "#{activity.parameters["previous_nurse_name"]}" %>
-	<%= weekday(activity.parameters["anchor"][0]) if activity.parameters["anchor"].present? %><%= activity.parameters['starts_at'][0].try(:strftime, "%-H:%M ~ ") %><%= activity.parameters['ends_at'][0].try(:strftime, "%-H:%M") %> 	
+	<%= weekday(activity.parameters["anchor"][0]) if activity.parameters["anchor"].present? %><%= activity.parameters['starts_at'][0].try(:strftime, "%-H:%M ~ ") if activity.parameters['starts_at'].present? %><%= activity.parameters['ends_at'][0].try(:strftime, "%-H:%M") if activity.parameters['ends_at'].present? %> 	
 	<%= activity.parameters['title'][0] if activity.parameters['title'].present? %>
 </span>
 <br/>

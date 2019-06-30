@@ -1,4 +1,4 @@
-が<%= "<span class='activity-important-fields'>#{activity.parameters[:patient_name]}様</span>の".html_safe if activity.parameters[:patient_name].present? %>サービスを編集リストへ追加しました<br/>
+が<%= "<span class='activity-important-fields'>#{activity.parameters[:patient_name]}様</span>の".html_safe if activity.parameters[:patient_name].present? %>サービスを<%= toggle_edit_requested_activity_text(activity.parameters[:previous_edit_requested] || false) %><br/>
 <span class="activity-important-fields"><%= activity.parameters[:nurse_name] %></span>
 <%= activity.parameters[:starts_at].strftime("%-m月%-d日#{weekday(activity.parameters[:starts_at])} %-H:%M") if activity.parameters[:starts_at].present? %>
 ~ <%= activity.parameters[:ends_at].try(:strftime, "%-H:%M") %>

@@ -44,4 +44,8 @@ module ActivitiesHelper
 		edit_was_requested ? "> 調整中リストから出す" :  "> 調整中リストへ追加"
 	end
 
+	def toggle_edit_requested_activity_text(edit_was_requested)
+		edit_was_requested ? "調整中リストから解除しました" : "調整中リストへ追加しました"
+	end
+
 end

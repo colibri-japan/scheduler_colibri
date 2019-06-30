@@ -3,7 +3,6 @@ class CopyPatientPlanningFromMasterWorker
   sidekiq_options retry: false
 
   def perform(patient_id, month, year)
-    MemoryProfiler.start
     patient = Patient.find(patient_id)
     corporation = patient.corporation
     planning = corporation.planning
@@ -67,7 +66,5 @@ class CopyPatientPlanningFromMasterWorker
 
     ProvidedService.import(new_provided_services)
 
-    report = MemoryProfiler.stop 
-    report.pretty_print(to_file: 'profile.txt')
   end
 end

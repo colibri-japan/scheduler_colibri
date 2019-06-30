@@ -1,5 +1,5 @@
-が<%= "<span class='activity-important-fields'>#{activity.parameters[:patient_name]}様</span>の".html_safe %>サービスを追加しました(繰り返し)<br/>
+が<%= "<span class='activity-important-fields'>#{activity.parameters[:patient_name]}様</span>の".html_safe if activity.parameters[:patient_name].present? %>サービスを追加しました(繰り返し)<br/>
 <span class="activity-important-fields"><%= activity.parameters[:nurse_name] %></span>
 <%= activity.parameters[:anchor].try(:strftime, "%-m月%-d日#{weekday(activity.parameters[:anchor])}") if activity.parameters[:anchor].present? %>
-<%= activity.parameters[:starts_at].strftime("開始 %-H:%M") %> ~ 
-<%= activity.parameters[:ends_at].strftime("%-H:%M") %>
+<%= activity.parameters[:starts_at].try(:strftime, "開始 %-H:%M") %> ~ 
+<%= activity.parameters[:ends_at].try(:strftime, "%-H:%M") %>

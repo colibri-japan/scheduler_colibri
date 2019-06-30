@@ -1,4 +1,4 @@
-が<span class="activity-important-fields"><%= "#{activity.parameters["previous_patient_name"] || activity.parameters["patient_name"]}様" %></span>のサービスをアップデートしました<br/>
+が<%= "<span class='activity-important-fields'>#{activity.parameters["previous_patient_name"] || activity.parameters["patient_name"]}様</span>の".html_safe if activity.parameters["previous_patient_name"].present? || activity.parameters["patient_name"].present? %>サービスをアップデートしました<br/>
 
 <span class="activity-before-update-state">
 	編集前：

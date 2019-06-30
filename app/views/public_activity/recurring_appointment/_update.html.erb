@@ -9,7 +9,7 @@
 編集内容：
 <span class="activity-important-fields"><%= "新規従業員：#{activity.parameters['nurse_name']} " if activity.parameters['nurse_name'].present? %></span>
 <span class="activity-important-fields"><%= "新規利用者：#{activity.parameters['patient_name']}" if activity.parameters['patient_name'].present? %></span>
-<% if activity.parameters["starts_at"].present? && activity.parameters["ends_at"].present? && (activity.parameters["anchor"][1].present? || activity.parameters["starts_at"][1].present? || activity.parameters["ends_at"][1].present?) %>
+<% if activity.parameters["starts_at"].present? && activity.parameters["ends_at"].present? && activity.parameters["anchor"].present? && (activity.parameters["anchor"][1].present? || activity.parameters["starts_at"][1].present? || activity.parameters["ends_at"][1].present?) %>
 	<%= weekday(activity.parameters["anchor"][1]) if activity.parameters["anchor"].present? && activity.parameters["anchor"][1] %>
 	<%= activity.parameters["starts_at"][1].present? ? activity.parameters["starts_at"][1].strftime("%-H:%M") : activity.parameters["starts_at"][0].strftime("%-H:%M") %> 
 	~ <%= activity.parameters["ends_at"][1].present? ? activity.parameters["ends_at"][1].strftime("%-H:%M") : activity.parameters["ends_at"][0].strftime("%-H:%M") %>

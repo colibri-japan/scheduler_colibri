@@ -157,8 +157,9 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def calculate_total_wage
-		if self.appointment.present? && (self.appointment.cancelled == true || self.appointment.edit_requested == true)
+		if self.appointment.present? && ((self.cancelled? && self.will_save_change_to_cancelled?) || self.appointment.edit_requested?)
 			self.total_wage = 0
+		elsif self.cancelled == true && !self.will_save_change_to_cancelled?
 		else 
 			calculate_wage
 		end
@@ -173,9 +174,10 @@ class ProvidedService < ApplicationRecord
 	end
 
 	def calculate_credits_and_invoiced_amount
-		if self.appointment.present? && (self.appointment.cancelled || self.appointment.edit_requested)
+		if self.appointment.present? && ((self.cancelled? && self.will_save_change_to_cancelled?) || self.appointment.edit_requested?)
 			self.total_credits = 0
 			self.invoiced_total = 0
+		elsif self.cancelled? && !self.will_save_change_to_cancelled?
 		else
 			if self.service_salary.present?
 				self.total_credits = self.service_salary.unit_credits || 0

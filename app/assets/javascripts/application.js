@@ -147,12 +147,9 @@ let setRecurringAppointmentTime = (start, end, resource, view) => {
     $('#recurring_appointment_patient_id').val(window.patientId);
   }
   if (resource) {
-    console.log('resource present')
     if (window.resourceType === 'nurse') {
-      console.log('nurse id')
       $("#recurring_appointment_nurse_id").val(resource.id);
     } else if (window.resourceType === 'patient') {
-      console.log('patient id')
       $('#recurring_appointment_patient_id').val(resource.id)
     }
   }

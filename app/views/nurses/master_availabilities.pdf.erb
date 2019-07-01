@@ -1,4 +1,5 @@
-<div style='margin-bottom:35px;font-size:2.5em;font-weight:bold;text-align:center'><%= @corporation.try(:name) %>空き情報</div>
+<div style='margin-bottom:15px;font-size:2.5em;font-weight:bold;text-align:center'><%= @corporation.try(:name) %>空き情報</div>
+<div style='margin-bottom:30px;font-size:1.7em;text-align:center'><%= @query_day.try(:strftime, '(%-m月%-d日現在)') %></div>
 <div style='margin-bottom:10px;font-size:2em'>電話番号：<%= @corporation.try(:phone_number) %></div> 
 <div style='margin-bottom:20px;font-size:2em'>FAX　　：<%= @corporation.try(:fax_number) %></div> 
 

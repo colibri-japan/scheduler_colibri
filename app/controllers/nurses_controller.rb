@@ -162,10 +162,10 @@ class NursesController < ApplicationController
   end
 
   def master_availabilities
-    query_day = params[:date].to_date rescue nil
+    @query_day = params[:date].to_date rescue nil
     @text = params[:text]
 
-    @master_availabilities = query_day.present? ? @corporation.nurses.displayable.master_availabilities_per_slot_and_wday(query_day) : []
+    @master_availabilities = @query_day.present? ? @corporation.nurses.displayable.master_availabilities_per_slot_and_wday(@query_day) : []
 
     respond_to do |format|
       format.pdf do 

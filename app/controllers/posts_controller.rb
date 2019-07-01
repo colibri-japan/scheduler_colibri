@@ -16,12 +16,19 @@ class PostsController < ApplicationController
 
     def index
         @users = @corporation.cached_registered_users_ordered_by_kana
-        @patients = @corporation.cached_all_patients_ordered_by_kana
+        patients = @corporation.cached_all_patients_ordered_by_kana
+        @patients_for_select = [['利用者タグなし', 'nil']] + patients.pluck(:name, :id)
 
         if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
             @posts = @corporation.posts.includes(:reminders)
             @posts = @posts.where('published_at BETWEEN ? AND ?', params[:range_start], params[:range_end]) if params[:range_start].present? && params[:range_end].present?
-            @posts = @posts.where(patient_id: params[:patient_ids]) if params[:patient_ids].present? && (params[:patient_ids].map(&:to_i) - @patients.ids).empty?
+            if params[:patient_ids].include? 'nil'
+                params[:patient_ids][params[:patient_ids].index('nil')] = nil
+                nil_array = [nil]
+            else
+                nil_array = []
+            end
+            @posts = @posts.where(patient_id: params[:patient_ids]) if params[:patient_ids].present? && ((params[:patient_ids] - nil_array).map(&:to_i) - patients.ids).empty?
             @posts = @posts.where(author_id: params[:author_ids]) if params[:author_ids].present? && (params[:author_ids].map(&:to_i) - @users.ids).empty?
         else
             @posts = @corporation.cached_recent_posts

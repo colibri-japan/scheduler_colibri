@@ -11,9 +11,9 @@
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 	window.masterSchedule = 'false';
 	window.generalPlanning = 'true';
-  window.resourceLabel = '従業員';
-  window.resourceType = 'nurse';
-  window.fullcalendarViewOptions = 'agendaDay,timelineWeek';
+    window.resourceLabel = '従業員';
+    window.resourceType = 'nurse';
+    window.fullcalendarViewOptions = 'agendaDay,timelineWeek';
 	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 <% end %>
 
@@ -67,7 +67,7 @@
 
 			<div class='form-group'>
 				<%= label_tag :text, "備考", class: 'colibri-form-label-dark' %>
-				<%= text_area_tag :text, value=nil, {class: "form-control", id: :availabilities_text} %>
+				<%= text_area_tag :text, value=@corporation.availabilities_default_text, {class: "form-control", id: :availabilities_text, rows: "8"} %>
 			</div>
 		</div>
 		<div class="modal-footer">

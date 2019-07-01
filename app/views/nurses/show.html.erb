@@ -7,6 +7,7 @@
 	window.selectActionUrl = "<%= j new_calendar_event_path %>";
 	window.defaultView = "<%= j @corporation.default_individual_view %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
+	window.patientId = "";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 	window.firstDay = "<%= j @corporation.default_first_day.to_s %>";

@@ -10,6 +10,7 @@
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";
+	window.patientId = "";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 	window.defaultView = "<%= j @corporation.default_master_view %>";

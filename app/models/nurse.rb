@@ -111,7 +111,7 @@ class Nurse < ApplicationRecord
 
 		Nurse.where(id: self.ids).each do |nurse|
 			nurse_services_hash = {}
-			grouped_provided_services_array = ProvidedService.from_appointments.where(service_date: range, nurse_id: nurse.id, cancelled: false, archived_at: nil).joins(:appointment).where(appointments: {edit_requested: false}).group(:title).pluck('provided_services.title, count(*), sum(provided_services.service_duration) / (60 * 60) as sum_service_duration')
+			grouped_provided_services_array = ProvidedService.from_appointments.where(service_date: range, nurse_id: nurse.id, cancelled: false, archived_at: nil).joins(:appointment).where(appointments: {edit_requested: false}).group(:title).pluck('provided_services.title, count(*), sum(provided_services.service_duration)::decimal / 3600 as sum_service_duration')
 			grouped_provided_services_array.map {|e| nurse_services_hash[e[0]] = {count: e[1], sum_service_duration: e[2]}}
 			return_array << [nurse.name, nurse_services_hash]
 		end

@@ -1,0 +1,53 @@
+@charset "UTF-8";
+/* line 1, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo-container {
+  page-break-after: always;
+  font-size: 0.9em;
+}
+
+/* line 6, app/assets/stylesheets/teikyohyo.scss */
+html {
+  font-family: 'IPAexゴシック', 'IPA Pゴシック', 'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+}
+
+/* line 10, app/assets/stylesheets/teikyohyo.scss */
+.table.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* line 15, app/assets/stylesheets/teikyohyo.scss */
+.table.table-bordered-pdf > thead > tr > td, .table.table-bordered-pdf > tbody > tr > td {
+  border: 0.5px solid black;
+  padding: 1px;
+  vertical-align: middle;
+}
+
+/* line 21, app/assets/stylesheets/teikyohyo.scss */
+.table.table-centered > thead > tr > td, .table.table-centered > tbody > tr > td {
+  text-align: center;
+}
+
+/* line 25, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo_title {
+  font-weight: bold;
+  font-size: 1.3em;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+/* line 33, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo-container {
+  padding: 5px;
+}
+
+/* line 37, app/assets/stylesheets/teikyohyo.scss */
+.teikyohyo_1_body {
+  margin-top: 15px;
+}
+
+/* line 41, app/assets/stylesheets/teikyohyo.scss */
+.gray_row {
+  background-color: #eee;
+}

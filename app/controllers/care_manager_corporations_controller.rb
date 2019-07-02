@@ -73,6 +73,35 @@ class CareManagerCorporationsController < ApplicationController
     end
   end
 
+  def commented_appointments
+    authorize current_user, :has_admin_access?
+    
+    if params[:m].present? && params[:y].present?
+      @care_manager_corporation = CareManagerCorporation.find(params[:id])
+      @first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0, 0)
+      @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
+      
+      @patients_with_commented_services = Appointment.includes(:patient).commented.edit_not_requested.not_archived.where(patient_id: Patient.active.from_care_manager_corporation(@care_manager_corporation.id).pluck(:id)).in_range(@first_day..@last_day).order(:starts_at).group_by {|appointment| appointment.patient.name}
+
+      puts @patients_with_commented_services
+
+      respond_to do |format|
+        format.html 
+        format.pdf do
+          render pdf: "#{@care_manager_corporation.name}様_サービス編集内容_#{@first_day.strftime('%Jy年%Jm月')}分",
+          page_size: 'A4',
+          layout: 'pdf.html',
+          orientation: 'portrait',
+          encoding: 'UTF-8',
+          zoom: 1,
+          dpi: 75
+        end 
+      end
+    else
+      redirect_back fallback_location: authenticated_root_path
+    end
+  end
+
   private 
 
   def care_manager_corporations_params

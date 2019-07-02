@@ -580,6 +580,10 @@ div.popover-body {
 	cursor: pointer;
 }
 
+.page-break {
+	page-break-after: always;
+}
+
 @media print {
 
 	@page {

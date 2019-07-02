@@ -12,11 +12,14 @@ html {
     border-collapse: collapse;
 }
 
-.table.table-teikyohyo > thead > tr > td, .table.table-teikyohyo > tbody > tr > td {
+.table.table-bordered-pdf > thead > tr > td, .table.table-bordered-pdf > tbody > tr > td {
     border: 0.5px solid black;
     padding: 1px;
-    text-align: center;
     vertical-align: middle;
+}
+
+.table.table-centered > thead > tr > td, .table.table-centered > tbody > tr > td {
+    text-align: center;
 }
 
 .teikyohyo_title {

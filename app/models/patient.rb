@@ -20,6 +20,7 @@ class Patient < ApplicationRecord
 	scope :active, -> { where(active: true) }
 	scope :deactivated, -> { where(active: false) }
 	scope :still_active_at, -> date { where('active IS TRUE OR (active IS FALSE AND end_of_contract > ?)', date) }
+	scope :from_care_manager_corporation, -> id { where(care_manager_id: CareManager.where(care_manager_corporation_id: id).pluck(:id)) }
 
 	def self.group_by_kana
 		{

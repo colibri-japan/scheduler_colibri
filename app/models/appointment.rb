@@ -31,10 +31,13 @@ class Appointment < ApplicationRecord
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :valid, -> { where(cancelled: false, displayable: true).not_archived }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
+	scope :not_cancelled, -> { where(cancelled: false) }
 	scope :from_master, -> { where(master: true) }
 	scope :to_be_displayed, -> { where(displayable: true).not_archived }
 	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true).not_archived }
     scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
+	scope :commented, -> { where.not(description: ['', nil]) }
+	scope :in_range, -> range { where(starts_at: range) }
 
 	def all_day_appointment?
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight

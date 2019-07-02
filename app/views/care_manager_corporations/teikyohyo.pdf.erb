@@ -2,7 +2,7 @@
     <div class="teikyohyo-container" id="teikyohyo_1_<%= patient.id %>">
         <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="teikyohyo_1_header">
-            <table class="table table-bordered table-teikyohyo">
+            <table class="table table-bordered table-bordered-pdf  table-centered">
                 <tr>
                     <td rowspan="2" style="width:8%">保険者番号</td>
                     <td colspan="2" rowspan="2" style="width:13%"><%= patient.try(:issuing_administration_number) %></td>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="teikyohyo_1_body">
-            <table class="table table-bordered table-teikyohyo">
+            <table class="table table-bordered table-bordered-pdf  table-centered">
                 <thead>
                   <tr>
                     <td rowspan="2">提供時間帯</td>
@@ -146,7 +146,7 @@
         <div class="teikyohyo_title">サービス提供票別表 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="teikyohyo_subtitle">区分支給限度管理.利用者負担計算</div>
         <div class="teikyohyo_2_subcontainer">
-            <table class="table table-bordered table-teikyohyo">
+            <table class="table table-bordered table-bordered-pdf  table-centered">
                 <tbody>
                   <tr>
                     <td rowspan="2" style="width:11%">事業所名</td>
@@ -260,7 +260,7 @@
         <div style="margin-top:20px;display:-webkit-box;display:-webkit-flex;display:flex">
             <div style="width:45%;margin-right:10%">
                 <div class="teikyohyo_subtitle">種類別支給限度管理</div>
-                <table class="table table-bordered table-teikyohyo">
+                <table class="table table-bordered table-bordered-pdf  table-centered">
                     <thead>
                       <tr>
                         <td>サービス種類</td>
@@ -287,7 +287,7 @@
             </div>
             <div style="width:45%">
                 <div class="teikyohyo_subtitle">利用者負担表</div>
-                <table class="table table-bordered table-teikyohyo">
+                <table class="table table-bordered table-bordered-pdf  table-centered">
                     <thead>
                         <tr>
                             <td>事業所名</td>
@@ -318,7 +318,7 @@
 
         <div style="width:35%;margin-top:20px">
             <div class="teikyohyo_subtitle">要介護認定期間中の短期入所利用日数</div>
-            <table class="table table-bordered table-teikyohyo">
+            <table class="table table-bordered table-bordered-pdf  table-centered">
                 <thead>
                     <td>前月までの利用日数</td>
                     <td>当月の計画利用日数</td>

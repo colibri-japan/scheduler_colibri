@@ -28,9 +28,17 @@
 		</div>
     	<div class='colibri-dashboard-subcontainer'>
 			<div class='colibri-subcontainer-header'>
-				<span class='colibri-subcontainer-title'>明細書</span>
+				<span class='colibri-subcontainer-title'>サービス編集内容（コメント付きサービス）</span>
 			</div>
 			<div class='colibri-subcontainer-body'>
+			  <table class="table">
+				<% @care_manager_corporations.each do |care_manager_corporation| %>
+                    <tr>
+                        <td><%= care_manager_corporation.name %></td>
+                        <td><%= link_to 'Pdf', care_manager_corporation_commented_appointments_path(care_manager_corporation, params: {m: @selected_month, y: @selected_year}, format: :pdf), target: :_blank, class: 'btn btn-sm btn-success text-white' if current_user.has_admin_access? %></td>
+                    </tr>
+                <% end %>
+			  </table>
 			</div>
 		</div>
     </div>

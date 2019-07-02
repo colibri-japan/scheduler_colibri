@@ -166,6 +166,7 @@ Rails.application.routes.draw do
 
   #custom routes for care manager corporations
   get 'care_manager_corporations/:id/teikyohyo' => 'care_manager_corporations#teikyohyo', as: :care_manager_corporation_teikyohyo
+  get 'care_manager_corporations/:id/commented_appointments' => 'care_manager_corporations#commented_appointments', as: :care_manager_corporation_commented_appointments
 
   authenticated :user do  
     root  to: 'dashboard#index', as: :authenticated_root

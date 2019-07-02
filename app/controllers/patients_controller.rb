@@ -149,6 +149,36 @@ class PatientsController < ApplicationController
     end
   end
 
+  def commented_appointments
+    authorize current_user, :has_admin_access?
+    authorize @patient, :same_corporation_as_current_user?
+    
+    if params[:m].present? && params[:y].present?
+      @first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0, 0)
+      @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
+      
+      @commented_appointments = Appointment.commented.edit_not_requested.not_archived.where(patient_id: @patient.id).in_range(@first_day..@last_day).order(:starts_at)
+
+      puts 'appointments'
+      puts @commented_appointments
+      
+      respond_to do |format|
+        format.html 
+        format.pdf do
+          render pdf: "#{@patient.name}様_サービス編集内容_#{@first_day.strftime('%Jy年%Jm月')}分",
+          page_size: 'A4',
+          layout: 'pdf.html',
+          orientation: 'portrait',
+          encoding: 'UTF-8',
+          zoom: 1,
+          dpi: 75
+        end 
+      end
+    else
+      redirect_back fallback_location: authenticated_root_path
+    end
+  end
+
   private
 
   def set_patient

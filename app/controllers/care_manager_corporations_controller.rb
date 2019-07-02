@@ -83,8 +83,6 @@ class CareManagerCorporationsController < ApplicationController
       
       @patients_with_commented_services = Appointment.includes(:patient).commented.edit_not_requested.not_archived.where(patient_id: Patient.active.from_care_manager_corporation(@care_manager_corporation.id).pluck(:id)).in_range(@first_day..@last_day).order(:starts_at).group_by {|appointment| appointment.patient.name}
 
-      puts @patients_with_commented_services
-
       respond_to do |format|
         format.html 
         format.pdf do

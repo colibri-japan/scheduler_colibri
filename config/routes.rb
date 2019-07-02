@@ -109,7 +109,7 @@ Rails.application.routes.draw do
   patch 'patients/:id/master_to_schedule' => 'patients#master_to_schedule', as: :patient_master_to_schedule
   get 'patients/:id/new_master_to_schedule' => "patients#new_master_to_schedule", as: :new_patient_master_to_schedule
   get 'plannings/:planning_id/patients/:id/payable' => 'patients#payable', as: :planning_patient_payable
-
+  get 'patients/:id/commented_appointments' => 'patients#commented_appointments', as: :patient_commented_appointments
   #custom routes for plannings
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report
   get 'plannings/:id/teams_report' => 'plannings#teams_report', as: :planning_teams_report

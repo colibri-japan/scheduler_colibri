@@ -1,0 +1,19 @@
+<h1 style="text-align:center"><%= @patient.name %>様</h1>
+<table class="table table-bordered table-bordered-pdf">
+    <thead>
+        <tr>
+            <th style="width:30%">サービス日時</th>
+            <th style="width:20%">内容.区分</th>
+            <th style="width:50%">コメント</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @commented_appointments.each do |appointment| %>
+            <tr>
+                <td><%= appointment.starts_at.strftime("%-m月%-d日#{weekday(appointment.starts_at)} %H:%M ~ ") %><%= appointment.ends_at.strftime("%H:%M") %></td>
+                <td><%= appointment.title %></td>
+                <td><%= appointment.description %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

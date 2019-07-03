@@ -5,7 +5,7 @@ class Post < ApplicationRecord
 
   belongs_to :corporation, touch: true
   belongs_to :author, class_name: 'User', touch: true
-  has_many :patient_posts
+  has_many :patient_posts, dependent: :destroy
   has_many :patients, through: :patient_posts
 
   has_many :reminders, as: :reminderable, dependent: :destroy

@@ -20,22 +20,24 @@ class PostsController < ApplicationController
         @patients_for_select = [['利用者タグなし', 'nil']] + patients.pluck(:name, :id)
 
         if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
-            @posts = @corporation.posts.includes(:reminders)
+            @posts = @corporation.posts.includes(:reminders).order(published_at: 'DESC')
             @posts = @posts.where('published_at BETWEEN ? AND ?', params[:range_start], params[:range_end]) if params[:range_start].present? && params[:range_end].present?
-            if params[:patient_ids].include? 'nil'
-                params[:patient_ids][params[:patient_ids].index('nil')] = nil
-                nil_array = [nil]
-            else
-                nil_array = []
-            end
-            @posts = @posts.where(patient_id: params[:patient_ids]) if params[:patient_ids].present? && ((params[:patient_ids] - nil_array).map(&:to_i) - patients.ids).empty?
             @posts = @posts.where(author_id: params[:author_ids]) if params[:author_ids].present? && (params[:author_ids].map(&:to_i) - @users.ids).empty?
+            if params[:patient_ids].present? 
+                if params[:patient_ids].include? 'nil'
+                    posts_without_patient = @posts.left_outer_joins(:patient_posts).where(patient_posts: {id: nil})
+                    posts_with_patients = @posts.joins(:patient_posts).where(patient_posts: {patient_id: params[:patient_ids]}) if ((params[:patient_ids] - ['nil']).map(&:to_i) - patients.ids).empty?
+                    puts 'posts with patients'
+                    puts posts_with_patients
+                    @posts = (posts_without_patient + (posts_with_patients || [])).uniq
+                else
+                    @posts = @posts.joins(:patients).where(patients: {id: params[:patient_ids]}) if (params[:patient_ids].map(&:to_i) - patients.ids).empty?
+                end
+            end
         else
             @posts = @corporation.cached_recent_posts
         end
 
-        @posts = @posts.order(published_at: 'DESC')
-        
         fetch_post_readers
 
         respond_to do |format|
@@ -49,7 +51,7 @@ class PostsController < ApplicationController
         @post = Post.new(post_params)
         @post.author = current_user
         @post.corporation = @corporation 
-        
+        @post.patients << Patient.where(id: post_params[:patient_id])
         @post.save
         mark_post_as_read
     end
@@ -102,6 +104,6 @@ class PostsController < ApplicationController
     end
 
     def post_params
-        params.require(:post).permit(:published_at, :body, :patient_id, reminders_attributes: [:id, :anchor, :frequency, :_destroy])
+        params.require(:post).permit(:published_at, :body, patient_ids: [], reminders_attributes: [:id, :anchor, :frequency, :_destroy])
     end
 end

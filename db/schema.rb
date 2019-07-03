@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190701125401) do
+ActiveRecord::Schema.define(version: 20190703145004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -254,6 +254,15 @@ ActiveRecord::Schema.define(version: 20190701125401) do
     t.integer "days_worked", default: 0
     t.index ["corporation_id"], name: "index_nurses_on_corporation_id"
     t.index ["team_id"], name: "index_nurses_on_team_id"
+  end
+
+  create_table "patient_posts", force: :cascade do |t|
+    t.bigint "patient_id"
+    t.bigint "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_patient_posts_on_patient_id"
+    t.index ["post_id"], name: "index_patient_posts_on_post_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -591,6 +600,8 @@ ActiveRecord::Schema.define(version: 20190701125401) do
   add_foreign_key "appointments", "plannings"
   add_foreign_key "care_manager_corporations", "corporations"
   add_foreign_key "completion_reports", "appointments"
+  add_foreign_key "patient_posts", "patients"
+  add_foreign_key "patient_posts", "posts"
   add_foreign_key "posts", "corporations"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "printing_options", "corporations"

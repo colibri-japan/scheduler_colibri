@@ -3,7 +3,8 @@ class Post < ApplicationRecord
 
   belongs_to :corporation, touch: true
   belongs_to :author, class_name: 'User', touch: true
-  belongs_to :patient, optional: true
+  has_many :patient_posts
+  has_many :patients, through: :patient_posts
 
   has_many :reminders, as: :reminderable, dependent: :destroy
   accepts_nested_attributes_for :reminders, allow_destroy: true, reject_if: lambda { |attributes| attributes['anchor'].blank? }

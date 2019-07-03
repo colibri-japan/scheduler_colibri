@@ -1491,7 +1491,9 @@ let submitReflect = () => {
 }
 
 let postSelectize = () => {
-  $('#post_patient_id').selectize();
+  $('#post_patient_id').selectize({
+    plugins: ['remove_button']
+  });
 }
 
 

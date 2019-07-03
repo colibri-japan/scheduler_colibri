@@ -9,7 +9,8 @@ class Patient < ApplicationRecord
 	has_many :recurring_appointments
 	has_many :private_events
 	has_many :provided_services
-	has_many :posts
+	has_many :patient_posts
+	has_many :posts, through: :patient_posts
 	
 	validates :kana, presence: true, format: { with: /\A[\p{katakana}\p{blank}\0-9１-９}ー－]+\z/, message: 'フリガナはカタカナで入力してください' }
 	validate :name_uniqueness

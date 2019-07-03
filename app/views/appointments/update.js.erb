@@ -11,41 +11,46 @@ pathname = window.location.pathname;
     $('.modal').modal('hide');
     $('#nurse-overlap-modal').modal({ backdrop: 'static' })
 
-    $('#nurse-overlap-override').one('click', function(){
-      let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
-      let indexCount =  0;
-      appointment_ids.forEach(function(appointment_id, index, array){
-        let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-        indexCount++;
-        $.ajax({
-          url: request_edit_url,
-          type: 'PATCH',
-          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-          success: function(data) {
-            if (indexCount == appointment_ids.length) {
-              let appointment_data;
-              appointment_data = {
-                appointment: {
-                  starts_at: "<%= @appointment.starts_at %>",
-                  ends_at: "<%= @appointment.ends_at %>",
-                  nurse_id: "<%= @appointment.nurse_id %>",
-                  patient_id: "<%= @appointment.patient_id %>",
-                  color: "<%= @appointment.color %>",
-                  title: "<%= @appointment.title %>",
-                  description: "<%= @appointment.description %>"
-                }
-              };
-              let appointment_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + <%= @appointment.id %>;
-              $.ajax({
-                url: appointment_url,
-                type: 'PATCH',
-                data: appointment_data
-              })
+    $('#nurse-overlap-modal').on('shown.bs.modal', function(){
+      $('#nurse-overlap-override').off('click')
+      $('#nurse-overlap-override').one('click', function(event){
+        event.preventDefault()
+        let appointment_ids = <%=  @appointment.errors[:overlapping_ids].flatten %>;
+        let indexCount =  0;
+        appointment_ids.forEach(function(appointment_id, index, array){
+          let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+          indexCount++;
+          $.ajax({
+            url: request_edit_url,
+            type: 'PATCH',
+            beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+            success: function(data) {
+              if (indexCount == appointment_ids.length) {
+                let appointment_data;
+                appointment_data = {
+                  appointment: {
+                    starts_at: "<%= @appointment.starts_at %>",
+                    ends_at: "<%= @appointment.ends_at %>",
+                    nurse_id: "<%= @appointment.nurse_id %>",
+                    patient_id: "<%= @appointment.patient_id %>",
+                    color: "<%= @appointment.color %>",
+                    title: "<%= @appointment.title %>",
+                    description: "<%= @appointment.description %>"
+                  }
+                };
+                let appointment_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + <%= @appointment.id %>;
+                $.ajax({
+                  url: appointment_url,
+                  type: 'PATCH',
+                  data: appointment_data
+                })
+              }
             }
-          }
+          })
         })
       })
-    })
+    });
+
   }
 
 <% else %>

@@ -292,17 +292,11 @@ initialize_nurse_calendar = function(){
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
-            url: event.base_url + '.js?delta=' + delta,
-            type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日のヘルパーが重複しています")) {
-                revertFunc();
-                
-              }
-            }
+              url: event.base_url + '.js?delta=' + delta,
+              type: 'PATCH',
+              data: ajaxData
           })
         })
       },
@@ -446,16 +440,11 @@ initialize_patient_calendar = function(){
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
             url: event.base_url + '.js?delta=' + delta,
             type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日のヘルパーが重複しています")) {
-                revertFunc();
-              }
-            }
+            data: ajaxData
           })
         })
       },
@@ -948,16 +937,11 @@ initialize_calendar = function() {
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
             url: event.base_url + '.js?delta=' + delta + patientResource,
             type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日の従業員が重複しています")) {
-                revertFunc();
-              }
-            }
+            data: ajaxData
           });
         })
       },
@@ -2208,6 +2192,14 @@ let endOfContractDate = () => {
         ],
         firstDay: 1
       }
+    })
+  })
+}
+
+let handleAppointmentOverlapRevert = (revertFunc) => {
+  $('#nurse-overlap-modal').on('shown.bs.modal', function () {
+    $('#nurse-revert-overlap').one('click', function () {
+      revertFunc()
     })
   })
 }

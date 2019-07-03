@@ -27,8 +27,6 @@ class PostsController < ApplicationController
                 if params[:patient_ids].include? 'nil'
                     posts_without_patient = @posts.left_outer_joins(:patient_posts).where(patient_posts: {id: nil})
                     posts_with_patients = @posts.joins(:patient_posts).where(patient_posts: {patient_id: params[:patient_ids]}) if ((params[:patient_ids] - ['nil']).map(&:to_i) - patients.ids).empty?
-                    puts 'posts with patients'
-                    puts posts_with_patients
                     @posts = (posts_without_patient + (posts_with_patients || [])).uniq
                 else
                     @posts = @posts.joins(:patients).where(patients: {id: params[:patient_ids]}) if (params[:patient_ids].map(&:to_i) - patients.ids).empty?
@@ -94,7 +92,7 @@ class PostsController < ApplicationController
     end
 
     def mark_post_as_read
-        if @post.reminders.any? 
+        if !@post.share_to_all || @post.reminders.any?
             @post.corporation.users.each do |user|
                 @post.mark_as_read! for: user
             end
@@ -104,6 +102,6 @@ class PostsController < ApplicationController
     end
 
     def post_params
-        params.require(:post).permit(:published_at, :body, patient_ids: [], reminders_attributes: [:id, :anchor, :frequency, :_destroy])
+        params.require(:post).permit(:published_at, :body, :share_to_all, patient_ids: [], reminders_attributes: [:id, :anchor, :frequency, :_destroy])
     end
 end

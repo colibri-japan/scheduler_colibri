@@ -68204,12 +68204,9 @@ let setRecurringAppointmentTime = (start, end, resource, view) => {
     $('#recurring_appointment_patient_id').val(window.patientId);
   }
   if (resource) {
-    console.log('resource present')
     if (window.resourceType === 'nurse') {
-      console.log('nurse id')
       $("#recurring_appointment_nurse_id").val(resource.id);
     } else if (window.resourceType === 'patient') {
-      console.log('patient id')
       $('#recurring_appointment_patient_id').val(resource.id)
     }
   }
@@ -68352,16 +68349,11 @@ initialize_nurse_calendar = function(){
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
-            url: event.base_url + '.js?delta=' + delta,
-            type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日のヘルパーが重複しています")) {
-                revertFunc();
-              }
-            }
+              url: event.base_url + '.js?delta=' + delta,
+              type: 'PATCH',
+              data: ajaxData
           })
         })
       },
@@ -68505,16 +68497,11 @@ initialize_patient_calendar = function(){
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
             url: event.base_url + '.js?delta=' + delta,
             type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日のヘルパーが重複しています")) {
-                revertFunc();
-              }
-            }
+            data: ajaxData
           })
         })
       },
@@ -69007,16 +68994,11 @@ initialize_calendar = function() {
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
             url: event.base_url + '.js?delta=' + delta + patientResource,
             type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日の従業員が重複しています")) {
-                revertFunc();
-              }
-            }
+            data: ajaxData
           });
         })
       },
@@ -69133,7 +69115,17 @@ let phoneMailRequirement = () => {
   })
 }
 
-
+let toggleMarkAsReadForAll = () => {
+  $('#toggle_share_to_all').bootstrapToggle({
+    on: '共有する',
+    off: '共有しない',
+    size: 'small',
+    onstyle: 'info',
+    offstyle: 'secondary',
+    height: 30,
+    width: 140
+  })
+}
 
 let toggleEditRequested = () => {
   let $this  = $('.edit-requested-toggle')
@@ -69566,7 +69558,9 @@ let submitReflect = () => {
 }
 
 let postSelectize = () => {
-  $('#post_patient_id').selectize();
+  $('#post_patient_id').selectize({
+    plugins: ['remove_button']
+  });
 }
 
 
@@ -70267,6 +70261,14 @@ let endOfContractDate = () => {
         ],
         firstDay: 1
       }
+    })
+  })
+}
+
+let handleAppointmentOverlapRevert = (revertFunc) => {
+  $('#nurse-overlap-modal').on('shown.bs.modal', function () {
+    $('#nurse-revert-overlap').one('click', function () {
+      revertFunc()
     })
   })
 }

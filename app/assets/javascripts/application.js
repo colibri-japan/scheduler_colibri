@@ -1058,7 +1058,17 @@ let phoneMailRequirement = () => {
   })
 }
 
-
+let toggleMarkAsReadForAll = () => {
+  $('#toggle_share_to_all').bootstrapToggle({
+    on: '共有する',
+    off: '共有しない',
+    size: 'small',
+    onstyle: 'info',
+    offstyle: 'secondary',
+    height: 30,
+    width: 140
+  })
+}
 
 let toggleEditRequested = () => {
   let $this  = $('.edit-requested-toggle')

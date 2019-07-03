@@ -1,6 +1,8 @@
 class Post < ApplicationRecord
   acts_as_readable on: :updated_at
 
+  attribute :share_to_all, :boolean
+
   belongs_to :corporation, touch: true
   belongs_to :author, class_name: 'User', touch: true
   has_many :patient_posts
@@ -10,7 +12,6 @@ class Post < ApplicationRecord
   accepts_nested_attributes_for :reminders, allow_destroy: true, reject_if: lambda { |attributes| attributes['anchor'].blank? }
 
   before_validation :add_default_publication_date
-
 
   private
 

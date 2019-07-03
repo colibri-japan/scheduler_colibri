@@ -300,6 +300,7 @@ initialize_nurse_calendar = function(){
               $(".popover").remove();
               if (data.includes("その日のヘルパーが重複しています")) {
                 revertFunc();
+                
               }
             }
           })

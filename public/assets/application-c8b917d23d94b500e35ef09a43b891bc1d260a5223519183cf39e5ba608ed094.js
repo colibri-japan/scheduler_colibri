@@ -67950,6 +67950,12 @@ document.addEventListener('turbolinks:load', function () {
       $('#availabilities-form').modal();
       availabilitiesDate();
     });
+    $('#service-type-filter').click(function() {
+      $('#service_type_filter_content').toggle();
+    });
+    if ($('#category-subcontainer').length > 0) {
+      $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
+    }
     $('#confirm-availabilities-print').click(function() {
       var date, text;
       date = $('#availabilities_date').val();
@@ -68349,16 +68355,11 @@ initialize_nurse_calendar = function(){
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
-            url: event.base_url + '.js?delta=' + delta,
-            type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日のヘルパーが重複しています")) {
-                revertFunc();
-              }
-            }
+              url: event.base_url + '.js?delta=' + delta,
+              type: 'PATCH',
+              data: ajaxData
           })
         })
       },
@@ -68502,16 +68503,11 @@ initialize_patient_calendar = function(){
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
             url: event.base_url + '.js?delta=' + delta,
             type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日のヘルパーが重複しています")) {
-                revertFunc();
-              }
-            }
+            data: ajaxData
           })
         })
       },
@@ -69004,16 +69000,11 @@ initialize_calendar = function() {
               }
             }
           }
+          handleAppointmentOverlapRevert(revertFunc)
           $.ajax({
             url: event.base_url + '.js?delta=' + delta + patientResource,
             type: 'PATCH',
-            data: ajaxData,
-            success: function (data) {
-              $(".popover").remove();
-              if (data.includes("その日の従業員が重複しています")) {
-                revertFunc();
-              }
-            }
+            data: ajaxData
           });
         })
       },
@@ -69130,7 +69121,17 @@ let phoneMailRequirement = () => {
   })
 }
 
-
+let toggleMarkAsReadForAll = () => {
+  $('#toggle_share_to_all').bootstrapToggle({
+    on: '共有する',
+    off: '共有しない',
+    size: 'small',
+    onstyle: 'info',
+    offstyle: 'secondary',
+    height: 30,
+    width: 140
+  })
+}
 
 let toggleEditRequested = () => {
   let $this  = $('.edit-requested-toggle')
@@ -69563,7 +69564,9 @@ let submitReflect = () => {
 }
 
 let postSelectize = () => {
-  $('#post_patient_id').selectize();
+  $('#post_patient_id').selectize({
+    plugins: ['remove_button']
+  });
 }
 
 
@@ -69831,6 +69834,15 @@ let initializeCalendar = () => {
   } else if ($('.patient_calendar').length > 0) {
     initialize_patient_calendar()
   }
+}
+
+let filterProvidedServiceCategory = () => {
+  $('#service_type_filter').selectize({
+    plugins: ['remove_button']
+  })
+  $('#refresh-service-types').click(function(){
+    $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+  })
 }
 
 let newPostReminderLayout = () => {
@@ -70264,6 +70276,14 @@ let endOfContractDate = () => {
         ],
         firstDay: 1
       }
+    })
+  })
+}
+
+let handleAppointmentOverlapRevert = (revertFunc) => {
+  $('#nurse-overlap-modal').on('shown.bs.modal', function () {
+    $('#nurse-revert-overlap').one('click', function () {
+      revertFunc()
     })
   })
 }

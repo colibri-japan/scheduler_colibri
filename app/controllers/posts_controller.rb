@@ -20,7 +20,7 @@ class PostsController < ApplicationController
         @patients_for_select = [['利用者タグなし', 'nil']] + patients.pluck(:name, :id)
 
         if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
-            @posts = @corporation.posts.includes(:reminders).order(published_at: 'DESC')
+            @posts = @corporation.posts.includes(:reminders, :author, :patients).order(published_at: 'DESC')
             @posts = @posts.where('published_at BETWEEN ? AND ?', params[:range_start], params[:range_end]) if params[:range_start].present? && params[:range_end].present?
             @posts = @posts.where(author_id: params[:author_ids]) if params[:author_ids].present? && (params[:author_ids].map(&:to_i) - @users.ids).empty?
             if params[:patient_ids].present? 

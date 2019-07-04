@@ -18,7 +18,7 @@ wb.styles do |s|
         sheet.add_row ['日付', '送信者','利用者',  'メッセージ', '既読'], style: table_header
 
         @posts.each do |post|
-          sheet.add_row [post.created_at.strftime("%-m月%-d日"), post.author.try(:name), post.patient.try(:name), post.try(:body), @posts_readers[post.id].join(', ')], style: table_cells
+          sheet.add_row [post.created_at.strftime("%-m月%-d日"), post.author.try(:name), post.patients.map(&:name).join('、'), post.try(:body), @posts_readers[post.id].join(', ')], style: table_cells
         end
 
         sheet.column_widths 10, 15, 15, 45, 30

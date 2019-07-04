@@ -94,9 +94,9 @@ class ProvidedService < ApplicationRecord
 		update_column(:archived_at, Time.current)
 	end
 
-	def self.grouped_by_weighted_category(categories)
+	def self.grouped_by_weighted_category(options = {})
 		return_hash = {}
-		categories = Array(0..9) if categories.blank? || categories == ['null']
+		categories = (options[:categories].blank? || options[:categories] == ['null']) ? Array(0..9) : options[:categories]
 		categories.map!(&:to_i)
 		categories.map {|category| return_hash[category] = {sum_weighted_service_duration: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0} }
 

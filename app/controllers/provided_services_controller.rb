@@ -55,7 +55,7 @@ class ProvidedServicesController < ApplicationController
 		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
 		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
 
-		@provided_services_grouped_by_category = ProvidedService.from_appointments.where(planning_id: @planning.id, cancelled: false, archived_at: nil).in_range(first_day..last_day).grouped_by_weighted_category(params[:categories].try(:split,','))
+		@provided_services_grouped_by_category = ProvidedService.from_appointments.where(planning_id: @planning.id, cancelled: false, archived_at: nil).in_range(first_day..last_day).grouped_by_weighted_category(categories: params[:categories].try(:split,','))
 		@available_categories = @corporation.services.where(nurse_id: nil).pluck(:category_1, :category_2).flatten.uniq
 	end
 

@@ -94,11 +94,11 @@ class ProvidedService < ApplicationRecord
 		update_column(:archived_at, Time.current)
 	end
 
-	def self.grouped_by_weighted_category
+	def self.grouped_by_weighted_category(categories)
 		return_hash = {}
-		for category in 0..9 do
-			return_hash[category] = {sum_weighted_service_duration: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0}
-		end 
+		categories = Array(0..9) if categories.blank? || categories == ['null']
+		categories.map!(&:to_i)
+		categories.map {|category| return_hash[category] = {sum_weighted_service_duration: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0} }
 
 		if self.first.present?
 			data_grouped_by_title = self.group(:title).select('provided_services.title, sum(provided_services.service_duration) as sum_service_duration, sum(provided_services.total_wage) as sum_total_wage, count(*)')
@@ -110,12 +110,12 @@ class ProvidedService < ApplicationRecord
 
 				if service_without_nurse.present?
 					argument = service_without_nurse[1].present? ? service_without_nurse[1] : 1
-					if service_without_nurse[2].present?
+					if service_without_nurse[2].present? && categories.include?(service_without_nurse[2])
 						return_hash[service_without_nurse[2]][:sum_weighted_service_duration] += (grouped_service.sum_service_duration || 0) * argument || 0
 						return_hash[service_without_nurse[2]][:sum_weighted_total_wage] += (grouped_service.sum_total_wage || 0) * argument || 0
 						return_hash[service_without_nurse[2]][:sum_count] += grouped_service.count || 0
 					end
-					if service_without_nurse[3].present?
+					if service_without_nurse[3].present? && categories.include?(service_without_nurse[3])
 						return_hash[service_without_nurse[3]][:sum_weighted_service_duration] += (grouped_service.sum_service_duration || 0)* (1 - argument) || 0
 						return_hash[service_without_nurse[3]][:sum_weighted_total_wage] += (grouped_service.sum_total_wage || 0) * (1 - argument) || 0
 						return_hash[service_without_nurse[3]][:sum_count] += grouped_service.count || 0

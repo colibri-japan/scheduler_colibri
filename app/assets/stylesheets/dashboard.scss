@@ -81,7 +81,7 @@
 }
 
 .colibri-subcontainer-body {
-	height: 90%;
+	height: calc(100% - 37px);
 	overflow-y: auto;
 	overflow-x: auto;
 }
@@ -97,6 +97,8 @@
 
 .colibri-subcontainer-header {
 	border-bottom: 0.5px solid #ccc;
+	padding-bottom: 4px;
+	height: 33px;
 }
 
 .unseen-activity-count {

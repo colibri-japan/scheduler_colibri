@@ -189,6 +189,13 @@ $(document).on 'turbolinks:load', ->
     $('#availabilities-form').modal()
     availabilitiesDate()
     return 
+
+  $('#service-type-filter').click ->
+    $('#service_type_filter_content').toggle()
+    return
+
+  if $('#category-subcontainer').length > 0
+    $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val())
     
   $('#confirm-availabilities-print').click -> 
     date = $('#availabilities_date').val()

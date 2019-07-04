@@ -1,3 +1,8 @@
+
+<%= javascript_tag do %>
+	window.popoverFocusAllowed = <%= true %> 
+<% end %>
+
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_all_nurses_path(@planning), resource_master_path: planning_all_nurses_master_path(@planning), resource_payable_path: planning_all_nurses_payable_path(@planning, params: {m: @selected_month, y: @selected_year})} %>
 
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'nurse', view: 'payable'} %>
@@ -7,10 +12,10 @@
 	<% if current_user.corporation_admin? %>
 	
 		<div class='colibri-xs-title no-print' style='margin-left:5px'>統計.データ</div>
-		<div class='no-print'>
+		<div class='no-print' style='margin-left:5px'>
 			<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
 			<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
-			<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
+			<button id='payable-query-trigger' class='btn-colibri-light btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:#5f6368;font-size:0.85em"></span></button>
 		</div>
 		<div class='colibri-dashboard-container-row no-print'>
 			<div class='colibri-dashboard-subcontainer'>
@@ -43,37 +48,15 @@
 				</div>
 			</div>
 			<div class='colibri-dashboard-subcontainer' id='category-container'>
-				<div class='colibri-subcontainer-header'>
-					<span class='colibri-subcontainer-title'>サービスタイプ割合  <span style="font-size:0.9em;color:#aaa">(<%= "#{params[:m]}月稼動時間合計より" %>)<span></span>
+				<div class='colibri-subcontainer-header' style='display:flex;justify-content:space-between'>
+					<div>
+						<span class='colibri-subcontainer-title'>サービスタイプ割合</span><span style="font-size:0.9em;color:#aaa">(<%= "#{params[:m]}月稼動時間合計より" %>)</span>
+					</div>
+					<div class='btn btn-sm btn-colibri-light' id='service-type-filter'>
+						<span class='glyphicon glyphicon-filter' style='color:#5f6368;font-size:14px'></span>フィルター
+					</div>
 				</div>
 				<div class='colibri-subcontainer-body' id='category-subcontainer'>
-
-					<div id="service-category-chart-container" style='margin-top:15px;margin-bottom:15px'>
-						<%= pie_chart @provided_services_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, width: '90%', height: '70%', legend: 'right', suffix: '%', donut: true, colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#9EE493', '#F58F29', '#5299D3', '#BEA9EF', '#8B5D33', '#DDEDAA', '#5E5C6C'] %>
-					</div>
-					<p style='text-align:center' id='see-more-service-category-data'>↓もっと見る↓</p>
-					<table class='table'>
-						<thead>
-							<tr>
-								<th>タイプ</th>
-								<th>給与計</th>
-								<th>稼動時間計</th>
-								<th>時間割合</th>
-								<th>件数</th>
-							</tr>
-						</thead>
-						<tbody>
-							<% @provided_services_grouped_by_category.each do |category_key, category_hash| %>
-								<tr>
-									<td><%= category_name_by_key(category_key) %></td>
-									<td><%= category_hash[:sum_weighted_total_wage].to_i %>￥</td>
-									<td><%= from_seconds_to_hours_minutes(category_hash[:sum_weighted_service_duration]) %></td>
-									<td><%= category_hash[:weighted_service_duration_percentage] %>%</td>
-									<td><%= category_hash[:sum_count] %></td>
-								</tr>
-							<% end %>
-						</tbody>
-					</table>
 				</div>
 			</div>
 		</div>
@@ -81,10 +64,10 @@
 	
 		<div class='colibri-xs-title no-print' style='margin-left:5px;margin-top:20px'>カスタム手当</div>
 
-    <%= link_to '+新規手当', new_salary_rule_path, remote: true, class: 'btn btn-info no-print', style: 'margin-left:5px;margin-top:8px' %>
+    	<%= link_to '+新規手当', new_salary_rule_path, remote: true, class: 'btn btn-info no-print', style: 'margin-left:5px;margin-top:8px' %>
 
 		<div class='colibri-dashboard-container-row no-print'>
-		  <div class='colibri-dashboard-subcontainer' id='colibri-salary-rules-index'>
+		    <div class='colibri-dashboard-subcontainer' id='colibri-salary-rules-index'>
 			</div>
 		</div>
 

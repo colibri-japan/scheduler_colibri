@@ -1773,6 +1773,15 @@ let initializeCalendar = () => {
   }
 }
 
+let filterProvidedServiceCategory = () => {
+  $('#service_type_filter').selectize({
+    plugins: ['remove_button']
+  })
+  $('#refresh-service-types').click(function(){
+    $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+  })
+}
+
 let newPostReminderLayout = () => {
   $('#show-reminder-form').click(function(){
     $(this).hide();

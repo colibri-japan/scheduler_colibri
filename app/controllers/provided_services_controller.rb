@@ -1,6 +1,6 @@
 class ProvidedServicesController < ApplicationController
-	before_action :set_provided_service, except: [:create]
-	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified, :new_cancellation_fee]
+	before_action :set_provided_service, except: [:create, :provided_services_by_category_report]
+	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified, :new_cancellation_fee, :provided_services_by_category_report]
 
 
 	def create
@@ -45,6 +45,18 @@ class ProvidedServicesController < ApplicationController
 	end
 
 	def new_cancellation_fee
+	end
+
+	def provided_services_by_category_report
+		set_corporation
+		set_planning
+
+		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
+
+		@provided_services_grouped_by_category = ProvidedService.from_appointments.where(planning_id: @planning.id, cancelled: false, archived_at: nil).in_range(first_day..last_day).grouped_by_weighted_category(params[:categories].try(:split,','))
+		@available_categories = @corporation.services.where(nurse_id: nil).pluck(:category_1, :category_2).flatten.uniq
 	end
 
 

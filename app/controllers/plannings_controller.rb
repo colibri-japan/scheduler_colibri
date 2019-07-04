@@ -52,8 +52,6 @@ class PlanningsController < ApplicationController
 
 		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: first_day..last_day)
 
-		#provided services grouped by category
-		@provided_services_grouped_by_category = ProvidedService.from_appointments.where(planning_id: @planning.id, cancelled: false, archived_at: nil).in_range(first_day..last_day).grouped_by_weighted_category
 
 		#appointments : since beginning of month
 		today = Date.today

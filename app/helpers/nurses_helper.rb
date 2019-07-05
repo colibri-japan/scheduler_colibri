@@ -9,14 +9,12 @@ module NursesHelper
 
     def nurse_availability_icon(count)
         case 
-        when count == 0
+        when count <= 2
             '✕'
-        when count == 1
+        when count.between?(3,4)
             '△'
-        when count == 2
+        when count >= 5
             '○'
-        when count >= 3
-            '◎'
         else
             ''
         end

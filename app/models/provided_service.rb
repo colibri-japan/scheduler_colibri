@@ -143,7 +143,7 @@ class ProvidedService < ApplicationRecord
 
 	def lookup_unit_cost_and_hour_based_wage
 		if self.service_salary.present?
-			self.unit_cost = self.weekend_holiday_provided_service? ? self.service_salary.weekend_unit_wage : self.service_salary.unit_wage
+			self.unit_cost = self.weekend_holiday_provided_service? ? (self.service_salary.weekend_unit_wage || 0) : (self.service_salary.unit_wage || 0)
 			self.hour_based_wage = self.service_salary.hour_based_wage
 		end
 	end

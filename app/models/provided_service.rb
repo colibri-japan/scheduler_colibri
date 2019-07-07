@@ -128,11 +128,13 @@ class ProvidedService < ApplicationRecord
 			end
 
 			total_service_duration = return_hash.sum {|k,v| v[:sum_weighted_service_duration]}
+			total_service_counts = return_hash.sum {|k,v| v[:sum_count] }
+			total_wage = return_hash.sum {|k,v| v[:sum_weighted_total_wage] }
 
 			return_hash.each do |key, value|
 				value[:weighted_service_duration_percentage] = total_service_duration == 0 ? 0 : ((value[:sum_weighted_service_duration].to_f / total_service_duration.to_f) * 100).round(1)
 			end
-
+			
 			return_hash = return_hash.sort_by{|k,v| v[:sum_weighted_service_duration]}.reverse
 		end
 		

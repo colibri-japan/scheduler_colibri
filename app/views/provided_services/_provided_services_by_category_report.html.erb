@@ -28,5 +28,12 @@
 				<td><%= category_hash[:sum_count] %></td>
 			</tr>
 		<% end %>
+		<tr>
+			<td>合計</td>
+			<td><%= @provided_services_grouped_by_category.sum {|k,v| v[:sum_weighted_total_wage] }.to_i %>￥</td>
+			<td><%= from_seconds_to_hours_minutes(@provided_services_grouped_by_category.sum {|k,v| v[:sum_weighted_service_duration] }) %></td>
+			<td>100%</td>
+			<td><%= @provided_services_grouped_by_category.sum {|k,v| v[:sum_count] } %></td>
+		</tr>
 	</tbody>
 </table>

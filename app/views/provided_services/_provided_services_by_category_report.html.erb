@@ -12,8 +12,9 @@
 	<thead>
 		<tr>
 			<th>タイプ</th>
-			<th>給与計</th>
-			<th>稼動時間計</th>
+			<th>売上</th>
+			<th>給与</th>
+			<th>稼動時間</th>
 			<th>時間割合</th>
 			<th>件数</th>
 		</tr>
@@ -22,6 +23,7 @@
 		<% @provided_services_grouped_by_category.each do |category_key, category_hash| %>
 			<tr>
 				<td><%= category_name_by_key(category_key) %></td>
+				<td><%= @corporation.credits_to_jpy_ratio.present? ? (category_hash[:sum_weighted_credits] * @corporation.credits_to_jpy_ratio).round : 0 %>￥</td>
 				<td><%= category_hash[:sum_weighted_total_wage].to_i %>￥</td>
 				<td><%= from_seconds_to_hours_minutes(category_hash[:sum_weighted_service_duration]) %></td>
 				<td><%= category_hash[:weighted_service_duration_percentage] %>%</td>
@@ -30,6 +32,7 @@
 		<% end %>
 		<tr>
 			<td>合計</td>
+			<td><%= @corporation.credits_to_jpy_ratio.present? ? (@provided_services_grouped_by_category.sum {|k,v| v[:sum_weighted_credits] } * @corporation.credits_to_jpy_ratio).round : 0 %>￥</td>
 			<td><%= @provided_services_grouped_by_category.sum {|k,v| v[:sum_weighted_total_wage] }.to_i %>￥</td>
 			<td><%= from_seconds_to_hours_minutes(@provided_services_grouped_by_category.sum {|k,v| v[:sum_weighted_service_duration] }) %></td>
 			<td>100%</td>

@@ -2,6 +2,9 @@ class SalaryRulesController < ApplicationController
     before_action :set_corporation
 
     def index
+      set_planning
+      set_main_nurse
+      
       @salary_rules = @corporation.salary_rules.not_expired_at(Time.current)
     end
 

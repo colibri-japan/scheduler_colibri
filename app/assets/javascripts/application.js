@@ -1899,15 +1899,15 @@ let salaryRulesFormLayout = () => {
   bootstrapToggleForAllNursesCheckbox();
   bootstrapToggleForAllServicesCheckbox();
   toggleNurseIdList();
-  toggleNurseIdForm();
   toggleServiceTitleList();
-  serviceDaterangepicker();
+  console.log('is it working')
   $('#target-nurse-ids').selectize({
     plugins: ['remove_button']
   })
   $('#target-service-titles').selectize({
     plugins: ['remove_button']
   })
+  serviceDaterangepicker();
 }
 
 let serviceDaterangepicker = () => {

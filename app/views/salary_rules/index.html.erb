@@ -1,0 +1,21 @@
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'settings', resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
+
+<%= render 'plannings/settings_submenu', view: "salary_rules" %>
+
+<div id="settings-container">
+  <div id="index-table-container">
+
+    <%= link_to '+新規手当', new_salary_rule_path, remote: true, class: 'btn btn-info no-print', style: 'margin-left:5px;margin-top:8px;margin-bottom:6px' %>
+
+    <table class='table table-hover' id="salary_rules_table">
+      <thead>
+        <th>手当名</th>
+        <th>対象従業員</th>
+        <th>対象サービス</th>
+      </thead>
+      <tbody id="salary-rules-table">
+        <%= render @salary_rules %>
+      </tbody>
+    </table>
+  </div>
+</div>

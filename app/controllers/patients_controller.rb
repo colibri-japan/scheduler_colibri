@@ -158,9 +158,6 @@ class PatientsController < ApplicationController
       @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
       
       @commented_appointments = Appointment.commented.edit_not_requested.not_archived.where(patient_id: @patient.id).in_range(@first_day..@last_day).order(:starts_at)
-
-      puts 'appointments'
-      puts @commented_appointments
       
       respond_to do |format|
         format.html 

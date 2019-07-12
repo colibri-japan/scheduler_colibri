@@ -1,21 +1,19 @@
-<div style='margin-bottom:15px;font-size:2.5em;font-weight:bold;text-align:center'><%= @corporation.try(:name) %>空き情報</div>
-<div style='margin-bottom:30px;font-size:1.7em;text-align:center'><%= @query_day.try(:strftime, '(%-m月%-d日現在)') %></div>
-<div style='margin-bottom:10px;font-size:2em'>電話番号：<%= @corporation.try(:phone_number) %></div> 
-<div style='margin-bottom:20px;font-size:2em'>FAX　　：<%= @corporation.try(:fax_number) %></div> 
+<div style='margin-bottom:15px;font-size:2.5em;font-weight:bold;text-align:center'>ヘルパー空き情報</div>
+<div style='margin-bottom:30px;font-size:1.9em;text-align:right'><%= @query_day.try(:strftime, '%-m月%-d日現在') %></div>
 
-<table class='table table-bordered table-bordered-pdf table-centered'>
+<table class='table table-bordered table-bordered-pdf table-centered' style="font-size:1.9em">
     <thead>
         <th style="width:25%"></th>
-        <th>月</th>
-        <th>火</th>
-        <th>水</th>
-        <th>木</th>
-        <th>金</th>
+        <th style="font-weight:normal!important">月</th>
+        <th style="font-weight:normal!important">火</th>
+        <th style="font-weight:normal!important">水</th>
+        <th style="font-weight:normal!important">木</th>
+        <th style="font-weight:normal!important">金</th>
         <% if @printing_option.print_saturday_availabilities %>
-            <th>土</th>
+            <th style="font-weight:normal!important">土</th>
         <% end %>
         <% if @printing_option.print_sunday_availabilities %>
-            <th>日</th>
+            <th style="font-weight:normal!important">日</th>
         <% end %>
     </thead>
     <tbody>
@@ -32,4 +30,8 @@
     </tbody>
 </table>
 
-<div style='margin-top:30px;border:0.5px solid black;white-space:pre-wrap'><%= simple_format(@text) if @text.present? %></div>
+<div style="font-size:1.7em;text-align:right">○:空きあり  △:多少空きあり  ✕:要相談</div>
+
+<div style='margin-top:30px;border:0.5px solid black;white-space:pre-wrap;font-size:1.9em'><%= simple_format(@text) if @text.present? %></div>
+
+<div style='margin-bottom:10px;font-size:2.2em;font-weight:bold;text-align:center'>連絡先：<%= @corporation.try(:phone_number) %></div> 

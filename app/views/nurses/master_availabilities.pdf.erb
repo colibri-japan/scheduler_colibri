@@ -34,4 +34,4 @@
 
 <div style='margin-top:30px;border:0.5px solid black;white-space:pre-wrap;font-size:1.9em'><%= simple_format(@text) if @text.present? %></div>
 
-<div style='margin-bottom:10px;font-size:2.2em;font-weight:bold;text-align:center'>連絡先：<%= @corporation.try(:phone_number) %></div> 
+<div style='margin-bottom:10px;font-size:2.2em;font-weight:bold;text-align:center'><%= @corporation.name %>   連絡先：<%= @corporation.try(:phone_number) %></div> 

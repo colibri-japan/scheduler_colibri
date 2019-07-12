@@ -11,8 +11,10 @@ class WishedSlotsController < ApplicationController
 
 		background = params[:background].present?
 
-		respond_to do |format|
-			format.json { render json: @wished_slots.as_json(background: background).flatten! }
+		if stale?(@wished_slots)
+			respond_to do |format|
+				format.json { render json: @wished_slots.as_json(background: background).flatten! }
+			end
 		end
 	end
 

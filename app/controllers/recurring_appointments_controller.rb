@@ -15,11 +15,12 @@ class RecurringAppointmentsController < ApplicationController
 
     patient_resource = params[:patient_resource].present?
 
-    respond_to do |format|
-      format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end], patient_resource: patient_resource).flatten!}
-      format.js
+    if stale?(@recurring_appointments)
+      respond_to do |format|
+        format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end], patient_resource: patient_resource).flatten!}
+        format.js
+      end
     end
-
   end
 
   def show

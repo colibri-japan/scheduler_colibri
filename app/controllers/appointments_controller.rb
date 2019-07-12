@@ -26,8 +26,10 @@ class AppointmentsController < ApplicationController
 
     patient_resource = params[:patient_resource].present?
 
-    respond_to do |format|
-      format.json {render json: @appointments.as_json(patient_resource: patient_resource)}
+    if stale?(@appointments)
+      respond_to do |format|
+        format.json {render json: @appointments.as_json(patient_resource: patient_resource)}
+      end
     end
 
   end

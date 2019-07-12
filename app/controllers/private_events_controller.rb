@@ -20,8 +20,10 @@ class PrivateEventsController < ApplicationController
 		
 		patient_resource = params[:patient_resource].present?
 
-		respond_to do |format|
-			format.json {render json: @private_events.as_json(patient_resource: patient_resource)}
+		if stale?(@private_events)
+			respond_to do |format|
+				format.json {render json: @private_events.as_json(patient_resource: patient_resource)}
+			end
 		end
 	end
 

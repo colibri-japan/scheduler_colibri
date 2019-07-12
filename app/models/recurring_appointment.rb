@@ -143,12 +143,11 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def as_json(options = {})
-		occurrences = self.appointments(options[:start_time], options[:end_time])
 		date_format = self.all_day_recurring_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
 		returned_json_array = []
-		occurrences.each do |occurrence|
-			occurrence_object = {
+		self.appointments(options[:start_time], options[:end_time]).each do |occurrence|
+			returned_json_array << {
 				allDay: self.all_day_recurring_appointment?,
 				id: "recurring_#{self.id}",
 				color: self.color,
@@ -179,8 +178,6 @@ class RecurringAppointment < ApplicationRecord
 				base_url: "/plannings/#{self.planning_id}/recurring_appointments/#{self.id}",
 				edit_url: "/plannings/#{self.planning_id}/recurring_appointments/#{self.id}/edit"
 			}
-
-			returned_json_array << occurrence_object			
 		end
 
 		returned_json_array

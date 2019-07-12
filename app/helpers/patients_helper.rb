@@ -6,8 +6,6 @@ module PatientsHelper
 
     def maximum_budget(kaigo_level)
         case kaigo_level
-        when 7
-            ''
         when 0
             '5,003単位'
         when 1
@@ -23,6 +21,7 @@ module PatientsHelper
         when 6
             '36,065単位'
         else 
+            ''
         end
     end
 
@@ -30,6 +29,8 @@ module PatientsHelper
         case kaigo_level
         when 7
             '申請中'
+        when 8
+            '事業対象者'
         when 0
             '要支援1'
         when 1

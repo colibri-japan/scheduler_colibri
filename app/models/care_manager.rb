@@ -1,5 +1,5 @@
 class CareManager < ApplicationRecord
-    belongs_to :care_manager_corporation
+    belongs_to :care_manager_corporation, touch: true
     has_many :patients
 
     before_destroy :remove_reference_from_patients

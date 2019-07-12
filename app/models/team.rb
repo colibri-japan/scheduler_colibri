@@ -8,7 +8,6 @@ class Team < ApplicationRecord
 
   private
 
-
   def update_members
     self.member_ids.reject!(&:blank?)
     Nurse.where(id: self.member_ids, corporation_id: self.corporation_id).update_all(team_id: self.id)

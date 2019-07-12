@@ -7,7 +7,6 @@ class RecurringAppointmentsController < ApplicationController
 
 
   def index
-    puts params[:master]
     @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).to_be_displayed.includes(:patient, :nurse)
 
     @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'

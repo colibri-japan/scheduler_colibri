@@ -6,6 +6,8 @@ class SalaryRulesController < ApplicationController
       set_main_nurse
       
       @salary_rules = @corporation.salary_rules.not_expired_at(Time.current)
+
+      fresh_when etag: @salary_rules, last_modified: @salary_rules.maximum(:updated_at)
     end
 
     def new 

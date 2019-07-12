@@ -7,6 +7,8 @@ class UsersController < ApplicationController
     set_main_nurse
     
     @users = @corporation.users.all.order_by_kana
+
+    fresh_when etag: @users, last_modified: @users.maximum(:updated_at)
   end
 
   def edit_role

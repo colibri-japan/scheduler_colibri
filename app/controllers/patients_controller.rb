@@ -20,12 +20,10 @@ class PatientsController < ApplicationController
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
     
-    if stale?(@patients)
-      respond_to do |format|
-        format.html
-        format.json {render json: @patients.as_json}
-        format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"利用者一覧_#{Date.today.strftime('%Y年%-m月%-d日')}.xlsx\""}
-      end
+    respond_to do |format|
+      format.html
+      format.json {render json: @patients.as_json}
+      format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"利用者一覧_#{Date.today.strftime('%Y年%-m月%-d日')}.xlsx\""}
     end
   end
 

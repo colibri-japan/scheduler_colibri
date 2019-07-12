@@ -7,6 +7,8 @@ class TeamsController < ApplicationController
         set_main_nurse
         @teams = @corporation.teams.includes(:nurses).where(nurses: {displayable: true})
         @nurses_without_any_team = @corporation.nurses.displayable.where(team_id: nil)
+
+        fresh_when etag: @teams, last_modified: @teams.maximum(:updated_at)
     end
 
     def new 

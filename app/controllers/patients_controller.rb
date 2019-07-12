@@ -7,10 +7,10 @@ class PatientsController < ApplicationController
 
   def index
     if params[:start].present? && params[:end].present? && params[:master] == 'false' && params[:planning_id].to_i == @corporation.planning.id
-      @patients = @corporation.patients.active.joins(:appointments).where(appointments: {displayable: true, master: false, planning_id: params[:planning_id], starts_at: params[:start].to_date.beginning_of_day..params[:end].to_date.beginning_of_day}).order_by_kana
+      @patients = @corporation.patients.active.joins(:appointments).where(appointments: {master: false, archived_at: nil, planning_id: params[:planning_id], starts_at: params[:start].to_date.beginning_of_day..params[:end].to_date.beginning_of_day}).order_by_kana
     elsif params[:start].present? && params[:end].present? && params[:master] == 'true' && params[:planning_id].to_i == @corporation.planning.id
-      recurring_appointments_that_occurs_in_range = RecurringAppointment.where(planning_id: params[:planning_id]).to_be_displayed.from_master.not_terminated_at(params[:start].to_date).occurs_in_range(params[:start].to_date.beginning_of_day..(params[:end].to_date - 1.day).beginning_of_day)
-      @patients = @corporation.patients.active.where(id: recurring_appointments_that_occurs_in_range.map(&:patient_id)).order_by_kana
+      patient_ids_from_recurring_appointments = RecurringAppointment.where(planning_id: params[:planning_id]).not_archived.from_master.not_terminated_at(params[:start].to_date).occurs_in_range(params[:start].to_date.beginning_of_day..(params[:end].to_date - 1.day).beginning_of_day).pluck(:patient_id).uniq
+      @patients = @corporation.patients.active.where(id: patient_ids_from_recurring_appointments).order_by_kana
     else
       @patients = @corporation.cached_active_patients_grouped_by_kana
       @deactivated_patients = @corporation.cached_inactive_patients_ordered_by_kana
@@ -20,10 +20,12 @@ class PatientsController < ApplicationController
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
     
-    respond_to do |format|
-      format.html
-      format.json {render json: @patients.as_json}
-      format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"利用者一覧_#{Date.today.strftime('%Y年%-m月%-d日')}.xlsx\""}
+    if stale?(@patients)
+      respond_to do |format|
+        format.html
+        format.json {render json: @patients.as_json}
+        format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"利用者一覧_#{Date.today.strftime('%Y年%-m月%-d日')}.xlsx\""}
+      end
     end
   end
 

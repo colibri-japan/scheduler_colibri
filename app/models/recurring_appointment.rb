@@ -24,10 +24,7 @@ class RecurringAppointment < ApplicationRecord
 	validate :cannot_overlap_existing_appointment_create, on: :create
 
 	before_create :default_frequency
-	before_create :default_master
-	before_create :default_displayable
 
-	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
 
 	before_update :split_recurring_appointment_before_after_update
@@ -35,12 +32,6 @@ class RecurringAppointment < ApplicationRecord
 
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :exclude_self, -> id { where.not(id: id) }
-	scope :valid, -> { where(cancelled: false, displayable: true).not_archived }
-	scope :edit_not_requested, -> { where(edit_requested: false) }
-	scope :from_master, -> { where(master: true) }
-	scope :duplicatable, -> { where(duplicatable: true) }
-	scope :to_be_displayed, -> { where(displayable: true).not_archived }
-	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true, duplicatable: true, edit_requested: false).where.not(frequency: 2).not_archived }
 	scope :not_terminated_at, -> date { where('(termination_date IS NULL) OR (termination_date > ?)', date) }
 	scope :occurs_in_range, -> range { select {|r| r.occurs_between?(range.first, range.last) } }
 
@@ -101,10 +92,6 @@ class RecurringAppointment < ApplicationRecord
 		synchronize_appointments
 	end
 
-	def border_color 
-		'#FFBBA0' if edit_requested
-	end
-
 	def appointments(start_date, end_date)
 		end_date = (termination_date - 1.day) if termination_date.present? && termination_date < end_date.to_date
 		schedule.occurrences_between(start_date.to_date, end_date.to_date)
@@ -151,20 +138,15 @@ class RecurringAppointment < ApplicationRecord
 				allDay: self.all_day_recurring_appointment?,
 				id: "recurring_#{self.id}",
 				color: self.color,
-				displayable: self.displayable,
-				master: master,
 				frequency: self.frequency,
-				edit_requested: self.edit_requested,
 				description: self.description || '',
 				patient_id: self.patient_id,
 				nurse_id: self.nurse_id,
-				cancelled: self.cancelled,
 				termination_date: self.termination_date,
 				title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
 				start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min).try(:strftime, date_format),
 				end: (DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i).try(:strftime, date_format),
 				resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
-				borderColor: self.border_color,
 				private_event: false,
 				service_type: self.title,
 				patient: {
@@ -186,13 +168,11 @@ class RecurringAppointment < ApplicationRecord
 	private
 
 	def split_recurring_appointment_before_after_update
-		if self.master == true && editing_occurrences_after.present? 
+		if editing_occurrences_after.present? 
 			new_recurring = self.dup 
 			new_recurring.original_id = self.id
 
 			if new_recurring.save 
-				puts 'new recurring has been saved with id:'
-				puts new_recurring.id
 				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
 				synchronize_appointments = self.synchronize_appointments
 				editing_occurrences_after_date = self.editing_occurrences_after.to_date
@@ -223,14 +203,6 @@ class RecurringAppointment < ApplicationRecord
 		self.frequency ||= 2
 	end
 
-	def default_master
-		self.master ||= false
-	end
-
-	def default_displayable
-		self.displayable = true if self.displayable.nil?
-	end
-
 	def calculate_duration
 		unless self.duration.present?
 			if self.end_day.present? && self.anchor.present? && self.end_day != self.anchor
@@ -240,12 +212,6 @@ class RecurringAppointment < ApplicationRecord
 			end
 		end
 	end
-
-	def request_edit_if_undefined_nurse
-		nurse = Nurse.find(self.nurse_id)
-		self.edit_requested = true if nurse.name === '未定'
-	end
-
 
 	def calculate_end_day
 		self.end_day = self.anchor + duration
@@ -261,8 +227,8 @@ class RecurringAppointment < ApplicationRecord
 	def cannot_overlap_existing_appointment_create
 		nurse = Nurse.find(self.nurse_id) rescue nil
 
-		if nurse.present? && self.master
-			competing_recurring_appointments = RecurringAppointment.to_be_displayed.from_master.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).not_terminated_at(self.anchor.beginning_of_day).where.not(id: [self.id, self.original_id]).overlapping_hours(self.starts_at, self.ends_at)
+		if nurse.present?
+			competing_recurring_appointments = RecurringAppointment.not_archived.where(nurse_id: self.nurse_id).where('extract(dow FROM anchor) = ?', self.anchor.wday).not_terminated_at(self.anchor.beginning_of_day).where.not(id: [self.id, self.original_id]).overlapping_hours(self.starts_at, self.ends_at)
 
 			overlapping_ids = []
 			overlapping_days = []

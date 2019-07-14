@@ -122,7 +122,7 @@ class Patient < ApplicationRecord
 					
 			shift_hash[:start_time] = start_and_end[0]
 			shift_hash[:end_time] = start_and_end[1]
-			recurring_appointments = RecurringAppointment.from_master.where(patient_id: self.id, title: service_title).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).not_terminated_at(date_range.first)
+			recurring_appointments = RecurringAppointment.where(patient_id: self.id, title: service_title).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).not_terminated_at(date_range.first)
 			shift_hash[:previsional] = recurring_appointments.map {|r| r.appointments(date_range.first, date_range.last).map(&:to_date) }.flatten
 			shift_hash[:provided] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: service_title, patient_id: self.id, cancelled: false, archived_at: nil).in_range(date_range).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', start_and_end[0], start_and_end[1]).pluck(:appointment_start).map(&:to_date)
 	

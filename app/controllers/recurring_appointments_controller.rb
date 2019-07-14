@@ -1,5 +1,5 @@
 class RecurringAppointmentsController < ApplicationController
-  before_action :set_recurring_appointment, only: [:show, :edit, :archive, :toggle_cancelled, :from_master_to_general, :terminate, :create_individual_appointments]
+  before_action :set_recurring_appointment, only: [:show, :edit, :archive, :from_master_to_general, :terminate, :create_individual_appointments]
   before_action :set_planning
   before_action :set_corporation
   before_action :set_nurses, only: [:new, :edit]
@@ -7,11 +7,10 @@ class RecurringAppointmentsController < ApplicationController
 
 
   def index
-    @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).to_be_displayed.includes(:patient, :nurse)
+    @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).not_archived.includes(:patient, :nurse)
 
     @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
     @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
-    @recurring_appointments = @recurring_appointments.where(master: params[:master]) if params[:master].present? && params[:master] != 'undefined'
 
     patient_resource = params[:patient_resource].present?
 
@@ -63,7 +62,7 @@ class RecurringAppointmentsController < ApplicationController
     @parameters_for_activity = @recurring_appointment.changes
     
     if @recurring_appointment.save
-      @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id, master: true).last if @recurring_appointment.master
+      @new_recurring_appointment = RecurringAppointment.where(original_id: @recurring_appointment.id).last
       create_activities_for_update
     end
   end
@@ -85,7 +84,6 @@ class RecurringAppointmentsController < ApplicationController
     authorize @planning, :same_corporation_as_current_user?
     
     @recurring_appointment.archive 
-    @recurring_appointment.displayable = false
     
     if @recurring_appointment.save(validate: false)
       cancel_all_appointments
@@ -159,7 +157,7 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :master, :duration, :editing_occurrences_after, :edit_requested, :cancelled, :service_id, :synchronize_appointments)
+      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :duration, :editing_occurrences_after, :service_id, :synchronize_appointments)
     end
 
 

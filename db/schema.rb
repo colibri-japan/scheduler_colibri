@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190714121917) do
+ActiveRecord::Schema.define(version: 20190714135249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -430,18 +430,13 @@ ActiveRecord::Schema.define(version: 20190714121917) do
     t.datetime "starts_at"
     t.datetime "ends_at"
     t.bigint "planning_id"
-    t.boolean "master"
-    t.boolean "displayable"
     t.bigint "original_id"
     t.string "color"
     t.text "description"
     t.datetime "archived_at"
     t.date "end_day"
     t.integer "duration"
-    t.boolean "edit_requested", default: false
-    t.boolean "cancelled", default: false
     t.bigint "service_id"
-    t.boolean "duplicatable", default: true
     t.datetime "termination_date"
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_recurring_appointments_on_original_id"

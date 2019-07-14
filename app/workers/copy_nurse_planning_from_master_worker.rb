@@ -14,7 +14,7 @@ class CopyNursePlanningFromMasterWorker
     new_provided_services = []
 
 
-    planning.recurring_appointments.from_master.where(nurse_id: nurse.id).to_be_displayed.edit_not_requested.not_terminated_at(first_day).find_each do |recurring_appointment|
+    planning.recurring_appointments.where(nurse_id: nurse.id).not_archived.edit_not_requested.not_terminated_at(first_day).find_each do |recurring_appointment|
       occurrences = recurring_appointment.appointments(first_day, last_day)
       occurrences.each do |occurrence|
         new_appointment = Appointment.new(
@@ -26,8 +26,6 @@ class CopyNursePlanningFromMasterWorker
           patient_id: recurring_appointment.patient_id,
           description: recurring_appointment.description,
           planning_id: recurring_appointment.planning_id,
-          master: false,
-          displayable: true,
           recurring_appointment_id: recurring_appointment.id,
           service_id: recurring_appointment.service_id,
           duration: recurring_appointment.duration,

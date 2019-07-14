@@ -24,8 +24,6 @@ class CreateIndividualAppointmentsWorker
                 patient_id: recurring_appointment.patient_id,
                 description: recurring_appointment.description,
                 planning_id: recurring_appointment.planning_id,
-                master: false,
-                displayable: recurring_appointment.displayable,
                 service_id: recurring_appointment.service_id,
                 recurring_appointment_id: recurring_appointment.id,
                 color: recurring_appointment.color,

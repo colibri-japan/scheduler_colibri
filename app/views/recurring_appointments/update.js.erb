@@ -1,10 +1,5 @@
 <% if @recurring_appointment.errors.any?  %>
-  <% if @recurring_appointment.master == true %>
     alert("<%= j @recurring_appointment.errors[:base].join('、') + 'の従業員が重複してます。' %>")
-  <% else %>
-    $('.modal').modal('hide');
-    $('.modal-backdrop').remove();
-  <% end %>
 <% else %>
     $('.modal').modal('hide');
     $('.modal-backdrop').remove();
@@ -22,26 +17,22 @@
       calendar = $('.master_calendar');
     }
 
-    <% if @recurring_appointment.master == true %>
-      calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>' );
-      if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
+    calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>' );
+    if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
+      calendar.fullCalendar(
+        'renderEvents',
+        $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe  %>"), 
+        false
+      );
+    }
+    <% if @new_recurring_appointment.present? %>
+      if (window.nurseId == <%= @new_recurring_appointment.nurse_id %> || window.patientId == <%= @new_recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
         calendar.fullCalendar(
           'renderEvents',
-          $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe  %>"), 
+          $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe  %>"), 
           false
-        );
+        )
       }
-      <% if @new_recurring_appointment.present? %>
-        if (window.nurseId == <%= @new_recurring_appointment.nurse_id %> || window.patientId == <%= @new_recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
-          calendar.fullCalendar(
-            'renderEvents',
-            $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe  %>"), 
-            false
-          )
-        }
-      <% end %>
-    <% else %>
-
     <% end %>
 
 <% end %>

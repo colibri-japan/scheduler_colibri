@@ -554,9 +554,6 @@ initialize_master_calendar = function() {
         if (window.eventDragging) {
           return
         }
-        if (event.edit_requested) {
-          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
-        }
 
         window.popoverFocusAllowed = true;
         let popoverTitle = event.service_type;

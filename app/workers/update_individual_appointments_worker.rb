@@ -22,7 +22,6 @@ class UpdateIndividualAppointmentsWorker
                 appointment.patient_id = recurring_appointment.patient_id 
                 appointment.service_id = recurring_appointment.service_id  
                 appointment.should_request_edit_for_overlapping_appointments = true
-                appointment.master = false 
                 appointment.recurring_appointment_id = recurring_appointment.id
 
                 appointment.save

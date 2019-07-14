@@ -67950,6 +67950,12 @@ document.addEventListener('turbolinks:load', function () {
       $('#availabilities-form').modal();
       availabilitiesDate();
     });
+    $('#service-type-filter').click(function() {
+      $('#service_type_filter_content').toggle();
+    });
+    if ($('#category-subcontainer').length > 0) {
+      $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
+    }
     $('#confirm-availabilities-print').click(function() {
       var date, text;
       date = $('#availabilities_date').val();
@@ -68025,6 +68031,14 @@ document.addEventListener('turbolinks:load', function () {
 }).call(this);
 (function() {
 
+
+}).call(this);
+(function() {
+  $(document).on('turbolinks:load', function() {
+    if ($('#salary_rules_table').length > 0) {
+      editSalaryRuleOnClick();
+    }
+  });
 
 }).call(this);
 (function() {
@@ -68245,7 +68259,7 @@ initialize_nurse_calendar = function(){
       selectHelper: false,
       editable: true,
       eventColor: '#7AD5DE',
-      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true},{url: window.privateEventsUrl + '&master=false', cache: true}],
+      eventSources: [{url: window.appointmentsURL, cache: true},{url: window.privateEventsUrl, cache: true}],
 
       select: function(start, end, jsEvent, view, resource) {
         let start_and_end = setDefaultEnd(start, end);
@@ -68300,7 +68314,6 @@ initialize_nurse_calendar = function(){
             return event.service_type + patient_name;
           }
         });
-        return event.displayable;
       },
          
       eventClick: function(event, jsEvent, view) {
@@ -68407,7 +68420,7 @@ initialize_patient_calendar = function(){
       selectable: true,
       selectHelper: false,
       editable: true,
-      eventSources: [{url: window.appointmentsURL + '&master=false', cache: true}, {url: window.privateEventsUrl + '&master=false', cache: true}],
+      eventSources: [{url: window.appointmentsURL, cache: true}, {url: window.privateEventsUrl, cache: true}],
 
 
       select: function (start, end, jsEvent, view, resource) {
@@ -68451,7 +68464,6 @@ initialize_patient_calendar = function(){
             return event.service_type + nurse_name;
           }
         });
-        return event.displayable;
       },
 
       eventDragStart: function (event, jsEvent, ui, view) {
@@ -68587,7 +68599,7 @@ initialize_master_calendar = function() {
 
       resources: function(callback, start, end, timezone){
         let concatChar = window.resourceUrl.includes('?') ? '&' : '?'
-        let ajaxUrl = window.resourceUrl + concatChar + 'master=true&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        let ajaxUrl = window.resourceUrl + concatChar + 'resource_type=recurring_appointments&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
         $.ajax({
           url: ajaxUrl,
           type: 'GET',
@@ -68613,11 +68625,6 @@ initialize_master_calendar = function() {
         if (window.eventDragging) {
           return
         }
-        if (event.cancelled) {
-          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)' });
-        } else if (event.edit_requested) {
-          element.css({ 'background-image': 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)' });
-        }
 
         window.popoverFocusAllowed = true;
         let popoverTitle = event.service_type;
@@ -68636,8 +68643,6 @@ initialize_master_calendar = function() {
             return event.patient.name || '';
           }
         })
-
-        return !event.edit_requested && event.master && event.displayable ;
       },
 
       eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
@@ -68698,8 +68703,7 @@ initialize_master_calendar = function() {
                 anchor: event.start.format('YYYY-MM-DD'),
                 end_day: event.end.format('YYYY-MM-DD'),
                 starts_at: event.start.format(),
-                ends_at: event.end.format(),
-                master: true
+                ends_at: event.end.format()
               },
             },
             success: function (data) {
@@ -68736,7 +68740,7 @@ initialize_master_calendar = function() {
         let start_and_end = setDefaultEnd(start, end);
         let start_time = start_and_end[0];
         let end_time = start_and_end[1];
-        $.getScript(window.selectActionUrl + '?master=true', function() {
+        $.getScript(window.selectActionUrl, function() {
           setWishedSlotTime(start_time, end_time, view);
           setRecurringAppointmentTime(start_time, end_time, resource, view);
           setHiddenStartAndEndFields(view_start, view_end);
@@ -68757,7 +68761,7 @@ initialize_master_calendar = function() {
           patientResource = '&patient_resource=true'
         }
         if (window.userIsAdmin == 'true') {
-          $.getScript(event.edit_url + '?master=true&date=' + dateClicked + patientResource, function(){
+          $.getScript(event.edit_url + '?date=' + dateClicked + patientResource, function(){
             terminateRecurringAppointment(dateClicked, view_start, view_end)
             setHiddenStartAndEndFields(view_start, view_end);
           })
@@ -68831,7 +68835,7 @@ initialize_calendar = function() {
       refetchResourcesOnNavigate: true,
 
       resources: function(callback, start, end, timezone){
-        let ajaxUrl = window.resourceUrl + '?include_undefined=true&master=false&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
+        let ajaxUrl = window.resourceUrl + '?include_undefined=true&resource_type=appointments&planning_id=' + window.planningId + '&start=' + moment(start).format('YYYY-MM-DD') + '&end=' + moment(end).format('YYYY-MM-DD') + '&nurse_ids=' + $('#nurse_resource_filter').val()
         $.ajax({
           url: ajaxUrl,
           type: 'GET',
@@ -68858,9 +68862,6 @@ initialize_calendar = function() {
       eventRender: function eventRender(event, element, view) {
         if (window.eventDragging) {
           return
-        }
-        if (!event.displayable) {
-          return false;
         }
         if (event.cancelled) {
           element.css({ 'background-image': 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)' });
@@ -69115,7 +69116,17 @@ let phoneMailRequirement = () => {
   })
 }
 
-
+let toggleMarkAsReadForAll = () => {
+  $('#toggle_share_to_all').bootstrapToggle({
+    on: '共有する',
+    off: '共有しない',
+    size: 'small',
+    onstyle: 'info',
+    offstyle: 'secondary',
+    height: 30,
+    width: 140
+  })
+}
 
 let toggleEditRequested = () => {
   let $this  = $('.edit-requested-toggle')
@@ -69820,6 +69831,15 @@ let initializeCalendar = () => {
   }
 }
 
+let filterProvidedServiceCategory = () => {
+  $('#service_type_filter').selectize({
+    plugins: ['remove_button']
+  })
+  $('#refresh-service-types').click(function(){
+    $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+  })
+}
+
 let newPostReminderLayout = () => {
   $('#show-reminder-form').click(function(){
     $(this).hide();
@@ -69937,15 +69957,15 @@ let salaryRulesFormLayout = () => {
   bootstrapToggleForAllNursesCheckbox();
   bootstrapToggleForAllServicesCheckbox();
   toggleNurseIdList();
-  toggleNurseIdForm();
   toggleServiceTitleList();
-  serviceDaterangepicker();
+  console.log('is it working')
   $('#target-nurse-ids').selectize({
     plugins: ['remove_button']
   })
   $('#target-service-titles').selectize({
     plugins: ['remove_button']
   })
+  serviceDaterangepicker();
 }
 
 let serviceDaterangepicker = () => {

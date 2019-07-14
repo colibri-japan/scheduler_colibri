@@ -193,7 +193,7 @@ class RecurringAppointment < ApplicationRecord
 			if new_recurring.save 
 				puts 'new recurring has been saved with id:'
 				puts new_recurring.id
-				Appointment.to_be_displayed.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
+				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
 				synchronize_appointments = self.synchronize_appointments
 				editing_occurrences_after_date = self.editing_occurrences_after.to_date
 				self.restore_attributes

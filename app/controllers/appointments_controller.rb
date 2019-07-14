@@ -10,14 +10,12 @@ class AppointmentsController < ApplicationController
   def index
     authorize @planning, :same_corporation_as_current_user?
 
-    if params[:nurse_id].present? && params[:master].present?
-      @appointments = @planning.appointments.to_be_displayed.where(nurse_id: params[:nurse_id], master: params[:master]).includes(:patient, :nurse, :recurring_appointment)
-    elsif params[:patient_id].present? && params[:master].present?
-      @appointments = @planning.appointments.to_be_displayed.where(patient_id: params[:patient_id], master: params[:master]).includes(:patient, :nurse, :recurring_appointment)
-    elsif params[:master] == 'true' && params[:nurse_id].blank? && params[:patient_id].blank?
-      @appointments = @planning.appointments.to_be_displayed.from_master.includes(:patient, :nurse, :recurring_appointment)
+    if params[:nurse_id].present? 
+      @appointments = @planning.appointments.not_archived.where(nurse_id: params[:nurse_id]).includes(:patient, :nurse, :recurring_appointment)
+    elsif params[:patient_id].present?
+      @appointments = @planning.appointments.not_archived.where(patient_id: params[:patient_id]).includes(:patient, :nurse, :recurring_appointment)
     else
-     @appointments = @planning.appointments.to_be_displayed.where(master: false).includes(:patient, :nurse, :recurring_appointment)
+     @appointments = @planning.appointments.not_archived.includes(:patient, :nurse, :recurring_appointment)
     end
 
     if params[:start].present? && params[:end].present? 
@@ -197,7 +195,7 @@ class AppointmentsController < ApplicationController
     def confirm_batch_action
       planning_id = @corporation.planning.id
 
-      @appointments = Appointment.to_be_displayed.where(planning_id: planning_id, master: false).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
+      @appointments = Appointment.not_archived.where(planning_id: planning_id).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
 
       @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
       @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?

@@ -66,7 +66,7 @@ class TeamsController < ApplicationController
     	#appointments : since beginning of month
         today = Date.today 
         nurse_ids = @team.nurses.displayable.ids
-        appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, nurse_id: nurse_ids, master: false, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
+        appointments = Appointment.operational.where(planning_id: @planning.id, nurse_id: nurse_ids, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
 
 	    #daily summary
     	@daily_appointments = appointments.where(starts_at: today.beginning_of_day..today.end_of_day)

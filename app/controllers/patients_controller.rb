@@ -6,9 +6,9 @@ class PatientsController < ApplicationController
   before_action :set_caveats, only: [:new, :edit]
 
   def index
-    if params[:start].present? && params[:end].present? && params[:master] == 'false' && params[:planning_id].to_i == @corporation.planning.id
-      @patients = @corporation.patients.active.joins(:appointments).where(appointments: {master: false, archived_at: nil, planning_id: params[:planning_id], starts_at: params[:start].to_date.beginning_of_day..params[:end].to_date.beginning_of_day}).order_by_kana
-    elsif params[:start].present? && params[:end].present? && params[:master] == 'true' && params[:planning_id].to_i == @corporation.planning.id
+    if params[:start].present? && params[:end].present? && params[:resource_type] == 'appointments' && params[:planning_id].to_i == @corporation.planning.id
+      @patients = @corporation.patients.active.joins(:appointments).where(appointments: {archived_at: nil, planning_id: params[:planning_id], starts_at: params[:start].to_date.beginning_of_day..params[:end].to_date.beginning_of_day}).order_by_kana
+    elsif params[:start].present? && params[:end].present? && params[:resource_type] == 'recurring_appointments' && params[:planning_id].to_i == @corporation.planning.id
       patient_ids_from_recurring_appointments = RecurringAppointment.where(planning_id: params[:planning_id]).not_archived.from_master.not_terminated_at(params[:start].to_date).occurs_in_range(params[:start].to_date.beginning_of_day..(params[:end].to_date - 1.day).beginning_of_day).pluck(:patient_id).uniq
       @patients = @corporation.patients.active.where(id: patient_ids_from_recurring_appointments).order_by_kana
     else

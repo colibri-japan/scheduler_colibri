@@ -122,12 +122,12 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def cancel_appointments_after_termination
-      appointment_ids = Appointment.where(recurring_appointment_id: @recurring_appointment.id).to_be_displayed.where('starts_at > ?', params[:t_date].to_date.beginning_of_day).ids 
+      appointment_ids = Appointment.where(recurring_appointment_id: @recurring_appointment.id).not_archived.where('starts_at > ?', params[:t_date].to_date.beginning_of_day).ids 
       CancelAppointmentsWorker.perform_async(appointment_ids) if appointment_ids.present?
     end
 
     def cancel_all_appointments
-      appointment_ids = Appointment.to_be_displayed.where(recurring_appointment_id: @recurring_appointment.id).ids 
+      appointment_ids = Appointment.not_archived.where(recurring_appointment_id: @recurring_appointment.id).ids 
       CancelAppointmentsWorker.perform_async(appointment_ids) if appointment_ids.present?
     end
 
@@ -137,7 +137,7 @@ class RecurringAppointmentsController < ApplicationController
       elsif @termination_date.present?
         year_and_months = [{year: @termination_date.year, month: @termination_date.month}]
       else
-        year_and_months = Appointment.where(recurring_appointment_id: @recurring_appointment.id).to_be_displayed.pluck(:starts_at).map{|d| {year: d.year, month: d.month}}.uniq
+        year_and_months = Appointment.where(recurring_appointment_id: @recurring_appointment.id).not_archived.pluck(:starts_at).map{|d| {year: d.year, month: d.month}}.uniq
       end
 
       year_and_months.each do |year_and_month|

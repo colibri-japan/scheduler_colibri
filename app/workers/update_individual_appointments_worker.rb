@@ -5,7 +5,7 @@ class UpdateIndividualAppointmentsWorker
     def perform(recurring_appointment_id)
         recurring_appointment = RecurringAppointment.find(recurring_appointment_id)
 
-        appointments = Appointment.to_be_displayed.where(recurring_appointment_id: recurring_appointment_id).order(starts_at: :asc)
+        appointments = Appointment.not_archived.where(recurring_appointment_id: recurring_appointment_id).order(starts_at: :asc)
 
         if appointments.present?
 

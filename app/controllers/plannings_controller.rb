@@ -55,7 +55,7 @@ class PlanningsController < ApplicationController
 
 		#appointments : since beginning of month
 		today = Date.today
-		appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: first_day..last_day).includes(:patient, :nurse)
+		appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: first_day..last_day).includes(:patient, :nurse)
 		
 		#daily summary
 		@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)

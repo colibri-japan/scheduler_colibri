@@ -13,8 +13,6 @@ class Appointment < ApplicationRecord
 	has_one :completion_report, dependent: :destroy
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
-	before_validation :default_master, on: :create
-	before_validation :default_displayable, on: :create
 	
 	validates :title, presence: true
 	validate :do_not_overlap
@@ -29,12 +27,9 @@ class Appointment < ApplicationRecord
 	before_destroy :record_delete_activity
 
 	scope :not_archived, -> { where(archived_at: nil) }
-	scope :valid, -> { where(cancelled: false, displayable: true).not_archived }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
 	scope :not_cancelled, -> { where(cancelled: false) }
-	scope :from_master, -> { where(master: true) }
-	scope :to_be_displayed, -> { where(displayable: true).not_archived }
-	scope :to_be_copied_to_new_planning, -> { where(master: true, cancelled: false, displayable: true).not_archived }
+	scope :operational, -> { not_archived.edit_not_requested.not_cancelled }
     scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
 	scope :commented, -> { where.not(description: ['', nil]) }
 	scope :in_range, -> range { where(starts_at: range) }
@@ -105,8 +100,6 @@ class Appointment < ApplicationRecord
 			resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
 			allDay: self.all_day_appointment?,
 			color: self.color,
-			displayable: self.displayable,
-			master: self.master,
 			cancelled: self.cancelled,
 			private_event: false,
 			service_type: self.title || '',
@@ -129,7 +122,7 @@ class Appointment < ApplicationRecord
 	private
 
 	def request_edit_for_overlapping_appointments
-		overlapping_appointments = Appointment.to_be_displayed.where(master: false, nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
+		overlapping_appointments = Appointment.not_archived.where(nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
 		overlapping_appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: Time.current) if overlapping_appointments.present?
 	end
 
@@ -144,21 +137,14 @@ class Appointment < ApplicationRecord
 		puts 'validating overlap'
 		nurse = Nurse.find(self.nurse_id)
 
-		unless nurse.name == '未定' || !self.displayable || self.edit_requested || self.cancelled
-			overlapping_ids = Appointment.where(master: self.master, displayable: true, edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
+		unless nurse.name == '未定' || self.archived? || self.edit_requested? || self.cancelled?
+			overlapping_ids = Appointment.where(edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
 
 			errors[:base] << "その日の従業員が重複しています。" if overlapping_ids.present?
 			errors[:overlapping_ids] << overlapping_ids if overlapping_ids.present?
 		end
 	end
 
-	def default_master
-		self.master ||= false
-	end
-
-	def default_displayable
-		self.displayable = true if self.displayable.nil?
-	end
 
 	def request_edit_if_undefined_nurse
 		nurse = Nurse.find(self.nurse_id)
@@ -166,12 +152,10 @@ class Appointment < ApplicationRecord
 	end
 
 	def create_provided_service
-		if !self.master
-		  provided_duration = self.ends_at - self.starts_at
-			nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first 
-			service_salary_id = nurse_service.present? ? nurse_service.id : self.service_id
-		  provided_service = ProvidedService.create(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, cancelled: self.cancelled, temporary: false, title: self.title, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
-		end
+		provided_duration = self.ends_at - self.starts_at
+		nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first 
+		service_salary_id = nurse_service.present? ? nurse_service.id : self.service_id
+		provided_service = ProvidedService.create(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, cancelled: self.cancelled, temporary: false, title: self.title, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
 	end
 
 	def update_provided_service

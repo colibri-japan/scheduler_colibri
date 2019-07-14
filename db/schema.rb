@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190703145004) do
+ActiveRecord::Schema.define(version: 20190714121917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,8 +74,6 @@ ActiveRecord::Schema.define(version: 20190703145004) do
     t.bigint "nurse_id"
     t.bigint "patient_id"
     t.bigint "planning_id"
-    t.boolean "master"
-    t.boolean "displayable"
     t.bigint "original_id"
     t.bigint "recurring_appointment_id"
     t.decimal "duration", default: "0.0"

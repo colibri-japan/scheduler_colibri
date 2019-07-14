@@ -60,12 +60,10 @@
       <%= form.select :color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], appointment.color), id: :appointment_color %>
   　</div> 
 
-    <% unless @master%>
-      <div class="form-group">
-        <%= form.label :edit_requested, "調整中リスト", class: "colibri-form-label-dark" %>
-        <%= form.check_box :edit_requested, class: "edit-requested-toggle", data: {requested: appointment.edit_requested} %>
-      </div>
-    <% end %>
+    <div class="form-group">
+      <%= form.label :edit_requested, "調整中リスト", class: "colibri-form-label-dark" %>
+      <%= form.check_box :edit_requested, class: "edit-requested-toggle", data: {requested: appointment.edit_requested} %>
+    </div>
 
 
     <div class="form-group">

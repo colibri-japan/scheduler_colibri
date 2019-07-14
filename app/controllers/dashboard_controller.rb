@@ -8,7 +8,7 @@ class DashboardController < ApplicationController
 
     #appointments : today, upcoming two weeks, since monday
     today = Date.today 
-    appointments = Appointment.valid.where(planning_id: @planning.id, master: false, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day)
+    appointments = Appointment.not_archived.not_cancelled.where(planning_id: @planning.id, starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..(today + 15.days).beginning_of_day)
 
     #edit requested appointments for next two weeks
     @current_user_team = Team.find(current_user.nurse.team_id) if current_user.nurse.present? && current_user.nurse.team.present?
@@ -30,7 +30,7 @@ class DashboardController < ApplicationController
     query_day = params[:q].to_date
     team = Team.find(params[:team_id]) if params[:team_id] != 'undefined'
 
-    appointments = Appointment.valid.edit_not_requested.where(planning_id: @planning.id, master: false, starts_at: query_day.beginning_of_month.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse)
+    appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: query_day.beginning_of_month.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse)
 
     if team.present?
       appointments = appointments.where(nurse_id: team.nurses.displayable.ids)

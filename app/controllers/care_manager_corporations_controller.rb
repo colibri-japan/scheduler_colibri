@@ -7,7 +7,7 @@ class CareManagerCorporationsController < ApplicationController
     set_main_nurse
     @care_manager_corporations = @corporation.care_manager_corporations.includes(:care_managers)
 
-    fresh_when etag: @care_manager_corporations, last_modified: @care_manager_corporations.maximum(:update_at)
+    fresh_when etag: @care_manager_corporations, last_modified: @care_manager_corporations.maximum(:updated_at)
   end
 
   def new 

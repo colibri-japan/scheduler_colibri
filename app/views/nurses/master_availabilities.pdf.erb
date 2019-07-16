@@ -1,5 +1,5 @@
-<div style='margin-bottom:15px;font-size:2.5em;font-weight:bold;text-align:center'>ヘルパー空き情報</div>
-<div style='margin-bottom:30px;font-size:1.9em;text-align:right'><%= @query_day.try(:strftime, '%-m月%-d日現在') %></div>
+<div style='margin-bottom:10px;font-size:2.5em;font-weight:bold;text-align:center'>ヘルパー空き情報</div>
+<div style='margin-bottom:20px;font-size:1.9em;text-align:right'><%= @query_day.try(:strftime, '%-m月%-d日現在') %></div>
 
 <table class='table table-bordered table-bordered-pdf table-centered' style="font-size:1.9em">
     <thead>
@@ -32,6 +32,6 @@
 
 <div style="font-size:1.7em;text-align:right">○:空きあり  △:多少空きあり  ✕:要相談</div>
 
-<div style='margin-top:30px;border:0.5px solid black;white-space:pre-wrap;font-size:1.9em'><%= simple_format(@text) if @text.present? %></div>
+<div style='margin-top:30px;border:0.5px solid black;white-space:pre-wrap;font-size:1.4em'><%= simple_format(@text) if @text.present? %></div>
 
 <div style='margin-bottom:10px;font-size:2.2em;font-weight:bold;text-align:center'><%= @corporation.name %>   連絡先：<%= @corporation.try(:phone_number) %></div> 

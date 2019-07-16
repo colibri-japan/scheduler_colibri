@@ -68,11 +68,11 @@ class Nurse < ApplicationRecord
 			nurse_shifts = nurse_recurring_appointments.map {|r| {starts_at: DateTime.new(range.first.year, range.first.month, range.first.day, r.starts_at.hour, r.starts_at.min), ends_at: DateTime.new(range.first.year, range.first.month, range.first.day, r.ends_at.hour, r.ends_at.min)} }
 			nurse_shifts.sort_by! {|hash| hash[:starts_at]}
 
-			next if ((nurse_shifts.first[:starts_at] - range.first) * 24 * 60 * 60).to_i >= 3600
-			next if ((range.last - nurse_shifts.last[:ends_at]) * 24 * 60 * 60).to_i >= 3600
+			next if ((nurse_shifts.first[:starts_at] - range.first) * 24 * 60 * 60).to_i >= 5400
+			next if ((range.last - nurse_shifts.last[:ends_at]) * 24 * 60 * 60).to_i >= 5400
 
 			nurse_shifts.each_with_index do |nurse_shift, index|
-				break if index + 1 < nurse_shifts.length && ((nurse_shifts[index + 1][:starts_at] - nurse_shift[:ends_at]) * 24 * 60 * 60 ).to_i >= 3600
+				break if index + 1 < nurse_shifts.length && ((nurse_shifts[index + 1][:starts_at] - nurse_shift[:ends_at]) * 24 * 60 * 60 ).to_i >= 5400
 			end
 
 			return_array.delete(nurse) if return_array.class.name == 'Array'

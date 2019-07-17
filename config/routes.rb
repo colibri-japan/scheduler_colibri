@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   end
 
   resources :nurses do
-    resources :provided_services
+    resources :provided_services, except: [:new]
     resources :services
     resources :bonuses, only: :new
   end

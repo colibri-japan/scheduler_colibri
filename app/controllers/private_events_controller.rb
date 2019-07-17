@@ -2,8 +2,8 @@ class PrivateEventsController < ApplicationController
 	before_action :set_private_event, only: [:show, :edit, :update, :destroy]
 	before_action :set_planning
 	before_action :set_corporation
-	before_action :set_nurses, only: [:new, :edit]
-	before_action :set_patients, only: [:new, :edit]
+	before_action :set_nurses, only: :edit
+	before_action :set_patients, only: :edit
 
 
 	def index
@@ -28,10 +28,6 @@ class PrivateEventsController < ApplicationController
 	end
 
 	def show
-	end
-
-	def new
-	  @private_event = PrivateEvent.new
 	end
 
 	def edit

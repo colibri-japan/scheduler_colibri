@@ -67,19 +67,19 @@ let setWishedSlotTime = (start, end, view) => {
 }
 
 let setPrivateEventTime = (start, end, view) => {
-  $('#private_event_starts_at_1i').val(moment(start).format('YYYY'));
+  $('#private_event_starts_at_1i').val(moment(start).format('Y'));
   $('#private_event_starts_at_2i').val(moment(start).format('M'));
   $('#private_event_starts_at_3i').val(moment(start).format('D'));
   $('#private_event_starts_at_4i').val(moment(start).format('HH'));
   $('#private_event_starts_at_5i').val(moment(start).format('mm'));
-  if (view.name == 'month' || view.name == 'timelineWeek') {
-    $('#private_event_ends_at_1i').val(moment(start).format('YYYY'));
+  if (['month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
+    $('#private_event_ends_at_1i').val(moment(start).format('Y'));
     $('#private_event_ends_at_2i').val(moment(start).format('M'));
     $('#private_event_ends_at_3i').val(moment(start).format('D'));
     $('#private_event_ends_at_4i').val('23');
     $('#private_event_ends_at_5i').val('00');
   } else {
-    $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
+    $('#private_event_ends_at_1i').val(moment(end).format('Y'));
     $('#private_event_ends_at_2i').val(moment(end).format('M'));
     $('#private_event_ends_at_3i').val(moment(end).format('D'));
     $('#private_event_ends_at_4i').val(moment(end).format('HH'));
@@ -100,7 +100,7 @@ let setAppointmentTime = (start, end, view) => {
   $('#appointment_starts_at_3i').val(moment(start).format('D'));
   $('#appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#appointment_starts_at_5i').val(moment(start).format('mm'));
-  if (view.name == 'month' || view.name == 'timelineWeek') {
+  if (['month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
     $('#appointment_ends_at_1i').val(moment(start).format('YYYY'));
     $('#appointment_ends_at_2i').val(moment(start).format('M'));
     $('#appointment_ends_at_3i').val(moment(start).format('D'));
@@ -127,7 +127,7 @@ let setRecurringAppointmentTime = (start, end, resource, view) => {
   $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
   $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-  if (view.name == 'month' || view.name ==  'timelineWeek' ) {
+  if (['month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
     $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
     $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
     $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
@@ -617,6 +617,8 @@ initialize_master_calendar = function() {
         $('#drag-drop-master').modal({ backdrop: 'static' })
         $('.close-drag-drop-modal').click(function(){
           revertFunc()
+          $('.modal').modal('hide');
+          $('.modal-backdrop').remove();
         })
         $('#master-drag-copy').one('click', function(){
           $.ajax({

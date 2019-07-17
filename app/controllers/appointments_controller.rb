@@ -37,15 +37,6 @@ class AppointmentsController < ApplicationController
   def show
   end
 
-  # GET /appointments/new
-  def new
-    authorize @planning, :same_corporation_as_current_user?
-
-    @appointment = Appointment.new
-    @nurses = @corporation.nurses.all 
-    @patients = @corporation.patients.all
-  end
-
   # GET /appointments/1/edit
   def edit  
     authorize @planning, :same_corporation_as_current_user?

@@ -3,7 +3,6 @@
 	window.recurringAppointmentsURL = "<%= j planning_recurring_appointments_url(@planning) %>";
 	window.corporationNursesURL = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.privateEventsUrl = "<%= j planning_private_events_url(@planning, params: {nurse_id: @nurse.id}) %>";
-	window.createAppointmentUrl = "<%= j new_planning_appointment_url(@planning) %>";
 	window.selectActionUrl = "<%= j new_calendar_event_path %>";
 	window.defaultView = "<%= j @corporation.default_individual_view %>";
 	window.nurseId = "<%= j @nurse.id.to_s %>";

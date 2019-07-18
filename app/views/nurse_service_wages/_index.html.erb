@@ -1,0 +1,35 @@
+<div id="nurse_service_wages_index" class="modal fade">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title"><%= "#{@nurse.name}の給与テーブル" %></h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+            <div class="modal-body">
+                <%= link_to '事業所のサービスタイプ管理へ', services_path, class: 'btn btn-colibri-light', style: 'margin-bottom:10px' %>
+                <table class="table">
+                    <thead>
+                        <tr >
+                            <th>サービスタイプ</th>
+                            <th>計算方法</th>
+                            <th>デフォルト時給.単価</th>
+                            <th><%= "#{@nurse.name}の時給.単価" %></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @services.each do |service| %>
+                            <tr>
+                                <td><%= service.try(:title) %></td>
+                                <td><%= humanize_hour_based_wage(service) %></td>
+                                <td><%= service.try(:unit_wage) %></td>
+                                <td><%= text_field_tag :nurse_wage_input, value = @nurse_service_wages.select {|e| e[0] == service.id}.flatten[1], style: "width:70px", id: "#{service.id}_nurse_service_wage", class: "nurse_service_wage_input", data: {url: set_nurse_service_wage_path(@nurse, service)} %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+		</div>
+	</div>
+
+</div>

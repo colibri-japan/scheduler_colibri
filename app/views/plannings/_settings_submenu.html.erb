@@ -9,7 +9,7 @@
             <li class="settings-list-header" style="margin-top:15px">事業所設定</li>
               <li id="teams" class="settings-list-element <%= "settings-list-element-selected" if view == "teams" %>"><%= link_to 'チーム管理', teams_path, class: 'settings-list-url' %></li>
               <li id="users" class="settings-list-element <%= "settings-list-element-selected" if view == "users" %>"><%= link_to 'ユーザー招待.権限', users_path, class: 'settings-list-url' %></li>
-              <li id="services" class="settings-list-element <%= "settings-list-element-selected" if view == "services" %>"><%= link_to 'サービスタイプ一覧', planning_services_path(@planning), class: 'settings-list-url' %></li>
+              <li id="services" class="settings-list-element <%= "settings-list-element-selected" if view == "services" %>"><%= link_to 'サービスタイプ一覧', services_path, class: 'settings-list-url' %></li>
               <li id="salary_rules" class="settings-list-element <%= "settings-list-element-selected" if view == "salary_rules" %>"><%= link_to '手当一覧', salary_rules_path, class: 'settings-list-url' %></li>
             <li class="settings-list-header" style="margin-top:15px">設定.履歴</li>
               <li id="activities" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to '編集履歴', planning_activities_path(@planning), class: 'settings-list-url' %></li>

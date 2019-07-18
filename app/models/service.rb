@@ -10,6 +10,7 @@ class Service < ApplicationRecord
   has_many :recurring_appointments
   has_many :provided_services
   belongs_to :nurse, optional: true
+  has_many :nurse_service_wages
 
   before_create :default_hour_based_wage
 

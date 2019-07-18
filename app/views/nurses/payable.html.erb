@@ -37,7 +37,7 @@
 	<div id='payable-table-commands'>
 	    <div id="add-provided-service-line">
 			<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true %>
-			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_services_path(@nurse, params: {planning_id: @planning.id}), class: 'btn btn-colibri-light-gray text-white', remote: true if current_user.corporation_admin? %>
+			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_nurse_service_wages_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true if current_user.corporation_admin? %>
 		</div>
 		<% if current_user.corporation_admin? %>
 			<%= link_to '<i class="glyphicon glyphicon-download" style="color:white"></i>  ダウンロード'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class:'excel-download btn btn-colibri-light-gray text-white' %>

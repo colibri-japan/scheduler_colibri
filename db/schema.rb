@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190718030902) do
+ActiveRecord::Schema.define(version: 20190718051140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,14 +235,14 @@ ActiveRecord::Schema.define(version: 20190718030902) do
   end
 
   create_table "nurse_service_wages", force: :cascade do |t|
-    t.bigint "nurses_id"
-    t.bigint "services_id"
     t.integer "unit_wage"
     t.integer "weekend_unit_wage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["nurses_id"], name: "index_nurse_service_wages_on_nurses_id"
-    t.index ["services_id"], name: "index_nurse_service_wages_on_services_id"
+    t.bigint "nurse_id"
+    t.bigint "service_id"
+    t.index ["nurse_id"], name: "index_nurse_service_wages_on_nurse_id"
+    t.index ["service_id"], name: "index_nurse_service_wages_on_service_id"
   end
 
   create_table "nurses", force: :cascade do |t|
@@ -602,8 +602,6 @@ ActiveRecord::Schema.define(version: 20190718030902) do
   add_foreign_key "appointments", "plannings"
   add_foreign_key "care_manager_corporations", "corporations"
   add_foreign_key "completion_reports", "appointments"
-  add_foreign_key "nurse_service_wages", "nurses", column: "nurses_id"
-  add_foreign_key "nurse_service_wages", "services", column: "services_id"
   add_foreign_key "patient_posts", "patients"
   add_foreign_key "patient_posts", "posts"
   add_foreign_key "posts", "corporations"

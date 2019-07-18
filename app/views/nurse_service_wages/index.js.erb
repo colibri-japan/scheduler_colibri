@@ -1,0 +1,18 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "index" %>');
+$('#nurse_service_wages_index').modal('show');
+$('.nurse_service_wage_input').change(function(){
+    let condition = /^\d+$/.test($(this).val())
+    if (condition) {
+        $.ajax({
+            url: $(this).data('url'),
+            data: {
+                unit_wage: $(this).val()
+            },
+            type: 'PATCH'
+        })
+    } else {
+        alert('給与は半額の数字て入力してください')
+    }
+})

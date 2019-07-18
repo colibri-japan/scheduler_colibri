@@ -30,12 +30,11 @@ Rails.application.routes.draw do
     resources :patients
     resources :activities
     resources :scans
-    resources :services, only: :index
     resources :printing_options, only: :show
     resources :teams, only: :show
   end
 
-  resources :services, except: :index
+  resources :services
 
   resources :care_manager_corporations do
     resources :care_managers
@@ -56,8 +55,8 @@ Rails.application.routes.draw do
 
   resources :nurses do
     resources :provided_services, except: [:new]
-    resources :services
     resources :bonuses, only: :new
+    resources :nurse_service_wages, only: :index
   end
 
   resources :corporations do
@@ -146,6 +145,9 @@ Rails.application.routes.draw do
   patch 'planning/:planning_id/recurring_appointments/:id/archive' => 'recurring_appointments#archive', as: :planning_recurring_appointment_archive
   patch 'plannings/:planning_id/recurring_appointments/:id/terminate' => 'recurring_appointments#terminate', as: :planning_recurring_appointment_terminate 
   patch 'plannings/:planning_id/recurring_appointments/:id/create_individual_appointments' => 'recurring_appointments#create_individual_appointments', as: :planning_recurring_appointment_create_individual_appointments
+
+  #custom routes for nurse_service_wages
+  patch 'nurses/:nurse_id/services/:service_id/set_nurse_wage' => 'nurse_service_wages#set_nurse_wage', as: :set_nurse_service_wage
 
   #custom routes for tags
   get '/tags' => 'tags#index'

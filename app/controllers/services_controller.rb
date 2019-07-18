@@ -1,16 +1,11 @@
 class ServicesController < ApplicationController
     before_action :set_corporation
+    before_action :set_planning, only: :index
+    before_action :set_main_nurse, only: :index
     before_action :set_service, only: [:edit, :update, :new_merge_and_destroy]
 
     def index
-        if params[:nurse_id].present? 
-            @nurse =  Nurse.find(params[:nurse_id])
-            @services = @nurse.services.order_by_title.all
-        else
-            @planning = Planning.find(params[:planning_id])
-            @services = @corporation.services.without_nurse_id.order_by_title
-            @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
-        end
+        @services = @corporation.services.without_nurse_id.order_by_title
 
         fresh_when etag: @services, last_modified: @services.maximum(:updated_at)
     end

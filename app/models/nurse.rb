@@ -10,8 +10,8 @@ class Nurse < ApplicationRecord
 	has_many :appointments, dependent: :destroy
 	has_many :recurring_appointments, dependent: :destroy
 	has_many :provided_services, dependent: :destroy
-	has_many :services
 	has_many :patients
+	has_many :nurse_service_wages
 
 	validates :name, presence: true
 

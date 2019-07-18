@@ -85,24 +85,7 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :official_title, :service_code, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :equal_salary, :hour_based_wage, :category_1, :category_2, :category_ratio, :unit_credits, :recalculate_previous_credits_and_invoice, :credit_calculation_method, :insurance_category_1, :insurance_category_2, :invoiced_amount)
+        params.require(:service).permit(:title, :official_title, :service_code, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :hour_based_wage, :category_1, :category_2, :category_ratio, :unit_credits, :recalculate_previous_credits_and_invoice, :credit_calculation_method, :insurance_category_1, :insurance_category_2, :invoiced_amount)
     end
 
-    def update_planning_provided_service
-        recalculate = service_params['recalculate_previous_wages'].to_i
-
-        if recalculate == 1
-            if @service.equal_salary == true 
-                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ?', @corporation.planning.id, service_params['title'])
-            else
-                provided_services_to_update = ProvidedService.where('planning_id = ? AND title = ? AND nurse_id = ?', @corporation.planning.id, service_params['title'], @service.nurse_id)
-            end
-
-            provided_services_to_update.each do |provided_service|
-                provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? @service.weekend_unit_wage : @service.unit_wage
-                provided_service.skip_callbacks_except_calculate_total_wage = true 
-                provided_service.save
-            end
-        end
-    end
 end

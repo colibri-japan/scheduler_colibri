@@ -1253,16 +1253,6 @@ let toggleServiceHourBasedWage = () => {
   })
 };
 
-let toggleServiceEqualSalary = () => {
-  $('#service_equal_salary').bootstrapToggle({
-    on: '全員同じ',
-    off: '従業員別',
-    onstyle: 'secondary',
-    offstyle: 'secondary',
-    width: 130
-  })
-}
-
 let drawHourMarks = () => {
   $('tr*[data-time="09:00:00"]').addClass('thick-calendar-line');
   $('tr*[data-time="12:00:00"]').addClass('thick-calendar-line');

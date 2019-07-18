@@ -15,7 +15,6 @@
                             <th>時給.単価</th>
                             <th>土日.祝日</th>
                             <th>計算方法</th>
-                            <th>全従業員共通</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,7 +24,6 @@
                                 <td><%= service.try(:unit_wage) %></td>
                                 <td><%= service.weekend_unit_wage.to_i if service.weekend_unit_wage.present? %></td>
                                 <td><%= humanize_hour_based_wage(service) %></td>
-                                <td><span class="<%= 'glyphicon glyphicon-ok' if service.equal_salary == true %>" style="color: #42B97C"></span></td>
                             </tr>
                         <% end %>
                     </tbody>

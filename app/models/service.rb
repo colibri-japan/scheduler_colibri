@@ -12,7 +12,6 @@ class Service < ApplicationRecord
   belongs_to :nurse, optional: true
 
   before_create :default_hour_based_wage
-  before_create :default_equal_salary
 
   after_create :create_nurse_services, unless: :skip_create_nurses_callback
   after_update :update_nurse_services, unless: :skip_update_nurses_callback
@@ -37,10 +36,6 @@ class Service < ApplicationRecord
     self.hour_based_wage = self.corporation.hour_based_payroll if self.hour_based_wage.nil?
   end
 
-  def default_equal_salary
-    self.equal_salary = self.corporation.equal_salary if self.equal_salary.nil?
-  end
-
   def create_nurse_services 
     services_to_create = []
     self.corporation.nurses.displayable.each do |nurse|
@@ -57,10 +52,10 @@ class Service < ApplicationRecord
       nurse_services_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(nurse_id: nil).ids
       UpdateServicesWorker.perform_async(self.id, nurse_services_ids)
     else
-      if self.equal_salary == true 
-        services_to_update_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(id: self.id).ids 
-        UpdateServicesWorker.perform_async(self.id, services_to_update_ids)
-      end
+      #if self.equal_salary == true 
+      #  services_to_update_ids = Service.where(corporation_id: self.corporation_id, title: self.title).where.not(id: self.id).ids 
+      #  UpdateServicesWorker.perform_async(self.id, services_to_update_ids)
+      #end
     end
   end
 

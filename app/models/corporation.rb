@@ -12,7 +12,6 @@ class Corporation < ApplicationRecord
 
 	validates :weekend_reminder_option, inclusion: 0..2
 
-	before_save :set_default_equal_salary
 	after_create :create_undefined_nurse
 	after_create :create_printing_option
 	after_commit :flush_cache
@@ -172,10 +171,6 @@ class Corporation < ApplicationRecord
 
 	def flush_cache 
 		Rails.cache.delete([self.class.name, id])
-	end
-
-	def set_default_equal_salary
-		self.equal_salary ||= false
 	end
 
 	def create_undefined_nurse

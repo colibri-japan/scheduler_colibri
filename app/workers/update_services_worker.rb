@@ -11,7 +11,6 @@ class UpdateServicesWorker
       unit_wage: updated_service.unit_wage, 
       weekend_unit_wage: updated_service.weekend_unit_wage, 
       hour_based_wage: updated_service.hour_based_wage, 
-      equal_salary: updated_service.equal_salary, 
       category_1: updated_service.category_1, 
       category_2: updated_service.category_2, 
       category_ratio: updated_service.category_ratio, 

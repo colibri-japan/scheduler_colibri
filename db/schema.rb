@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190714135249) do
+ActiveRecord::Schema.define(version: 20190718030902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -215,7 +215,6 @@ ActiveRecord::Schema.define(version: 20190714135249) do
     t.string "business_end_hour", default: "24:00:00"
     t.boolean "hour_based_payroll", default: true
     t.string "email"
-    t.boolean "equal_salary"
     t.text "custom_email_intro_text"
     t.text "custom_email_outro_text"
     t.string "default_master_view", default: "agendaWeek"
@@ -233,6 +232,17 @@ ActiveRecord::Schema.define(version: 20190714135249) do
     t.string "phone_number"
     t.string "fax_number"
     t.text "availabilities_default_text"
+  end
+
+  create_table "nurse_service_wages", force: :cascade do |t|
+    t.bigint "nurses_id"
+    t.bigint "services_id"
+    t.integer "unit_wage"
+    t.integer "weekend_unit_wage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nurses_id"], name: "index_nurse_service_wages_on_nurses_id"
+    t.index ["services_id"], name: "index_nurse_service_wages_on_services_id"
   end
 
   create_table "nurses", force: :cascade do |t|
@@ -482,7 +492,6 @@ ActiveRecord::Schema.define(version: 20190714135249) do
     t.decimal "weekend_unit_wage"
     t.bigint "nurse_id"
     t.boolean "hour_based_wage"
-    t.boolean "equal_salary"
     t.integer "category_1"
     t.integer "category_2"
     t.decimal "category_ratio"
@@ -593,6 +602,8 @@ ActiveRecord::Schema.define(version: 20190714135249) do
   add_foreign_key "appointments", "plannings"
   add_foreign_key "care_manager_corporations", "corporations"
   add_foreign_key "completion_reports", "appointments"
+  add_foreign_key "nurse_service_wages", "nurses", column: "nurses_id"
+  add_foreign_key "nurse_service_wages", "services", column: "services_id"
   add_foreign_key "patient_posts", "patients"
   add_foreign_key "patient_posts", "posts"
   add_foreign_key "posts", "corporations"

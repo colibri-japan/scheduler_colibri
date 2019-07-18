@@ -22,9 +22,8 @@
           <tr class="service-clickable-row" data-link="<%= edit_service_path(service, format: :js) %>">
             <td><%= service.title %></td>
             <td><%= service.unit_credits %></td>
-            <td><%= service.unit_wage if service.equal_salary %></td>
+            <td><% service.unit_wage %></td>
             <td><%= humanize_hour_based_wage(service) %></td>
-            <td><%= humanize_equal_salary(service) %></td>
           </tr>
         <% end %>
       </tbody>

@@ -1,0 +1,2 @@
+class NurseServiceWage < ApplicationRecord
+end

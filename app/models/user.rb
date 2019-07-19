@@ -11,7 +11,7 @@ class User < ApplicationRecord
   belongs_to :nurse, optional: true
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
-  enum role: [:schedule_restricted, :schedule_restricted_with_provided_services, :schedule_admin, :corporation_admin]
+  enum role: [:schedule_restricted, :schedule_restricted_with_salary_line_items, :schedule_admin, :corporation_admin]
   # schedule restricted: master readonly, no access to provided services
   # schedule restricted with provided services: master readonly, limited access to provided services
   # schedule admin: master edit, limited access to provided services

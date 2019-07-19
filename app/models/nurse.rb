@@ -9,7 +9,7 @@ class Nurse < ApplicationRecord
 	belongs_to :team, optional: true, touch: true
 	has_many :appointments, dependent: :destroy
 	has_many :recurring_appointments, dependent: :destroy
-	has_many :provided_services, dependent: :destroy
+	has_many :salary_line_items, dependent: :destroy
 	has_many :patients
 	has_many :nurse_service_wages
 
@@ -106,13 +106,13 @@ class Nurse < ApplicationRecord
 		}
 	end
 
-	def self.provided_services_count_and_sum_duration_for(range)
+	def self.salary_line_items_count_and_sum_duration_for(range)
 		return_array = []
 
 		Nurse.where(id: self.ids).each do |nurse|
 			nurse_services_hash = {}
-			grouped_provided_services_array = ProvidedService.from_appointments.where(service_date: range, nurse_id: nurse.id, cancelled: false, archived_at: nil).joins(:appointment).where(appointments: {edit_requested: false}).group(:title).pluck('provided_services.title, count(*), sum(provided_services.service_duration)::decimal / 3600 as sum_service_duration')
-			grouped_provided_services_array.map {|e| nurse_services_hash[e[0]] = {count: e[1], sum_service_duration: e[2]}}
+			grouped_salary_line_items_array = SalaryLineItem.from_appointments.where(service_date: range, nurse_id: nurse.id, cancelled: false, archived_at: nil).joins(:appointment).where(appointments: {edit_requested: false}).group(:title).pluck('salary_line_items.title, count(*), sum(salary_line_items.service_duration)::decimal / 3600 as sum_service_duration')
+			grouped_salary_line_items_array.map {|e| nurse_services_hash[e[0]] = {count: e[1], sum_service_duration: e[2]}}
 			return_array << [nurse.name, nurse_services_hash]
 		end
 
@@ -145,7 +145,7 @@ class Nurse < ApplicationRecord
 	end
 
 	def self.increment_days_worked_if_has_worked_yesterday
-		Nurse.joins(:provided_services, :appointments).where(provided_services: {cancelled: false, archived_at: nil, service_date: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day}, appointments: {edit_requested: false}).update_all("days_worked = days_worked + 1")
+		Nurse.joins(:salary_line_items, :appointments).where(salary_line_items: {cancelled: false, archived_at: nil, service_date: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day}, appointments: {edit_requested: false}).update_all("days_worked = days_worked + 1")
 	end
 
 end

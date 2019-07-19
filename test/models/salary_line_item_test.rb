@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ProvidedServiceTest < ActiveSupport::TestCase
+class SalaryLineItemTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

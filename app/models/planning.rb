@@ -6,7 +6,7 @@ class Planning < ApplicationRecord
 	has_many :recurring_appointments
 	has_many :private_events
 	has_many :wished_slots
-	has_many :provided_services
+	has_many :salary_line_items
 
 	before_save :default_title
 

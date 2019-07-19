@@ -1,42 +1,32 @@
-class ProvidedService < ApplicationRecord
+class SalaryLineItem < ApplicationRecord
 	attribute :target_service_ids
-	attribute :skip_callbacks_except_calculate_total_wage, :boolean
-	attribute :skip_wage_credits_and_invoice_calculations, :boolean
 
-	belongs_to :appointment, optional: true
 	belongs_to :nurse
 	belongs_to :patient, optional: true
 	belongs_to :planning
-	belongs_to :service_salary, class_name: 'Service', optional: true
 	belongs_to :verifier, class_name: 'User', optional: true
 	belongs_to :second_verifier, class_name: 'User', optional: true
 	belongs_to :salary_rule, optional: true
 
-	before_save :lookup_unit_cost_and_hour_based_wage, unless: :skip_callbacks_except_calculate_total_wage
-	before_save :set_default_service_counts, unless: :skip_callbacks_except_calculate_total_wage
-	before_save :set_default_duration, unless: :skip_callbacks_except_calculate_total_wage
-	before_save :calculate_total_wage, unless: :skip_wage_credits_and_invoice_calculations
-	before_save :calculate_credits_and_invoiced_amount, unless: :skip_wage_credits_and_invoice_calculations
-
-	before_update :reset_verifications, unless: :verifying_provided_service
+	before_save :set_default_service_counts
+	before_update :reset_verifications, unless: :verifying_salary_line_item
 
 	scope :is_verified, -> { where.not(verified_at: nil) }
 	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('service_date BETWEEN ? AND ?', range.first, range.last) }
-	scope :from_salary_rules, -> { where('appointment_id IS NULL') }
-	scope :from_appointments, -> { where('appointment_id IS NOT NULL') }
+	scope :from_salary_rules, -> { where('salary_rule_id IS NOT NULL') }
 
 	def self.to_csv(options = {})
 		CSV.generate(options) do |csv|
 			csv << column_names
-			all.each do |provided_service|
-				csv << provided_service.attributes.values_at(*column_names)
+			all.each do |salary_line_item|
+				csv << salary_line_item.attributes.values_at(*column_names)
 			end
 		end
 	end
 
-	def weekend_holiday_provided_service?
+	def weekend_holiday_salary_line_item?
 		!self.service_date.on_weekday? || HolidayJp.between(self.service_date.beginning_of_day, self.service_date.end_of_day).present? ? true : false
 	end
 
@@ -78,7 +68,7 @@ class ProvidedService < ApplicationRecord
 		end
 	end
 
-	def verifying_provided_service
+	def verifying_salary_line_item
 		will_save_change_to_verified_at? || will_save_change_to_second_verified_at?
 	end
 
@@ -101,7 +91,7 @@ class ProvidedService < ApplicationRecord
 		categories.map {|category| return_hash[category] = {sum_weighted_service_duration: 0, sum_weighted_credits: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0} }
 
 		if self.first.present?
-			data_grouped_by_title = self.group(:title).select('provided_services.title, sum(provided_services.service_duration) as sum_service_duration, sum(provided_services.total_wage) as sum_total_wage, sum(provided_services.total_credits) as sum_total_credits, count(*)')
+			data_grouped_by_title = self.group(:title).select('salary_line_items.title, sum(salary_line_items.service_duration) as sum_service_duration, sum(salary_line_items.total_wage) as sum_total_wage, sum(salary_line_items.total_credits) as sum_total_credits, count(*)')
 
 			services_without_nurses = Service.where(title: data_grouped_by_title.map(&:title), nurse_id: nil, corporation_id: self.first.planning.corporation.id).pluck(:title, :category_ratio, :category_1, :category_2, :unit_credits)
 
@@ -145,7 +135,7 @@ class ProvidedService < ApplicationRecord
 
 	def lookup_unit_cost_and_hour_based_wage
 		if self.service_salary.present?
-			self.unit_cost = self.weekend_holiday_provided_service? ? (self.service_salary.weekend_unit_wage || 0) : (self.service_salary.unit_wage || 0)
+			self.unit_cost = self.weekend_holiday_salary_line_item? ? (self.service_salary.weekend_unit_wage || 0) : (self.service_salary.unit_wage || 0)
 			self.hour_based_wage = self.service_salary.hour_based_wage
 		end
 	end
@@ -206,9 +196,9 @@ class ProvidedService < ApplicationRecord
 		self.second_verifier_id = nil
 	end
 
-	#def recalculate_provided_services_from_salary_rules
+	#def recalculate_salary_line_items_from_salary_rules
 	#	if self.appointment_id.present?
-	#		RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(self.nurse_id, self.service_date.year, self.service_date.month)
+	#		RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(self.nurse_id, self.service_date.year, self.service_date.month)
 	#	end
 	#end
 

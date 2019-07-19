@@ -4,8 +4,8 @@ class UserPolicy < ApplicationPolicy
 		user.admin == true
 	end
 
-	def has_access_to_provided_services?
-		user.schedule_restricted_with_provided_services? || user.schedule_admin? || user.corporation_admin?
+	def has_access_to_salary_line_items?
+		user.schedule_restricted_with_salary_line_items? || user.schedule_admin? || user.corporation_admin?
 	end
 
 	def has_admin_access?

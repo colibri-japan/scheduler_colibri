@@ -43,7 +43,7 @@ Rails.application.routes.draw do
 
   resources :calendar_events, only: :new
 
-  resources :provided_services, only: [:update, :destroy]
+  resources :salary_line_items, only: [:update, :destroy]
 
   resources :patients
 
@@ -54,7 +54,7 @@ Rails.application.routes.draw do
   end
 
   resources :nurses do
-    resources :provided_services, except: [:new]
+    resources :salary_line_items, except: [:new]
     resources :bonuses, only: :new
     resources :nurse_service_wages, only: :index
   end
@@ -88,11 +88,11 @@ Rails.application.routes.draw do
   get 'users/:id/edit_role' => 'users#edit_role', as: :edit_user_role
   patch 'users/:id/update_role' => 'users#update_role', as: :update_user_role
   
-  #custom routes for provided services
-  patch 'provided_services/:id/toggle_verified' => 'provided_services#toggle_verified', as: :toggle_verified_provided_service
-  patch 'provided_services/:id/toggle_second_verified' => 'provided_services#toggle_second_verified', as: :toggle_second_verified_provided_service
-  get 'provided_services/:id/new_cancellation_fee' => 'provided_services#new_cancellation_fee', as: :provided_service_new_cancellation_fee
-  get 'provided_services_by_category_report/provided_services' => 'provided_services#provided_services_by_category_report', as: :provided_services_by_category_report
+  #custom routes for salary line items
+  patch 'salary_line_items/:id/toggle_verified' => 'salary_line_items#toggle_verified', as: :toggle_verified_salary_line_item
+  patch 'salary_line_items/:id/toggle_second_verified' => 'salary_line_items#toggle_second_verified', as: :toggle_second_verified_salary_line_item
+  get 'salary_line_items/:id/new_cancellation_fee' => 'salary_line_items#new_cancellation_fee', as: :salary_line_item_new_cancellation_fee
+  get 'salary_line_items_by_category_report/salary_line_items' => 'salary_line_items#salary_line_items_by_category_report', as: :salary_line_items_by_category_report
 
   #custom routes for nurses
   get 'plannings/:planning_id/nurses/:id/payable' => 'nurses#payable', as: :planning_nurse_payable

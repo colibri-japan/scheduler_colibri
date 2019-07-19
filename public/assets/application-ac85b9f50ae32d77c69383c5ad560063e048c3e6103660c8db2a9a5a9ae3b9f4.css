@@ -1654,24 +1654,24 @@ p.master-reflect-option {
 .post-clickable-row:hover {
   cursor: pointer;
 }
-/* line 1, app/assets/stylesheets/provided_services.scss */
+/* line 1, app/assets/stylesheets/salary_line_items.scss */
 #chosen-select-all-container {
   margin-left: 150px;
 }
 
-/* line 5, app/assets/stylesheets/provided_services.scss */
+/* line 5, app/assets/stylesheets/salary_line_items.scss */
 #chosen_target_services_chosen {
   width: 250px !important;
 }
 
-/* line 9, app/assets/stylesheets/provided_services.scss */
+/* line 9, app/assets/stylesheets/salary_line_items.scss */
 .verified-at-and-by {
   margin-left: 4px;
   color: #4f5b66;
   font-size: 0.9em;
 }
 
-/* line 15, app/assets/stylesheets/provided_services.scss */
+/* line 15, app/assets/stylesheets/salary_line_items.scss */
 .verified-at-and-by:hover {
   color: black;
   cursor: pointer;

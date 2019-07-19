@@ -69,7 +69,7 @@ class AppointmentsController < ApplicationController
     @appointment.recurring_appointment_id = nil
     
     if @appointment.update(appointment_params)      
-      @provided_service = @appointment.provided_service if @previous_cancelled != appointment_params[:cancelled]
+      @salary_line_item = @appointment.salary_line_item if @previous_cancelled != appointment_params[:cancelled]
       create_activity_for_update
       recalculate_bonus
     end
@@ -82,7 +82,7 @@ class AppointmentsController < ApplicationController
     @appointment.recurring_appointment_id = nil 
 
     if @appointment.save(validate: !@appointment.cancelled)
-      @provided_service = @appointment.provided_service
+      @salary_line_item = @appointment.salary_line_item
       @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_cancelled: !@appointment.cancelled, patient_name: @appointment.patient.try(:name), nurse_name: @appointment.nurse.try(:name)}
       recalculate_bonus
     end
@@ -122,11 +122,11 @@ class AppointmentsController < ApplicationController
   def batch_archive
     planning_id = @corporation.planning.id
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
-    @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
+    @salary_line_items = SalaryLineItem.where(planning_id: planning_id, appointment_id: @appointments.ids)
     
     now = Time.current
     @appointments.update_all(archived_at: now, recurring_appointment_id: nil, updated_at: now)
-    @provided_services.update_all(archived_at: now, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
+    @salary_line_items.update_all(archived_at: now, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
     @planning.create_activity :batch_archive, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
 
@@ -141,11 +141,11 @@ class AppointmentsController < ApplicationController
 
   def batch_cancel
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
-    @provided_services = ProvidedService.where(planning_id: @planning.id, appointment_id: @appointments.ids)
+    @salary_line_items = SalaryLineItem.where(planning_id: @planning.id, appointment_id: @appointments.ids)
 
     now = Time.current
     @appointments.update_all(cancelled: true, recurring_appointment_id: nil, updated_at: now)
-    @provided_services.update_all(cancelled: true, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
+    @salary_line_items.update_all(cancelled: true, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
     @planning.create_activity :batch_cancel, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
     batch_recalculate_bonus
@@ -160,11 +160,11 @@ class AppointmentsController < ApplicationController
   def batch_request_edit 
     planning_id = @corporation.planning.id 
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
-    @provided_services = ProvidedService.where(planning_id: planning_id, appointment_id: @appointments.ids)
+    @salary_line_items = SalaryLineItem.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
     @appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: now)
-    @provided_services.update_all(total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
+    @salary_line_items.update_all(total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
 
     @planning.create_activity :batch_request_edit, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
 
@@ -225,23 +225,23 @@ class AppointmentsController < ApplicationController
     end
 
     def recalculate_bonus
-      RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@appointment.nurse_id, @appointment.starts_at.year, @appointment.starts_at.month)
-      RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@previous_nurse_id, @appointment.starts_at.year, @appointment.starts_at.month) if @previous_nurse_id.present? && @previous_nurse_id != @appointment.nurse_id
+      RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@appointment.nurse_id, @appointment.starts_at.year, @appointment.starts_at.month)
+      RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@previous_nurse_id, @appointment.starts_at.year, @appointment.starts_at.month) if @previous_nurse_id.present? && @previous_nurse_id != @appointment.nurse_id
     end
 
     def batch_recalculate_bonus
-      nurse_ids = @provided_services.pluck(:nurse_id).uniq
-      year_and_months = @provided_services.pluck(:service_date).map{|d| {year: d.year, month: d.month}}.uniq
+      nurse_ids = @salary_line_items.pluck(:nurse_id).uniq
+      year_and_months = @salary_line_items.pluck(:service_date).map{|d| {year: d.year, month: d.month}}.uniq
 
       nurse_ids.each do |nurse_id|
         year_and_months.each do |year_and_month|
-          RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(nurse_id, year_and_month[:year], year_and_month[:month])
+          RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(nurse_id, year_and_month[:year], year_and_month[:month])
         end
       end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def appointment_params
-      params.require(:appointment).permit(:title, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id, :color, :edit_requested, :cancelled)
+      params.require(:appointment).permit(:title, :service_id, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id, :color, :edit_requested, :cancelled)
     end
 end

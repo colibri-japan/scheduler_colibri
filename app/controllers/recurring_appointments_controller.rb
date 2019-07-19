@@ -139,8 +139,8 @@ class RecurringAppointmentsController < ApplicationController
       end
 
       year_and_months.each do |year_and_month|
-        RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month])
-        RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(@new_recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month]) if @new_recurring_appointment.present? && @new_recurring_appointment.nurse_id != @recurring_appointment.nurse_id
+        RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month])
+        RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@new_recurring_appointment.nurse_id, year_and_month[:year], year_and_month[:month]) if @new_recurring_appointment.present? && @new_recurring_appointment.nurse_id != @recurring_appointment.nurse_id
       end
     end
 

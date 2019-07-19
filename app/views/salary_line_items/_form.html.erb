@@ -1,10 +1,10 @@
-<%= form_with model: provided_service, url: [@nurse, provided_service] do |form| %>
-  <% if provided_service.errors.any? %>
+<%= form_with model: salary_line_item, url: [@nurse, salary_line_item] do |form| %>
+  <% if salary_line_item.errors.any? %>
   <div id="error_explanation">
     <h2>エラーが発生しました：</h2>
 
     <ul>
-      <% provided_service.errors.full_messages.each do |message| %>
+      <% salary_line_item.errors.full_messages.each do |message| %>
       <li><%= message %></li>
       <% end %>
     </ul>
@@ -16,27 +16,27 @@
 
       <div class="form-group">
         <%= form.label :title, "タイトル", class: "colibri-form-label-dark" %>
-        <%= form.text_field :title, id: :provided_service_title, required: true, class: "form-control" %>
+        <%= form.text_field :title, id: :salary_line_item_title, required: true, class: "form-control" %>
       </div>
 
       <div class="form-group">
         <%= form.label :service_date, "日付", class: "colibri-form-label-dark" %>
-        <%= form.date_select :service_date, id: :provided_service_service_date, class: "form-control" %>
+        <%= form.date_select :service_date, id: :salary_line_item_service_date, class: "form-control" %>
       </div>
 
       <div class="form-group">
         <%= form.label :total_wage, "合計額", class: "colibri-form-label-dark" %>
-        <%= form.number_field :total_wage, {step: 1, id: :provided_service_total_wage, class: "form-control"} %>
+        <%= form.number_field :total_wage, {step: 1, id: :salary_line_item_total_wage, class: "form-control"} %>
       </div>
 
   </div>
 
   <div class="modal-footer">
     <div class="actions">
-      <% if provided_service.new_record? %>
+      <% if salary_line_item.new_record? %>
         <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
       <% end %>
-      <%= link_to '削除', provided_service, method: :delete, data: {confirm: 'この手当が削除されます。'}, class: 'btn btn-danger' unless provided_service.new_record? %>
+      <%= link_to '削除', salary_line_item, method: :delete, data: {confirm: 'この手当が削除されます。'}, class: 'btn btn-danger' unless salary_line_item.new_record? %>
       <%= form.submit 'セーブする', class: 'btn btn-info' %>
     </div>
   </div>

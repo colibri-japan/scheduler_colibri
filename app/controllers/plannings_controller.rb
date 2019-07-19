@@ -38,7 +38,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def all_nurses_payable
-		authorize current_user, :has_access_to_provided_services?
+		authorize current_user, :has_access_to_salary_line_items?
 		
 		@nurse = @corporation.nurses.displayable.order_by_kana.first 
 
@@ -50,30 +50,31 @@ class PlanningsController < ApplicationController
 		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
 		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
 
-		@provided_services_till_today = ProvidedService.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: first_day..last_day)
+		#needs change
+		#@salary_line_items_till_today = SalaryLineItem.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: first_day..last_day)
 
 
 		#appointments : since beginning of month
-		today = Date.today
-		appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: first_day..last_day).includes(:patient, :nurse)
+		#today = Date.today
+		#appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: first_day..last_day).includes(:patient, :nurse)
 		
-		#daily summary
-		@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
-    	@female_patients_ids = @corporation.patients.where(gender: true).ids
-    	@male_patients_ids = @corporation.patients.where(gender: false).ids
+		##daily summary
+		#@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
+    	#@female_patients_ids = @corporation.patients.where(gender: true).ids
+    	#@male_patients_ids = @corporation.patients.where(gender: false).ids
 		
-    	#weekly summary, from monday to today
-    	@weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
-
-		#monthly summary, until end of today
-		@monthly_appointments = appointments
-
-    	#daily provided_services to be verified
-    	@daily_provided_services = ProvidedService.where(planning_id:  @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+    	##weekly summary, from monday to today
+    	#@weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
+		
+		##monthly summary, until end of today
+		#@monthly_appointments = appointments
+		
+		##daily salary_line_items to be verified
+    	#@daily_salary_line_items = SalaryLineItem.where(planning_id:  @planning.id, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|salary_line_item| salary_line_item.nurse_id}
 	end
 
 	def all_patients_payable
-		authorize current_user, :has_access_to_provided_services?
+		authorize current_user, :has_access_to_salary_line_items?
 
 		set_month_and_year_params
 		fetch_nurses_grouped_by_team
@@ -92,7 +93,7 @@ class PlanningsController < ApplicationController
 		
 		@service_hour_based_hash = @corporation.services.delivered_in_range(start_date..end_date).order(:title).pluck(:title, :hour_based_wage).uniq.to_h
 
-		@provided_services_count_and_sum_duration_by_nurse = @corporation.nurses.displayable.provided_services_count_and_sum_duration_for(start_date..end_date)
+		@salary_line_items_count_and_sum_duration_by_nurse = @corporation.nurses.displayable.salary_line_items_count_and_sum_duration_for(start_date..end_date)
 		
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}

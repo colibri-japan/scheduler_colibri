@@ -1,4 +1,4 @@
-class ReflectCreditsToProvidedServicesWorker
+class ReflectCreditsToSalaryLineItemsWorker
     include Sidekiq::Worker
     sidekiq_options retry: false
 
@@ -17,7 +17,7 @@ class ReflectCreditsToProvidedServicesWorker
                 else
                     total_to_invoice = 0
                 end
-                ProvidedService.where(title: service.title, planning_id: corporation.planning.id, archived_at: nil, nurse_id: team_nurses_ids, cancelled: false).update_all(total_credits: service.unit_credits, invoiced_total: total_to_invoice, updated_at: Time.current)
+                SalaryLineItem.where(title: service.title, planning_id: corporation.planning.id, archived_at: nil, nurse_id: team_nurses_ids, cancelled: false).update_all(total_credits: service.unit_credits, invoiced_total: total_to_invoice, updated_at: Time.current)
             end
         else
             case service.insurance_category_1
@@ -28,7 +28,7 @@ class ReflectCreditsToProvidedServicesWorker
             else
                 total_to_invoice = 0
             end
-            ProvidedService.where(title: service.title, planning_id: corporation.planning.id, archived_at: nil, cancelled: false).update_all(total_credits: service.unit_credits, invoiced_total: total_to_invoice, updated_at: Time.current)
+            SalaryLineItem.where(title: service.title, planning_id: corporation.planning.id, archived_at: nil, cancelled: false).update_all(total_credits: service.unit_credits, invoiced_total: total_to_invoice, updated_at: Time.current)
         end
 
     end

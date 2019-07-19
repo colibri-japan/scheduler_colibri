@@ -8,8 +8,7 @@ class Appointment < ApplicationRecord
 	belongs_to :planning
 	belongs_to :original, class_name: 'Appointment', optional: true
 	belongs_to :recurring_appointment, optional: true
-	belongs_to :service, optional: true
-	has_one :provided_service, dependent: :destroy
+	belongs_to :service
 	has_one :completion_report, dependent: :destroy
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
@@ -20,11 +19,10 @@ class Appointment < ApplicationRecord
 	
 	before_save :request_edit_if_undefined_nurse
 	before_save :match_title_to_service
+	before_save :set_duration
+	before_save :calculate_credits_invoice_and_wage
 
-	after_create :create_provided_service
-	after_update :update_provided_service
-
-	before_destroy :record_delete_activity
+	before_update :reset_verifications, unless: :verifying_appointment
 
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
@@ -36,6 +34,10 @@ class Appointment < ApplicationRecord
 
 	def all_day_appointment?
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
+	end
+
+	def verifying_appointment
+		will_save_change_to_verified_at? || will_save_change_to_second_verified_at?
 	end
 
 	def weekend_holiday_appointment?
@@ -120,53 +122,16 @@ class Appointment < ApplicationRecord
 	end
 
 	private
-
-	def request_edit_for_overlapping_appointments
-		overlapping_appointments = Appointment.not_archived.where(nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
-		overlapping_appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: Time.current) if overlapping_appointments.present?
-	end
-
-	def nurse_patient_and_planning_from_same_corporation
-		if self.patient.corporation_id.present? && self.nurse.corporation_id.present? && self.planning.corporation_id.present?
-			corporation_id_is_matching = self.patient.corporation_id == self.planning.corporation_id && self.nurse.corporation_id == self.planning.corporation_id
-			errors.add(:planning_id, "ご自身の事業所と、利用者様と従業員の事業所が異なってます。") unless corporation_id_is_matching
-		end
-	end
-
-	def do_not_overlap
-		puts 'validating overlap'
-		nurse = Nurse.find(self.nurse_id)
-
-		unless nurse.name == '未定' || self.archived? || self.edit_requested? || self.cancelled?
-			overlapping_ids = Appointment.where(edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
-
-			errors[:base] << "その日の従業員が重複しています。" if overlapping_ids.present?
-			errors[:overlapping_ids] << overlapping_ids if overlapping_ids.present?
-		end
-	end
-
-
+	
 	def request_edit_if_undefined_nurse
 		nurse = Nurse.find(self.nurse_id)
 		self.edit_requested = true if nurse.name === '未定'
 	end
-
-	def create_provided_service
-		provided_duration = self.ends_at - self.starts_at
-		nurse_service = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first 
-		service_salary_id = nurse_service.present? ? nurse_service.id : self.service_id
-		provided_service = ProvidedService.create(appointment_id: self.id, planning_id: self.planning_id, service_duration: provided_duration, nurse_id: self.nurse_id, patient_id: self.patient_id, cancelled: self.cancelled, temporary: false, title: self.title, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
-	end
-
-	def update_provided_service
-		provided_service = self.provided_service
-
-		if provided_service.present?
-			provided_duration = self.ends_at - self.starts_at
-			nurse_service_id = Service.where(title: self.title, nurse_id: self.nurse_id, corporation_id: self.planning.corporation_id).first.try(:id)
-			service_salary_id = nurse_service_id || self.service_id
-
-			provided_service.update(service_duration: provided_duration, planning_id: self.planning_id, nurse_id: self.nurse_id, patient_id: self.patient_id, title: self.title, cancelled: self.cancelled, archived_at: self.archived_at, service_date: self.starts_at, appointment_start: self.starts_at, appointment_end: self.ends_at, service_salary_id: service_salary_id)
+	
+	def nurse_patient_and_planning_from_same_corporation
+		if self.patient.corporation_id.present? && self.nurse.corporation_id.present? && self.planning.corporation_id.present?
+			corporation_id_is_matching = self.patient.corporation_id == self.planning.corporation_id && self.nurse.corporation_id == self.planning.corporation_id
+			errors.add(:planning_id, "ご自身の事業所と、利用者様と従業員の事業所が異なってます。") unless corporation_id_is_matching
 		end
 	end
 
@@ -180,8 +145,35 @@ class Appointment < ApplicationRecord
 		end
 	end
 
-	def record_delete_activity
-		self.create_activity :destroy, previous_patient: self.patient.try(:name), previous_nurse: self.nurse.try(:name), previous_start: self.starts_at, previous_end: self.ends_at, nurse_id: self.nurse_id, patient_id: self.patient_id
+	def set_duration
+		self.duration = self.ends_at - self.starts_at
+	end
+
+	def calculate_credits_invoice_and_wage
+		self.total_credits = self.service.unit_credits
+		self.total_invoiced = self.service.invoiced_amount
+		if self.service.nurse_services_wages.where(nurse_id: self.nurse_id).present?
+			self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.nurse_services_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)) : (self.service.nurse_services_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
+		else
+			self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.unit_wage || 0)) : self.service.unit_wage
+		end
+	end
+
+	def request_edit_for_overlapping_appointments
+		overlapping_appointments = Appointment.not_archived.where(nurse_id: self.nurse_id).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).where_recurring_appointment_id_different_from(self.recurring_appointment_id)
+		overlapping_appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: Time.current) if overlapping_appointments.present?
+	end
+
+	def do_not_overlap
+		puts 'validating overlap'
+		nurse = Nurse.find(self.nurse_id)
+
+		unless nurse.name == '未定' || self.archived? || self.edit_requested? || self.cancelled?
+			overlapping_ids = Appointment.where(edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
+
+			errors[:base] << "その日の従業員が重複しています。" if overlapping_ids.present?
+			errors[:overlapping_ids] << overlapping_ids if overlapping_ids.present?
+		end
 	end
 
 end

@@ -30,7 +30,7 @@ class UpdateIndividualAppointmentsWorker
             years_and_months_updated = appointments.pluck(:starts_at).map {|d| [d.year, d.month]}.uniq
 
             years_and_months_updated.each do |year, month|
-                RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(recurring_appointment.nurse_id, year, month)
+                RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(recurring_appointment.nurse_id, year, month)
             end
         end
 

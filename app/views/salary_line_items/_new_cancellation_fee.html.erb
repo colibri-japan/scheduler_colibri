@@ -6,7 +6,7 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
-            <%= form_with model: @provided_service, url: url_for(controller: 'provided_services', action: 'add_cancellation_fee'), id: 'cancellation_fee_form' do |form| %>
+            <%= form_with model: @salary_line_item, url: url_for(controller: 'salary_line_items', action: 'add_cancellation_fee'), id: 'cancellation_fee_form' do |form| %>
 			<div class='modal-body'>
               <div class='form-group'>
 				<%= form.label :total_wage, '手当', class: 'colibri-form-label' %>

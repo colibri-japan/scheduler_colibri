@@ -195,7 +195,7 @@ $(document).on 'turbolinks:load', ->
     return
 
   if $('#category-subcontainer').length > 0
-    $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val())
+    $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val())
     
   $('#confirm-availabilities-print').click -> 
     date = $('#availabilities_date').val()

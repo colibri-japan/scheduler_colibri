@@ -57,8 +57,8 @@ pathname = window.location.pathname;
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
   if (pathname.includes('payable')) {
-    <% if @provided_service.present? && @appointment.cancelled && @corporation.detailed_cancellation_options %>
-      $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
+    <% if @salary_line_item.present? && @appointment.cancelled && @corporation.detailed_cancellation_options %>
+      $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
       $('#cancellation_options').modal({backdrop: 'static'});
       reloadWhenDismissedInPayable()
     <% else %>
@@ -86,8 +86,8 @@ pathname = window.location.pathname;
       );
     } 
 
-    <% if @provided_service.present? && @provided_service.cancelled && @corporation.detailed_cancellation_options %>
-      $('#remote_container').html('<%= j render "provided_services/cancellation_options" %>');
+    <% if @salary_line_item.present? && @salary_line_item.cancelled && @corporation.detailed_cancellation_options %>
+      $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
       $('#cancellation_options').modal('show');
       reloadWhenDismissedInPayable()
     <% end %>

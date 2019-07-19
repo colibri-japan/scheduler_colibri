@@ -1,21 +1,21 @@
-module ProvidedServicesHelper
+module SalaryLineItemsHelper
 
-    def provided_service_title_with_counts(provided_service)
-        provided_service.service_counts == 1 ?  provided_service.try(:title) : "#{provided_service.try(:title)}(x#{provided_service.service_counts})"
+    def salary_line_item_title_with_counts(salary_line_item)
+        salary_line_item.service_counts == 1 ?  salary_line_item.try(:title) : "#{salary_line_item.try(:title)}(x#{salary_line_item.service_counts})"
     end
 
-    def provided_service_title_in_excel(provided_service)
-        if provided_service.cancelled == true 
-            "#{provided_service.try(:title)} (キャンセル)"
+    def salary_line_item_title_in_excel(salary_line_item)
+        if salary_line_item.cancelled == true 
+            "#{salary_line_item.try(:title)} (キャンセル)"
         else
-            provided_service.service_counts == 1 ?  provided_service.try(:title) : "#{provided_service.try(:title)}(x#{provided_service.service_counts})"
+            salary_line_item.service_counts == 1 ?  salary_line_item.try(:title) : "#{salary_line_item.try(:title)}(x#{salary_line_item.service_counts})"
         end
     end
 
-    def weekend_holiday_provided_service_css(provided_service)
-        if HolidayJp.between(provided_service.service_date.beginning_of_day, provided_service.service_date.end_of_day).present? || provided_service.service_date.wday == 0
+    def weekend_holiday_salary_line_item_css(salary_line_item)
+        if HolidayJp.between(salary_line_item.service_date.beginning_of_day, salary_line_item.service_date.end_of_day).present? || salary_line_item.service_date.wday == 0
             "sunday-holiday-provided-service"
-        elsif provided_service.service_date.wday == 6
+        elsif salary_line_item.service_date.wday == 6
             "saturday-provided-service"
         end
     end

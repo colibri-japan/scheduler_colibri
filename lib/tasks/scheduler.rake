@@ -15,7 +15,7 @@ task :calculate_salaries_from_salary_rules => :environment do
 	year = now_in_Japan.year
 	month = now_in_Japan.month
 	nurse_ids.each do |nurse_id|
-		RecalculateProvidedServicesFromSalaryRulesWorker.perform_async(nurse_id, year, month)
+		RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(nurse_id, year, month)
 	end
 end
 

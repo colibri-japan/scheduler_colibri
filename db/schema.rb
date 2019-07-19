@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190718051140) do
+ActiveRecord::Schema.define(version: 20190718113415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,12 +82,21 @@ ActiveRecord::Schema.define(version: 20190718051140) do
     t.boolean "cancelled", default: false
     t.datetime "archived_at"
     t.bigint "service_id"
+    t.integer "total_credits"
+    t.integer "total_invoiced"
+    t.integer "total_wage"
+    t.datetime "verified_at"
+    t.bigint "verifier_id"
+    t.datetime "second_verified_at"
+    t.bigint "second_verifier_id"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_appointments_on_original_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
     t.index ["planning_id"], name: "index_appointments_on_planning_id"
     t.index ["recurring_appointment_id"], name: "index_appointments_on_recurring_appointment_id"
+    t.index ["second_verifier_id"], name: "index_appointments_on_second_verifier_id"
     t.index ["service_id"], name: "index_appointments_on_service_id"
+    t.index ["verifier_id"], name: "index_appointments_on_verifier_id"
   end
 
   create_table "care_manager_corporations", force: :cascade do |t|
@@ -376,48 +385,6 @@ ActiveRecord::Schema.define(version: 20190718051140) do
     t.index ["planning_id"], name: "index_private_events_on_planning_id"
   end
 
-  create_table "provided_services", force: :cascade do |t|
-    t.string "payable_type"
-    t.bigint "payable_id"
-    t.integer "unit_cost"
-    t.integer "service_duration"
-    t.integer "total_wage"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "nurse_id"
-    t.bigint "patient_id"
-    t.bigint "planning_id"
-    t.integer "service_counts"
-    t.boolean "countable"
-    t.string "title"
-    t.boolean "temporary", default: false, null: false
-    t.boolean "provided", default: false
-    t.boolean "cancelled", default: false
-    t.bigint "appointment_id"
-    t.boolean "hour_based_wage", default: true
-    t.datetime "service_date"
-    t.datetime "appointment_start"
-    t.datetime "appointment_end"
-    t.bigint "service_salary_id"
-    t.datetime "verified_at"
-    t.datetime "archived_at"
-    t.bigint "verifier_id"
-    t.bigint "second_verifier_id"
-    t.datetime "second_verified_at"
-    t.bigint "salary_rule_id"
-    t.integer "total_credits"
-    t.integer "invoiced_total"
-    t.index ["appointment_id"], name: "index_provided_services_on_appointment_id", unique: true
-    t.index ["nurse_id"], name: "index_provided_services_on_nurse_id"
-    t.index ["patient_id"], name: "index_provided_services_on_patient_id"
-    t.index ["payable_type", "payable_id"], name: "index_provided_services_on_payable_type_and_payable_id"
-    t.index ["planning_id"], name: "index_provided_services_on_planning_id"
-    t.index ["salary_rule_id"], name: "index_provided_services_on_salary_rule_id"
-    t.index ["second_verifier_id"], name: "index_provided_services_on_second_verifier_id"
-    t.index ["service_salary_id"], name: "index_provided_services_on_service_salary_id"
-    t.index ["verifier_id"], name: "index_provided_services_on_verifier_id"
-  end
-
   create_table "read_marks", id: :serial, force: :cascade do |t|
     t.string "readable_type", null: false
     t.integer "readable_id"
@@ -463,6 +430,40 @@ ActiveRecord::Schema.define(version: 20190718051140) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reminderable_type", "reminderable_id"], name: "index_reminders_on_reminderable_type_and_reminderable_id"
+  end
+
+  create_table "salary_line_items", force: :cascade do |t|
+    t.integer "unit_cost"
+    t.integer "service_duration"
+    t.integer "total_wage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "nurse_id"
+    t.bigint "patient_id"
+    t.bigint "planning_id"
+    t.integer "service_counts"
+    t.string "title"
+    t.boolean "provided", default: false
+    t.bigint "appointment_id"
+    t.boolean "hour_based_wage", default: true
+    t.datetime "service_date"
+    t.bigint "service_salary_id"
+    t.datetime "verified_at"
+    t.datetime "archived_at"
+    t.bigint "verifier_id"
+    t.bigint "second_verifier_id"
+    t.datetime "second_verified_at"
+    t.bigint "salary_rule_id"
+    t.integer "total_credits"
+    t.integer "invoiced_total"
+    t.index ["appointment_id"], name: "index_salary_line_items_on_appointment_id", unique: true
+    t.index ["nurse_id"], name: "index_salary_line_items_on_nurse_id"
+    t.index ["patient_id"], name: "index_salary_line_items_on_patient_id"
+    t.index ["planning_id"], name: "index_salary_line_items_on_planning_id"
+    t.index ["salary_rule_id"], name: "index_salary_line_items_on_salary_rule_id"
+    t.index ["second_verifier_id"], name: "index_salary_line_items_on_second_verifier_id"
+    t.index ["service_salary_id"], name: "index_salary_line_items_on_service_salary_id"
+    t.index ["verifier_id"], name: "index_salary_line_items_on_verifier_id"
   end
 
   create_table "salary_rules", force: :cascade do |t|
@@ -607,9 +608,9 @@ ActiveRecord::Schema.define(version: 20190718051140) do
   add_foreign_key "posts", "corporations"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "printing_options", "corporations"
-  add_foreign_key "provided_services", "users", column: "second_verifier_id"
-  add_foreign_key "provided_services", "users", column: "verifier_id"
   add_foreign_key "recurring_appointments", "plannings"
+  add_foreign_key "salary_line_items", "users", column: "second_verifier_id"
+  add_foreign_key "salary_line_items", "users", column: "verifier_id"
   add_foreign_key "salary_rules", "corporations"
   add_foreign_key "services", "corporations"
   add_foreign_key "teams", "corporations"

@@ -8,7 +8,7 @@ class Patient < ApplicationRecord
 	has_many :appointments
 	has_many :recurring_appointments
 	has_many :private_events
-	has_many :provided_services
+	has_many :salary_line_items
 	has_many :patient_posts
 	has_many :posts, through: :patient_posts
 	
@@ -76,31 +76,31 @@ class Patient < ApplicationRecord
 		end
 	end
 
-	def provided_service_summary(date_range, options = {})
+	def salary_line_item_summary(date_range, options = {})
 		inside_or_outside_insurance_scope = options[:within_insurance_scope] || false 
 		
 		array_of_service_summary = []
-		provided_services_titles = ProvidedService.where(patient: self.id, archived_at: nil).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).pluck(:title).uniq
+		salary_line_items_titles = SalaryLineItem.where(patient: self.id, archived_at: nil).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).pluck(:title).uniq
 
-        provided_services_titles.each do |title|
+        salary_line_items_titles.each do |title|
             service_type = Service.where(nurse_id: nil, title: title, corporation_id: self.corporation_id).first
 			service_hash = {}
 			
             if service_type.present? && service_type.invoiced_to_insurance? == inside_or_outside_insurance_scope
-                provided_services = ProvidedService.where(patient: self.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).order(:appointment_start)
+                salary_line_items = SalaryLineItem.where(patient: self.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range)
                 service_hash[:title] = title
                 service_hash[:official_title] = service_type.try(:official_title)
                 service_hash[:service_code] = service_type.try(:service_code)
                 service_hash[:unit_credits] = service_type.try(:unit_credit)
                 if service_type.credit_calculation_method == 0
-                    service_hash[:sum_total_credits] = provided_services.sum(:total_credits)
+                    service_hash[:sum_total_credits] = salary_line_items.sum(:total_credits)
                 elsif service_type.credit_calculation_method == 1
                     service_hash[:sum_total_credits] = service_type.try(:unit_credits)
                 elsif service_type.credit_calculation_method == 2
-                    service_hash[:sum_total_credits] = ((provided_services.first.service_date.to_date)..(date_range.last.to_date)).count * (service_type.try(:unit_credits) || 0)
+                    service_hash[:sum_total_credits] = ((salary_line_items.first.service_date.to_date)..(date_range.last.to_date)).count * (service_type.try(:unit_credits) || 0)
 				end
-                service_hash[:sum_invoiced_total] = provided_services.sum(:invoiced_total)
-                service_hash[:count] = service_type.credit_calculation_method == 2 ? ((provided_services.first.service_date.to_date)..(date_range.last.to_date)).count : provided_services.count
+                service_hash[:sum_invoiced_total] = salary_line_items.sum(:invoiced_total)
+                service_hash[:count] = service_type.credit_calculation_method == 2 ? ((salary_line_items.first.service_date.to_date)..(date_range.last.to_date)).count : salary_line_items.count
 
                 array_of_service_summary << service_hash
             end
@@ -111,7 +111,7 @@ class Patient < ApplicationRecord
 	def shifts_by_title_and_date_range(service_title, date_range)
 		array_of_shifts = []
 
-		shift_dates = ProvidedService.where(patient_id: self.id, title: service_title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).not_archived.in_range(date_range).pluck(:appointment_start, :appointment_end)
+		shift_dates = SalaryLineItem.where(patient_id: self.id, title: service_title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).not_archived.in_range(date_range).pluck(:appointment_start, :appointment_end)
 		shift_dates.map {|e| e[0] = e[0].strftime("%H:%M")}
 		shift_dates.map {|e| e[1] = e[1].strftime("%H:%M")}
 		shift_dates.uniq!
@@ -124,7 +124,7 @@ class Patient < ApplicationRecord
 			shift_hash[:end_time] = start_and_end[1]
 			recurring_appointments = RecurringAppointment.where(patient_id: self.id, title: service_title).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).not_terminated_at(date_range.first)
 			shift_hash[:previsional] = recurring_appointments.map {|r| r.appointments(date_range.first, date_range.last).map(&:to_date) }.flatten
-			shift_hash[:provided] = ProvidedService.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: service_title, patient_id: self.id, cancelled: false, archived_at: nil).in_range(date_range).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', start_and_end[0], start_and_end[1]).pluck(:appointment_start).map(&:to_date)
+			shift_hash[:provided] = SalaryLineItem.from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).where(title: service_title, patient_id: self.id, cancelled: false, archived_at: nil).in_range(date_range).where('appointment_start::timestamp::time = ? AND appointment_end::timestamp::time = ?', start_and_end[0], start_and_end[1]).pluck(:appointment_start).map(&:to_date)
 	
 			array_of_shifts << shift_hash
 		end

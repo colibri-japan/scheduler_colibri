@@ -47,10 +47,10 @@ class DashboardController < ApplicationController
     #monthly summary, until end of today
 		@monthly_appointments = appointments
 
-    #daily provided_services to be verified
-    daily_provided_services = ProvidedService.where(planning_id: @planning.id, temporary: false, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc)
-    daily_provided_services = daily_provided_services.where(nurse_id: team.nurses.displayable.ids) if team.present?
-    @daily_provided_services = daily_provided_services.group_by {|provided_service| provided_service.nurse_id}
+    #daily salary_line_items to be verified
+    daily_salary_line_items = SalaryLineItem.where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc)
+    daily_salary_line_items = daily_salary_line_items.where(nurse_id: team.nurses.displayable.ids) if team.present?
+    @daily_salary_line_items = daily_salary_line_items.group_by {|salary_line_item| salary_line_item.nurse_id}
 
   end
 

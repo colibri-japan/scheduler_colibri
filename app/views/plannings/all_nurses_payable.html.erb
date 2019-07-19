@@ -57,16 +57,17 @@
 
 	<% end %>
 	
+	<% if false %>
+		<div id='extended-daily-summary-title-container'>
+			<div class='colibri-xs-title'>業務日報</div>
+			<div class='small-side-margins'><%= text_field_tag 'query_date', "#{Date.today.strftime("%Y-%m-%d")}", {data: {url: dashboard_extended_daily_summary_path}} %></div>
+			<div class='btn btn-sm btn-success text-white small-side-margins no-print' id='print-button'>印刷</div>
+		</div>
 
-	<div id='extended-daily-summary-title-container'>
-    <div class='colibri-xs-title'>業務日報</div>
-    <div class='small-side-margins'><%= text_field_tag 'query_date', "#{Date.today.strftime("%Y-%m-%d")}", {data: {url: dashboard_extended_daily_summary_path}} %></div>
-    <div class='btn btn-sm btn-success text-white small-side-margins no-print' id='print-button'>印刷</div>
-  </div>
-
-  <div id='extended-daily-summary-container'>
-    <%= render partial: 'extended_daily_summary', locals: {daily_appointments: @daily_appointments, weekly_appointments: @weekly_appointments, monthly_appointments: @monthly_appointments, daily_provided_services: @daily_provided_services, female_patients_ids: @female_patients_ids, male_patients_ids: @male_patients_ids} %>
-  </div>
+		<div id='extended-daily-summary-container'>
+			<%= render partial: 'extended_daily_summary', locals: {daily_appointments: @daily_appointments, weekly_appointments: @weekly_appointments, monthly_appointments: @monthly_appointments, daily_salary_line_items: @daily_salary_line_items, female_patients_ids: @female_patients_ids, male_patients_ids: @male_patients_ids} %>
+		</div>
+	<% end %>
 </div>
 
 <div id="team-report-range" class="modal fade" style="display:none">

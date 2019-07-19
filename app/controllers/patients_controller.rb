@@ -37,8 +37,8 @@ class PatientsController < ApplicationController
 
     @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
 
-    @nurses_with_services = Nurse.joins(:provided_services).select("nurses.*, sum(provided_services.service_duration) as sum_service_duration").where(provided_services: {patient_id: @patient.id}).where(displayable: true).group('nurses.id').order('sum_service_duration DESC')
-
+    #reporting line that needs to be changed
+    #@nurses_with_services = Nurse.joins(:salary_line_items).select("nurses.*, sum(salary_line_items.service_duration) as sum_service_duration").where(salary_line_items: {patient_id: @patient.id}).where(displayable: true).group('nurses.id').order('sum_service_duration DESC')
   end
 
   def master
@@ -124,7 +124,7 @@ class PatientsController < ApplicationController
   end
 
   def payable 
-    authorize current_user, :has_access_to_provided_services?
+    authorize current_user, :has_access_to_salary_line_items?
     authorize @patient, :same_corporation_as_current_user?
 
     set_month_and_year_params
@@ -135,13 +135,15 @@ class PatientsController < ApplicationController
     @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
     @end_of_today_in_japan = (Time.current + 9.hours).end_of_day < @last_day ? (Time.current + 9.hours).end_of_day : @last_day
 
-    @services_from_appointments = ProvidedService.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :nurse).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
+    #all this needs to be changed with new appointment system
     
-    @provided_service_summary = @patient.provided_service_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
-    @provided_service_summary_without_insurance = @patient.provided_service_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
-    @cancelled_but_invoiceable_services = @services_from_appointments.where(cancelled: true).where.not(invoiced_total: [0, nil])
+    #@services_from_appointments = SalaryLineItem.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :nurse).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
+    
+    #@salary_line_item_summary = @patient.salary_line_item_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
+    #@salary_line_item_summary_without_insurance = @patient.salary_line_item_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
+    #@cancelled_but_invoiceable_services = @services_from_appointments.where(cancelled: true).where.not(invoiced_total: [0, nil])
 
-    calculate_invoice_fields
+    #calculate_invoice_fields
 
     respond_to do |format|
       format.html 
@@ -209,7 +211,7 @@ class PatientsController < ApplicationController
   end
 
   def calculate_invoice_fields
-    @sum_of_credits = @provided_service_summary.sum {|hash| hash[:sum_total_credits]}
+    @sum_of_credits = @salary_line_item_summary.sum {|hash| hash[:sum_total_credits]}
     @bonus_credits = (@sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round
     @total_credits = @bonus_credits.present? ? @sum_of_credits + @bonus_credits : (@sum_of_credits || 0)
     @total_invoiced_inside_insurance_scope = (@total_credits * @corporation.credits_to_jpy_ratio).floor
@@ -220,7 +222,7 @@ class PatientsController < ApplicationController
     @amount_invoiced_to_patient_within_max_budget = @amount_invoiced_within_max_budget - @amount_invoiced_to_insurance_within_max_budget
     @amount_invoiced_exceeding_max_budget = @total_invoiced_inside_insurance_scope - @amount_invoiced_within_max_budget 
     @total_invoiced_to_patient_inside_insurance_scope = @amount_invoiced_to_patient_within_max_budget + @amount_invoiced_exceeding_max_budget
-    @total_invoiced_outside_insurance_scope = @provided_service_summary_without_insurance.sum {|hash| hash[:sum_invoiced_total]} + @cancelled_but_invoiceable_services.sum(:invoiced_total)
+    @total_invoiced_outside_insurance_scope = @salary_line_item_summary_without_insurance.sum {|hash| hash[:sum_invoiced_total]} + @cancelled_but_invoiceable_services.sum(:invoiced_total)
     @total_invoiced_to_patient = @total_invoiced_to_patient_inside_insurance_scope + @total_invoiced_outside_insurance_scope
     @total_sales = @total_invoiced_outside_insurance_scope + @total_invoiced_inside_insurance_scope
   end

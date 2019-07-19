@@ -17,13 +17,13 @@ wb.styles do |s|
 			end
 		end
 
-		@provided_services_count_and_sum_duration_by_nurse.each do |nurse_name, provided_service_hash|
+		@salary_line_items_count_and_sum_duration_by_nurse.each do |nurse_name, salary_line_item_hash|
 			sheet.add_row do |row|
 				row.add_cell nurse_name, style: table_cells
 				@service_hour_based_hash.each do |service_name, hour_based|
-					if provided_service_hash.present?
-						if provided_service_hash[service_name].present?
-							val = hour_based ? provided_service_hash[service_name][:sum_service_duration] : provided_service_hash[service_name][:count]
+					if salary_line_item_hash.present?
+						if salary_line_item_hash[service_name].present?
+							val = hour_based ? salary_line_item_hash[service_name][:sum_service_duration] : salary_line_item_hash[service_name][:count]
 						else 
 							val = 0
 						end

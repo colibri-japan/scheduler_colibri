@@ -29,7 +29,7 @@ wb.styles do |s|
 			start_time = service.appointment_start? ? service.appointment_start.strftime("%H:%M") : ''
 			end_time = service.appointment_start? ? service.appointment_end.strftime("%H:%M") : ''
 			date = service.service_date.strftime("%-d日") + weekday(service.service_date)
-			if service.weekend_holiday_provided_service?
+			if service.weekend_holiday_salary_line_item?
 				if service.service_date.wday == 6
 					date_style = saturday_cell
 				else
@@ -38,12 +38,12 @@ wb.styles do |s|
 			else
 				date_style = table_cells
 			end
-			sheet.add_row [date, "#{service.patient.try(:name)}様", provided_service_title_in_excel(service),  from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:total_wage) ], style: [date_style, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
+			sheet.add_row [date, "#{service.patient.try(:name)}様", salary_line_item_title_in_excel(service),  from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:total_wage) ], style: [date_style, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
 		end
-		@services_from_salary_rules.each do |provided_service|
-			service_duration = provided_service.hour_based_wage ? from_seconds_to_hours_minutes(provided_service.service_duration) : ""
-			date = provided_service.service_date.strftime("%-d日") + weekday(provided_service.service_date)
-			sheet.add_row [date, "", provided_service_title_in_excel(provided_service), service_duration, "", "", provided_service.total_wage ], style: table_cells
+		@services_from_salary_rules.each do |salary_line_item|
+			service_duration = salary_line_item.hour_based_wage ? from_seconds_to_hours_minutes(salary_line_item.service_duration) : ""
+			date = salary_line_item.service_date.strftime("%-d日") + weekday(salary_line_item.service_date)
+			sheet.add_row [date, "", salary_line_item_title_in_excel(salary_line_item), service_duration, "", "", salary_line_item.total_wage ], style: table_cells
 		end
 		sheet.add_row ['','','','','','合計：', @services_from_appointments.sum(:total_wage) + @services_from_salary_rules.sum(:total_wage) || 0], style: [nil, nil, nil, nil, nil, final_wage_title, final_wage]
 		sheet.add_row

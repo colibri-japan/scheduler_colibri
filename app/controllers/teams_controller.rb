@@ -7,8 +7,6 @@ class TeamsController < ApplicationController
         set_main_nurse
         @teams = @corporation.teams.includes(:nurses).where(nurses: {displayable: true})
         @nurses_without_any_team = @corporation.nurses.displayable.where(team_id: nil)
-
-        fresh_when etag: @teams, last_modified: @teams.maximum(:updated_at)
     end
 
     def new 
@@ -53,7 +51,7 @@ class TeamsController < ApplicationController
         @planning = Planning.find(params[:planning_id])
         @team = Team.find(params[:id])
 
-        authorize current_user, :has_access_to_provided_services?
+        authorize current_user, :has_access_to_salary_line_items?
         authorize @planning, :same_corporation_as_current_user?
         authorize @team, :same_corporation_as_current_user?
 
@@ -63,23 +61,25 @@ class TeamsController < ApplicationController
         fetch_nurses_grouped_by_team
         fetch_patients_grouped_by_kana
 
+        
+
     	#appointments : since beginning of month
-        today = Date.today 
-        nurse_ids = @team.nurses.displayable.ids
-        appointments = Appointment.operational.where(planning_id: @planning.id, nurse_id: nurse_ids, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
+        #today = Date.today 
+        #nurse_ids = @team.nurses.displayable.ids
+        #appointments = Appointment.operational.where(planning_id: @planning.id, nurse_id: nurse_ids, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
 
 	    #daily summary
-    	@daily_appointments = appointments.where(starts_at: today.beginning_of_day..today.end_of_day)
-    	@female_patients_ids = @corporation.patients.where(gender: true).ids 
-    	@male_patients_ids = @corporation.patients.where(gender: false).ids
+    	#@daily_appointments = appointments.where(starts_at: today.beginning_of_day..today.end_of_day)
+    	#@female_patients_ids = @corporation.patients.where(gender: true).ids 
+    	#@male_patients_ids = @corporation.patients.where(gender: false).ids
 		
     	#weekly summary, from monday to today
-    	@weekly_appointments = appointments.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day)
+    	#@weekly_appointments = appointments.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day)
 
 		#monthly summary, until end of today
-		@monthly_appointments = appointments
-    	#daily provided_services to be verified
-    	@daily_provided_services = ProvidedService.where(planning_id: @planning.id, nurse_id: nurse_ids, temporary: false, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|provided_service| provided_service.nurse_id}
+		#@monthly_appointments = appointments
+    	#daily salary_line_items to be verified
+    	#@daily_salary_line_items = SalaryLineItem.where(planning_id: @planning.id, nurse_id: nurse_ids, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|salary_line_item| salary_line_item.nurse_id}
     end
 
     def edit

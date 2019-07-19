@@ -67954,7 +67954,7 @@ document.addEventListener('turbolinks:load', function () {
       $('#service_type_filter_content').toggle();
     });
     if ($('#category-subcontainer').length > 0) {
-      $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
+      $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
     }
     $('#confirm-availabilities-print').click(function() {
       var date, text;
@@ -69844,12 +69844,12 @@ let initializeCalendar = () => {
   }
 }
 
-let filterProvidedServiceCategory = () => {
+let filterSalaryLineItemCategory = () => {
   $('#service_type_filter').selectize({
     plugins: ['remove_button']
   })
   $('#refresh-service-types').click(function(){
-    $.getScript('/provided_services_by_category_report/provided_services?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+    $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
   })
 }
 

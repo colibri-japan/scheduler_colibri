@@ -3,7 +3,6 @@ class SendNurseReminderWorker
   sidekiq_options retry: false
 
   def perform(nurse_id, custom_email_days, options={})
-    MemoryProfiler.start
     custom_email_message = options['custom_email_message']
     custom_email_subject = options['custom_email_subject']
     selected_appointments = []
@@ -26,8 +25,7 @@ class SendNurseReminderWorker
     if selected_appointments.present? && @nurse.phone_mail.present?
       NurseMailer.reminder_email(@nurse, selected_appointments, custom_email_days, {custom_email_message: custom_email_message, custom_subject: custom_email_subject}).deliver_now
     end
-    report = MemoryProfiler.stop 
-    report.pretty_print
+
   end
 end
 

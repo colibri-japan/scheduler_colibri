@@ -8,7 +8,7 @@ class Service < ApplicationRecord
   belongs_to :corporation, touch: true
   has_many :appointments
   has_many :recurring_appointments
-  has_many :provided_services
+  has_many :salary_line_items
   belongs_to :nurse, optional: true
   has_many :nurse_service_wages
 
@@ -28,7 +28,7 @@ class Service < ApplicationRecord
   end
 
   def self.delivered_in_range(range)
-    joins('left join provided_services on provided_services.service_salary_id = services.id').joins('left join appointments on provided_services.appointment_id = appointments.id').where(provided_services: {cancelled: false, archived_at: nil, service_date: range}).where(appointments: {edit_requested: false})
+    joins('left join salary_line_items on salary_line_items.service_salary_id = services.id').joins('left join appointments on salary_line_items.appointment_id = appointments.id').where(salary_line_items: {cancelled: false, archived_at: nil, service_date: range}).where(appointments: {edit_requested: false})
   end
 
   private 
@@ -63,7 +63,7 @@ class Service < ApplicationRecord
   def calculate_credits_and_invoice
     if self.saved_change_to_unit_credits? || self.saved_change_to_invoiced_amount?
       puts 'will call worker'
-      ReflectCreditsToProvidedServicesWorker.perform_async(self.id)
+      ReflectCreditsToSalaryLineItemsWorker.perform_async(self.id)
     end
   end
 

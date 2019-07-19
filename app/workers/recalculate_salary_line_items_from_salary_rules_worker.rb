@@ -1,4 +1,4 @@
-class RecalculateProvidedServicesFromSalaryRulesWorker
+class RecalculateSalaryLineItemsFromSalaryRulesWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
@@ -13,16 +13,16 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
     targeted_salary_rules.each do |salary_rule|
         
         targeted_titles = salary_rule.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : salary_rule.service_title_list
-        provided_service_from_rule = ProvidedService.where(nurse_id: nurse_id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_month).first
-        targeted_services = ProvidedService.includes(:appointment).where(nurse_id: nurse_id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).from_appointments.where(appointments: {edit_requested: false}).in_range(start_of_month..end_of_today)
+        salary_line_item_from_rule = SalaryLineItem.where(nurse_id: nurse_id, salary_rule_id: salary_rule.id).in_range(start_of_month..end_of_month).first
+        targeted_services = SalaryLineItem.includes(:appointment).where(nurse_id: nurse_id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).from_appointments.where(appointments: {edit_requested: false}).in_range(start_of_month..end_of_today)
         
         case salary_rule.date_constraint
         when 1
             #holidays
-            targeted_services = targeted_services.where('DATE(provided_services.service_date) IN (?)', HolidayJp.between(start_of_month, end_of_today).map(&:date))
+            targeted_services = targeted_services.where('DATE(salary_line_items.service_date) IN (?)', HolidayJp.between(start_of_month, end_of_today).map(&:date))
         when 2
             #sunday
-            targeted_services = targeted_services.where('EXTRACT(dow from provided_services.service_date) = 0')
+            targeted_services = targeted_services.where('EXTRACT(dow from salary_line_items.service_date) = 0')
         else
         end
         
@@ -33,12 +33,12 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         case salary_rule.target_nurse_by_filter
         when 1
             previous_career_rule = SalaryRule.where(corporation_id: corporation.id, target_nurse_by_filter: 0).first
-            previous_career_bonus = ProvidedService.where(nurse_id: nurse_id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_today).first
+            previous_career_bonus = SalaryLineItem.where(nurse_id: nurse_id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_today).first
             service_counts -= previous_career_bonus.service_counts  unless previous_career_bonus.nil?
             service_duration -= previous_career_bonus.service_duration unless previous_career_bonus.nil?
         when 2
             previous_career_rule = SalaryRule.where(corporation_id: corporation.id, target_nurse_by_filter: 1).first
-            previous_career_bonus = ProvidedService.where(nurse_id: nurse_id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_today).first
+            previous_career_bonus = SalaryLineItem.where(nurse_id: nurse_id, salary_rule_id: previous_career_rule.id).in_range(start_of_month..end_of_today).first
             service_counts -= previous_career_bonus.service_counts unless previous_career_bonus.nil?
             service_duration -= previous_career_bonus.service_duration unless previous_career_bonus.nil?
         else
@@ -58,10 +58,10 @@ class RecalculateProvidedServicesFromSalaryRulesWorker
         end
         
         #creating/updating provided service
-        if provided_service_from_rule.present? 
-            provided_service_from_rule.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, updated_at: Time.current, service_date: end_of_today.beginning_of_day)
+        if salary_line_item_from_rule.present? 
+            salary_line_item_from_rule.update_columns(service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, updated_at: Time.current, service_date: end_of_today.beginning_of_day)
         else
-            ProvidedService.create(nurse_id: nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
+            SalaryLineItem.create(nurse_id: nurse_id, planning_id: corporation.planning.id, salary_rule_id: salary_rule.id, service_date: end_of_today.beginning_of_day, title: salary_rule.title, hour_based_wage: salary_rule.hour_based, total_wage: total_wage, service_duration: service_duration, service_counts: service_counts, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
         end
     end
   end

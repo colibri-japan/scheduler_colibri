@@ -8,16 +8,16 @@ class RecalculatePreviousWagesWorker
     planning_id = updated_service.corporation.planning.id
 
     #if updated_service.equal_salary == true 
-    #    provided_services_to_update = ProvidedService.where(title: updated_service.title, planning_id: planning_id)
+    #    salary_line_items_to_update = SalaryLineItem.where(title: updated_service.title, planning_id: planning_id)
     #else
-    #    provided_services_to_update = ProvidedService.where(title: updated_service.title, planning_id: planning_id, nurse_id: updated_service.nurse_id)
+    #    salary_line_items_to_update = SalaryLineItem.where(title: updated_service.title, planning_id: planning_id, nurse_id: updated_service.nurse_id)
     #end
 
-    provided_services_to_update.find_each do |provided_service|
-      if provided_service.appointment.present?
-          provided_service.unit_cost = provided_service.weekend_holiday_provided_service? ? updated_service.weekend_unit_wage : updated_service.unit_wage
-          provided_service.skip_callbacks_except_calculate_total_wage = true 
-          provided_service.save
+    salary_line_items_to_update.find_each do |salary_line_item|
+      if salary_line_item.appointment.present?
+          salary_line_item.unit_cost = salary_line_item.weekend_holiday_salary_line_item? ? updated_service.weekend_unit_wage : updated_service.unit_wage
+          salary_line_item.skip_callbacks_except_calculate_total_wage = true 
+          salary_line_item.save
       end
     end
   end

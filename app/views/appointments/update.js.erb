@@ -57,10 +57,12 @@ pathname = window.location.pathname;
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
   if (pathname.includes('payable')) {
-    <% if @salary_line_item.present? && @appointment.cancelled && @corporation.detailed_cancellation_options %>
-      $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
-      $('#cancellation_options').modal({backdrop: 'static'});
-      reloadWhenDismissedInPayable()
+    <% if @appointment.cancelled && @corporation.detailed_cancellation_options %>
+      <% if false %>
+        $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
+        $('#cancellation_options').modal({backdrop: 'static'});
+        reloadWhenDismissedInPayable()
+      <% end %>
     <% else %>
       Turbolinks.reload()
     <% end %>
@@ -86,10 +88,12 @@ pathname = window.location.pathname;
       );
     } 
 
-    <% if @salary_line_item.present? && @salary_line_item.cancelled && @corporation.detailed_cancellation_options %>
-      $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
-      $('#cancellation_options').modal('show');
-      reloadWhenDismissedInPayable()
+    <% if @appointment.cancelled && @corporation.detailed_cancellation_options %>
+      <% if false %>
+        $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
+        $('#cancellation_options').modal('show');
+        reloadWhenDismissedInPayable()
+      <% end %>
     <% end %>
 
     <% if @activity.parameters["patient_id"].present? %>

@@ -12,13 +12,13 @@ class Appointment < ApplicationRecord
 	has_one :completion_report, dependent: :destroy
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
+	before_validation :set_title_from_service_title
 	
 	validates :title, presence: true
 	validate :do_not_overlap
 	validate :nurse_patient_and_planning_from_same_corporation
 	
 	before_save :request_edit_if_undefined_nurse
-	before_save :match_title_to_service
 	before_save :set_duration
 	before_save :calculate_credits_invoice_and_wage
 
@@ -122,6 +122,13 @@ class Appointment < ApplicationRecord
 	end
 
 	private
+
+	def reset_verifications
+		self.verified_at = nil 
+		self.verifier_id = nil 
+		self.second_verified_at = nil 
+		self.second_verifier_id = nil
+	end
 	
 	def request_edit_if_undefined_nurse
 		nurse = Nurse.find(self.nurse_id)
@@ -135,14 +142,8 @@ class Appointment < ApplicationRecord
 		end
 	end
 
-	def match_title_to_service
-		first_service = Service.where(title: self.title, corporation_id: self.planning.corporation.id, nurse_id: nil).first
-		if first_service.present?
-			self.service_id = first_service.id
-		else
-			new_service = self.planning.corporation.services.create(title: self.title)
-			self.service_id = new_service.id
-		end
+	def set_title_from_service_title
+		self.title = self.service.try(:title)
 	end
 
 	def set_duration
@@ -152,8 +153,8 @@ class Appointment < ApplicationRecord
 	def calculate_credits_invoice_and_wage
 		self.total_credits = self.service.unit_credits
 		self.total_invoiced = self.service.invoiced_amount
-		if self.service.nurse_services_wages.where(nurse_id: self.nurse_id).present?
-			self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.nurse_services_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)) : (self.service.nurse_services_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
+		if self.service.nurse_service_wages.where(nurse_id: self.nurse_id).present?
+			self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)) : (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
 		else
 			self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.unit_wage || 0)) : self.service.unit_wage
 		end

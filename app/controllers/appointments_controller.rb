@@ -44,7 +44,7 @@ class AppointmentsController < ApplicationController
     @nurses = @corporation.nurses.order_by_kana
     @patients = @corporation.patients.active.order_by_kana
     @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).includes(:owner)
-    @services = @corporation.cached_most_used_services_for_select
+    @services_with_recommendations = @corporation.cached_most_used_services_for_select
     @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end
 
@@ -69,7 +69,6 @@ class AppointmentsController < ApplicationController
     @appointment.recurring_appointment_id = nil
     
     if @appointment.update(appointment_params)      
-      @salary_line_item = @appointment.salary_line_item if @previous_cancelled != appointment_params[:cancelled]
       create_activity_for_update
       recalculate_bonus
     end
@@ -82,7 +81,6 @@ class AppointmentsController < ApplicationController
     @appointment.recurring_appointment_id = nil 
 
     if @appointment.save(validate: !@appointment.cancelled)
-      @salary_line_item = @appointment.salary_line_item
       @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_cancelled: !@appointment.cancelled, patient_name: @appointment.patient.try(:name), nurse_name: @appointment.nurse.try(:name)}
       recalculate_bonus
     end
@@ -242,6 +240,6 @@ class AppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def appointment_params
-      params.require(:appointment).permit(:title, :service_id, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id, :color, :edit_requested, :cancelled)
+      params.require(:appointment).permit(:service_id, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id, :color, :edit_requested, :cancelled)
     end
 end

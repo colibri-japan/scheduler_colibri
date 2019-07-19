@@ -1200,15 +1200,7 @@ let appointmentSelectizeNursePatient = () => {
 }
 
 let appointmentSelectize = () => {
-  $('#appointment_title').selectize({
-    persist: false,
-    create: true,
-    render: {
-      option_create: function (data, escape) {
-        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  });
+  $('#appointment_service_id').selectize()
 }
 
 let skillsSelectize = () => {

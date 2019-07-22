@@ -19,6 +19,34 @@
 		</p>
 	</div>
 
+    <% if current_user.corporation_admin? %>
+        <div id="patient-dashboard" style='display:flex'>
+            <div class="patient-dashboard-panel" style='width:calc(66% - 5px);margin-right:5px'>
+                <div class="patient-dashboard-panel-title">
+                    <%= @selected_month %>月のまとめ
+                </div>
+                <div class="patient-dashboard-panel-body">
+                    サービスによる給与：<%= sum_appointments = @appointments_till_today.sum(:total_wage) || 0 %>¥<br/>
+                    手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
+                    合計：<%= total_wage = sum_salary_line_items + sum_appointments || 0 %>¥<br/>
+                </div>
+            </div>
+            <div  class="patient-dashboard-panel" style="width:34%">
+                <div class="patient-dashboard-panel-title">
+                    <%= @selected_month %>月の書類
+                </div>
+                <div class="patient-dashboard-panel-body">
+                    <table class="table">
+                        <tr>
+                            <td style='width:60%'>給与明細書</td>
+                            <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i>xlsx'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class: 'btn btn-sm btn-success text-white' %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <% end %>
+
 	<% if false %>
 		<div id="payable-charts">
 			<% if  @total_time_pending > 0 %>
@@ -35,14 +63,11 @@
 		</div>
 	<% end %>
 
-	<div id='payable-table-commands'>
+	<div id='payable-table-commands' style='margin-top:20px'>
 	    <div id="add-provided-service-line">
 			<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true %>
 			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_nurse_service_wages_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true if current_user.corporation_admin? %>
 		</div>
-		<% if current_user.corporation_admin? %>
-			<%= link_to '<i class="glyphicon glyphicon-download" style="color:white"></i>  ダウンロード'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class:'excel-download btn btn-colibri-light-gray text-white' %>
-		<% end %>
 	</div>
 
 	<div class="colibri-payable-subtitle">実績.手当詳細</div>
@@ -98,7 +123,7 @@
 				  <div style="display:flex" id='appointment-second-verified-<%= appointment.id %>'>
 				    <div style="display:flex">
 					    <% if appointment.cancelled? %>
-							  <%= link_to '+手当', appointment_new_cancellation_fee_path(salary_line_item), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
+							  <%= link_to '+手当', appointment_new_cancellation_fee_path(appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
 					    <% elsif appointment.edit_requested? %>
 					    <% else %>
 							<% if appointment.second_verified? %>
@@ -123,7 +148,7 @@
 					<td></td>
 					<td></td>
 					<td><span id="total-salary-label" style="font-weight:bold;float:right">実績小計</span></td>
-					<td id="total-salary" style="font-weight:bold"><%= sum_appointments =  @appointments_till_today.sum(:total_wage) || 0 %>¥</td>
+					<td id="total-salary" style="font-weight:bold"><%= sum_appointments %>¥</td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -161,7 +186,7 @@
 				<td></td>
 				<td></td>
 				<td><span style="font-weight:bold;float:right;margin:0">実績.手当合計</span></td>
-				<td style="font-weight:bold"><%= sum_salary_line_items + sum_appointments || 0 %>¥</td>
+				<td style="font-weight:bold"><%= total_wage %>¥</td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -175,7 +200,6 @@
 
 
 	<div class="colibri-payable-subtitle">実績サービスタイプ小計</div>
-	<% if false %>
 	<table class="table" style='margin-bottom:30px'>
 		<thead>
 			<tr>
@@ -188,26 +212,24 @@
 			</tr>
 		</thead>
 		<tbody class="text-not-bold">
-			<% @grouped_services.each do |service_group| %>
+			<% @grouped_appointments.each do |appointment_group| %>
 				<tr>
-					<td><%= service_group.title %></td>
-					<td><%= from_seconds_to_hours_minutes(service_group.sum_duration) if service_group.sum_duration > 0 %></td>
-					<td><%= service_group.count %></td>
+					<td><%= appointment_group.title %></td>
+					<td><%= from_seconds_to_hours_minutes(appointment_group.sum_duration) if appointment_group.sum_duration > 0 %></td>
+					<td><%= appointment_group.count %></td>
 					<% if current_user.corporation_admin? %>
-						<td><%= service_group.sum_total_wage %>¥</td>
+						<td><%= appointment_group.sum_total_wage %>¥</td>
 					<% end %>
 				</tr>
 			<% end %>
 			<tr>
 				<td>実績小計</td>
-				<td><%= from_seconds_to_hours_minutes(@grouped_services_sum_duration) if @grouped_services_sum_duration > 0 %></td>
-				<td><%= @grouped_services_sum_count %></td>
+				<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 })  %></td>
+				<td><%= @grouped_appointments.sum {|group| group.count || 0 } %></td>
 				<% if current_user.corporation_admin? %>
-					<td><span style="font-weight:bold"><%= @grouped_services_sum_total_wage %>¥</span></td>
+					<td><span style="font-weight:bold"><%= @grouped_appointments.sum {|group| group.sum_total_wage || 0 } %>¥</span></td>
 				<% end %>
 			</tr>
 		</tbody>
 	</table>
-	<% end %>
-	
 </div>

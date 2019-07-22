@@ -7,7 +7,7 @@ module SalaryRulesHelper
         salary_rule.target_all_services ? '全サービスタイプ' : '指定のサービスタイプ'
     end
 
-    def salary_calculation(salary_rule_operator)
-        "#{salary_rule_operator == 0 ? '+ ' : 'x ' }#{salary_rule_operator == 0 ? salary_rule.argument.to_i : salary_rule.argument}¥#{salary_rule.hour_based ? ' /時' : ' /回'}"
+    def salary_calculation(salary_rule)
+        "#{salary_rule.operator == 0 ? '+ ' : 'x ' }#{salary_rule.operator == 0 ? salary_rule.argument.to_i : salary_rule.argument}¥#{salary_rule.hour_based ? ' /時' : ' /回'}"
     end
 end

@@ -121,28 +121,24 @@ class NursesController < ApplicationController
     fetch_nurses_grouped_by_team
     fetch_patients_grouped_by_kana
 
+    set_sort_direction
+
     first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0).beginning_of_month
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
     end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
 
-    @appointments_till_today = @nurse.appointments.not_archived.includes(:patient).in_range(first_day..end_of_today_in_japan)
+    @appointments_till_today = @nurse.appointments.not_archived.includes(:patient).in_range(first_day..end_of_today_in_japan).order("starts_at #{@sort_direction}")
     @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan)
     @unverified_services_count = @appointments_till_today.operational.unverified.count
 
+    @grouped_appointments = @nurse.appointments.not_archived.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
     #reporting section that needs update
     
     #@appointments_till_today = @nurse.appointments.not_archived.includes(:patient).where(planning_id: @planning.id).in_range(first_day..end_of_today_in_japan)
     #@appointments_from_today = @nurse.appointments.not_archived.includes(:patient).where(planning_id: @planning.id).in_range(end_of_today_in_japan..last_day).order(starts_at: 'asc')
-    #calculate_total_wage
-
-    #set_sort_direction
-    #@services_from_salary_rules = @services_till_today.from_salary_rules.order(service_date: 'asc')
-    #@services_from_appointments = @services_till_today.from_appointments.order("service_date #{@sort_direction}")
-
 
     #@total_days_worked = [[@services_till_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq] + [@services_till_today.from_salary_rules.where(salary_rule_id: nil).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq]].flatten.uniq.count
     
-    #group_services_till_now_by_title
     #fetch_time_worked_vs_time_pending
 
     respond_to do |format|
@@ -211,19 +207,6 @@ class NursesController < ApplicationController
 
   def nurse_params
     params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :custom_email_message, skill_list:[], custom_email_days: [])
-  end
-
-  def calculate_total_wage
-    @total_till_today = @appointments_till_today.sum(:total_wage) || 0
-    @total_from_today = @appointments_from_today.sum(:total_wage) || 0
-  end
-
-  def group_services_till_now_by_title
-    countable_services = @services_till_today.where(appointments: {edit_requested: false, cancelled: false})
-    @grouped_services = SalaryLineItem.where(id: countable_services.ids).order(:title).group(:title).select('title, sum(service_duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
-    @grouped_services_sum_duration = countable_services.sum(:service_duration)
-    @grouped_services_sum_count = countable_services.count
-    @grouped_services_sum_total_wage = countable_services.sum(:total_wage)
   end
 
   def fetch_time_worked_vs_time_pending

@@ -4,18 +4,15 @@ class SalaryLineItem < ApplicationRecord
 	belongs_to :nurse
 	belongs_to :patient, optional: true
 	belongs_to :planning
-	belongs_to :verifier, class_name: 'User', optional: true
-	belongs_to :second_verifier, class_name: 'User', optional: true
 	belongs_to :salary_rule, optional: true
 
 	before_save :set_default_service_counts
-	before_update :reset_verifications, unless: :verifying_salary_line_item
 
 	scope :is_verified, -> { where.not(verified_at: nil) }
 	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('service_date BETWEEN ? AND ?', range.first, range.last) }
-	scope :from_salary_rules, -> { where('salary_rule_id IS NOT NULL') }
+	scope :not_from_appointments, -> { where('appointment_id IS NULL') }
 
 	def self.to_csv(options = {})
 		CSV.generate(options) do |csv|
@@ -30,13 +27,6 @@ class SalaryLineItem < ApplicationRecord
 		!self.service_date.on_weekday? || HolidayJp.between(self.service_date.beginning_of_day, self.service_date.end_of_day).present? ? true : false
 	end
 
-	def verified?
-		verified_at.present?
-	end
-
-	def second_verified?
-		second_verified_at.present? 
-	end
 
 	def verify(user_id)
 		verified_at = Time.current
@@ -46,30 +36,6 @@ class SalaryLineItem < ApplicationRecord
 	def second_verify(user_id)
 		second_verified_at = Time.current 
 		second_verified_id = user_id 
-	end
-
-	def toggle_second_verified!(user_id)
-		if second_verified? 
-			update_column(:second_verified_at, nil)
-			update_column(:second_verifier_id, nil)
-		else
-			update_column(:second_verified_at, Time.current)
-			update_column(:second_verifier_id, user_id)		
-		end
-	end	
-
-	def toggle_verified!(user_id)
-		if verified? 
-			update_column(:verified_at, nil)
-			update_column(:verifier_id, nil)
-		else
-			update_column(:verified_at, Time.current)
-			update_column(:verifier_id, user_id)
-		end
-	end
-
-	def verifying_salary_line_item
-		will_save_change_to_verified_at? || will_save_change_to_second_verified_at?
 	end
 
 	def archived?

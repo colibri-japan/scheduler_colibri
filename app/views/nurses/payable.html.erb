@@ -47,7 +47,7 @@
 
 	<div class="colibri-payable-subtitle">実績.手当詳細</div>
 
-	<% if false %>
+
 	<table class="table">
 		<thead>
 			<tr>
@@ -57,74 +57,63 @@
 				<th style="width:10%">提供時間</th>
 				<th style="width:10%">開始~終了</th>
 				<% if current_user.corporation_admin? %>
-					<th style="width:11%">時給/単価</th>
-				<% end %>
-				<% if current_user.corporation_admin? %>
 					<th style="width:8%">計</th>
 				<% end %>
-				<th style="width:18%" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @services_from_appointments.count %></span></th>
+				<th style="width:18%" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @appointments_till_today.size %></span></th>
 				<th style="width:8%">編集</th>
 			</tr>
 			
 		</thead>
 
 		<tbody>
-			<% @services_from_appointments.each do |salary_line_item| %>
+			<% @appointments_till_today.each do |appointment| %>
 			<tr>
-				<td class="<%= weekend_holiday_salary_line_item_css(salary_line_item) if salary_line_item.weekend_holiday_salary_line_item? %>"><%= salary_line_item.service_date.strftime("%-m月%-d日") + ' ' + weekday(salary_line_item.service_date) %></td>
-				<td><%= salary_line_item_title_with_counts(salary_line_item) %></td>
-				<td><%= salary_line_item.patient.try(:name) %> </td>
-				<td><%= from_seconds_to_hours_minutes(salary_line_item.service_duration) if salary_line_item.service_duration.present? %></td>
-				<td><%= "#{salary_line_item.appointment_start.strftime('%H:%M')}~#{salary_line_item.appointment_end.strftime('%H:%M')}"  if salary_line_item.appointment_start.present? && salary_line_item.appointment_end.present? %></td>
+				<td class="<%= weekend_holiday_appointment_css(appointment) if appointment.weekend_holiday_appointment? %>"><%= appointment.starts_at.strftime("%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
+				<td><%= appointment.title %></td>
+				<td><%= appointment.patient.try(:name) %> </td>
+				<td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
+				<td><%= "#{appointment.starts_at.try(:strftime,'%H:%M')}~#{appointment.ends_at.try(:strftime,'%H:%M')}"  %></td>
 				<% if current_user.corporation_admin? %>
-					<td><%= "#{salary_line_item.unit_cost}¥" %></td>
-				<% end %>
-				<% if current_user.corporation_admin? %>
-					<td id="service-total-<%= salary_line_item.id %>"><%= "#{salary_line_item.total_wage}¥" %></td>
+					<td id="service-total-<%= appointment.id %>"><%= "#{appointment.total_wage}¥" %></td>
 				<% end %>
         		<td style="width:9%">
-				  <div style="display:flex" id='provided-service-<%= salary_line_item.id %>'>
-				    <div class='<%= 'cancelled-provided-service' if salary_line_item.cancelled == true %> <%= 'edit-requested-provided-service' if salary_line_item.appointment.present? && salary_line_item.appointment.edit_requested == true %>' style="display:flex">
-					    <% if salary_line_item.cancelled == true %>
+				  <div style="display:flex" id='appointment-<%= appointment.id %>'>
+				    <div class='<%= 'cancelled-provided-service' if appointment.cancelled? %> <%= 'edit-requested-provided-service' if appointment.edit_requested? %>' style="display:flex">
+					    <% if appointment.cancelled? %>
 					    	<span>キャンセル</span>
-					    <% elsif salary_line_item.appointment.present? && salary_line_item.appointment.edit_requested == true %>
+					    <% elsif appointment.edit_requested? %>
 					    	<span>調整中</span>
 					    <% else %>
-							<% if salary_line_item.verified? %>
+							<% if appointment.verified? %>
 							<div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-							<%= link_to "#{salary_line_item.verifier.try(:name)} #{salary_line_item.try(:verified_at).strftime('%y/%m/%d')}", toggle_verified_salary_line_item_path(salary_line_item), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+							<%= link_to "#{appointment.verifier.try(:name)} #{appointment.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
 							<% else %>
-							<%= link_to '確認１', toggle_verified_salary_line_item_path(salary_line_item), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !salary_line_item.verified? %>
+							<%= link_to '確認１', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.verified? %>
 							<% end %>
 					    <% end %>
 				    </div>
 				  </div>
         		</td>
 				<td style='width:9%'>
-				  <div style="display:flex" id='provided-service-second-verified-<%= salary_line_item.id %>'>
+				  <div style="display:flex" id='appointment-second-verified-<%= appointment.id %>'>
 				    <div style="display:flex">
-					    <% if salary_line_item.cancelled == true %>
-							  <%= link_to '+手当', salary_line_item_new_cancellation_fee_path(salary_line_item), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
-					    <% elsif salary_line_item.appointment.present? && salary_line_item.appointment.edit_requested == true %>
+					    <% if appointment.cancelled? %>
+							  <%= link_to '+手当', appointment_new_cancellation_fee_path(salary_line_item), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
+					    <% elsif appointment.edit_requested? %>
 					    <% else %>
-							<% if salary_line_item.second_verified? %>
-							<div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-							<%= link_to "#{salary_line_item.second_verifier.try(:name)}#{salary_line_item.try(:second_verified_at).strftime('%y/%m/%d')}", toggle_second_verified_salary_line_item_path(salary_line_item), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+							<% if appointment.second_verified? %>
+								<div><span class='glyphicon glyphicon-check' style="color: #42B97C"></span></div>
+								<%= link_to "#{appointment.second_verifier.try(:name)}#{appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
 							<% else %>
-							<%= link_to '確認２', toggle_second_verified_salary_line_item_path(salary_line_item), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !salary_line_item.second_verified? %>
+								<%= link_to '確認２', toggle_second_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.second_verified? %>
 							<% end %>
 					    <% end %>
 				    </div>
 				  </div>
 				</td>
 				<td>
-					<% if salary_line_item.appointment.present? %>
-						<%= link_to '編集', edit_planning_appointment_path(@planning, salary_line_item.appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
-					<% else %>
-						<%= link_to '編集', edit_nurse_salary_line_item_path(@nurse, salary_line_item, params: {planning_id: @planning.id}), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
-					<% end %>
+					<%= link_to '編集', edit_planning_appointment_path(@planning, appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
 				</td>
-
 			</tr>
 			<% end %>
 			<% if current_user.corporation_admin? %>
@@ -133,9 +122,8 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td></td>
 					<td><span id="total-salary-label" style="font-weight:bold;float:right">実績小計</span></td>
-					<td id="total-salary" style="font-weight:bold"><%= @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
+					<td id="total-salary" style="font-weight:bold"><%= sum_appointments =  @appointments_till_today.sum(:total_wage) || 0 %>¥</td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -143,18 +131,17 @@
 			<% end %>
 
 		<% if current_user.corporation_admin? %>
-			<% @services_from_salary_rules.each do |salary_line_item| %>
+			<% @salary_line_items.each do |salary_line_item| %>
 				<tr>
 					<td><%= salary_line_item.service_date.strftime("%-m月%-d日") %></td>
-					<td><%= salary_line_item.hour_based_wage ? salary_line_item.title : salary_line_item_title_with_counts(salary_line_item) %></td>
+					<td><%= salary_line_item_title_with_counts(salary_line_item) %></td>
 					<td></td>
-					<td><%= from_seconds_to_hours_minutes(salary_line_item.service_duration) if salary_line_item.hour_based_wage %></td>
-					<td></td>
+					<td><%= from_seconds_to_hours_minutes(salary_line_item.service_duration) %></td>
 					<td><%= salary_calculation(salary_line_item.salary_rule) if salary_line_item.salary_rule.present? %></td>
 					<td><%= "#{salary_line_item.total_wage}¥" %></td>
 					<td></td>
 					<td></td>
-					<td><%= link_to '編集', edit_nurse_salary_line_item_path(@nurse, salary_line_item), remote: true, class: 'btn btn-sm btn-secondary' unless salary_line_item.salary_rule.present? %></td>
+					<td><%= link_to '編集', edit_nurse_salary_line_item_path(@nurse, salary_line_item), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' unless salary_line_item.salary_rule.present? %></td>
 				</tr>
 			<% end %>
 			<tr>
@@ -162,9 +149,8 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td></td>
 				<td><span style="font-weight:bold;float:right">手当小計</span></td>
-				<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) ||0 %>¥</td>
+				<td style="font-weight:bold"><%= sum_salary_line_items =  @salary_line_items.sum(:total_wage) ||0 %>¥</td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -174,9 +160,8 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td></td>
 				<td><span style="font-weight:bold;float:right;margin:0">実績.手当合計</span></td>
-				<td style="font-weight:bold"><%= @services_from_salary_rules.sum(:total_wage) + @services_from_appointments.sum(:total_wage) || 0 %>¥</td>
+				<td style="font-weight:bold"><%= sum_salary_line_items + sum_appointments || 0 %>¥</td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -186,7 +171,7 @@
 		</tbody>
 		
 	</table>
-	<% end %>
+
 
 
 	<div class="colibri-payable-subtitle">実績サービスタイプ小計</div>

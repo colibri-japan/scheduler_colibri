@@ -1,5 +1,0 @@
-<% if @salary_line_item.second_verified? %>
-    $('#provided-service-second-verified-<%= @salary_line_item.id %>').html('<div><span class="glyphicon glyphicon-check"  style="color: #42B97C"></span></div><%= link_to "#{@salary_line_item.second_verifier.try(:name)} #{@salary_line_item.try(:second_verified_at).strftime('%y/%m/%d')}", toggle_second_verified_salary_line_item_path(@salary_line_item), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>')
-<% else %>
-    $('#provided-service-second-verified-<%= @salary_line_item.id %>').html('<%= link_to "確認２", toggle_second_verified_salary_line_item_path(@salary_line_item), method: :patch, remote: :true, class: "btn btn-success btn-sm" %>')
-<% end %>

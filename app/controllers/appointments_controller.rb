@@ -1,7 +1,7 @@
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: [:show, :edit, :archive, :toggle_cancelled, :toggle_edit_requested]
+  before_action :set_appointment, only: [:show, :edit, :archive, :toggle_verified, :new_cancellation_fee, :toggle_second_verified, :toggle_cancelled, :toggle_edit_requested]
   before_action :set_corporation
-  before_action :set_planning, except: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit, :batch_archive_confirm, :batch_cancel_confirm, :batch_request_edit_confirm]
+  before_action :set_planning, except: [:new_batch_archive, :new_batch_cancel, :new_cancellation_fee, :new_batch_request_edit, :batch_archive_confirm, :batch_cancel_confirm, :batch_request_edit_confirm]
   before_action :new_batch_action, only: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit]
   before_action :confirm_batch_action, only: [:batch_cancel_confirm, :batch_archive_confirm, :batch_request_edit_confirm]
 
@@ -74,6 +74,14 @@ class AppointmentsController < ApplicationController
     end
   end
 
+	def toggle_verified
+		@appointment.toggle_verified!(current_user.id)
+	end
+
+	def toggle_second_verified
+		@appointment.toggle_second_verified!(current_user.id)
+	end
+
   def toggle_cancelled
     authorize @planning, :same_corporation_as_current_user?
 
@@ -110,6 +118,8 @@ class AppointmentsController < ApplicationController
     end
   end
 
+	def new_cancellation_fee
+	end
 
   def new_batch_archive
   end
@@ -240,6 +250,6 @@ class AppointmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def appointment_params
-      params.require(:appointment).permit(:service_id, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id, :color, :edit_requested, :cancelled)
+      params.require(:appointment).permit(:service_id, :description, :starts_at, :ends_at, :nurse_id, :patient_id, :planning_id, :color, :edit_requested, :cancelled, :skip_credits_invoice_and_wage_calculations, :total_wage, :total_invoiced)
     end
 end

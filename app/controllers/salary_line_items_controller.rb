@@ -1,13 +1,12 @@
 class SalaryLineItemsController < ApplicationController
 	before_action :set_salary_line_item, except: [:create, :salary_line_items_by_category_report]
-	before_action :set_nurse, except: [:destroy, :toggle_verified, :toggle_second_verified, :new_cancellation_fee, :salary_line_items_by_category_report]
+	before_action :set_nurse, except: [:destroy, :salary_line_items_by_category_report]
 
 
 	def create
 		@salary_line_item = SalaryLineItem.new(salary_line_item_params)
 		@salary_line_item.nurse_id = params[:nurse_id]
 		@salary_line_item.planning_id = current_user.corporation.planning.id
-		@salary_line_item.skip_wage_credits_and_invoice_calculations = true
 
 		if @salary_line_item.save
 		  redirect_back fallback_location: authenticated_root_path, notice: "新規手当がセーブされました"
@@ -34,17 +33,6 @@ class SalaryLineItemsController < ApplicationController
 		if @salary_line_item.delete
 			redirect_back fallback_location: authenticated_root_path, notice: '実績が削除されました'
 		end
-	end
-
-	def toggle_verified
-		@salary_line_item.toggle_verified!(current_user.id)
-	end
-
-	def toggle_second_verified
-		@salary_line_item.toggle_second_verified!(current_user.id)
-	end
-
-	def new_cancellation_fee
 	end
 
 	def salary_line_items_by_category_report

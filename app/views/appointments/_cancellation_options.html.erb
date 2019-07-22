@@ -6,12 +6,12 @@
 				<button type="button" class="close">&times;</button>
 			</div>
 
-            <%= form_with model: @salary_line_item do |form| %>
+            <%= form_with model: @appointment do |form| %>
 
                 <div class="modal-body">
                     <div class="form-group">
-                        <%= form.label :invoiced_total, "請求額" %>
-                        <%= form.number_field :invoiced_total, {step: 1, class: 'form-control'} %>
+                        <%= form.label :total_invoiced, "請求額" %>
+                        <%= form.number_field :total_invoiced, {step: 1, class: 'form-control'} %>
                     </div>
 
                     <div class="form-group">
@@ -19,7 +19,7 @@
                         <%= form.number_field :total_wage, {step: 1, class: 'form-control'} %>
                     </div>
 
-                    <%= form.hidden_field :skip_wage_credits_and_invoice_calculations, value: true %>
+                    <%= form.hidden_field :skip_credits_invoice_and_wage_calculations, value: true %>
                 </div>
 
                 <div class="modal-footer">

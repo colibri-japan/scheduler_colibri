@@ -12,14 +12,6 @@ module SalaryLineItemsHelper
         end
     end
 
-    def weekend_holiday_salary_line_item_css(salary_line_item)
-        if HolidayJp.between(salary_line_item.service_date.beginning_of_day, salary_line_item.service_date.end_of_day).present? || salary_line_item.service_date.wday == 0
-            "sunday-holiday-provided-service"
-        elsif salary_line_item.service_date.wday == 6
-            "saturday-provided-service"
-        end
-    end
-
     def sort_link(sort_direction)
         direction = sort_direction == "asc" ? "desc" : "asc"
         icon = sort_direction == "asc" ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"

@@ -2,6 +2,7 @@ class Appointment < ApplicationRecord
 	include PublicActivity::Common
 
 	attribute :should_request_edit_for_overlapping_appointments, :boolean 
+	attribute :skip_credits_invoice_and_wage_calculations, :boolean 
 
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
@@ -9,6 +10,8 @@ class Appointment < ApplicationRecord
 	belongs_to :original, class_name: 'Appointment', optional: true
 	belongs_to :recurring_appointment, optional: true
 	belongs_to :service
+	belongs_to :verifier, class_name: 'User', optional: true
+	belongs_to :second_verifier, class_name: 'User', optional: true
 	has_one :completion_report, dependent: :destroy
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
@@ -20,7 +23,7 @@ class Appointment < ApplicationRecord
 	
 	before_save :request_edit_if_undefined_nurse
 	before_save :set_duration
-	before_save :calculate_credits_invoice_and_wage
+	before_save :calculate_credits_invoice_and_wage, unless: :skip_credits_invoice_and_wage_calculations
 
 	before_update :reset_verifications, unless: :verifying_appointment
 
@@ -31,6 +34,7 @@ class Appointment < ApplicationRecord
     scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
 	scope :commented, -> { where.not(description: ['', nil]) }
 	scope :in_range, -> range { where(starts_at: range) }
+	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
 
 	def all_day_appointment?
 		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
@@ -77,6 +81,34 @@ class Appointment < ApplicationRecord
 			"/plannings/#{self.planning_id}/recurring_appointments/#{self.recurring_appointment_id}/edit"
 		else 
 			''
+		end
+	end
+
+	def verified?
+		verified_at.present?
+	end
+
+	def second_verified?
+		second_verified_at.present? 
+	end
+
+	def toggle_second_verified!(user_id)
+		if second_verified? 
+			update_column(:second_verified_at, nil)
+			update_column(:second_verifier_id, nil)
+		else
+			update_column(:second_verified_at, Time.current)
+			update_column(:second_verifier_id, user_id)		
+		end
+	end	
+
+	def toggle_verified!(user_id)
+		if verified? 
+			update_column(:verified_at, nil)
+			update_column(:verifier_id, nil)
+		else
+			update_column(:verified_at, Time.current)
+			update_column(:verifier_id, user_id)
 		end
 	end
 

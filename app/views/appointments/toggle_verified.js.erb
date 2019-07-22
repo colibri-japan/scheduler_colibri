@@ -1,0 +1,5 @@
+<% if @appointment.verified? %>
+    $('#appointment-<%= @appointment.id %>').html('<div><span class="glyphicon glyphicon-check"  style="color: #42B97C"></span></div><%= link_to "#{@appointment.verifier.try(:name)} #{@appointment.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(@appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>')
+<% else %>
+    $('#appointment-<%= @appointment.id %>').html('<%= link_to "確認１", toggle_verified_appointment_path(@appointment), method: :patch, remote: :true, class: "btn btn-success btn-sm" %>')
+<% end %>

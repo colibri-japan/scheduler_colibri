@@ -89,9 +89,6 @@ Rails.application.routes.draw do
   patch 'users/:id/update_role' => 'users#update_role', as: :update_user_role
   
   #custom routes for salary line items
-  patch 'salary_line_items/:id/toggle_verified' => 'salary_line_items#toggle_verified', as: :toggle_verified_salary_line_item
-  patch 'salary_line_items/:id/toggle_second_verified' => 'salary_line_items#toggle_second_verified', as: :toggle_second_verified_salary_line_item
-  get 'salary_line_items/:id/new_cancellation_fee' => 'salary_line_items#new_cancellation_fee', as: :salary_line_item_new_cancellation_fee
   get 'salary_line_items_by_category_report/salary_line_items' => 'salary_line_items#salary_line_items_by_category_report', as: :salary_line_items_by_category_report
 
   #custom routes for nurses
@@ -140,7 +137,11 @@ Rails.application.routes.draw do
   get 'new_batch_request_edit/appointments' => 'appointments#new_batch_request_edit', as: :new_appointments_batch_request_edit
   get 'batch_request_edit_confirm/appointments' => 'appointments#batch_request_edit_confirm', as: :appointments_batch_request_edit_confirm
   patch 'batch_request_edit/appointments' => 'appointments#batch_request_edit', as: :appointments_batch_request_edit 
-  
+  patch 'appointments/:id/toggle_verified' => 'appointments#toggle_verified', as: :toggle_verified_appointment
+  patch 'appointments/:id/toggle_second_verified' => 'appointments#toggle_second_verified', as: :toggle_second_verified_appointment
+  get 'appointments/:id/new_cancellation_fee' => 'appointments#new_cancellation_fee', as: :appointment_new_cancellation_fee
+
+
   #custom routes for recurring_appointments
   patch 'planning/:planning_id/recurring_appointments/:id/archive' => 'recurring_appointments#archive', as: :planning_recurring_appointment_archive
   patch 'plannings/:planning_id/recurring_appointments/:id/terminate' => 'recurring_appointments#terminate', as: :planning_recurring_appointment_terminate 

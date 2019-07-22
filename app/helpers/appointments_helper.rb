@@ -32,4 +32,13 @@ module AppointmentsHelper
         appointment.completion_report.present? ? "実施記録へ" :  "+実施記録"
     end
 
+    
+    def weekend_holiday_appointment_css(appointment)
+        if HolidayJp.between(appointment.starts_at.beginning_of_day, appointment.ends_at.end_of_day).present? || appointment.starts_at.wday == 0
+            "sunday-holiday-provided-service"
+        elsif appointment.starts_at.wday == 6
+            "saturday-provided-service"
+        end
+    end
+
 end

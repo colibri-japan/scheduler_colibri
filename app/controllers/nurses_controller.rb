@@ -125,6 +125,10 @@ class NursesController < ApplicationController
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
     end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
 
+    @appointments_till_today = @nurse.appointments.not_archived.includes(:patient).in_range(first_day..end_of_today_in_japan)
+    @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan)
+    @unverified_services_count = @appointments_till_today.operational.unverified.count
+
     #reporting section that needs update
     
     #@appointments_till_today = @nurse.appointments.not_archived.includes(:patient).where(planning_id: @planning.id).in_range(first_day..end_of_today_in_japan)
@@ -135,7 +139,6 @@ class NursesController < ApplicationController
     #@services_from_salary_rules = @services_till_today.from_salary_rules.order(service_date: 'asc')
     #@services_from_appointments = @services_till_today.from_appointments.order("service_date #{@sort_direction}")
 
-    #@unverified_services_count = @services_from_appointments.where(appointments: {edit_requested: false}).where(cancelled: false, archived_at: nil).unverified.count
 
     #@total_days_worked = [[@services_till_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq] + [@services_till_today.from_salary_rules.where(salary_rule_id: nil).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq]].flatten.uniq.count
     

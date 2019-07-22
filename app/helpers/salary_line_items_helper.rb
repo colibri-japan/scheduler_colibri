@@ -4,14 +4,6 @@ module SalaryLineItemsHelper
         salary_line_item.service_counts == 1 ?  salary_line_item.try(:title) : "#{salary_line_item.try(:title)}(x#{salary_line_item.service_counts})"
     end
 
-    def salary_line_item_title_in_excel(salary_line_item)
-        if salary_line_item.cancelled == true 
-            "#{salary_line_item.try(:title)} (キャンセル)"
-        else
-            salary_line_item.service_counts == 1 ?  salary_line_item.try(:title) : "#{salary_line_item.try(:title)}(x#{salary_line_item.service_counts})"
-        end
-    end
-
     def sort_link(sort_direction)
         direction = sort_direction == "asc" ? "desc" : "asc"
         icon = sort_direction == "asc" ? "glyphicon glyphicon-chevron-up" : "glyphicon glyphicon-chevron-down"

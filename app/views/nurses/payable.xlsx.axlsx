@@ -25,27 +25,19 @@ wb.styles do |s|
 		sheet.merge_cells "F4:G4"
 		sheet.add_row
 		sheet.add_row ['日付', '利用者名','サービスタイプ',  '稼働時間', '開始', '終了',  '計'], style: table_header
-		@services_from_appointments.each do |service|
-			start_time = service.appointment_start? ? service.appointment_start.strftime("%H:%M") : ''
-			end_time = service.appointment_start? ? service.appointment_end.strftime("%H:%M") : ''
-			date = service.service_date.strftime("%-d日") + weekday(service.service_date)
-			if service.weekend_holiday_salary_line_item?
-				if service.service_date.wday == 6
-					date_style = saturday_cell
-				else
-					date_style = sunday_holiday_cell
-				end
+		@appointments_till_today.each do |appointment|
+			if appointment.weekend_holiday_appointment?
+				date_style = appointment.starts_at.wday == 6 ? saturday_cell : sunday_holiday_cell
 			else
 				date_style = table_cells
 			end
-			sheet.add_row [date, "#{service.patient.try(:name)}様", salary_line_item_title_in_excel(service),  from_seconds_to_hours_minutes(service.service_duration), start_time, end_time,  service.try(:total_wage) ], style: [date_style, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
+			sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", "#{appointment.patient.try(:name)}様", appointment_title_in_excel(appointment),  from_seconds_to_hours_minutes(appointment.duration), appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"),  appointment.try(:total_wage) ], style: [date_style, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
 		end
-		@services_from_salary_rules.each do |salary_line_item|
-			service_duration = salary_line_item.hour_based_wage ? from_seconds_to_hours_minutes(salary_line_item.service_duration) : ""
-			date = salary_line_item.service_date.strftime("%-d日") + weekday(salary_line_item.service_date)
-			sheet.add_row [date, "", salary_line_item_title_in_excel(salary_line_item), service_duration, "", "", salary_line_item.total_wage ], style: table_cells
+		@salary_line_items.each do |salary_line_item|
+			sheet.add_row ["#{salary_line_item.service_date.try(:strftime,'%-d日')} #{weekday(salary_line_item.service_date)}", "", salary_line_item_title_with_counts(salary_line_item), from_seconds_to_hours_minutes(salary_line_item.try(:service_duration)), "", "", salary_line_item.try(:total_wage)], style: table_cells
 		end
-		sheet.add_row ['','','','','','合計：', @services_from_appointments.sum(:total_wage) + @services_from_salary_rules.sum(:total_wage) || 0], style: [nil, nil, nil, nil, nil, final_wage_title, final_wage]
+		
+		sheet.add_row ['','','','','','合計：', @appointments_till_today.sum(:total_wage) + @salary_line_items.sum(:total_wage) || 0], style: [nil, nil, nil, nil, nil, final_wage_title, final_wage]
 		sheet.add_row
 		sheet.add_row ['', '', '', '', '', '計稼働日数', @total_days_worked], style: [nil, nil, nil, nil, nil, table_cells, table_cells]
 		sheet.add_row ['', '', '', '', '', '計稼働時間', from_seconds_to_hours_minutes(@total_time_worked)], style: [nil, nil, nil, nil, nil, table_cells, align_right_cell]

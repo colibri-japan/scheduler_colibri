@@ -137,9 +137,8 @@ class NursesController < ApplicationController
     #@appointments_till_today = @nurse.appointments.not_archived.includes(:patient).where(planning_id: @planning.id).in_range(first_day..end_of_today_in_japan)
     #@appointments_from_today = @nurse.appointments.not_archived.includes(:patient).where(planning_id: @planning.id).in_range(end_of_today_in_japan..last_day).order(starts_at: 'asc')
 
-    #@total_days_worked = [[@services_till_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq] + [@services_till_today.from_salary_rules.where(salary_rule_id: nil).pluck(:service_date).map{|e| e.strftime('%m-%d')}.uniq]].flatten.uniq.count
-    
-    #fetch_time_worked_vs_time_pending
+    @total_days_worked = [@appointments_till_today.operational.pluck(:starts_at).map{|e| e.strftime('%m-%d')}].uniq.length
+    @total_time_worked = @appointments_till_today.operational.sum(:duration) || 0    
 
     respond_to do |format|
       format.html
@@ -208,12 +207,6 @@ class NursesController < ApplicationController
   def nurse_params
     params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :custom_email_message, skill_list:[], custom_email_days: [])
   end
-
-  def fetch_time_worked_vs_time_pending
-    @total_time_worked = @services_till_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).sum(:service_duration) || 0
-    @total_time_pending =  @services_from_today.from_appointments.where(appointments: {edit_requested: false, cancelled: false}).sum(:service_duration) || 0
-  end
-
 
   def set_printing_option
     @printing_option = @corporation.printing_option

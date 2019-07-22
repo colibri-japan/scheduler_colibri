@@ -71,14 +71,14 @@ wb.styles do |s|
         sheet.merge_cells summary_row.cells[(7..8)]
 
 
-        @salary_line_item_summary.each do |service_hash|
-            service_row = sheet.add_row [service_hash[:official_title], '', '', service_hash[:unit_credits], service_hash[:count], service_hash[:sum_total_credits], '', '', '', ''], style: table_cells
+        @appointments_summary.each do |appointment_hash|
+            service_row = sheet.add_row [appointment_hash[:official_title], '', '', appointment_hash[:unit_credits], appointment_hash[:count], appointment_hash[:sum_total_credits], '', '', '', ''], style: table_cells
             sheet.merge_cells service_row.cells[(0..2)]
             sheet.merge_cells service_row.cells[(5..6)]
             sheet.merge_cells service_row.cells[(7..8)]
         end
 
-        if @salary_line_item_summary.count > 0 && @corporation.invoicing_bonus_ratio.present?
+        if @appointments_summary.count > 0 && @corporation.invoicing_bonus_ratio.present?
             bonus_row = sheet.add_row [corporation_bonus_official_text(@corporation), '', '', '', 1, @bonus_credits, '', '', '', ''], style: table_cells
             sheet.merge_cells bonus_row.cells[(0..2)]
             sheet.merge_cells bonus_row.cells[(5..6)]
@@ -92,15 +92,15 @@ wb.styles do |s|
         sheet.merge_cells title_3_row.cells[(3..4)]
         sheet.merge_cells title_3_row.cells[(5..6)]
         sheet.merge_cells title_3_row.cells[(7..8)]
-        @salary_line_item_summary_without_insurance.each do |service_hash|
-            new_row = sheet.add_row [service_hash[:title], '', '', '', '', service_hash[:count], '', service_hash[:sum_invoiced_total], ''], style: table_cells
+        @appointments_summary_without_insurance.each do |appointment_hash|
+            new_row = sheet.add_row [appointment_hash[:title], '', '', '', '', appointment_hash[:count], '', appointment_hash[:sum_invoiced_total], ''], style: table_cells
             sheet.merge_cells new_row.cells[(0..2)]
             sheet.merge_cells new_row.cells[(3..4)]
             sheet.merge_cells new_row.cells[(5..6)]
             sheet.merge_cells new_row.cells[(7..8)]
         end
-        @cancelled_but_invoiceable_services.each do |salary_line_item|
-            new_row = sheet.add_row [salary_line_item.title, '', '', '', '', 1, '', salary_line_item.invoiced_total, ''], style: table_cells
+        @cancelled_but_invoiceable_appointments.each do |appointment|
+            new_row = sheet.add_row [appointment.title, '', '', '', '', 1, '', appointment.total_invoiced, ''], style: table_cells
             sheet.merge_cells new_row.cells[(0..2)]
             sheet.merge_cells new_row.cells[(3..4)]
             sheet.merge_cells new_row.cells[(5..6)]

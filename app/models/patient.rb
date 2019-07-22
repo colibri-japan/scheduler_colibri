@@ -94,10 +94,13 @@ class Patient < ApplicationRecord
 				service_hash[:unit_credits] = service.try(:unit_credits)
 				case service.credit_calculation_method
 				when 0
+					puts 'credit calculation classic'
 					service_hash[:sum_total_credits] = appointment_group.sum_total_credits
 				when 1
+					puts 'credit calculation monthly'
 					service_hash[:sum_total_credits] = service.try(:unit_credits)
 				when 2
+					puts 'credit calculation daily'
 					service_hash[:sum_total_credits] = ((appointment_group.minimum_starts_at.to_date)..(date_range.last.to_date)).count * (service.try(:unit_credit) || 0)
 				else
 					service_hash[:sum_total_credits] = 0

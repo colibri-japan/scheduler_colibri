@@ -135,15 +135,13 @@ class PatientsController < ApplicationController
     @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
     @end_of_today_in_japan = (Time.current + 9.hours).end_of_day < @last_day ? (Time.current + 9.hours).end_of_day : @last_day
 
-    #all this needs to be changed with new appointment system
-    
-    #@services_from_appointments = SalaryLineItem.not_archived.in_range(@first_day..@end_of_today_in_japan).from_appointments.includes(:appointment, :nurse).where(patient_id: @patient.id, planning_id: @planning.id).order(service_date: 'asc')
-    
-    #@salary_line_item_summary = @patient.salary_line_item_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
-    #@salary_line_item_summary_without_insurance = @patient.salary_line_item_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
-    #@cancelled_but_invoiceable_services = @services_from_appointments.where(cancelled: true).where.not(invoiced_total: [0, nil])
+    @appointments_till_today = @patient.appointments.not_archived.in_range(@first_day..@end_of_today_in_japan).includes(:nurse).order(starts_at: 'asc')
 
-    #calculate_invoice_fields
+    @appointments_summary = @patient.appointments_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
+    @appointments_summary_without_insurance = @patient.appointments_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
+    @cancelled_but_invoiceable_appointments = @appointments_till_today.where(cancelled: true).where.not(total_invoiced: [0, nil])
+
+    calculate_invoice_fields
 
     respond_to do |format|
       format.html 
@@ -211,7 +209,7 @@ class PatientsController < ApplicationController
   end
 
   def calculate_invoice_fields
-    @sum_of_credits = @salary_line_item_summary.sum {|hash| hash[:sum_total_credits]}
+    @sum_of_credits = @appointments_summary.sum {|hash| hash[:sum_total_credits] || 0}
     @bonus_credits = (@sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round
     @total_credits = @bonus_credits.present? ? @sum_of_credits + @bonus_credits : (@sum_of_credits || 0)
     @total_invoiced_inside_insurance_scope = (@total_credits * @corporation.credits_to_jpy_ratio).floor
@@ -222,7 +220,7 @@ class PatientsController < ApplicationController
     @amount_invoiced_to_patient_within_max_budget = @amount_invoiced_within_max_budget - @amount_invoiced_to_insurance_within_max_budget
     @amount_invoiced_exceeding_max_budget = @total_invoiced_inside_insurance_scope - @amount_invoiced_within_max_budget 
     @total_invoiced_to_patient_inside_insurance_scope = @amount_invoiced_to_patient_within_max_budget + @amount_invoiced_exceeding_max_budget
-    @total_invoiced_outside_insurance_scope = @salary_line_item_summary_without_insurance.sum {|hash| hash[:sum_invoiced_total]} + @cancelled_but_invoiceable_services.sum(:invoiced_total)
+    @total_invoiced_outside_insurance_scope = @appointments_summary_without_insurance.sum {|hash| hash[:sum_invoiced_total]} + @cancelled_but_invoiceable_appointments.sum(:total_invoiced)
     @total_invoiced_to_patient = @total_invoiced_to_patient_inside_insurance_scope + @total_invoiced_outside_insurance_scope
     @total_sales = @total_invoiced_outside_insurance_scope + @total_invoiced_inside_insurance_scope
   end

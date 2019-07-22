@@ -38,6 +38,8 @@ module AppointmentsHelper
             "sunday-holiday-provided-service"
         elsif appointment.starts_at.wday == 6
             "saturday-provided-service"
+        else
+            ''
         end
     end
 

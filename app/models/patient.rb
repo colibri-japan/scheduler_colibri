@@ -76,34 +76,57 @@ class Patient < ApplicationRecord
 		end
 	end
 
-	def salary_line_item_summary(date_range, options = {})
+	def appointments_summary(date_range, options = {})
 		inside_or_outside_insurance_scope = options[:within_insurance_scope] || false 
 		
 		array_of_service_summary = []
-		salary_line_items_titles = SalaryLineItem.where(patient: self.id, archived_at: nil).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).pluck(:title).uniq
+		#salary_line_items_titles = SalaryLineItem.where(patient: self.id, archived_at: nil).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range).pluck(:title).uniq
+		appointments_grouped_by_service = self.appointments.not_archived.edit_not_requested.in_range(date_range).includes(:service).group(:service_id).select('service_id, sum(total_invoiced) as sum_total_invoiced, sum(total_wage) as sum_total_wage, sum(total_credits) as sum_total_credits, count(*) as total_count, min(starts_at) as minimum_starts_at, max(ends_at) as maximum_ends_at')
 
-        salary_line_items_titles.each do |title|
-            service_type = Service.where(nurse_id: nil, title: title, corporation_id: self.corporation_id).first
+		appointments_grouped_by_service.each do |appointment_group|
+			service = appointment_group.try(:service)
 			service_hash = {}
-			
-            if service_type.present? && service_type.invoiced_to_insurance? == inside_or_outside_insurance_scope
-                salary_line_items = SalaryLineItem.where(patient: self.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range)
-                service_hash[:title] = title
-                service_hash[:official_title] = service_type.try(:official_title)
-                service_hash[:service_code] = service_type.try(:service_code)
-                service_hash[:unit_credits] = service_type.try(:unit_credit)
-                if service_type.credit_calculation_method == 0
-                    service_hash[:sum_total_credits] = salary_line_items.sum(:total_credits)
-                elsif service_type.credit_calculation_method == 1
-                    service_hash[:sum_total_credits] = service_type.try(:unit_credits)
-                elsif service_type.credit_calculation_method == 2
-                    service_hash[:sum_total_credits] = ((salary_line_items.first.service_date.to_date)..(date_range.last.to_date)).count * (service_type.try(:unit_credits) || 0)
-				end
-                service_hash[:sum_invoiced_total] = salary_line_items.sum(:invoiced_total)
-                service_hash[:count] = service_type.credit_calculation_method == 2 ? ((salary_line_items.first.service_date.to_date)..(date_range.last.to_date)).count : salary_line_items.count
 
-                array_of_service_summary << service_hash
-            end
+			if service.present? && service.invoiced_to_insurance? == inside_or_outside_insurance_scope 
+				service_hash[:title] = service.try(:title)
+				service_hash[:official_title] = service.try(:official_title)
+				service_hash[:service_code] = service.try(:service_code)
+				service_hash[:unit_credits] = service.try(:unit_credits)
+				case service.credit_calculation_method
+				when 0
+					service_hash[:sum_total_credits] = appointment_group.sum_total_credits
+				when 1
+					service_hash[:sum_total_credits] = service.try(:unit_credits)
+				when 2
+					service_hash[:sum_total_credits] = ((appointment_group.minimum_starts_at.to_date)..(date_range.last.to_date)).count * (service.try(:unit_credit) || 0)
+				else
+					service_hash[:sum_total_credits] = 0
+				end
+				service_hash[:sum_invoiced_total] = appointment_group.sum_total_invoiced
+				service_hash[:count] = service.credit_calculation_method == 2 ?  ((appointment_group.minimum_starts_at.to_date)..(date_range.last.to_date)).count : appointment_group.total_count
+
+				array_of_service_summary << service_hash
+			end
+
+            #service_type = Service.where(nurse_id: nil, title: title, corporation_id: self.corporation_id).first
+			
+            #if service_type.present? && service_type.invoiced_to_insurance? == inside_or_outside_insurance_scope
+            #    salary_line_items = SalaryLineItem.where(patient: self.id, archived_at: nil, cancelled: false, title: title).from_appointments.includes(:appointment).where(appointments: {edit_requested: false}).in_range(date_range)
+            #    service_hash[:title] = title
+            #    service_hash[:official_title] = service_type.try(:official_title)
+            #    service_hash[:service_code] = service_type.try(:service_code)
+            #    service_hash[:unit_credits] = service_type.try(:unit_credit)
+            #    if service_type.credit_calculation_method == 0
+            #        service_hash[:sum_total_credits] = salary_line_items.sum(:total_credits)
+            #    elsif service_type.credit_calculation_method == 1
+            #        service_hash[:sum_total_credits] = service_type.try(:unit_credits)
+            #    elsif service_type.credit_calculation_method == 2
+            #        service_hash[:sum_total_credits] = ((salary_line_items.first.service_date.to_date)..(date_range.last.to_date)).count * (service_type.try(:unit_credits) || 0)
+			#	end
+            #    service_hash[:sum_invoiced_total] = salary_line_items.sum(:invoiced_total)
+            #    service_hash[:count] = service_type.credit_calculation_method == 2 ? ((salary_line_items.first.service_date.to_date)..(date_range.last.to_date)).count : salary_line_items.count
+            #    array_of_service_summary << service_hash
+            #end
 		end
 		array_of_service_summary
 	end

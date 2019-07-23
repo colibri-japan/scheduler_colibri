@@ -14,6 +14,7 @@ class RecurringAppointment < ApplicationRecord
 
 	before_validation :calculate_duration
 	before_validation :calculate_end_day
+	before_validation :set_title_from_service_title
 	
 	validates :anchor, presence: true
 	validates :frequency, presence: true, inclusion: 0..10
@@ -22,10 +23,6 @@ class RecurringAppointment < ApplicationRecord
 	validates :patient_id, presence: true
 	validate :nurse_patient_and_planning_from_same_corporation
 	validate :cannot_overlap_existing_appointment_create, on: :create
-
-	before_create :default_frequency
-
-	before_save :match_title_to_service
 
 	before_update :split_recurring_appointment_before_after_update
 	after_commit :update_appointments, on: :update
@@ -149,6 +146,7 @@ class RecurringAppointment < ApplicationRecord
 				resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
 				private_event: false,
 				service_type: self.title,
+				service_id: self.service_id,
 				patient: {
 					name: self.patient.try(:name),
 					address: self.patient.try(:address)
@@ -166,6 +164,10 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	private
+
+	def set_title_from_service_title
+		self.title = self.service.try(:title)
+	end
 
 	def split_recurring_appointment_before_after_update
 		if editing_occurrences_after.present? 
@@ -199,9 +201,6 @@ class RecurringAppointment < ApplicationRecord
 		end
 	end
 
-	def default_frequency
-		self.frequency ||= 2
-	end
 
 	def calculate_duration
 		unless self.duration.present?
@@ -244,18 +243,6 @@ class RecurringAppointment < ApplicationRecord
 			errors[:base] << overlapping_days if overlapping_days.present?
 		end
 
-	end
-
-
-	def match_title_to_service
-		first_service = Service.where(corporation_id: self.planning.corporation.id, title: self.title, nurse_id: nil).first
-		
-		if first_service.present? 
-			self.service_id = first_service.id
-		else
-			new_service = self.planning.corporation.services.create(title: self.title)
-			self.service_id = new_service.id
-		end
 	end
 
 

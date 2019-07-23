@@ -57,12 +57,10 @@ pathname = window.location.pathname;
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
   if (pathname.includes('payable')) {
-    <% if @appointment.cancelled && @corporation.detailed_cancellation_options %>
-      <% if false %>
-        $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
+    <% if @appointment.cancelled && @appointment.will_save_change_to_cancelled? && @corporation.detailed_cancellation_options %>
+        $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');
         $('#cancellation_options').modal({backdrop: 'static'});
         reloadWhenDismissedInPayable()
-      <% end %>
     <% else %>
       Turbolinks.reload()
     <% end %>

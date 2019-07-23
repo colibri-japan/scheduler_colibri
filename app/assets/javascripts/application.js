@@ -629,7 +629,7 @@ initialize_master_calendar = function() {
                 nurse_id: newNurseId,
                 patient_id: newPatientId,
                 frequency: event.frequency,
-                title: event.service_type,
+                service_id: event.service_id,
                 color: event.color,
                 anchor: event.start.format('YYYY-MM-DD'),
                 end_day: event.end.format('YYYY-MM-DD'),
@@ -1178,15 +1178,7 @@ let humanizeFrequency = (frequency) => {
 
 
 let recurringAppointmenSelectizeTitle = () => {
-  $('#recurring_appointment_title').selectize({
-    persist: false,
-    create: true,
-    render: {
-      option_create: function(data, escape) {
-        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  });
+  $('#recurring_appointment_service_id').selectize()
 };
 
 let recurringAppointmentSelectizeNursePatient = () => {

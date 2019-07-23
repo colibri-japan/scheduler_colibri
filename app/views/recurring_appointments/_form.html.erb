@@ -49,8 +49,8 @@
       <% end %>
 
       <div class="form-group">
-        <%= form.label :title, "サービスタイプ", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
-        <%= form.select :title, grouped_options_for_select(@services, recurring_appointment.title), {}, {required: true, id: :recurring_appointment_title} %>
+        <%= form.label :service_id, "サービスタイプ", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+        <%= form.select :service_id, grouped_options_for_select(@services, recurring_appointment.service_id), {}, {id: :recurring_appointment_service_id, required: true} %>
       </div>
 
       <div class="form-group">

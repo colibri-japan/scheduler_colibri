@@ -137,6 +137,7 @@ class Appointment < ApplicationRecord
 			cancelled: self.cancelled,
 			private_event: false,
 			service_type: self.title || '',
+			service_id: self.service_id,
 			borderColor: self.borderColor,
 			nurse: {
 				name: self.nurse.try(:name),
@@ -183,12 +184,19 @@ class Appointment < ApplicationRecord
 	end
 
 	def calculate_credits_invoice_and_wage
-		self.total_credits = self.service.unit_credits
-		self.total_invoiced = self.service.invoiced_amount
-		if self.service.nurse_service_wages.where(nurse_id: self.nurse_id).present?
-			self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)) : (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
+		if self.edit_requested? || (self.cancelled? && self.will_save_change_to_cancelled?)
+			self.total_credits = 0
+			self.total_invoiced = 0
+			self.total_wage = 0
+		elsif self.cancelled? && !self.will_save_change_to_cancelled?
 		else
-			self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.unit_wage || 0)) : self.service.unit_wage
+			self.total_credits = self.service.try(:unit_credits)
+			self.total_invoiced = self.service.try(:invoiced_amount)
+			if self.service.nurse_service_wages.where(nurse_id: self.nurse_id).present?
+				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)) : (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
+			else
+				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.unit_wage || 0)) : self.service.unit_wage
+			end
 		end
 	end
 

@@ -1736,12 +1736,19 @@ let initializeCalendar = () => {
   }
 }
 
-let filterSalaryLineItemCategory = () => {
+let filterAppointmentCategory = () => {
   $('#service_type_filter').selectize({
     plugins: ['remove_button']
   })
   $('#refresh-service-types').click(function(){
-    $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+    $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+  })
+}
+
+let scrollAppointmentByCategory = () => {
+  $('#see-more-service-category-data').click(function(){
+    $container = $(this).parent('#category-subcontainer')
+    $container.animate({ scrollTop: $container[0].clientHeight }, 500, 'swing')
   })
 }
 

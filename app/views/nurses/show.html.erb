@@ -97,30 +97,26 @@
 				</table>
 			</div>
 
-			<% if false %>
-
-				<div id="service-history-block">
-					<div class='resource-details-block-title'>過去の利用者</div>
-					<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
-						<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_service_duration) %></div>
-					<% end %>
-					<% if @patients_with_services.all[2..-1].present? %>
-						<div class="resource-history">
-							<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
-							<div id="more-resource-history" style="display: none">
-								<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
-							</div>
+			<div id="service-history-block">
+				<div class='resource-details-block-title'>過去の利用者</div>
+				<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
+					<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_duration) %></div>
+				<% end %>
+				<% if @patients_with_services.all[2..-1].present? %>
+					<div class="resource-history">
+						<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
+						<div id="more-resource-history" style="display: none">
+							<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
 						</div>
-					<% end %>
-				</div>
-				<div id="service-balance-block" style="margin-bottom:25px">
-					<div class='resource-details-block-title'>サービス割合 (過去２ヵ月.稼働時間)</div>
-					<div id="chart-and-details-container">
-						<%= pie_chart @salary_line_items_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, donut: true, suffix: '%', width: '100%', height: '100px', legend: 'right', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] if @salary_line_items_grouped_by_category.present? %>
 					</div>
+				<% end %>
+			</div>
+			<div id="service-balance-block" style="margin-bottom:25px">
+				<div class='resource-details-block-title'>サービス割合 (過去２ヵ月.稼働時間)</div>
+				<div id="chart-and-details-container">
+					<%= pie_chart @appointments_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, donut: true, suffix: '%', width: '100%', height: '100px', legend: 'right', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] if @appointments_grouped_by_category.present? %>
 				</div>
-
-			<% end %>
+			</div>
 
 			<div id="resource-action-block">
 				<%= link_to 'エディット', edit_nurse_path(@nurse), remote: true, class: 'btn btn-info btn-block' %>

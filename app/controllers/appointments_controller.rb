@@ -179,6 +179,18 @@ class AppointmentsController < ApplicationController
     batch_recalculate_bonus
   end
 
+	def appointments_by_category_report
+		set_corporation
+		set_planning
+
+		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
+
+		@appointments_grouped_by_category = @planning.appointments.operational.includes(:service).in_range(first_day..last_day).grouped_by_weighted_category(categories: params[:categories].try(:split,','))
+		@available_categories = @corporation.services.where(nurse_id: nil).pluck(:category_1, :category_2).flatten.uniq
+	end
+
 
   private
     # Use methods to share common setup or constraints between actions.

@@ -50,8 +50,8 @@ class NursesController < ApplicationController
     fetch_patients_grouped_by_kana
 
     #reporting lines that need to be changed
-    #@patients_with_services = Patient.joins(:salary_line_items).select("patients.*, sum(salary_line_items.service_duration) as sum_service_duration").where(salary_line_items: {nurse_id: @nurse.id}).where(active: true).group('patients.id').order('sum_service_duration DESC')
-    #@salary_line_items_grouped_by_category = @nurse.salary_line_items.where(planning_id: @planning.id, cancelled: false).in_range((Date.today - 2.months)..Date.today).not_archived.from_appointments.grouped_by_weighted_category
+    @patients_with_services = Patient.joins(:appointments).select("patients.*, sum(appointments.duration) as sum_duration").where(appointments: {nurse_id: @nurse.id}).active.group('patients.id').order('sum_duration DESC')
+    @appointments_grouped_by_category = @nurse.appointments.operational.where(planning_id: @planning.id).in_range((Date.today - 2.months)..Date.today).grouped_by_weighted_category
   end
 
   def master 

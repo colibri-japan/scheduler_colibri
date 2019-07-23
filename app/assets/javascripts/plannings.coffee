@@ -172,11 +172,6 @@ $(document).on 'turbolinks:load', ->
   if $('#colibri-salary-rules-index').length > 0
     $.getScript('/salary_rules.js')
 
-  $('#see-more-service-category-data').click ->
-    $container = $(this).parent('.colibri-subcontainer-body')
-    $container.animate({scrollTop: $container[0].clientHeight}, 500 , 'swing')
-    return
-
   if $('#nurse_resource_filter').length > 0
     $('#nurse_resource_filter').selectize
       plugins: ['remove_button']
@@ -195,7 +190,7 @@ $(document).on 'turbolinks:load', ->
     return
 
   if $('#category-subcontainer').length > 0
-    $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val())
+    $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val())
     
   $('#confirm-availabilities-print').click -> 
     date = $('#availabilities_date').val()

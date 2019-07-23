@@ -154,6 +154,52 @@ class Appointment < ApplicationRecord
 		}
 	end
 
+
+	def self.grouped_by_weighted_category(options = {})
+		return_hash = {}
+		categories = (options[:categories].blank? || options[:categories] == ['null']) ? Array(0..9) : options[:categories].map(&:to_i)
+		categories.map {|category| return_hash[category] = {sum_weighted_service_duration: 0, sum_weighted_credits: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0} }
+
+		if self.present?
+			data_grouped_by_title = self.group(:service_id).select('appointments.service_id, sum(appointments.duration) as sum_service_duration, sum(appointments.total_wage) as sum_total_wage, sum(appointments.total_credits) as sum_total_credits, count(*)')
+			#services_without_nurses = Service.where(title: data_grouped_by_title.map(&:title), nurse_id: nil, corporation_id: self.first.planning.corporation.id).pluck(:title, :category_ratio, :category_1, :category_2, :unit_credits)
+
+			data_grouped_by_title.each do |grouped_appointment|
+				service = grouped_appointment.service
+
+				if service.present?
+					argument = service.category_ratio.present? ? service.category_ratio : 1
+					if service.category_1.present? && categories.include?(service.category_1)
+						return_hash[service.category_1][:sum_weighted_credits] += (grouped_appointment.sum_total_credits || 0) * argument || 0
+						return_hash[service.category_1][:sum_weighted_service_duration] += (grouped_appointment.sum_service_duration || 0) * argument || 0
+						return_hash[service.category_1][:sum_weighted_total_wage] += (grouped_appointment.sum_total_wage || 0) * argument || 0
+						return_hash[service.category_1][:sum_count] += grouped_appointment.count || 0
+					end
+					if service.category_2.present? && categories.include?(service.category_2)
+						return_hash[service.category_2][:sum_weighted_credits] += (grouped_appointment.sum_total_credits || 0) * (1 - argument) || 0
+						return_hash[service.category_2][:sum_weighted_service_duration] += (grouped_appointment.sum_service_duration || 0) * (1 - argument) || 0
+						return_hash[service.category_2][:sum_weighted_total_wage] += (grouped_appointment.sum_total_wage || 0) * (1 - argument) || 0
+						return_hash[service.category_2][:sum_count] += grouped_appointment.count || 0
+					end 
+				end
+			end
+			
+			return_hash.each do |key, value|
+				return_hash.delete(key) if return_hash[key].map {|k,v| v}.sum == 0
+			end
+
+			total_service_duration = return_hash.sum {|k,v| v[:sum_weighted_service_duration]}
+
+			return_hash.each do |key, value|
+				value[:weighted_service_duration_percentage] = total_service_duration == 0 ? 0 : ((value[:sum_weighted_service_duration].to_f / total_service_duration.to_f) * 100).round(1)
+			end
+
+			return_hash = return_hash.sort_by{|k,v| v[:sum_weighted_service_duration]}.reverse
+		end
+		
+		return_hash
+    end
+
 	private
 
 	def reset_verifications

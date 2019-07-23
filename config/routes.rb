@@ -88,9 +88,6 @@ Rails.application.routes.draw do
   get 'users/:id/edit_role' => 'users#edit_role', as: :edit_user_role
   patch 'users/:id/update_role' => 'users#update_role', as: :update_user_role
   
-  #custom routes for salary line items
-  get 'salary_line_items_by_category_report/salary_line_items' => 'salary_line_items#salary_line_items_by_category_report', as: :salary_line_items_by_category_report
-
   #custom routes for nurses
   get 'plannings/:planning_id/nurses/:id/payable' => 'nurses#payable', as: :planning_nurse_payable
   get 'plannings/:planning_id/nurses/:id/master' => 'nurses#master', as: :planning_nurse_master
@@ -140,7 +137,7 @@ Rails.application.routes.draw do
   patch 'appointments/:id/toggle_verified' => 'appointments#toggle_verified', as: :toggle_verified_appointment
   patch 'appointments/:id/toggle_second_verified' => 'appointments#toggle_second_verified', as: :toggle_second_verified_appointment
   get 'appointments/:id/new_cancellation_fee' => 'appointments#new_cancellation_fee', as: :appointment_new_cancellation_fee
-
+  get 'appointments_by_category_report/appointments' => 'appointments#appointments_by_category_report', as: :appointments_by_category_report
 
   #custom routes for recurring_appointments
   patch 'planning/:planning_id/recurring_appointments/:id/archive' => 'recurring_appointments#archive', as: :planning_recurring_appointment_archive

@@ -1,0 +1,4 @@
+$('#category-subcontainer').empty()
+$('#category-subcontainer').append("<%= j render('appointments/appointments_by_category_report').html_safe %>")
+filterAppointmentCategory()
+scrollAppointmentByCategory()

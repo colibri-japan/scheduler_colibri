@@ -1,6 +1,6 @@
 class SalaryLineItemsController < ApplicationController
-	before_action :set_salary_line_item, except: [:create, :salary_line_items_by_category_report]
-	before_action :set_nurse, except: [:destroy, :salary_line_items_by_category_report]
+	before_action :set_salary_line_item, except: [:create]
+	before_action :set_nurse, except: [:destroy]
 
 
 	def create
@@ -34,19 +34,6 @@ class SalaryLineItemsController < ApplicationController
 			redirect_back fallback_location: authenticated_root_path, notice: '実績が削除されました'
 		end
 	end
-
-	def salary_line_items_by_category_report
-		set_corporation
-		set_planning
-
-		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
-		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
-		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
-
-		@salary_line_items_grouped_by_category = SalaryLineItem.from_appointments.where(planning_id: @planning.id, cancelled: false, archived_at: nil).in_range(first_day..last_day).grouped_by_weighted_category(categories: params[:categories].try(:split,','))
-		@available_categories = @corporation.services.where(nurse_id: nil).pluck(:category_1, :category_2).flatten.uniq
-	end
-
 
 	private
 

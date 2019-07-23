@@ -37,21 +37,15 @@ class DashboardController < ApplicationController
     end
 
     #daily summary
-    @daily_appointments = appointments.where(starts_at: query_day.beginning_of_day..query_day.end_of_day)
-    @female_patients_ids = @corporation.patients.where(gender: true).ids 
-    @male_patients_ids = @corporation.patients.where(gender: false).ids
+    @daily_appointments = appointments.in_range(query_day.beginning_of_day..query_day.end_of_day).includes(:verifier, :second_verifier).order('nurse_id, starts_at desc')
+    @female_patients_ids = @corporation.patients.female.ids 
+    @male_patients_ids = @corporation.patients.male.ids
 
     #weekly  summary, from monday to query date
     @weekly_appointments = appointments.where(starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..query_day.end_of_day)
     
     #monthly summary, until end of today
 		@monthly_appointments = appointments
-
-    #daily salary_line_items to be verified
-    daily_salary_line_items = SalaryLineItem.where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: query_day.beginning_of_day..query_day.end_of_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc)
-    daily_salary_line_items = daily_salary_line_items.where(nurse_id: team.nurses.displayable.ids) if team.present?
-    @daily_salary_line_items = daily_salary_line_items.group_by {|salary_line_item| salary_line_item.nurse_id}
-
   end
 
   private

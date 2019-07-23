@@ -120,24 +120,22 @@
               </tr>
             </thead>
             <tbody>
-              <% daily_salary_line_items.each do |nurse_id, salary_line_item_array| %>
-                <% salary_line_item_array.each do |salary_line_item| %>
-                  <tr>
-                    <td><%= salary_line_item.patient.try(:name) %></td>
-                    <td><%= patient_gender(salary_line_item.patient) %></td>
-                    <td><%= "#{salary_line_item.appointment_start.strftime('%H:%M')} ~ #{salary_line_item.appointment_end.strftime('%H:%M')}" if salary_line_item.appointment_end.present? && salary_line_item.appointment_start.present? %></td>
-                    <td><%= salary_line_item.nurse.try(:name) %></td>
-                    <td><%= salary_line_item.title %></td>
-                    <td class='verify-provided-service' id='provided-service-<%= salary_line_item.id %>'>
-                      <% if salary_line_item.verified? %>
-                          <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-                          <%= link_to "#{salary_line_item.verifier.try(:name)} #{salary_line_item.try(:verified_at).strftime('%-m月%-d日')}", toggle_verified_salary_line_item_path(salary_line_item), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
-                      <% else %>
-                        <%= link_to '確認', toggle_verified_salary_line_item_path(salary_line_item), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !salary_line_item.verified? %>
-                      <% end %>
-                    </td>
-                  </tr>
-                <% end %>
+              <% daily_appointments.each do |appointment| %>
+                <tr>
+                  <td><%= appointment.patient.try(:name) %></td>
+                  <td><%= patient_gender(appointment.patient.gender) %></td>
+                  <td><%= "#{appointment.starts_at.strftime('%H:%M')} ~ #{appointment.ends_at.strftime('%H:%M')}" %></td>
+                  <td><%= appointment.nurse.try(:name) %></td>
+                  <td><%= appointment.title %></td>
+                  <td class='verify-provided-service' id='appointment-<%= appointment.id %>'>
+                    <% if appointment.verified? %>
+                        <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
+                        <%= link_to "#{appointment.verifier.try(:name)} #{appointment.try(:verified_at).strftime('%-m月%-d日')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+                    <% else %>
+                      <%= link_to '確認', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.verified? %>
+                    <% end %>
+                  </td>
+                </tr>
               <% end %>
             </tbody>
           </table>

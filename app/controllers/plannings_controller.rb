@@ -46,31 +46,26 @@ class PlanningsController < ApplicationController
 		fetch_nurses_grouped_by_team
 		fetch_patients_grouped_by_kana
 
-		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
-		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0)
+		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
 		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
 
-		#needs change
 		#@salary_line_items_till_today = SalaryLineItem.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: first_day..last_day)
 
-
 		#appointments : since beginning of month
-		#today = Date.today
-		#appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: first_day..last_day).includes(:patient, :nurse)
+		today = Date.today
+		appointments = @planning.appointments.operational.in_range(first_day..last_day).includes(:patient, :nurse)
 		
 		##daily summary
-		#@daily_appointments = appointments.where(starts_at: last_day.beginning_of_day..last_day)
-    	#@female_patients_ids = @corporation.patients.where(gender: true).ids
-    	#@male_patients_ids = @corporation.patients.where(gender: false).ids
+		@daily_appointments = appointments.in_range(last_day.beginning_of_day..last_day).includes(:verifier, :second_verifier).order('nurse_id, starts_at desc')
+    	@female_patients_ids = @corporation.patients.female.ids
+    	@male_patients_ids = @corporation.patients.male.ids
 		
     	##weekly summary, from monday to today
-    	#@weekly_appointments = appointments.where(starts_at: (last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
+    	@weekly_appointments = appointments.in_range((last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
 		
 		##monthly summary, until end of today
-		#@monthly_appointments = appointments
-		
-		##daily salary_line_items to be verified
-    	#@daily_salary_line_items = SalaryLineItem.where(planning_id:  @planning.id, cancelled: false, archived_at: nil, service_date: last_day.beginning_of_day..last_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|salary_line_item| salary_line_item.nurse_id}
+		@monthly_appointments = appointments	
 	end
 
 	def all_patients_payable

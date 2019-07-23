@@ -1,7 +1,7 @@
 module PatientsHelper
 
-    def gender_text(patient)
-        patient.gender ? '女' : '男'
+    def gender_text(gender)
+        gender ? '女' : '男'
     end
 
     def maximum_budget(kaigo_level)

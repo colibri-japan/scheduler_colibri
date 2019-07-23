@@ -61,25 +61,21 @@ class TeamsController < ApplicationController
         fetch_nurses_grouped_by_team
         fetch_patients_grouped_by_kana
 
-        
-
     	#appointments : since beginning of month
-        #today = Date.today 
-        #nurse_ids = @team.nurses.displayable.ids
-        #appointments = Appointment.operational.where(planning_id: @planning.id, nurse_id: nurse_ids, starts_at: today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
+        today = Date.today 
+        nurse_ids = @team.nurses.displayable.pluck(:id)
+        appointments = @planning.appointments.operational.where(nurse_id: nurse_ids).in_range(today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
 
 	    #daily summary
-    	#@daily_appointments = appointments.where(starts_at: today.beginning_of_day..today.end_of_day)
-    	#@female_patients_ids = @corporation.patients.where(gender: true).ids 
-    	#@male_patients_ids = @corporation.patients.where(gender: false).ids
+    	@daily_appointments = appointments.in_range(today.beginning_of_day..today.end_of_day).includes(:verifier, :second_verifier).order('nurse_id, starts_at desc')
+    	@female_patients_ids = @corporation.patients.female.ids 
+    	@male_patients_ids = @corporation.patients.male.ids
 		
     	#weekly summary, from monday to today
-    	#@weekly_appointments = appointments.where(starts_at: (today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day)
+    	@weekly_appointments = appointments.in_range((today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day)
 
 		#monthly summary, until end of today
-		#@monthly_appointments = appointments
-    	#daily salary_line_items to be verified
-    	#@daily_salary_line_items = SalaryLineItem.where(planning_id: @planning.id, nurse_id: nurse_ids, cancelled: false, archived_at: nil, service_date: Date.today.beginning_of_day..Date.today.end_of_day).from_appointments.includes(:patient, :nurse, :appointment).where(appointments: {edit_requested: false}).order(service_date: :asc).group_by {|salary_line_item| salary_line_item.nurse_id}
+        @monthly_appointments = appointments
     end
 
     def edit

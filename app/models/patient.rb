@@ -82,7 +82,7 @@ class Patient < ApplicationRecord
 		inside_or_outside_insurance_scope = options[:within_insurance_scope] || false 
 		
 		array_of_service_summary = []
-		appointments_grouped_by_service = self.appointments.not_archived.edit_not_requested.in_range(date_range).includes(:service).group(:service_id).select('service_id, sum(total_invoiced) as sum_total_invoiced, sum(total_wage) as sum_total_wage, sum(total_credits) as sum_total_credits, count(*) as total_count, min(starts_at) as minimum_starts_at, max(ends_at) as maximum_ends_at')
+		appointments_grouped_by_service = self.appointments.operational.in_range(date_range).includes(:service).group(:service_id).select('service_id, sum(total_invoiced) as sum_total_invoiced, sum(total_wage) as sum_total_wage, sum(total_credits) as sum_total_credits, count(*) as total_count, min(starts_at) as minimum_starts_at, max(ends_at) as maximum_ends_at')
 
 		appointments_grouped_by_service.each do |appointment_group|
 			service = appointment_group.try(:service)
@@ -95,11 +95,11 @@ class Patient < ApplicationRecord
 				service_hash[:unit_credits] = service.try(:unit_credits)
 				case service.credit_calculation_method
 				when 0
-					service_hash[:sum_total_credits] = appointment_group.sum_total_credits
+					service_hash[:sum_total_credits] = (appointment_group.total_count || 0) * (service.try(:unit_credits) || 0)
 				when 1
 					service_hash[:sum_total_credits] = service.try(:unit_credits)
 				when 2
-					service_hash[:sum_total_credits] = ((appointment_group.minimum_starts_at.to_date)..(date_range.last.to_date)).count * (service.try(:unit_credit) || 0)
+					service_hash[:sum_total_credits] = ((appointment_group.minimum_starts_at.to_date)..(date_range.last.to_date)).count * (service.try(:unit_credits) || 0)
 				else
 					service_hash[:sum_total_credits] = 0
 				end

@@ -102,7 +102,7 @@
                 <% @appointments_summary_without_insurance.each do |appointment_summary_hash| %>
                     <tr style="<%= 'border-top:2px solid #ddd !important' if @appointments_summary_without_insurance.index(appointment_summary_hash) == 0 %>">
                         <td><%= appointment_summary_hash[:title] %></td>
-                        <td><%= appointment_summary_hash[:unit_credits] %></td>
+                        <td></td>
                         <td><%= appointment_summary_hash[:count] %></td>
                         <td></td>
                         <td><%= appointment_summary_hash[:sum_invoiced_total] %>¥</td>

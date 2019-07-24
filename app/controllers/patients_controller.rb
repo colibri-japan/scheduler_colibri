@@ -141,6 +141,8 @@ class PatientsController < ApplicationController
     @appointments_summary_without_insurance = @patient.appointments_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
     @cancelled_but_invoiceable_appointments = @appointments_till_today.where(cancelled: true).where.not(total_invoiced: [0, nil])
 
+    puts @appointments_summary
+    puts @appointments_summary_without_insurance
     calculate_invoice_fields
 
     respond_to do |format|

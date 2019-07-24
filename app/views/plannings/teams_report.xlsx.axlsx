@@ -10,15 +10,15 @@ wb.styles do |s|
 
 	wb.add_worksheet(name: "チーム分け実績") do |sheet|
 
-        @service_counts_by_title_and_team.each do |team_name, service_counts_by_title|
+        @appointment_counts_by_title_and_team.each do |team_name, appointment_counts_by_title|
 
             sheet.add_row [team_name, '','','']
             sheet.add_row ['サービスタイプ', '女', '男', '計'], style: table_header
 
-            service_counts_by_title.each do |title, service_counts_per_gender|
+            appointment_counts_by_title.each do |title, service_counts_per_gender|
                 sheet.add_row [title, service_counts_per_gender[:female], service_counts_per_gender[:male], service_counts_per_gender[:total]], style: table_cells
             end
-            sheet.add_row ['計', service_counts_by_title.values.map{|counts| counts[:female]}.sum, service_counts_by_title.values.map{|counts| counts[:male]}.sum, service_counts_by_title.values.map{|counts| counts[:total]}.sum], style: table_cells
+            sheet.add_row ['計', appointment_counts_by_title.values.map{|counts| counts[:female]}.sum, appointment_counts_by_title.values.map{|counts| counts[:male]}.sum, appointment_counts_by_title.values.map{|counts| counts[:total]}.sum], style: table_cells
 
             sheet.add_row
         end

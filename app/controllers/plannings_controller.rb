@@ -96,11 +96,7 @@ class PlanningsController < ApplicationController
 	end
 
 	def teams_report
-		if @corporation.teams.exists?
-			@service_counts_by_title_and_team = @corporation.monthly_service_counts_by_title_and_team(params[:range_start], params[:range_end])
-		else
-			@service_counts_by_title_and_team = @corporation.service_counts_by_title_in_range(params[:range_start], params[:range_end])
-		end
+		@appointment_counts_by_title_and_team = @corporation.appointments_count_by_title_and_team_in_range(params[:range_start], params[:range_end])
 
 		@patients_count = @corporation.patients.active.count
 

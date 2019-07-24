@@ -105,60 +105,49 @@ class Corporation < ApplicationRecord
 		datetime.between?((valid_reminder_datetime - 15.minutes), (valid_reminder_datetime + 15.minutes))
 	end
 
-	def monthly_service_counts_by_title_and_team(range_start, range_end)
+	def appointments_count_by_title_and_team_in_range(range_start, range_end)
 		return_hash = {}
 
 		start_date = range_start.to_date.beginning_of_day
 		end_date = range_end.to_date.end_of_day
 
-		titles = SalaryLineItem.where(planning_id: self.planning.id, service_date: start_date..end_date, archived_at: nil, cancelled: false).from_appointments.pluck(:title).uniq
+		titles = self.planning.appointments.in_range(start_date..end_date).operational.pluck(:title).uniq
 
-		teams.each do |team|
-			team_hash = {}
-
-			nurse_ids = team.nurses.all.pluck(:id)
-
-			team_salary_line_items = SalaryLineItem.includes(:appointment).from_appointments.where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil).where(appointments: {edit_requested: false}).group(:title).count
-			team_salary_line_items_female = SalaryLineItem.includes(:patient, :appointment).from_appointments.where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).where(patients: {gender: true}).where(appointments: {edit_requested: false}).group(:title).count
-			team_salary_line_items_male = SalaryLineItem.includes(:patient, :appointment).from_appointments.where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).where(patients: {gender: false}).where(appointments: {edit_requested: false}).group(:title).count
-
+		if self.teams.present?
+			teams.each do |team|
+				team_hash = {}
+				nurse_ids = team.nurses.all.pluck(:id)
+	
+				team_salary_line_items = self.planning.appointments.in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).group(:title).count
+				team_salary_line_items_female = self.planning.appointments.joins(:patient).in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).where(patients: {gender: true}).group(:title).count
+				team_salary_line_items_male = self.planning.appointments.joins(:patient).in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).where(patients: {gender: false}).group(:title).count
+	
+				titles.each do |title|
+					team_hash[title] = {
+						female: team_salary_line_items_female[title] || 0,
+						male: team_salary_line_items_male[title] || 0,
+						total: team_salary_line_items[title] || 0
+					}
+				end
+	
+				return_hash[team.team_name] = team_hash
+			end
+		else
+			corporation_hash = {}
+			salary_line_items = self.planning.appointments.in_range(starts_date..end_date).operational.group(:title).count
+			salary_line_items_female = self.planning.appointments.joins(:patient).where(patients: {gender: true}).in_range(starts_date..end_date).operational.group(:title).count
+			salary_line_items_male = self.planning.appointments.joins(:patient).where(patients: {gender: false}).in_range(starts_date..end_date).operational.group(:title).count
+			
 			titles.each do |title|
-				team_hash[title] = {
-					female: team_salary_line_items_female[title] || 0,
-					male: team_salary_line_items_male[title] || 0,
-					total: team_salary_line_items[title] || 0
+				corporation_hash[title] = {
+					female: salary_line_items_female[title] || 0,
+					male: salary_line_items_male[title]|| 0,
+					total: salary_line_items[title] || 0
 				}
 			end
 
-			return_hash[team.team_name] = team_hash
-		end
-
-		return_hash
-	end
-
-	def service_counts_by_title_in_range(range_start, range_end)
-		return_hash = {}
-		corporation_hash = {}
-
-		start_date = range_start.to_date.beginning_of_day
-		end_date = range_end.to_date.end_of_day
-		nurse_ids = self.nurses.displayable.ids
-		salary_line_items = SalaryLineItem.includes(:appointment).where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil).from_appointments.where(appointments: {edit_requested: false}).group(:title).count
-		salary_line_items_female = SalaryLineItem.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).from_appointments.where(patients: {gender: true}).where(appointments: {edit_requested: false}).group(:title).count
-		salary_line_items_male = SalaryLineItem.includes(:patient, :appointment).where(nurse_id: nurse_ids, cancelled: false, service_date: start_date..end_date, archived_at: nil).from_appointments.where(patients: {gender: false}).where(appointments: {edit_requested: false}).group(:title).count
-
-		
-		titles = SalaryLineItem.where(nurse_id: nurse_ids, service_date: start_date..end_date, cancelled: false, archived_at: nil).from_appointments.pluck(:title).uniq
-
-		titles.each do |title|
-			corporation_hash[title] = {
-				female: salary_line_items_female[title] || 0,
-				male: salary_line_items_male[title] || 0,
-				total: salary_line_items[title] || 0
-			}
-		end
-
-		return_hash['全従業員'] = corporation_hash
+			return_hash['全従業員'] = corporation_hash
+		end 
 
 		return_hash
 	end

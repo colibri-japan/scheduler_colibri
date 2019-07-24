@@ -26,32 +26,32 @@ class SalaryRule < ApplicationRecord
         end_of_range = self.service_date_range_end.to_datetime || Date.today.end_of_day
         
         targeted_nurses.each do |nurse|
-            targeted_salary_line_items = SalaryLineItem.includes(:appointment).from_appointments.where(nurse_id: nurse.id, salary_rule_id: nil, archived_at: nil, cancelled: false, title: targeted_titles).where(appointments: {edit_requested: false}).in_range(start_of_range..end_of_range)
+            targeted_appointments = nurse.appointments.operational.where(title: targeted_titles).in_range(start_of_range..end_of_range)
             
             case self.date_constraint
             when 1
-                targeted_salary_line_items = targeted_salary_line_items.where('DATE(salary_line_items.service_date) IN (?)', HolidayJp.between(start_of_range, end_of_range))
+                targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) IN (?)', HolidayJp.between(start_of_range, end_of_range))
             when 2
-                targeted_salary_line_items = targeted_salary_line_items.where('EXTRACT(dow from salary_line_items.service_date) = 0')
+                targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 0')
             else
             end
 
-            service_counts = targeted_salary_line_items.count || 0
-            service_duration = targeted_salary_line_items.sum(:service_duration) || 0
+            appointments_count = targeted_appointments.size || 0
+            appointments_duration = targeted_appointments.sum(:duration) || 0
 
             if self.operator == 0
                 if self.hour_based 
-                    total_wage = (service_duration / 60) * (self.argument.to_f / 60) || 0
+                    total_wage = (appointments_duration / 60) * (self.argument.to_f / 60) || 0
                 else
-                    total_wage = service_counts * self.argument.to_f || 0
+                    total_wage = appointments_count * self.argument.to_f || 0
                 end
             elsif self.operator == 1
-                total_wage = targeted_salary_line_items.sum(:total_wage) * self.argument.to_f || 0
+                total_wage = targeted_appointments.sum(:total_wage) * self.argument.to_f || 0
             else
                 total_wage = 0
             end
 
-            SalaryLineItem.create(nurse_id: nurse.id, planning_id: corporation.planning.id, service_date: (Time.current + 9.hours), title: self.title, hour_based_wage: self.hour_based, service_counts: service_counts, service_duration: service_duration, total_wage: total_wage, skip_callbacks_except_calculate_total_wage: true, skip_wage_credits_and_invoice_calculations: true)
+            SalaryLineItem.create(nurse_id: nurse.id, planning_id: corporation.planning.id, service_date: (Time.current + 9.hours), title: self.title, hour_based_wage: self.hour_based, service_counts: appointments_count, service_duration: appointments_duration, total_wage: total_wage)
         end
     end
 

@@ -220,7 +220,7 @@ class PatientsController < ApplicationController
     @amount_invoiced_to_patient_within_max_budget = @amount_invoiced_within_max_budget - @amount_invoiced_to_insurance_within_max_budget
     @amount_invoiced_exceeding_max_budget = @total_invoiced_inside_insurance_scope - @amount_invoiced_within_max_budget 
     @total_invoiced_to_patient_inside_insurance_scope = @amount_invoiced_to_patient_within_max_budget + @amount_invoiced_exceeding_max_budget
-    @total_invoiced_outside_insurance_scope = @appointments_summary_without_insurance.sum {|hash| hash[:sum_invoiced_total]} + @cancelled_but_invoiceable_appointments.sum(:total_invoiced)
+    @total_invoiced_outside_insurance_scope = @appointments_summary_without_insurance.sum {|hash| hash[:sum_total_invoiced] || 0} + (@cancelled_but_invoiceable_appointments.sum(:total_invoiced) || 0)
     @total_invoiced_to_patient = @total_invoiced_to_patient_inside_insurance_scope + @total_invoiced_outside_insurance_scope
     @total_sales = @total_invoiced_outside_insurance_scope + @total_invoiced_inside_insurance_scope
   end

@@ -1,46 +1,7 @@
 <% if @appointment.errors.any? %>
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
-  
-  $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
-
-  $('#nurse-overlap-modal').modal({ backdrop: 'static' })
-
-  $('#nurse-overlap-override').one('click', function(){
-    let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
-    let indexCount =  0;
-    appointment_ids.forEach(function(appointment_id, index, array){
-      let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-      indexCount++;
-      $.ajax({
-        url: request_edit_url,
-        type: 'PATCH',
-        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-        success: function(data) {
-          if (indexCount == appointment_ids.length) {
-            let appointment_data;
-            appointment_data = {
-              appointment: {
-                starts_at: "<%= @appointment.starts_at %>",
-                ends_at: "<%= @appointment.ends_at %>",
-                nurse_id: "<%= @appointment.nurse_id %>",
-                patient_id: "<%= @appointment.patient_id %>",
-                color: "<%= @appointment.color %>",
-                title: "<%= @appointment.title %>",
-                description: "<%= @appointment.description %>"
-              }
-            };
-            let appointment_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + <%= @appointment.id %> + '/toggle_cancelled';
-            $.ajax({
-              url: appointment_url,
-              type: 'PATCH',
-              data: appointment_data
-            })
-          }
-        }
-      })
-    })
-  })
+  alert('キャンセル中にエラーが発生しました。')
 
 <% else %>
   if (typeof pathname === 'undefined') {
@@ -52,8 +13,8 @@
   $('.modal-backdrop').remove();
 
   if (pathname.includes('payable')) {
-    <% if @salary_line_item.present? && @salary_line_item.cancelled && @corporation.detailed_cancellation_options %>
-      $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
+    <% if @appointment.cancelled && @corporation.detailed_cancellation_options %>
+      $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');
       $('#cancellation_options').modal({backdrop: 'static'});
       reloadWhenDismissedInPayable()
     <% else %>
@@ -81,8 +42,8 @@
       false
     );
 
-    <% if @salary_line_item.present? && @salary_line_item.cancelled && @corporation.detailed_cancellation_options %>
-      $('#remote_container').html('<%= j render "salary_line_items/cancellation_options" %>');
+    <% if @appointment.cancelled? && @corporation.detailed_cancellation_options %>
+      $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');
       $('#cancellation_options').modal('show');
       reloadWhenDismissedInPayable()
     <% end %>

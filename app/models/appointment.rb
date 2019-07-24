@@ -162,7 +162,6 @@ class Appointment < ApplicationRecord
 
 		if self.present?
 			data_grouped_by_title = self.group(:service_id).select('appointments.service_id, sum(appointments.duration) as sum_service_duration, sum(appointments.total_wage) as sum_total_wage, sum(appointments.total_credits) as sum_total_credits, count(*)')
-			#services_without_nurses = Service.where(title: data_grouped_by_title.map(&:title), nurse_id: nil, corporation_id: self.first.planning.corporation.id).pluck(:title, :category_ratio, :category_1, :category_2, :unit_credits)
 
 			data_grouped_by_title.each do |grouped_appointment|
 				service = grouped_appointment.service

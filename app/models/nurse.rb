@@ -8,6 +8,7 @@ class Nurse < ApplicationRecord
 	belongs_to :corporation, touch: true
 	belongs_to :team, optional: true, touch: true
 	has_many :appointments, dependent: :destroy
+	has_many :private_events
 	has_many :recurring_appointments, dependent: :destroy
 	has_many :salary_line_items, dependent: :destroy
 	has_many :patients
@@ -145,7 +146,7 @@ class Nurse < ApplicationRecord
 	end
 
 	def self.increment_days_worked_if_has_worked_yesterday
-		Nurse.joins(:salary_line_items, :appointments).where(salary_line_items: {cancelled: false, archived_at: nil, service_date: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day}, appointments: {edit_requested: false}).update_all("days_worked = days_worked + 1")
+		Nurse.joins(:appointments).where(appointments: {cancelled: false, edit_requested: false, archived_at: nil, starts_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day}).update_all("days_worked = days_worked + 1")
 	end
 
 end

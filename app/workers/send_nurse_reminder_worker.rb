@@ -13,8 +13,8 @@ class SendNurseReminderWorker
     planning = @nurse.corporation.planning
 
     custom_email_days.each do |date|
-      custom_day_appointments =  Appointment.not_archived.edit_not_requested.where(planning_id: planning.id, nurse_id: nurse_id, starts_at: date.beginning_of_day..date.end_of_day, master: false).all.order(starts_at: 'asc')
-      custom_day_private_events = PrivateEvent.where(planning_id: planning.id, nurse_id: nurse_id, starts_at: date.beginning_of_day..date.end_of_day).order(starts_at: :asc)
+      custom_day_appointments =  @nurse.appointments.not_archived.edit_not_requested.where(planning_id: planning.id).in_range(date.beginning_of_day..date.end_of_day).order(starts_at: :asc)
+      custom_day_private_events = @nurse.private_events.where(planning_id: planning.id, starts_at: date.beginning_of_day..date.end_of_day).order(starts_at: :asc)
       selected_appointments << custom_day_appointments.to_a
       selected_appointments << custom_day_private_events.to_a
     end

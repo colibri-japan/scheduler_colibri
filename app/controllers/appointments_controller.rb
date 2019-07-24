@@ -70,7 +70,6 @@ class AppointmentsController < ApplicationController
     
     if @appointment.update(appointment_params)      
       create_activity_for_update
-      recalculate_bonus
     end
   end
 
@@ -90,7 +89,6 @@ class AppointmentsController < ApplicationController
 
     if @appointment.save(validate: !@appointment.cancelled)
       @activity = @appointment.create_activity :toggle_cancelled, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_cancelled: !@appointment.cancelled, patient_name: @appointment.patient.try(:name), nurse_name: @appointment.nurse.try(:name)}
-      recalculate_bonus
     end
   end
 
@@ -102,7 +100,6 @@ class AppointmentsController < ApplicationController
 
     if @appointment.save(validate: false)
       @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, previous_nurse_id: @appointment.nurse_id, previous_patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_nurse_name: @appointment.nurse.try(:name), previous_patient_name: @appointment.patient.try(:name)}
-      recalculate_bonus
     end
   end
 
@@ -114,7 +111,6 @@ class AppointmentsController < ApplicationController
 
     if @appointment.save(validate: !@appointment.edit_requested)
       @activity = @appointment.create_activity :toggle_edit_requested, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_edit_requested: !@appointment.edit_requested, patient_name: @appointment.patient.try(:name), nurse_name: @appointment.nurse.try(:name)} 
-      recalculate_bonus
     end
   end
 
@@ -130,11 +126,9 @@ class AppointmentsController < ApplicationController
   def batch_archive
     planning_id = @corporation.planning.id
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
-    @salary_line_items = SalaryLineItem.where(planning_id: planning_id, appointment_id: @appointments.ids)
     
     now = Time.current
-    @appointments.update_all(archived_at: now, recurring_appointment_id: nil, updated_at: now)
-    @salary_line_items.update_all(archived_at: now, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
+    @appointments.update_all(archived_at: now, total_wage: 0, total_credits: 0, total_invoiced: 0, recurring_appointment_id: nil, updated_at: now)
 
     @planning.create_activity :batch_archive, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
 
@@ -149,11 +143,9 @@ class AppointmentsController < ApplicationController
 
   def batch_cancel
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
-    @salary_line_items = SalaryLineItem.where(planning_id: @planning.id, appointment_id: @appointments.ids)
 
     now = Time.current
-    @appointments.update_all(cancelled: true, recurring_appointment_id: nil, updated_at: now)
-    @salary_line_items.update_all(cancelled: true, total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
+    @appointments.update_all(cancelled: true, total_wage: 0, total_credits: 0, total_invoiced: 0, recurring_appointment_id: nil, updated_at: now)
 
     @planning.create_activity :batch_cancel, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
     batch_recalculate_bonus
@@ -168,11 +160,9 @@ class AppointmentsController < ApplicationController
   def batch_request_edit 
     planning_id = @corporation.planning.id 
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
-    @salary_line_items = SalaryLineItem.where(planning_id: planning_id, appointment_id: @appointments.ids)
 
     now = Time.current
-    @appointments.update_all(edit_requested: true, recurring_appointment_id: nil, updated_at: now)
-    @salary_line_items.update_all(total_wage: 0, total_credits: 0, invoiced_total: 0, updated_at: now)
+    @appointments.update_all(edit_requested: true, total_wage: 0, total_credits: 0, total_invoiced: 0, recurring_appointment_id: nil, updated_at: now)
 
     @planning.create_activity :batch_request_edit, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
 
@@ -244,14 +234,9 @@ class AppointmentsController < ApplicationController
       @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse_id: previous_nurse_id, previous_patient_id: previous_patient_id, parameters: parameters
     end
 
-    def recalculate_bonus
-      RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@appointment.nurse_id, @appointment.starts_at.year, @appointment.starts_at.month)
-      RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@previous_nurse_id, @appointment.starts_at.year, @appointment.starts_at.month) if @previous_nurse_id.present? && @previous_nurse_id != @appointment.nurse_id
-    end
-
     def batch_recalculate_bonus
-      nurse_ids = @salary_line_items.pluck(:nurse_id).uniq
-      year_and_months = @salary_line_items.pluck(:service_date).map{|d| {year: d.year, month: d.month}}.uniq
+      nurse_ids = @appointments.pluck(:nurse_id).uniq
+      year_and_months = @appointments.pluck(:starts_at).map{|date_time| {year: date_time.year, month: date_time.month}}.uniq
 
       nurse_ids.each do |nurse_id|
         year_and_months.each do |year_and_month|

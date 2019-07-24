@@ -27,6 +27,8 @@ class Appointment < ApplicationRecord
 
 	before_update :reset_verifications, unless: :verifying_appointment
 
+	after_commit :recalculate_salary_line_items_from_salary_rules, on: :update
+
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
 	scope :not_cancelled, -> { where(cancelled: false) }
@@ -210,8 +212,7 @@ class Appointment < ApplicationRecord
 	end
 	
 	def request_edit_if_undefined_nurse
-		nurse = Nurse.find(self.nurse_id)
-		self.edit_requested = true if nurse.name === '未定'
+		self.edit_requested = true if self.nurse.try(:name) == '未定'
 	end
 	
 	def nurse_patient_and_planning_from_same_corporation
@@ -260,6 +261,12 @@ class Appointment < ApplicationRecord
 
 			errors[:base] << "その日の従業員が重複しています。" if overlapping_ids.present?
 			errors[:overlapping_ids] << overlapping_ids if overlapping_ids.present?
+		end
+	end
+
+	def recalculate_salary_line_items_from_salary_rules
+		if self.planning.corporation.salary_rules.targeting_nurse(self.nurse_id.to_s).not_expired_at(Time.current + 9.hours).exists?
+			RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(self.nurse_id, self.starts_at.year, self.starts_at.month)
 		end
 	end
 

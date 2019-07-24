@@ -195,7 +195,7 @@
                             <td></td>
                         </tr>
                     <% end %>
-                    <% sum_of_credits = service_shift_array.sum {|hash_of_service_and_shifts| hash_of_service_and_shifts[:service_hash][:sum_total_credits] }  %>
+                    <% sum_of_credits = service_shift_array.sum {|hash_of_service_and_shifts| hash_of_service_and_shifts[:service_hash][:sum_total_credits] || 0 }  %>
                     <% if service_shift_array.count > 0 && @corporation.invoicing_bonus_ratio.present? %>
                         <tr>
                             <td><%= @corporation.name %></td>

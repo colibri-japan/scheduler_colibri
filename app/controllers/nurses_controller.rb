@@ -131,11 +131,7 @@ class NursesController < ApplicationController
     @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan)
     @unverified_services_count = @appointments_till_today.operational.unverified.count
 
-    @grouped_appointments = @nurse.appointments.not_archived.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
-    #reporting section that needs update
-    
-    #@appointments_till_today = @nurse.appointments.not_archived.includes(:patient).where(planning_id: @planning.id).in_range(first_day..end_of_today_in_japan)
-    #@appointments_from_today = @nurse.appointments.not_archived.includes(:patient).where(planning_id: @planning.id).in_range(end_of_today_in_japan..last_day).order(starts_at: 'asc')
+    @grouped_appointments = @nurse.appointments.operational.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
 
     @total_days_worked = [@appointments_till_today.operational.pluck(:starts_at).map{|e| e.strftime('%m-%d')}].uniq.length
     @total_time_worked = @appointments_till_today.operational.sum(:duration) || 0    

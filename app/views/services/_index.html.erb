@@ -23,7 +23,7 @@
                                 <td><%= service.try(:title) %></td>
                                 <td><%= service.try(:unit_wage) %></td>
                                 <td><%= service.weekend_unit_wage.to_i if service.weekend_unit_wage.present? %></td>
-                                <td><%= humanize_hour_based_wage(service) %></td>
+                                <td><%= hour_based_wage_text(service.hour_based_wage) %></td>
                             </tr>
                         <% end %>
                     </tbody>

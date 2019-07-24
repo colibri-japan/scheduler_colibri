@@ -88,7 +88,7 @@ class PlanningsController < ApplicationController
 		
 		@service_hour_based_hash = @corporation.services.delivered_in_range(start_date..end_date).order(:title).pluck(:title, :hour_based_wage).uniq.to_h
 
-		@salary_line_items_count_and_sum_duration_by_nurse = @corporation.nurses.displayable.salary_line_items_count_and_sum_duration_for(start_date..end_date)
+		@appointments_count_and_sum_duration_by_nurse = @corporation.nurses.displayable.appointments_count_and_sum_duration_for(start_date..end_date)
 		
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}

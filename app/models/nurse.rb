@@ -106,13 +106,13 @@ class Nurse < ApplicationRecord
 		}
 	end
 
-	def self.salary_line_items_count_and_sum_duration_for(range)
+	def self.appointments_count_and_sum_duration_for(range)
 		return_array = []
 
 		Nurse.where(id: self.ids).each do |nurse|
 			nurse_services_hash = {}
-			grouped_salary_line_items_array = SalaryLineItem.from_appointments.where(service_date: range, nurse_id: nurse.id, cancelled: false, archived_at: nil).joins(:appointment).where(appointments: {edit_requested: false}).group(:title).pluck('salary_line_items.title, count(*), sum(salary_line_items.service_duration)::decimal / 3600 as sum_service_duration')
-			grouped_salary_line_items_array.map {|e| nurse_services_hash[e[0]] = {count: e[1], sum_service_duration: e[2]}}
+			grouped_appointments_array = nurse.appointments.in_range(range).operational.group(:title).pluck('appointments.title, count(*), sum(appointments.duration)::decimal / 3600 as sum_duration')
+			grouped_appointments_array.map {|e| nurse_services_hash[e[0]] = {count: e[1], sum_duration: e[2]}}
 			return_array << [nurse.name, nurse_services_hash]
 		end
 

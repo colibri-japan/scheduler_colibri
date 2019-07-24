@@ -11,19 +11,26 @@ wb.styles do |s|
 	wb.add_worksheet(name: "実績給与詳細") do |sheet|
 
 		sheet.add_row do |row|
-			row.add_cell '従業員', style: table_header
+			row.add_cell '', style: table_header
 			@service_hour_based_hash.each do |service_name, hour_based|
 				row.add_cell service_name, style: table_header
 			end
 		end
 
-		@salary_line_items_count_and_sum_duration_by_nurse.each do |nurse_name, salary_line_item_hash|
+		sheet.add_row do |row|
+			row.add_cell '従業員', style: table_header
+			@service_hour_based_hash.each do |service_name, hour_based|
+				row.add_cell hour_based_wage_text(hour_based), style: table_header
+			end
+		end
+
+		@appointments_count_and_sum_duration_by_nurse.each do |nurse_name, appointment_item_hash|
 			sheet.add_row do |row|
 				row.add_cell nurse_name, style: table_cells
-				@service_hour_based_hash.each do |service_name, hour_based|
-					if salary_line_item_hash.present?
-						if salary_line_item_hash[service_name].present?
-							val = hour_based ? salary_line_item_hash[service_name][:sum_service_duration] : salary_line_item_hash[service_name][:count]
+				@service_hour_based_hash.each do |title, hour_based|
+					if appointment_item_hash.present?
+						if appointment_item_hash[title].present?
+							val = hour_based ? appointment_item_hash[title][:sum_duration] : appointment_item_hash[title][:count]
 						else 
 							val = 0
 						end

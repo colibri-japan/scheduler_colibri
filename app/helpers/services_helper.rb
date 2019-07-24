@@ -1,7 +1,7 @@
 module ServicesHelper
 
-    def humanize_hour_based_wage(service)
-        service.hour_based_wage ? '時給' : '単価'
+    def hour_based_wage_text(hour_based)
+        hour_based ? '時給' : '単価'
     end
     
 end

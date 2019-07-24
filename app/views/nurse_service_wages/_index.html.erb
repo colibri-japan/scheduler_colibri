@@ -21,7 +21,7 @@
                         <% @services.each do |service| %>
                             <tr>
                                 <td><%= service.try(:title) %></td>
-                                <td><%= humanize_hour_based_wage(service) %></td>
+                                <td><%= hour_based_wage_text(service.hour_based_wage) %></td>
                                 <td><%= service.try(:unit_wage) %></td>
                                 <td><%= text_field_tag :nurse_wage_input, value = @nurse_service_wages.select {|e| e[0] == service.id}.flatten[1], style: "width:70px", id: "#{service.id}_nurse_service_wage", class: "nurse_service_wage_input", data: {url: set_nurse_service_wage_path(@nurse, service)} %></td>
                             </tr>

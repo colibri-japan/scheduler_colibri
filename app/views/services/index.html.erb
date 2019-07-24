@@ -22,7 +22,7 @@
             <td><%= service.title %></td>
             <td><%= service.unit_credits %></td>
             <td><%= service.unit_wage %></td>
-            <td><%= humanize_hour_based_wage(service) %></td>
+            <td><%= hour_based_wage_text(service.hour_based_wage) %></td>
           </tr>
         <% end %>
       </tbody>

@@ -28,7 +28,7 @@ class Service < ApplicationRecord
   end
 
   def self.delivered_in_range(range)
-    joins('left join salary_line_items on salary_line_items.service_salary_id = services.id').joins('left join appointments on salary_line_items.appointment_id = appointments.id').where(salary_line_items: {cancelled: false, archived_at: nil, service_date: range}).where(appointments: {edit_requested: false})
+    joins('left join appointments on appointments.service_id = services.id').where(appointments: {cancelled: false, edit_requested: false, archived_at: nil, starts_at: range})
   end
 
   private 

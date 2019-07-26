@@ -201,4 +201,16 @@ $(document).on 'turbolinks:load', ->
       alert('期間を選択してください')
     return
 
+  if $('#cm_filter').length > 0
+    $('#cm_filter').selectize 
+      plugins: ['remove_button']
+      placeholder: '検索する...'
+    filterCmCorporations()
+
+  if $('#cm_teikyohyo_filter').length > 0
+    $('#cm_teikyohyo_filter').selectize 
+      plugins: ['remove_button']
+      placeholder: '検索する...'
+    filterCmTeikyohyo()
+
   return

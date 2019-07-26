@@ -5,7 +5,7 @@
 <div id="payable-container">
     	
 	<div class='colibri-xs-title no-print' style='margin-left:5px'>請求.実績</div>
-	<div class='no-print'>
+	<div class='no-print' style='margin-left:5px'>
 		<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
 		<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
 		<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
@@ -16,9 +16,12 @@
 				<span class='colibri-subcontainer-title'>提供票</span>
 			</div>
 			<div class='colibri-subcontainer-body'>
+			  <div style="margin-top:4px;margin-right:4px">
+			    <%= select_tag :care_manager_corporation_filter, options_for_select(@care_manager_corporations.pluck(:name, :id)), {id: :cm_teikyohyo_filter, multiple: true} %>
+			  </div>
               <table class="table">
 				<% @care_manager_corporations.each do |care_manager_corporation| %>
-                    <tr>
+                    <tr id="cm_teikyohyo_<%= care_manager_corporation.id %>" class="cm_teikyohyo">
                         <td><%= care_manager_corporation.name %></td>
                         <td><%= link_to 'Pdf', care_manager_corporation_teikyohyo_path(care_manager_corporation, params: {m: @selected_month, y: @selected_year}, format: :pdf), target: :_blank, class: 'btn btn-sm btn-success text-white' if current_user.has_admin_access? %></td>
                     </tr>
@@ -31,9 +34,12 @@
 				<span class='colibri-subcontainer-title'>サービス編集内容（コメント付きサービス）</span>
 			</div>
 			<div class='colibri-subcontainer-body'>
+			  <div style="margin-top:4px;margin-right:4px">
+			    <%= select_tag :care_manager_corporation_filter, options_for_select(@care_manager_corporations.pluck(:name, :id)), {id: :cm_filter, multiple: true} %>
+			  </div>
 			  <table class="table">
 				<% @care_manager_corporations.each do |care_manager_corporation| %>
-                    <tr>
+                    <tr id="cm_corporation_<%= care_manager_corporation.id %>" class="cm_corporation">
                         <td><%= care_manager_corporation.name %></td>
                         <td><%= link_to 'Pdf', care_manager_corporation_commented_appointments_path(care_manager_corporation, params: {m: @selected_month, y: @selected_year}, format: :pdf), target: :_blank, class: 'btn btn-sm btn-success text-white' if current_user.has_admin_access? %></td>
                     </tr>

@@ -1880,6 +1880,34 @@ let salaryRulesFormLayout = () => {
   serviceDaterangepicker();
 }
 
+let filterCmCorporations = () => {
+  $('#cm_filter').change(function(){
+    let selected_ids = $(this).val()
+    if (selected_ids) {
+      $('.cm_corporation').hide()
+      selected_ids.forEach(function(id){
+        $('#cm_corporation_' + id).show()
+      })
+    } else {
+      $('.cm_corporation').show()
+    }
+  })
+}
+
+let filterCmTeikyohyo = () => {
+  $('#cm_teikyohyo_filter').change(function(){
+    let selected_ids = $(this).val()
+    if (selected_ids) {
+      $('.cm_teikyohyo').hide()
+      selected_ids.forEach(function(id){
+        $('#cm_teikyohyo_' + id).show()
+      })
+    } else {
+      $('.cm_teikyohyo').show()
+    }
+  })
+}
+
 let serviceDaterangepicker = () => {
   $('#salary_rule_service_date_range_start').focus(function(){
     $(this).daterangepicker({

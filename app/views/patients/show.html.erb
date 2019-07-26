@@ -62,6 +62,10 @@
 				</div>
 				<table class="resource-detail-table">
 					<tr style='margin-top:6px'>
+						<td class="details-table-head">年齢</td>
+						<td><%= @patient.try(:age) %></td>
+					</tr>
+					<tr style='margin-top:6px'>
 						<td class="details-table-head">サ責</td>
 						<td><%= @patient.nurse.try(:name) %></td>
 					</tr>

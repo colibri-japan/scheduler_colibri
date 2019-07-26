@@ -25,6 +25,15 @@ class Patient < ApplicationRecord
 	scope :male, -> { where(gender: false) }
 	scope :female, -> { where(gender: true) }
 
+	def age
+		if birthday.present?
+			now = Time.current.in_time_zone('Tokyo')
+			now.year - birthday.year - (now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day) ? 0 : 1)
+		else
+			''
+		end
+	end
+
 	def self.group_by_kana
 		{
 			'あ' => where( "kana LIKE 'あ%' OR kana LIKE 'い%'  OR kana LIKE 'う%' OR kana LIKE 'え%' OR kana LIKE 'お%' OR kana LIKE 'ア%' OR kana LIKE 'イ%'  OR kana LIKE 'ウ%' OR kana LIKE 'エ%' OR kana LIKE 'オ%'" ).order_by_kana,

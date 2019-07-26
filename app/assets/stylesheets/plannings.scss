@@ -133,9 +133,11 @@ li.planning-menu-selected {
 
 #detail-container {
 	display: flex;
-	margin-left: 190px;
+	position: absolute;
+	width: calc(90vw - 55px);
+	max-width: calc(100vw - 195px);
+	right: 0;
 	margin-right: 5px;
-	height: 100%;
 }
 
 #detail-planning-title {
@@ -155,7 +157,8 @@ li.planning-menu-selected {
 	flex-direction: column;
 	overflow:hidden;
 	height: 100%;
-	width: 130px;
+	min-width: 130px;
+	width:10vw;
 	position: fixed;
 	z-index: 0;
 	top: 0;

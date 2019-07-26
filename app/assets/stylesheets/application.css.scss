@@ -339,7 +339,7 @@ tr.patient-clickable-row:hover {
 }
 
 .fc-scroller {
-	height: 57vh !important;
+	height: calc(100vh - 200px) !important;
 }
 
 

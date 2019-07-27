@@ -1,6 +1,7 @@
 class RecurringAppointment < ApplicationRecord
 	include PublicActivity::Common
 	include CalendarEvent
+	include Archivable
 
 	attribute :editing_occurrences_after, :date
 	attribute :request_edit_for_overlapping_appointments, :boolean
@@ -93,18 +94,6 @@ class RecurringAppointment < ApplicationRecord
 
 	def occurs_between?(start_date, end_date)
 		schedule.occurs_between?(start_date.to_date, end_date.to_date)
-	end
-
-	def archived?
-		self.archived_at.present?
-	end
-
-	def archive 
-		self.archived_at = Time.current 
-	end
-
-	def archive! 
-		self.update_column(:archived_at, Time.current)
 	end
 
 	def self.overlapping_hours(start_time, end_time)

@@ -1,5 +1,6 @@
 class SalaryLineItem < ApplicationRecord
 	attribute :target_service_ids
+	include Archivable
 
 	belongs_to :nurse
 	belongs_to :patient, optional: true
@@ -16,29 +17,6 @@ class SalaryLineItem < ApplicationRecord
 
 	def weekend_holiday_salary_line_item?
 		!self.service_date.on_weekday? || HolidayJp.between(self.service_date.beginning_of_day, self.service_date.end_of_day).present? ? true : false
-	end
-
-
-	def verify(user_id)
-		verified_at = Time.current
-		verifier_id = user_id
-	end
-
-	def second_verify(user_id)
-		second_verified_at = Time.current 
-		second_verified_id = user_id 
-	end
-
-	def archived?
-		archived_at.present?
-	end
-
-	def archive 
-		archived_at = Time.current 
-	end
-
-	def archive! 
-		update_column(:archived_at, Time.current)
 	end
 
 	private

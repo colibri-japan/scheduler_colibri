@@ -1,6 +1,7 @@
 class Appointment < ApplicationRecord
 	include PublicActivity::Common
 	include CalendarEvent
+	include Archivable
 
 	attribute :should_request_edit_for_overlapping_appointments, :boolean 
 	attribute :skip_credits_invoice_and_wage_calculations, :boolean 
@@ -47,26 +48,6 @@ class Appointment < ApplicationRecord
 
 	def self.overlapping(range)
 		where('((appointments.starts_at >= ? AND appointments.starts_at < ?) OR (appointments.ends_at > ? AND appointments.ends_at <= ?)) OR (appointments.starts_at < ? AND appointments.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
-	end
-
-	def archived?
-		self.archived_at.present?
-	end
-
-	def archive 
-		self.archived_at = Time.current 
-	end
-
-	def archive! 
-		self.update_column(:archived_at, Time.current)
-	end
-
-	def recurring_appointment_frequency 
-		if self.recurring_appointment.present? 
-			self.recurring_appointment.frequency 
-		else
-			''
-		end
 	end
 
 	def recurring_appointment_path
@@ -140,7 +121,7 @@ class Appointment < ApplicationRecord
 				address: self.patient.try(:address)
 			},
 			eventType: 'appointment',
-			frequency: self.recurring_appointment_frequency,
+			frequency: self.recurring_appointment.try(:frequency),
 			base_url: "/plannings/#{self.planning_id}/appointments/#{self.id}",
 			edit_url: "/plannings/#{self.planning_id}/appointments/#{self.id}/edit",
 			recurring_appointment_path: self.recurring_appointment_path

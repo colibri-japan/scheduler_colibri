@@ -1,5 +1,6 @@
 class Appointment < ApplicationRecord
 	include PublicActivity::Common
+	include CalendarEvent
 
 	attribute :should_request_edit_for_overlapping_appointments, :boolean 
 	attribute :skip_credits_invoice_and_wage_calculations, :boolean 
@@ -36,16 +37,8 @@ class Appointment < ApplicationRecord
 	scope :in_range, -> range { where(starts_at: range) }
 	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
 
-	def all_day_appointment?
-		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
-	end
-
 	def verifying_appointment
 		will_save_change_to_verified_at? || will_save_change_to_second_verified_at?
-	end
-
-	def weekend_holiday_appointment?
-		!self.starts_at.on_weekday? || !self.ends_at.on_weekday? || HolidayJp.between(self.starts_at, self.ends_at).present? ? true : false
 	end
 
 	def should_request_edit_for_overlapping_appointments?
@@ -121,7 +114,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def as_json(options = {})
-		date_format = self.all_day_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
+		date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 		{
 			id: "appointment_#{self.id}",
 			title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
@@ -132,7 +125,7 @@ class Appointment < ApplicationRecord
 			edit_requested: self.edit_requested,
 			description: self.description || '',
 			resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
-			allDay: self.all_day_appointment?,
+			allDay: self.all_day?,
 			color: self.color,
 			cancelled: self.cancelled,
 			private_event: false,

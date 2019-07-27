@@ -1,4 +1,4 @@
-json.allDay appointment.all_day_appointment?
+json.allDay appointment.all_day?
 
 date_format = json.allDay ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 

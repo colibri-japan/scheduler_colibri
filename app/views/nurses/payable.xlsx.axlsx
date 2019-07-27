@@ -26,7 +26,7 @@ wb.styles do |s|
 		sheet.add_row
 		sheet.add_row ['日付', '利用者名','サービスタイプ',  '稼働時間', '開始', '終了',  '計'], style: table_header
 		@appointments_till_today.each do |appointment|
-			if appointment.weekend_holiday_appointment?
+			if appointment.on_weekend_or_holiday?
 				date_style = appointment.starts_at.wday == 6 ? saturday_cell : sunday_holiday_cell
 			else
 				date_style = table_cells

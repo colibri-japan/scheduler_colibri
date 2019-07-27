@@ -1,5 +1,6 @@
 class RecurringAppointment < ApplicationRecord
 	include PublicActivity::Common
+	include CalendarEvent
 
 	attribute :editing_occurrences_after, :date
 	attribute :request_edit_for_overlapping_appointments, :boolean
@@ -81,10 +82,6 @@ class RecurringAppointment < ApplicationRecord
 
 	end
 
-	def all_day_recurring_appointment?
-		self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
-	end
-
 	def synchronize_appointments?
 		synchronize_appointments
 	end
@@ -127,12 +124,12 @@ class RecurringAppointment < ApplicationRecord
 	end
 
 	def as_json(options = {})
-		date_format = self.all_day_recurring_appointment? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
+		date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
 		returned_json_array = []
 		self.appointments(options[:start_time], options[:end_time]).each do |occurrence|
 			returned_json_array << {
-				allDay: self.all_day_recurring_appointment?,
+				allDay: self.all_day?,
 				id: "recurring_#{self.id}",
 				color: self.color,
 				frequency: self.frequency,

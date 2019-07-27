@@ -1,5 +1,6 @@
 class WishedSlot < ApplicationRecord
   include PublicActivity::Model
+  include CalendarEvent
 
   tracked owner: Proc.new{ |controller, model| controller.current_user }
   tracked planning_id: Proc.new{ |controller, model| model.planning_id }
@@ -47,10 +48,6 @@ class WishedSlot < ApplicationRecord
 
   end
 
-  def all_day_wished_slot?
-  	self.starts_at == self.starts_at.midnight && self.ends_at == self.ends_at.midnight
-  end
-
   def wished_slot_occurrences(start_date, end_date)
   	start_frequency = start_date ? start_date.to_date : Date.today - 1.year
     end_frequency = end_date ? end_date.to_date : Date.today + 1.year
@@ -64,7 +61,7 @@ class WishedSlot < ApplicationRecord
 
 	def overlapping_hours(start_time, end_time)
 		self_start = self.starts_at.utc.strftime("%H:%M")
-		self_end = self.all_day_wished_slot? ? "23:59" : self.ends_at.utc.strftime("%H:%M")
+		self_end = self.all_day? ? "23:59" : self.ends_at.utc.strftime("%H:%M")
 		check_start = start_time.utc.strftime("%H:%M")
     check_end = end_time.utc.strftime("%H:%M")
     
@@ -99,11 +96,11 @@ class WishedSlot < ApplicationRecord
   def as_json(options = {})
     occurrences = self.wished_slot_occurrences(options[:start_time], options[:end_time])
     returned_json_array = []
-    date_format = self.all_day_wished_slot? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
+    date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
     occurrences.each do |occurrence|
       occurrence_object = {
-        allDay: all_day_wished_slot?,
+        allDay: all_day?,
         id: "wished_slot_#{self.id}",
         title: title_from_rank,
         frequency: frequency,

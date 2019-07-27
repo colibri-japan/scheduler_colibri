@@ -1,6 +1,6 @@
 json.array! @private_events.each do |private_event|
-    json.allDay private_event.all_day_private_event? 
-    date_format = private_event.all_day_private_event? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
+    json.allDay private_event.all_day? 
+    date_format = private_event.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
     
     json.id "private_event_#{private_event.id}"
     

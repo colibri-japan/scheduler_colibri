@@ -149,7 +149,7 @@
 		<tbody>
             <% @appointments_till_today.each do |appointment| %>
                 <tr>
-                    <td class="<%= weekend_holiday_appointment_css(appointment) if appointment.weekend_holiday_appointment? %>"><%= appointment.starts_at.try(:strftime,"%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
+                    <td class="<%= weekend_holiday_appointment_css(appointment) if appointment.on_weekend_or_holiday? %>"><%= appointment.starts_at.try(:strftime,"%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
                     <td><%= appointment.title %></td>
                     <td><%= appointment.nurse.try(:name) %> </td>
                     <td><%= from_seconds_to_hours_minutes(appointment.duration) if appointment.duration.present? %></td>

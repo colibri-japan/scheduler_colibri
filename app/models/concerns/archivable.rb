@@ -1,10 +1,6 @@
 module Archivable
     extend ActiveSupport::Concern 
 
-    included do
-        validates :archived_at, presence: true
-    end
-
 	def archived?
 		archived_at.present?
 	end

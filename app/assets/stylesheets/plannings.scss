@@ -521,6 +521,11 @@ p.master-reflect-option {
 	#index-table-container {
 		margin: 0px;
 	}
+
+	#detail-container {
+		max-width: none;
+		width: 100% !important;
+	}
 }
 
 @media screen and (orientation: portrait) {

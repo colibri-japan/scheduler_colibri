@@ -67756,6 +67756,9 @@ document.addEventListener('turbolinks:load', function () {
       url = window.location.href.split('?')[0] + '?m=' + $('#query_month').val() + '&y=' + $('#query_year').val();
       window.location = url;
     });
+    $('#nurse_monthly_wage').click(function() {
+      $('#manage_nurse_monthly_wage').modal('show');
+    });
   });
 
 }).call(this);
@@ -67785,6 +67788,37 @@ document.addEventListener('turbolinks:load', function () {
       $(this).addClass('toggle-active-selected');
       $('#deactivated-patients-table').hide();
       $('#active-patients-table').show();
+    });
+    $('#calculate_day_count').click(function() {
+      $('#calculate_hiwari_days').modal('show');
+    });
+    $('#patient_date_of_contract').focus(function() {
+      $(this).daterangepicker({
+        singleDatePicker: true,
+        startDate: moment(),
+        locale: {
+          format: 'YYYY-MM-DD',
+          applyLabel: '選択する',
+          cancelLabel: "取消",
+          daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
+          monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+          firstDay: 1
+        }
+      });
+    });
+    $('#patient_end_of_contract').focus(function() {
+      $(this).daterangepicker({
+        singleDatePicker: true,
+        startDate: moment(),
+        locale: {
+          format: 'YYYY-MM-DD',
+          applyLabel: '選択する',
+          cancelLabel: "取消",
+          daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
+          monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+          firstDay: 1
+        }
+      });
     });
   });
 
@@ -67929,13 +67963,6 @@ document.addEventListener('turbolinks:load', function () {
     if ($('#colibri-salary-rules-index').length > 0) {
       $.getScript('/salary_rules.js');
     }
-    $('#see-more-service-category-data').click(function() {
-      var $container;
-      $container = $(this).parent('.colibri-subcontainer-body');
-      $container.animate({
-        scrollTop: $container[0].clientHeight
-      }, 500, 'swing');
-    });
     if ($('#nurse_resource_filter').length > 0) {
       $('#nurse_resource_filter').selectize({
         plugins: ['remove_button']
@@ -67954,7 +67981,7 @@ document.addEventListener('turbolinks:load', function () {
       $('#service_type_filter_content').toggle();
     });
     if ($('#category-subcontainer').length > 0) {
-      $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
+      $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
     }
     $('#confirm-availabilities-print').click(function() {
       var date, text;
@@ -67966,6 +67993,20 @@ document.addEventListener('turbolinks:load', function () {
         alert('期間を選択してください');
       }
     });
+    if ($('#cm_filter').length > 0) {
+      $('#cm_filter').selectize({
+        plugins: ['remove_button'],
+        placeholder: '検索する...'
+      });
+      filterCmCorporations();
+    }
+    if ($('#cm_teikyohyo_filter').length > 0) {
+      $('#cm_teikyohyo_filter').selectize({
+        plugins: ['remove_button'],
+        placeholder: '検索する...'
+      });
+      filterCmTeikyohyo();
+    }
   });
 
 }).call(this);
@@ -68700,7 +68741,7 @@ initialize_master_calendar = function() {
                 nurse_id: newNurseId,
                 patient_id: newPatientId,
                 frequency: event.frequency,
-                title: event.service_type,
+                service_id: event.service_id,
                 color: event.color,
                 anchor: event.start.format('YYYY-MM-DD'),
                 end_day: event.end.format('YYYY-MM-DD'),
@@ -69249,15 +69290,7 @@ let humanizeFrequency = (frequency) => {
 
 
 let recurringAppointmenSelectizeTitle = () => {
-  $('#recurring_appointment_title').selectize({
-    persist: false,
-    create: true,
-    render: {
-      option_create: function(data, escape) {
-        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  });
+  $('#recurring_appointment_service_id').selectize()
 };
 
 let recurringAppointmentSelectizeNursePatient = () => {
@@ -69271,15 +69304,7 @@ let appointmentSelectizeNursePatient = () => {
 }
 
 let appointmentSelectize = () => {
-  $('#appointment_title').selectize({
-    persist: false,
-    create: true,
-    render: {
-      option_create: function (data, escape) {
-        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  });
+  $('#appointment_service_id').selectize()
 }
 
 let skillsSelectize = () => {
@@ -69823,12 +69848,19 @@ let initializeCalendar = () => {
   }
 }
 
-let filterSalaryLineItemCategory = () => {
+let filterAppointmentCategory = () => {
   $('#service_type_filter').selectize({
     plugins: ['remove_button']
   })
   $('#refresh-service-types').click(function(){
-    $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+    $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+  })
+}
+
+let scrollAppointmentByCategory = () => {
+  $('#see-more-service-category-data').click(function(){
+    $container = $(this).parent('#category-subcontainer')
+    $container.animate({ scrollTop: $container[0].clientHeight }, 500, 'swing')
   })
 }
 
@@ -69958,6 +69990,49 @@ let salaryRulesFormLayout = () => {
     plugins: ['remove_button']
   })
   serviceDaterangepicker();
+}
+
+let filterCmCorporations = () => {
+  $('#cm_filter').change(function(){
+    let selected_ids = $(this).val()
+    if (selected_ids) {
+      $('.cm_corporation').hide()
+      selected_ids.forEach(function(id){
+        $('#cm_corporation_' + id).show()
+      })
+    } else {
+      $('.cm_corporation').show()
+    }
+  })
+}
+
+let filterCmTeikyohyo = () => {
+  $('#cm_teikyohyo_filter').change(function(){
+    let selected_ids = $(this).val()
+    if (selected_ids) {
+      $('.cm_teikyohyo').hide()
+      selected_ids.forEach(function(id){
+        $('#cm_teikyohyo_' + id).show()
+      })
+    } else {
+      $('.cm_teikyohyo').show()
+    }
+  })
+}
+
+let showMonthlyWageField = () => {
+  $('#full-timer-toggle').change(function(){
+    nurseMonthlyWageField()
+  })
+}
+
+let nurseMonthlyWageField = () => {
+  if ($('#full-timer-toggle').is(':checked')) {
+    $('#monthly_wage_group').show()
+  } else {
+    $('#monthly_wage_group').hide()
+    $('#nurse_monthly_wage').val('')
+  }
 }
 
 let serviceDaterangepicker = () => {

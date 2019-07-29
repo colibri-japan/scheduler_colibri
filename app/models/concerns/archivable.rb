@@ -6,7 +6,7 @@ module Archivable
 	end
 
 	def archive 
-		archived_at = Time.current 
+		self.archived_at = Time.current 
 	end
 
 	def archive! 

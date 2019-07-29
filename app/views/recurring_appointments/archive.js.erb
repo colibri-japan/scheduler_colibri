@@ -17,10 +17,7 @@
     calendar = $('.master_calendar');
   }
 
-  <% if @recurring_appointment.master == true %>
-    calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
-  <% else %>
-  <% end %>
+  calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
 
 
 <% end %>

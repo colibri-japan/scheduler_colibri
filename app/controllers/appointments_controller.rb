@@ -97,9 +97,13 @@ class AppointmentsController < ApplicationController
   def archive
     authorize @planning, :same_corporation_as_current_user?
 
+    puts 'archived at before and after'
+    puts @appointment.archived_at
     @appointment.archive 
     @appointment.recurring_appointment_id = nil 
 
+    puts @appointment.archived_at
+    
     if @appointment.save(validate: false)
       @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, previous_nurse_id: @appointment.nurse_id, previous_patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_nurse_name: @appointment.nurse.try(:name), previous_patient_name: @appointment.patient.try(:name)}
       recalculate_bonus

@@ -57,4 +57,12 @@ module PatientsHelper
             ""
         end
     end
+
+    def day_count_for_hiwari_service(day_count)
+        if day_count == 0
+            "<div id='calculate_day_count' class='btn btn-sm btn-info'>+日数計算</div>".html_safe
+        else
+            day_count
+        end
+    end
 end

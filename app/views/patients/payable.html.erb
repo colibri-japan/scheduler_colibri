@@ -65,6 +65,9 @@
                     <tr>
                         <td><%= appointment_summary_hash[:official_title] %></td>
                         <td><%= appointment_summary_hash[:unit_credits] %></td>
+                        <% if false %>
+                            <td><%= appointment_summary_hash[:calculation_method] == 2 ? day_count_for_hiwari_service(appointment_summary_hash[:count]) : appointment_summary_hash[:count] %></td>
+                        <% end %>
                         <td><%= appointment_summary_hash[:count] %></td>
                         <td><%= appointment_summary_hash[:sum_total_credits] %></td>
                         <td></td>
@@ -197,4 +200,31 @@
 		</tbody>
 	</table>
 	
+</div>
+
+<div id="calculate_hiwari_days" class="modal fade" style="display:none">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">契約日からの日割り計算</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<%= form_with(model: @patient, local: true) do |form| %>
+				<div class="modal-body">
+					<div class="form-group">
+						<%= form.label :date_of_contract, '契約日', class:"colibri-form-label-dark" %>
+						<%= form.text_field :date_of_contract, class: "form-control", id: :patient_date_of_contract %>
+					</div>
+					<div class="form-group">
+						<%= form.label :end_of_contract, '契約終了日', class:"colibri-form-label-dark" %>
+						<%= form.text_field :end_of_contract, class: "form-control", id: :patient_end_of_contract %>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+					<%= form.submit 'セーブする', class:'btn btn-info' %>
+				</div>
+			<% end %>
+		</div>
+	</div>
 </div>

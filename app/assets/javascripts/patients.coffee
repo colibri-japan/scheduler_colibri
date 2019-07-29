@@ -28,5 +28,78 @@ $(document).on 'turbolinks:load', ->
     $('#deactivated-patients-table').hide()
     $('#active-patients-table').show()
     return
+
+  $('#calculate_day_count').click ->
+    $('#calculate_hiwari_days').modal('show')
+    return
+
+  $('#patient_date_of_contract').focus ->
+    $(this).daterangepicker
+      singleDatePicker: true 
+      startDate: moment()
+      locale: 
+        format: 'YYYY-MM-DD'
+        applyLabel: '選択する'
+        cancelLabel: "取消"
+        daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土"
+        ]
+        monthNames: [
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月",
+          "9月",
+          "10月",
+          "11月",
+          "12月"
+        ]
+        firstDay: 1
+    return
+
+  $('#patient_end_of_contract').focus ->
+    $(this).daterangepicker
+      singleDatePicker: true 
+      startDate: moment()
+      locale: 
+        format: 'YYYY-MM-DD'
+        applyLabel: '選択する'
+        cancelLabel: "取消"
+        daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土"
+        ]
+        monthNames: [
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月",
+          "9月",
+          "10月",
+          "11月",
+          "12月"
+        ]
+        firstDay: 1
+    return
+
     
   return

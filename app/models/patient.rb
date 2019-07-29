@@ -102,18 +102,32 @@ class Patient < ApplicationRecord
 				service_hash[:official_title] = service.try(:official_title)
 				service_hash[:service_code] = service.try(:service_code)
 				service_hash[:unit_credits] = service.try(:unit_credits)
+				service_hash[:calculation_method] = service.credit_calculation_method
 				case service.credit_calculation_method
 				when 0
 					service_hash[:sum_total_credits] = (appointment_group.total_count || 0) * (service.try(:unit_credits) || 0)
 				when 1
 					service_hash[:sum_total_credits] = service.try(:unit_credits)
 				when 2
-					service_hash[:sum_total_credits] = ((appointment_group.minimum_starts_at.to_date)..(date_range.last.to_date)).count * (service.try(:unit_credits) || 0)
+					#here change to calculation based on contract start OR end
+					puts 'patient contract start or end'
+					puts self.end_of_contract
+					puts self.date_of_contract
+					if self.date_of_contract.present? && self.date_of_contract.month == date_range.first.month 
+						puts 'hiwari start'
+						day_count = (date_of_contract..date_range.last).count
+					elsif self.end_of_contract.present? && self.end_of_contract.month == date_range.last.month 
+						puts 'hiwari end'
+						day_count = (date_range.first..end_of_contract).count
+					else
+						day_count = 0
+					end
+					service_hash[:sum_total_credits] = day_count * (service.try(:unit_credits) || 0)
 				else
 					service_hash[:sum_total_credits] = 0
 				end
 				service_hash[:sum_total_invoiced] = appointment_group.sum_total_invoiced
-				service_hash[:count] = service.credit_calculation_method == 2 ?  ((appointment_group.minimum_starts_at.to_date)..(date_range.last.to_date)).count : appointment_group.total_count
+				service_hash[:count] = service.credit_calculation_method == 2 ? day_count : appointment_group.total_count
 
 				array_of_service_summary << service_hash
 			end

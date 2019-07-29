@@ -67929,13 +67929,6 @@ document.addEventListener('turbolinks:load', function () {
     if ($('#colibri-salary-rules-index').length > 0) {
       $.getScript('/salary_rules.js');
     }
-    $('#see-more-service-category-data').click(function() {
-      var $container;
-      $container = $(this).parent('.colibri-subcontainer-body');
-      $container.animate({
-        scrollTop: $container[0].clientHeight
-      }, 500, 'swing');
-    });
     if ($('#nurse_resource_filter').length > 0) {
       $('#nurse_resource_filter').selectize({
         plugins: ['remove_button']
@@ -67954,7 +67947,7 @@ document.addEventListener('turbolinks:load', function () {
       $('#service_type_filter_content').toggle();
     });
     if ($('#category-subcontainer').length > 0) {
-      $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
+      $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val());
     }
     $('#confirm-availabilities-print').click(function() {
       var date, text;
@@ -67966,6 +67959,20 @@ document.addEventListener('turbolinks:load', function () {
         alert('期間を選択してください');
       }
     });
+    if ($('#cm_filter').length > 0) {
+      $('#cm_filter').selectize({
+        plugins: ['remove_button'],
+        placeholder: '検索する...'
+      });
+      filterCmCorporations();
+    }
+    if ($('#cm_teikyohyo_filter').length > 0) {
+      $('#cm_teikyohyo_filter').selectize({
+        plugins: ['remove_button'],
+        placeholder: '検索する...'
+      });
+      filterCmTeikyohyo();
+    }
   });
 
 }).call(this);
@@ -68138,19 +68145,19 @@ let setWishedSlotTime = (start, end, view) => {
 }
 
 let setPrivateEventTime = (start, end, view) => {
-  $('#private_event_starts_at_1i').val(moment(start).format('YYYY'));
+  $('#private_event_starts_at_1i').val(moment(start).format('Y'));
   $('#private_event_starts_at_2i').val(moment(start).format('M'));
   $('#private_event_starts_at_3i').val(moment(start).format('D'));
   $('#private_event_starts_at_4i').val(moment(start).format('HH'));
   $('#private_event_starts_at_5i').val(moment(start).format('mm'));
-  if (view.name == 'month' || view.name == 'timelineWeek') {
-    $('#private_event_ends_at_1i').val(moment(start).format('YYYY'));
+  if (['month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
+    $('#private_event_ends_at_1i').val(moment(start).format('Y'));
     $('#private_event_ends_at_2i').val(moment(start).format('M'));
     $('#private_event_ends_at_3i').val(moment(start).format('D'));
     $('#private_event_ends_at_4i').val('23');
     $('#private_event_ends_at_5i').val('00');
   } else {
-    $('#private_event_ends_at_1i').val(moment(end).format('YYYY'));
+    $('#private_event_ends_at_1i').val(moment(end).format('Y'));
     $('#private_event_ends_at_2i').val(moment(end).format('M'));
     $('#private_event_ends_at_3i').val(moment(end).format('D'));
     $('#private_event_ends_at_4i').val(moment(end).format('HH'));
@@ -68171,7 +68178,7 @@ let setAppointmentTime = (start, end, view) => {
   $('#appointment_starts_at_3i').val(moment(start).format('D'));
   $('#appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#appointment_starts_at_5i').val(moment(start).format('mm'));
-  if (view.name == 'month' || view.name == 'timelineWeek') {
+  if (['month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
     $('#appointment_ends_at_1i').val(moment(start).format('YYYY'));
     $('#appointment_ends_at_2i').val(moment(start).format('M'));
     $('#appointment_ends_at_3i').val(moment(start).format('D'));
@@ -68198,7 +68205,7 @@ let setRecurringAppointmentTime = (start, end, resource, view) => {
   $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
   $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-  if (view.name == 'month' || view.name ==  'timelineWeek' ) {
+  if (['month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
     $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
     $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
     $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));
@@ -68688,6 +68695,8 @@ initialize_master_calendar = function() {
         $('#drag-drop-master').modal({ backdrop: 'static' })
         $('.close-drag-drop-modal').click(function(){
           revertFunc()
+          $('.modal').modal('hide');
+          $('.modal-backdrop').remove();
         })
         $('#master-drag-copy').one('click', function(){
           $.ajax({
@@ -68698,7 +68707,7 @@ initialize_master_calendar = function() {
                 nurse_id: newNurseId,
                 patient_id: newPatientId,
                 frequency: event.frequency,
-                title: event.service_type,
+                service_id: event.service_id,
                 color: event.color,
                 anchor: event.start.format('YYYY-MM-DD'),
                 end_day: event.end.format('YYYY-MM-DD'),
@@ -69247,15 +69256,7 @@ let humanizeFrequency = (frequency) => {
 
 
 let recurringAppointmenSelectizeTitle = () => {
-  $('#recurring_appointment_title').selectize({
-    persist: false,
-    create: true,
-    render: {
-      option_create: function(data, escape) {
-        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  });
+  $('#recurring_appointment_service_id').selectize()
 };
 
 let recurringAppointmentSelectizeNursePatient = () => {
@@ -69269,15 +69270,7 @@ let appointmentSelectizeNursePatient = () => {
 }
 
 let appointmentSelectize = () => {
-  $('#appointment_title').selectize({
-    persist: false,
-    create: true,
-    render: {
-      option_create: function (data, escape) {
-        return '<div class="create">新規タイプ <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  });
+  $('#appointment_service_id').selectize()
 }
 
 let skillsSelectize = () => {
@@ -69321,16 +69314,6 @@ let toggleServiceHourBasedWage = () => {
     width: 130
   })
 };
-
-let toggleServiceEqualSalary = () => {
-  $('#service_equal_salary').bootstrapToggle({
-    on: '全員同じ',
-    off: '従業員別',
-    onstyle: 'secondary',
-    offstyle: 'secondary',
-    width: 130
-  })
-}
 
 let drawHourMarks = () => {
   $('tr*[data-time="09:00:00"]').addClass('thick-calendar-line');
@@ -69831,12 +69814,19 @@ let initializeCalendar = () => {
   }
 }
 
-let filterSalaryLineItemCategory = () => {
+let filterAppointmentCategory = () => {
   $('#service_type_filter').selectize({
     plugins: ['remove_button']
   })
   $('#refresh-service-types').click(function(){
-    $.getScript('/salary_line_items_by_category_report/salary_line_items?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+    $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
+  })
+}
+
+let scrollAppointmentByCategory = () => {
+  $('#see-more-service-category-data').click(function(){
+    $container = $(this).parent('#category-subcontainer')
+    $container.animate({ scrollTop: $container[0].clientHeight }, 500, 'swing')
   })
 }
 
@@ -69966,6 +69956,49 @@ let salaryRulesFormLayout = () => {
     plugins: ['remove_button']
   })
   serviceDaterangepicker();
+}
+
+let filterCmCorporations = () => {
+  $('#cm_filter').change(function(){
+    let selected_ids = $(this).val()
+    if (selected_ids) {
+      $('.cm_corporation').hide()
+      selected_ids.forEach(function(id){
+        $('#cm_corporation_' + id).show()
+      })
+    } else {
+      $('.cm_corporation').show()
+    }
+  })
+}
+
+let filterCmTeikyohyo = () => {
+  $('#cm_teikyohyo_filter').change(function(){
+    let selected_ids = $(this).val()
+    if (selected_ids) {
+      $('.cm_teikyohyo').hide()
+      selected_ids.forEach(function(id){
+        $('#cm_teikyohyo_' + id).show()
+      })
+    } else {
+      $('.cm_teikyohyo').show()
+    }
+  })
+}
+
+let showMonthlyWageField = () => {
+  $('#full-timer-toggle').change(function(){
+    nurseMonthlyWageField()
+  })
+}
+
+let nurseMonthlyWageField = () => {
+  if ($('#full-timer-toggle').is(':checked')) {
+    $('#monthly_wage_group').show()
+  } else {
+    $('#monthly_wage_group').hide()
+    $('#nurse_monthly_wage').val('')
+  }
 }
 
 let serviceDaterangepicker = () => {

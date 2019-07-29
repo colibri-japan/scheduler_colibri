@@ -29,14 +29,13 @@ $(document).on 'turbolinks:load', ->
     $('#active-patients-table').show()
     return
 
-  $('#calculate_day_count').click ->
+  $('.edit_hiwari_count').click ->
     $('#calculate_hiwari_days').modal('show')
     return
 
   $('#patient_date_of_contract').focus ->
     $(this).daterangepicker
       singleDatePicker: true 
-      startDate: moment()
       locale: 
         format: 'YYYY-MM-DD'
         applyLabel: '選択する'
@@ -70,7 +69,6 @@ $(document).on 'turbolinks:load', ->
   $('#patient_end_of_contract').focus ->
     $(this).daterangepicker
       singleDatePicker: true 
-      startDate: moment()
       locale: 
         format: 'YYYY-MM-DD'
         applyLabel: '選択する'

@@ -60,9 +60,9 @@ module PatientsHelper
 
     def day_count_for_hiwari_service(day_count)
         if day_count == 0
-            "<div id='calculate_day_count' class='btn btn-sm btn-info'>+日数計算</div>".html_safe
+            "<div class='btn btn-sm btn-info edit_hiwari_count'>+日数計算</div>".html_safe
         else
-            day_count
+            "#{day_count} <span class='glyphicon glyphicon-pencil btn-pointer edit_hiwari_count' style='font-size:15px;color:#4f5b66;margin-left:4px'></span>".html_safe
         end
     end
 end

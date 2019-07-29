@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190718113415) do
+ActiveRecord::Schema.define(version: 20190729021059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,6 +269,7 @@ ActiveRecord::Schema.define(version: 20190718113415) do
     t.text "description"
     t.bigint "team_id"
     t.integer "days_worked", default: 0
+    t.integer "monthly_wage"
     t.index ["corporation_id"], name: "index_nurses_on_corporation_id"
     t.index ["team_id"], name: "index_nurses_on_team_id"
   end

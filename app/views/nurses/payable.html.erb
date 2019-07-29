@@ -26,9 +26,10 @@
                     <%= @selected_month %>月のまとめ
                 </div>
                 <div class="patient-dashboard-panel-body">
-                    サービスによる給与：<%= sum_appointments = @appointments_till_today.sum(:total_wage) || 0 %>¥<br/>
+					基本給: <%= "#{@nurse.monthly_wage || 0}¥" if @nurse.full_timer? %><br/>
+                    サービスによる給与：<%= sum_appointments = @nurse.full_timer ? 0 : (@appointments_till_today.sum(:total_wage) || 0)%>¥<br/>
                     手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
-                    合計：<%= total_wage = sum_salary_line_items + sum_appointments || 0 %>¥<br/>
+                    合計：<%= total_wage = (@nurse.monthly_wage || 0) + sum_salary_line_items + sum_appointments || 0 %>¥<br/>
                 </div>
             </div>
             <div  class="patient-dashboard-panel" style="width:34%">
@@ -82,7 +83,7 @@
 				<th style="width:10%">提供時間</th>
 				<th style="width:10%">開始~終了</th>
 				<% if current_user.corporation_admin? %>
-					<th style="width:8%">計</th>
+					<th style="width:8%">給与</th>
 				<% end %>
 				<th style="width:18%" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @appointments_till_today.size %></span></th>
 				<th style="width:8%">編集</th>
@@ -99,7 +100,7 @@
 				<td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
 				<td><%= "#{appointment.starts_at.try(:strftime,'%H:%M')}~#{appointment.ends_at.try(:strftime,'%H:%M')}"  %></td>
 				<% if current_user.corporation_admin? %>
-					<td id="service-total-<%= appointment.id %>"><%= "#{appointment.total_wage}¥" %></td>
+					<td id="service-total-<%= appointment.id %>"><%= "#{appointment.total_wage}¥" unless @nurse.full_timer %></td>
 				<% end %>
         		<td style="width:9%">
 				  <div style="display:flex" id='appointment-<%= appointment.id %>'>
@@ -207,7 +208,7 @@
 				<th>提供時間</th>
 				<th>回数</th>
 				<% if current_user.corporation_admin? %>
-					<th>計</th>
+					<th>給与計</th>
 				<% end %>
 			</tr>
 		</thead>
@@ -218,7 +219,7 @@
 					<td><%= from_seconds_to_hours_minutes(appointment_group.sum_duration) if appointment_group.sum_duration > 0 %></td>
 					<td><%= appointment_group.count %></td>
 					<% if current_user.corporation_admin? %>
-						<td><%= appointment_group.sum_total_wage %>¥</td>
+						<td><%= "#{appointment_group.sum_total_wage}¥" unless @nurse.full_timer? %></td>
 					<% end %>
 				</tr>
 			<% end %>
@@ -227,7 +228,7 @@
 				<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 })  %></td>
 				<td><%= @grouped_appointments.sum {|group| group.count || 0 } %></td>
 				<% if current_user.corporation_admin? %>
-					<td><span style="font-weight:bold"><%= @grouped_appointments.sum {|group| group.sum_total_wage || 0 } %>¥</span></td>
+					<td><span style="font-weight:bold"><%="#{@grouped_appointments.sum {|group| group.sum_total_wage || 0 }}¥" unless @nurse.full_timer? %></span></td>
 				<% end %>
 			</tr>
 		</tbody>

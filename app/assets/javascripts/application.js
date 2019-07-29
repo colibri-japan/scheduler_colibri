@@ -1908,6 +1908,21 @@ let filterCmTeikyohyo = () => {
   })
 }
 
+let showMonthlyWageField = () => {
+  $('#full-timer-toggle').change(function(){
+    nurseMonthlyWageField()
+  })
+}
+
+let nurseMonthlyWageField = () => {
+  if ($('#full-timer-toggle').is(':checked')) {
+    $('#monthly_wage_group').show()
+  } else {
+    $('#monthly_wage_group').hide()
+    $('#nurse_monthly_wage').val('')
+  }
+}
+
 let serviceDaterangepicker = () => {
   $('#salary_rule_service_date_range_start').focus(function(){
     $(this).daterangepicker({

@@ -24,4 +24,12 @@ module NursesHelper
             ''
         end
     end
+
+    def manage_nurse_monthly_wage_text(nurse)
+        if nurse.full_timer?
+            nurse.monthly_wage.present? ? '基本給を編集する' : '+基本給を追加する'
+        else
+            ''
+        end
+    end
 end

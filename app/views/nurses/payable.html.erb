@@ -66,6 +66,9 @@
 
 	<div id='payable-table-commands' style='margin-top:20px'>
 	    <div id="add-provided-service-line">
+			<% if @nurse.full_timer? && current_user.corporation_admin? %>
+				<div id="nurse_monthly_wage" class="btn <%= @nurse.monthly_wage.present? ? 'btn-colibri-light-gray' : 'btn-info' %> text-white"><%= manage_nurse_monthly_wage_text(@nurse) %></div>
+			<% end %>
 			<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true %>
 			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_nurse_service_wages_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true if current_user.corporation_admin? %>
 		</div>
@@ -234,3 +237,32 @@
 		</tbody>
 	</table>
 </div>
+
+<% if @nurse.full_timer? %>
+	<div id="manage_nurse_monthly_wage" class="modal fade" style="display:none">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="colibri-small-title"><%= @nurse.name %>の基本給</h1>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<%= form_with(model: @nurse, local: true) do |form| %>
+					<div class="modal-body">
+
+						<div class="form-group">
+							<%= form.label :monthly_wage, '基本給', class:"colibri-form-label-dark" %>
+							<%= form.number_field :monthly_wage, class: "form-control" %>
+						</div>
+
+					</div>
+
+					<div class="modal-footer">
+						<div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+						<%= form.submit 'セーブする', class:'btn btn-info' %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+<% end %>

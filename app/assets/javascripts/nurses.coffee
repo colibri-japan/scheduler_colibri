@@ -24,6 +24,10 @@ $(document).on 'turbolinks:load', ->
     url = window.location.href.split('?')[0] + '?m=' + $('#query_month').val() + '&y=' + $('#query_year').val();
     window.location = url
     return
+
+  $('#nurse_monthly_wage').click ->
+    $('#manage_nurse_monthly_wage').modal('show')    
+    return
     
   
   return

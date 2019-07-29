@@ -91,7 +91,7 @@ class PlanningsController < ApplicationController
 		@appointments_count_and_sum_duration_by_nurse = @corporation.nurses.displayable.appointments_count_and_sum_duration_for(start_date..end_date)
 		
 		respond_to do |format|
-			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="給与詳細.xlsx"'}
+			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="従業員別実績.xlsx"'}
 		end
 	end
 

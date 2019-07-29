@@ -8,9 +8,13 @@
 }
 
 #payable-container {
+	position: absolute;
+	right: 0;
+	width: calc(90vw - 55px);
+	max-width: calc(100vw - 195px);
 	margin-top: 15px;
-	margin-left: 190px;
 	margin-right: 5px;
+	padding-left: 8px;
 }
 
 #payable-dashboard {

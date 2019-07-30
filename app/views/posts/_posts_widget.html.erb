@@ -16,7 +16,7 @@
   <% read_posts.to_a.reverse.each do |read_post| %>
     <div class="post-container" id="post-<%= read_post.id %>">
         <div class="post-header">
-            <div class="post-author-wrapper"><%= read_post.author.name %><%=" > #{read_post.patients.map(&:name).join('、')}" if read_post.patients.present? %></div>
+            <div class="post-author-wrapper"><%= read_post.author.name %><%= post_patients_names(read_post.patients.map(&:name)) if read_post.patients.present? %></div>
             <div class="post-timestamps-wrapper"><%= post_was_published_at(read_post) %></div>
         </div>
         <div class="post-body post-clickable <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(read_post.id) %> <%= 'reminderable-post' if read_post.reminders.present? %>" data-url="<%= edit_post_path(read_post) %>">
@@ -28,7 +28,7 @@
     <% unread_posts.to_a.reverse.each do |unread_post| %>
       <div class="post-container" id="post-<%= unread_post.id %>">
           <div class="post-header">
-              <div class="post-author-wrapper"><%= unread_post.author.name %><%=" > #{unread_post.patients.map(&:name).join('、')}" if unread_post.patients.present? %></div>
+              <div class="post-author-wrapper"><%= unread_post.author.name %><%= post_patients_names(unread_post.patients.map(&:name)) if unread_post.patients.present? %></div>
               <div class="post-timestamps-wrapper"><%= post_was_published_at(unread_post) %></div>
           </div>
           <div class="post-body post-clickable <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(unread_post.id) %> <%= 'reminderable-post' if unread_post.reminders.present? %>" data-url="<%= edit_post_path(unread_post) %>">

@@ -20,7 +20,7 @@ class Service < ApplicationRecord
 
 
   def invoiced_to_insurance?
-    service_code.present? && official_title.present?
+    service_code.present? && official_title.present? && inside_insurance_scope?
   end
 
   def self.delivered_in_range(range)

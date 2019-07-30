@@ -200,7 +200,7 @@
                         <tr>
                             <td><%= @corporation.name %></td>
                             <td><%= @corporation.identifier %></td>
-                            <td><%= corporation_bonus_official_text(@corporation) %></td>
+                            <td><%= corporation_bonus_official_text(@corporation,11) %></td>
                             <td><%= corporation_bonus_service_code(@corporation) %></td>
                             <td></td>
                             <td></td>
@@ -221,7 +221,7 @@
                     <% end %>
                     <tr>
                         <td><%= @corporation.name %></td>
-                        <td><%= @corporation.identifier %></td>
+                        <td><%=     @corporation.identifier %></td>
                         <td>訪問介護合計</td>
                         <td></td>
                         <td></td>

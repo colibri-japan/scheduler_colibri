@@ -88,17 +88,18 @@ class Patient < ApplicationRecord
 	end
 
 	def appointments_summary(date_range, options = {})
-		inside_or_outside_insurance_scope = options[:within_insurance_scope] || false 
+		within_insurance = options[:within_insurance_scope] || false 
 		
-		array_of_service_summary = []
+		array_of_services = []
 		appointments_grouped_by_service = self.appointments.operational.in_range(date_range).includes(:service).group(:service_id).select('service_id, sum(total_invoiced) as sum_total_invoiced, sum(total_wage) as sum_total_wage, sum(total_credits) as sum_total_credits, count(*) as total_count, min(starts_at) as minimum_starts_at, max(ends_at) as maximum_ends_at')
 
 		appointments_grouped_by_service.each do |appointment_group|
 			service = appointment_group.try(:service)
 			service_hash = {}
-
-			if service.present? && service.invoiced_to_insurance? == inside_or_outside_insurance_scope 
+			
+			if service.present? && service.invoiced_to_insurance? == within_insurance 
 				service_hash[:title] = service.try(:title)
+				service_hash[:insurance_service_category] = service.try(:insurance_service_category)
 				service_hash[:official_title] = service.try(:official_title)
 				service_hash[:service_code] = service.try(:service_code)
 				service_hash[:unit_credits] = service.try(:unit_credits)
@@ -109,15 +110,9 @@ class Patient < ApplicationRecord
 				when 1
 					service_hash[:sum_total_credits] = service.try(:unit_credits)
 				when 2
-					#here change to calculation based on contract start OR end
-					puts 'patient contract start or end'
-					puts self.end_of_contract
-					puts self.date_of_contract
 					if self.date_of_contract.present? && self.date_of_contract.month == date_range.first.month 
-						puts 'hiwari start'
 						day_count = (date_of_contract..date_range.last).count
 					elsif self.end_of_contract.present? && self.end_of_contract.month == date_range.last.month 
-						puts 'hiwari end'
 						day_count = (date_range.first..end_of_contract).count
 					else
 						day_count = 0
@@ -129,10 +124,10 @@ class Patient < ApplicationRecord
 				service_hash[:sum_total_invoiced] = appointment_group.sum_total_invoiced
 				service_hash[:count] = service.credit_calculation_method == 2 ? day_count : appointment_group.total_count
 
-				array_of_service_summary << service_hash
+				array_of_services << service_hash
 			end
 		end
-		array_of_service_summary
+		array_of_services
 	end
 
 	def shifts_by_title_and_date_range(service_title, date_range)

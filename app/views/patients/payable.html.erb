@@ -61,30 +61,33 @@
                 <th>額</th>
             </thead>
             <tbody>
-                <% @appointments_summary.each do |appointment_summary_hash| %>
+                <% @appointments_summary.group_by {|hash| hash[:insurance_service_category]}.each do |insurance_category_id, appointment_summary_hash| %>
+                    <% appointment_summary_hash.each do |appointment_hash| %>
+                        <tr>
+                            <td><%= appointment_hash[:official_title] %></td>
+                            <td><%= appointment_hash[:unit_credits] %></td>
+                            <td><%= appointment_hash[:calculation_method] == 2 ? day_count_for_hiwari_service(appointment_hash[:count]) : appointment_hash[:count] %></td>
+                            <td><%= appointment_hash[:sum_total_credits] %></td>
+                            <td></td>
+                        </tr>
+                    <% end %>
+                    <% if @corporation.invoicing_bonus_ratio.present? %>
+                        <tr>
+                            <td><%= corporation_bonus_official_text(@corporation, insurance_category_id) %></td>
+                            <td></td>
+                            <td></td>
+                            <td><%= subcategory_bonus_credits = (appointment_summary_hash.sum {|e| e[:sum_total_credits]} * (@corporation.invoicing_bonus_ratio - 1)).round %></td>
+                            <td></td>
+                        </tr>
+                    <% end %>
                     <tr>
-                        <td><%= appointment_summary_hash[:official_title] %></td>
-                        <td><%= appointment_summary_hash[:unit_credits] %></td>
-                        <td><%= appointment_summary_hash[:calculation_method] == 2 ? day_count_for_hiwari_service(appointment_summary_hash[:count]) : appointment_summary_hash[:count] %></td>
-                        <td><%= appointment_summary_hash[:sum_total_credits] %></td>
+                        <td><%= "#{insurance_category_name(insurance_category_id)}合計" %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%= subcategory_total_credits = subcategory_bonus_credits.present? ? appointment_summary_hash.sum {|e| e[:sum_total_credits]} + (subcategory_bonus_credits) : appointment_summary_hash.sum {|e| e.sum_total_credits} %></td>
                         <td></td>
                     </tr>
                 <% end %>
-                <% if @appointments_summary.size > 0 && @corporation.invoicing_bonus_ratio.present? %>
-                    <tr>
-                        <td><%= corporation_bonus_official_text(@corporation) %></td>
-                        <td></td>
-                        <td></td>
-                        <% @sum_of_credits %>
-                        <td><%= @bonus_credits %></td>
-                        <td></td>
-                    </tr>
-                <% end %>
-                <tr>
-                    <td colspan="3">訪問介護合計</td>
-                    <td><%= @total_credits %></td>
-                    <td><%= @total_invoiced_inside_insurance_scope %>¥</td>
-                </tr>
                 <tr style='border-top:2px solid #ddd !important'>
                     <td colspan="3">区分支給限度額内</td>
                     <td><%= @credits_within_max_budget %></td>

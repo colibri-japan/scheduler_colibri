@@ -138,6 +138,7 @@ class PatientsController < ApplicationController
     @appointments_till_today = @patient.appointments.not_archived.in_range(@first_day..@end_of_today_in_japan).includes(:nurse).order(starts_at: 'asc')
 
     @appointments_summary = @patient.appointments_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
+    
     @appointments_summary_without_insurance = @patient.appointments_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
     @cancelled_but_invoiceable_appointments = @appointments_till_today.where(cancelled: true).where.not(total_invoiced: [0, nil])
 

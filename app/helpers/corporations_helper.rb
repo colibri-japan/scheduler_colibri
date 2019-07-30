@@ -14,16 +14,31 @@ module CorporationsHelper
         end
     end
 
-    def corporation_bonus_official_text(corporation)
-        case corporation.invoicing_bonus_ratio
-        when 1
-            ""
-        when 1.055
-            "訪問介護処遇改善加算III"
-        when 1.1
-            "訪問介護処遇改善加算II"
-        when 1.137
-            "訪問介護処遇改善加算I"
+    def corporation_bonus_official_text(corporation, insurance_category_id)
+        if insurance_category_id == 11
+            case corporation.invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.055
+                "訪問介護処遇改善加算III"
+            when 1.1
+                "訪問介護処遇改善加算II"
+            when 1.137
+                "訪問介護処遇改善加算I"
+            else
+            end
+        elsif insurance_category_id == 102
+            case corporation.invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.055
+                "訪問型独自処遇改善加算III"
+            when 1.1
+                "訪問型独自処遇改善加算II"
+            when 1.137
+                "訪問型独自処遇改善加算I"
+            else
+            end
         else
         end
     end

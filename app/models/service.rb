@@ -36,7 +36,7 @@ class Service < ApplicationRecord
   def calculate_credits_and_invoice
     if self.saved_change_to_unit_credits? || self.saved_change_to_invoiced_amount?
       puts 'will call worker'
-      ReflectCreditsToSalaryLineItemsWorker.perform_async(self.id)
+      #ReflectCreditsToSalaryLineItemsWorker.perform_async(self.id)
     end
   end
 

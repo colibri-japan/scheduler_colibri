@@ -2192,6 +2192,16 @@ let reloadWhenDismissedInPayable = () => {
   })
 }
 
+let insuranceScopeBootstrapToggle = () => {
+  $('#service_inside_insurance_scope').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '保険内',
+    off: '自費',
+    width: 130
+  })
+}
+
 let endOfContractDate = () => {
   $('#patient_end_of_contract').focus(function(){
     $(this).daterangepicker({
@@ -2354,12 +2364,15 @@ document.addEventListener('turbolinks:load', function() {
 })
 
 let adaptServiceInvoiceFields = () => {
-  $('#service_insurance_category_1').change(function(){
-    if ($(this).val() === "0") {
+  $('#service_inside_insurance_scope').change(function(){
+    if ($(this).is(':checked')) {
+      $('#insurance_category_2_group').show()
       $('#fields_for_kaigo_invoicing').show()
+      $('#insurance_service_category').val('')
       $('#service_invoiced_amount').val('')
       $('#fields_for_invoicing_without_insurance').hide()
-    } else if ($(this).val() === "1") {
+    } else {
+      $('#insurance_category_2_group').hide()
       $('#service_official_title').val('')
       $('#service_service_code').val('')
       $('#service_unit_credits').val('')

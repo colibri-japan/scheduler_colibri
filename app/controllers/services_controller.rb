@@ -80,7 +80,7 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :official_title, :service_code, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :hour_based_wage, :category_1, :category_2, :category_ratio, :unit_credits, :recalculate_previous_credits_and_invoice, :credit_calculation_method, :insurance_category_1, :insurance_category_2, :invoiced_amount)
+        params.require(:service).permit(:title, :official_title, :service_code, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :hour_based_wage, :category_1, :category_2, :category_ratio, :unit_credits, :recalculate_previous_credits_and_invoice, :credit_calculation_method, :inside_insurance_scope, :insurance_service_category, :invoiced_amount)
     end
 
 end

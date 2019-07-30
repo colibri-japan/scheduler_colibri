@@ -1,4 +1,4 @@
-class ReflectCreditsToSalaryLineItemsWorker
+class ReflectCreditsToAppointmentsWorker
     include Sidekiq::Worker
     sidekiq_options retry: false
 

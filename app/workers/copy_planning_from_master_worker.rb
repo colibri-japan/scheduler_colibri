@@ -35,31 +35,6 @@ class CopyPlanningFromMasterWorker
     end
 
     Appointment.import(new_appointments)
-    
-    #iterate over the new appointments to create matching provided services
 
-    #new_appointments.each do |appointment|
-    #  if appointment.present? && appointment.id.present?
-    #    nurse_service_id = Service.where(title: appointment.title, corporation_id: corporation.id, nurse_id: appointment.nurse_id).first.id
-    #    service_salary_id = nurse_service_id || appointment.service_id
-    #    provided_duration = appointment.ends_at - appointment.starts_at
-    #    new_salary_line_item = SalaryLineItem.new(
-    #      appointment_id: appointment.id, 
-    #      planning_id: appointment.planning_id, 
-    #      service_duration: provided_duration, 
-    #      nurse_id: appointment.nurse_id, 
-    #      patient_id: appointment.patient_id, 
-    #      cancelled: appointment.cancelled, 
-    #      title: appointment.title, 
-    #      hour_based_wage: corporation.hour_based_payroll, 
-    #      service_date: appointment.starts_at, 
-    #      service_salary_id: service_salary_id
-    #    )
-    #    new_salary_line_item.run_callbacks(:save) { false }
-    #    new_salary_line_items << new_salary_line_item
-    #  end
-    #end
-
-    #SalaryLineItem.import(new_salary_line_items)
   end
 end

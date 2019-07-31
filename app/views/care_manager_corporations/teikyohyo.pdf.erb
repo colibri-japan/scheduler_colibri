@@ -253,18 +253,18 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
+                                <td><%= @total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
                                 <td></td>
-                                <td><%= sum_of_credits %></td>
-                                <td><%= credits_exceeding_max_budget = total_credits > patient.current_max_credits ? total_credits - patient.current_max_credits : 0 %></td>
-                                <td><%= sum_of_credits_within_max_budget = total_credits - credits_exceeding_max_budget %></td>
+                                <td><%= @sum_of_credits = sum_of_credits %></td>
+                                <td><%= @credits_exceeding_max_budget = @total_credits > patient.current_max_credits ? @total_credits - patient.current_max_credits : 0 %></td>
+                                <td><%= @sum_of_credits_within_max_budget = @total_credits - @credits_exceeding_max_budget %></td>
                                 <td><%= @corporation.credits_to_jpy_ratio %></td>
-                                <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
+                                <td><%= @total_invoiced = (@total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
                                 <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
-                                <% total_invoiced_within_budget = ((total_credits - credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
-                                <td><%= amount_paid_by_insurance = (total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
-                                <td><%= amount_within_insurance_paid_by_patient = total_invoiced_within_budget - amount_paid_by_insurance %></td>
-                                <td><%= amount_in_excess_paid_by_patient = total_invoiced - total_invoiced_within_budget %></td>
+                                <% @total_invoiced_within_budget = ((@total_credits - @credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
+                                <td><%= @amount_paid_by_insurance = (@total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
+                                <td><%= @amount_within_insurance_paid_by_patient = @total_invoiced_within_budget - @amount_paid_by_insurance %></td>
+                                <td><%= @amount_in_excess_paid_by_patient = @total_invoiced - @total_invoiced_within_budget %></td>
                             </tr>
                         <% end %>
                     <% end %>
@@ -278,34 +278,32 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <% sum_of_credits = service_shift_array.sum { |service_shifts_hash| service_shifts_hash[:service_hash][:sum_total_credits] || 0 } %>
-                            <% bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round  %>
-                            <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
+                            <% @sum_of_credits = service_shift_array.sum { |service_shifts_hash| service_shifts_hash[:service_hash][:sum_total_credits] || 0 } %>
+                            <% @bonus_credits = (@sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round  %>
+                            <td><%= @total_credits = @bonus_credits.present? ? @bonus_credits + @sum_of_credits : @sum_of_credits %></td>
                             <td></td>
-                            <td><%= sum_of_credits %></td>
-                            <td><%= credits_exceeding_max_budget = total_credits > patient.current_max_credits ? total_credits - patient.current_max_credits : 0 %></td>
-                            <td><%= sum_of_credits_within_max_budget = total_credits - credits_exceeding_max_budget %></td>
+                            <td><%= @sum_of_credits %></td>
+                            <td><%= @credits_exceeding_max_budget = @total_credits > patient.current_max_credits ? @total_credits - patient.current_max_credits : 0 %></td>
+                            <td><%= @sum_of_credits_within_max_budget = @total_credits - @credits_exceeding_max_budget %></td>
                             <td><%= @corporation.credits_to_jpy_ratio %></td>
-                            <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
+                            <td><%= @total_invoiced = (@total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
                             <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
-                            <% total_invoiced_within_budget = ((total_credits - credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
-                            <td><%= amount_paid_by_insurance = (total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
-                            <td><%= amount_within_insurance_paid_by_patient = total_invoiced_within_budget - amount_paid_by_insurance %></td>
-                            <td><%= amount_in_excess_paid_by_patient = total_invoiced - total_invoiced_within_budget %></td>
+                            <% @total_invoiced_within_budget = ((@total_credits - @credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
+                            <td><%= @amount_paid_by_insurance = (@total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
+                            <td><%= @amount_within_insurance_paid_by_patient = @total_invoiced_within_budget - @amount_paid_by_insurance %></td>
+                            <td><%= @amount_in_excess_paid_by_patient = @total_invoiced - @total_invoiced_within_budget %></td>
                         </tr>
                     <% end %>
                     <tr>
                         <td colspan="5">区分支給限度基準: <%= maximum_budget = maximum_budget(patient.current_kaigo_level) %></td>
-                        <td colspan="4">合計：<%= sum_of_credits %></td>
+                        <td colspan="4">合計：<%= @sum_of_credits %></td>
                         <td>0</td>
-                        <td><%= sum_of_credits %></td>
+                        <td><%= @sum_of_credits %></td>
                         <td>0</td>
-                        <td colspan="2"><%= sum_of_credits %></td>
-                        <td colspan="2"><%= total_invoiced  %></td>
-                        <td><%= amount_paid_by_insurance %></td>
-                        <% excess_credits = sum_of_credits > patient.current_max_credits ? sum_of_credits - patient.current_max_credits : 0 %>
-                        <% excess_amount = (excess_credits * @corporation.credits_to_jpy_ratio).floor %>
-                        <td colspan="2"><%= total_paid_by_patient = total_invoiced - amount_paid_by_insurance + excess_amount %></td>
+                        <td colspan="2"><%= @sum_of_credits %></td>
+                        <td colspan="2"><%= @total_invoiced  %></td>
+                        <td><%= @amount_paid_by_insurance %></td>
+                        <td colspan="2"><%= @total_paid_by_patient = (@amount_within_insurance_paid_by_patient || 0) + (@amount_in_excess_paid_by_patient || 0) %></td>
                     </tr>
                 </tbody>
             </table>
@@ -341,7 +339,6 @@
             </div>
             <div style="width:45%">
                 <div class="teikyohyo_subtitle">利用者負担表</div>
-                <% if false %>
                 <table class="table table-bordered table-bordered-pdf  table-centered">
                     <thead>
                         <tr>
@@ -356,11 +353,11 @@
                     <tbody>
                         <tr>
                             <td><%= @corporation.name %></td>
-                            <td><%= amount_within_insurance_paid_by_patient %></td>
-                            <td>(<%= public_assistance_1 = patient.public_assistance_ratio_1 > 0 ? (total_invoiced_within_budget * patient.public_assistance_ratio_1).floor - amount_paid_by_insurance : 0 %>)</td>
-                            <td>(<%= public_assistance_2 = patient.public_assistance_ratio_1 > 0 && patient.public_assistance_ratio_2 > 0 && patient.public_assistance_ratio_2 > patient.public_assistance_ratio_1 ? (total_invoiced_within_budget * patient.public_assistance_ratio_2).floor - amount_paid_by_insurance - public_assistance_1 : 0 %>)</td>
-                            <td><%= amount_in_excess_paid_by_patient %></td>
-                            <td><%= net_total_paid_by_patient = amount_within_insurance_paid_by_patient - public_assistance_1 - public_assistance_2 + amount_in_excess_paid_by_patient %></td>
+                            <td><%= @amount_within_insurance_paid_by_patient %></td>
+                            <td>(<%= public_assistance_1 = patient.public_assistance_ratio_1 > 0 ? (@total_invoiced_within_budget * patient.public_assistance_ratio_1).floor - @amount_paid_by_insurance : 0 %>)</td>
+                            <td>(<%= public_assistance_2 = patient.public_assistance_ratio_1 > 0 && patient.public_assistance_ratio_2 > 0 && patient.public_assistance_ratio_2 > patient.public_assistance_ratio_1 ? (@total_invoiced_within_budget * patient.public_assistance_ratio_2).floor - @amount_paid_by_insurance - public_assistance_1 : 0 %>)</td>
+                            <td><%= @amount_in_excess_paid_by_patient %></td>
+                            <td><%= net_total_paid_by_patient = (@total_paid_by_patient ||0) - public_assistance_1 - public_assistance_2 %></td>
                         </tr>
                         <tr>
                             <td colspan="4">ご利用者負担</td>
@@ -368,7 +365,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <% end %>
             </div>
         </div>
 

@@ -172,76 +172,128 @@
                     <td>％</td>
                     <td>単位数</td>
                   </tr>
-                    <% service_shift_array.each do |hash_of_service_and_shifts| %>
+                    <% grouped_service_shifts_array = service_shift_array.group_by {|hash_of_services_and_shifts| hash_of_services_and_shifts[:service_hash][:insurance_service_category] } %>
+                    <% grouped_service_shifts_array.each do |insurance_category_id, array_service_and_shifts_hashes| %>
+                        <% array_service_and_shifts_hashes.each do |hash_of_service_and_shifts| %>
+                            <tr>
+                                <td><%= @corporation.name %></td>
+                                <td><%= @corporation.identifier %></td>
+                                <td><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
+                                <td><%= hash_of_service_and_shifts[:service_hash][:service_code] %></td>
+                                <td><%= hash_of_service_and_shifts[:service_hash][:unit_credits] %></td>
+                                <td></td>
+                                <td></td>
+                                <td><%= hash_of_service_and_shifts[:service_hash][:count] %></td>
+                                <td><%= hash_of_service_and_shifts[:service_hash][:sum_total_credits] %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        <% end %>
+                        <% sum_of_credits = array_service_and_shifts_hashes.sum { |hash| hash[:service_hash][:sum_total_credits] || 0 } %>
+                        <% if service_shift_array.count > 0 && @corporation.invoicing_bonus_ratio.present? %>
+                            <tr>
+                                <td><%= @corporation.name %></td>
+                                <td><%= @corporation.identifier %></td>
+                                <td><%= corporation_bonus_official_text(@corporation, insurance_category_id.to_i) %></td>
+                                <td><%= corporation_bonus_service_code(@corporation) %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>1</td>
+                                <td>(<%= bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round %>)</td>
+                                <td></td>
+                                <td>(<%= bonus_credits %>)</td>
+                                <td></td>
+                                <td>(<%= bonus_credits %>)</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        <% end %>
+                        <% if grouped_service_shifts_array.size > 1 %>
+                            <tr>
+                                <td><%= @corporation.name %></td>
+                                <td><%= @corporation.identifier %></td>
+                                <td><%= insurance_category_name(insurance_category_id.to_i) %>計</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
+                                <td></td>
+                                <td><%= sum_of_credits %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        <% else %>
+                            <tr>
+                                <td><%= @corporation.name %></td>
+                                <td><%= @corporation.identifier %></td>
+                                <td><%= insurance_category_name(insurance_category_id.to_i) %>合計</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
+                                <td></td>
+                                <td><%= sum_of_credits %></td>
+                                <td><%= credits_exceeding_max_budget = total_credits > patient.current_max_credits ? total_credits - patient.current_max_credits : 0 %></td>
+                                <td><%= sum_of_credits_within_max_budget = total_credits - credits_exceeding_max_budget %></td>
+                                <td><%= @corporation.credits_to_jpy_ratio %></td>
+                                <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
+                                <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
+                                <% total_invoiced_within_budget = ((total_credits - credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
+                                <td><%= amount_paid_by_insurance = (total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
+                                <td><%= amount_within_insurance_paid_by_patient = total_invoiced_within_budget - amount_paid_by_insurance %></td>
+                                <td><%= amount_in_excess_paid_by_patient = total_invoiced - total_invoiced_within_budget %></td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                    <% if grouped_service_shifts_array.size > 1 %>
                         <tr>
                             <td><%= @corporation.name %></td>
                             <td><%= @corporation.identifier %></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:service_code] %></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:unit_credits] %></td>
-                            <td></td>
-                            <td></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:count] %></td>
-                            <td><%= hash_of_service_and_shifts[:service_hash][:sum_total_credits] %></td>
+                            <td>合計</td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
+                            <% sum_of_credits = service_shift_array.sum { |service_shifts_hash| service_shifts_hash[:service_hash][:sum_total_credits] || 0 } %>
+                            <% bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round  %>
+                            <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><%= sum_of_credits %></td>
+                            <td><%= credits_exceeding_max_budget = total_credits > patient.current_max_credits ? total_credits - patient.current_max_credits : 0 %></td>
+                            <td><%= sum_of_credits_within_max_budget = total_credits - credits_exceeding_max_budget %></td>
+                            <td><%= @corporation.credits_to_jpy_ratio %></td>
+                            <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
+                            <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
+                            <% total_invoiced_within_budget = ((total_credits - credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
+                            <td><%= amount_paid_by_insurance = (total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
+                            <td><%= amount_within_insurance_paid_by_patient = total_invoiced_within_budget - amount_paid_by_insurance %></td>
+                            <td><%= amount_in_excess_paid_by_patient = total_invoiced - total_invoiced_within_budget %></td>
                         </tr>
                     <% end %>
-                    <% sum_of_credits = service_shift_array.sum {|hash_of_service_and_shifts| hash_of_service_and_shifts[:service_hash][:sum_total_credits] || 0 }  %>
-                    <% if service_shift_array.count > 0 && @corporation.invoicing_bonus_ratio.present? %>
-                        <tr>
-                            <td><%= @corporation.name %></td>
-                            <td><%= @corporation.identifier %></td>
-                            <td><%= corporation_bonus_official_text(@corporation,11) %></td>
-                            <td><%= corporation_bonus_service_code(@corporation) %></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>1</td>
-                            <td>(<%= bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round %>)</td>
-                            <td></td>
-                            <td>(<%= bonus_credits %>)</td>
-                            <td></td>
-                            <td>(<%= bonus_credits %>)</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    <% end %>
-                    <tr>
-                        <td><%= @corporation.name %></td>
-                        <td><%=     @corporation.identifier %></td>
-                        <td>訪問介護合計</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><%= total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %></td>
-                        <td></td>
-                        <td><%= sum_of_credits %></td>
-                        <td><%= credits_exceeding_max_budget = total_credits > patient.current_max_credits ? total_credits - patient.current_max_credits : 0 %></td>
-                        <% credits_within_max_budget = total_credits - credits_exceeding_max_budget %>
-                        <td><%= sum_of_credits_within_max_budget = sum_of_credits - credits_exceeding_max_budget %></td>
-                        <td><%= @corporation.credits_to_jpy_ratio %></td>
-                        <td><%= total_invoiced = (total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
-                        <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
-                        <% total_invoiced_within_budget = (credits_within_max_budget * @corporation.credits_to_jpy_ratio).floor %>
-                        <td><%= amount_paid_by_insurance = (total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %></td>
-                        <td><%= amount_within_insurance_paid_by_patient = total_invoiced_within_budget - amount_paid_by_insurance %></td>
-                        <td><%= amount_in_excess_paid_by_patient = total_invoiced - total_invoiced_within_budget %></td>
-                    </tr>
                     <tr>
                         <td colspan="5">区分支給限度基準: <%= maximum_budget = maximum_budget(patient.current_kaigo_level) %></td>
                         <td colspan="4">合計：<%= sum_of_credits %></td>
@@ -249,9 +301,11 @@
                         <td><%= sum_of_credits %></td>
                         <td>0</td>
                         <td colspan="2"><%= sum_of_credits %></td>
-                        <td colspan="2"><%= total_invoiced %></td>
+                        <td colspan="2"><%= total_invoiced  %></td>
                         <td><%= amount_paid_by_insurance %></td>
-                        <td colspan="2"><%= total_paid_by_patient = amount_within_insurance_paid_by_patient + amount_in_excess_paid_by_patient %></td>
+                        <% excess_credits = sum_of_credits > patient.current_max_credits ? sum_of_credits - patient.current_max_credits : 0 %>
+                        <% excess_amount = (excess_credits * @corporation.credits_to_jpy_ratio).floor %>
+                        <td colspan="2"><%= total_paid_by_patient = total_invoiced - amount_paid_by_insurance + excess_amount %></td>
                     </tr>
                 </tbody>
             </table>
@@ -287,6 +341,7 @@
             </div>
             <div style="width:45%">
                 <div class="teikyohyo_subtitle">利用者負担表</div>
+                <% if false %>
                 <table class="table table-bordered table-bordered-pdf  table-centered">
                     <thead>
                         <tr>
@@ -313,6 +368,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <% end %>
             </div>
         </div>
 

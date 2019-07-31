@@ -34,6 +34,85 @@ class Patient < ApplicationRecord
 		end
 	end
 
+	def public_assistance_ratio_1
+		if public_assistance_id_1.present? && public_assistance_id_1.size > 2
+			case public_assistance_id_1[0..1]
+			when '12'
+				#社会保護
+				1
+			when '56'
+				#特定対策
+				0.97
+			when '57'
+				#特定対策
+				0.97
+			when '51'
+				#治療研究の係る医療の給付
+				1
+			when '19'
+				#原子爆弾被爆者
+				1
+			when '15'
+				#身体障害者福祉法「更生医療」
+				1
+			when '21'
+				#精神保健.精神障害者福祉士に関する法律「通院医療」
+				0.95
+			when '11'
+				#結核予防法「従業禁止、命令入所者の医療」
+				1
+			when '10'
+				#結核予防法「一般患者に対する医療」
+				0.95
+			else
+				0
+			end
+		else
+			0
+		end
+	end
+
+	def public_assistance_ratio_2
+		if public_assistance_id_2.present? && public_assistance_id_2.size > 2
+			case public_assistance_id_2[0..1]
+			when '12'
+				1
+			when '56'
+				0.97
+			when '57'
+				0.97
+			when '51'
+				1
+			when '19'
+				1
+			when '15'
+				1
+			when '21'
+				0.95
+			when '11'
+				1
+			when '10'
+				0.95
+			else
+				0
+			end
+		else
+			0
+		end
+	end
+
+	def net_invoicing_ratio
+		if ratio_paid_by_patient.present?
+			if public_assistance_ratio_1 > 0 || public_assistance_ratio_2 > 0
+				(1 - [public_assistance_ratio_1, public_assistance_ratio_2].max).round(2)
+			else
+				ratio_paid_by_patient.to_f / 10
+			end
+		else
+			1
+		end
+	end
+
 	def self.group_by_kana
 		{
 			'あ' => where( "kana LIKE 'あ%' OR kana LIKE 'い%'  OR kana LIKE 'う%' OR kana LIKE 'え%' OR kana LIKE 'お%' OR kana LIKE 'ア%' OR kana LIKE 'イ%'  OR kana LIKE 'ウ%' OR kana LIKE 'エ%' OR kana LIKE 'オ%'" ).order_by_kana,

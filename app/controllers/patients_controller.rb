@@ -217,10 +217,13 @@ class PatientsController < ApplicationController
     @credits_within_max_budget = @total_credits > @patient.current_max_credits ? @patient.current_max_credits : @total_credits
     @credits_exceeding_max_budget = @total_credits - @credits_within_max_budget
     @amount_invoiced_within_max_budget = (@credits_within_max_budget * @corporation.credits_to_jpy_ratio).floor
-    @amount_invoiced_to_insurance_within_max_budget = (@amount_invoiced_within_max_budget * ((10 - (@patient.ratio_paid_by_patient || 0)) * 0.1)).floor
+    @amount_invoiced_to_insurance_within_max_budget = (@amount_invoiced_within_max_budget * (1 - (@patient.ratio_paid_by_patient || 0).to_f / 10)).floor
     @amount_invoiced_to_patient_within_max_budget = @amount_invoiced_within_max_budget - @amount_invoiced_to_insurance_within_max_budget
+    @amount_invoiced_to_public_assistance_1 = @patient.public_assistance_ratio_1 > 0 ? (@amount_invoiced_within_max_budget * @patient.public_assistance_ratio_1).floor - @amount_invoiced_to_insurance_within_max_budget : 0
+    @amount_invoiced_to_public_assistance_2 = @patient.public_assistance_ratio_1 > 0 && @patient.public_assistance_ratio_2 > 0 && @patient.public_assistance_ratio_1 < @patient.public_assistance_ratio_2 ? (@amount_invoiced_within_max_budget * @patient.public_assistance_ratio_2).floor - @amount_invoiced_to_insurance_within_max_budget - @amount_invoiced_to_public_assistance_1 : 0
+    @net_amount_invoiced_to_patient_within_max_budget = @amount_invoiced_within_max_budget - @amount_invoiced_to_insurance_within_max_budget - @amount_invoiced_to_public_assistance_1 - @amount_invoiced_to_public_assistance_2
     @amount_invoiced_exceeding_max_budget = @total_invoiced_inside_insurance_scope - @amount_invoiced_within_max_budget 
-    @total_invoiced_to_patient_inside_insurance_scope = @amount_invoiced_to_patient_within_max_budget + @amount_invoiced_exceeding_max_budget
+    @total_invoiced_to_patient_inside_insurance_scope = @net_amount_invoiced_to_patient_within_max_budget + @amount_invoiced_exceeding_max_budget
     @total_invoiced_outside_insurance_scope = @appointments_summary_without_insurance.sum {|hash| hash[:sum_total_invoiced] || 0} + (@cancelled_but_invoiceable_appointments.sum(:total_invoiced) || 0)
     @total_invoiced_to_patient = @total_invoiced_to_patient_inside_insurance_scope + @total_invoiced_outside_insurance_scope
     @total_sales = @total_invoiced_outside_insurance_scope + @total_invoiced_inside_insurance_scope

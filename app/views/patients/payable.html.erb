@@ -97,6 +97,26 @@
                     <td colspan="4">区分支給限度額内の利用者請求額</td>
                     <td><%= @amount_invoiced_to_patient_within_max_budget  %>¥</td>
                 </tr>
+                <% if @amount_invoiced_to_public_assistance_1 > 0  %>
+                    <tr>
+                        <td colspan="3">公費1負担額</td>
+                        <td></td>
+                        <td>(<%= @amount_invoiced_to_public_assistance_1 %>)¥</td>
+                    </tr>
+                <% end %>
+                <% if @amount_invoiced_to_public_assistance_2 > 0  %>
+                    <tr>
+                        <td colspan="3">公費2負担額</td>
+                        <td></td>
+                        <td>(<%= @amount_invoiced_to_public_assistance_2 %>)¥</td>
+                    </tr>
+                <% end %>
+                <% if @amount_invoiced_to_public_assistance_1 + @amount_invoiced_to_public_assistance_2 > 0 %>
+                    <tr>
+                        <td colspan="4">区分支給限度額内の利用者請求額(公費計算後)</td>
+                        <td><%= @net_amount_invoiced_to_patient_within_max_budget  %>¥</td>
+                    </tr>
+                <% end %>
                 <tr>
                     <td colspan="3">区分支給限度額を超える単位</td>
                     <td><%= @credits_exceeding_max_budget %></td>

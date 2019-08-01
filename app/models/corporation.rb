@@ -156,6 +156,21 @@ class Corporation < ApplicationRecord
 		patients.includes(:nurse).active.where('date_of_contract IS NOT NULL AND date_of_contract > ?', date).order(date_of_contract: :desc)
 	end
 
+	def revenue_per_team(range)
+		return_hash = {}
+
+		self.teams.each do |team|
+			revenue_from_insurance = self.planning.appointments.operational.in_range(range).joins(:service).where(nurse_id: team.nurses.pluck(:id)).where(services: {inside_insurance_scope: true}).sum('appointments.total_credits') || 0
+			revenue_from_insurance = revenue_from_insurance * (self.invoicing_bonus_ratio || 1) * (self.credits_to_jpy_ratio || 0)
+			revenue_outside_insurance = self.planning.appointments.edit_not_requested.not_archived.in_range(range).joins(:service).where(nurse_id: team.nurses.pluck(:id)).where(services: {inside_insurance_scope: false}).sum('appointments.total_invoiced') || 0
+			return_hash[team.team_name] = (revenue_from_insurance + revenue_outside_insurance).floor
+		end
+
+		return_hash = return_hash.sort_by { |a,b| b }.reverse 
+
+		return_hash
+	end
+
 	private
 
 

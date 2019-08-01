@@ -1,6 +1,6 @@
 class CorporationsController < ApplicationController
 
-    before_action :set_corporation, only: :edit
+    before_action :set_corporation, only: [:edit, :revenue_per_team_report]
     before_action :set_planning, only: :edit 
     before_action :set_main_nurse, only: :edit
 
@@ -15,6 +15,14 @@ class CorporationsController < ApplicationController
         if @corporation.update(corporation_params)
             redirect_back(fallback_location: authenticated_root_path, notice: '設定がセーブされました')
         end
+    end
+
+    def revenue_per_team_report
+		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
+        
+        @revenue_per_team = @corporation.revenue_per_team(first_day..last_day)
     end
 
     private

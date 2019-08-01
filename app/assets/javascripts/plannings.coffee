@@ -219,4 +219,7 @@ $(document).on 'turbolinks:load', ->
   if $('#revenue-per-team-and-employee').length > 0
     $.getScript($('#revenue-per-team-and-employee').data('url'))
 
+  if $('#revenue-per-team-report').length > 0
+    $.getScript($('#revenue-per-team-report').data('url'))
+
   return

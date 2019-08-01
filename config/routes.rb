@@ -84,6 +84,10 @@ Rails.application.routes.draw do
   get 'plannings/:planning_id/teams/:id/master' => 'teams#master', as: :planning_team_master
   get 'teams/:id/revenue_per_nurse_report' => 'teams#revenue_per_nurse_report', as: :team_revenue_per_nurse_report
 
+  #custom routes for corporations
+  get 'corporations/:id/revenue_per_team_report' => 'corporations#revenue_per_team_report', as: :corporation_revenue_per_team_report
+
+
   #custom routes for users
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
   get 'users/:id/edit_role' => 'users#edit_role', as: :edit_user_role

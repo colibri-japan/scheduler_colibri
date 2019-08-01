@@ -55,6 +55,18 @@
 			</div>
 		</div>
 
+		<% if @corporation.teams.any? %>
+			<div class='colibri-dashboard-container-row no-print'>
+				<div class='colibri-dashboard-subcontainer'>
+					<div class='colibri-subcontainer-header'>
+						<span class='colibri-subcontainer-title'>チーム実績</span>
+					</div>
+					<div class="colibri-subcontainer-body" style="padding-top:8px" id="revenue-per-team-report" data-url="<%= corporation_revenue_per_team_report_path(@corporation, params: {m: params[:m], y: params[:y]}) %>">
+					</div>
+				</div>
+			</div>
+		<% end %>
+
 		<% if false %>
 			<div class='colibri-dashboard-container-row no-print'>
 				<div class='colibri-dashboard-subcontainer'>

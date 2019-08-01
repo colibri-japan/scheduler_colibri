@@ -5,7 +5,7 @@
   </div>
 </div>
 <div id="service-category-chart-container" style='margin-top:15px;margin-bottom:15px'>
-	<%= pie_chart @appointments_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, width: '90%', height: '70%', legend: 'right', suffix: '%', donut: true, colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#9EE493', '#F58F29', '#5299D3', '#BEA9EF', '#8B5D33', '#DDEDAA', '#5E5C6C'] %>
+	<%= pie_chart @appointments_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, width: '90%', height: '70%', legend: 'right', suffix: '%', donut: true, id: 'appointment_by_ccategory_pie_chart', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#9EE493', '#F58F29', '#5299D3', '#BEA9EF', '#8B5D33', '#DDEDAA', '#5E5C6C'] %>
 </div>
 <p style='text-align:center' id='see-more-service-category-data'>↓もっと見る↓</p>
 <table class='table'>

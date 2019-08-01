@@ -54,15 +54,15 @@ class Corporation < ApplicationRecord
 	def cached_displayable_nurses_grouped_by_team_name
 		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_team_name']) { 
 			team_name_by_id = self.teams.pluck(:id, :team_name).to_h
-			return nurses.displayable.order_by_kana.group_by {|n| team_name_by_id[n.team_id] }
+			return nurses.displayable.not_archived.order_by_kana.group_by {|n| team_name_by_id[n.team_id] }
 		}
 	end
 
 	def cached_displayable_nurses_grouped_by_fulltimer
 		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_fulltimer']) {
 			{
-				'正社員' => nurses.displayable.full_timers.order_by_kana,
-				'非正社員' => nurses.displayable.part_timers.order_by_kana
+				'正社員' => nurses.displayable.not_archived.full_timers.order_by_kana,
+				'非正社員' => nurses.displayable.not_archived.part_timers.order_by_kana
 			}
 		}
 	end
@@ -116,7 +116,7 @@ class Corporation < ApplicationRecord
 		if self.teams.present?
 			teams.each do |team|
 				team_hash = {}
-				nurse_ids = team.nurses.all.pluck(:id)
+				nurse_ids = team.nurses.not_archived.pluck(:id)
 	
 				team_salary_line_items = self.planning.appointments.in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).group(:title).count
 				team_salary_line_items_female = self.planning.appointments.joins(:patient).in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).where(patients: {gender: true}).group(:title).count

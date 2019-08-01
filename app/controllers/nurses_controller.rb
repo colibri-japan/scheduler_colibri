@@ -9,7 +9,7 @@ class NursesController < ApplicationController
     @planning = @corporation.planning 
     set_main_nurse
     
-    nurses = @corporation.nurses
+    nurses = @corporation.nurses.not_archived
     
     if params[:team_id].present? 
       team = Team.find(params[:team_id])
@@ -99,6 +99,15 @@ class NursesController < ApplicationController
       format.html { redirect_to nurses_url, notice: '従業員が削除されました' }
       format.json { head :no_content }
       format.js
+    end
+  end
+
+  def archive
+    authorize @nurse, :same_corporation_as_current_user?
+
+    @nurse.archive!
+    respond_to do |format|
+      format.html { redirect_to nurses_url, notice: '従業員が削除されました。過去の実績は削除されません。' }
     end
   end
 

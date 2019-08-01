@@ -108,7 +108,7 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def set_nurses
-      @nurses = @corporation.nurses.displayable.order_by_kana
+      @nurses = @corporation.nurses.displayable.not_archived.order_by_kana
     end
 
     def set_patients

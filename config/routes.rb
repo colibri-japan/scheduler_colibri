@@ -101,6 +101,7 @@ Rails.application.routes.draw do
   patch 'nurses/:id/master_to_schedule' => 'nurses#master_to_schedule', as: :nurse_master_to_schedule
   get 'nurses/:id/new_master_to_schedule' => "nurses#new_master_to_schedule", as: :new_nurse_master_to_schedule
   get 'master_availabilities/nurses' => 'nurses#master_availabilities', as: :nurses_master_availabilities
+  patch 'nurses/:id/archive' => 'nurses#archive', as: :nurse_archive
 
   #custom routes for patients
   get 'plannings/:planning_id/patients/:id/master' => 'patients#master', as: :planning_patient_master

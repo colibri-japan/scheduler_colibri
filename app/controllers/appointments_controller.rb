@@ -41,7 +41,7 @@ class AppointmentsController < ApplicationController
   def edit  
     authorize @planning, :same_corporation_as_current_user?
 
-    @nurses = @corporation.nurses.order_by_kana
+    @nurses = @corporation.nurses.not_archived.order_by_kana
     @patients = @corporation.patients.active.order_by_kana
     @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).includes(:owner)
     @services_with_recommendations = @corporation.cached_most_used_services_for_select

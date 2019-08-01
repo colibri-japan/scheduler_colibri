@@ -1,6 +1,9 @@
 class Nurse < ApplicationRecord
+	include Archivable
+
 	acts_as_taggable
 	acts_as_taggable_on :skills
+
 	attribute :custom_email_message
 	attribute :custom_email_days
 	attribute :custom_email_subject, :string
@@ -21,6 +24,7 @@ class Nurse < ApplicationRecord
 	scope :reminderable, -> { where(reminderable: true) }
 	scope :full_timers, -> { where(full_timer: true) }
 	scope :part_timers, -> { where(full_timer: false) }
+	scope :not_archived, -> { where(archived_at: nil) }
 
 	def self.group_full_timer_for_select
 		{

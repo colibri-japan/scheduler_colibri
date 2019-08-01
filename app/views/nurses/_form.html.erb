@@ -76,7 +76,7 @@
 
 
   <div class="modal-footer">
-    <%= link_to '削除', nurse, method: :delete, data: {confirm: 'このヘルパーが削除されます。'}, class: 'btn btn-danger text-white' unless nurse.new_record? %>
+    <%= link_to '削除', nurse_archive_path(nurse), method: :patch, data: {confirm: 'このヘルパーが削除されます。過去のサービスは削除されません。'}, class: 'btn btn-danger text-white' unless nurse.new_record? %>
     <%= form.submit 'セーブする', class: 'btn btn-info' %>
   </div>
 <% end %>

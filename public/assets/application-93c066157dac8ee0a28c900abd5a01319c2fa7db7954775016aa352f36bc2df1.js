@@ -67756,6 +67756,9 @@ document.addEventListener('turbolinks:load', function () {
       url = window.location.href.split('?')[0] + '?m=' + $('#query_month').val() + '&y=' + $('#query_year').val();
       window.location = url;
     });
+    $('#nurse_monthly_wage').click(function() {
+      $('#manage_nurse_monthly_wage').modal('show');
+    });
   });
 
 }).call(this);
@@ -67785,6 +67788,35 @@ document.addEventListener('turbolinks:load', function () {
       $(this).addClass('toggle-active-selected');
       $('#deactivated-patients-table').hide();
       $('#active-patients-table').show();
+    });
+    $('.edit_hiwari_count').click(function() {
+      $('#calculate_hiwari_days').modal('show');
+    });
+    $('#patient_date_of_contract').focus(function() {
+      $(this).daterangepicker({
+        singleDatePicker: true,
+        locale: {
+          format: 'YYYY-MM-DD',
+          applyLabel: '選択する',
+          cancelLabel: "取消",
+          daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
+          monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+          firstDay: 1
+        }
+      });
+    });
+    $('#patient_end_of_contract').focus(function() {
+      $(this).daterangepicker({
+        singleDatePicker: true,
+        locale: {
+          format: 'YYYY-MM-DD',
+          applyLabel: '選択する',
+          cancelLabel: "取消",
+          daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
+          monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+          firstDay: 1
+        }
+      });
     });
   });
 
@@ -67972,6 +68004,15 @@ document.addEventListener('turbolinks:load', function () {
         placeholder: '検索する...'
       });
       filterCmTeikyohyo();
+    }
+    if ($('#revenue-report').length > 0) {
+      $.getScript('/monthly_revenue_report/appointments');
+    }
+    if ($('#revenue-per-team-and-employee').length > 0) {
+      $.getScript($('#revenue-per-team-and-employee').data('url'));
+    }
+    if ($('#revenue-per-team-report').length > 0) {
+      $.getScript($('#revenue-per-team-report').data('url'));
     }
   });
 
@@ -69986,6 +70027,21 @@ let filterCmTeikyohyo = () => {
   })
 }
 
+let showMonthlyWageField = () => {
+  $('#full-timer-toggle').change(function(){
+    nurseMonthlyWageField()
+  })
+}
+
+let nurseMonthlyWageField = () => {
+  if ($('#full-timer-toggle').is(':checked')) {
+    $('#monthly_wage_group').show()
+  } else {
+    $('#monthly_wage_group').hide()
+    $('#nurse_monthly_wage').val('')
+  }
+}
+
 let serviceDaterangepicker = () => {
   $('#salary_rule_service_date_range_start').focus(function(){
     $(this).daterangepicker({
@@ -70255,6 +70311,16 @@ let reloadWhenDismissedInPayable = () => {
   })
 }
 
+let insuranceScopeBootstrapToggle = () => {
+  $('#service_inside_insurance_scope').bootstrapToggle({
+    onstyle: 'info',
+    offstyle: 'secondary',
+    on: '保険内',
+    off: '自費',
+    width: 130
+  })
+}
+
 let endOfContractDate = () => {
   $('#patient_end_of_contract').focus(function(){
     $(this).daterangepicker({
@@ -70417,12 +70483,15 @@ document.addEventListener('turbolinks:load', function() {
 })
 
 let adaptServiceInvoiceFields = () => {
-  $('#service_insurance_category_1').change(function(){
-    if ($(this).val() === "0") {
+  $('#service_inside_insurance_scope').change(function(){
+    if ($(this).is(':checked')) {
+      $('#insurance_category_2_group').show()
       $('#fields_for_kaigo_invoicing').show()
+      $('#insurance_service_category').val('')
       $('#service_invoiced_amount').val('')
       $('#fields_for_invoicing_without_insurance').hide()
-    } else if ($(this).val() === "1") {
+    } else {
+      $('#insurance_category_2_group').hide()
       $('#service_official_title').val('')
       $('#service_service_code').val('')
       $('#service_unit_credits').val('')

@@ -23,6 +23,8 @@ class CorporationsController < ApplicationController
 		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
         
         @revenue_per_team = @corporation.revenue_per_team(first_day..last_day)
+        @salary_per_team = @corporation.salary_per_team(first_day..last_day)
+        puts @salary_per_team
     end
 
     private

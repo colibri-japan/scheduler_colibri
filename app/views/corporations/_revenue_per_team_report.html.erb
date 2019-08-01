@@ -1,1 +1,1 @@
-<%= column_chart @revenue_per_team, height: 'calc(100% - 8px)', width: 'auto', suffix: '¥', colors: ['#7AD5DE', '#FD9BA6'], id: 'team_revenue_column_chart', library: {scales: {xAxes: [{maxBarThickness: 30}]}} %>
+<%= column_chart [{name: '実績', data: @revenue_per_team, stack: 1}, {name: '給与', data: @salary_per_team, stack: 2}], stacked: true, height: 'calc(100% - 8px)', width: 'auto', suffix: '¥', colors: ['#7AD5DE', '#FD9BA6'], id: 'team_revenue_column_chart', library: {scales: {xAxes: [{maxBarThickness: 30}]}} %>

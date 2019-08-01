@@ -171,6 +171,19 @@ class Corporation < ApplicationRecord
 		return_hash
 	end
 
+	def salary_per_team(range)
+		return_hash = {}
+
+		self.teams.each do |team|
+			salary_from_appointments = self.planning.appointments.edit_not_requested.not_archived.in_range(range).where(nurse_id: team.nurses.displayable.part_timers.ids).sum('appointments.total_wage') || 0
+			salary_from_line_items = self.planning.salary_line_items.in_range(range).where(nurse_id: team.nurses.displayable.ids).not_from_appointments.sum(:total_wage) || 0
+			salary_from_wage = team.nurses.displayable.full_timers.sum(:monthly_wage) || 0
+			return_hash[team.team_name] = salary_from_appointments + salary_from_line_items + salary_from_wage
+		end
+
+		return_hash
+	end
+
 	private
 
 

@@ -26,7 +26,7 @@ class Team < ApplicationRecord
   
   def salary_per_nurse(range)
     planning = self.corporation.planning
-    salary_from_line_items = planning.salary_line_items.in_range(range).where(nurse_id: self.nurses.displayable.ids).joins(:nurse).group('nurses.name').sum(:total_wage)
+    salary_from_line_items = planning.salary_line_items.in_range(range).not_from_appointments.where(nurse_id: self.nurses.displayable.ids).joins(:nurse).group('nurses.name').sum(:total_wage)
     salary_from_appointments = planning.appointments.not_archived.edit_not_requested.in_range(range).joins(:nurse).where(nurse_id: self.nurses.displayable.part_timers.pluck(:id)).group('nurses.name').sum(:total_wage)
     salary_from_wage = self.nurses.displayable.full_timers.pluck(:name, :monthly_wage).to_h
     

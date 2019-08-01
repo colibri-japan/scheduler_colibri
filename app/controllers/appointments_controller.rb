@@ -97,12 +97,8 @@ class AppointmentsController < ApplicationController
   def archive
     authorize @planning, :same_corporation_as_current_user?
 
-    puts 'archived at before and after'
-    puts @appointment.archived_at
     @appointment.archive 
     @appointment.recurring_appointment_id = nil 
-
-    puts @appointment.archived_at
     
     if @appointment.save(validate: false)
       @activity = @appointment.create_activity :archive, owner: current_user, planning_id: @planning.id, previous_nurse_id: @appointment.nurse_id, previous_patient_id: @appointment.patient_id, parameters: {starts_at: @appointment.starts_at, ends_at: @appointment.ends_at, previous_nurse_name: @appointment.nurse.try(:name), previous_patient_name: @appointment.patient.try(:name)}
@@ -178,16 +174,22 @@ class AppointmentsController < ApplicationController
   end
 
 	def appointments_by_category_report
-		set_corporation
 		set_planning
 
 		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
 		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
 		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
 
-		@appointments_grouped_by_category = @planning.appointments.operational.includes(:service).in_range(first_day..last_day).grouped_by_weighted_category(categories: params[:categories].try(:split,','))
+		@appointments_grouped_by_category = @planning.appointments.edit_not_requested.not_archived.includes(:service).in_range(first_day..last_day).grouped_by_weighted_category(categories: params[:categories].try(:split,','))
 		@available_categories = @corporation.services.where(nurse_id: nil).pluck(:category_1, :category_2).flatten.uniq
-	end
+  end
+  
+  def monthly_revenue_report
+    set_planning 
+    
+    @revenue_grouped_by_month = @planning.appointments.edit_not_requested.not_archived.includes(:service).joins(:service).in_range((Date.today - 5.months).beginning_of_month..Date.today.end_of_day).revenue_grouped_by_month
+    puts @revenue_grouped_by_month
+  end
 
 
   private

@@ -114,7 +114,6 @@ Rails.application.routes.draw do
   get 'plannings/:id/duplicate_from' => 'plannings#duplicate_from', as: :planning_duplicate_from
   patch 'plannings/:id/duplicate' => 'plannings#duplicate', as: :planning_duplicate
   patch 'plannings/:id/master_to_schedule' => 'plannings#master_to_schedule', as: :master_to_schedule
-  patch 'plannings/:id/archive' => 'plannings#archive', as: :planning_archive
   get 'plannings/:id/new_master_to_schedule' => 'plannings#new_master_to_schedule', as: :new_planning_master_to_schedule
   get 'plannings/:id/all_patients' => 'plannings#all_patients', as: :planning_all_patients
   get 'plannings/:id/all_nurses' => 'plannings#all_nurses', as: :planning_all_nurses
@@ -138,6 +137,7 @@ Rails.application.routes.draw do
   patch 'appointments/:id/toggle_second_verified' => 'appointments#toggle_second_verified', as: :toggle_second_verified_appointment
   get 'appointments/:id/new_cancellation_fee' => 'appointments#new_cancellation_fee', as: :appointment_new_cancellation_fee
   get 'appointments_by_category_report/appointments' => 'appointments#appointments_by_category_report', as: :appointments_by_category_report
+  get 'monthly_revenue_report/appointments' => 'appointments#monthly_revenue_report', as: :appointments_monthly_revenue_report
 
   #custom routes for recurring_appointments
   patch 'planning/:planning_id/recurring_appointments/:id/archive' => 'recurring_appointments#archive', as: :planning_recurring_appointment_archive

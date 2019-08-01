@@ -213,4 +213,7 @@ $(document).on 'turbolinks:load', ->
       placeholder: '検索する...'
     filterCmTeikyohyo()
 
+  if $('#revenue-report').length > 0
+    $.getScript('/monthly_revenue_report/appointments')
+
   return

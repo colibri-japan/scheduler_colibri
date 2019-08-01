@@ -171,7 +171,18 @@ class Appointment < ApplicationRecord
 		end
 		
 		return_hash
-    end
+	end
+	
+	def self.revenue_grouped_by_month
+		corporation = self.first.planning.corporation
+		revenue_from_insurance = self.where(services: {inside_insurance_scope: true}).group_by_month(:starts_at).sum(:total_credits)
+		revenue_from_insurance.map { |key, value| revenue_from_insurance[key] = value * (corporation.invoicing_bonus_ratio || 1) } 
+		revenue_from_insurance.map { |key, value| revenue_from_insurance[key] = value * (corporation.credits_to_jpy_ratio || 0) }
+		revenue_outside_insurance = self.where(services: {inside_insurance_scope: false}).group_by_month(:starts_at).sum(:total_invoiced)
+		total_revenue = {}
+		revenue_outside_insurance.map { |key, value| total_revenue[key] = value + (revenue_from_insurance[key] || 0) }
+		total_revenue
+	end
 
 	private
 

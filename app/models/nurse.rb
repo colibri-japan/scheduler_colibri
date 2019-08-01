@@ -61,7 +61,7 @@ class Nurse < ApplicationRecord
 	def self.available_as_master_in_range(range)
 		return_array = self.without_unavailabilities(range).to_a
 		
-		recurring_appointments = RecurringAppointment.valid.where(nurse_id: self.ids).not_terminated_at(range.first).occurs_in_range(range).select {|r| r.overlapping_hours(range.first, range.last)}
+		recurring_appointments = RecurringAppointment.not_archived.where(nurse_id: self.ids).not_terminated_at(range.first).occurs_in_range(range).select {|r| r.overlapping_hours(range.first, range.last)}
 		return return_array if recurring_appointments.blank?
 
 		nurses_with_appointments = self.where(id: recurring_appointments.map(&:nurse_id).uniq)

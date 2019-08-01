@@ -82,6 +82,7 @@ Rails.application.routes.draw do
   #custom routes for teams
   get 'plannings/:planning_id/teams/:id/payable' => 'teams#payable', as: :planning_team_payable
   get 'plannings/:planning_id/teams/:id/master' => 'teams#master', as: :planning_team_master
+  get 'teams/:id/revenue_per_nurse_report' => 'teams#revenue_per_nurse_report', as: :team_revenue_per_nurse_report
 
   #custom routes for users
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin

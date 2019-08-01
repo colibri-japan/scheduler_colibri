@@ -6,6 +6,23 @@ class Team < ApplicationRecord
 
   after_save :update_members, if: :saved_change_to_member_ids?
 
+  def revenue_per_nurse(range)
+    nurse_ids = self.nurses.displayable.pluck(:id)
+    revenue_from_insurance = self.corporation.planning.appointments.in_range(range).where(nurse_id: nurse_ids).operational.joins(:service, :nurse).where(services: {inside_insurance_scope: true}).group('nurses.name').sum(:total_credits)
+    revenue_from_insurance.map { |nurse_name, value| revenue_from_insurance[nurse_name] = value * (self.corporation.invoicing_bonus_ratio || 1) }
+    revenue_from_insurance.map { |nurse_name, value| revenue_from_insurance[nurse_name] = value * (self.corporation.credits_to_jpy_ratio || 0) }
+    revenue_outside_insurance = self.corporation.planning.appointments.in_range(range).where(nurse_id: nurse_ids).edit_not_requested.not_archived.joins(:nurse, :service).where(services: {inside_insurance_scope: false}).group('nurses.name').sum(:total_invoiced)
+    return_hash = {}
+    nurse_names = self.nurses.displayable.pluck(:name)
+    nurse_names.each do |nurse_name|
+      return_hash[nurse_name] = ((revenue_from_insurance[nurse_name] || 0) + (revenue_outside_insurance[nurse_name] || 0)).floor
+    end
+
+    return_hash = return_hash.sort_by {|a,b| b }.reverse
+
+    return_hash
+  end
+
   private
 
   def update_members

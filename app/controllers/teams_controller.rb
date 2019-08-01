@@ -98,6 +98,16 @@ class TeamsController < ApplicationController
     def delete
     end
 
+    def revenue_per_nurse_report
+        @team = Team.find(params[:id])
+
+		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
+
+        @revenue_per_nurse = @team.revenue_per_nurse(first_day..last_day)
+    end
+
     private
 
     def team_params

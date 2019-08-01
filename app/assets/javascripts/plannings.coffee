@@ -216,4 +216,7 @@ $(document).on 'turbolinks:load', ->
   if $('#revenue-report').length > 0
     $.getScript('/monthly_revenue_report/appointments')
 
+  if $('#revenue-per-team-and-employee').length > 0
+    $.getScript($('#revenue-per-team-and-employee').data('url'))
+
   return

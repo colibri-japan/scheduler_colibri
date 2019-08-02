@@ -107,9 +107,6 @@ class TeamsController < ApplicationController
 
         @revenue_per_nurse = @team.revenue_per_nurse(first_day..last_day)
         @salary_per_nurse = @team.salary_per_nurse(first_day..last_day)
-
-        puts @revenue_per_nurse
-        puts @salary_per_nurse
     end
 
     private

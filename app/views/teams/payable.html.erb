@@ -14,15 +14,17 @@
 		<button id='payable-query-trigger' class='btn-colibri-light btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:#5f6368;font-size:0.85em"></span></button>
 	</div>
 
-	<div class='colibri-dashboard-container-row no-print'>
-		<div class='colibri-dashboard-subcontainer'>
-			<div class='colibri-subcontainer-header'>
-				<span class='colibri-subcontainer-title'>従業員別売上</span>
-			</div>
-			<div class="colibri-subcontainer-body" style="padding-top:8px" id="revenue-per-team-and-employee" data-url="<%= team_revenue_per_nurse_report_path(@team, params: {m: params[:m], y: params[:y]}) %>">
+	<% if current_user.corporation_admin? %>
+		<div class='colibri-dashboard-container-row no-print'>
+			<div class='colibri-dashboard-subcontainer'>
+				<div class='colibri-subcontainer-header'>
+					<span class='colibri-subcontainer-title'>従業員別売上</span>
+				</div>
+				<div class="colibri-subcontainer-body" style="padding-top:8px" id="revenue-per-team-and-employee" data-url="<%= team_revenue_per_nurse_report_path(@team, params: {m: params[:m], y: params[:y]}) %>">
+				</div>
 			</div>
 		</div>
-	</div>
+	<% end %>
 
   <div id='extended-daily-summary-title-container'>
     <div class='colibri-xs-title'>業務日報 - <%= @team.team_name %></div>

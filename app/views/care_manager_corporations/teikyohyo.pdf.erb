@@ -283,8 +283,8 @@
                             <td><%= @total_credits = @bonus_credits.present? ? @bonus_credits + @sum_of_credits : @sum_of_credits %></td>
                             <td></td>
                             <td><%= @sum_of_credits %></td>
-                            <td><%= @credits_exceeding_max_budget = @total_credits > patient.current_max_credits ? @total_credits - patient.current_max_credits : 0 %></td>
-                            <td><%= @sum_of_credits_within_max_budget = @total_credits - @credits_exceeding_max_budget %></td>
+                            <td><%= @credits_exceeding_max_budget = @sum_of_credits > patient.current_max_credits ? @sum_of_credits - patient.current_max_credits : 0 %></td>
+                            <td><%= @sum_of_credits_within_max_budget = @sum_of_credits > patient.current_max_credits ? patient.current_max_credits : @sum_of_credits %></td>
                             <td><%= @corporation.credits_to_jpy_ratio %></td>
                             <td><%= @total_invoiced = (@total_credits * @corporation.credits_to_jpy_ratio).floor %></td>
                             <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>

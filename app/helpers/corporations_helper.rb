@@ -43,16 +43,31 @@ module CorporationsHelper
         end
     end
 
-    def corporation_bonus_service_code(corporation)
-        case corporation.invoicing_bonus_ratio
-        when 1
-            ""
-        when 1.055
-            "116275"
-        when 1.1
-            "116275"
-        when 1.137
-            "116275"
+    def corporation_bonus_service_code(corporation, insurance_category_id)
+        if insurance_category_id == 11
+            case corporation.invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.055
+                "116275"
+            when 1.1
+                "116275"
+            when 1.137
+                "116275"
+            else
+            end
+        elsif insurance_category_id == 102
+            case corporation.invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.055
+                "A26271"
+            when 1.1
+                "A26270"
+            when 1.137
+                "A26269"
+            else
+            end
         else
         end
     end

@@ -7,7 +7,7 @@ module NursesHelper
 
             format("%02d:%02d", hours, minutes)
         else
-            ''
+            '00:00'
         end
 
     end

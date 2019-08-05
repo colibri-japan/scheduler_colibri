@@ -18,6 +18,11 @@ html {
     vertical-align: middle;
 }
 
+.table.table-bordered-pdf > tbody > tr {
+    page-break-inside: avoid;
+    page-break-after: avoid;
+}
+
 .table.table-centered > thead > tr > td, .table.table-centered > tbody > tr > td {
     text-align: center;
 }

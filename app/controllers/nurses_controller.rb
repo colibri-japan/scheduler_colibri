@@ -143,7 +143,10 @@ class NursesController < ApplicationController
     @grouped_appointments = @nurse.appointments.operational.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
 
     @total_days_worked = [@appointments_till_today.operational.pluck(:starts_at).map{|e| e.strftime('%m-%d')}].uniq.length
-    @total_time_worked = @appointments_till_today.operational.sum(:duration) || 0    
+    @total_time_worked = @appointments_till_today.operational.sum(:duration) || 0 
+    @total_time_pending = @nurse.appointments.not_archived.in_range(end_of_today_in_japan..last_day).sum(:duration) || 0
+    @percentage_of_time_worked = @total_time_worked + @total_time_pending == 0 ? 100 : (@total_time_worked.to_f * 100 / (@total_time_pending + @total_time_worked)).round(1)
+    @percentage_of_time_pending = 100 - @percentage_of_time_worked
 
     respond_to do |format|
       format.html

@@ -211,7 +211,7 @@ class PatientsController < ApplicationController
 
   def calculate_invoice_fields
     @sum_of_credits = @appointments_summary.sum {|hash| hash[:sum_total_credits] || 0}
-    @bonus_credits = (@sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round
+    @bonus_credits = (@appointments_summary.sum {|hash| [11,102].include?(hash[:insurance_service_category]) ? (hash[:sum_total_credits] || 0) : 0 } * (@corporation.invoicing_bonus_ratio - 1)).round
     @total_credits = @bonus_credits.present? ? @sum_of_credits + @bonus_credits : (@sum_of_credits || 0)
     @total_invoiced_inside_insurance_scope = (@total_credits * @corporation.credits_to_jpy_ratio).floor
     @credits_within_max_budget = @total_credits > @patient.current_max_credits ? @patient.current_max_credits : @total_credits

@@ -71,7 +71,7 @@
                             <td></td>
                         </tr>
                     <% end %>
-                    <% if @corporation.invoicing_bonus_ratio.present? %>
+                    <% if [11,102].include?(insurance_category_id.to_i) && @corporation.invoicing_bonus_ratio.present? %>
                         <tr>
                             <td><%= corporation_bonus_official_text(@corporation, insurance_category_id) %></td>
                             <td></td>
@@ -84,7 +84,7 @@
                         <td><%= "#{insurance_category_name(insurance_category_id)}合計" %></td>
                         <td></td>
                         <td></td>
-                        <td><%= subcategory_total_credits = subcategory_bonus_credits.present? ? appointment_summary_hash.sum {|e| e[:sum_total_credits]} + (subcategory_bonus_credits) : appointment_summary_hash.sum {|e| e.sum_total_credits} %></td>
+                        <td><%= subcategory_total_credits = subcategory_bonus_credits.present? ? appointment_summary_hash.sum {|e| e[:sum_total_credits]} + (subcategory_bonus_credits) : appointment_summary_hash.sum {|e| e[:sum_total_credits]} %></td>
                         <td></td>
                     </tr>
                 <% end %>

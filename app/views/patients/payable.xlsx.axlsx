@@ -73,7 +73,7 @@ wb.styles do |s|
                 sheet.merge_cells service_row.cells[(5..6)]
                 sheet.merge_cells service_row.cells[(7..8)]
             end
-            if @corporation.invoicing_bonus_ratio.present?
+            if [11,102].include?(insurance_category_id.to_i) && @corporation.invoicing_bonus_ratio.present?
                 sum_credits = appointment_summary_hash.sum{|e| e[:sum_total_credits]}
                 bonus_credits = ((sum_credits || 0) * (@corporation.invoicing_bonus_ratio - 1 || 0)).round
                 bonus_row = sheet.add_row [corporation_bonus_official_text(@corporation, insurance_category_id), '', '', '', 1, bonus_credits, '', '', '', ''], style: table_cells

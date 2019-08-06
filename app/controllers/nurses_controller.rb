@@ -148,6 +148,8 @@ class NursesController < ApplicationController
     @percentage_of_time_worked = @total_time_worked + @total_time_pending == 0 ? 100 : (@total_time_worked.to_f * 100 / (@total_time_pending + @total_time_worked)).round(1)
     @percentage_of_time_pending = 100 - @percentage_of_time_worked
 
+    @appointments_grouped_by_category = @nurse.appointments.operational.where(planning_id: @planning.id).in_range(first_day..end_of_today_in_japan).grouped_by_weighted_category
+
     respond_to do |format|
       format.html
       format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"給与明細書_#{@nurse.try(:name)}_#{params[:y]}年#{params[:m]}月.xlsx\""}

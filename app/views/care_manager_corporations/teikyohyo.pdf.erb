@@ -86,10 +86,10 @@
                     <% count = 0 %>
                     <% service_shift_array.each do |hash_of_service_and_shifts| %>
                       <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
-                        <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
-                            <td rowspan="2" style="page-break-inside: avoid;max-height:25px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
-                            <td rowspan="2" style="page-break-inside: avoid;max-height:25px"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
-                            <td rowspan="2" style="page-break-inside: avoid;max-height:25px"><%= @corporation.name %></td>
+                        <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="page-break-inside:avoid">
+                            <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
+                            <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
+                            <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= @corporation.name %></td>
                             <td>予定</td>
                             <% (@first_day..@last_day).each do |date| %>
                                 <td><%= shift[:previsional].include?(date.to_date) ? '1' : '' %></td>

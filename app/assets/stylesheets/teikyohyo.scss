@@ -19,8 +19,11 @@ html {
 }
 
 .table.table-bordered-pdf > tbody > tr {
-    page-break-inside: avoid;
-    page-break-after: avoid;
+    page-break-inside: avoid !important;
+}
+
+.table.table-bordered-pdf > tbody > tr > td {
+    page-break-inside: avoid !important;
 }
 
 .table.table-centered > thead > tr > td, .table.table-centered > tbody > tr > td {
@@ -31,12 +34,12 @@ html {
     font-weight: bold;
     font-size: 1.3em;
     text-align: center;
-    margin-top: 10px;
     margin-bottom: 15px;
 }
 
 .teikyohyo-container {
     padding: 5px;
+    padding-top: 0;
 }
 
 .teikyohyo_1_body {

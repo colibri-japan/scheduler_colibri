@@ -66,6 +66,12 @@ class CareManagerCorporationsController < ApplicationController
           layout: 'pdf.html',
           orientation: 'landscape',
           encoding: 'UTF-8',
+          margin: {
+            top: 7,
+            bottom: 10,
+            left: 7,
+            right: 7
+          },
           zoom: 1,
           dpi: 75
         end 

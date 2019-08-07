@@ -50,6 +50,65 @@ module PatientsHelper
         end
     end
 
+    def first_care_manager_corporation_title(kaigo_level)
+        if [8,0,1].include?(kaigo_level)
+            '担当地域包括'
+        else
+            '居宅介護事業所'
+        end
+    end
+
+    def first_care_manager_corporation_name(patient)
+        if [8,0,1].include?(patient.kaigo_level)
+            if patient.care_manager.present? && patient.second_care_manager.present?
+                patient.second_care_manager.care_manager_corporation.try(:name)
+            elsif patient.care_manager.present?
+                patient.care_manager.care_manager_corporation.try(:name)
+            elsif patient.second_care_manager.present? 
+                patient.second_care_manager.care_manager_corporation.try(:name)
+            end
+        else
+            patient.care_manager.care_manager_corporation.name
+        end
+    end
+    
+    def first_care_manager_name(patient)
+        if [8,0,1].include?(patient.kaigo_level)
+            if patient.care_manager.present? && patient.second_care_manager.present?
+                patient.second_care_manager.try(:name)
+            elsif patient.care_manager.present?
+                patient.care_manager.try(:name)
+            elsif patient.second_care_manager.present? 
+                patient.second_care_manager.try(:name)
+            end
+        else
+            patient.care_manager.try(:name)
+        end
+    end
+
+    def second_care_manager_corporation_title(kaigo_level)
+        if [8,0,1].include?(kaigo_level)
+            '居宅介護事業所'
+        else
+            '保険者確認印'
+        end
+    end
+
+    def second_care_manager_corporation_name(patient)
+        #not finished
+        if [8,0,1].include?(patient.kaigo_level)
+            if patient.care_manager.present? && patient.second_care_manager.present?
+                "#{patient.care_manager.care_manager_corporation.try(:name)}<br/>#{patient.care_manager.try(:name)}".html_safe
+            elsif patient.care_manager.present?
+                ''
+            elsif patient.second_care_manager.present? 
+                ''
+            end
+        else
+            ''
+        end
+    end
+
     def kaigo_certification_validity(patient)
         if patient.present?
             "#{patient.kaigo_certification_validity_start.try(:strftime, "%Jf")} ~ \x0A #{patient.kaigo_certification_validity_end.try(:strftime, "%Jf")}"

@@ -38,15 +38,6 @@
       <%= form.check_box :full_timer, id: 'full-timer-toggle' %>
     </div>
 
-    <% if false %>
-    
-      <div class="form-group" id="monthly_wage_group">
-        <%= form.label :monthly_wage, "基本給", class: "colibri-form-label" %>
-        <%= form.number_field :monthly_wage, class: 'form-control', id: 'nurse_monthly_wage' %>
-      </div>
-
-    <% end %>
-
     <div class="form-group">
       <%= form.label :skill_list, "スキル", class: "colibri-form-label" %>
       <%= form.select :skill_list, options_from_collection_for_select(@skills, 'name', 'name', nurse.skill_list), {}, {multiple: true, id: "nurse_skill_list"} %>

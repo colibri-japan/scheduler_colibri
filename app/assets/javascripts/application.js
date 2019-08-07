@@ -2250,6 +2250,7 @@ let handleAppointmentOverlapRevert = (revertFunc) => {
 
 let patientCaremanagerSelectize = () => {
   $('#patient_care_manager').selectize()
+  $('#patient_second_care_manager').selectize()
 }
 
 let patientWarekiFields = () => {

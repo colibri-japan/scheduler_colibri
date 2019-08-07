@@ -211,7 +211,7 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <%= form.label :nurse_id, "担当従業員", class: "colibri-form-label-dark" %>
-          <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, patient.nurse_id), {prompt: '検索する'}, {id: :patient_nurse_id}  %>
+          <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, patient.nurse_id), {}, {id: :patient_nurse_id}  %>
         </div>
         <div class="form-group col-md-6">
           <%= form.label :doctor_name, "主治医", class: "colibri-form-label-dark" %>
@@ -221,7 +221,12 @@
 
       <div class="form-group">
         <%= form.label :care_manager_id, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
-        <%= form.select :care_manager_id, options_for_select(@care_managers.map{|cm| ["#{cm.name} - #{cm.care_manager_corporation.try(:name)}", cm.id]}, patient.care_manager_id), {prompt: "ケアマネジャー"}, id: :patient_care_manager %>
+        <%= form.select :care_manager_id, options_for_select(@care_managers.map{|cm| ["#{cm.name} - #{cm.care_manager_corporation.try(:name)}", cm.id]}, patient.care_manager_id), {include_blank: ''}, id: :patient_care_manager %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :second_care_manager_id, "地域包括ケアマネジャー（支援）", class: "colibri-form-label-dark" %>
+        <%= form.select :second_care_manager_id, options_for_select(@care_managers.map{|cm| ["#{cm.name} - #{cm.care_manager_corporation.try(:name)}", cm.id]}, patient.second_care_manager_id), {include_blank: ''}, id: :patient_second_care_manager %>
       </div>
 
       <div class="form-group">

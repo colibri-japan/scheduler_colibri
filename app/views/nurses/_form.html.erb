@@ -38,6 +38,13 @@
       <%= form.check_box :full_timer, id: 'full-timer-toggle' %>
     </div>
 
+    <% if nurse.new_record? %>
+      <div class="form-group">
+        <%= form.label :days_worked, "稼動日数", class: "colibri-form-label" %>
+        <%= form.number_field :days_worked, id: :nurse_days_worked, class: "form-control" %>
+      </div>
+    <% end %>
+
     <div class="form-group">
       <%= form.label :skill_list, "スキル", class: "colibri-form-label" %>
       <%= form.select :skill_list, options_from_collection_for_select(@skills, 'name', 'name', nurse.skill_list), {}, {multiple: true, id: "nurse_skill_list"} %>

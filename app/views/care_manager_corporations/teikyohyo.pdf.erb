@@ -60,17 +60,17 @@
             <table class="table table-bordered table-bordered-pdf  table-centered">
                 <thead>
                   <tr>
-                    <td rowspan="2">提供時間帯</td>
-                    <td rowspan="2">サービス内容</td>
-                    <td rowspan="2">サービス事業者名</td>
-                    <td>日付</td>
+                    <td rowspan="2" style="width:9%">提供時間帯</td>
+                    <td rowspan="2" style="width:15%">サービス内容</td>
+                    <td rowspan="2" style="width:13%">サービス事業者名</td>
+                    <td style="width:3%">日付</td>
                     <% (@first_day..@last_day).each do |date| %>
-                        <td><%= date.day %></td>
+                        <td style="width:1.8%"><%= date.day %></td>
                     <% end %>
                     <% (31 - (@first_day..@last_day).count).times do %>
-                        <td></td>
+                        <td style="width:1.8%"></td>
                     <% end %>
-                    <td rowspan="2">合計回数</td>
+                    <td rowspan="2">合計<br/>回数</td>
                   </tr>
                   <tr>
                     <td>曜日</td>
@@ -97,7 +97,7 @@
                             <% (31 - (@first_day..@last_day).count).times do  %>
                                 <td></td>
                             <% end %>
-                            <td><%= shift[:previsional].count %></td>
+                            <td style="<%= 'color:red' if shift[:previsional].count != shift[:provided].count %>"><%= shift[:previsional].count %></td>
                         </tr>
                         <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
                             <td>実績</td>
@@ -107,7 +107,7 @@
                             <% (31 - (@first_day..@last_day).count).times do  %>
                                 <td></td>
                             <% end %>
-                            <td><%= shift[:provided].count %></td>
+                            <td style="<%= 'color:red' if shift[:previsional].count != shift[:provided].count %>"><%= shift[:provided].count %></td>
                         </tr>
                         <% count += 1 %>
                       <% end %>

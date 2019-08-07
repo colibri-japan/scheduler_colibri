@@ -46,3 +46,17 @@ html {
 .gray_row {
     background-color: #eee;
 }
+
+.teikyohyo-count-discrepancy::after {
+    content: '(!)';
+    color: red;
+}
+
+@page {
+	margin: 5mm 5mm 5mm 5mm;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}

@@ -56,7 +56,7 @@ class CareManagerCorporationsController < ApplicationController
       @first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0, 0)
       @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
       
-      @patients_with_services_and_dates = @care_manager_corporation.teikyohyo_data(@first_day, @last_day)
+      @invoicing_summary_per_patient = @care_manager_corporation.teikyohyo_data(@first_day, @last_day)
 
       respond_to do |format|
         format.html 

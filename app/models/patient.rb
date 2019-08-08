@@ -167,28 +167,30 @@ class Patient < ApplicationRecord
 		end
 	end
 
-	def appointments_summary(date_range, options = {})
-		within_insurance = options[:within_insurance_scope] || false 
-		
-		array_of_services = []
+	def invoicing_summary(date_range, options = {})
+		summary_hash = {inside_insurance_scope: {}, outside_insurance_scope: [], summary_data: {}}
+		inside_insurance_scope_hash = {}
 		appointments_grouped_by_service = self.appointments.operational.in_range(date_range).includes(:service).group(:service_id).select('service_id, sum(total_invoiced) as sum_total_invoiced, sum(total_wage) as sum_total_wage, sum(total_credits) as sum_total_credits, count(*) as total_count, min(starts_at) as minimum_starts_at, max(ends_at) as maximum_ends_at')
+		cancelled_but_invoiceable_appointments = self.appointments.includes(:service).not_archived.edit_not_requested.in_range(date_range).where.not(total_invoiced: [nil, 0])
+		services_inside_insurance_scope = []
+		services_outside_insurance_scope = []
 
 		appointments_grouped_by_service.each do |appointment_group|
 			service = appointment_group.try(:service)
-			service_hash = {}
-			
-			if service.present? && service.invoiced_to_insurance? == within_insurance 
+			if service.present?
+				service_hash = {}
 				service_hash[:title] = service.try(:title)
 				service_hash[:insurance_service_category] = service.try(:insurance_service_category)
 				service_hash[:official_title] = service.try(:official_title)
 				service_hash[:service_code] = service.try(:service_code)
 				service_hash[:unit_credits] = service.try(:unit_credits)
+				service_hash[:invoiced_to_insurance] = service.invoiced_to_insurance?
 				service_hash[:calculation_method] = service.credit_calculation_method
 				case service.credit_calculation_method
 				when 0
-					service_hash[:sum_total_credits] = (appointment_group.total_count || 0) * (service.try(:unit_credits) || 0)
+					sum_total_credits = (appointment_group.total_count || 0) * (service.try(:unit_credits) || 0)
 				when 1
-					service_hash[:sum_total_credits] = service.try(:unit_credits)
+					sum_total_credits = service.try(:unit_credits)
 				when 2
 					if self.date_of_contract.present? && self.date_of_contract.month == date_range.first.month 
 						day_count = (date_of_contract..date_range.last).count
@@ -197,17 +199,107 @@ class Patient < ApplicationRecord
 					else
 						day_count = 0
 					end
-					service_hash[:sum_total_credits] = day_count * (service.try(:unit_credits) || 0)
+					sum_total_credits = day_count * (service.try(:unit_credits) || 0)
 				else
-					service_hash[:sum_total_credits] = 0
+					sum_total_credits = 0
 				end
-				service_hash[:sum_total_invoiced] = appointment_group.sum_total_invoiced
+				service_hash[:sum_total_credits] = sum_total_credits
+				service_hash[:sum_total_invoiced] = (sum_total_credits * corporation.credits_to_jpy_ratio).floor
 				service_hash[:count] = service.credit_calculation_method == 2 ? day_count : appointment_group.total_count
 
-				array_of_services << service_hash
+				if service.invoiced_to_insurance?
+					services_inside_insurance_scope << service_hash
+				else
+					services_outside_insurance_scope << service_hash
+				end
 			end
 		end
-		array_of_services
+
+		services_outside_insurance_scope.each do |service_hash|
+			service_shift_hash = {service_hash: {}, shifts_hash: {}}
+			service_shift_hash[:service_hash] = service_hash 
+			service_shift_hash[:shifts_hash] = self.shifts_by_title_and_date_range(service_hash[:title], date_range)
+			summary_hash[:outside_insurance_scope] << service_shift_hash
+		end
+
+		cancelled_but_invoiceable_appointments.each do |cancelled_appointment|
+			service = cancelled_appointment.service
+			if service.present?
+				service_shift_hash = {service_hash: {}, shifts_hash: {}}
+				service_shift_hash[:service_hash] = {
+					title: service.title,
+					official_title: service.official_title,
+					service_code: service.service_code,
+					insurance_service_category: service.insurance_service_category,
+					unit_credits: service.unit_credits,
+					invoiced_to_insurance: false,
+					sum_total_credits: 0,
+					sum_total_invoiced: cancelled_appointment.total_invoiced
+				}
+				service_shift_hash[:shifts_hash] = {
+					start_time: cancelled_appointment.starts_at.strftime("%H:%M"),
+					end_time: cancelled_appointment.ends_at.strftime("%H:%M"),
+					previsional: [],
+					provided: [cancelled_appointment.starts_at.to_date]
+				}
+				summary_hash[:outside_insurance_scope] << service_shift_hash
+			end
+		end
+
+		services_inside_insurance_scope.group_by {|service_hash| service_hash[:insurance_service_category] }.each do |category_id, service_hashes|
+			category_sub_total_credits = service_hashes.sum {|service_hash| service_hash[:sum_total_credits] || 0 }
+			category_bonus_credits = ([11,102].include?(category_id.to_i) && corporation.invoicing_bonus_ratio.present?) ? (category_sub_total_credits * (corporation.invoicing_bonus_ratio - 1)).round : 0
+			category_summary = {
+				insurance_category_id: category_id,
+				category_sub_total_credits: category_sub_total_credits,
+				category_bonus_credits: category_bonus_credits,
+				category_total_credits: category_sub_total_credits + category_bonus_credits
+			}
+			array_of_service_and_shifts_hashed = []
+			service_hashes.each do |service_hash|
+				service_shift_hash = {service_hash: {}, shifts_hash: {}}
+				service_shift_hash[:service_hash] = service_hash
+				service_shift_hash[:shifts_hash] = self.shifts_by_title_and_date_range(service_hash[:title], date_range)   
+				array_of_service_and_shifts_hashed << service_shift_hash
+			end
+			inside_insurance_scope_hash[category_summary] = array_of_service_and_shifts_hashed
+		end
+
+		summary_hash[:inside_insurance_scope] = inside_insurance_scope_hash 
+
+		total_credits = summary_hash[:inside_insurance_scope].sum {|category_summary, services_hashes| category_summary[:category_sub_total_credits] || 0 }
+		total_bonus_credits = summary_hash[:inside_insurance_scope].sum {|category_summary, services_hashes| category_summary[:category_bonus_credits] || 0 }
+		total_credits_with_bonus = summary_hash[:inside_insurance_scope].sum {|category_summary, services_hashes| category_summary[:category_total_credits] || 0 }
+		credits_within_max_budget = total_credits > current_max_credits ? current_max_credits : total_credits
+		credits_with_bonus_within_max_budget = total_credits_with_bonus > current_max_credits ? current_max_credits : total_credits_with_bonus
+		total_invoiced = (total_credits_with_bonus * corporation.credits_to_jpy_ratio).floor
+		total_invoiced_inside_insurance_scope = (credits_with_bonus_within_max_budget * corporation.credits_to_jpy_ratio).floor
+		amount_paid_by_insurance = (total_invoiced_inside_insurance_scope * (10 - (ratio_paid_by_patient || 0)) / 10).floor
+		amount_in_excess_from_insurance_paid_by_patient = total_invoiced - total_invoiced_inside_insurance_scope
+		total_paid_by_patient_from_insurance_without_assistance = total_invoiced - amount_paid_by_insurance
+		public_assistance_1 =  public_assistance_ratio_1 > 0 ? (total_invoiced_inside_insurance_scope * public_assistance_ratio_1).floor - amount_paid_by_insurance : 0
+		public_assistance_2 = public_assistance_ratio_1 > 0 && public_assistance_ratio_2 > 0 && public_assistance_ratio_2 > public_assistance_ratio_1 ? (total_invoiced_inside_insurance_scope * public_assistance_ratio_2).floor - amount_paid_by_insurance - public_assistance_1 : 0
+		total_paid_by_patient_from_insurance = total_invoiced_inside_insurance_scope - amount_paid_by_insurance - public_assistance_1 - public_assistance_2
+		amount_paid_by_patient_outside_insurance = summary_hash[:outside_insurance_scope].sum {|service_hash| service_hash[:sum_total_invoiced] ||0}
+		summary_hash[:summary_data] = {
+			total_credits: total_credits,
+			total_bonus_credits: total_bonus_credits,
+			total_credits_with_bonus: total_credits_with_bonus,
+			credits_within_max_budget: credits_within_max_budget,
+			credits_exceeding_max_budget: total_credits_with_bonus - credits_within_max_budget,
+			total_invoiced: total_invoiced,
+			amount_paid_by_insurance: amount_paid_by_insurance,
+			amount_within_insurance_paid_by_patient: total_invoiced_inside_insurance_scope - amount_paid_by_insurance,
+			amount_in_excess_from_insurance_paid_by_patient: amount_in_excess_from_insurance_paid_by_patient,
+			total_paid_by_patient_from_insurance_without_assistance: total_paid_by_patient_from_insurance_without_assistance,
+			amount_paid_by_public_assistance_1: public_assistance_1,
+			amount_paid_by_public_assistance_2: public_assistance_2,
+			total_paid_by_patient_from_insurance: total_paid_by_patient_from_insurance,
+			amount_paid_by_patient_outside_insurance: amount_paid_by_patient_outside_insurance,
+			final_amount_paid_by_patient: total_paid_by_patient_from_insurance + amount_in_excess_from_insurance_paid_by_patient + amount_paid_by_patient_outside_insurance
+		}
+
+		summary_hash
 	end
 
 	def shifts_by_title_and_date_range(service_title, date_range)

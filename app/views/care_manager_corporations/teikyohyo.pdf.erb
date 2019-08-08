@@ -1,4 +1,4 @@
-<% @patients_with_services_and_dates.each do |patient, service_shift_array| %>
+<% @invoicing_summary_per_patient.each do |patient, invoicing_summary| %>
     <div class="teikyohyo-container" id="teikyohyo_1_<%= patient.id %>">
         <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="teikyohyo_1_header">
@@ -84,37 +84,40 @@
                 </thead>
                 <tbody>
                     <% count = 0 %>
-                    <% service_shift_array.each do |hash_of_service_and_shifts| %>
-                      <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
-                        <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="page-break-inside:avoid">
-                            <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
-                            <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
-                            <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= @corporation.name %></td>
-                            <td>予定</td>
-                            <% (@first_day..@last_day).each do |date| %>
-                                <td><%= shift[:previsional].include?(date.to_date) ? '1' : '' %></td>
-                            <% end %>
-                            <% (31 - (@first_day..@last_day).count).times do  %>
-                                <td></td>
-                            <% end %>
-                            <td style="<%= 'color:red' if shift[:previsional].count != shift[:provided].count %>"><%= shift[:previsional].count %></td>
-                        </tr>
-                        <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
-                            <td>実績</td>
-                            <% (@first_day..@last_day).each do |date| %>
-                                <td><%= shift[:provided].include?(date.to_date) ? '1' : '' %></td>
-                            <% end %>
-                            <% (31 - (@first_day..@last_day).count).times do  %>
-                                <td></td>
-                            <% end %>
-                            <td style="<%= 'color:red' if shift[:previsional].count != shift[:provided].count %>"><%= shift[:provided].count %></td>
-                        </tr>
-                        <% count += 1 %>
+                    <% invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
+                      <% array_of_service_and_shifts_hashes.each do |hash_of_service_and_shifts| %>
+                        <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
+                          <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="page-break-inside:avoid">
+                              <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
+                              <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
+                              <td rowspan="2" style="vertical-align:top !important;padding-top:14px"><%= @corporation.name %></td>
+                              <td>予定</td>
+                              <% (@first_day..@last_day).each do |date| %>
+                                  <td><%= shift[:previsional].include?(date.to_date) ? '1' : '' %></td>
+                              <% end %>
+                              <% (31 - (@first_day..@last_day).count).times do  %>
+                                  <td></td>
+                              <% end %>
+                              <td style="<%= 'color:red' if shift[:previsional].count != shift[:provided].count %>"><%= shift[:previsional].count %></td>
+                          </tr>
+                          <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                              <td>実績</td>
+                              <% (@first_day..@last_day).each do |date| %>
+                                  <td><%= shift[:provided].include?(date.to_date) ? '1' : '' %></td>
+                              <% end %>
+                              <% (31 - (@first_day..@last_day).count).times do  %>
+                                  <td></td>
+                              <% end %>
+                              <td style="<%= 'color:red' if shift[:previsional].count != shift[:provided].count %>"><%= shift[:provided].count %></td>
+                          </tr>
+                          <% count += 1 %>
+                        <% end %>
                       <% end %>
                     <% end %>
                     
-                    <% if service_shift_array.sum {|hash_of_services_and_shifts| hash_of_services_and_shifts[:shifts_hash].count} < 10 %>
-                        <% (10 - service_shift_array.sum {|hash_of_services_and_shifts| hash_of_services_and_shifts[:shifts_hash].count}).times do %>
+                    <% shift_line_count = invoicing_summary[:inside_insurance_scope].sum {|category_hash, array_of_service_and_shifts_hashes| array_of_service_and_shifts_hashes.sum {|hash| hash[:shifts_hash].count } } %>
+                    <% if shift_line_count < 10 %>
+                        <% (10 - shift_line_count).times do %>
                             <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
                                 <td rowspan="2"></td>
                                 <td rowspan="2"></td>
@@ -171,9 +174,8 @@
                     <td>％</td>
                     <td>単位数</td>
                   </tr>
-                    <% grouped_service_shifts_array = service_shift_array.group_by {|hash_of_services_and_shifts| hash_of_services_and_shifts[:service_hash][:insurance_service_category] } %>
-                    <% grouped_service_shifts_array.each do |insurance_category_id, array_service_and_shifts_hashes| %>
-                        <% array_service_and_shifts_hashes.each do |hash_of_service_and_shifts| %>
+                    <% invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
+                        <% array_of_service_and_shifts_hashes.each do |hash_of_service_and_shifts| %>
                             <tr>
                                 <td><%= @corporation.name %></td>
                                 <td><%= @corporation.identifier %></td>
@@ -196,23 +198,21 @@
                                 <td></td>
                             </tr>
                         <% end %>
-                        <% sum_of_credits = array_service_and_shifts_hashes.sum { |hash| hash[:service_hash][:sum_total_credits] || 0 } %>
-                        <% if service_shift_array.count > 0 && [11,102].include?(insurance_category_id.to_i) && @corporation.invoicing_bonus_ratio.present? %>
+                        <% if array_of_service_and_shifts_hashes.count > 0 && [11,102].include?(category_hash[:insurance_category_id].to_i) && @corporation.invoicing_bonus_ratio.present? %>
                             <tr>
                                 <td><%= @corporation.name %></td>
                                 <td><%= @corporation.identifier %></td>
-                                <td><%= corporation_bonus_official_text(@corporation, insurance_category_id.to_i) %></td>
-                                <td><%= corporation_bonus_service_code(@corporation, insurance_category_id.to_i) %></td>
+                                <td><%= corporation_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
+                                <td><%= corporation_bonus_service_code(@corporation, category_hash[:insurance_category_id].to_i) %></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>1</td>
-                                <% bonus_credits = (sum_of_credits * (@corporation.invoicing_bonus_ratio - 1)).round %>
-                                <td>(<%= number_with_delimiter(bonus_credits, delimiter: ',') %>)</td>
+                                <td>(<%= number_with_delimiter(category_hash[:category_bonus_credits], delimiter: ',') %>)</td>
                                 <td></td>
-                                <td>(<%= number_with_delimiter(bonus_credits, delimiter: ',') %>)</td>
+                                <td>(<%= number_with_delimiter(category_hash[:category_bonus_credits], delimiter: ',') %>)</td>
                                 <td></td>
-                                <td>(<%= number_with_delimiter(bonus_credits, delimiter: ',') %>)</td>
+                                <td>(<%= number_with_delimiter(category_hash[:category_bonus_credits], delimiter: ',') %>)</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -221,20 +221,19 @@
                                 <td></td>
                             </tr>
                         <% end %>
-                        <% if grouped_service_shifts_array.size > 1 %>
+                        <% if invoicing_summary[:inside_insurance_scope].size > 1 %>
                             <tr>
                                 <td><%= @corporation.name %></td>
                                 <td><%= @corporation.identifier %></td>
-                                <td><%= insurance_category_name(insurance_category_id.to_i) %>計</td>
+                                <td><%= insurance_category_name(category_hash[:insurance_category_id].to_i) %>計</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <% total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %>
-                                <td><%= number_with_delimiter(total_credits, delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(category_hash[:category_total_credits], delimiter: ',') %></td>
                                 <td></td>
-                                <td><%= number_with_delimiter(sum_of_credits, delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(category_hash[:category_sub_total_credits], delimiter: ',') %></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -248,36 +247,27 @@
                             <tr>
                                 <td><%= @corporation.name %></td>
                                 <td><%= @corporation.identifier %></td>
-                                <td><%= insurance_category_name(insurance_category_id.to_i) %>合計</td>
+                                <td><%= insurance_category_name(category_hash[:insurance_category_id].to_i) %>合計</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <% @total_credits = bonus_credits.present? ? bonus_credits + sum_of_credits : sum_of_credits %>
-                                <td><%= number_with_delimiter(@total_credits, delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits_with_bonus], delimiter: ',') %></td>
                                 <td></td>
-                                <% @sum_of_credits = sum_of_credits %>
-                                <td><%= number_with_delimiter(@sum_of_credits, delimiter: ',') %></td>
-                                <% @credits_exceeding_max_budget = @sum_of_credits > patient.current_max_credits ? @sum_of_credits - patient.current_max_credits : 0 %>
-                                <td><%= number_with_delimiter(@credits_exceeding_max_budget, delimiter: ',') %></td>
-                                <% @sum_of_credits_within_max_budget = @sum_of_credits > patient.current_max_credits ? patient.current_max_credits : @sum_of_credits %>
-                                <td><%= number_with_delimiter(@sum_of_credits_within_max_budget, delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits], delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:credits_exceeding_max_budget], delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:credits_within_max_budget], delimiter: ',') %></td>
                                 <td><%= @corporation.credits_to_jpy_ratio %></td>
-                                <% @total_invoiced = (@total_credits * @corporation.credits_to_jpy_ratio).floor %>
-                                <td><%= number_with_delimiter(@total_invoiced, delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_invoiced], delimiter: ',') %></td>
                                 <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
-                                <% @total_invoiced_within_budget = ((@total_credits - @credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
-                                <% @amount_paid_by_insurance = (@total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %>
-                                <td><%= number_with_delimiter(@amount_paid_by_insurance, delimiter: ',') %></td>
-                                <% @amount_within_insurance_paid_by_patient = @total_invoiced_within_budget - @amount_paid_by_insurance %>
-                                <td><%= number_with_delimiter(@amount_within_insurance_paid_by_patient, delimiter: ',') %></td>
-                                <% @amount_in_excess_paid_by_patient = @total_invoiced - @total_invoiced_within_budget %>
-                                <td><%= number_with_delimiter(@amount_in_excess_paid_by_patient, delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_paid_by_insurance], delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_within_insurance_paid_by_patient], delimiter: ',') %></td>
+                                <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_in_excess_from_insurance_paid_by_patient], delimiter: ',') %></td>
                             </tr>
                         <% end %>
                     <% end %>
-                    <% if grouped_service_shifts_array.size > 1 %>
+                    <% if invoicing_summary[:inside_insurance_scope].size > 1 %>
                         <tr>
                             <td><%= @corporation.name %></td>
                             <td><%= @corporation.identifier %></td>
@@ -287,40 +277,29 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <% @sum_of_credits = service_shift_array.sum { |service_shifts_hash| service_shifts_hash[:service_hash][:sum_total_credits] || 0 } %>
-                            <% @bonus_credits = (service_shift_array.sum { |service_shifts_hash| [11,102].include?(service_shifts_hash[:service_hash][:insurance_service_category]) ? (service_shifts_hash[:service_hash][:sum_total_credits] || 0) : 0 } * (@corporation.invoicing_bonus_ratio - 1)).round  %>
-                            <% @total_credits = @bonus_credits.present? ? @bonus_credits + @sum_of_credits : @sum_of_credits %>
-                            <td><%= number_with_delimiter(@total_credits, delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits_with_bonus], delimiter: ',') %></td>
                             <td></td>
-                            <td><%= number_with_delimiter(@sum_of_credits, delimiter: ',') %></td>
-                            <% @credits_exceeding_max_budget = @sum_of_credits > patient.current_max_credits ? @sum_of_credits - patient.current_max_credits : 0 %>
-                            <td><%= number_with_delimiter(@credits_exceeding_max_budget, delimiter: ',') %></td>
-                            <% @sum_of_credits_within_max_budget = @sum_of_credits > patient.current_max_credits ? patient.current_max_credits : @sum_of_credits %>
-                            <td><%= number_with_delimiter(@sum_of_credits_within_max_budget, delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:credits_exceeding_max_budget], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:credits_within_max_budget], delimiter: ',') %></td>
                             <td><%= @corporation.credits_to_jpy_ratio %></td>
-                            <% @total_invoiced = (@total_credits * @corporation.credits_to_jpy_ratio).floor %>
-                            <td><%= number_with_delimiter(@total_invoiced, delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_invoiced], delimiter: ',') %></td>
                             <td><%= (10 - patient.ratio_paid_by_patient) * 10 if patient.ratio_paid_by_patient.present? %></td>
-                            <% @total_invoiced_within_budget = ((@total_credits - @credits_exceeding_max_budget) * @corporation.credits_to_jpy_ratio).floor %>
-                            <% @amount_paid_by_insurance = (@total_invoiced_within_budget * (10 - (patient.ratio_paid_by_patient || 0)) / 10).floor %>
-                            <td><%= number_with_delimiter(@amount_paid_by_insurance, delimiter: ',') %></td>
-                            <% @amount_within_insurance_paid_by_patient = @total_invoiced_within_budget - @amount_paid_by_insurance %>
-                            <td><%= number_with_delimiter(@amount_within_insurance_paid_by_patient, delimiter: ',') %></td>
-                            <% @amount_in_excess_paid_by_patient = @total_invoiced - @total_invoiced_within_budget %>
-                            <td><%= number_with_delimiter(@amount_in_excess_paid_by_patient, delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_paid_by_insurance], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_within_insurance_paid_by_patient], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_in_excess_from_insurance_paid_by_patient], delimiter: ',') %></td>
                         </tr>
                     <% end %>
                     <tr>
                         <td colspan="5">区分支給限度基準: <%= maximum_budget = maximum_budget(patient.current_kaigo_level) %></td>
-                        <td colspan="4">合計：<%= number_with_delimiter(@sum_of_credits, delimiter: ',') %></td>
+                        <td colspan="4">合計：<%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits], delimiter: ',') %></td>
                         <td>0</td>
-                        <td><%= number_with_delimiter(@sum_of_credits, delimiter: ',') %></td>
+                        <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits], delimiter: ',') %></td>
                         <td>0</td>
-                        <td colspan="2"><%= number_with_delimiter(@sum_of_credits, delimiter: ',') %></td>
-                        <td colspan="2"><%= number_with_delimiter(@total_invoiced, delimiter: ',')  %></td>
-                        <td><%= number_with_delimiter(@amount_paid_by_insurance, delimiter: ',') %></td>
-                        <% @total_paid_by_patient = (@amount_within_insurance_paid_by_patient || 0) + (@amount_in_excess_paid_by_patient || 0) %>
-                        <td colspan="2"><%= number_with_delimiter(@total_paid_by_patient, delimiter: ',') %></td>
+                        <td colspan="2"><%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits], delimiter: ',') %></td>
+                        <td colspan="2"><%= number_with_delimiter(invoicing_summary[:summary_data][:total_invoiced], delimiter: ',')  %></td>
+                        <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_paid_by_insurance], delimiter: ',') %></td>
+                        <td colspan="2"><%= number_with_delimiter(invoicing_summary[:summary_data][:total_paid_by_patient_from_insurance_without_assistance], delimiter: ',') %></td>
                     </tr>
                 </tbody>
             </table>
@@ -370,17 +349,15 @@
                     <tbody>
                         <tr>
                             <td><%= @corporation.name %></td>
-                            <td><%= number_with_delimiter(@amount_within_insurance_paid_by_patient, delimiter: ',') %></td>
-                            <% public_assistance_1 = patient.public_assistance_ratio_1 > 0 ? (@total_invoiced_within_budget * patient.public_assistance_ratio_1).floor - @amount_paid_by_insurance : 0 %>
-                            <td>(<%= number_with_delimiter(public_assistance_1, delimiter: ',') %>)</td>
-                            <% public_assistance_2 = patient.public_assistance_ratio_1 > 0 && patient.public_assistance_ratio_2 > 0 && patient.public_assistance_ratio_2 > patient.public_assistance_ratio_1 ? (@total_invoiced_within_budget * patient.public_assistance_ratio_2).floor - @amount_paid_by_insurance - public_assistance_1 : 0 %>
-                            <td>(<%= number_with_delimiter(public_assistance_2, delimiter: ',') %>)</td>
-                            <td><%= number_with_delimiter(@amount_in_excess_paid_by_patient, delimiter: ',') %></td>
-                            <td><%= net_total_paid_by_patient = number_with_delimiter((@total_paid_by_patient ||0) - public_assistance_1 - public_assistance_2, delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_within_insurance_paid_by_patient], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:total_paid_by_patient_from_insurance], delimiter: ',') %></td>
+                            <td><%= number_with_delimiter(invoicing_summary[:summary_data][:amount_in_excess_from_insurance_paid_by_patient], delimiter: ',') %></td>
                         </tr>
                         <tr>
                             <td colspan="4">ご利用者負担</td>
-                            <td colspan="2"><%= net_total_paid_by_patient %>円</td>
+                            <td colspan="2"><%= number_with_delimiter(invoicing_summary[:summary_data][:final_amount_paid_by_patient], delimiter: ',') %>円</td>
                         </tr>
                     </tbody>
                 </table>

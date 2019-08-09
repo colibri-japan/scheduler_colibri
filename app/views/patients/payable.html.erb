@@ -24,8 +24,8 @@
                     <%= @selected_month %>月のまとめ
                 </div>
                 <div class="patient-dashboard-panel-body">
-                    請求額：<%= @total_invoiced_to_patient %>¥<br/>
-                    総売り上げ：<%= @total_sales %>¥<br/>
+                    請求額：<%= @invoicing_summary[:summary_data][:final_amount_paid_by_patient] %>¥<br/>
+                    総売り上げ：<%= @invoicing_summary[:summary_data][:total_invoiced] %>¥<br/>
                 </div>
             </div>
             <div  class="patient-dashboard-panel" style="width:34%">

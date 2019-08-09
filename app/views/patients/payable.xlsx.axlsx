@@ -40,7 +40,7 @@ wb.styles do |s|
         sheet.merge_cells "A9:J9"
 
 
-        sheet.add_row ['','', '', '','', '', 'ご請求金額', '', "#{@total_invoiced_to_patient}¥", ''], style: total_amount_line, height: 25
+        sheet.add_row ['','', '', '','', '', 'ご請求金額', '', "#{@invoicing_summary[:summary_data][:final_amount_paid_by_patient]}¥", ''], style: total_amount_line, height: 25
         sheet.merge_cells "G10:H10"
         sheet.merge_cells "I10:J10"
         sheet.add_row
@@ -56,7 +56,17 @@ wb.styles do |s|
         title_2_row.cells[4].merge title_1_row.cells[4]
         title_2_row.cells[9].merge title_1_row.cells[9]
 
-        sheet.add_row ['訪問介護', @corporation.credits_to_jpy_ratio, @credits_within_max_budget, @total_invoiced_inside_insurance_scope, @credits_exceeding_max_budget, @amount_invoiced_to_patient_within_max_budget, @amount_invoiced_exceeding_max_budget, 0, "(#{@amount_invoiced_to_public_assistance_1 + @amount_invoiced_to_public_assistance_2})", "#{@total_invoiced_to_patient_inside_insurance_scope}¥"], style: table_cells
+        sheet.add_row [
+            '訪問介護', 
+            @corporation.credits_to_jpy_ratio, 
+            @invoicing_summary[:summary_data][:credits_with_bonus_within_max_budget], 
+            @invoicing_summary[:summary_data][:total_invoiced_inside_insurance_scope], 
+            @invoicing_summary[:summary_data][:credits_with_bonus_exceeding_max_budget], 
+            @invoicing_summary[:summary_data][:amount_within_insurance_paid_by_patient], 
+            @invoicing_summary[:summary_data][:amount_in_excess_from_insurance_paid_by_patient], 
+            0, 
+            "(#{ @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] + @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2]})", "#{@invoicing_summary[:summary_data][:total_paid_by_patient_from_insurance]}¥"
+        ], style: table_cells
         sheet.add_row
 
         sheet.add_row ['介護保険単位数明細']
@@ -66,23 +76,20 @@ wb.styles do |s|
         sheet.merge_cells header_row.cells[(7..8)]
 
 
-        @appointments_summary.group_by {|e| e[:insurance_service_category]}.each do |insurance_category_id, appointment_summary_hash|
-            appointment_summary_hash.each do |appointment_hash|
-                service_row = sheet.add_row [appointment_hash[:official_title], '', '', appointment_hash[:unit_credits], appointment_hash[:count], appointment_hash[:sum_total_credits], '', '', '', ''], style: table_cells
+        @invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes|
+            array_of_service_and_shifts_hashes.each do |service_shift_hash|
+                service_row = sheet.add_row [service_shift_hash[:service_hash][:official_title], '', '', service_shift_hash[:service_hash][:unit_credits], service_shift_hash[:service_hash][:count], service_shift_hash[:service_hash][:sum_total_credits], '', '', '', ''], style: table_cells
                 sheet.merge_cells service_row.cells[(0..2)]
                 sheet.merge_cells service_row.cells[(5..6)]
                 sheet.merge_cells service_row.cells[(7..8)]
             end
-            if [11,102].include?(insurance_category_id.to_i) && @corporation.invoicing_bonus_ratio.present?
-                sum_credits = appointment_summary_hash.sum{|e| e[:sum_total_credits]}
-                bonus_credits = ((sum_credits || 0) * (@corporation.invoicing_bonus_ratio - 1 || 0)).round
-                bonus_row = sheet.add_row [corporation_bonus_official_text(@corporation, insurance_category_id), '', '', '', 1, bonus_credits, '', '', '', ''], style: table_cells
+            if [11,102].include?(category_hash[:insurance_category_id].to_i) && @corporation.invoicing_bonus_ratio.present?
+                bonus_row = sheet.add_row [corporation_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i), '', '', '', 1, category_hash[:category_bonus_credits], '', '', '', ''], style: table_cells
                 sheet.merge_cells bonus_row.cells[(0..2)]
                 sheet.merge_cells bonus_row.cells[(5..6)]
                 sheet.merge_cells bonus_row.cells[(7..8)]
             end
-            subtotal_credits = bonus_credits.present? ? bonus_credits + sum_credits : sum_credits
-            summary_row = sheet.add_row ["#{insurance_category_name(insurance_category_id)}合計", '', '', '', '', subtotal_credits, '', '', '', ''], style: table_cells
+            summary_row = sheet.add_row ["#{insurance_category_name(category_hash[:insurance_category_id].to_i)}合計", '', '', '', '', category_hash[:category_total_credits], '', '', '', ''], style: table_cells
             sheet.merge_cells summary_row.cells[(0..2)]
             sheet.merge_cells summary_row.cells[(5..6)]
             sheet.merge_cells summary_row.cells[(7..8)]
@@ -95,21 +102,14 @@ wb.styles do |s|
         sheet.merge_cells title_3_row.cells[(3..4)]
         sheet.merge_cells title_3_row.cells[(5..6)]
         sheet.merge_cells title_3_row.cells[(7..8)]
-        @appointments_summary_without_insurance.each do |appointment_hash|
-            new_row = sheet.add_row [appointment_hash[:title], '', '', '', '', appointment_hash[:count], '', appointment_hash[:sum_invoiced_total], ''], style: table_cells
+        @invoicing_summary[:outside_insurance_scope].each do |service_shift_hash|
+            new_row = sheet.add_row [service_shift_hash[:service_hash][:title], '', '', '', '', service_shift_hash[:service_hash][:count], '', service_shift_hash[:service_hash][:sum_invoiced_total], ''], style: table_cells
             sheet.merge_cells new_row.cells[(0..2)]
             sheet.merge_cells new_row.cells[(3..4)]
             sheet.merge_cells new_row.cells[(5..6)]
             sheet.merge_cells new_row.cells[(7..8)]
         end
-        @cancelled_but_invoiceable_appointments.each do |appointment|
-            new_row = sheet.add_row [appointment.title, '', '', '', '', 1, '', appointment.total_invoiced, ''], style: table_cells
-            sheet.merge_cells new_row.cells[(0..2)]
-            sheet.merge_cells new_row.cells[(3..4)]
-            sheet.merge_cells new_row.cells[(5..6)]
-            sheet.merge_cells new_row.cells[(7..8)]
-        end
-        total_row = sheet.add_row ['合計'] + Array.new(6, '') + ["#{@total_invoiced_outside_insurance_scope}¥", ''], style: table_cells
+        total_row = sheet.add_row ['合計'] + Array.new(6, '') + ["#{@invoicing_summary[:summary_data][:amount_paid_by_patient_outside_insurance]}¥", ''], style: table_cells
         sheet.merge_cells total_row.cells[(0..6)]
         sheet.merge_cells total_row.cells[(7..8)]
 

@@ -227,14 +227,15 @@ class Patient < ApplicationRecord
 			if service.present?
 				service_shift_hash = {service_hash: {}, shifts_hash: {}}
 				service_shift_hash[:service_hash] = {
-					title: service.title,
+					title: "#{service.title} (#{cancelled_appointment.starts_at.strftime('%-d日')}キャンセル)",
 					official_title: service.official_title,
 					service_code: service.service_code,
 					insurance_service_category: service.insurance_service_category,
 					unit_credits: service.unit_credits,
 					invoiced_to_insurance: false,
 					sum_total_credits: 0,
-					sum_total_invoiced: cancelled_appointment.total_invoiced
+					sum_total_invoiced: cancelled_appointment.total_invoiced,
+					count: 1
 				}
 				service_shift_hash[:shifts_hash] = {
 					start_time: cancelled_appointment.starts_at.strftime("%H:%M"),
@@ -286,9 +287,12 @@ class Patient < ApplicationRecord
 			total_bonus_credits: total_bonus_credits,
 			total_credits_with_bonus: total_credits_with_bonus,
 			credits_within_max_budget: credits_within_max_budget,
+			credits_with_bonus_within_max_budget: credits_with_bonus_within_max_budget,
 			credits_exceeding_max_budget: total_credits_with_bonus - credits_within_max_budget,
+			credits_with_bonus_exceeding_max_budget: total_credits_with_bonus - credits_with_bonus_within_max_budget,
 			total_invoiced: total_invoiced,
 			amount_paid_by_insurance: amount_paid_by_insurance,
+			total_invoiced_inside_insurance_scope: total_invoiced_inside_insurance_scope,
 			amount_within_insurance_paid_by_patient: total_invoiced_inside_insurance_scope - amount_paid_by_insurance,
 			amount_in_excess_from_insurance_paid_by_patient: amount_in_excess_from_insurance_paid_by_patient,
 			total_paid_by_patient_from_insurance_without_assistance: total_paid_by_patient_from_insurance_without_assistance,

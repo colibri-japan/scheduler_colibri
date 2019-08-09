@@ -61,92 +61,83 @@
                 <th>額</th>
             </thead>
             <tbody>
-                <% @appointments_summary.group_by {|hash| hash[:insurance_service_category]}.each do |insurance_category_id, appointment_summary_hash| %>
-                    <% appointment_summary_hash.each do |appointment_hash| %>
+                <% @invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
+                    <% array_of_service_and_shifts_hashes.each do |service_shift_hash| %>
                         <tr>
-                            <td><%= appointment_hash[:official_title] %></td>
-                            <td><%= appointment_hash[:unit_credits] %></td>
-                            <td><%= appointment_hash[:calculation_method] == 2 ? day_count_for_hiwari_service(appointment_hash[:count]) : appointment_hash[:count] %></td>
-                            <td><%= appointment_hash[:sum_total_credits] %></td>
+                            <td><%= service_shift_hash[:service_hash][:official_title] %></td>
+                            <td><%= service_shift_hash[:service_hash][:unit_credits] %></td>
+                            <td><%= service_shift_hash[:service_hash][:calculation_method] == 2 ? day_count_for_hiwari_service(service_shift_hash[:service_hash][:count]) : service_shift_hash[:service_hash][:count] %></td>
+                            <td><%= service_shift_hash[:service_hash][:sum_total_credits] %></td>
                             <td></td>
                         </tr>
                     <% end %>
-                    <% if [11,102].include?(insurance_category_id.to_i) && @corporation.invoicing_bonus_ratio.present? %>
+                    <% if [11,102].include?(category_hash[:insurance_category_id].to_i) && @corporation.invoicing_bonus_ratio.present? %>
                         <tr>
-                            <td><%= corporation_bonus_official_text(@corporation, insurance_category_id) %></td>
+                            <td><%= corporation_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
                             <td></td>
                             <td></td>
-                            <td><%= subcategory_bonus_credits = (appointment_summary_hash.sum {|e| e[:sum_total_credits]} * (@corporation.invoicing_bonus_ratio - 1)).round %></td>
+                            <td><%= category_hash[:category_bonus_credits] %></td>
                             <td></td>
                         </tr>
                     <% end %>
                     <tr>
-                        <td><%= "#{insurance_category_name(insurance_category_id)}合計" %></td>
+                        <td><%= "#{insurance_category_name(category_hash[:insurance_category_id].to_i)}合計" %></td>
                         <td></td>
                         <td></td>
-                        <td><%= subcategory_total_credits = subcategory_bonus_credits.present? ? appointment_summary_hash.sum {|e| e[:sum_total_credits]} + (subcategory_bonus_credits) : appointment_summary_hash.sum {|e| e[:sum_total_credits]} %></td>
+                        <td><%= category_hash[:category_total_credits] %></td>
                         <td></td>
                     </tr>
                 <% end %>
                 <tr style='border-top:2px solid #ddd !important'>
                     <td colspan="3">区分支給限度額内</td>
-                    <td><%= @credits_within_max_budget %></td>
-                    <td><%= @amount_invoiced_within_max_budget %>¥</td>
+                    <td><%= @invoicing_summary[:summary_data][:credits_with_bonus_within_max_budget] %></td>
+                    <td><%= @invoicing_summary[:summary_data][:total_invoiced_inside_insurance_scope] %>¥</td>
                 </tr>
                 <tr>
                     <td colspan="4">区分支給限度額内の利用者請求額</td>
-                    <td><%= @amount_invoiced_to_patient_within_max_budget  %>¥</td>
+                    <td><%= @invoicing_summary[:summary_data][:amount_within_insurance_paid_by_patient] %>¥</td>
                 </tr>
-                <% if @amount_invoiced_to_public_assistance_1 > 0  %>
+                <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] > 0  %>
                     <tr>
                         <td colspan="3">公費1負担額</td>
                         <td></td>
-                        <td>(<%= @amount_invoiced_to_public_assistance_1 %>)¥</td>
+                        <td>(<%= @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] %>)¥</td>
                     </tr>
                 <% end %>
-                <% if @amount_invoiced_to_public_assistance_2 > 0  %>
+                <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] > 0  %>
                     <tr>
                         <td colspan="3">公費2負担額</td>
                         <td></td>
-                        <td>(<%= @amount_invoiced_to_public_assistance_2 %>)¥</td>
+                        <td>(<%= @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] %>)¥</td>
                     </tr>
                 <% end %>
-                <% if @amount_invoiced_to_public_assistance_1 + @amount_invoiced_to_public_assistance_2 > 0 %>
+                <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] + @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] > 0 %>
                     <tr>
                         <td colspan="4">区分支給限度額内の利用者請求額(公費計算後)</td>
-                        <td><%= @net_amount_invoiced_to_patient_within_max_budget  %>¥</td>
+                        <td><%= @invoicing_summary[:summary_data][:total_paid_by_patient_from_insurance] %>¥</td>
                     </tr>
                 <% end %>
                 <tr>
                     <td colspan="3">区分支給限度額を超える単位</td>
-                    <td><%= @credits_exceeding_max_budget %></td>
-                    <td><%= @amount_invoiced_exceeding_max_budget %>¥</td>
+                    <td><%= @invoicing_summary[:summary_data][:credits_with_bonus_exceeding_max_budget] %></td>
+                    <td><%= @invoicing_summary[:summary_data][:amount_in_excess_from_insurance_paid_by_patient] %>¥</td>
                 </tr>
-                <% @appointments_summary_without_insurance.each do |appointment_summary_hash| %>
-                    <tr style="<%= 'border-top:2px solid #ddd !important' if @appointments_summary_without_insurance.index(appointment_summary_hash) == 0 %>">
-                        <td><%= appointment_summary_hash[:title] %></td>
+                <% @invoicing_summary[:outside_insurance_scope].each do |service_and_shifts_hash| %>
+                    <tr style="<%= 'border-top:2px solid #ddd !important' if @invoicing_summary[:outside_insurance_scope].index(service_and_shifts_hash) == 0 %>">
+                        <td><%= service_and_shifts_hash[:service_hash][:title] %></td>
                         <td></td>
-                        <td><%= appointment_summary_hash[:count] %></td>
+                        <td><%= service_and_shifts_hash[:service_hash][:count] %></td>
                         <td></td>
-                        <td><%= appointment_summary_hash[:sum_invoiced_total] %>¥</td>
-                    </tr>
-                <% end %>
-                <% @cancelled_but_invoiceable_appointments.each do |cancelled_appointment| %>
-                    <tr style="<%= 'border-top:2px solid #ddd !important' if !@appointments_summary_without_insurance.present? && @cancelled_but_invoiceable_appointments.index(cancelled_appointment) == 0 %>">
-                        <td><%= "#{cancelled_appointment.title} (#{cancelled_appointment.starts_at.strftime('%-m月%-d日')} キャンセル)" %></td>
-                        <td></td>
-                        <td>1</td>
-                        <td></td>
-                        <td><%= cancelled_appointment.total_invoiced %>¥</td>
+                        <td><%= service_and_shifts_hash[:service_hash][:sum_total_invoiced] %>¥</td>
                     </tr>
                 <% end %>
                 <tr>
                     <td colspan="4">保険対象外合計</td>
-                    <td><%= @total_invoiced_outside_insurance_scope %>¥</td>
+                    <td><%= @invoicing_summary[:summary_data][:amount_paid_by_patient_outside_insurance] %>¥</td>
                 </tr>
                 <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
                     <td colspan="4">合計</td>
-                    <td><%= @total_invoiced_to_patient %>¥</td>
+                    <td><%= @invoicing_summary[:summary_data][:final_amount_paid_by_patient] %>¥</td>
                 </tr>
             </tbody>
         </table>

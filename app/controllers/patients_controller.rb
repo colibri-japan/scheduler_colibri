@@ -137,12 +137,9 @@ class PatientsController < ApplicationController
 
     @appointments_till_today = @patient.appointments.not_archived.in_range(@first_day..@end_of_today_in_japan).includes(:nurse).order(starts_at: 'asc')
 
-    @appointments_summary = @patient.appointments_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: true)
+    @invoicing_summary = @patient.invoicing_summary(@first_day..@end_of_today_in_japan)
     
-    @appointments_summary_without_insurance = @patient.appointments_summary(@first_day..@end_of_today_in_japan, within_insurance_scope: false)
     @cancelled_but_invoiceable_appointments = @appointments_till_today.where(cancelled: true).where.not(total_invoiced: [0, nil])
-
-    calculate_invoice_fields
 
     respond_to do |format|
       format.html 
@@ -207,26 +204,6 @@ class PatientsController < ApplicationController
   def set_month_and_year_params
     @selected_year = params[:y].present? ? params[:y] : Date.today.year
     @selected_month = params[:m].present? ? params[:m] : Date.today.month
-  end
-
-  def calculate_invoice_fields
-    @sum_of_credits = @appointments_summary.sum {|hash| hash[:sum_total_credits] || 0}
-    @bonus_credits = (@appointments_summary.sum {|hash| [11,102].include?(hash[:insurance_service_category]) ? (hash[:sum_total_credits] || 0) : 0 } * (@corporation.invoicing_bonus_ratio - 1)).round
-    @total_credits = @bonus_credits.present? ? @sum_of_credits + @bonus_credits : (@sum_of_credits || 0)
-    @total_invoiced_inside_insurance_scope = (@total_credits * @corporation.credits_to_jpy_ratio).floor
-    @credits_within_max_budget = @total_credits > @patient.current_max_credits ? @patient.current_max_credits : @total_credits
-    @credits_exceeding_max_budget = @total_credits - @credits_within_max_budget
-    @amount_invoiced_within_max_budget = (@credits_within_max_budget * @corporation.credits_to_jpy_ratio).floor
-    @amount_invoiced_to_insurance_within_max_budget = (@amount_invoiced_within_max_budget * (1 - (@patient.ratio_paid_by_patient || 0).to_f / 10)).floor
-    @amount_invoiced_to_patient_within_max_budget = @amount_invoiced_within_max_budget - @amount_invoiced_to_insurance_within_max_budget
-    @amount_invoiced_to_public_assistance_1 = @patient.public_assistance_ratio_1 > 0 ? (@amount_invoiced_within_max_budget * @patient.public_assistance_ratio_1).floor - @amount_invoiced_to_insurance_within_max_budget : 0
-    @amount_invoiced_to_public_assistance_2 = @patient.public_assistance_ratio_1 > 0 && @patient.public_assistance_ratio_2 > 0 && @patient.public_assistance_ratio_1 < @patient.public_assistance_ratio_2 ? (@amount_invoiced_within_max_budget * @patient.public_assistance_ratio_2).floor - @amount_invoiced_to_insurance_within_max_budget - @amount_invoiced_to_public_assistance_1 : 0
-    @net_amount_invoiced_to_patient_within_max_budget = @amount_invoiced_within_max_budget - @amount_invoiced_to_insurance_within_max_budget - @amount_invoiced_to_public_assistance_1 - @amount_invoiced_to_public_assistance_2
-    @amount_invoiced_exceeding_max_budget = @total_invoiced_inside_insurance_scope - @amount_invoiced_within_max_budget 
-    @total_invoiced_to_patient_inside_insurance_scope = @net_amount_invoiced_to_patient_within_max_budget + @amount_invoiced_exceeding_max_budget
-    @total_invoiced_outside_insurance_scope = @appointments_summary_without_insurance.sum {|hash| hash[:sum_total_invoiced] || 0} + (@cancelled_but_invoiceable_appointments.sum(:total_invoiced) || 0)
-    @total_invoiced_to_patient = @total_invoiced_to_patient_inside_insurance_scope + @total_invoiced_outside_insurance_scope
-    @total_sales = @total_invoiced_outside_insurance_scope + @total_invoiced_inside_insurance_scope
   end
 
   def convert_wareki_dates(params)

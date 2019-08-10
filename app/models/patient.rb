@@ -237,12 +237,12 @@ class Patient < ApplicationRecord
 					sum_total_invoiced: cancelled_appointment.total_invoiced,
 					count: 1
 				}
-				service_shift_hash[:shifts_hash] = {
+				service_shift_hash[:shifts_hash] = [{
 					start_time: cancelled_appointment.starts_at.strftime("%H:%M"),
 					end_time: cancelled_appointment.ends_at.strftime("%H:%M"),
 					previsional: [],
 					provided: [cancelled_appointment.starts_at.to_date]
-				}
+				}]
 				summary_hash[:outside_insurance_scope] << service_shift_hash
 			end
 		end

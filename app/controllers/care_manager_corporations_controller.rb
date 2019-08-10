@@ -67,7 +67,7 @@ class CareManagerCorporationsController < ApplicationController
           orientation: 'landscape',
           encoding: 'UTF-8',
           margin: {
-            top: 11,
+            top: 5,
             bottom: 10,
             left: 7,
             right: 7

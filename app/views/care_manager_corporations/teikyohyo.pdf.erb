@@ -1,11 +1,12 @@
 <% @invoicing_summary_per_patient.each do |patient, invoicing_summary| %>
-    <div class="teikyohyo-container" id="teikyohyo_1_<%= patient.id %>">
+    <div class="teikyohyo-container">
         <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
+        <div class="total_credits">合計：<%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits], delimiter: ',') %>単位</div>
         <div class="teikyohyo_1_header">
             <table class="table table-bordered table-bordered-pdf  table-centered">
                 <tr>
                     <td rowspan="2" style="width:8%">保険者番号</td>
-                    <td colspan="2" rowspan="2" style="width:13%"><%= patient.try(:issuing_administration_number) %></td>
+                    <td colspan="2" rowspan="2" style="width:13%;font-size:1.2em"><%= patient.try(:issuing_administration_number) %></td>
                     <td rowspan="2" style="width:11%">保険者名</td>
                     <td rowspan="2" style="width:10%"><%= patient.try(:issuing_administration_name) %></td>
                     <td style="width:10%"><%= first_care_manager_corporation_title(patient.kaigo_level) %></td>
@@ -19,7 +20,7 @@
                 </tr>
                 <tr>
                     <td rowspan="2">被保険者番号</td>
-                    <td rowspan="2" colspan="2"><%= patient.insurance_id %></td>
+                    <td rowspan="2" colspan="2" style='font-size:1.2em'><%= patient.insurance_id %></td>
                     <td >フリガナ</td>
                     <td><%= patient.kana %></td>
                     <td rowspan="2"><%= second_care_manager_corporation_title(patient.kaigo_level) %></td>
@@ -61,11 +62,11 @@
                 <thead>
                   <tr>
                     <td rowspan="2" style="width:9%">提供時間帯</td>
-                    <td rowspan="2" style="width:15%">サービス内容</td>
-                    <td rowspan="2" style="width:13%">サービス事業者名</td>
+                    <td rowspan="2" style="width:11%">サービス内容</td>
+                    <td rowspan="2" style="width:17%">サービス事業者名</td>
                     <td style="width:3%">日付</td>
                     <% (@first_day..@last_day).each do |date| %>
-                        <td style="width:1.8%"><%= date.day %></td>
+                        <td style="width:1.8%" class='<%= "dark_gray_cell" if date.wday == 0 || HolidayJp.holiday?(date) %>'><%= date.day %></td>
                     <% end %>
                     <% (31 - (@first_day..@last_day).count).times do %>
                         <td style="width:1.8%"></td>
@@ -75,7 +76,7 @@
                   <tr>
                     <td>曜日</td>
                     <% (@first_day..@last_day).each do |date| %>
-                        <td><%= %w(日 月 火 水 木 金 土)[date.wday] %></td>
+                        <td class='<%= "dark_gray_cell" if date.wday == 0 || HolidayJp.holiday?(date) %>'><%= %w(日 月 火 水 木 金 土)[date.wday] %></td>
                     <% end %>
                     <% (31 - (@first_day..@last_day).count).times do %>
                         <td></td>
@@ -144,7 +145,151 @@
         </div>
     </div>
 
-    <div class="teikyohyo-container" id="teikyohyo_2_<%= patient.id %>">
+    <% if invoicing_summary[:outside_insurance_scope].present? %>
+        <div class="teikyohyo-container">
+            <div class="teikyohyo_title">保険外サービス提供表</div>
+            <div class="teikyohyo_1_header">
+                <table class="table table-bordered table-bordered-pdf  table-centered">
+                    <tr>
+                        <td rowspan="2" style="width:8%">保険者番号</td>
+                        <td colspan="2" rowspan="2" style="width:13%;font-size:1.2em"><%= patient.try(:issuing_administration_number) %></td>
+                        <td rowspan="2" style="width:11%">保険者名</td>
+                        <td rowspan="2" style="width:10%"><%= patient.try(:issuing_administration_name) %></td>
+                        <td style="width:10%"><%= first_care_manager_corporation_title(patient.kaigo_level) %></td>
+                        <td colspan="2" style="width:20%"><%= first_care_manager_corporation_name(patient) %></td>
+                        <td rowspan="2" style="width:11%">作成年月日</td>
+                        <td rowspan="2" style="width:12%"><%= Date.today.strftime('%Jf') %></td>
+                    </tr>
+                    <tr>
+                        <td>担当者名</td>
+                        <td colspan="2"><%= first_care_manager_name(patient) %></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">被保険者番号</td>
+                        <td rowspan="2" colspan="2" style='font-size:1.2em'><%= patient.insurance_id %></td>
+                        <td >フリガナ</td>
+                        <td><%= patient.kana %></td>
+                        <td rowspan="2"><%= second_care_manager_corporation_title(patient.kaigo_level) %></td>
+                        <td rowspan="2" colspan="2"><%= second_care_manager_corporation_name(patient) %></td>
+                        <td rowspan="2">届出年月日</td>
+                        <td rowspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>被保険者氏名</td>
+                        <td><%= patient.name %></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">生年月日</td>
+                        <td rowspan="3"><%= "#{patient.birthday.try(:strftime, '%Jf')}" %></td>
+                        <td>性別</td>
+                        <td>要介護状態区分</td>
+                        <% kaigo_level_has_changed = patient.previous_kaigo_level.present? && (@first_day..@last_day).include?(patient.kaigo_certification_validity_start) %>
+                        <td><%= kaigo_level_has_changed ? kaigo_level_text(patient.previous_kaigo_level) : kaigo_level_text(patient.kaigo_level) %></td>
+                        <td rowspan="3">区分支給限度基準額</td>
+                        <td rowspan="3" style="width:10%"><%= maximum_budget(patient.current_kaigo_level) %></td>
+                        <td rowspan="3" style="width:10%">限度額適用期間</td>
+                        <td rowspan="3"><%= "#{patient.kaigo_certification_validity_start.try(:strftime, "%Jy年%Jm月")}" %><br/>~<br/><%= "#{patient.kaigo_certification_validity_end.try(:strftime, '%Jy年%Jm月')}" %></td>
+                        <td rowspan="2">前月までの短期入所利用日数</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><%= gender_text(patient.gender) %></td>
+                        <td rowspan="2">変更後要介護状態区分</td>
+                        <td><%= kaigo_level_has_changed ? kaigo_level_text(patient.kaigo_level) : ''  %></td>
+                    </tr>
+                    <tr>
+                        <td><%= kaigo_level_has_changed ? patient.kaigo_certification_validity_start.strftime("%Jf") : '' %></td>
+                        <td><span style="color:white">//</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="teikyohyo_1_body">
+                <table class="table table-bordered table-bordered-pdf  table-centered">
+                    <thead>
+                    <tr>
+                        <td rowspan="2" style="width:9%">提供時間帯</td>
+                        <td rowspan="2" style="width:11%">サービス内容</td>
+                        <td rowspan="2" style="width:17%">サービス事業者名</td>
+                        <td style="width:3%">日付</td>
+                        <% (@first_day..@last_day).each do |date| %>
+                            <td style="width:1.8%"><%= date.day %></td>
+                        <% end %>
+                        <% (31 - (@first_day..@last_day).count).times do %>
+                            <td style="width:1.8%"></td>
+                        <% end %>
+                        <td rowspan="2">合計<br/>回数</td>
+                    </tr>
+                    <tr>
+                        <td>曜日</td>
+                        <% (@first_day..@last_day).each do |date| %>
+                            <td><%= %w(日 月 火 水 木 金 土)[date.wday] %></td>
+                        <% end %>
+                        <% (31 - (@first_day..@last_day).count).times do %>
+                            <td></td>
+                        <% end %>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <% count = 0 %>
+                        <% invoicing_summary[:outside_insurance_scope].each do |hash_of_service_and_shifts| %>
+                            <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
+                            <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="page-break-inside:avoid;height:29px">
+                                <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
+                                <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
+                                <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= @corporation.name %></td>
+                                <td>予定</td>
+                                <% (@first_day..@last_day).each do |date| %>
+                                    <td><%= shift[:previsional].include?(date.to_date) ? '1' : '' %></td>
+                                <% end %>
+                                <% (31 - (@first_day..@last_day).count).times do  %>
+                                    <td></td>
+                                <% end %>
+                                <td><%= shift[:previsional].count %></td>
+                            </tr>
+                            <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="height:29px">
+                                <td>実績</td>
+                                <% (@first_day..@last_day).each do |date| %>
+                                    <td><%= shift[:provided].include?(date.to_date) ? '1' : '' %></td>
+                                <% end %>
+                                <% (31 - (@first_day..@last_day).count).times do  %>
+                                    <td></td>
+                                <% end %>
+                                <td><%= shift[:provided].count %></td>
+                            </tr>
+                            <% count += 1 %>
+                            <% end %>
+                        <% end %>
+                        
+                        <% shift_line_count = invoicing_summary[:outside_insurance_scope].sum {|service_shift_hash| service_shift_hash[:shifts_hash].size } %>
+                        <% if shift_line_count < 10 %>
+                            <% (10 - shift_line_count).times do %>
+                                <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                                    <td rowspan="2"></td>
+                                    <td rowspan="2"></td>
+                                    <td rowspan="2"></td>
+                                    <td>予定</td>
+                                    <% 31.times do %>
+                                        <td></td>
+                                    <% end %>
+                                    <td></td>
+                                </tr>
+                                <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                                    <td>実績</td>
+                                    <% 31.times do %>
+                                        <td></td>
+                                    <% end %>
+                                    <td></td>
+                                </tr>
+                                <% count += 1 %>
+                            <% end %>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <% end %>
+
+    <div class="teikyohyo-container">
         <div class="teikyohyo_title">サービス提供票別表 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="teikyohyo_subtitle">区分支給限度管理.利用者負担計算</div>
         <div class="teikyohyo_2_subcontainer">
@@ -381,7 +526,4 @@
         </div>
         
     </div>
-
-    <br/>
-    <br/>
 <% end %>

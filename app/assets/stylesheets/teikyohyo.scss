@@ -31,10 +31,14 @@ html {
 }
 
 .teikyohyo_title {
-    font-weight: bold;
     font-size: 1.3em;
     text-align: center;
-    margin-bottom: 15px;
+}
+
+.total_credits {
+    font-size:1.5em;
+    font-weight: bold;
+    text-align: right;
 }
 
 .teikyohyo-container {
@@ -50,9 +54,8 @@ html {
     background-color: #eee;
 }
 
-.teikyohyo-count-discrepancy::after {
-    content: '(!)';
-    color: red;
+.dark_gray_cell {
+    background-color: #ddd;
 }
 
 @page {

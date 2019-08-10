@@ -171,7 +171,7 @@ class Patient < ApplicationRecord
 		summary_hash = {inside_insurance_scope: {}, outside_insurance_scope: [], summary_data: {}}
 		inside_insurance_scope_hash = {}
 		appointments_grouped_by_service = self.appointments.operational.in_range(date_range).includes(:service).group(:service_id).select('service_id, sum(total_invoiced) as sum_total_invoiced, sum(total_wage) as sum_total_wage, sum(total_credits) as sum_total_credits, count(*) as total_count, min(starts_at) as minimum_starts_at, max(ends_at) as maximum_ends_at')
-		cancelled_but_invoiceable_appointments = self.appointments.includes(:service).not_archived.edit_not_requested.in_range(date_range).where.not(total_invoiced: [nil, 0])
+		cancelled_but_invoiceable_appointments = self.appointments.includes(:service).not_archived.edit_not_requested.where(cancelled: true).in_range(date_range).where.not(total_invoiced: [nil, 0])
 		services_inside_insurance_scope = []
 		services_outside_insurance_scope = []
 

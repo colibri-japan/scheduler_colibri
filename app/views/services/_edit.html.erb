@@ -6,11 +6,8 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
-			<% if @nurse.present? %>
-                <%= render 'form', service: @service %>
-			<% else %>
-				<%= render 'index_form', service: @service %>
-			<% end %>
+
+			<%= render 'index_form', service: @service %>
 		</div>
 	</div>
 

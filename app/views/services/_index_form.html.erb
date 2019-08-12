@@ -61,10 +61,29 @@
         <%= form.number_field :invoiced_amount, step: 1, class: 'form-control', id: :service_invoiced_amount %>
       </div>
     </div>
-
   </div>
 
   <div id="service_payroll_fields" class="modal-body">
+    <div class="modal-subsection-title">給与情報</div>
+
+    <div class="form-group">
+      <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label-dark" %>
+      <%= form.check_box :hour_based_wage, checked: @service.corporation.hour_based_payroll, id: :service_hour_based_wage %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :unit_wage, "デフォルト平日給与", class: "colibri-form-label-dark" %>
+      <%= form.number_field :unit_wage, step: 1, id: :service_unit_wage, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :weekend_unit_wage, "デフォルト週末.祝日給与", class: "colibri-form-label-dark" %>
+      <%= form.number_field :weekend_unit_wage, step: 1, id: :service_weekend_unit_wage, class: 'form-control' %>
+    </div>
+
+  </div>
+
+  <div id="service_reporting_fields"  class="blue-background-form">
 
     <div class="form-group">
       <%= form.label :category_1, "サービス種類1", class: "colibri-form-label-dark" %>
@@ -83,10 +102,6 @@
         <%= form.number_field :category_ratio, step: 0.01, id: :service_category_ratio %>
       </div>
       <div class="btn btn-sm btn-colibri-light" id="drop-second-service-category" style="margin-bottom:15px"><i class="glyphicon glyphicon-trash" style="color:#5f6368;font-size:12px"></i> サービス種類2の取り消し</div>
-    </div>
-
-    <div class="form-group">
-      <%= form.check_box :recalculate_previous_credits_and_invoice, checked: true, id: :service_recalculate_previous_credits_and_invoice %>
     </div>
     
   </div>

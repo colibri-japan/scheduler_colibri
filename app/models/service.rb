@@ -1,6 +1,4 @@
 class Service < ApplicationRecord
-  attribute :recalculate_previous_wages, :boolean
-  attribute :recalculate_previous_credits_and_invoice, :boolean
   attribute :planning_id, :integer
 
   belongs_to :corporation, touch: true
@@ -12,7 +10,8 @@ class Service < ApplicationRecord
 
   before_create :default_hour_based_wage
 
-  after_update :calculate_credits_and_invoice, if: :recalculate_previous_credits_and_invoice
+  after_commit :reflect_credits_and_invoiced_amount_to_appointments, on: :update, if: :should_recalculate_credits_and_invoiced_amount
+  after_commit :recalculate_appointments_wage, on: :update, if: :should_recalculate_wages
   before_destroy :destroy_services_for_other_nurses
 
   scope :order_by_title, -> { order(:title) }
@@ -27,17 +26,26 @@ class Service < ApplicationRecord
     joins('left join appointments on appointments.service_id = services.id').where(appointments: {cancelled: false, edit_requested: false, archived_at: nil, starts_at: range})
   end
 
+  def should_recalculate_credits_and_invoiced_amount
+    saved_change_to_unit_credits? || saved_change_to_invoiced_amount?
+  end
+
+  def should_recalculate_wages
+    saved_change_to_unit_wage? || saved_change_to_hour_based_wage?
+  end
+
   private 
 
   def default_hour_based_wage
     self.hour_based_wage = self.corporation.hour_based_payroll if self.hour_based_wage.nil?
   end
 
-  def calculate_credits_and_invoice
-    if self.saved_change_to_unit_credits? || self.saved_change_to_invoiced_amount?
-      puts 'will call worker'
-      #ReflectCreditsToSalaryLineItemsWorker.perform_async(self.id)
-    end
+  def reflect_credits_and_invoiced_amount_to_appointments
+    ReflectCreditsAndInvoicedAmountToAppointmentsWorker.perform_async(self.id)
+  end
+
+  def recalculate_appointments_wage
+    ReflectWageToAppointmentsWorker.perform_async(self.id)
   end
 
   def destroy_services_for_other_nurses

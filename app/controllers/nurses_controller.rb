@@ -191,6 +191,15 @@ class NursesController < ApplicationController
     end
   end
 
+  def recalculate_salary
+    year = params[:y]
+    month = params[:m]
+
+    if year.present? && month.present?
+    else
+    end
+  end
+
 
   private
 

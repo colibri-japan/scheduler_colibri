@@ -42,7 +42,6 @@ class ServicesController < ApplicationController
             if @service.update(service_params)
                 format.html { redirect_back fallback_location: authenticated_root_path, notice: 'サービスの詳細が編集されました' }
                 format.js
-                RecalculatePreviousWagesWorker.perform_async(@service.id) if @service.recalculate_previous_wages
             else
                 format.html { redirect_back fallback_location: authenticated_root_path, alert: 'サービスの編集が失敗しました' }
                 format.js
@@ -80,7 +79,7 @@ class ServicesController < ApplicationController
     end
 
     def service_params
-        params.require(:service).permit(:title, :official_title, :service_code, :unit_wage, :weekend_unit_wage, :recalculate_previous_wages, :hour_based_wage, :category_1, :category_2, :category_ratio, :unit_credits, :recalculate_previous_credits_and_invoice, :credit_calculation_method, :inside_insurance_scope, :insurance_service_category, :invoiced_amount)
+        params.require(:service).permit(:title, :official_title, :service_code, :unit_wage, :weekend_unit_wage, :hour_based_wage, :category_1, :category_2, :category_ratio, :unit_credits, :credit_calculation_method, :inside_insurance_scope, :insurance_service_category, :invoiced_amount)
     end
 
 end

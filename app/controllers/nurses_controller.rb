@@ -192,11 +192,12 @@ class NursesController < ApplicationController
   end
 
   def recalculate_salary
-    year = params[:y]
-    month = params[:m]
+    if params[:y].present? && params[:m].present?
+      RecalculateNurseMonthlyWageWorker.perform_async(@nurse.id, params[:y], params[:m])
 
-    if year.present? && month.present?
+      redirect_back(fallback_location: authenticated_root_path, notice: "#{@nurse.name}の給与を計算計算中です。")
     else
+      redirect_back(fallback_location: authenticated_root_path)
     end
   end
 

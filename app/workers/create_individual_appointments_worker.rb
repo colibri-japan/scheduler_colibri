@@ -33,27 +33,6 @@ class CreateIndividualAppointmentsWorker
         end
 
         Appointment.import new_appointments 
-
-        #new_appointments.each do |appointment|
-        #    service_salary_id = Service.where(title: appointment.title, nurse_id: appointment.nurse_id).first.id rescue nil
-        #    provided_duration = appointment.ends_at - appointment.starts_at
-        #    new_salary_line_item = SalaryLineItem.new(
-        #        appointment_id: appointment.id, 
-        #        planning_id: appointment.planning_id, 
-        #        service_duration: provided_duration, 
-        #        nurse_id: appointment.nurse_id, 
-        #        patient_id: appointment.patient_id, 
-        #        cancelled: appointment.cancelled, 
-        #        title: appointment.title, 
-        #        hour_based_wage: service.hour_based_wage, 
-        #        service_date: appointment.starts_at, 
-        #        service_salary_id: service_salary_id
-        #    )
-        #    new_salary_line_item.run_callbacks(:save) { false } 
-        #    new_salary_line_items << new_salary_line_item
-        #end
-
-        #SalaryLineItem.import new_salary_line_items
     end
 
     private 

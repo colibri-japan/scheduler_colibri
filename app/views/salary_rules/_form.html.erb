@@ -81,7 +81,7 @@
       <% else %>
         <%= link_to '削除する', salary_rule, method: :delete, remote: true, class: 'btn btn-secondary', data: {confirm: "手当の計算ルールは削除されますが、既に計算された手当は削除されません。"} %>
       <% end %>
-      <% confirmation = salary_rule.new_record? ? nil : {confirm: '今月の手当には明日午前に反映されますが、前の月の手当には反映されません'} %>
+      <% confirmation = salary_rule.new_record? ? nil : {confirm: '従業員別の給与ページから「給与リフレッシュ」ボタンを押す必要があります'} %>
       <%= form.submit 'セーブする', class: 'btn btn-info', data: confirmation %>
     </div>
   </div>

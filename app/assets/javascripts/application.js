@@ -1869,6 +1869,7 @@ let salaryRulesFormLayout = () => {
   bootstrapToggleForAllNursesCheckbox();
   bootstrapToggleForAllServicesCheckbox();
   toggleNurseIdList();
+  toggleNurseIdForm();
   toggleServiceTitleList();
   console.log('is it working')
   $('#target-nurse-ids').selectize({

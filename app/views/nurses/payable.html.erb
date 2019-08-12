@@ -67,8 +67,11 @@
 			<% if @nurse.full_timer? && current_user.corporation_admin? %>
 				<div id="nurse_monthly_wage" class="btn <%= @nurse.monthly_wage.present? ? 'btn-colibri-light-gray' : 'btn-info' %> text-white"><%= manage_nurse_monthly_wage_text(@nurse) %></div>
 			<% end %>
-			<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true %>
-			<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_nurse_service_wages_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true if current_user.corporation_admin? %>
+			<% if current_user.corporation_admin? %>
+				<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true %>
+				<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_nurse_service_wages_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true  %>
+				<%= link_to '給与リフレッシュ', nurse_recalculate_salary_path(@nurse, params: {m: @selected_month, y: @selected_year}), method: :patch, class: 'btn btn-colibri-light-gray text-white' %>
+			<% end %>
 		</div>
 	</div>
 

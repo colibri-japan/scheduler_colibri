@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190806040238) do
+ActiveRecord::Schema.define(version: 20190813140303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -210,6 +210,12 @@ ActiveRecord::Schema.define(version: 20190806040238) do
     t.boolean "checked_door_when_leaving"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "heart_rate_bpm"
+    t.integer "heart_rythm_anomalies"
+    t.integer "blood_sugar"
+    t.integer "blood_oxygen_rate"
+    t.integer "breathe_rate"
+    t.integer "body_weight"
     t.index ["appointment_id"], name: "index_completion_reports_on_appointment_id"
   end
 
@@ -271,6 +277,7 @@ ActiveRecord::Schema.define(version: 20190806040238) do
     t.integer "days_worked", default: 0
     t.integer "monthly_wage"
     t.datetime "archived_at"
+    t.integer "profession"
     t.index ["corporation_id"], name: "index_nurses_on_corporation_id"
     t.index ["team_id"], name: "index_nurses_on_team_id"
   end

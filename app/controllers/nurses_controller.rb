@@ -225,7 +225,7 @@ class NursesController < ApplicationController
   end
 
   def nurse_params
-    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, skill_list:[], custom_email_days: [])
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, :profession, skill_list:[], custom_email_days: [])
   end
 
   def set_printing_option

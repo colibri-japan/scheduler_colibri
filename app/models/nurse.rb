@@ -122,6 +122,22 @@ class Nurse < ApplicationRecord
 		return_array
 	end
 
+	def days_worked_at(date)
+		(days_worked || 0) + self.appointments.operational.where('starts_at <= ?', date.end_of_day).pluck(:starts_at).map(&:to_date).uniq.size
+	end
+
+	def days_worked_in_range(range)
+		self.appointments.operational.in_range(range).pluck(:starts_at).map(&:to_date).uniq.size
+	end
+
+	def date_from_work_day_number(day_number)
+		days_worked_until_today = days_worked_at(Date.today)
+		if day_number > days_worked && day_number <= days_worked_until_today
+			dates_array = self.appointments.operational.where('starts_at <= ?', Date.today.end_of_day).order(:starts_at).pluck(:starts_at).map(&:to_date).uniq
+			dates_array[day_number.to_i - (days_worked || 0) - 1]
+		end
+	end
+
 	
 	private 
 

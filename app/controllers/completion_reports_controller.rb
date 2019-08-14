@@ -33,6 +33,7 @@ class CompletionReportsController < ApplicationController
 
   def set_appointment
     @appointment = Appointment.find(params[:appointment_id])
+    @nurse = @appointment.nurse
   end
 
   def set_planning

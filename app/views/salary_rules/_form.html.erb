@@ -70,9 +70,9 @@
       <%= form.select :hour_based, options_for_select([['/時間', true], ['/回数', false]], salary_rule.hour_based) %>
     </div>
   </div>
-    <% if @nurse.present? %>
-      <%= form.hidden_field :one_time_salary_rule, value: true %>
-    <% end %>
+  <% if @nurse.present? %>
+    <%= form.hidden_field :one_time_salary_rule, value: true %>
+  <% end %>
 
   <div class="modal-footer">
     <div class="actions">

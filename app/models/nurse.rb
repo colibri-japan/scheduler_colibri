@@ -138,6 +138,10 @@ class Nurse < ApplicationRecord
 		end
 	end
 
+	def date_from_worked_months(worked_months)
+		contract_date + (worked_months.to_i).months
+	end
+
 	
 	private 
 

@@ -2057,6 +2057,17 @@ let toggleServiceTitleList = () => {
   })
 }
 
+let conditionallyShowCountBetweenAppointments = () => {
+  $('#salary_rule_hour_based').change(function(){
+    if ($(this).val() == 'true') {
+      $('#only_count_between_appointments_checkbox').prop('checked', false)
+      $('#only_count_between_appointments_group').hide()
+    } else {
+      $('#only_count_between_appointments_group').show()
+    }
+  })
+}
+
 let editSalaryRuleOnClick = () => {
   $('tr.salary_rule').click(function(){
     $.getScript($(this).data('url'))

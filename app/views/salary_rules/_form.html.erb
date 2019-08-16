@@ -77,7 +77,12 @@
     <div class="form-group">
       <%= form.select :operator, options_for_select([['+', 0], ['x', 1]], salary_rule.operator) %>
       <%= form.number_field :argument, {step: 0.01} %>
-      <%= form.select :hour_based, options_for_select([['/時間', true], ['/回数', false]], salary_rule.hour_based) %>
+      <%= form.select :hour_based, options_for_select([['/時間', true], ['/回数', false]], salary_rule.hour_based), {}, {id: :salary_rule_hour_based} %>
+    </div>
+
+    <div class="form-group" id="only_count_between_appointments_group" style="<%= 'display:none' if salary_rule.hour_based? %>">
+      <%= form.label :only_count_between_appointments, "サービスの間の回数のみ", class: "colibri-form-label-dark" %>
+      <%= form.check_box :only_count_between_appointments, id: :only_count_between_appointments_checkbox %>
     </div>
   </div>
   <% if @nurse.present? %>

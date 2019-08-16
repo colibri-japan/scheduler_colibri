@@ -39,6 +39,12 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         appointments_count = targeted_appointments.size 
         appointments_duration = targeted_appointments.sum(:duration)
 
+        # substract number of days worked from appointments count if only_count_between_appointments
+        if salary_rule.only_count_between_appointments?
+          day_count = targeted_appointments.present? ? (targeted_appointments.pluck(:starts_at).map(&:to_date).uniq.size - targeted_appointments.day_count_with_only_one_appointment) : 0
+          appointments_count -= day_count
+        end
+
         #calculating total_wage
         if salary_rule.operator == 0
             if salary_rule.hour_based

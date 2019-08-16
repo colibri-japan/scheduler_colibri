@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190816043347) do
+ActiveRecord::Schema.define(version: 20190816055603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -497,6 +497,7 @@ ActiveRecord::Schema.define(version: 20190816043347) do
     t.integer "min_months_worked"
     t.integer "max_months_worked"
     t.boolean "only_count_days_inside_insurance_scope", default: false
+    t.boolean "only_count_between_appointments", default: false
     t.index ["corporation_id"], name: "index_salary_rules_on_corporation_id"
   end
 

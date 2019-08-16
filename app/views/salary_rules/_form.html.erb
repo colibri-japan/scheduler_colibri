@@ -37,6 +37,11 @@
       <%= form.number_field :min_months_worked,  {step: 1, style: 'width:50px'} %>ヵ月目から
       <%= form.number_field :max_months_worked, {step: 1, style: 'width:50px'} %>ヵ月目まで
     </div>
+
+    <div class="form-group">
+      <%= form.label :only_count_days_inside_insurance_scope, "保険内サービスを含む日数のみ", class: "colibri-form-label-dark" %>
+      <%= form.check_box :only_count_days_inside_insurance_scope %>
+    </div>
   </div>
 
   <div class='modal-body'>

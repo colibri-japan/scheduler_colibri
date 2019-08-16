@@ -19,8 +19,8 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         targeted_appointments = @nurse.appointments.operational.where(title: targeted_titles).in_range(@start_of_month..@end_of_today)
 
         # here specify the targeted appointments from min max days worked rule
-        targeted_appointments = targeted_appointments.where('starts_at >= ?', @nurse.date_from_work_day_number(salary_rule.min_days_worked).beginning_of_day) if salary_rule.min_days_worked.present?
-        targeted_appointments = targeted_appointments.where('starts_at <= ?', @nurse.date_from_work_day_number(salary_rule.max_days_worked).end_of_day) if salary_rule.max_days_worked.present?
+        targeted_appointments = targeted_appointments.where('starts_at >= ?', @nurse.date_from_work_day_number(salary_rule.min_days_worked, inside_insurance_scope: salary_rule.only_count_days_inside_insurance_scope).beginning_of_day) if salary_rule.min_days_worked.present?
+        targeted_appointments = targeted_appointments.where('starts_at <= ?', @nurse.date_from_work_day_number(salary_rule.max_days_worked, inside_insurance_scope: salary_rule.only_count_days_inside_insurance_scope).end_of_day) if salary_rule.max_days_worked.present?
         
         #targeting appointments from min max worked months
         targeted_appointments = targeted_appointments.where('starts_at >= ?', @nurse.date_from_worked_months(salary_rule.min_months_worked)) if salary_rule.min_months_worked.present?
@@ -62,24 +62,24 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
 
   def skip_because_of_worked_days_constraint(salary_rule)
     if salary_rule.min_days_worked.present? && salary_rule.max_days_worked.present? 
-        days_worked_at_end_inferior_to_min_required(salary_rule.min_days_worked) || days_worked_at_start_greater_than_max_allowed(salary_rule.max_days_worked)
+        days_worked_at_end_inferior_to_min_required(salary_rule) || days_worked_at_start_greater_than_max_allowed(salary_rule)
     elsif salary_rule.min_days_worked.present? 
-        days_worked_at_end_inferior_to_min_required(salary_rule.min_days_worked)
+        days_worked_at_end_inferior_to_min_required(salary_rule)
     elsif salary_rule.max_days_worked.present?
-        days_worked_at_start_greater_than_max_allowed(salary_rule.max_days_worked)
+        days_worked_at_start_greater_than_max_allowed(salary_rule)
     else
         false
     end
   end
 
-  def days_worked_at_end_inferior_to_min_required(minimum)
-    days_worked_at_end_of_range = @nurse.days_worked_at(@end_of_today)
-    days_worked_at_end_of_range.present? ? days_worked_at_end_of_range < minimum : false
+  def days_worked_at_end_inferior_to_min_required(salary_rule)
+    days_worked_at_end_of_range = @nurse.days_worked_at(@end_of_today, inside_insurance_scope: salary_rule.only_count_days_inside_insurance_scope)
+    days_worked_at_end_of_range.present? ? days_worked_at_end_of_range < salary_rule.min_days_worked : false
   end
 
-  def days_worked_at_start_greater_than_max_allowed(maximum)
-    days_worked_at_start_of_range = @nurse.days_worked_at(@start_of_month)
-    days_worked_at_start_of_range.present? ? days_worked_at_start_of_range > maximum : false
+  def days_worked_at_start_greater_than_max_allowed(salary_rule)
+    days_worked_at_start_of_range = @nurse.days_worked_at(@start_of_month, inside_insurance_scope: salary_rule.only_count_days_inside_insurance_scope)
+    days_worked_at_start_of_range.present? ? days_worked_at_start_of_range > salary_rule.max_days_worked : false
   end
 
   def skip_because_of_worked_duration_constraint(salary_rule)

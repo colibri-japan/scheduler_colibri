@@ -122,16 +122,25 @@ class Nurse < ApplicationRecord
 		return_array
 	end
 
-	def days_worked_at(date)
-		(days_worked || 0) + self.appointments.operational.where('starts_at <= ?', date.end_of_day).pluck(:starts_at).map(&:to_date).uniq.size
+	def days_worked_at(date, options = {})
+		if options[:inside_insurance_scope].present? && options[:inside_insurance_scope] == true
+			(days_worked || 0) + self.appointments.operational.joins(:service).where(services: {inside_insurance_scope: true}).where('starts_at <= ?', date.end_of_day).pluck(:starts_at).map(&:to_date).uniq.size
+		else
+			(days_worked || 0) + self.appointments.operational.where('starts_at <= ?', date.end_of_day).pluck(:starts_at).map(&:to_date).uniq.size
+		end
 	end
 
 	def days_worked_in_range(range)
 		self.appointments.operational.in_range(range).pluck(:starts_at).map(&:to_date).uniq.size
 	end
 
-	def date_from_work_day_number(day_number)
-		dates_array = self.appointments.operational.order(:starts_at).pluck(:starts_at).map(&:to_date).uniq
+	def date_from_work_day_number(day_number, options = {})
+		if options[:inside_insurance_scope].present? && options[:inside_insurance_scope] == true
+			dates_array = self.appointments.operational.joins(:service).where(services: {inside_insurance_scope: true}).order(:starts_at).pluck(:starts_at).map(&:to_date).uniq
+		else
+			dates_array = self.appointments.operational.order(:starts_at).pluck(:starts_at).map(&:to_date).uniq
+		end
+		
 		if day_number <= days_worked
 			(dates_array[0]).to_date - 1.day
 		elsif day_number > days_worked && (day_number.to_i - (days_worked || 0)) <= dates_array.size

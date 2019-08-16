@@ -2039,26 +2039,11 @@ let toggleNurseIdForm = () => {
     $('#form_nurse_id_list_group').hide()
     $('#target_nurse_by_filter_group').hide()
     $('#target-nurse-ids').val('')
-    $('#nurse_target_filter').val('')
     selectize.clear(true)
   } else {
     $('#target_nurse_by_filter_group').show()
     $('#form_nurse_id_list_group').show()
   }
-}
-
-let applyNurseFilterToSalaryService = () => {
-  $('#nurse_target_filter').on('change', function(){
-    $selectize = $('#target-nurse-ids').selectize()
-    selectize = $selectize[0].selectize 
-    if (["0", "1", "2"].includes($(this).val())) {
-      $('#target-nurse-ids').val('')
-      $('#form_nurse_id_list_group').hide()
-      selectize.clear(true)
-    } else {
-      $('#form_nurse_id_list_group').show()
-    }
-  })
 }
 
 let toggleServiceTitleList = () => {

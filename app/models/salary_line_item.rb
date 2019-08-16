@@ -14,6 +14,7 @@ class SalaryLineItem < ApplicationRecord
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :in_range, -> range { where('service_date BETWEEN ? AND ?', range.first, range.last) }
 	scope :not_from_appointments, -> { where('appointment_id IS NULL') }
+	scope :from_salary_rules, -> { where.not(salary_rule_id: nil) }
 
 	def weekend_holiday_salary_line_item?
 		!self.service_date.on_weekday? || HolidayJp.between(self.service_date.beginning_of_day, self.service_date.end_of_day).present? ? true : false

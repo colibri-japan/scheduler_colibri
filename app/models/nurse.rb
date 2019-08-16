@@ -131,15 +131,20 @@ class Nurse < ApplicationRecord
 	end
 
 	def date_from_work_day_number(day_number)
-		days_worked_until_today = days_worked_at(Date.today)
-		if day_number > days_worked && day_number <= days_worked_until_today
-			dates_array = self.appointments.operational.where('starts_at <= ?', Date.today.end_of_day).order(:starts_at).pluck(:starts_at).map(&:to_date).uniq
+		dates_array = self.appointments.operational.order(:starts_at).pluck(:starts_at).map(&:to_date).uniq
+		if day_number <= days_worked
+			(dates_array[0]).to_date - 1.day
+		elsif day_number > days_worked && (day_number.to_i - (days_worked || 0)) <= dates_array.size
 			dates_array[day_number.to_i - (days_worked || 0) - 1]
+		elsif day_number > dates_array.size + (days_worked || 0)
+			(dates_array[-1]).to_date + 1.day
+		else
+			Date.today
 		end
 	end
 
 	def date_from_worked_months(worked_months)
-		contract_date + (worked_months.to_i).months
+		contract_date.present? ? (contract_date + (worked_months.to_i).months).to_date : (created_at + (worked_months.to_i).months).to_date
 	end
 
 	

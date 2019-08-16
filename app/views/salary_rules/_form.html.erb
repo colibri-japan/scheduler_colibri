@@ -26,12 +26,17 @@
       <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
     </div>
 
-    <% unless  @nurse.present? %>
-      <div class="form-group" id="target_nurse_by_filter_group">
-        <%= form.label :target_nurse_by_filter, "稼動日数フィルタ", class: "colibri-form-label-dark" %>
-        <%= form.select :target_nurse_by_filter, options_for_select([['稼動日数100~299', 0],['稼動日数300~499', 1], ['稼動日数500以上', 2]], salary_rule.target_nurse_by_filter), {include_blank: 'フィルタなし'}, {id: :nurse_target_filter} %>
-      </div>
-    <% end %>
+    <div class="form-group">
+      <%= form.label :min_days_worked, "稼動日数" %>
+      <%= form.number_field :min_days_worked,  {step: 1, style: 'width:50px'} %>日から
+      <%= form.number_field :max_days_worked, {step: 1, style: 'width:50px'} %>まで
+    </div>
+
+    <div class="form-group">
+      <%= form.label :min_days_worked, "稼動期間" %>
+      <%= form.number_field :min_months_worked,  {step: 1, style: 'width:50px'} %>ヵ月目から
+      <%= form.number_field :max_months_worked, {step: 1, style: 'width:50px'} %>ヵ月目まで
+    </div>
   </div>
 
   <div class='modal-body'>

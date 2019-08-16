@@ -22,6 +22,8 @@ class RecalculateNurseMonthlyWageWorker
             end
         end
 
+        nurse.salary_line_items.from_salary_rules.in_range(start_of_month..end_of_month).delete_all
+
         RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(nurse_id, year, month)
     end
 

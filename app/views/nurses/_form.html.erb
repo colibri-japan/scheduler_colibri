@@ -43,9 +43,18 @@
       <%= form.check_box :full_timer, id: 'full-timer-toggle' %>
     </div>
 
+    <div class="form-group">
+      <%= form.label :contract_date, '登録日' %>
+      <%= form.hidden_field :contract_date, id: :nurse_contract_date %>
+      <%= select_tag :contract_date_era, options_for_select(wareki_era, nurse.contract_date.try(:strftime, '%Je')), {prompt: '選択', id: :nurse_contract_date_era, class: :wareki_era} %>
+      <%= text_field_tag :contract_date_year, value = nurse.contract_date.try(:strftime, '%Jg'), {style: "width:32px;height:25px", placeholder: 'yy', id: :nurse_contract_date_year, class: :wareki_year} %>年
+      <%= text_field_tag :contract_date_month, value = nurse.contract_date.try(:month), {style: "width:32px;height:25px", placeholder: 'mm', id: :nurse_contract_date_month, class: :wareki_month} %>月
+      <%= text_field_tag :contract_date_day, value = nurse.contract_date.try(:day), {style: "width:32px;height:25px", placeholder: 'dd', id: :nurse_contract_date_day, class: :wareki_day} %>日
+    </div>
+
     <% if nurse.new_record? %>
       <div class="form-group">
-        <%= form.label :days_worked, "稼動日数", class: "colibri-form-label" %>
+        <%= form.label :days_worked, "現時点の稼働日数", class: "colibri-form-label" %>
         <%= form.number_field :days_worked, id: :nurse_days_worked, class: "form-control" %>
       </div>
     <% end %>

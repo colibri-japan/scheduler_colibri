@@ -69,7 +69,10 @@ class NursesController < ApplicationController
   end
 
   def create
-    @nurse = Nurse.new(nurse_params)
+    params = nurse_params
+    params = convert_wareki_dates(params)
+
+    @nurse = Nurse.new(params)
     @nurse.corporation_id = @corporation.id
 
     respond_to do |format|
@@ -83,8 +86,12 @@ class NursesController < ApplicationController
 
   def update
     authorize @nurse, :same_corporation_as_current_user?
+
+    params = nurse_params 
+    params = convert_wareki_dates(params)
+
     respond_to do |format|
-      if @nurse.update(nurse_params)
+      if @nurse.update(params)
         format.html {redirect_back(fallback_location: authenticated_root_path, notice: '従業員の情報がアップデートされました')}
       else
         format.html {redirect_back(fallback_location: authenticated_root_path, alert: '従業員の情報のアップデートが失敗しました')}
@@ -225,11 +232,16 @@ class NursesController < ApplicationController
   end
 
   def nurse_params
-    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, :profession, skill_list:[], custom_email_days: [])
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, :profession, :contract_date, skill_list:[], custom_email_days: [])
   end
 
   def set_printing_option
     @printing_option = @corporation.printing_option
+  end
+
+  def convert_wareki_dates(params)
+    params[:contract_date] = Date.parse(params[:contract_date]) rescue nil
+    params
   end
 
   def set_month_and_year_params

@@ -2301,6 +2301,30 @@ let patientWarekiFields = () => {
   })
 }
 
+let nurseWarekiFields = () => {
+  $('#nurse_contract_date_era').change(function () {
+    set_contract_date()
+  })
+  $('#nurse_contract_date_year').change(function () {
+    set_contract_date()
+  })
+  $('#nurse_contract_date_month').change(function () {
+    set_contract_date()
+  })
+  $('#nurse_contract_date_day').change(function () {
+    set_contract_date()
+  }) 
+}
+
+let set_contract_date = () => {
+  let era = $('#nurse_contract_date_era').val() || ''
+  let year = $('#nurse_contract_date_year').val() || ''
+  let month = $('#nurse_contract_date_month').val() || ''
+  let day = $('#nurse_contract_date_day').val() || ''
+  let wareki_date = era + year + '年' + month + '月' + day + '日'
+  $('#nurse_contract_date').val(wareki_date)
+}
+
 let set_kaigo_certification_validity_end = () => {
   let era = $('#patient_kaigo_certification_validity_end_era').val() || ''
   let year = $('#patient_kaigo_certification_validity_end_year').val() || ''
@@ -2380,7 +2404,7 @@ let adaptServiceInvoiceFields = () => {
   })
 }
 
-let patientBirthdayHelper = () => {
+let warekiHelper = () => {
   $('.wareki_era').change(function(){
     $(this).next('.wareki_year').focus()
   })

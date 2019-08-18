@@ -26,13 +26,14 @@
 
 <div id="detail-container">
   <div id="detail-planning-container">
-    <div style="display:flex;justify-content:space-between;margin-bottom: 15px">
-      <div id="planning-nurse-information">
+    <div style="display:flex;justify-content:space-between;margin-bottom: 15px" class="no-print">
+        <div id="planning-nurse-information">
 	  		<span id="resource-name-wrapper">全従業員</span>
 	  	</div>
-			<div>
-				<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
-			</div>
+		<div style='display:flex'>
+			<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
+		    <div class="btn btn-colibri-light-gray text-white btn-sm" style="margin-left:4px" id="print-button"><span class="glyphicon glyphicon-print"></span> 印刷</div>
+		</div>
     </div>
 	<div id="planning-container">
 		<div class="calendar"></div>

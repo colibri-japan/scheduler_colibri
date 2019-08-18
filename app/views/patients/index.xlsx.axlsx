@@ -10,7 +10,7 @@ wb.styles do |s|
 
 	wb.add_worksheet(name: "サービス実施中") do |sheet|
 
-        sheet.add_row ['利用者名', '契約期間', '電話番号', '住所']
+        sheet.add_row ["#{client_resource_name(@corporation.business_vertical)}名", '契約期間', '電話番号', '住所']
         @patients.each do |kana, patients|
             sheet.add_row [kana, '', '', ''], style: table_header
             patients.each do |patient|
@@ -22,7 +22,7 @@ wb.styles do |s|
 	end
 
 	wb.add_worksheet(name: "サービス終了") do |sheet|
-        sheet.add_row ['利用者名', '契約期間', '電話番号', '住所'], style: table_header
+        sheet.add_row ["#{client_resource_name(@corporation.business_vertical)}名", '契約期間', '電話番号', '住所'], style: table_header
         @deactivated_patients.each do |patient|
             contract_start = patient.date_of_contract.present? ? patient.date_of_contract.strftime('%Y年%-m月%-d日') : ''
             contract_end = patient.end_of_contract.present? ? patient.end_of_contract.strftime('%Y年%-m月%-d日') : '' 

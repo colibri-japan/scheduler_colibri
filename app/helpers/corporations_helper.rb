@@ -14,6 +14,17 @@ module CorporationsHelper
         end
     end
 
+    def corporation_resource_name(business_vertical)
+        case business_vertical
+        when 'elderly_care_and_nursing'
+            "事業所"
+        when 'temporary_staffing'
+            "企業"
+        else
+            "事業所"
+        end
+    end
+
     def corporation_bonus_official_text(corporation, insurance_category_id)
         if insurance_category_id == 11
             case corporation.invoicing_bonus_ratio

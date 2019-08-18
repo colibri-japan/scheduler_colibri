@@ -5,20 +5,22 @@
 
 <div id="settings-container">
     <div id="planning-options" >
-        <h1 class="colibri-small-title">事業所設定</h1>
+        <h1 class="colibri-small-title"><%= corporation_resource_name(@corporation.business_vertical) %>設定</h1>
         <%= form_for @corporation do |form| %>
           <div class="colibri-form-subsection" style="margin-top:25px">
             <div class='colibri-form-subsection-title'>基本情報</div>
 
             <div class="form-group" style="margin-top:15px">
-                <%= form.label :name, "事業所名", class:"colibri-form-label-dark" %>
+                <%= form.label :name, "#{corporation_resource_name(@corporation.business_vertical)}名", class:"colibri-form-label-dark" %>
                 <%= form.text_field :name, class: "form-control" %>
             </div>
 
-            <div class="form-group" style="margin-top:15px">
-                <%= form.label :identifier, "登録番号", class:"colibri-form-label-dark" %>
-                <%= form.text_field :identifier, class: "form-control" %>
-            </div>
+            <% if @corporation.elderly_care_and_nursing? %>
+                <div class="form-group" style="margin-top:15px">
+                    <%= form.label :identifier, "登録番号", class:"colibri-form-label-dark" %>
+                    <%= form.text_field :identifier, class: "form-control" %>
+                </div>
+            <% end %>
 
             <div class="form-group">
                 <%= form.label :address, "住所", class: "colibri-form-label-dark" %>
@@ -61,7 +63,7 @@
             </div>
 
             <div class="form-group">
-                <%= form.label :default_view, "従業員.利用者全員.チーム分けレイアウト", class: "colibri-form-label-dark" %>
+                <%= form.label :default_view, "従業員.#{client_resource_name(@corporation.business_vertical)}全員.チーム分けレイアウト", class: "colibri-form-label-dark" %>
                 <%= form.select :default_view, options_for_select([['日', 'agendaDay'], ['週横','timelineWeek']], @corporation.default_view), class: "form-control" %>
             </div>
 

@@ -13,7 +13,7 @@
 	window.generalPlanning = 'true';
 	window.nurseId = "";
 	window.patientId = "";
-    window.resourceLabel = '利用者';
+    window.resourceLabel = "<%= j client_resource_name(@corporation.business_vertical) %>";
     window.resourceType = 'patient';
     window.fullcalendarViewOptions = 'agendaDay,timelineWeek';
 	window.userIsAdmin = <%= current_user.has_admin_access? %>;
@@ -28,7 +28,7 @@
   <div id="detail-planning-container">
     <div style="display:flex;justify-content:space-between;margin-bottom: 15px">
       <div id="planning-nurse-information">
-	  		<span id="resource-name-wrapper">全利用者</span>
+	  		<span id="resource-name-wrapper">全<%= client_resource_name(@corporation.business_vertical) %></span>
 	  	</div>
     </div>
 		<div id="planning-container">

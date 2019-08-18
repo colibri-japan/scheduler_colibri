@@ -83,7 +83,7 @@
 			<tr>
 				<th style="width:11%"><%= sort_link(@sort_direction) %></th>
 				<th style="width:13%">タイプ</th>
-				<th style="width:11%">利用者名</th>
+				<th style="width:11%"><%= client_resource_name(@corporation.business_vertical) %>名</th>
 				<th style="width:10%">提供時間</th>
 				<th style="width:10%">開始~終了</th>
 				<% if current_user.corporation_admin? %>

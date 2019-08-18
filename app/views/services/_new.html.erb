@@ -25,43 +25,47 @@
             <%= form.text_field :title, id: :service_title, required: true, class: "form-control" %>
           </div>
 
-          <div class="form-group">
-            <%= form.label :inside_insurance_scope, "保険内.自費", class: "colibri-form-label-dark" %>
-            <%= form.check_box :inside_insurance_scope, id: :service_inside_insurance_scope %>
-          </div>
+          <% if @corporation.elderly_care_and_nursing? %>
+            <div class="form-group">
+              <%= form.label :inside_insurance_scope, "保険内.自費", class: "colibri-form-label-dark" %>
+              <%= form.check_box :inside_insurance_scope, id: :service_inside_insurance_scope %>
+            </div>
 
-          <div class="form-group" id="insurance_category_2_group">
-            <%= form.label :insurance_service_category, "サービス種類", class: "colibri-form-label-dark" %>
-            <%= form.select :insurance_service_category, options_for_select(ServicesHelper::SERVICE_CATEGORIES, @service.insurance_service_category), {}, id: :service_insurance_service_category %>
-          </div>
+            <div class="form-group" id="insurance_category_2_group">
+              <%= form.label :insurance_service_category, "サービス種類", class: "colibri-form-label-dark" %>
+              <%= form.select :insurance_service_category, options_for_select(ServicesHelper::SERVICE_CATEGORIES, @service.insurance_service_category), {}, id: :service_insurance_service_category %>
+            </div>
+          <% end %>
         </div>
 
         <div id="service_invoice_fields" class="blue-background-form">
           <div class="modal-subsection-title">請求情報</div>
 
-          <div id="fields_for_kaigo_invoicing">
-            <div class="form-group">
-              <%= form.label :official_title, "サービス正式名称", class: "colibri-form-label-dark" %>
-              <%= form.text_field :official_title, id: :service_official_title, class: "form-control " %>
-            </div>
+          <% if @corporation.elderly_care_and_nursing? %>
+            <div id="fields_for_kaigo_invoicing">
+              <div class="form-group">
+                <%= form.label :official_title, "サービス正式名称", class: "colibri-form-label-dark" %>
+                <%= form.text_field :official_title, id: :service_official_title, class: "form-control " %>
+              </div>
 
-            <div class="form-group">
-              <%= form.label :service_code, "サービスコード", class: "colibri-form-label-dark" %>
-              <%= form.text_field :service_code, id: :service_service_code, class: "form-control " %>
-            </div>
+              <div class="form-group">
+                <%= form.label :service_code, "サービスコード", class: "colibri-form-label-dark" %>
+                <%= form.text_field :service_code, id: :service_service_code, class: "form-control " %>
+              </div>
 
-            <div class="form-group">
-              <%= form.label :unit_credits, "単位数", class: "colibri-form-label-dark" %>
-              <%= form.number_field :unit_credits, step: 1, id: :service_unit_credits, class: 'form-control ' %>
-            </div>
+              <div class="form-group">
+                <%= form.label :unit_credits, "単位数", class: "colibri-form-label-dark" %>
+                <%= form.number_field :unit_credits, step: 1, id: :service_unit_credits, class: 'form-control ' %>
+              </div>
 
-            <div class="form-group">
-              <%= form.label :credit_calculation_method, "単位計算方法", class:"colibri-form-label-dark" %>
-              <%= form.select :credit_calculation_method, options_for_select([['稼動回数 x 単位数', 0], ['単位数 x 1 /月', 1], ['日数 x 単位数（日割り）', 2]]), id: :service_credit_calculation_method %>
+              <div class="form-group">
+                <%= form.label :credit_calculation_method, "単位計算方法", class:"colibri-form-label-dark" %>
+                <%= form.select :credit_calculation_method, options_for_select([['稼動回数 x 単位数', 0], ['単位数 x 1 /月', 1], ['日数 x 単位数（日割り）', 2]]), id: :service_credit_calculation_method %>
+              </div>
             </div>
-          </div>
+          <% end %>
 
-          <div id="fields_for_invoicing_without_insurance" style="display:none">
+          <div id="fields_for_invoicing_without_insurance">
             <div class="form-group">
               <%= form.label :invoiced_amount, '請求額', class: "colibri-form-label-dark" %>
               <%= form.number_field :invoiced_amount, step: 1, class: 'form-control', id: :service_invoiced_amount %>
@@ -89,30 +93,33 @@
           </div>
         </div>
 
-        <div id="service_reporting_fields"  class="blue-background-form">
-          <div class="modal-subsection-title">統計情報</div>
+        <% if @corporation.elderly_care_and_nursing? %>
 
-          <div class="form-group">
-            <%= form.label :category_1, "サービス種類1", class: "colibri-form-label-dark" %>
-            <%= form.select :category_1, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障身', 3], ['障家', 8], ['総合', 9], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_1 %>
-          </div>
-
-          <div class="btn btn-colibri-light btn-sm" id="add-second-service-type" style="margin-bottom:15px">+サービス種類追加</div>
-
-          <div id="second-service-type" style='display:none'>
-            <div class="form-group">
-              <%= form.label :category_2, "サービス種類2", class: "colibri-form-label-dark" %>
-              <%= form.select :category_2, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障身', 3], ['障家', 8], ['総合', 9], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_2 %>
-            </div>
+          <div id="service_reporting_fields"  class="blue-background-form">
+            <div class="modal-subsection-title">統計情報</div>
 
             <div class="form-group">
-              <%= form.label :category_ratio, "サービス種類1割合", class: "colibri-form-label-dark" %>
-              <%= form.number_field :category_ratio, step: 0.01, id: :service_category_ratio %>
+              <%= form.label :category_1, "サービス種類1", class: "colibri-form-label-dark" %>
+              <%= form.select :category_1, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障身', 3], ['障家', 8], ['総合', 9], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_1 %>
             </div>
 
-            <div class="btn btn-sm btn-colibri-light" id="drop-second-service-category" style="margin-bottom:15px"><i class="glyphicon glyphicon-trash" style="color:#5f6368;font-size:12px"></i> サービス種類2の取り消し</div>
+            <div class="btn btn-colibri-light btn-sm" id="add-second-service-type" style="margin-bottom:15px">+サービス種類追加</div>
+
+            <div id="second-service-type" style='display:none'>
+              <div class="form-group">
+                <%= form.label :category_2, "サービス種類2", class: "colibri-form-label-dark" %>
+                <%= form.select :category_2, options_for_select([['身体', 0], ['生活', 1], ['自費', 2], ['障身', 3], ['障家', 8], ['総合', 9], ['リハ', 4], ['看護', 5], ['医療', 6], ['その他', 7]], @service.category_1), {prompt: '選択する'}, id: :service_category_2 %>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :category_ratio, "サービス種類1割合", class: "colibri-form-label-dark" %>
+                <%= form.number_field :category_ratio, step: 0.01, id: :service_category_ratio %>
+              </div>
+
+              <div class="btn btn-sm btn-colibri-light" id="drop-second-service-category" style="margin-bottom:15px"><i class="glyphicon glyphicon-trash" style="color:#5f6368;font-size:12px"></i> サービス種類2の取り消し</div>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <div class="modal-footer">
           <button class="btn btn-colibri-light" data-dismiss="modal">閉じる</button>

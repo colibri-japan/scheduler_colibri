@@ -38,10 +38,12 @@
       <%= form.number_field :max_months_worked, {step: 1, style: 'width:50px'} %>ヵ月目まで
     </div>
 
-    <div class="form-group">
-      <%= form.label :only_count_days_inside_insurance_scope, "保険内サービスを含む日数のみ", class: "colibri-form-label-dark" %>
-      <%= form.check_box :only_count_days_inside_insurance_scope %>
-    </div>
+    <% if @corporation.elderly_care_and_nursing? %>
+      <div class="form-group">
+        <%= form.label :only_count_days_inside_insurance_scope, "保険内サービスを含む日数のみ", class: "colibri-form-label-dark" %>
+        <%= form.check_box :only_count_days_inside_insurance_scope %>
+      </div>
+    <% end %>
   </div>
 
   <div class='modal-body'>

@@ -1,7 +1,7 @@
 <div id="resource-list-container" class="no-print">
 	<div id="toggle-patients-nurses-wrapper">
 		<div id="toggle-switch-patients" class="no-print btn btn-colibri-light-gray colibri-toggle-switch" style="<%= 'display:none' if resource_type == 'nurse' %>">
-			<div style="display:inline-block" class="colibri-toggle-text-left">利用者</div>
+			<div style="display:inline-block" class="colibri-toggle-text-left"><%= client_resource_name(@corporation.business_vertical) %></div>
 			<div class="btn btn-light colibri-toggle-handle colibri-handle-left"></div>
 		</div>
 		<div id="toggle-switch-nurses" class="no-print btn btn-colibri-light-gray colibri-toggle-switch" style="<%= 'display:none' if resource_type == 'patient' %>">
@@ -11,7 +11,7 @@
 	</div>
 	<div id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 		<div id="patients-resource" class="no-print <%= 'hide-resource' if resource_type == 'nurse' %>">
-			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= link_to_all_patients_from_view(view, @planning, {month: @selected_month, year: @selected_year}) %>">利用者全員</div>
+			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= link_to_all_patients_from_view(view, @planning, {month: @selected_month, year: @selected_year}) %>">全<%= client_resource_name(@corporation.business_vertical) %></div>
 			
 			<% @patients_grouped_by_kana.each do |kana, patients| %>
 				<div class="nurses-resource-subsection-title"><%= kana %></div>

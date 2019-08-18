@@ -15,8 +15,8 @@
               <tr>
                 <th>提供日</th>
                 <th>サービス</th>
-                <th>利用者名</th>
-                <th>従業員名</th>
+                <th><%= client_resource_name(@corporation.business_vertical) %></th>
+                <th>従業員</th>
                 <th>稼働時間</th>
               </tr>
             </thead>
@@ -63,7 +63,7 @@
         <table class='table'>
           <thead>
             <tr>
-              <th style="width:20%">利用者</th>
+              <th style="width:20%"><%= client_resource_name(@corporation.business_vertical) %></th>
               <th style="width:20%">従業員</th>
               <th style="width:20%">開始時間</th>
               <th style="width:40%">コメント</th>

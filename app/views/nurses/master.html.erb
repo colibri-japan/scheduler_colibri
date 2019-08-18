@@ -8,7 +8,7 @@
 	window.eventSource2 = window.wishedSlotsUrl + '&background=true';
 	window.resourceUrl = "<%= j corporation_nurses_url(@corporation, format: :json) %>";
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
+	window.userIsAdmin = <%= current_user.has_admin_access? %>;
 	window.nurseId = "<%= j @nurse.id.to_s %>";
 	window.patientId = "";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";

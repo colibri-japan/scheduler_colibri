@@ -19,7 +19,7 @@
   window.resourceLabel = '従業員';
   window.resourceType = 'nurse';
   window.fullcalendarViewOptions = 'agendaDay,timelineWeek';
-	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
+	window.userIsAdmin = <%= current_user.has_admin_access? %>;
 <% end %>
 
 

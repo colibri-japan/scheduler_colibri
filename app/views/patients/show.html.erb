@@ -5,6 +5,7 @@
 	window.selectActionUrl = "<%= j new_calendar_event_path %>";
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.nurseId = "";
+	window.restrictedUser = <%= current_user.schedule_readonly? %>
 	window.defaultView = "<%= j @corporation.default_individual_view %>";
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";

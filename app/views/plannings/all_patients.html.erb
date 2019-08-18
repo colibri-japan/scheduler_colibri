@@ -4,6 +4,7 @@
 	window.selectActionUrl = "<%= j new_calendar_event_path params: {patient_resource: true} %>";
 	window.privateEventsUrl = "<%= j planning_private_events_url(@planning,  params: {patient_resource: true}) %>";
 	window.defaultView = "<%= j @corporation.default_view %>";
+	window.restrictedUser = <%= current_user.schedule_readonly? %>
 	window.minTime = "<%= j current_user.corporation.business_start_hour %>";
 	window.maxTime = "<%= j current_user.corporation.business_end_hour %>";
 	window.planningId = "<%= j @planning.id.to_s %>";

@@ -184,9 +184,9 @@ initialize_nurse_calendar = function(){
         center: 'title',
         right: 'agendaDay,agendaWeek,month'
       },
-      selectable: true,
+      selectable: !window.restrictedUser,
       selectHelper: false,
-      editable: true,
+      editable: !window.restrictedUser,
       eventColor: '#7AD5DE',
       eventSources: [{url: window.appointmentsURL, cache: true},{url: window.privateEventsUrl, cache: true}],
 
@@ -246,9 +246,10 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-        let dateClicked = moment(event.start).format('YYYY-MM-DD');
-        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
-        });
+        if (!window.restrictedUser) {
+          let dateClicked = moment(event.start).format('YYYY-MM-DD');
+          $.getScript(event.edit_url + '?date=' + dateClicked);
+        }
       },
 
       eventAfterAllRender: function (view) {
@@ -346,9 +347,9 @@ initialize_patient_calendar = function(){
         center: 'title',
         right: 'agendaDay,agendaWeek,month'
       },
-      selectable: true,
+      selectable: !window.restrictedUser,
       selectHelper: false,
-      editable: true,
+      editable: !window.restrictedUser,
       eventSources: [{url: window.appointmentsURL, cache: true}, {url: window.privateEventsUrl, cache: true}],
 
 
@@ -448,6 +449,9 @@ initialize_patient_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
+        if (window.restrictedUser) {
+          return
+        }
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
         $.getScript(event.edit_url + '?date=' + dateClicked, function() {
         });
@@ -520,9 +524,9 @@ initialize_master_calendar = function() {
         center: 'title',
         right: window.fullcalendarViewOptions
       },
-      selectable: (window.userIsAdmin == 'true') ? true : false,
+      selectable: window.userIsAdmin,
       selectHelper: false,
-      editable: true,
+      editable: window.userIsAdmin,
       eventSources: [window.eventSource1, window.eventSource2],
       refetchResourcesOnNavigate: true,
 
@@ -683,7 +687,9 @@ initialize_master_calendar = function() {
       },
          
       eventClick: function (event, jsEvent, view) {
-        // Get the table
+        if (!window.userIsAdmin) {
+          return
+        }
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
@@ -691,12 +697,10 @@ initialize_master_calendar = function() {
         if (window.resourceType === 'patient') {
           patientResource = '&patient_resource=true'
         }
-        if (window.userIsAdmin == 'true') {
-          $.getScript(event.edit_url + '?date=' + dateClicked + patientResource, function(){
-            terminateRecurringAppointment(dateClicked, view_start, view_end)
-            setHiddenStartAndEndFields(view_start, view_end);
-          })
-        }
+        $.getScript(event.edit_url + '?date=' + dateClicked + patientResource, function(){
+          terminateRecurringAppointment(dateClicked, view_start, view_end)
+          setHiddenStartAndEndFields(view_start, view_end);
+        })
         return false;
       },
       
@@ -758,9 +762,9 @@ initialize_calendar = function() {
         center: 'title',
         right: 'agendaDay,timelineWeek'
       },
-      selectable: true,
+      selectable: !window.restrictedUser,
       selectHelper: false,
-      editable: true,
+      editable: !window.restrictedUser,
       eventLimit: true,
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
@@ -835,8 +839,6 @@ initialize_calendar = function() {
           return $('#nurse_resource_filter').val().includes(nurseId)
         }
       },
-
-
 
 
       select: function(start, end, jsEvent, view, resource) {
@@ -936,6 +938,9 @@ initialize_calendar = function() {
       },
          
       eventClick: function(event, jsEvent, view) {
+        if (window.restrictedUser) {
+          return
+        }
         var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
         var table = $(this).parent().parent().parent().parent().children();
         let dateClicked;

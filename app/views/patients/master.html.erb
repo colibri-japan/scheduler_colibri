@@ -4,7 +4,7 @@
 	window.createWishedSlotUrl = "<%= j new_planning_wished_slot_url(@planning) %>"
 	window.createRecurringAppointmentUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_url(@planning) %>";
-	window.userIsAdmin = "<%= j current_user.has_admin_access?.to_s %>";
+	window.userIsAdmin = <%= current_user.has_admin_access? %>;
 	window.patientId = "<%= j @patient.id.to_s %>";
 	window.nurseId = "";
 	window.resourceUrl = "<%= j corporation_patients_url(@corporation, format: :json) %>";

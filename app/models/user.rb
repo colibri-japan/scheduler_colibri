@@ -11,7 +11,14 @@ class User < ApplicationRecord
   belongs_to :nurse, optional: true
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
-  enum role: [:schedule_restricted, :schedule_restricted_with_salary_line_items, :schedule_admin, :corporation_admin]
+  enum role: {
+    schedule_readonly: 4, 
+    schedule_restricted: 0, 
+    schedule_restricted_with_salary_line_items: 1, 
+    schedule_admin: 2, 
+    corporation_admin: 3
+  }
+  # schedule_readonly: master and non master schedule readonly, no access to provided services
   # schedule restricted: master readonly, no access to provided services
   # schedule restricted with provided services: master readonly, limited access to provided services
   # schedule admin: master edit, limited access to provided services
@@ -27,7 +34,7 @@ class User < ApplicationRecord
 	scope :registered, -> { where.not(name: ['', nil]) }
 
   def has_restricted_access?
-    schedule_restricted?
+    schedule_restricted? || schedule_readonly?
   end
 
   def has_admin_access?

@@ -19,6 +19,14 @@
 	window.allResourcesIds = <%= raw @nurses.ids %>
 <% end %>
 
+<style type="text/css" media="print">
+	@page
+	{
+	size: landscape;
+	margin: 2cm;
+	}
+</style>
+
 
 <%= render partial: 'planning_left_menu', locals: {resource_path: planning_all_nurses_path(@planning), resource_master_path: planning_all_nurses_master_path(@planning), resource_payable_path: planning_all_nurses_payable_path(@planning, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'resource'} %>
 

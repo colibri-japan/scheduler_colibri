@@ -16,6 +16,10 @@ class Corporation < ApplicationRecord
 	after_create :create_printing_option
 	after_commit :flush_cache
 
+	enum business_vertical: {
+		elderly_care_and_nursing: 0,
+		temporary_staffing: 1
+	}
 
 	def reminder_email_days(date)
 		if self.weekend_reminder_option == 0

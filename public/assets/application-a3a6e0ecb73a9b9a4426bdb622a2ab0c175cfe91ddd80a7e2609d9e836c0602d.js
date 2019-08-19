@@ -67934,6 +67934,9 @@ document.addEventListener('turbolinks:load', function () {
       $('#patients-resource').show();
       $('#nurses-resource').hide();
     });
+    $('#nurse-search-button').click(function() {
+      return alert('search nurse');
+    });
     $('#toggle-switch-recurring-appointments').click(function() {
       var calendar;
       $(this).hide();
@@ -68303,9 +68306,9 @@ initialize_nurse_calendar = function(){
         center: 'title',
         right: 'agendaDay,agendaWeek,month'
       },
-      selectable: true,
+      selectable: !window.restrictedUser,
       selectHelper: false,
-      editable: true,
+      editable: !window.restrictedUser,
       eventColor: '#7AD5DE',
       eventSources: [{url: window.appointmentsURL, cache: true},{url: window.privateEventsUrl, cache: true}],
 
@@ -68365,9 +68368,10 @@ initialize_nurse_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
-        let dateClicked = moment(event.start).format('YYYY-MM-DD');
-        $.getScript(event.edit_url + '?date=' + dateClicked, function() {
-        });
+        if (!window.restrictedUser) {
+          let dateClicked = moment(event.start).format('YYYY-MM-DD');
+          $.getScript(event.edit_url + '?date=' + dateClicked);
+        }
       },
 
       eventAfterAllRender: function (view) {
@@ -68465,9 +68469,9 @@ initialize_patient_calendar = function(){
         center: 'title',
         right: 'agendaDay,agendaWeek,month'
       },
-      selectable: true,
+      selectable: !window.restrictedUser,
       selectHelper: false,
-      editable: true,
+      editable: !window.restrictedUser,
       eventSources: [{url: window.appointmentsURL, cache: true}, {url: window.privateEventsUrl, cache: true}],
 
 
@@ -68567,6 +68571,9 @@ initialize_patient_calendar = function(){
       },
          
       eventClick: function(event, jsEvent, view) {
+        if (window.restrictedUser) {
+          return
+        }
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
         $.getScript(event.edit_url + '?date=' + dateClicked, function() {
         });
@@ -68639,9 +68646,9 @@ initialize_master_calendar = function() {
         center: 'title',
         right: window.fullcalendarViewOptions
       },
-      selectable: (window.userIsAdmin == 'true') ? true : false,
+      selectable: window.userIsAdmin,
       selectHelper: false,
-      editable: true,
+      editable: window.userIsAdmin,
       eventSources: [window.eventSource1, window.eventSource2],
       refetchResourcesOnNavigate: true,
 
@@ -68802,7 +68809,9 @@ initialize_master_calendar = function() {
       },
          
       eventClick: function (event, jsEvent, view) {
-        // Get the table
+        if (!window.userIsAdmin) {
+          return
+        }
         let view_start = moment(view.start).format('YYYY-MM-DD');
         let view_end = moment(view.end).format('YYYY-MM-DD');
         let dateClicked = moment(event.start).format('YYYY-MM-DD');
@@ -68810,12 +68819,10 @@ initialize_master_calendar = function() {
         if (window.resourceType === 'patient') {
           patientResource = '&patient_resource=true'
         }
-        if (window.userIsAdmin == 'true') {
-          $.getScript(event.edit_url + '?date=' + dateClicked + patientResource, function(){
-            terminateRecurringAppointment(dateClicked, view_start, view_end)
-            setHiddenStartAndEndFields(view_start, view_end);
-          })
-        }
+        $.getScript(event.edit_url + '?date=' + dateClicked + patientResource, function(){
+          terminateRecurringAppointment(dateClicked, view_start, view_end)
+          setHiddenStartAndEndFields(view_start, view_end);
+        })
         return false;
       },
       
@@ -68877,9 +68884,9 @@ initialize_calendar = function() {
         center: 'title',
         right: 'agendaDay,timelineWeek'
       },
-      selectable: true,
+      selectable: !window.restrictedUser,
       selectHelper: false,
-      editable: true,
+      editable: !window.restrictedUser,
       eventLimit: true,
       eventColor: '#7AD5DE',
       refetchResourcesOnNavigate: true,
@@ -68954,8 +68961,6 @@ initialize_calendar = function() {
           return $('#nurse_resource_filter').val().includes(nurseId)
         }
       },
-
-
 
 
       select: function(start, end, jsEvent, view, resource) {
@@ -69055,6 +69060,9 @@ initialize_calendar = function() {
       },
          
       eventClick: function(event, jsEvent, view) {
+        if (window.restrictedUser) {
+          return
+        }
         var caseNumber = Math.floor((Math.abs(jsEvent.offsetX + jsEvent.currentTarget.offsetLeft) / $(this).parent().parent().width() * 100) / (100 / 7));
         var table = $(this).parent().parent().parent().parent().children();
         let dateClicked;
@@ -69988,6 +69996,7 @@ let salaryRulesFormLayout = () => {
   bootstrapToggleForAllNursesCheckbox();
   bootstrapToggleForAllServicesCheckbox();
   toggleNurseIdList();
+  toggleNurseIdForm();
   toggleServiceTitleList();
   console.log('is it working')
   $('#target-nurse-ids').selectize({
@@ -70133,6 +70142,62 @@ let bootstrapToggleForAllNursesCheckbox = () => {
   })
 }
 
+let wishesSelectize = () => {
+  $('#nurse_wish_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    plugins: ['remove_button'],
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規希望 <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
+  })
+}
+
+let wishedAreasSelectize = () => {
+  $('#nurse_wished_area_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    plugins: ['remove_button'],
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規希望エリア <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
+  })
+}
+
+let selectizeForSmartSearch = () => {
+  $('#nurse_skills_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+  $('#nurse_wishes_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+  $('#nurse_wished_areas_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+}
+
+let submitSmartSearch = () => {
+  $('#submit-smart-search').click(function(){
+    let skill_list = $('#nurse_skills_tags').val() || ''
+    let wish_list = $('#nurse_wishes_tags').val() || ''
+    let wished_area_list = $('#nurse_wished_areas_tags').val() || ''
+    let url = $(this).data('url') + '?skill_list=' + skill_list + '&wish_list=' + wish_list + '&wished_areas_tags=' + wished_area_list
+    $.getScript(url)
+  })
+}
+
 let bootstrapToggleForAllServicesCheckbox = () => {
   $('#all_services_selected_checkbox').bootstrapToggle({
     onstyle: 'info',
@@ -70157,26 +70222,11 @@ let toggleNurseIdForm = () => {
     $('#form_nurse_id_list_group').hide()
     $('#target_nurse_by_filter_group').hide()
     $('#target-nurse-ids').val('')
-    $('#nurse_target_filter').val('')
     selectize.clear(true)
   } else {
     $('#target_nurse_by_filter_group').show()
     $('#form_nurse_id_list_group').show()
   }
-}
-
-let applyNurseFilterToSalaryService = () => {
-  $('#nurse_target_filter').on('change', function(){
-    $selectize = $('#target-nurse-ids').selectize()
-    selectize = $selectize[0].selectize 
-    if (["0", "1", "2"].includes($(this).val())) {
-      $('#target-nurse-ids').val('')
-      $('#form_nurse_id_list_group').hide()
-      selectize.clear(true)
-    } else {
-      $('#form_nurse_id_list_group').show()
-    }
-  })
 }
 
 let toggleServiceTitleList = () => {
@@ -70186,6 +70236,17 @@ let toggleServiceTitleList = () => {
       $('#target-service-titles').val('')
     } else {
       $('#form_service_title_list_group').show()
+    }
+  })
+}
+
+let conditionallyShowCountBetweenAppointments = () => {
+  $('#salary_rule_hour_based').change(function(){
+    if ($(this).val() == 'true') {
+      $('#only_count_between_appointments_checkbox').prop('checked', false)
+      $('#only_count_between_appointments_group').hide()
+    } else {
+      $('#only_count_between_appointments_group').show()
     }
   })
 }
@@ -70423,6 +70484,30 @@ let patientWarekiFields = () => {
   })
 }
 
+let nurseWarekiFields = () => {
+  $('#nurse_contract_date_era').change(function () {
+    set_contract_date()
+  })
+  $('#nurse_contract_date_year').change(function () {
+    set_contract_date()
+  })
+  $('#nurse_contract_date_month').change(function () {
+    set_contract_date()
+  })
+  $('#nurse_contract_date_day').change(function () {
+    set_contract_date()
+  }) 
+}
+
+let set_contract_date = () => {
+  let era = $('#nurse_contract_date_era').val() || ''
+  let year = $('#nurse_contract_date_year').val() || ''
+  let month = $('#nurse_contract_date_month').val() || ''
+  let day = $('#nurse_contract_date_day').val() || ''
+  let wareki_date = era + year + '年' + month + '月' + day + '日'
+  $('#nurse_contract_date').val(wareki_date)
+}
+
 let set_kaigo_certification_validity_end = () => {
   let era = $('#patient_kaigo_certification_validity_end_era').val() || ''
   let year = $('#patient_kaigo_certification_validity_end_year').val() || ''
@@ -70502,7 +70587,7 @@ let adaptServiceInvoiceFields = () => {
   })
 }
 
-let patientBirthdayHelper = () => {
+let warekiHelper = () => {
   $('.wareki_era').change(function(){
     $(this).next('.wareki_year').focus()
   })

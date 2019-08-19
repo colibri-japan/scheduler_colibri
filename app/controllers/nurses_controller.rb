@@ -4,6 +4,7 @@ class NursesController < ApplicationController
   before_action :set_planning, only: [:show, :master, :payable]
   before_action :set_printing_option, only: [:show, :master, :master_availabilities]
   before_action :set_skills, only: [:new, :edit]
+  before_action :set_wishes, only: [:new, :edit]
 
   def index
     @planning = @corporation.planning 
@@ -231,8 +232,12 @@ class NursesController < ApplicationController
     @skills = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: {taggable_type: 'Nurse', taggable_id: @corporation.nurses.ids, context: 'skills'})
   end
 
+  def set_wishes
+    @wishes = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: {taggable_type: 'Nurse', taggable_id: @corporation.nurses.ids, context: 'wishes'})
+  end
+
   def nurse_params
-    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, :profession, :contract_date, skill_list:[], custom_email_days: [])
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, :profession, :contract_date, skill_list:[], wish_list: [], custom_email_days: [])
   end
 
   def set_printing_option

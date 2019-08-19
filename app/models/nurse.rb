@@ -3,6 +3,7 @@ class Nurse < ApplicationRecord
 
 	acts_as_taggable
 	acts_as_taggable_on :skills
+	acts_as_taggable_on :wishes
 
 	attribute :custom_email_message
 	attribute :custom_email_days

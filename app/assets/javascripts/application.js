@@ -2020,6 +2020,20 @@ let bootstrapToggleForAllNursesCheckbox = () => {
   })
 }
 
+let wishesSelectize = () => {
+  $('#nurse_wish_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    plugins: ['remove_button'],
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規希望 <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
+  })
+}
+
 let bootstrapToggleForAllServicesCheckbox = () => {
   $('#all_services_selected_checkbox').bootstrapToggle({
     onstyle: 'info',

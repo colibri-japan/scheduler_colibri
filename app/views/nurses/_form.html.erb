@@ -30,10 +30,12 @@
       </div>
     <% end %>
 
-    <div class="form-group">
-      <%= form.label :profession, "職種", class: "colibri-form-label" %>
-      <%= form.select :profession, options_for_select([['ヘルパー', 0], ['看護師', 1], ['理学療法士', 2], ['ケアマネジャー', 3]], nurse.profession) %>
-    </div>
+    <% if @corporation.elderly_care_and_nursing? %>
+      <div class="form-group">
+        <%= form.label :profession, "職種", class: "colibri-form-label" %>
+        <%= form.select :profession, options_for_select([['ヘルパー', 0], ['看護師', 1], ['理学療法士', 2], ['ケアマネジャー', 3], ['その他', 4]], nurse.profession) %>
+      </div>
+    <% end %>
 
     <div class="form-group">
       <%= form.check_box :reminderable, id: 'reminderable-toggle' %>

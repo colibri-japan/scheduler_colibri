@@ -19,6 +19,8 @@ class Nurse < ApplicationRecord
 
 	validates :name, presence: true
 
+	before_create :set_default_profession
+
 	scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 	scope :displayable, -> { where(displayable: true) }
 	scope :reminderable, -> { where(reminderable: true) }
@@ -158,6 +160,11 @@ class Nurse < ApplicationRecord
 
 	
 	private 
+
+	def set_default_profession
+		#defaults to 'other'
+		self.profession ||= 4
+	end
 
 	def self.send_service_reminder
 		now_in_japan = Time.current.in_time_zone('Tokyo')

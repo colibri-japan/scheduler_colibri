@@ -184,13 +184,6 @@ class Appointment < ApplicationRecord
 		total_revenue
 	end
 
-	def self.day_count_with_only_one_appointment
-		count = 0
-		dates = self.pluck(:starts_at).map(&:to_date)
-		dates.uniq.map {|date| count += 1 if dates.count(date) == 1}
-		count
-	end
-
 	private
 
 	def reset_verifications

@@ -1,10 +1,11 @@
 class NursesController < ApplicationController
   before_action :set_corporation
-  before_action :set_nurse, except: [:index, :new, :create, :master_availabilities]
+  before_action :set_nurse, except: [:index, :new, :create, :master_availabilities, :smart_search, :smart_search_results]
   before_action :set_planning, only: [:show, :master, :payable]
   before_action :set_printing_option, only: [:show, :master, :master_availabilities]
-  before_action :set_skills, only: [:new, :edit]
-  before_action :set_wishes, only: [:new, :edit]
+  before_action :set_skills, only: [:new, :edit, :smart_search]
+  before_action :set_wishes, only: [:new, :edit, :smart_search]
+  before_action :set_wished_areas, only: [:new, :edit, :smart_search]
 
   def index
     @planning = @corporation.planning 
@@ -117,6 +118,23 @@ class NursesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to nurses_url, notice: '従業員が削除されました。過去の実績は削除されません。' }
     end
+  end
+
+  def smart_search
+  end
+
+  def smart_search_results
+    puts params[:skill_list]
+    puts params[:skill_list].class.name
+    puts params[:wish_list]
+    puts params[:wish_list].class.name
+    puts params[:wished_area_list]
+    @nurses = @corporation.nurses.not_archived
+    puts @nurses
+    @nurses = @nurses.tagged_with(params[:skill_list], on: :skills, any: true) if params[:skill_list].present?
+    @nurses = @nurses.tagged_with(params[:wish_list], on: :wishes, any: true) if params[:wish_list].present?
+    @nurses = @nurses.tagged_with(params[:wished_area_list], on: :wished_areas, any: true) if params[:wished_area_list].present?
+    puts @nurses
   end
 
   def new_reminder_email
@@ -236,8 +254,12 @@ class NursesController < ApplicationController
     @wishes = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: {taggable_type: 'Nurse', taggable_id: @corporation.nurses.ids, context: 'wishes'})
   end
 
+  def set_wished_areas
+    @wished_areas = ActsAsTaggableOn::Tag.includes(:taggings).where(taggings: {taggable_type: 'Nurse', taggable_id: @corporation.nurses.ids, context: 'wished_areas'})
+  end
+
   def nurse_params
-    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, :profession, :contract_date, skill_list:[], wish_list: [], custom_email_days: [])
+    params.require(:nurse).permit(:name, :kana, :address, :phone_number, :phone_mail, :team_id, :description, :full_timer, :reminderable,:custom_email_subject, :days_worked, :custom_email_message, :monthly_wage, :profession, :contract_date, skill_list:[], wish_list: [], wished_area_list: [], custom_email_days: [])
   end
 
   def set_printing_option

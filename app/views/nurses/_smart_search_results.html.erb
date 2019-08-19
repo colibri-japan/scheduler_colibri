@@ -1,0 +1,39 @@
+<div id="nurse_smart_search_results" class="modal fade">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">従業員検索</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+            <div class="modal-body">
+                <%= link_to "<i class='glyphicon glyphicon-search text-white' style='size:12px'></i>再検索".html_safe, nurses_smart_search_path, remote: true, class: 'btn btn-info text-white' %>
+                <table class="table">
+                    <thead>
+                        <th>従業員名</th>
+                        <th>スキル</th>
+                        <th>希望</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <% @nurses.each do |nurse| %>
+                            <tr>
+                                <th><%= nurse.name %></th>
+                                <th><%= nurse.skill_list.join(', ') %></th>
+                                <th><%= nurse.wish_list.join(', ') %></th>
+                                <th></th>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+
+            </div>
+
+		</div>
+	</div>
+
+</div>

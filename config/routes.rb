@@ -103,6 +103,8 @@ Rails.application.routes.draw do
   get 'master_availabilities/nurses' => 'nurses#master_availabilities', as: :nurses_master_availabilities
   patch 'nurses/:id/archive' => 'nurses#archive', as: :nurse_archive
   patch 'nurses/:id/recalculate_salary' => 'nurses#recalculate_salary', as: :nurse_recalculate_salary
+  get 'smart_search/nurses' => 'nurses#smart_search', as: :nurses_smart_search
+  get 'smart_search_results/nurses' => 'nurses#smart_search_results', as: :nurses_smart_search_results
 
   #custom routes for patients
   get 'plannings/:planning_id/patients/:id/master' => 'patients#master', as: :planning_patient_master

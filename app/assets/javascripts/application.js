@@ -2034,6 +2034,48 @@ let wishesSelectize = () => {
   })
 }
 
+let wishedAreasSelectize = () => {
+  $('#nurse_wished_area_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    plugins: ['remove_button'],
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規希望エリア <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
+  })
+}
+
+let selectizeForSmartSearch = () => {
+  $('#nurse_skills_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+  $('#nurse_wishes_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+  $('#nurse_wished_areas_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+}
+
+let submitSmartSearch = () => {
+  $('#submit-smart-search').click(function(){
+    let skill_list = $('#nurse_skills_tags').val() || ''
+    let wish_list = $('#nurse_wishes_tags').val() || ''
+    let wished_area_list = $('#nurse_wished_areas_tags').val() || ''
+    let url = $(this).data('url') + '?skill_list=' + skill_list + '&wish_list=' + wish_list + '&wished_areas_tags=' + wished_area_list
+    $.getScript(url)
+  })
+}
+
 let bootstrapToggleForAllServicesCheckbox = () => {
   $('#all_services_selected_checkbox').bootstrapToggle({
     onstyle: 'info',

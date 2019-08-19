@@ -1,0 +1,6 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "smart_search" %>');
+$('#nurse_smart_search').modal('show');
+selectizeForSmartSearch()
+submitSmartSearch()

@@ -145,6 +145,9 @@ $(document).on 'turbolinks:load', ->
     $('#nurses-resource').hide()
     return
 
+  $('#nurse-search-button').click -> 
+    alert('search nurse')
+
   $('#toggle-switch-recurring-appointments').click ->
     $(this).hide()
     $('#toggle-switch-wished-slots').show()

@@ -124,17 +124,10 @@ class NursesController < ApplicationController
   end
 
   def smart_search_results
-    puts params[:skill_list]
-    puts params[:skill_list].class.name
-    puts params[:wish_list]
-    puts params[:wish_list].class.name
-    puts params[:wished_area_list]
-    @nurses = @corporation.nurses.not_archived
-    puts @nurses
+    @nurses = @corporation.nurses.not_archived.includes(:skills, :wishes, :wished_areas)
     @nurses = @nurses.tagged_with(params[:skill_list], on: :skills, any: true) if params[:skill_list].present?
     @nurses = @nurses.tagged_with(params[:wish_list], on: :wishes, any: true) if params[:wish_list].present?
     @nurses = @nurses.tagged_with(params[:wished_area_list], on: :wished_areas, any: true) if params[:wished_area_list].present?
-    puts @nurses
   end
 
   def new_reminder_email

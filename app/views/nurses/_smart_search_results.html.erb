@@ -7,21 +7,21 @@
 			</div>
 
             <div class="modal-body">
-                <%= link_to "<i class='glyphicon glyphicon-search text-white' style='size:12px'></i>再検索".html_safe, nurses_smart_search_path, remote: true, class: 'btn btn-info text-white' %>
+                <%= link_to "<i class='glyphicon glyphicon-search text-white' style='font-size:12px'></i>再検索".html_safe, nurses_smart_search_path, remote: true, class: 'btn btn-info text-white', style: 'margin-bottom:5px' %>
                 <table class="table">
                     <thead>
-                        <th>従業員名</th>
-                        <th>スキル</th>
-                        <th>希望</th>
-                        <th></th>
+                        <th style="width:20%">従業員名</th>
+                        <th style="width:30%">スキル</th>
+                        <th style="width:30%">希望内容</th>
+                        <th style="width:20%">希望エリア</th>
                     </thead>
                     <tbody>
                         <% @nurses.each do |nurse| %>
                             <tr>
                                 <th><%= nurse.name %></th>
-                                <th><%= nurse.skill_list.join(', ') %></th>
-                                <th><%= nurse.wish_list.join(', ') %></th>
-                                <th></th>
+                                <th><%= nurse.skills.pluck(:name).join(', ') %></th>
+                                <th><%= nurse.wishes.pluck(:name).join(', ') %></th>
+                                <th><%= nurse.wished_areas.pluck(:name).join(', ') %></th>
                             </tr>
                         <% end %>
                     </tbody>

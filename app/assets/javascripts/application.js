@@ -2071,7 +2071,7 @@ let submitSmartSearch = () => {
     let skill_list = $('#nurse_skills_tags').val() || ''
     let wish_list = $('#nurse_wishes_tags').val() || ''
     let wished_area_list = $('#nurse_wished_areas_tags').val() || ''
-    let url = $(this).data('url') + '?skill_list=' + skill_list + '&wish_list=' + wish_list + '&wished_areas_tags=' + wished_area_list
+    let url = $(this).data('url') + '?skill_list=' + skill_list + '&wish_list=' + wish_list + '&wished_area_list=' + wished_area_list
     $.getScript(url)
   })
 }

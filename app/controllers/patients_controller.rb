@@ -59,7 +59,7 @@ class PatientsController < ApplicationController
 
     if @patient.save(validate: false)
       CancelPatientAppointmentsWorker.perform_async(@patient.id)
-      redirect_to patients_path, notice: '利用者のサービスが停止されました。'
+      redirect_to patients_path, notice: "#{@patient.try(:name)}様のサービスが停止されました。"
     end
   end
 
@@ -78,9 +78,9 @@ class PatientsController < ApplicationController
 
     respond_to do |format|
       if @patient.save
-        format.html { redirect_to patients_path, notice: '利用者様が登録されました' }
+        format.html { redirect_to patients_path, notice: "#{@patient.try(:name)}様が登録されました" }
       else
-        format.html { redirect_to patients_path, alert: '利用者様の登録が失敗しました' }
+        format.html { redirect_to patients_path, alert: '登録が失敗しました' }
       end
     end
   end

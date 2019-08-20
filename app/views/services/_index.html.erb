@@ -21,7 +21,7 @@
                         <% @services.each do |service| %>
                             <tr class="clickable-row service-clickable" data-service-link="<%= edit_nurse_service_path(@nurse, service, params: {planning_id: params[:planning_id]}, format: :js) %>">
                                 <td><%= service.try(:title) %></td>
-                                <td><%= service.try(:unit_wage) %></td>
+                                <td><%= @corporation.elderly_care_and_nursing? ? service.try(:unit_wage) : service.try(:unit_cost) %></td>
                                 <td><%= service.weekend_unit_wage.to_i if service.weekend_unit_wage.present? %></td>
                                 <td><%= hour_based_wage_text(service.hour_based_wage) %></td>
                             </tr>

@@ -36,12 +36,8 @@
   </div>
 </div>
 
-<%= render 'plannings/drag_drop_modal' %>
-
-<%= render 'plannings/nurse_overlap_modal' %>
-
-<%= render 'plannings/batch_action_button' %>
-
-
-
-
+<% unless current_user.schedule_readonly? %>
+	<%= render 'plannings/drag_drop_modal' %>
+	<%= render 'plannings/nurse_overlap_modal' %>
+	<%= render 'plannings/batch_action_button' %>
+<% end %>

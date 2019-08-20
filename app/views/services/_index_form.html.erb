@@ -37,7 +37,7 @@
   <div id="service_invoice_fields" class="blue-background-form">
     <div class="modal-subsection-title">請求情報</div>
 
-    <div id="fields_for_kaigo_invoicing" style="<%= 'display:none' if @service.insurance_category_1 == 1 %>">
+    <div id="fields_for_kaigo_invoicing" style="<%= 'display:none' unless @service.inside_insurance_scope? %>">
       <div class="form-group">
         <%= form.label :official_title, "サービス正式名称", class: "colibri-form-label-dark" %>
         <%= form.text_field :official_title, id: :service_official_title, class: "form-control" %>
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div id="fields_for_invoicing_without_insurance" style="<%= 'display:none' if @service.insurance_category_1 == 0 %>">
+    <div id="fields_for_invoicing_without_insurance" style="<%= 'display:none' if @service.inside_insurance_scope? %>">
       <div class="form-group">
         <%= form.label :invoiced_amount, '請求額', class: "colibri-form-label-dark" %>
         <%= form.number_field :invoiced_amount, step: 1, class: 'form-control', id: :service_invoiced_amount %>

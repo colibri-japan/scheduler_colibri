@@ -204,7 +204,7 @@ class Patient < ApplicationRecord
 					sum_total_credits = 0
 				end
 				service_hash[:sum_total_credits] = sum_total_credits
-				service_hash[:sum_total_invoiced] = (sum_total_credits * corporation.credits_to_jpy_ratio).floor
+				service_hash[:sum_total_invoiced] = service.inside_insurance_scope? ? (sum_total_credits * corporation.credits_to_jpy_ratio).floor : appointment_group.sum_total_invoiced
 				service_hash[:count] = service.credit_calculation_method == 2 ? day_count : appointment_group.total_count
 
 				if service.invoiced_to_insurance?
@@ -281,7 +281,7 @@ class Patient < ApplicationRecord
 		public_assistance_1 =  public_assistance_ratio_1 > 0 ? (total_invoiced_inside_insurance_scope * public_assistance_ratio_1).floor - amount_paid_by_insurance : 0
 		public_assistance_2 = public_assistance_ratio_1 > 0 && public_assistance_ratio_2 > 0 && public_assistance_ratio_2 > public_assistance_ratio_1 ? (total_invoiced_inside_insurance_scope * public_assistance_ratio_2).floor - amount_paid_by_insurance - public_assistance_1 : 0
 		total_paid_by_patient_from_insurance = total_invoiced_inside_insurance_scope - amount_paid_by_insurance - public_assistance_1 - public_assistance_2
-		amount_paid_by_patient_outside_insurance = summary_hash[:outside_insurance_scope].sum {|service_hash| service_hash[:sum_total_invoiced] ||0}
+		amount_paid_by_patient_outside_insurance = summary_hash[:outside_insurance_scope].sum {|service_shifts_hash| service_shifts_hash[:service_hash][:sum_total_invoiced] || 0 }
 		summary_hash[:summary_data] = {
 			total_credits: total_credits,
 			total_bonus_credits: total_bonus_credits,

@@ -1,4 +1,6 @@
 <td><%= patient.name %></td>
-<td><%= "#{patient.date_of_contract.strftime("%Y年%-m月%-d日")} ~ " if patient.date_of_contract.present? %><%= patient.end_of_contract.strftime("%Y年%-m月%-d日") if patient.end_of_contract.present? %></td>
+<% if @corporation.elderly_care_and_nursing? %>
+    <td><%= "#{patient.date_of_contract.strftime("%Y年%-m月%-d日")} ~ " if patient.date_of_contract.present? %><%= patient.end_of_contract.strftime("%Y年%-m月%-d日") if patient.end_of_contract.present? %></td>
+<% end %>
 <td><%= patient.phone_number %></td>
 <td><%= patient.address %></td>

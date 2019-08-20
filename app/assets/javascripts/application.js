@@ -267,7 +267,7 @@ initialize_nurse_calendar = function(){
         let nurse_name = event.nurse.name;
         let patient_name = event.patient.name
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / ' + window.clientResourceName + ': ' + patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         
         $('#drag-drop-modal').modal({backdrop: 'static'})
         $('.close-drag-drop-modal').click(function(){
@@ -414,7 +414,7 @@ initialize_patient_calendar = function(){
         let nurse_name = event.nurse.name || '';
         let patient_name = event.patient.name || '';
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / ' + window.clientResourceName + ': ' + patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
     
         $('#drag-drop-modal').modal({ backdrop: 'static' })
         $('.close-drag-drop-modal').click(function () {
@@ -885,7 +885,7 @@ initialize_calendar = function() {
             newNurseId = newResource.id;
             newPatientId = event.patient_id;
           } else {
-            resourceChange = '新規利用者：' + newResource.title  + '</p><p>' ;
+            resourceChange = '新規' + window.clientResourceName + ':' + newResource.title  + '</p><p>' ;
             newPatientId = newResource.id;
             newNurseId = event.nurse_id;
           }
@@ -899,7 +899,7 @@ initialize_calendar = function() {
           }
         }
 
-        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / ' + window.clientResourceName + '名： ' + patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         
         $('#drag-drop-modal').modal({ backdrop: 'static' })
         $('.close-drag-drop-modal').click(function () {
@@ -1009,7 +1009,7 @@ let appointmentComments = () => {
 
   clientEvents.forEach(event => {
     if (event.description && !event.private_event && event.eventType !== 'wished_slot') {
-      var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse.name + ' 利用者：' + event.patient.name + ' ' + event.description;
+      var stringToAppend = event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + '従業員：' + event.nurse.name + window.clientResourceName + ' ：' + event.patient.name + ' ' + event.description;
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }
   })
@@ -1596,7 +1596,7 @@ let toggleCalendarEventModel = () => {
 }
 
 let autoFillResource = (resourceId, resourceLabel) => {
-  if (resourceLabel == "利用者") {
+  if (resourceLabel == "利用者" || resourceLabel == "顧客") {
     $('#appointment_patient_id').val(resourceId);
     $('#private_event_patient_id').val(resourceId);
   } else if (resourceLabel == "従業員") {

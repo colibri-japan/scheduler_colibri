@@ -67934,6 +67934,9 @@ document.addEventListener('turbolinks:load', function () {
       $('#patients-resource').show();
       $('#nurses-resource').hide();
     });
+    $('#nurse-search-button').click(function() {
+      return alert('search nurse');
+    });
     $('#toggle-switch-recurring-appointments').click(function() {
       var calendar;
       $(this).hide();
@@ -68386,7 +68389,7 @@ initialize_nurse_calendar = function(){
         let nurse_name = event.nurse.name;
         let patient_name = event.patient.name
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / ' + window.clientResourceName + ': ' + patient_name + "</p> <p>" + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         
         $('#drag-drop-modal').modal({backdrop: 'static'})
         $('.close-drag-drop-modal').click(function(){
@@ -68533,7 +68536,7 @@ initialize_patient_calendar = function(){
         let nurse_name = event.nurse.name || '';
         let patient_name = event.patient.name || '';
 
-        $('#drag-drop-content').html("<p>ヘルパー： " + nurse_name + '  / 利用者名： ' + patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / ' + window.clientResourceName + ': ' + patient_name +  "</p> <p>" + previousAppointment + " >> </p><p>"+ newAppointment +  "</p>")
     
         $('#drag-drop-modal').modal({ backdrop: 'static' })
         $('.close-drag-drop-modal').click(function () {
@@ -69004,7 +69007,7 @@ initialize_calendar = function() {
             newNurseId = newResource.id;
             newPatientId = event.patient_id;
           } else {
-            resourceChange = '新規利用者：' + newResource.title  + '</p><p>' ;
+            resourceChange = '新規' + window.clientResourceName + ':' + newResource.title  + '</p><p>' ;
             newPatientId = newResource.id;
             newNurseId = event.nurse_id;
           }
@@ -69018,7 +69021,7 @@ initialize_calendar = function() {
           }
         }
 
-        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / 利用者名： ' + patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
+        $('#drag-drop-content').html("<p>従業員： " + nurse_name + '  / ' + window.clientResourceName + '名： ' + patient_name + "</p> <p>" + resourceChange + previousAppointment + " >> </p><p>" + newAppointment + "</p>")
         
         $('#drag-drop-modal').modal({ backdrop: 'static' })
         $('.close-drag-drop-modal').click(function () {
@@ -69128,7 +69131,7 @@ let appointmentComments = () => {
 
   clientEvents.forEach(event => {
     if (event.description && !event.private_event && event.eventType !== 'wished_slot') {
-      var stringToAppend =　event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + ' ヘルパー：' + event.nurse.name + ' 利用者：' + event.patient.name + ' ' + event.description;
+      var stringToAppend = event.start.format('M月D日　H:mm ~ ') + event.end.format('H:mm') + '従業員：' + event.nurse.name + window.clientResourceName + ' ：' + event.patient.name + ' ' + event.description;
       $('#appointment-comments').append("<p class='appointment-comment'>" + stringToAppend + "</p>")
     }
   })
@@ -69715,7 +69718,7 @@ let toggleCalendarEventModel = () => {
 }
 
 let autoFillResource = (resourceId, resourceLabel) => {
-  if (resourceLabel == "利用者") {
+  if (resourceLabel == "利用者" || resourceLabel == "顧客") {
     $('#appointment_patient_id').val(resourceId);
     $('#private_event_patient_id').val(resourceId);
   } else if (resourceLabel == "従業員") {
@@ -70136,6 +70139,62 @@ let bootstrapToggleForAllNursesCheckbox = () => {
     off: '従業員選択',
     size: 'small',
     width: 170
+  })
+}
+
+let wishesSelectize = () => {
+  $('#nurse_wish_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    plugins: ['remove_button'],
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規希望 <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
+  })
+}
+
+let wishedAreasSelectize = () => {
+  $('#nurse_wished_area_list').selectize({
+    delimiter: ',',
+    persist: false,
+    create: true,
+    plugins: ['remove_button'],
+    render: {
+      option_create: function (data, escape) {
+        return '<div class="create">新規希望エリア <strong>' + escape(data.input) + '</strong>&hellip;</div>'
+      }
+    }
+  })
+}
+
+let selectizeForSmartSearch = () => {
+  $('#nurse_skills_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+  $('#nurse_wishes_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+  $('#nurse_wished_areas_tags').selectize({
+    delimiter: ',',
+    persist: false,
+    plugins: ['remove_button']
+  })
+}
+
+let submitSmartSearch = () => {
+  $('#submit-smart-search').click(function(){
+    let skill_list = $('#nurse_skills_tags').val() || ''
+    let wish_list = $('#nurse_wishes_tags').val() || ''
+    let wished_area_list = $('#nurse_wished_areas_tags').val() || ''
+    let url = $(this).data('url') + '?skill_list=' + skill_list + '&wish_list=' + wish_list + '&wished_area_list=' + wished_area_list
+    $.getScript(url)
   })
 }
 

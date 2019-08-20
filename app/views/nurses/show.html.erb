@@ -8,6 +8,7 @@
 	window.restrictedUser = <%= current_user.schedule_readonly? %>
 	window.nurseId = "<%= j @nurse.id.to_s %>";
 	window.patientId = "";
+    window.clientResourceName = "<%= j client_resource_name(@corporation.business_vertical) %>";
 	window.minTime = "<%= j @corporation.business_start_hour %>";
 	window.maxTime = "<%= j @corporation.business_end_hour %>";
 	window.firstDay = "<%= j @corporation.default_first_day.to_s %>";

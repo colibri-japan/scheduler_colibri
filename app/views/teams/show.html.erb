@@ -14,7 +14,8 @@
   window.generalPlanning = 'true';
   window.nurseId = "";
   window.patientId = "";
-  window.resourceLabel = '従業員';
+  window.clientResourceName = "<%= j client_resource_name(@corporation.business_vertical) %>";
+  window.resourceLabel = "<%= j client_resource_name(@corporation.business_vertical) %>";
   window.resourceType = 'nurse';
 <% end %>
 

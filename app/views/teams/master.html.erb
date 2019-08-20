@@ -17,6 +17,7 @@
 	window.nurseId = "";
 	window.patientId = "";
   window.resourceLabel = '従業員';
+  window.clientResourceName = "<%= j client_resource_name(@corporation.business_vertical) %>";
   window.resourceType = 'nurse';
   window.fullcalendarViewOptions = 'agendaDay,timelineWeek';
 	window.userIsAdmin = <%= current_user.has_admin_access? %>;

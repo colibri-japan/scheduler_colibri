@@ -18,6 +18,7 @@
 	window.printDates = "<%= j @printing_option.print_patient_dates_in_master.to_s %>";
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 	window.masterSchedule = 'true'
+    window.clientResourceName = "<%= j client_resource_name(@corporation.business_vertical) %>";
 	window.eventSource1 = window.recurringAppointmentsUrl;
 	window.eventSource2 = '';
 	window.fullcalendarViewOptions = 'agendaDayWithoutResources,agendaWeek,month';

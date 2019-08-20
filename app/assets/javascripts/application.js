@@ -615,7 +615,7 @@ initialize_master_calendar = function() {
           newNurseName = event.nurse.name;
           newPatientName = event.patient.name
         }
-        $('#drag-drop-master-content').html("<p>従業員： " + newNurseName + '  / 利用者名： ' + newPatientName + "</p><p>"  + newAppointmentDetails + "</p>")
+        $('#drag-drop-master-content').html("<p>従業員： " + newNurseName + '  / ' + window.clientResourceName + ' : ' + newPatientName + "</p><p>"  + newAppointmentDetails + "</p>")
 
 
         $('#drag-drop-master').modal({ backdrop: 'static' })
@@ -1876,7 +1876,6 @@ let salaryRulesFormLayout = () => {
   toggleNurseIdList();
   toggleNurseIdForm();
   toggleServiceTitleList();
-  console.log('is it working')
   $('#target-nurse-ids').selectize({
     plugins: ['remove_button']
   })
@@ -2100,7 +2099,9 @@ let toggleNurseIdForm = () => {
     $('#form_nurse_id_list_group').hide()
     $('#target_nurse_by_filter_group').hide()
     $('#target-nurse-ids').val('')
-    selectize.clear(true)
+    if (typeof(selectize) !== 'undefined') {
+      selectize.clear(true)
+    }
   } else {
     $('#target_nurse_by_filter_group').show()
     $('#form_nurse_id_list_group').show()

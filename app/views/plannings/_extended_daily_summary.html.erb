@@ -123,7 +123,7 @@
               <% daily_appointments.each do |appointment| %>
                 <tr>
                   <td><%= appointment.patient.try(:name) %></td>
-                  <td><%= patient_gender(appointment.patient.gender) %></td>
+                  <td><%= patient_gender(appointment.patient) %></td>
                   <td><%= "#{appointment.starts_at.strftime('%H:%M')} ~ #{appointment.ends_at.strftime('%H:%M')}" %></td>
                   <td><%= appointment.nurse.try(:name) %></td>
                   <td><%= appointment.title %></td>

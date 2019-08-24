@@ -6,7 +6,9 @@ wb.styles do |s|
 	align_right = s.add_style alignment: {horizontal: :right}
 	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
 	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_header_centered = s.add_style border: {style: :thin, color: 'FF000000'}, b: true, alignment: {horizontal: :center}
 	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+	table_cells_centered = s.add_style  border: {style: :thin, color: 'FF000000'}, alignment: {horizontal: :center}
 	weekend_table_cells = s.add_style border: {style: :thin, color: 'FF000000'}, bg_color: 'FFFDF498'
 	saturday_cell = s.add_style border: {style: :thin, color: 'FF000000'}, fg_color: 'FF118DF0'
 	sunday_holiday_cell = s.add_style border: {style: :thin, color: 'FF000000'}, fg_color: 'FFFF304F'
@@ -14,33 +16,73 @@ wb.styles do |s|
 	final_wage = s.add_style sz: 12, b: true, border: { style: :thick, color: 'FF000000'  }, alignment: {horizontal: :center, vertical: :center }
 
 	wb.add_worksheet(name: "給与支払明細書") do |sheet|
-		sheet.add_row ['給与支払明細書'], style: title_style
-		sheet.merge_cells "A1:G1"
-		sheet.add_row [current_user.corporation.name], style: align_right
-		sheet.merge_cells "A2:G2"
+		if @corporation.detailed_salary?
+			sheet.add_row ['給与支払明細書'], style: title_style
+			sheet.merge_cells "A1:K1"
+			sheet.add_row [current_user.corporation.name], style: align_right
+			sheet.merge_cells "A2:K2"
+			sheet.add_row
+			sheet.add_row ["#{params[:y]}年#{params[:m]}月", '','','', '', '', '', '従業員氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,nil,nil,nil,nil,align_right,align_right, thick_border, thick_border]
+			sheet.merge_cells "A4:B4"
+			sheet.merge_cells "H4:I4"
+			sheet.merge_cells "J4:K4"
+		else
+			sheet.add_row ['給与支払明細書'], style: title_style
+			sheet.merge_cells "A1:G1"
+			sheet.add_row [current_user.corporation.name], style: align_right
+			sheet.merge_cells "A2:G2"
+			sheet.add_row
+			sheet.add_row ["#{params[:y]}年#{params[:m]}月", '','', '従業員氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,align_right,align_right, thick_border, thick_border]
+			sheet.merge_cells "A4:B4"
+			sheet.merge_cells "D4:E4"
+			sheet.merge_cells "F4:G4"
+		end
+
 		sheet.add_row
-		sheet.add_row ["#{params[:y]}年#{params[:m]}月", '','', '従業員氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,align_right,align_right, thick_border, thick_border]
-		sheet.merge_cells "A4:B4"
-		sheet.merge_cells "D4:E4"
-		sheet.merge_cells "F4:G4"
-		sheet.add_row
-		sheet.add_row ['日付', '利用者名','サービスタイプ',  '稼働時間', '開始', '終了',  '計'], style: table_header
+
+		if @corporation.detailed_salary?
+			sheet.add_row ['日付', 'ケ', '介', '利用者名','サービス種類','開始', '終了', '時間', 'コード', '単位', '給与'], style: table_header_centered
+		else 
+			sheet.add_row ['日付', '利用者名','サービスタイプ',  '稼働時間', '開始', '終了',  '計'], style: table_header
+		end
 		@appointments_till_today.each do |appointment|
 			if appointment.on_weekend_or_holiday?
 				date_style = appointment.starts_at.wday == 6 ? saturday_cell : sunday_holiday_cell
 			else
 				date_style = table_cells
 			end
-			sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", "#{appointment.patient.try(:name)}様", appointment_title_in_excel(appointment),  from_seconds_to_hours_minutes(appointment.duration), appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"),  appointment.try(:total_wage) ], style: [date_style, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
+			if @corporation.detailed_salary?
+				sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", appointment.patient.care_manager.try(:name), short_kaigo_level(appointment.patient.kaigo_level), "#{appointment.patient.try(:name)}様", appointment_title_in_excel(appointment), appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"), from_seconds_to_hours_minutes(appointment.duration), appointment.service.try(:service_code), appointment.service.try(:unit_credits), appointment.try(:total_wage)], style: table_cells_centered
+			else
+				sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", "#{appointment.patient.try(:name)}様", appointment_title_in_excel(appointment),  from_seconds_to_hours_minutes(appointment.duration), appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"),  appointment.try(:total_wage) ], style: [date_style, table_cells, table_cells, table_cells, table_cells, table_cells, table_cells]
+			end
 		end
 		@salary_line_items.each do |salary_line_item|
-			sheet.add_row ["#{salary_line_item.service_date.try(:strftime,'%-d日')} #{weekday(salary_line_item.service_date)}", "", salary_line_item_title_with_counts(salary_line_item), from_seconds_to_hours_minutes(salary_line_item.try(:service_duration)), "", "", salary_line_item.try(:total_wage)], style: table_cells
+			if @corporation.detailed_salary?
+				sheet.add_row ["", "", "", "", salary_line_item_title_with_counts(salary_line_item), "", "", "", "", "", salary_line_item.try(:total_wage)], style: table_cells_centered
+			else
+				sheet.add_row ["", "", salary_line_item_title_with_counts(salary_line_item), "", "", "", salary_line_item.try(:total_wage)], style: table_cells
+			end
 		end
 		
-		sheet.add_row ['','','','','','合計：', @appointments_till_today.sum(:total_wage) + @salary_line_items.sum(:total_wage) || 0], style: [nil, nil, nil, nil, nil, final_wage_title, final_wage]
-		sheet.add_row
-		sheet.add_row ['', '', '', '', '', '計稼働日数', @total_days_worked], style: [nil, nil, nil, nil, nil, table_cells, table_cells]
-		sheet.add_row ['', '', '', '', '', '計稼働時間', from_seconds_to_hours_minutes(@total_time_worked)], style: [nil, nil, nil, nil, nil, table_cells, align_right_cell]
-		sheet.column_widths 9, nil, nil, 8, nil, nil, nil
+		if @corporation.detailed_salary?
+			sheet.add_row ['','','','','','','','','', '合計：', @appointments_till_today.sum(:total_wage) + @salary_line_items.sum(:total_wage) || 0], style: [nil, nil, nil, nil, nil, nil, nil, nil,nil, final_wage_title, final_wage]
+			sheet.add_row
+			days_worked = sheet.add_row ['', '', '', '', '','','','', '計稼働日数', '', @total_days_worked], style: [nil, nil, nil, nil, nil, nil,nil,nil, table_cells_centered,table_cells_centered, table_cells_centered]
+			sheet.merge_cells days_worked.cells[(8..9)]
+			time_worked = sheet.add_row ['', '', '', '', '','','','', '計稼働時間', '', from_seconds_to_hours_minutes(@total_time_worked)], style: [nil, nil, nil, nil, nil,nil,nil,nil,table_cells_centered, table_cells_centered, table_cells_centered]
+			sheet.merge_cells time_worked.cells[(8..9)]
+		else
+			sheet.add_row ['','','','','','合計：', @appointments_till_today.sum(:total_wage) + @salary_line_items.sum(:total_wage) || 0], style: [nil, nil, nil, nil, nil, final_wage_title, final_wage]
+			sheet.add_row
+			sheet.add_row ['', '', '', '', '', '計稼働日数', @total_days_worked], style: [nil, nil, nil, nil, nil, table_cells, table_cells]
+			sheet.add_row ['', '', '', '', '', '計稼働時間', from_seconds_to_hours_minutes(@total_time_worked)], style: [nil, nil, nil, nil, nil, table_cells, align_right_cell]
+		end
+
+		if @corporation.detailed_salary?
+			sheet.column_widths 8, 9, 5, 12, 12, 7, 7, 7,8,6,8
+		else
+			sheet.column_widths 9, nil, nil, 8, nil, nil, nil
+		end
 	end
 end

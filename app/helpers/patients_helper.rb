@@ -15,6 +15,27 @@ module PatientsHelper
         gender ? '女' : '男'
     end
 
+    def short_kaigo_level(kaigo_level)
+        case kaigo_level
+        when 0
+            '支1'
+        when 1
+            '支2'
+        when 2
+            '介1'
+        when 3
+            '介2'
+        when 4
+            '介3'
+        when 5
+            '介4'
+        when 6
+            '介5'
+        else 
+            ''
+        end
+    end
+
     def maximum_budget(kaigo_level)
         case kaigo_level
         when 0

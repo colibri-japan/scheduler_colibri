@@ -45,6 +45,9 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Use webpack to bundle js
+gem 'webpacker'
+
 gem 'jquery-rails'
 
 gem 'bootstrap', '~> 4.3.1'

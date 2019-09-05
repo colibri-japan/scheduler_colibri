@@ -46,7 +46,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 # Use webpack to bundle js
-gem 'webpacker'
+gem 'webpacker', '~> 4.x'
 
 gem 'jquery-rails'
 

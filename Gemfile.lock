@@ -357,7 +357,7 @@ DEPENDENCIES
   unread
   wareki (= 0.4.0)
   web-console (>= 3.3.0)
-  webpacker
+  webpacker (~> 4.x)
   wicked_pdf
   wkhtmltopdf-heroku (= 2.12.4)
 

@@ -16,3 +16,6 @@
 // const imagePath = (name) => images(name, true)
 
 import "controllers"
+
+require("@rails/ujs").start()
+require("turbolinks").start()

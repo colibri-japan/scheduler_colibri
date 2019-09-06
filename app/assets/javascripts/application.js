@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require turbolinks
 //= require popper
 //= require bootstrap
 //= require bootstrap4-toggle.min

@@ -1,0 +1,37 @@
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+<%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'nurse', view: 'resource'} %>
+
+
+<div id="detail-container">
+	<div id="detail-planning-container">
+		<div id="detail-planning-title">
+		    <div id="planning-nurse-information">
+			    <div class="planning-resource-module-title">
+				    <span id="resource-name-wrapper"></span>
+				    <button id="resource-details-button" class="btn btn-sm btn-mid-light"  style="margin-bottom:10px">詳細</button>
+			    </div>
+			</div>
+			<div id="planning-top-right-action-container" class="no-print">
+				<%= link_to '<i class="glyphicon glyphicon-envelope" style="color:white"></i>リマインダー'.html_safe, nurse_new_reminder_email_path(@nurse), remote: true, style: "margin-right:5px;max-height:40px", class: "btn btn-colibri-light-gray text-white btn-sm" if @nurse.present? && @nurse.phone_mail.present? && !current_user.schedule_readonly? %>
+				<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
+			</div>
+		</div>
+
+		<div data-controller="calendar" id="planning-container">
+			<div id="nurse-calendar"></div>
+		</div>
+
+		<div id="resource-details-panel" style="display: none">
+
+		</div>
+	</div>
+</div>
+
+<% unless current_user.schedule_readonly? %>
+	<%= render 'plannings/drag_drop_modal' %>
+	<%= render 'plannings/nurse_overlap_modal' %>
+	<%= render 'plannings/batch_action_button' %>
+<% end %>
+
+
+

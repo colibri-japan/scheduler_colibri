@@ -16,7 +16,7 @@
 			<% @patients_grouped_by_kana.each do |kana, patients| %>
 				<div class="nurses-resource-subsection-title"><%= kana %></div>
 				<% patients.each do |patient| %>
-					<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'patient' && patient.id == @patient.id %>" data-url="<%= link_to_planning_patient_from_view(view, @planning, patient, {month: @selected_month, year: @selected_year}) %>"><%= patient.try(:name) %></p>
+					<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'patient' && patient.id == @patient.try(:id) %>" data-url="<%= link_to_planning_patient_from_view(view, @planning, patient, {month: @selected_month, year: @selected_year}) %>"><%= patient.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>
@@ -28,7 +28,7 @@
 			<% @grouped_nurses.each do |group, nurses| %>
 				<div class="nurses-resource-subsection-title <%= 'resource-title-selectable colibri-clickable-link' if @teams_id_by_name.present? %>" data-url='<%= "/plannings/#{@planning.id}/teams/#{@teams_id_by_name[group]}" if @teams_id_by_name.present? %><%= case view when 'master' then '/master' when 'payable' then '/payable' else '' end %><%= "?m=#{@selected_month}&y=#{@selected_year}" if @selected_month.present? && @selected_year.present? %>'><%= group %></div>
 				<% nurses.each do |nurse| %>
-					<p id='<%= "nurse_#{nurse.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'nurse' && nurse.id == @nurse.id %>" data-url="<%= link_to_planning_nurse_from_view(view, @planning, nurse, {month: @selected_month, year: @selected_year}) %>"><%= nurse.try(:name) %></p>
+					<p id='<%= "nurse_#{nurse.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'nurse' && nurse.id == @nurse.try(:id) %>" data-url="<%= link_to_planning_nurse_from_view(view, @planning, nurse, {month: @selected_month, year: @selected_year}) %>"><%= nurse.try(:name) %></p>
 				<% end %>
 			<% end %>
 		</div>

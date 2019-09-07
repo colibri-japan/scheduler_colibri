@@ -1,8 +1,14 @@
 class PlanningsController < ApplicationController
 	before_action :set_corporation
 	before_action :set_planning, except: [:recent_patients_report] 
-	before_action :fetch_patients_grouped_by_kana, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
-	before_action :fetch_nurses_grouped_by_team, only: [:all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
+	before_action :fetch_patients_grouped_by_kana, only: [:show, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
+	before_action :fetch_nurses_grouped_by_team, only: [:show, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
+
+
+	def show 
+		authorize @planning, :same_corporation_as_current_user?
+		set_main_nurse
+	end
 
 	def all_patients
 		authorize @planning, :same_corporation_as_current_user?
@@ -126,7 +132,7 @@ class PlanningsController < ApplicationController
 
 	def set_month_and_year_params
 		@selected_year = params[:y].present? ? params[:y] : Date.today.year
-    @selected_month = params[:m].present? ? params[:m] : Date.today.month
+    	@selected_month = params[:m].present? ? params[:m] : Date.today.month
 	end
 
 end

@@ -1,0 +1,59 @@
+<div id="resource-details-block">
+	<div id="resource-detail-header">
+		<h1 class="colibri-xs-title"><%= @nurse.name %>の詳細</h1>
+		<span class="close" value="閉じる" onclick="$('#resource-details-panel').toggle()">&times;</span>
+	</div>
+	<table>
+		<tr>
+			<td class="details-table-head">メール</td>
+			<td><%= @nurse.phone_mail %></td>
+		</tr>
+		<tr>
+			<td class="details-table-head">電話</td>
+			<td><%= @nurse.phone_number %></td>
+		</tr>
+		<tr>
+			<td class="details-table-head">住所</td>
+			<td><%= @nurse.address %></td>
+		</tr>
+		<tr>
+			<td class="details-table-head">スキル</td>
+			<td><%= @nurse.skill_list %></td>
+		</tr>
+		<% if @nurse.days_worked.present? %>
+			<tr>
+				<td class="details-table-head">稼動日数</td>
+				<td><%= @nurse.days_worked %>日</td>
+			</tr>
+		<% end %>
+		<% if @nurse.description.present? %>
+			<tr>
+				<td class="details-table-head">備考</td>
+				<td><%= @nurse.description %></td>
+			</tr>
+		<% end %>
+	</table>
+</div>
+<div id="service-history-block">
+	<div class='resource-details-block-title'>過去の<%= client_resource_name(@corporation.business_vertical) %></div>
+	<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
+		<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_duration) %></div>
+	<% end %>
+	<% if @patients_with_services.all[2..-1].present? %>
+		<div class="resource-history">
+			<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
+			<div id="more-resource-history" style="display: none">
+				<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
+			</div>
+		</div>
+	<% end %>
+</div>
+<div id="service-balance-block" style="margin-bottom:25px">
+	<div class='resource-details-block-title'>サービス割合 (過去２ヵ月.稼働時間)</div>
+	<div id="chart-and-details-container">
+		<%= pie_chart @appointments_grouped_by_category.map{|k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, donut: true, suffix: '%', width: '100%', height: '100px', legend: 'right', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] if @appointments_grouped_by_category.present? %>
+	</div>
+</div>
+<div id="resource-action-block">
+	<%= link_to 'エディット', edit_nurse_path(@nurse), remote: true, class: 'btn btn-info btn-block' %>
+</div>

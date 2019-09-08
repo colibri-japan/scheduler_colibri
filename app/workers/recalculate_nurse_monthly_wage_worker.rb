@@ -14,7 +14,7 @@ class RecalculateNurseMonthlyWageWorker
                 unit_wage = nurse_service_wage.try(:unit_wage) || appointment.service.unit_wage || 0
 
                 if appointment.service.hour_based_wage?
-                    total_wage = ((appointment.duration || 0) / 3600) * (unit_wage || 0)
+                    total_wage = ((appointment.duration.to_f || 0) / 3600) * (unit_wage || 0)
                     appointment.update_column(:total_wage, total_wage)
                 else
                     appointment.update_column(:total_wage, unit_wage)

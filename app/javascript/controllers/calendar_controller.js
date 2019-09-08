@@ -26,6 +26,10 @@ export default class extends Controller {
         this.getCalendar().destroy()
     }
 
+    navigate(event) {
+        event.target.classList.add('resource-selected')
+    }
+
     getCalendar() {
         let calendarEl = document.getElementById('nurse-calendar')
 

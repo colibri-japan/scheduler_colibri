@@ -14,11 +14,13 @@ import '@fullcalendar/list/main.css';
 
 
 export default class extends Controller {
+
+    static targets = [ 'resourceName' ]
     
     connect() {
         console.log('connected')
-        this.getCalendar().destroy()
         this.getCalendar().render()
+        this.initializeResource()
     }
 
     disconnect() {
@@ -27,7 +29,12 @@ export default class extends Controller {
     }
 
     navigate(event) {
+        let selectedEl = document.getElementsByClassName('resource-selected')
+        for (let el of selectedEl) {
+            el.classList.remove('resource-selected')
+        }
         event.target.classList.add('resource-selected')
+        this.resourceNameTarget.textContent = event.target.textContent
     }
 
     getCalendar() {
@@ -39,5 +46,15 @@ export default class extends Controller {
         })
 
         return calendar
+    }
+
+    initializeResource() {
+        let resourceType = window.currentResourceType || window.defaultResourceType
+        let resourceId = window.currentResourceType || window.defaultResourceId
+
+        let selectedItem = document.getElementById(`${resourceType}_${resourceId}`)
+        selectedItem.classList.add('resource-selected')
+
+        return
     }
 }

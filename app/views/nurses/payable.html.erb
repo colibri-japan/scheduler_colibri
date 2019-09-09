@@ -26,22 +26,23 @@
                     <%= @selected_month %>月のまとめ
                 </div>
                 <div class="patient-dashboard-panel-body" style='display:flex'>
-					<div id="payment-summary" style="padding-right:10px;min-width:200px;border-right:0.5px #ccc solid">
+					<div id="payment-summary" style="height:125px;padding-right:10px;min-width:200px;border-right:0.5px #ccc solid">
 						基本給: <%= "#{@nurse.monthly_wage || 0}¥" if @nurse.full_timer? %><br/>
                     	サービス：<%= sum_appointments = @nurse.full_timer ? 0 : (@appointments_till_today.sum(:total_wage) || 0)%>¥<br/>
                     	手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
                     	合計：<%= total_wage = (@nurse.monthly_wage || 0) + sum_salary_line_items + sum_appointments || 0 %>¥<br/>
+						キャンセル数:<%= @appointments_till_today.where(cancelled: true).size %><br/>
 					</div>
 					<div id="hours-worked-pied-container" style="padding-left:10px">
 						<%= pie_chart [['稼働時間', @percentage_of_time_worked], ['予定時間', @percentage_of_time_pending]], donut: true,  width: '100px', height: '100px', suffix: '%', legend: false, colors: ['#ffc107', '#e4e4e4'] %>
 					</div>
-					<div id="payable-dashboard" style="padding-right:10px;min-width:150px;border-right:0.5px #ccc solid">
+					<div id="payable-dashboard" style="padding-right:10px;min-width:150px">
 						<div class="payable-dashboard-text-container">
 							<p class="payable-dashboard-line">稼働時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_worked) %></span></p>
 							<p class="payable-dashboard-line">予定時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_pending) %></span></p>
 						</div>
 					</div>
-					<div id="chart-and-details-container" style="padding-left:10px">
+					<div id="chart-and-details-container" style="height:125px;border-left:0.5px #ccc solid;padding-left:10px">
 						<%= pie_chart @appointments_grouped_by_category.map { |k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, donut: true, suffix: '%', height: '100px', width: "#{@appointments_grouped_by_category.size > 4 ? '260px' : '210px'}", legend: 'right', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] if @appointments_grouped_by_category.present? %>
 					</div>
                 </div>

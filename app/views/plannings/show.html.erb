@@ -1,7 +1,12 @@
 <%= javascript_tag do %>
+	window.appointmentsUrl = '<%= j planning_appointments_path(@planning) %>'
+	window.privateEventsUrl = '<%= j planning_private_events_path(@planning) %>'
 	window.defaultResourceId = '39'
 	window.defaultResourceType = 'nurse'
-
+	window.minTime = '<%= j @corporation.business_start_hour %>'
+	window.maxTime = '<%= j @corporation.business_end_hour %>'
+	window.firstDay = '<%= j @corporation.default_first_day.to_s %>'
+	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_path: planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
@@ -25,7 +30,14 @@
 				<% @patients_grouped_by_kana.each do |kana, patients| %>
 					<div class="nurses-resource-subsection-title" data-action="click->calendar#navigate"><%= kana %></div>
 					<% patients.each do |patient| %>
-						<p id="patient_<%= patient.id %>" class="resource-list-element" data-action="click->calendar#navigate"><%= patient.try(:name) %></p>
+						<p 
+							id="patient_<%= patient.id %>" 
+							data-resource-type="patient" 
+							data-resource-id="<%= patient.id %>" 
+							class="resource-list-element" 
+							data-action="click->calendar#navigate">
+							<%= patient.try(:name) %>
+						</p>
 					<% end %>
 				<% end %>
 			</div>
@@ -35,9 +47,16 @@
 
 				<% today = Date.today %>
 				<% @grouped_nurses.each do |group_name, nurses| %>
-					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' class="nurses-resource-subsection-title" data-action="click->calendar#navigate"><%= group_name %></div>
+					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' data-resource-id="<%= @teams_id_by_name[group_name] %>" data-resource-type="team" class="nurses-resource-subsection-title" data-action="click->calendar#navigate"><%= group_name %></div>
 					<% nurses.each do |nurse| %>
-						<p id="nurse_<%= nurse.id %>" class="resource-list-element" data-action="click->calendar#navigate"><%= nurse.try(:name) %></p>
+						<p 
+							id="nurse_<%= nurse.id %>" 
+							data-resource-type="nurse" 
+							data-resource-id="<%= nurse.id %>" 
+							class="resource-list-element" 
+							data-action="click->calendar#navigate">
+							<%= nurse.try(:name) %>
+						</p>
 					<% end %>
 				<% end %>
 			</div>

@@ -66,6 +66,10 @@ Rails.application.configure do
                      :pool_size => 5
                     }
 
+  config.serve_static_assets = true
+  config.assets.digest = true
+  config.static_cache_control = "public, max-age=2592000"
+
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "Scheduler_#{Rails.env}"

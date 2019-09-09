@@ -44,7 +44,7 @@ module AppointmentsHelper
     end
 
     def appointment_title_in_excel(appointment)
-        appointment.cancelled? ? "#{appointment.try(:title)} (キャンセル)" : appointment.try(:title)
+        appointment.cancelled? ? "(キャンセル)" : appointment.try(:title)
     end
 
 end

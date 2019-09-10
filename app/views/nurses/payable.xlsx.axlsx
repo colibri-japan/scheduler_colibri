@@ -23,7 +23,7 @@ wb.styles do |s|
 		sheet.add_row [current_user.corporation.name], style: align_right
 		sheet.merge_cells "A2:H2"
 		sheet.add_row
-		sheet.add_row ["#{params[:y]}年#{params[:m]}月", '','','', '従業員氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,align_right,align_right, thick_border, thick_border]
+		sheet.add_row ["#{params[:y]}年#{params[:m]}月", '','','', '従業員氏名: ', '', @nurse.try(:name), ''], style: [thick_border, thick_border, nil,nil,align_right,align_right, thick_border, thick_border]
 		sheet.merge_cells "A4:B4"
 		sheet.merge_cells "E4:F4"
 		sheet.merge_cells "G4:H4"
@@ -53,10 +53,10 @@ wb.styles do |s|
 			sheet.add_row
 			sheet.add_row
 
-			line_item_header = sheet.add_row ['','','','手当名', '','','','額'], style: [nil,nil,nil, table_header_centered, nil,nil,nil, table_header_centered]
+			line_item_header = sheet.add_row ['','','','手当名', '','','','額'], style: [nil,nil,nil, table_header_centered, table_header_centered,table_header_centered,table_header_centered, table_header_centered]
 			sheet.merge_cells line_item_header.cells[(3..6)]
 			@salary_line_items.each do |salary_line_item|
-				line_item_row = sheet.add_row ['','','', salary_line_item_title_with_counts(salary_line_item), '','','',salary_line_item.try(:total_wage)], style: [nil, nil, nil, table_cells_centered, nil, nil, nil, table_cells_centered]
+				line_item_row = sheet.add_row ['','','', salary_line_item_title_with_counts(salary_line_item), '','','',salary_line_item.try(:total_wage)], style: [nil, nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
 				sheet.merge_cells line_item_row.cells[(3..6)]
 			end
 			sum_line_items = @salary_line_items.sum(:total_wage)

@@ -14,6 +14,8 @@ import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
+import '@fullcalendar/timeline/main.css';
+import '@fullcalendar/resource-timeline/main.css';
 
 let resourceHeader = {
     left: 'prev,next today',

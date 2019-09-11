@@ -1,6 +1,8 @@
 <%= javascript_tag do %>
 	window.appointmentsUrl = '<%= j planning_appointments_path(@planning) %>'
 	window.privateEventsUrl = '<%= j planning_private_events_path(@planning) %>'
+	window.defaultResourceView = '<%= j @corporation.default_view %>'
+	window.defaultView = '<%= j @corporation.default_individual_view %>'
 	window.defaultResourceType = 'nurse'
 	window.defaultResourceId = '39'
 	window.currentResourceType = 'nurse'
@@ -29,10 +31,17 @@
 		</div>
 		<div  id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 			<div id="patients-resource" class="no-print hide-resource">
-				<div class="nurses-resource-subsection-title resource-title-selectable">全<%= client_resource_name(@corporation.business_vertical) %></div>
+				<div class="nurses-resource-subsection-title resource-title-selectable"
+					data-resource-type="patient"
+					data-resource-id="all"
+					data-action="click->calendar#navigate">
+						全<%= client_resource_name(@corporation.business_vertical) %>
+				</div>
 				
 				<% @patients_grouped_by_kana.each do |kana, patients| %>
-					<div class="nurses-resource-subsection-title" data-action="click->calendar#navigate"><%= kana %></div>
+					<div class="nurses-resource-subsection-title">
+						<%= kana %>
+					</div>
 					<% patients.each do |patient| %>
 						<p 
 							id="patient_<%= patient.id %>" 
@@ -47,11 +56,22 @@
 			</div>
 			<div id="nurses-resource" class="no-print">
 
-				<div class="nurses-resource-subsection-title" data-action="click->calendar#navigate">従業員全員</div>
+				<div class="nurses-resource-subsection-title resource-title-selectable" 
+					data-resource-type="nurse"
+					data-resource-id="all"
+					data-action="click->calendar#navigate">
+						従業員全員
+				</div>
 
 				<% today = Date.today %>
 				<% @grouped_nurses.each do |group_name, nurses| %>
-					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' data-resource-id="<%= @teams_id_by_name[group_name] %>" data-resource-type="team" class="nurses-resource-subsection-title" data-action="click->calendar#navigate"><%= group_name %></div>
+					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' 
+						data-resource-id="<%= @teams_id_by_name[group_name] %>" 
+						data-resource-type="team" 
+						class="nurses-resource-subsection-title <%= 'resource-title-selectable' if @teams_id_by_name.present? %>" 
+						data-action="<%= 'click->calendar#navigate' if @teams_id_by_name.present? %>">
+							<%= group_name %>
+					</div>
 					<% nurses.each do |nurse| %>
 						<p 
 							id="nurse_<%= nurse.id %>" 

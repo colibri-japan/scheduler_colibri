@@ -4,6 +4,9 @@ import { Calendar } from '@fullcalendar/core'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import resourcePlugin from '@fullcalendar/resource-common'
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
 
 import '@fullcalendar/core/main.css';
@@ -11,24 +14,30 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
 
+let resourceHeader = {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'resourceTimeGridDay,resourceTimelineWeek'
+}
 
+let header = {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'timeGridDay,timeGridWeek,dayGridMonth'
+}
 
 let calendarEl = document.getElementById('calendar')
 
 window.fullCalendar = new Calendar(calendarEl, {
-    plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin],
+    plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, resourcePlugin, resourceTimeGridPlugin, resourceTimelinePlugin],
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
     firstDay: window.firstDay,
     slotDuration: '00:15:00',
     timeFormat: 'H:mm',
     nowIndicator: true,
-    defaultView: 'timeGridWeek',
+    defaultView: window.defaultView,
     locale: 'ja',
-    header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'timeGridDay,timeGridWeek,dayGridMonth'
-    },
+    header: header,
     eventColor: '#7AD5DE',
     selectable: true,
     minTime: window.minTime,
@@ -59,6 +68,8 @@ window.fullCalendar = new Calendar(calendarEl, {
         this.unselect()
     }
 })
+
+
 
 let dateFormatter = new Intl.DateTimeFormat('sv-SE')
 
@@ -166,6 +177,27 @@ let setRecurringAppointmentRange = (start, end, resource, view) => {
     }
 }
 
+let updateCalendarHeader = () => {
+    if (window.currentResourceType === 'team' ||(window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' && window.currentResourceId === 'all')) {
+        window.fullCalendar.setOption('header', resourceHeader)
+    } else {
+        window.fullCalendar.setOption('header', header)
+    }
+}
+
+let toggleResourceView = () => {
+    let currentView = window.fullCalendar.view
+    if (window.currentResourceType === 'team' || (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' && window.currentResourceId === 'all')) {
+        if (['timeGridDay', 'timeGridWeek', 'dayGridMonth'].includes(currentView.type)) {
+            window.fullCalendar.changeView(window.defaultResourceView)
+        }
+    } else {
+        if (['resourceTimeGridDay', 'resourceTimelineWeek'].includes(currentView.type)) {
+            window.fullCalendar.changeView(window.defaultView)
+        }
+    }
+}
+
 export default class extends Controller {
 
     static targets = [ 'resourceName' ]
@@ -199,6 +231,9 @@ export default class extends Controller {
         for (let event of remainingEvents) {
             event.remove()
         }
+
+        updateCalendarHeader()
+        toggleResourceView()
         
         window.fullCalendar.addEventSource(`${window.appointmentsUrl}?${window.currentResourceType}_id=${window.currentResourceId}`)
         window.fullCalendar.refetchEvents()

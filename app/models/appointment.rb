@@ -90,7 +90,9 @@ class Appointment < ApplicationRecord
         if self.cancelled == true 
             '#FF8484'
         elsif self.edit_requested == true 
-            '#99E6BF'
+			'#99E6BF'
+		else
+			self.color
         end
 	end
 

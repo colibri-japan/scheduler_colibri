@@ -99,7 +99,7 @@ let setAppointmentTime = (start, end, view) => {
   $('#appointment_starts_at_3i').val(moment(start).format('D'));
   $('#appointment_starts_at_4i').val(moment(start).format('HH'));
   $('#appointment_starts_at_5i').val(moment(start).format('mm'));
-  if (['month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
+  if (['dayGridMonth', 'month', 'timelineWeek'].includes(view.name) && moment(start).add(1, 'day').format('Y-M-D') == moment(end).format('Y-M-D')) {
     $('#appointment_ends_at_1i').val(moment(start).format('YYYY'));
     $('#appointment_ends_at_2i').val(moment(start).format('M'));
     $('#appointment_ends_at_3i').val(moment(start).format('D'));

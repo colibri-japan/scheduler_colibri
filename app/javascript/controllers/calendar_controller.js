@@ -42,6 +42,13 @@ window.fullCalendar = new Calendar(calendarEl, {
     selectable: true,
     minTime: window.minTime,
     maxTime: window.maxTime,
+    refetchResourcesOnNavigate: true,
+
+    resources: function (fetchInfo, successCallback, failureCallback) {
+        let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
+        let url = `${window.resourceUrl}${connector}start=${fetchInfo.start}&end=${fetchInfo.end}`
+        $.getScript(url).then(data => successCallback($.parseJSON(data)))
+    },
     
     events: '/plannings/62/appointments?nurse_id=39',
     
@@ -198,6 +205,27 @@ let toggleResourceView = () => {
     }
 }
 
+
+let updateEventSources = () => {
+    let eventSources = window.fullCalendar.getEventSources()
+    for (let source of eventSources) {
+        source.remove()
+    }
+
+    let remainingEvents = window.fullCalendar.getEvents()
+    for (let event of remainingEvents) {
+        event.remove()
+    }
+
+    if (window.currentResourceId !== 'all') {
+        window.fullCalendar.addEventSource(`${window.appointmentsUrl}?${window.currentResourceType}_id=${window.currentResourceId}`)
+    } else {
+        window.fullCalendar.addEventSource(window.appointmentsUrl)
+    }
+
+    return
+}
+
 export default class extends Controller {
 
     static targets = [ 'resourceName' ]
@@ -221,21 +249,21 @@ export default class extends Controller {
         window.currentResourceType = event.target.dataset.resourceType
         window.currentResourceId = event.target.dataset.resourceId
 
-        let eventSources = window.fullCalendar.getEventSources()
-
-        for (let source of eventSources) {
-            source.remove()
-        }
-
-        let remainingEvents = window.fullCalendar.getEvents()
-        for (let event of remainingEvents) {
-            event.remove()
-        }
-
         updateCalendarHeader()
         toggleResourceView()
-        
-        window.fullCalendar.addEventSource(`${window.appointmentsUrl}?${window.currentResourceType}_id=${window.currentResourceId}`)
+
+        let fcResources = window.fullCalendar.getResources()
+        for (let resource of fcResources) {
+            resource.remove()
+        }
+
+        if (event.target.dataset.fcResourceUrl) {
+            window.resourceUrl = event.target.dataset.fcResourceUrl
+        }
+
+        updateEventSources(event)
+              
+        window.fullCalendar.refetchResources()
         window.fullCalendar.refetchEvents()
 
         this.resourceNameTarget.textContent = event.target.textContent

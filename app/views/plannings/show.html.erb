@@ -3,6 +3,7 @@
 	window.privateEventsUrl = '<%= j planning_private_events_path(@planning) %>'
 	window.defaultResourceView = '<%= j @corporation.default_view %>'
 	window.defaultView = '<%= j @corporation.default_individual_view %>'
+	window.resourceUrl = '<%= j corporation_nurses_url(@corporation, format: :json)  %>'
 	window.defaultResourceType = 'nurse'
 	window.defaultResourceId = '39'
 	window.currentResourceType = 'nurse'
@@ -34,6 +35,7 @@
 				<div class="nurses-resource-subsection-title resource-title-selectable"
 					data-resource-type="patient"
 					data-resource-id="all"
+					data-fc-resource-url="<%= corporation_patients_url(@corporation, include_undefined: true, resource_type: 'appointments', planning_id: @planning.id, format: :json) %>"
 					data-action="click->calendar#navigate">
 						全<%= client_resource_name(@corporation.business_vertical) %>
 				</div>
@@ -59,6 +61,7 @@
 				<div class="nurses-resource-subsection-title resource-title-selectable" 
 					data-resource-type="nurse"
 					data-resource-id="all"
+					data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json) %>"
 					data-action="click->calendar#navigate">
 						従業員全員
 				</div>
@@ -68,6 +71,7 @@
 					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' 
 						data-resource-id="<%= @teams_id_by_name[group_name] %>" 
 						data-resource-type="team" 
+						data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json, team_id: @teams_id_by_name[group_name]) if @teams_id_by_name.present? %>"
 						class="nurses-resource-subsection-title <%= 'resource-title-selectable' if @teams_id_by_name.present? %>" 
 						data-action="<%= 'click->calendar#navigate' if @teams_id_by_name.present? %>">
 							<%= group_name %>

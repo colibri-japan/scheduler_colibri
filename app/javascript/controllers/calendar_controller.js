@@ -7,6 +7,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import resourcePlugin from '@fullcalendar/resource-common'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import jaLocale from '@fullcalendar/core/locales/ja'
 
 
 import '@fullcalendar/core/main.css';
@@ -36,13 +37,38 @@ window.fullCalendar = new Calendar(calendarEl, {
     timeFormat: 'H:mm',
     nowIndicator: true,
     defaultView: window.defaultView,
-    locale: 'ja',
+    locale: jaLocale,
     header: header,
     eventColor: '#7AD5DE',
     selectable: true,
     minTime: window.minTime,
     maxTime: window.maxTime,
     refetchResourcesOnNavigate: true,
+    displayEventEnd: true,
+    height: function() {
+        return (screen.height - 240)
+    },
+    views: {
+        'timeGrid': {
+            slotLabelFormat: {hour: 'numeric', minute: '2-digit'},
+        },
+        'dayGrid': {
+            slotLabelFormat: {day: 'numeric'},
+        },
+        'resourceTimeGridDay': {
+            resourceLabelText: window.resourceLabel
+        },
+        'resourceTimelineWeek': {
+            slotDuration: {days: 1},
+            resourceAreaWidth: '10%',
+            resourceLabelText: window.resourceLabel
+        }
+    },
+
+    viewSkeletonRender: function(info) {
+        drawHourMarks()
+        makeTimeAxisPrintFriendly()
+    },
 
     resources: function (fetchInfo, successCallback, failureCallback) {
         let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
@@ -79,6 +105,17 @@ window.fullCalendar = new Calendar(calendarEl, {
 
 
 let dateFormatter = new Intl.DateTimeFormat('sv-SE')
+
+let drawHourMarks = () => {
+    $('tr*[data-time="09:00:00"]').addClass('thick-calendar-line');
+    $('tr*[data-time="12:00:00"]').addClass('thick-calendar-line');
+    $('tr*[data-time="15:00:00"]').addClass('thick-calendar-line');
+    $('tr*[data-time="18:00:00"]').addClass('thick-calendar-line');
+}
+
+let makeTimeAxisPrintFriendly = () => {
+    $('tr[data-time] > td > span').addClass('bolder-calendar-time-axis')
+}
 
 let setWishedSlotRange = (start, end, view) => {
     $('#wished_slot_anchor_1i').val(moment(start).format('YYYY'));
@@ -197,10 +234,12 @@ let toggleResourceView = () => {
     if (window.currentResourceType === 'team' || (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' && window.currentResourceId === 'all')) {
         if (['timeGridDay', 'timeGridWeek', 'dayGridMonth'].includes(currentView.type)) {
             window.fullCalendar.changeView(window.defaultResourceView)
+            drawHourMarks()
         }
     } else {
         if (['resourceTimeGridDay', 'resourceTimelineWeek'].includes(currentView.type)) {
             window.fullCalendar.changeView(window.defaultView)
+            drawHourMarks()
         }
     }
 }
@@ -248,6 +287,7 @@ export default class extends Controller {
 
         window.currentResourceType = event.target.dataset.resourceType
         window.currentResourceId = event.target.dataset.resourceId
+        window.resourceLabel = window.currentResourceType === 'patient' ? '利用者' : '従業員'
 
         updateCalendarHeader()
         toggleResourceView()

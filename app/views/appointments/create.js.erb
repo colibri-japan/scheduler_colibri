@@ -44,4 +44,9 @@ $('.modal').modal('hide')
       $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>")
     )
   }
+
+  if (window.fullCalendar) {
+    window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
+  }
+
 <% end %>

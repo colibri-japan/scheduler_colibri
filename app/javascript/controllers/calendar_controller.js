@@ -15,7 +15,7 @@ import '@fullcalendar/list/main.css';
 
 let calendarEl = document.getElementById('calendar')
 
-let calendar = new Calendar(calendarEl, {
+window.fullCalendar = new Calendar(calendarEl, {
     plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin],
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
     firstDay: window.firstDay,
@@ -33,16 +33,16 @@ let calendar = new Calendar(calendarEl, {
     selectable: true,
     minTime: window.minTime,
     maxTime: window.maxTime,
-
+    
     events: '/plannings/62/appointments?nurse_id=39',
-
+    
     eventClick: function(info) {
         if (window.userAllowedToEdit) {
             let dateClicked = dateFormatter.format(info.event.start)
             $.getScript(info.event.extendedProps.edit_url + '?date=' + dateClicked);
         }
     },
-
+    
     select: function(info) {
         let selectEnd = info.end 
         let selectStart = info.start
@@ -50,16 +50,13 @@ let calendar = new Calendar(calendarEl, {
             selectEnd.setMinutes(selectStart.getMinutes() + 30)
         }
         $.getScript(window.selectActionUrl, function () {
-            console.log(info.view)
-            console.log(info.view.type)
-            console.log(info.view.name)
             setAppointmentRange(selectStart, selectEnd, info.view);
             setPrivateEventRange(selectStart, selectEnd, info.view);
             appointmentSelectizeNursePatient();
             privateEventSelectizeNursePatient();
         });
-
-        calendar.unselect()
+        
+        this.unselect()
     }
 })
 
@@ -174,12 +171,12 @@ export default class extends Controller {
     static targets = [ 'resourceName' ]
     
     connect() {
-        calendar.render()
+        window.fullCalendar.render()
         this.initializeResource()
     }
 
     disconnect() {
-        calendar.destroy()
+        window.fullCalendar.destroy()
     }
 
     navigate(event) {
@@ -192,14 +189,19 @@ export default class extends Controller {
         window.currentResourceType = event.target.dataset.resourceType
         window.currentResourceId = event.target.dataset.resourceId
 
-        let eventSources = calendar.getEventSources()
+        let eventSources = window.fullCalendar.getEventSources()
 
         for (let source of eventSources) {
             source.remove()
         }
+
+        let remainingEvents = window.fullCalendar.getEvents()
+        for (let event of remainingEvents) {
+            event.remove()
+        }
         
-        calendar.addEventSource(`${window.appointmentsUrl}?${window.currentResourceType}_id=${window.currentResourceId}`)
-        calendar.refetchEvents()
+        window.fullCalendar.addEventSource(`${window.appointmentsUrl}?${window.currentResourceType}_id=${window.currentResourceId}`)
+        window.fullCalendar.refetchEvents()
 
         this.resourceNameTarget.textContent = event.target.textContent
     }

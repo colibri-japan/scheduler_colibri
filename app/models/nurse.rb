@@ -107,9 +107,10 @@ class Nurse < ApplicationRecord
 
 	def as_json
 		{
-			id: id, 
-			title: name, 
-			is_nurse_resource: true 
+			id: "nurse_#{id}", 
+			title: name,
+			model_name: 'nurse',
+			record_id: id
 		}
 	end
 

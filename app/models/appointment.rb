@@ -107,7 +107,7 @@ class Appointment < ApplicationRecord
 			nurse_id: self.nurse_id,
 			edit_requested: self.edit_requested,
 			description: self.description || '',
-			resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
+			resourceIds: ["patient_#{self.patient_id}", "nurse_#{self.nurse_id}"],
 			allDay: self.all_day?,
 			color: self.color,
 			cancelled: self.cancelled,

@@ -132,9 +132,10 @@ class Patient < ApplicationRecord
 
 	def as_json
 		{
-			id: id, 
+			id: "patient_#{id}", 
 			title: name,
-			is_nurse_resource: false 
+			model_name: 'patient',
+			record_id: id
 		}
 	end
 

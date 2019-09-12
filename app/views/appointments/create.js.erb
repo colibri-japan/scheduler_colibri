@@ -6,25 +6,29 @@ $('.modal').modal('hide')
 
   $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
   $('#nurse-overlap-modal').modal({ backdrop: 'static' })
-
-  $('#nurse-overlap-override').one('click', function(){
-    let appointment_ids = <%=  @appointment.errors[:nurse_id].flatten %>;
-    let indexCount =  0;
-    appointment_ids.forEach(function(appointment_id, index, array){
-      let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
-      indexCount++;
-      $.ajax({
-        url: request_edit_url,
-        type: 'PATCH',
-        beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
-        success: function(data) {
-          if (indexCount == appointment_ids.length) {
-            $('input#save-appointment').click();
+  $('#nurse-overlap-modal').modal({ backdrop: 'static' }).on('shown.bs.modal', function(){
+    $('#nurse-overlap-override').click(function(){
+      let errors = '<%= @appointment.errors.full_messages %>'
+      let appointment_ids = <%=  @appointment.errors[:overlapping_ids].flatten %>;
+      let indexCount =  0;
+      appointment_ids.forEach(function(appointment_id, index, array){
+        let request_edit_url = '/plannings/' + <%= @appointment.planning_id %> + '/appointments/' + appointment_id + '/toggle_edit_requested';
+        indexCount++;
+        $.ajax({
+          url: request_edit_url,
+          type: 'PATCH',
+          beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
+          success: function(data) {
+            if (indexCount == appointment_ids.length) {
+              $('input#save-appointment').click();
+            }
           }
-        }
+        })
       })
     })
+
   })
+
 
 <% else %>
   if (typeof fullcalendar === 'undefined') {

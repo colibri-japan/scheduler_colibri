@@ -7,7 +7,7 @@ $('.modal').modal('hide')
   $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
   $('#nurse-overlap-modal').modal({ backdrop: 'static' })
   $('#nurse-overlap-modal').modal({ backdrop: 'static' }).on('shown.bs.modal', function(){
-    $('#nurse-overlap-override').click(function(){
+    $('#nurse-overlap-override').one('click', function(){
       let errors = '<%= @appointment.errors.full_messages %>'
       let appointment_ids = <%=  @appointment.errors[:overlapping_ids].flatten %>;
       let indexCount =  0;

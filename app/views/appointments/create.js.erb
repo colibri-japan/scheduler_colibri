@@ -47,7 +47,12 @@ $('.modal').modal('hide')
     )
   }
 
-  if (window.fullCalendar) {
+  if (typeof renderEvent === 'undefined') {
+    let renderEvent
+  }
+  renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @appointment.patient_id %>'].includes(window.currentResourceId) )
+
+  if (window.fullCalendar && renderEvent) {
     window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
   }
 

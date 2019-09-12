@@ -10,7 +10,7 @@ json.array! @appointments.each do |appointment|
         json.end appointment.ends_at.try(:strftime, date_format)
         json.description appointment.description ? appointment.description : ''
         
-        json.resourceId appointment.nurse_id
+        json.resourceIds ["nurse_#{appointment.nurse_id}", "patient_#{appointment.patient_id}"]
         json.service_type appointment.title ? appointment.title : ''
         json.eventType 'appointment'
 

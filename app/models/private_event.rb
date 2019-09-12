@@ -25,7 +25,7 @@ class PrivateEvent < ApplicationRecord
 			nurse_id: self.nurse_id,
 			edit_requested: self.edit_requested,
 			description: self.description || '',
-			resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
+			resourceIds: ["nurse_#{self.nurse_id}", "patient_#{self.patient_id}"],
 			allDay: self.all_day?,
 			color: '#ff7777',
 			base_url: "/plannings/#{self.planning_id}/private_events/#{self.id}",

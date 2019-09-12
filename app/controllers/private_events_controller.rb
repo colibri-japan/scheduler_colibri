@@ -16,6 +16,8 @@ class PrivateEventsController < ApplicationController
 			@private_events = @private_events.where(nurse_id: params[:nurse_id])
 		elsif params[:patient_id].present?
 			@private_events = @private_events.where(patient_id: params[:patient_id])
+		elsif params[:team_id].present? 
+			@private_events = @private_events.where(nurse_id: Team.find(params[:team_id]).nurses.pluck(:id))
 		end
 		
 		patient_resource = params[:patient_resource].present?

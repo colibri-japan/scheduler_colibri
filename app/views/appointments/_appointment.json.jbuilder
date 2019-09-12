@@ -8,7 +8,7 @@ json.extract! appointment, :color, :nurse_id, :patient_id, :edit_requested, :can
 json.start appointment.starts_at.try(:strftime, date_format)
 json.end appointment.ends_at.try(:strftime, date_format)
 json.description appointment.description ? appointment.description : ''
-json.resourceId params[:patient_resource].present? ? appointment.patient_id : appointment.nurse_id
+json.resourceIds ["nurse_#{appointment.nurse_id}", "patient_#{appointment.patient_id}"]
 json.nurse do 
     json.name appointment.nurse.name 
 end

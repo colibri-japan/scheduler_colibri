@@ -19,7 +19,7 @@ end
 
 json.eventType 'private_event'
 
-json.resourceId params[:patient_resource].present? ? private_event.try(:patient_id) : private_event.try(:nurse_id)
+json.resourceIds ["nurse_#{private_event.nurse_id}", "patient_#{private_event.patient_id}"]
 
 json.displayable true
 

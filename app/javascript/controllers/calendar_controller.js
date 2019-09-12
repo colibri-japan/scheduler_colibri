@@ -96,6 +96,24 @@ window.fullCalendar = new Calendar(calendarEl, {
                 }).then(data => successCallback(data))
             },
             id: 'url1'
+        },
+        {
+            events: function(fetchInfo, successCallback, failureCallback) {
+                let url2 = window.eventsUrl2
+                let data = {}
+                data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
+                data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
+                if (window.currentResourceId !== 'all') {
+                    let resourceArgument = `${window.currentResourceType}_id`
+                    data[resourceArgument] = window.currentResourceId
+                }
+                $.ajax({
+                    url: url2,
+                    type: 'GET',
+                    data: data
+                }).then(data => successCallback(data))
+            },
+            id: 'url2'
         }
     ], 
 
@@ -278,7 +296,7 @@ let updateEventSources = () => {
     let eventSources = window.fullCalendar.getEventSources()
     
     for (let source of eventSources) {
-        if (source.id !== 'url1') {
+        if ( !['url1', 'url2'].includes(source.id) ) {
             source.remove()
         }
     }

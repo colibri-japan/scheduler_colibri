@@ -21,11 +21,7 @@ json.private_event false
 
 json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 
-if appointment.cancelled == true
-    json.borderColor '#FF8484'
-elsif appointment.edit_requested == true
-    json.borderColor '#99E6BF'
-end
+json.borderColor appointment.borderColor    
 json.eventType 'appointment'
 
 json.base_url planning_appointment_path(appointment.planning, appointment)

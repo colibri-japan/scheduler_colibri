@@ -27,11 +27,7 @@ json.array! @appointments.each do |appointment|
 
         json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 
-        if appointment.cancelled == true 
-            json.borderColor '#FF8484'
-        elsif appointment.edit_requested == true 
-            json.borderColor '#99E6BF'
-        end
+        json.borderColor appointment.borderColor
 
         json.base_url planning_appointment_path(@planning, appointment)
         json.edit_url edit_planning_appointment_path(@planning, appointment)

@@ -47,16 +47,18 @@
       );
     }
 
+    if (typeof renderEvent === 'undefined') {
+      let renderEvent
+    }
+  
+    renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @appointment.patient_id %>'].includes(window.currentResourceId) )
+
     if (window.fullCalendar) {
       let event_to_remove = window.fullCalendar.getEventById('<%= "appointment_#{@appointment.id}" %>')
       event_to_remove.remove()
-      if (window.currentResourceType === 'team' || (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' || window.currentResourceId === 'all')) {
+
+      if (renderEvent) {
         window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
-      } else {
-        if (['<%= j "patient_#{@appointment.patient_id}" %>', '<%= j "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) {
-          window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
-        } else {
-        }
       }
     }
 

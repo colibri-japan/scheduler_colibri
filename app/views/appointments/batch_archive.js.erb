@@ -1,1 +1,9 @@
-window.location.reload()
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+
+<% @appointments.each do |appointment| %>
+    if (window.fullCalendar) {
+        let event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
+        event.remove()
+    }
+<% end %>

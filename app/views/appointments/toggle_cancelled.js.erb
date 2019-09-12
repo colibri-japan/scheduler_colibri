@@ -49,7 +49,6 @@
 
     if (window.fullCalendar) {
       let event_to_remove = window.fullCalendar.getEventById('<%= "appointment_#{@appointment.id}" %>')
-      console.log(event_to_remove)
       event_to_remove.remove()
       window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
     }

@@ -9,30 +9,35 @@
   if (pathname.includes('payable')) {
     Turbolinks.reload()
   } else {
-    if (typeof calendar === 'undefined') {
-      let calendar;
+    $('.modal').modal('hide');
+
+    if (typeof fullcalendar === 'undefined') {
+      let fullcalendar;
     }
     if (typeof toggleEditRender === 'undefined') {
       let toggleEditRender;
     }
 
     if ($('.calendar').length > 0) {
-      calendar = $('.calendar');
+      fullcalendar = $('.calendar');
       toggleEditRender = true;
     } else if ($('.patient_calendar').length > 0) {
-      calendar = $('.patient_calendar');
+      fullcalendar = $('.patient_calendar');
       toggleEditRender = '<%= @appointment.patient_id %>' == window.patientId 
     } else if ($('.nurse_calendar').length > 0) {
-      calendar = $('.nurse_calendar');
+      fullcalendar = $('.nurse_calendar');
       toggleEditRender = '<%= @appointment.nurse_id %>' == window.nurseId
     } else if ($('.master_calendar').length > 0) {
-      calendar = $('.master_calendar');
+      fullcalendar = $('.master_calendar');
       toggleEditRender = '<%= @appointment.patient_id %>' == window.patientId || '<%= @appointment.nurse_id %>' == window.nurseId
-    }
-    
-    $('.modal').modal('hide');
+    } else {
+      fullcalendar = ''
+      toggleEditRender = ''
+    }    
 
-    calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+    if (fullcalendar) {
+      calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
+    }
 
     if (toggleEditRender) {
       calendar.fullCalendar(
@@ -40,6 +45,19 @@
         $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
         false
       );
+    }
+
+    if (window.fullCalendar) {
+      let event_to_remove = window.fullCalendar.getEventById('<%= "appointment_#{@appointment.id}" %>')
+      event_to_remove.remove()
+      if (window.currentResourceType === 'team' || (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' || window.currentResourceId === 'all')) {
+        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
+      } else {
+        if (['<%= j "patient_#{@appointment.patient_id}" %>', '<%= j "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) {
+          window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
+        } else {
+        }
+      }
     }
 
   }

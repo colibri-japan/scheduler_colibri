@@ -79,6 +79,14 @@ window.fullCalendar = new Calendar(calendarEl, {
     },
     
     events: '/plannings/62/appointments?nurse_id=39',
+
+    eventRender: function(info) {
+        if (info.event.extendedProps.cancelled) {
+            info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)'
+        } else if (info.event.extendedProps.edit_requested) {
+            info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)'
+        }
+    },
     
     eventClick: function(info) {
         if (window.userAllowedToEdit) {

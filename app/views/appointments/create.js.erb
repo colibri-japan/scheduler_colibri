@@ -36,7 +36,9 @@ $('.modal').modal('hide')
     fullcalendar = $('.patient_calendar');
   } else if ($('.nurse_calendar').length > 0) {
     fullcalendar = $('.nurse_calendar');
-  } 
+  } else {
+    fullcalendar = ''
+  }
 
   if (fullcalendar && window.nurseId == <%= @appointment.nurse_id %>  || window.patientId == <%= @appointment.patient_id %> || window.generalPlanning == 'true' ) {
     fullcalendar.fullCalendar(

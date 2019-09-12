@@ -3,6 +3,8 @@
 	window.privateEventsUrl = '<%= j planning_private_events_path(@planning) %>'
 	window.defaultResourceView = '<%= j @corporation.default_view %>'
 	window.defaultView = '<%= j @corporation.default_individual_view %>'
+	window.eventsUrl1 = '<%= j planning_appointments_path(@planning, format: :json) %>'
+	window.eventsUrl2 = '<%= j planning_private_events_path(@planning, format: :json) %>'
 	window.resourceUrl = '<%= j corporation_nurses_url(@corporation, format: :json)  %>'
 	window.resourceLabel = '従業員'
 	window.defaultResourceType = 'nurse'

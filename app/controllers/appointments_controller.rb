@@ -14,6 +14,8 @@ class AppointmentsController < ApplicationController
       @appointments = @planning.appointments.not_archived.where(nurse_id: params[:nurse_id]).includes(:patient, :nurse, :recurring_appointment)
     elsif params[:patient_id].present?
       @appointments = @planning.appointments.not_archived.where(patient_id: params[:patient_id]).includes(:patient, :nurse, :recurring_appointment)
+    elsif params[:team_id].present? 
+      @appointments = @planning.appointments.not_archived.where(nurse_id: Team.find(params[:team_id]).nurses.pluck(:id)).includes(:patient, :nurse, :recurring_appointment)
     else
      @appointments = @planning.appointments.not_archived.includes(:patient, :nurse, :recurring_appointment)
     end

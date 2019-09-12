@@ -77,8 +77,27 @@ window.fullCalendar = new Calendar(calendarEl, {
         let url = `${window.resourceUrl}${connector}start=${fetchInfo.start}&end=${fetchInfo.end}`
         $.getScript(url).then(data => successCallback($.parseJSON(data)))
     },
-    
-    events: '/plannings/62/appointments?nurse_id=39',
+
+    eventSources: [
+        {
+            events: function (fetchInfo, successCallback, failureCallback) {
+                let url1 = window.eventsUrl1
+                let data = {};
+                data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
+                data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
+                if (window.currentResourceId !== 'all') {
+                    let resourceArgument = `${window.currentResourceType}_id`
+                    data[resourceArgument] = window.currentResourceId
+                }
+                $.ajax({
+                    url: url1,
+                    type: 'GET',
+                    data: data
+                }).then(data => successCallback(data))
+            },
+            id: 'url1'
+        }
+    ], 
 
     eventRender: function(info) {
         if (info.event.extendedProps.cancelled) {
@@ -257,19 +276,17 @@ let toggleResourceView = () => {
 
 let updateEventSources = () => {
     let eventSources = window.fullCalendar.getEventSources()
+    
     for (let source of eventSources) {
-        source.remove()
+        if (source.id !== 'url1') {
+            source.remove()
+        }
     }
+
 
     let remainingEvents = window.fullCalendar.getEvents()
     for (let event of remainingEvents) {
         event.remove()
-    }
-
-    if (window.currentResourceId !== 'all') {
-        window.fullCalendar.addEventSource(`${window.appointmentsUrl}?${window.currentResourceType}_id=${window.currentResourceId}`)
-    } else {
-        window.fullCalendar.addEventSource(window.appointmentsUrl)
     }
 
     return

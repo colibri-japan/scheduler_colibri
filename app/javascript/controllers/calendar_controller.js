@@ -74,7 +74,7 @@ window.fullCalendar = new Calendar(calendarEl, {
 
     resources: function (fetchInfo, successCallback, failureCallback) {
         let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
-        let url = `${window.resourceUrl}${connector}start=${fetchInfo.start}&end=${fetchInfo.end}`
+        let url = `${window.resourceUrl}${connector}start=${moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')}&end=${moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')}`
         $.getScript(url).then(data => successCallback($.parseJSON(data)))
     },
 

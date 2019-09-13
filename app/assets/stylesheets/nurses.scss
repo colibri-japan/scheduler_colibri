@@ -106,9 +106,10 @@ p.payable-dashboard-line {
 	background-color: white;
 	position: absolute;
 	right: 0px;
-	top: 46px;
+	top: 48px;
 	width: 400px;
-	min-height: calc(100% - 46px);
+	min-height: calc(100% - 60px);
+	box-shadow: -2px 0px 2px 0px #a0a7af ;
 	z-index: 15;
 	padding: 15px;
 	border-left: 0.5px solid #ddd;

@@ -31,14 +31,13 @@ class PatientsController < ApplicationController
 
   def show
     authorize @patient, :same_corporation_as_current_user?
-    
-    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
-    fetch_nurses_grouped_by_team
-
-    @recurring_appointments = RecurringAppointment.where(patient_id: @patient.id, planning_id: @planning.id, displayable: true)
 
     #reporting line that needs to be changed
     #@nurses_with_services = Nurse.joins(:salary_line_items).select("nurses.*, sum(salary_line_items.service_duration) as sum_service_duration").where(salary_line_items: {patient_id: @patient.id}).where(displayable: true).group('nurses.id').order('sum_service_duration DESC')
+    respond_to do |format|
+      format.js 
+      format.html 
+    end
   end
 
   def master
@@ -178,10 +177,6 @@ class PatientsController < ApplicationController
 
   def set_patient
     @patient = Patient.find(params[:id])
-  end
-
-  def set_planning 
-    @planning = Planning.find(params[:planning_id])
   end
 
   def set_caveats

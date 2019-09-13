@@ -1,0 +1,6 @@
+$('#resource-details-panel').empty()
+$('#resource-details-panel').append("<%= j render('nurses/details').html_safe %>")
+$('#resource-details-panel').show()
+$('#see-more-resource-history-button').click(function(){
+    $('#more-resource-history').toggle()
+})

@@ -48,12 +48,14 @@ class NursesController < ApplicationController
   def show
     authorize @nurse, :same_corporation_as_current_user?
 
-    fetch_nurses_grouped_by_team
-    fetch_patients_grouped_by_kana
-
     #reporting lines that need to be changed
     @patients_with_services = Patient.joins(:appointments).select("patients.*, sum(appointments.duration) as sum_duration").where(appointments: {nurse_id: @nurse.id}).active.group('patients.id').order('sum_duration DESC')
     @appointments_grouped_by_category = @nurse.appointments.operational.where(planning_id: @planning.id).in_range((Date.today - 2.months)..Date.today).grouped_by_weighted_category
+    
+    respond_to do |format|
+      format.js 
+      format.html
+    end
   end
 
   def master 
@@ -225,14 +227,6 @@ class NursesController < ApplicationController
 
   def set_nurse
     @nurse = Nurse.find(params[:id])
-  end
-
-  def set_planning
-    @planning = Planning.find(params[:planning_id])
-  end
-  
-  def set_planning
-    @planning = Planning.find(params[:planning_id])
   end
 
   def set_valid_range

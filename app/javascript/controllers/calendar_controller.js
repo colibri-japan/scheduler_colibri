@@ -394,8 +394,19 @@ export default class extends Controller {
         this.initializeResource()
     }
 
-    disconnect() {
-        window.fullCalendar.destroy()
+    initializeResource() {
+        let resourceType = window.currentResourceType || window.defaultResourceType
+        let resourceId = window.currentResourceId || window.defaultResourceId
+
+        let selectedItem = document.getElementById(`${resourceType}_${resourceId}`)
+
+        selectedItem.classList.add('resource-selected')
+
+        this.resourceNameTarget.textContent = selectedItem.textContent
+
+        this.toggleDetailsButton()
+
+        return
     }
 
     navigate(event) {
@@ -415,6 +426,8 @@ export default class extends Controller {
         if (event.target.dataset.fcResourceUrl) {
             window.resourceUrl = event.target.dataset.fcResourceUrl
         }
+
+        document.getElementById('resource-details-panel').style.display = 'none'
         
         removeEvents()
               
@@ -423,19 +436,23 @@ export default class extends Controller {
 
         this.resourceNameTarget.textContent = event.target.textContent
 
+        this.toggleDetailsButton()
+
         return
     }
 
-    initializeResource() {
-        let resourceType = window.currentResourceType || window.defaultResourceType
-        let resourceId = window.currentResourceId || window.defaultResourceId
+    toggleDetailsButton() {
+        let detailsButton = document.getElementById('resource-details-button')
+        if (window.currentResourceType === 'team' || window.currentResourceId === 'all') {
+            console.log('details not needed')
+            detailsButton.style.display = 'none'
+        } else {
+            detailsButton.style.display = 'inline-block'
+            detailsButton.dataset.resourceUrl = `/${window.currentResourceType}s/${window.currentResourceId}.js`
+        }
+    }
 
-        let selectedItem = document.getElementById(`${resourceType}_${resourceId}`)
-
-        selectedItem.classList.add('resource-selected')
-
-        this.resourceNameTarget.textContent = selectedItem.textContent
-
-        return
+    disconnect() {
+        window.fullCalendar.destroy()
     }
 }

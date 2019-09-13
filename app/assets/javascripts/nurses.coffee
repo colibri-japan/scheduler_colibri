@@ -4,18 +4,6 @@
 
 $(document).on 'turbolinks:load', ->
 
-  $('#resource-name-wrapper').hover ->
-    $('#resource-details-panel').toggle()
-    return
-
-  $('#resource-details-button').click ->
-    $('#resource-details-panel').toggle()
-    return
-
-  $('#see-more-resource-history-button').click ->
-    $('#more-resource-history').toggle()
-    return
-
   $('tr.nurse-clickable-row').click ->
     $.getScript($(this).data('link'))
     return

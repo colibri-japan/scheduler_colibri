@@ -1,5 +1,7 @@
 <%= javascript_tag do %>
   window.teamId = "<%= j @team.id.to_s %>"
+  window.currentResourceType = 'team'
+  window.currentResourceId = '<%= @team.id %>'
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_master_path: planning_team_master_path(@planning, @team), resource_payable_path: planning_team_payable_path(@planning, @team, params: {m: @selected_month, y: @selected_year})} %>

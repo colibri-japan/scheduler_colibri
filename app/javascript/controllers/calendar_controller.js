@@ -386,6 +386,22 @@ let removeEvents = () => {
     return
 }
 
+let updatePayableUrl = () => {
+    let baseUrl = window.location.href 
+    let targetUrl
+    if (window.currentResourceType === 'team' || window.currentResourceId !== 'all') {
+        targetUrl = `${baseUrl}/${window.currentResourceType}s/${window.currentResourceId}/payable?m=${window.currentMonth}&y=${window.currentYear}`
+    } else if (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') {
+        targetUrl = `${baseUrl}/all_nurses_payable?m=${window.currentMonth}&y=${window.currentYear}`
+    } else if (window.currentResourceType === 'patient' && window.currentResourceId === 'all') {
+        targetUrl = `${baseUrl}/all_patients_payable?m=${window.currentMonth}&y=${window.currentYear}`
+    }
+
+    console.log(targetUrl)
+
+    document.getElementById('go-to-payable').dataset.url = targetUrl
+}
+
 export default class extends Controller {
 
     static targets = [ 'resourceName' ]
@@ -458,6 +474,8 @@ export default class extends Controller {
         }
 
         document.getElementById('resource-details-panel').style.display = 'none'
+
+        updatePayableUrl()
         
         removeEvents()
               

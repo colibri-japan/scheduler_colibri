@@ -47,6 +47,7 @@ window.fullCalendar = new Calendar(calendarEl, {
     maxTime: window.maxTime,
     refetchResourcesOnNavigate: true,
     displayEventEnd: true,
+    editable: true,
     height: function() {
         return (screen.height - 240)
     },
@@ -146,7 +147,59 @@ window.fullCalendar = new Calendar(calendarEl, {
         });
         
         this.unselect()
-    }
+    },
+
+    eventDrop: function (eventDropInfo) {
+        $(".popover").remove()
+
+        let minutes = moment.duration(eventDropInfo.delta).asMinutes();
+        let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
+        let previous_end = moment(eventDropInfo.event.end).subtract(minutes, "minutes");
+        let previousAppointment = `${previous_start.format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.format('LT')}`
+        let newAppointment = `${moment(eventDropInfo.event.start).format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).format('LT')}`
+        let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
+        let patient_name = eventDropInfo.event.extendedProps.patient.name
+
+        $('#drag-drop-content').html(`<p>従業員：${nurse_name} / ${window.clientResourceName}: ${patient_name} </p><p>${previousAppointment} >> </p><p>${newAppointment}</p>`)
+
+        $('#drag-drop-modal').modal()
+
+        $('.close-drag-drop-modal').click(function () {
+            eventDropInfo.revert()
+            $('.modal').modal('hide');
+            $('.modal-backdrop').remove();
+        })
+
+        $('#drag-drop-save').one('click', function () {
+            let ajaxData;
+            if (eventDropInfo.event.extendedProps.eventType === 'private_event') {
+                ajaxData = {
+                    private_event: {
+                        starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                        ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm')
+                    }
+                }
+            } else if (eventDropInfo.event.extendedProps.eventType === 'appointment') {
+                ajaxData = {
+                    appointment: {
+                        starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                        ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
+                    }
+                }
+            }
+            handleAppointmentOverlapRevert(eventDropInfo.revert())
+            $.ajax({
+                url: `${eventDropInfo.event.extendedProps.base_url}.js`,
+                type: 'PATCH',
+                data: ajaxData,
+                success: function(){
+                    $('.modal').modal('hide');
+                    $('.modal-backdrop').remove(); 
+                }
+            })
+        })
+    },
+
 })
 
 
@@ -268,6 +321,14 @@ let setRecurringAppointmentRange = (start, end, resource, view) => {
     }
 }
 
+let handleAppointmentOverlapRevert = (revertFunc) => {
+    $('#nurse-overlap-modal').on('shown.bs.modal', function () {
+        $('#nurse-revert-overlap').one('click', function () {
+            revertFunc()
+        })
+    })
+}
+
 let updateCalendarHeader = () => {
     if (window.currentResourceType === 'team' ||(window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' && window.currentResourceId === 'all')) {
         window.fullCalendar.setOption('header', resourceHeader)
@@ -333,9 +394,11 @@ export default class extends Controller {
         window.currentResourceType = event.target.dataset.resourceType
         window.currentResourceId = event.target.dataset.resourceId
         window.resourceLabel = window.currentResourceType === 'patient' ? '利用者' : '従業員'
-
+        
         updateCalendarHeader()
         toggleResourceView()
+
+        console.log('focus on this resource segment')
 
         let fcResources = window.fullCalendar.getResources()
         for (let resource of fcResources) {
@@ -352,6 +415,8 @@ export default class extends Controller {
         window.fullCalendar.refetchEvents()
 
         this.resourceNameTarget.textContent = event.target.textContent
+
+        return
     }
 
     initializeResource() {

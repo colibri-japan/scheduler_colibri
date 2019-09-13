@@ -112,7 +112,6 @@ class Appointment < ApplicationRecord
 			backgroundColor: self.color,
 			borderColor: self.borderColor,
 			cancelled: self.cancelled,
-			private_event: false,
 			service_type: self.title || '',
 			service_id: self.service_id,
 			nurse: {

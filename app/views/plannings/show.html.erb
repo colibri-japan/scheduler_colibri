@@ -121,7 +121,25 @@
 </div>
 
 <% unless current_user.schedule_readonly? %>
-	<%= render 'plannings/drag_drop_modal' %>
+	<div id="drag-drop-modal" class="modal fade" style="display:none">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="colibri-small-title">サービス編集確認</h1>
+					<button type="button" data-dismiss="modal" class="close close-drag-drop-modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p>下記の編集がセーブされます：</p>
+					<div id="drag-drop-content"></div>
+				</div>
+				<div class="modal-footer">
+					<div class="btn btn-colibri-light btn-pointer close-drag-drop-modal">キャンセル</div>
+					<div class="btn btn-info text-white btn-pointer" id="drag-drop-save">セーブする</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<%= render 'plannings/nurse_overlap_modal' %>
 	<%= render 'plannings/batch_action_button' %>
 <% end %>

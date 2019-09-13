@@ -353,20 +353,14 @@ let toggleResourceView = () => {
 }
 
 
-let updateEventSources = () => {
-    let eventSources = window.fullCalendar.getEventSources()
-    
-    for (let source of eventSources) {
-        if ( !['url1', 'url2'].includes(source.id) ) {
-            source.remove()
+let removeEvents = () => {
+    window.fullCalendar.batchRendering(function(){
+        let events = window.fullCalendar.getEvents()
+
+        for (let event of events) {
+            event.remove()
         }
-    }
-
-
-    let remainingEvents = window.fullCalendar.getEvents()
-    for (let event of remainingEvents) {
-        event.remove()
-    }
+    })
 
     return
 }
@@ -398,18 +392,11 @@ export default class extends Controller {
         updateCalendarHeader()
         toggleResourceView()
 
-        console.log('focus on this resource segment')
-
-        let fcResources = window.fullCalendar.getResources()
-        for (let resource of fcResources) {
-            resource.remove()
-        }
-
         if (event.target.dataset.fcResourceUrl) {
             window.resourceUrl = event.target.dataset.fcResourceUrl
         }
-
-        updateEventSources(event)
+        
+        removeEvents()
               
         window.fullCalendar.refetchResources()
         window.fullCalendar.refetchEvents()

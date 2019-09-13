@@ -27,6 +27,3 @@ json.eventType 'appointment'
 json.base_url planning_appointment_path(appointment.planning, appointment)
 json.edit_url edit_planning_appointment_path(appointment.planning, appointment)
 json.recurring_appointment_path "/plannings/#{appointment.planning_id}/recurring_appointments/#{appointment.recurring_appointment_id}/edit" if appointment.recurring_appointment_id.present?
-
-puts 'resource id'
-puts json.resourceId

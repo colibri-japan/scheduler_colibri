@@ -29,202 +29,201 @@ let header = {
     right: 'timeGridDay,timeGridWeek,dayGridMonth'
 }
 
-let calendarEl = document.getElementById('calendar')
-
-window.fullCalendar = new Calendar(calendarEl, {
-    plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, resourcePlugin, resourceTimeGridPlugin, resourceTimelinePlugin],
-    schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-    firstDay: window.firstDay,
-    slotDuration: '00:15:00',
-    timeFormat: 'H:mm',
-    nowIndicator: true,
-    defaultView: window.defaultView,
-    locale: jaLocale,
-    header: header,
-    eventColor: '#7AD5DE',
-    selectable: true,
-    minTime: window.minTime,
-    maxTime: window.maxTime,
-    refetchResourcesOnNavigate: true,
-    displayEventEnd: true,
-    editable: true,
-    height: function() {
-        return (screen.height - 240)
-    },
-    views: {
-        'timeGrid': {
-            slotLabelFormat: {hour: 'numeric', minute: '2-digit'},
+let createCalendar = () => {
+    let calendar = new Calendar(document.getElementById('calendar'), {
+        plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, resourcePlugin, resourceTimeGridPlugin, resourceTimelinePlugin],
+        schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+        firstDay: window.firstDay,
+        slotDuration: '00:15:00',
+        timeFormat: 'H:mm',
+        nowIndicator: true,
+        defaultView: window.defaultView,
+        locale: jaLocale,
+        header: header,
+        eventColor: '#7AD5DE',
+        selectable: true,
+        minTime: window.minTime,
+        maxTime: window.maxTime,
+        refetchResourcesOnNavigate: true,
+        displayEventEnd: true,
+        editable: true,
+        height: function () {
+            return (screen.height - 240)
         },
-        'dayGrid': {
-            slotLabelFormat: {day: 'numeric'},
-        },
-        'resourceTimeGridDay': {
-            resourceLabelText: window.resourceLabel
-        },
-        'resourceTimelineWeek': {
-            slotDuration: {days: 1},
-            resourceAreaWidth: '10%',
-            resourceLabelText: window.resourceLabel
-        }
-    },
-
-    viewSkeletonRender: function(info) {
-        drawHourMarks()
-        makeTimeAxisPrintFriendly()
-    },
-
-    resources: function (fetchInfo, successCallback, failureCallback) {
-        if (window.resourceUrl) {
-            let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
-            let url = `${window.resourceUrl}${connector}start=${moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')}&end=${moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')}`
-            $.getScript(url).then(data => successCallback($.parseJSON(data)))
-        }
-    },
-
-    eventSources: [
-        {
-            events: function (fetchInfo, successCallback, failureCallback) {
-                let url1 = window.eventsUrl1
-                let data = {};
-                data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
-                data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                if (window.currentResourceId !== 'all') {
-                    let resourceArgument = `${window.currentResourceType}_id`
-                    data[resourceArgument] = window.currentResourceId
-                }
-                $.ajax({
-                    url: url1,
-                    type: 'GET',
-                    data: data
-                }).then(data => successCallback(data))
+        views: {
+            'timeGrid': {
+                slotLabelFormat: { hour: 'numeric', minute: '2-digit' },
             },
-            id: 'url1'
-        },
-        {
-            events: function(fetchInfo, successCallback, failureCallback) {
-                let url2 = window.eventsUrl2
-                let data = {}
-                data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
-                data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                if (window.currentResourceId !== 'all') {
-                    let resourceArgument = `${window.currentResourceType}_id`
-                    data[resourceArgument] = window.currentResourceId
-                }
-                $.ajax({
-                    url: url2,
-                    type: 'GET',
-                    data: data
-                }).then(data => successCallback(data))
+            'dayGrid': {
+                slotLabelFormat: { day: 'numeric' },
             },
-            id: 'url2'
-        }
-    ], 
-
-    eventRender: function(info) {
-        if (info.event.extendedProps.cancelled) {
-            info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)'
-        } else if (info.event.extendedProps.edit_requested) {
-            info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)'
-        }
-
-        let popoverTitle = info.event.extendedProps.serviceType
-
-        let popoverContent
-        if (info.event.extendedProps.patient && info.event.extendedProps.patient.address) {
-            popoverContent = `${info.event.extendedProps.patient.address}<br/>${info.event.extendedProps.description}`
-        } else {
-            popoverContent = info.event.extendedProps.description
-        }
-
-        $(info.el).popover({
-            html: true,
-            title: popoverTitle,
-            content: popoverContent,
-            placement: 'top',
-            container: 'body',
-            trigger: 'hover'
-        }).on('mouseleave', function(){
-            $('.popover').remove()
-        })
-    },
-    
-    eventClick: function(info) {
-        if (window.userAllowedToEdit) {
-            let dateClicked = dateFormatter.format(info.event.start)
-            $.getScript(info.event.extendedProps.edit_url + '?date=' + dateClicked);
-        }
-    },
-    
-    select: function(info) {
-        let selectEnd = info.end 
-        let selectStart = info.start
-        if (selectEnd - selectStart <= 900000) {
-            selectEnd.setMinutes(selectStart.getMinutes() + 30)
-        }
-        $.getScript(window.selectActionUrl, function () {
-            setAppointmentRange(selectStart, selectEnd, info.view);
-            setPrivateEventRange(selectStart, selectEnd, info.view);
-            appointmentSelectizeNursePatient();
-            privateEventSelectizeNursePatient();
-        });
-        
-        this.unselect()
-    },
-
-    eventDrop: function (eventDropInfo) {
-        $(".popover").remove()
-
-        let minutes = moment.duration(eventDropInfo.delta).asMinutes();
-        let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
-        let previous_end = moment(eventDropInfo.event.end).subtract(minutes, "minutes");
-        let previousAppointment = `${previous_start.format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.format('LT')}`
-        let newAppointment = `${moment(eventDropInfo.event.start).format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).format('LT')}`
-        let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
-        let patient_name = eventDropInfo.event.extendedProps.patient.name
-
-        $('#drag-drop-content').html(`<p>従業員：${nurse_name} / ${window.clientResourceName}: ${patient_name} </p><p>${previousAppointment} >> </p><p>${newAppointment}</p>`)
-
-        $('#drag-drop-modal').modal()
-
-        $('.close-drag-drop-modal').click(function () {
-            eventDropInfo.revert()
-            $('.modal').modal('hide');
-            $('.modal-backdrop').remove();
-        })
-
-        $('#drag-drop-save').one('click', function () {
-            let ajaxData;
-            if (eventDropInfo.event.extendedProps.eventType === 'private_event') {
-                ajaxData = {
-                    private_event: {
-                        starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
-                        ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm')
-                    }
-                }
-            } else if (eventDropInfo.event.extendedProps.eventType === 'appointment') {
-                ajaxData = {
-                    appointment: {
-                        starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
-                        ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
-                    }
-                }
+            'resourceTimeGridDay': {
+                resourceLabelText: window.resourceLabel
+            },
+            'resourceTimelineWeek': {
+                slotDuration: { days: 1 },
+                resourceAreaWidth: '10%',
+                resourceLabelText: window.resourceLabel
             }
-            handleAppointmentOverlapRevert(eventDropInfo.revert())
-            $.ajax({
-                url: `${eventDropInfo.event.extendedProps.base_url}.js`,
-                type: 'PATCH',
-                data: ajaxData,
-                success: function(){
-                    $('.modal').modal('hide');
-                    $('.modal-backdrop').remove(); 
-                }
+        },
+
+        viewSkeletonRender: function (info) {
+            drawHourMarks()
+            makeTimeAxisPrintFriendly()
+        },
+
+        resources: function (fetchInfo, successCallback, failureCallback) {
+            if (window.resourceUrl) {
+                let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
+                let url = `${window.resourceUrl}${connector}start=${moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')}&end=${moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')}`
+                $.getScript(url).then(data => successCallback($.parseJSON(data)))
+            }
+        },
+
+        eventSources: [
+            {
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    let url1 = window.eventsUrl1
+                    let data = {};
+                    data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
+                    data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
+                    if (window.currentResourceId !== 'all') {
+                        let resourceArgument = `${window.currentResourceType}_id`
+                        data[resourceArgument] = window.currentResourceId
+                    }
+                    $.ajax({
+                        url: url1,
+                        type: 'GET',
+                        data: data
+                    }).then(data => successCallback(data))
+                },
+                id: 'url1'
+            },
+            {
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    let url2 = window.eventsUrl2
+                    let data = {}
+                    data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
+                    data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
+                    if (window.currentResourceId !== 'all') {
+                        let resourceArgument = `${window.currentResourceType}_id`
+                        data[resourceArgument] = window.currentResourceId
+                    }
+                    $.ajax({
+                        url: url2,
+                        type: 'GET',
+                        data: data
+                    }).then(data => successCallback(data))
+                },
+                id: 'url2'
+            }
+        ],
+
+        eventRender: function (info) {
+            if (info.event.extendedProps.cancelled) {
+                info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)'
+            } else if (info.event.extendedProps.edit_requested) {
+                info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)'
+            }
+
+            let popoverTitle = info.event.extendedProps.serviceType
+
+            let popoverContent
+            if (info.event.extendedProps.patient && info.event.extendedProps.patient.address) {
+                popoverContent = `${info.event.extendedProps.patient.address}<br/>${info.event.extendedProps.description}`
+            } else {
+                popoverContent = info.event.extendedProps.description
+            }
+
+            $(info.el).popover({
+                html: true,
+                title: popoverTitle,
+                content: popoverContent,
+                placement: 'top',
+                container: 'body',
+                trigger: 'hover'
+            }).on('mouseleave', function () {
+                $('.popover').remove()
             })
-        })
-    },
+        },
 
-})
+        eventClick: function (info) {
+            if (window.userAllowedToEdit) {
+                let dateClicked = dateFormatter.format(info.event.start)
+                $.getScript(info.event.extendedProps.edit_url + '?date=' + dateClicked);
+            }
+        },
 
+        select: function (info) {
+            let selectEnd = info.end
+            let selectStart = info.start
+            if (selectEnd - selectStart <= 900000) {
+                selectEnd.setMinutes(selectStart.getMinutes() + 30)
+            }
+            $.getScript(window.selectActionUrl, function () {
+                setAppointmentRange(selectStart, selectEnd, info.view);
+                setPrivateEventRange(selectStart, selectEnd, info.view);
+                appointmentSelectizeNursePatient();
+                privateEventSelectizeNursePatient();
+            });
 
+            this.unselect()
+        },
+
+        eventDrop: function (eventDropInfo) {
+            $(".popover").remove()
+
+            let minutes = moment.duration(eventDropInfo.delta).asMinutes();
+            let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
+            let previous_end = moment(eventDropInfo.event.end).subtract(minutes, "minutes");
+            let previousAppointment = `${previous_start.format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.format('LT')}`
+            let newAppointment = `${moment(eventDropInfo.event.start).format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).format('LT')}`
+            let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
+            let patient_name = eventDropInfo.event.extendedProps.patient.name
+
+            $('#drag-drop-content').html(`<p>従業員：${nurse_name} / ${window.clientResourceName}: ${patient_name} </p><p>${previousAppointment} >> </p><p>${newAppointment}</p>`)
+
+            $('#drag-drop-modal').modal()
+
+            $('.close-drag-drop-modal').click(function () {
+                eventDropInfo.revert()
+                $('.modal').modal('hide');
+                $('.modal-backdrop').remove();
+            })
+
+            $('#drag-drop-save').one('click', function () {
+                let ajaxData;
+                if (eventDropInfo.event.extendedProps.eventType === 'private_event') {
+                    ajaxData = {
+                        private_event: {
+                            starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                            ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm')
+                        }
+                    }
+                } else if (eventDropInfo.event.extendedProps.eventType === 'appointment') {
+                    ajaxData = {
+                        appointment: {
+                            starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                            ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
+                        }
+                    }
+                }
+                handleAppointmentOverlapRevert(eventDropInfo.revert())
+                $.ajax({
+                    url: `${eventDropInfo.event.extendedProps.base_url}.js`,
+                    type: 'PATCH',
+                    data: ajaxData,
+                    success: function () {
+                        $('.modal').modal('hide');
+                        $('.modal-backdrop').remove();
+                    }
+                })
+            })
+        },
+    })
+
+    return calendar
+}
 
 let dateFormatter = new Intl.DateTimeFormat('sv-SE')
 
@@ -392,6 +391,29 @@ export default class extends Controller {
     static targets = [ 'resourceName' ]
     
     connect() {
+        console.log('connected')
+        this.renderCalendar()
+        this.initializeResource()
+    }
+
+    renderCalendar() {
+        if (window.fullCalendar) {
+            this.initializeView()
+            let response = window.fullCalendar.render()
+    
+            if (typeof reponse === 'undefined') {
+                window.fullCalendar = createCalendar()
+                this.initializeView()
+                window.fullCalendar.render()
+            }
+        } else {
+            window.fullCalendar = createCalendar()
+            this.initializeView()
+            window.fullCalendar.render()  
+        }
+    }
+
+    initializeView() {
         if (window.defaultResourceType === 'team' || window.defaultResourceId === 'all') {
             window.fullCalendar.changeView(window.defaultResourceView)
             window.fullCalendar.setOption('header', resourceHeader)
@@ -399,8 +421,6 @@ export default class extends Controller {
             window.fullCalendar.changeView(window.defaultView)
             window.fullCalendar.setOption('header', header)
         }
-        window.fullCalendar.render()
-        this.initializeResource()
     }
 
     initializeResource() {

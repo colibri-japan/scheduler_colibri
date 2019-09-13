@@ -20,7 +20,7 @@
 <% end %>
 
 
-<%= render partial: 'plannings/planning_left_menu', locals: {resource_path: planning_team_path(@planning, @team), resource_master_path: planning_team_master_path(@planning, @team), view:'resource', resource_payable_path: planning_team_payable_path(@planning, @team, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}) } %>
+<%= render partial: 'plannings/planning_left_menu', locals: {resource_master_path: planning_team_master_path(@planning, @team), view:'resource', resource_payable_path: planning_team_payable_path(@planning, @team, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}) } %>
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'nurse', view: 'resource'} %>
 
 <div id="detail-container">

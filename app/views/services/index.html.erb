@@ -1,4 +1,4 @@
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'settings', resource_path: current_user.schedule_default_url_option || planning_nurse_path(@planning, @main_nurse), resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'settings', resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
 
 <%= render 'plannings/settings_submenu', view: "services" %>
 

@@ -1,4 +1,4 @@
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_all_patients_path(@planning), resource_master_path: planning_all_patients_master_path(@planning), resource_payable_path: planning_all_patients_payable_path(@planning, params: {m: @selected_month, y: @selected_year})} %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_master_path: planning_all_patients_master_path(@planning), resource_payable_path: planning_all_patients_payable_path(@planning, params: {m: @selected_month, y: @selected_year})} %>
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'patient', view: 'payable'} %>
 
 <% if @corporation.elderly_care_and_nursing? %>

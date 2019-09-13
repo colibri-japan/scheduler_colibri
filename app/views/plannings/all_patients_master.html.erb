@@ -21,7 +21,7 @@
 <% end %>
 
 
-<%= render partial: 'planning_left_menu', locals: {resource_path: planning_all_patients_path(@planning), resource_master_path: planning_all_patients_master_path(@planning), resource_payable_path: planning_all_patients_payable_path(@planning, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'master'} %>
+<%= render partial: 'planning_left_menu', locals: {resource_master_path: planning_all_patients_master_path(@planning), resource_payable_path: planning_all_patients_payable_path(@planning, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'master'} %>
 
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'patient', view: 'master'} %>
 

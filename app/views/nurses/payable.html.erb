@@ -3,7 +3,7 @@
 	window.excelUrl = "<%= j planning_nurse_payable_path(@planning, @nurse, format: :xlsx) %>"
 <% end %>
 
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_path: planning_nurse_path(@planning, @nurse), resource_master_path: planning_nurse_master_path(@planning, @nurse), resource_payable_path: planning_nurse_payable_path(@planning, @nurse, params: {m: @selected_month, y: @selected_year})} %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_master_path: planning_nurse_master_path(@planning, @nurse), resource_payable_path: planning_nurse_payable_path(@planning, @nurse, params: {m: @selected_month, y: @selected_year})} %>
 
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'true', resource_type: 'nurse', view: 'payable'} %>
 

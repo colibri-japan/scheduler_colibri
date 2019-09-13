@@ -31,7 +31,7 @@ class PrivateEvent < ApplicationRecord
 			base_url: "/plannings/#{self.planning_id}/private_events/#{self.id}",
 			edit_url: "/plannings/#{self.planning_id}/private_events/#{self.id}/edit",
 			displayable: true,
-			service_type: self.title || '',
+			serviceType: self.title || '',
 			nurse: {
 				name: self.nurse.try(:name),
 			},

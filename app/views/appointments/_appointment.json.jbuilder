@@ -16,8 +16,7 @@ json.patient do
     json.name appointment.patient.name 
     json.address appointment.patient.address 
 end
-json.service_type appointment.title ? appointment.title : ''
-json.private_event false
+json.serviceType appointment.title || ''
 
 json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 

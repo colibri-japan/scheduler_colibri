@@ -112,7 +112,7 @@ class Appointment < ApplicationRecord
 			backgroundColor: self.color,
 			borderColor: self.borderColor,
 			cancelled: self.cancelled,
-			service_type: self.title || '',
+			serviceType: self.title || '',
 			service_id: self.service_id,
 			nurse: {
 				name: self.nurse.try(:name),

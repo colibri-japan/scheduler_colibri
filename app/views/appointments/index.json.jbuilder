@@ -11,7 +11,7 @@ json.array! @appointments.each do |appointment|
         json.description appointment.description ? appointment.description : ''
         
         json.resourceIds ["nurse_#{appointment.nurse_id}", "patient_#{appointment.patient_id}"]
-        json.service_type appointment.title ? appointment.title : ''
+        json.serviceType appointment.title || ''
         json.eventType 'appointment'
 
         json.patient do 
@@ -22,8 +22,6 @@ json.array! @appointments.each do |appointment|
         json.nurse do 
             json.name appointment.nurse.name
         end
-
-        json.private_event false
 
         json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
 

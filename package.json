@@ -17,6 +17,7 @@
     "coffee-loader": "^0.9.0",
     "coffeescript": "1.12.7",
     "jquery": "^3.4.1",
+    "popper.js": "^1.15.0",
     "stimulus": "^1.1.1",
     "turbolinks": "^5.2.0"
   },

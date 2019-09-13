@@ -8,10 +8,8 @@ json.title "#{private_event.patient.try(:name)} #{private_event.nurse.try(:name)
 json.start private_event.starts_at.try(:strftime, date_format)
 json.end private_event.ends_at.try(:strftime, date_format)
 json.description private_event.description ? private_event.description : ''
-json.service_type private_event.title ? private_event.title : ''
+json.serviceType private_event.title || ''
 
-
-json.private_event true
 json.patient do 
     json.name private_event.patient.try(:name)
     json.address private_event.patient.try(:address)

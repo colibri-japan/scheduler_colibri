@@ -124,6 +124,26 @@ window.fullCalendar = new Calendar(calendarEl, {
         } else if (info.event.extendedProps.edit_requested) {
             info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)'
         }
+
+        let popoverTitle = info.event.extendedProps.serviceType
+
+        let popoverContent
+        if (info.event.extendedProps.patient && info.event.extendedProps.patient.address) {
+            popoverContent = `${info.event.extendedProps.patient.address}<br/>${info.event.extendedProps.description}`
+        } else {
+            popoverContent = info.event.extendedProps.description
+        }
+
+        $(info.el).popover({
+            html: true,
+            title: popoverTitle,
+            content: popoverContent,
+            placement: 'top',
+            container: 'body',
+            trigger: 'hover'
+        }).on('mouseleave', function(){
+            $('.popover').remove()
+        })
     },
     
     eventClick: function(info) {

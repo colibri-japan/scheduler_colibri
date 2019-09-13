@@ -36,6 +36,7 @@
 		<div  id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
 			<div id="patients-resource" class="no-print hide-resource">
 				<div class="nurses-resource-subsection-title resource-title-selectable"
+					id="patient_all"
 					data-resource-type="patient"
 					data-resource-id="all"
 					data-fc-resource-url="<%= corporation_patients_url(@corporation, include_undefined: true, resource_type: 'appointments', planning_id: @planning.id, format: :json) %>"
@@ -62,6 +63,7 @@
 			<div id="nurses-resource" class="no-print">
 
 				<div class="nurses-resource-subsection-title resource-title-selectable" 
+					id="nurse_all"
 					data-resource-type="nurse"
 					data-resource-id="all"
 					data-fc-resource-url="<%= corporation_nurses_url(@corporation, include_undefined: true, format: :json) %>"
@@ -76,6 +78,7 @@
 						data-resource-type="team" 
 						data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json, include_undefined: true, team_id: @teams_id_by_name[group_name]) if @teams_id_by_name.present? %>"
 						class="nurses-resource-subsection-title <%= 'resource-title-selectable' if @teams_id_by_name.present? %>" 
+						id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>'
 						data-action="<%= 'click->calendar#navigate' if @teams_id_by_name.present? %>">
 							<%= group_name %>
 					</div>

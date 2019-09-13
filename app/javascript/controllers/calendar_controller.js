@@ -397,8 +397,6 @@ let updatePayableUrl = () => {
         targetUrl = `${baseUrl}/all_patients_payable?m=${window.currentMonth}&y=${window.currentYear}`
     }
 
-    console.log(targetUrl)
-
     document.getElementById('go-to-payable').dataset.url = targetUrl
 }
 
@@ -408,8 +406,8 @@ export default class extends Controller {
     
     connect() {
         console.log('connected')
-        this.renderCalendar()
         this.initializeResource()
+        this.renderCalendar()
     }
 
     renderCalendar() {
@@ -430,22 +428,36 @@ export default class extends Controller {
     }
 
     initializeView() {
-        if (window.defaultResourceType === 'team' || window.defaultResourceId === 'all') {
-            window.fullCalendar.changeView(window.defaultResourceView)
-            window.fullCalendar.setOption('header', resourceHeader)
+        if (window.currentResourceId && window.currentResourceType) {
+            if (window.currentResourceType === 'team' || window.currentResourceId === 'all') {
+                window.fullCalendar.changeView(window.defaultResourceView)
+                window.fullCalendar.setOption('header', resourceHeader)
+            } else {
+                window.fullCalendar.changeView(window.defaultView)
+                window.fullCalendar.setOption('header', header)
+            }
         } else {
-            window.fullCalendar.changeView(window.defaultView)
-            window.fullCalendar.setOption('header', header)
+            if (window.defaultResourceType === 'team' || window.defaultResourceId === 'all') {
+                window.fullCalendar.changeView(window.defaultResourceView)
+                window.fullCalendar.setOption('header', resourceHeader)
+            } else {
+                window.fullCalendar.changeView(window.defaultView)
+                window.fullCalendar.setOption('header', header)
+            }
         }
     }
 
     initializeResource() {
-        let resourceType = window.defaultResourceType || 'nurses'
-        let resourceId = window.defaultResourceId || 'all'
+        let resourceType = window.currentResourceType || window.defaultResourceType || 'nurses'
+        let resourceId = window.currentResourceId || window.defaultResourceId || 'all'
 
         let selectedItem = document.getElementById(`${resourceType}_${resourceId}`)
 
         selectedItem.classList.add('resource-selected')
+
+        if (selectedItem.dataset.fcResourceUrl) {
+            window.resourceUrl = selectedItem.dataset.fcResourceUrl
+        }
 
         this.resourceNameTarget.textContent = selectedItem.textContent
 

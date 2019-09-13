@@ -74,9 +74,11 @@ window.fullCalendar = new Calendar(calendarEl, {
     },
 
     resources: function (fetchInfo, successCallback, failureCallback) {
-        let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
-        let url = `${window.resourceUrl}${connector}start=${moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')}&end=${moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')}`
-        $.getScript(url).then(data => successCallback($.parseJSON(data)))
+        if (window.resourceUrl) {
+            let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
+            let url = `${window.resourceUrl}${connector}start=${moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')}&end=${moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')}`
+            $.getScript(url).then(data => successCallback($.parseJSON(data)))
+        }
     },
 
     eventSources: [
@@ -390,13 +392,20 @@ export default class extends Controller {
     static targets = [ 'resourceName' ]
     
     connect() {
+        if (window.defaultResourceType === 'team' || window.defaultResourceId === 'all') {
+            window.fullCalendar.changeView(window.defaultResourceView)
+            window.fullCalendar.setOption('header', resourceHeader)
+        } else {
+            window.fullCalendar.changeView(window.defaultView)
+            window.fullCalendar.setOption('header', header)
+        }
         window.fullCalendar.render()
         this.initializeResource()
     }
 
     initializeResource() {
-        let resourceType = window.currentResourceType || window.defaultResourceType
-        let resourceId = window.currentResourceId || window.defaultResourceId
+        let resourceType = window.defaultResourceType || 'nurses'
+        let resourceId = window.defaultResourceId || 'all'
 
         let selectedItem = document.getElementById(`${resourceType}_${resourceId}`)
 
@@ -405,6 +414,7 @@ export default class extends Controller {
         this.resourceNameTarget.textContent = selectedItem.textContent
 
         this.toggleDetailsButton()
+
 
         return
     }
@@ -444,7 +454,7 @@ export default class extends Controller {
     toggleDetailsButton() {
         let detailsButton = document.getElementById('resource-details-button')
         if (window.currentResourceType === 'team' || window.currentResourceId === 'all') {
-            console.log('details not needed')
+
             detailsButton.style.display = 'none'
         } else {
             detailsButton.style.display = 'inline-block'

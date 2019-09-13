@@ -35,6 +35,21 @@ module PlanningsHelper
 		date.present? ? date.strftime('%Y年%-m月%-d日') : '未記入'
 	end
 
+	def calendar_resources_url(user, corporation, include_undefined)
+		case user.calendar_option
+		when 0
+			corporation_nurses_path(corporation, include_undefined: include_undefined, format: :json)
+		when 1
+			corporation_patients_path(corporation, format: :json)
+		when 2
+			''
+		when 3
+			corporation_nurses_path(corporation, format: :json, include_undefined: include_undefined, team_id: current_user.default_resource_id)
+		else
+			corporation_nurses_path(corporation, include_undefined: include_undefined, format: :json)
+		end
+	end
+
 	def link_to_all_patients_from_view(view, planning, options={})
 		case view 
 		when 'master'

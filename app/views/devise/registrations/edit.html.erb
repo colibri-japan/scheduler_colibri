@@ -16,7 +16,6 @@
       </div>
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-        <%= devise_error_messages! %>
 
         <div class="form-group">
           <%= f.label :name, 'ご自身のユーザー名', class: "colibri-form-label" %><br />
@@ -35,7 +34,7 @@
 
         <div class="form-group">
           <%= f.label :nurse_id, 'シフトのデフォルトページ', class: "colibri-form-label" %><br />
-          <%= f.select :schedule_default_url_option, options_for_select(user_default_url_options(resource), resource.schedule_default_url_option)  %>
+          <%= f.select :default_calendar_option, options_for_select(user_default_calendar_options(resource), resource.calendar_option)  %>
         </div>
 
         <div class="form-group">

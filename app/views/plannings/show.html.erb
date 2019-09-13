@@ -1,16 +1,16 @@
 <%= javascript_tag do %>
 	window.appointmentsUrl = '<%= j planning_appointments_path(@planning) %>'
 	window.privateEventsUrl = '<%= j planning_private_events_path(@planning) %>'
-	window.defaultResourceView = '<%= j @corporation.default_view %>'
-	window.defaultView = '<%= j @corporation.default_individual_view %>'
+	window.defaultResourceView = '<%= j @corporation.default_view || 'resourceTimeGridDay' %>'
+	window.defaultView = '<%= j @corporation.default_individual_view || 'timeGridWeek' %>'
 	window.eventsUrl1 = '<%= j planning_appointments_path(@planning, format: :json) %>'
 	window.eventsUrl2 = '<%= j planning_private_events_path(@planning, format: :json) %>'
-	window.resourceUrl = '<%= j corporation_nurses_url(@corporation, format: :json)  %>'
+	window.resourceUrl = '<%= j calendar_resources_url(current_user, @corporation, true) %>'
 	window.resourceLabel = '従業員'
-	window.defaultResourceType = 'nurse'
-	window.defaultResourceId = '39'
-	window.currentResourceType = 'nurse'
-	window.currentResourceId = '39'
+	window.defaultResourceType = '<%= j current_user.default_resource_type || "nurses" %>'
+	window.defaultResourceId = '<%= j current_user.default_resource_id || "all" %>'
+	window.currentResourceType = ''
+	window.currentResourceId = ''
 	window.selectActionUrl = "<%= j new_calendar_event_path %>";
 	window.minTime = '<%= j @corporation.business_start_hour %>'
 	window.maxTime = '<%= j @corporation.business_end_hour %>'
@@ -64,7 +64,7 @@
 				<div class="nurses-resource-subsection-title resource-title-selectable" 
 					data-resource-type="nurse"
 					data-resource-id="all"
-					data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json) %>"
+					data-fc-resource-url="<%= corporation_nurses_url(@corporation, include_undefined: true, format: :json) %>"
 					data-action="click->calendar#navigate">
 						従業員全員
 				</div>
@@ -74,7 +74,7 @@
 					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' 
 						data-resource-id="<%= @teams_id_by_name[group_name] %>" 
 						data-resource-type="team" 
-						data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json, team_id: @teams_id_by_name[group_name]) if @teams_id_by_name.present? %>"
+						data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json, include_undefined: true, team_id: @teams_id_by_name[group_name]) if @teams_id_by_name.present? %>"
 						class="nurses-resource-subsection-title <%= 'resource-title-selectable' if @teams_id_by_name.present? %>" 
 						data-action="<%= 'click->calendar#navigate' if @teams_id_by_name.present? %>">
 							<%= group_name %>

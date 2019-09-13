@@ -4,6 +4,8 @@ class User < ApplicationRecord
   
   devise :invitable, :database_authenticatable, :registerable,
   :recoverable, :rememberable, :trackable, :validatable
+
+  attribute :default_calendar_option, :integer
   
   acts_as_reader
   
@@ -28,6 +30,7 @@ class User < ApplicationRecord
 
   before_validation :set_default_corporation
   before_create :invited_corporation
+  before_save :set_calendar_defaults
 
 
   scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
@@ -53,10 +56,46 @@ class User < ApplicationRecord
     super && self.is_active?
   end
 
+  def calendar_option
+    if default_resource_type == 'nurse' && default_resource_id == 'all'
+      0
+    elsif default_resource_type == 'patient' && default_resource_id == 'all'
+      1 
+    elsif default_resource_type == 'nurse' && default_resource_id == "#{nurse_id}" 
+      2
+    elsif default_resource_type == 'team'
+      3
+    else
+      0
+    end
+  end
+
   private
 
   def set_default_corporation
   	self.corporation_id = 1 unless self.corporation_id
+  end
+
+  def set_calendar_defaults
+    case self.default_calendar_option
+    when 0
+      #all nurses
+      self.default_resource_type = 'nurse'
+      self.default_resource_id = 'all'
+    when 1
+      #all patients
+      self.default_resource_type = 'patient'
+      self.default_resource_id = 'all'
+    when 2
+      #self nurse
+      self.default_resource_type = 'nurse'
+      self.default_resource_id = "#{self.nurse_id}" || 'all'
+    when 3
+      #self team
+      self.default_resource_type = 'team'
+      self.default_resource_id = "#{self.nurse.try(:team_id)}" || ''
+    else
+    end
   end
 
   def invited_corporation

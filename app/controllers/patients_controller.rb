@@ -33,7 +33,8 @@ class PatientsController < ApplicationController
     authorize @patient, :same_corporation_as_current_user?
 
     #reporting line that needs to be changed
-    #@nurses_with_services = Nurse.joins(:salary_line_items).select("nurses.*, sum(salary_line_items.service_duration) as sum_service_duration").where(salary_line_items: {patient_id: @patient.id}).where(displayable: true).group('nurses.id').order('sum_service_duration DESC')
+    @nurses_with_services = Nurse.joins(:appointments).select("nurses.*, sum(appointments.duration) as sum_appointments_duration").where(appointments: {patient_id: @patient.id, archived_at: nil, cancelled: false, edit_requested: false}).displayable.not_archived.group('nurses.id').order('sum_appointments_duration DESC')
+    
     respond_to do |format|
       format.js 
       format.html 

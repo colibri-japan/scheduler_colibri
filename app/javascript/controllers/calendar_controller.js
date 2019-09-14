@@ -179,8 +179,10 @@ let createCalendar = () => {
             $.getScript(window.selectActionUrl, function () {
                 setAppointmentRange(selectStart, selectEnd, info.view);
                 setPrivateEventRange(selectStart, selectEnd, info.view);
+                setRecurringAppointmentRange(selectStart, selectEnd, info.view);
                 appointmentSelectizeNursePatient();
                 privateEventSelectizeNursePatient();
+                recurringAppointmentSelectizeNursePatient()
             });
 
             this.unselect()
@@ -323,15 +325,15 @@ let setAppointmentRange = (start, end, view) => {
         $('#appointment_ends_at_4i').val(moment(end).format('HH'));
         $('#appointment_ends_at_5i').val(moment(end).format('mm'));
     }
-    if (window.currentResourceType === 'nurse' && window.currentResourceId && window.currentResourceId !== 'all') {
-        $("#appointment_nurse_id").val(window.currentResourceId);
-    }
-    if (window.currentResourceType === 'patient' && window.currentResourceId && window.currentResourceId !== 'all') {
-        $("#appointment_patient_id").val(window.currentResourceId);
+
+    if (window.currentResourceType && window.currentResourceType !== 'team' && window.currentResourceId !== 'all') {
+        $(`#appointment_${window.currentResourceType}_id`).val(window.currentResourceId);
+    } else if (window.defaultResourceType !== 'team' && window.currentResourceType !== 'all') {
+        $(`#appointment_${window.defaultResourceType}_id`).val(window.defaultResourceId);
     }
 }
 
-let setRecurringAppointmentRange = (start, end, resource, view) => {
+let setRecurringAppointmentRange = (start, end, view) => {
     $('#recurring_appointment_anchor_1i').val(moment(start).format('YYYY'));
     $('#recurring_appointment_anchor_2i').val(moment(start).format('M'));
     $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
@@ -350,12 +352,12 @@ let setRecurringAppointmentRange = (start, end, resource, view) => {
         $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
         $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
     }
-    if (window.currentResourceType === 'nurse' && window.currentResourceId && window.currentResourceId !== 'all') {
-        $('#recurring_appointment_nurse_id').val(window.currentResourceId);
+    if (window.currentResourceType && window.currentResourceType !== 'team' && window.currentResourceId !== 'all') {
+        $(`#recurring_appointment_${window.currentResourceType}_id`).val(window.currentResourceId);
+    } else if (window.defaultResourceType !== 'team' && window.currentResourceType !== 'all') {
+        $(`#recurring_appointment_${window.currentResourceType}_id`).val(window.currentResourceId);
     }
-    if (window.currentResourceType === 'patient' && window.currentResourceId && window.currentResourceId !== 'all') {
-        $('#recurring_appointment_patient_id').val(window.currentResourceId);
-    }
+
 }
 
 let handleAppointmentOverlapRevert = (revertFunc) => {

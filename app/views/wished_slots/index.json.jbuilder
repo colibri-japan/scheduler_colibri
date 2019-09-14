@@ -11,12 +11,10 @@
         json.borderColor wished_slot.color_from_rank unless params[:background] == 'true'
         json.master true
         json.cancelled false
-        json.displayable true
         json.start DateTime.new(slot.year, slot.month, slot.day, wished_slot.starts_at.hour, wished_slot.starts_at.min).strftime(date_format)
         json.end (DateTime.new(slot.year, slot.month, slot.day, wished_slot.ends_at.hour, wished_slot.ends_at.min) + wished_slot.duration.to_i).strftime(date_format)
-        json.resourceId wished_slot.nurse_id
-        json.private_event false
-        json.service_type wished_slot.title_from_rank
+        json.resourceId "nurse_#{wished_slot.nurse_id}"
+        json.serviceType wished_slot.title_from_rank || ''
         json.nurse do 
             json.name wished_slot.nurse.try(:name)
         end

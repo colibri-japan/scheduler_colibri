@@ -14,7 +14,7 @@ class RecurringAppointmentsController < ApplicationController
 
     if stale?(@recurring_appointments)
       respond_to do |format|
-        format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end]).flatten!}
+        format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end]).flatten}
         format.js
       end
     end

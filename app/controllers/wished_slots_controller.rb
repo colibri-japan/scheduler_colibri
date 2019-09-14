@@ -8,12 +8,12 @@ class WishedSlotsController < ApplicationController
 		@wished_slots = @planning.wished_slots.includes(:nurse)
 
 		@wished_slots = @wished_slots.where('nurse_id = ?', params[:nurse_id]) if params[:nurse_id].present?
-
+		@wished_slots = @wished_slots.occurs_in_range(params[:start].to_datetime..params[:end].to_datetime) if params[:start].present? && params[:end].present?
 		background = params[:background].present?
 
 		if stale?(@wished_slots)
 			respond_to do |format|
-				format.json { render json: @wished_slots.as_json(background: background).flatten! }
+				format.json { render json: @wished_slots.as_json(background: background).flatten }
 			end
 		end
 	end

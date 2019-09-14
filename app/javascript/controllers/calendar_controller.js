@@ -8,6 +8,7 @@ import resourcePlugin from '@fullcalendar/resource-common'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import jaLocale from '@fullcalendar/core/locales/ja'
+require('selectize')
 
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
@@ -421,7 +422,7 @@ let updatePayableUrl = () => {
 let toggleNurseFilterButton = () => {
     let nurseFilterWrapper = document.getElementById('nurse_filter_wrapper')
     if (nurseFilterWrapper) {
-        let allNurseView = (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.defaultResourceType === 'nurse' && window.defaultResourceId === 'all')
+        let allNurseView = (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId === 'all')
         if (allNurseView) {
             nurseFilterWrapper.style.display = 'block'
         } else {
@@ -441,6 +442,12 @@ let toggleNurseReminderButton = () => {
             reminderButton.style.display = 'none'
         }
     } 
+}
+
+let updateSelectize = () => {
+    if ($('#nurse_resource_filter').length > 0) {
+        $('#nurse_resource_filter').selectize()[0].selectize.clear()
+    }
 }
 
 export default class extends Controller {

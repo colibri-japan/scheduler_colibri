@@ -2536,10 +2536,6 @@ let availabilitiesDate = () => {
   })
 }
 
-let updateSelectize = () => {
-  $('#nurse_resource_filter').selectize()[0].selectize.clear()
-}
-
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 

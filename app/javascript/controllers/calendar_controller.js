@@ -404,6 +404,9 @@ let removeEvents = () => {
 
 let updatePayableUrl = () => {
     let baseUrl = window.location.href 
+    if (baseUrl.includes('/master')) {
+        baseUrl = baseUrl.replace('/master', '')
+    }
     let targetUrl
     if (window.currentResourceType === 'team' || window.currentResourceId !== 'all') {
         targetUrl = `${baseUrl}/${window.currentResourceType}s/${window.currentResourceId}/payable?m=${window.currentMonth}&y=${window.currentYear}`
@@ -414,6 +417,24 @@ let updatePayableUrl = () => {
     }
 
     document.getElementById('go-to-payable').dataset.url = targetUrl
+}
+
+let toggleNurseReminderButton = () => {
+    if (window.masterCalendar === 'false') {
+        if (window.currentResourceType && window.currentResourceId) {
+            if (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') {
+                let reminderButton = document.getElementById('new-reminder-email')
+                reminderButton.dataset.url = `/nurses/${window.currentResourceId}/new_reminder_email`
+                reminderButton.style.display = 'block'
+            }
+        } else {
+            if (window.defaultResourceType === 'nurse' && window.defaultResourceView !== 'all') {
+                let reminderButton = document.getElementById('new-reminder-email')
+                reminderButton.dataset.url = `/nurses/${window.defaultResourceId}/new_reminder_email`
+                reminderButton.style.display = 'block'
+            }
+        }
+    } 
 }
 
 export default class extends Controller {
@@ -485,7 +506,7 @@ export default class extends Controller {
         this.resourceNameTarget.textContent = selectedItem.textContent
 
         this.toggleDetailsButton()
-
+        toggleNurseReminderButton()
 
         return
     }
@@ -520,6 +541,7 @@ export default class extends Controller {
         this.resourceNameTarget.textContent = event.target.textContent
 
         this.toggleDetailsButton()
+        toggleNurseReminderButton()
 
         return
     }

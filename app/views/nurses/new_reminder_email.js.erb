@@ -1,5 +1,10 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
-$('#remote_container').html('<%= j render "new_reminder_email" %>');
-$('#new-reminder-email').modal('show');
-sendReminder()
+
+<% if @nurse.phone_mail.present? %>
+    $('#remote_container').html('<%= j render "new_reminder_email" %>');
+    $('#reminder-email-modal').modal('show');
+    sendReminder()
+<% else %>
+    alert('従業員のメールアドレスを登録してください。')
+<% end %>

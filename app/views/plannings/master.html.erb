@@ -17,6 +17,7 @@
 	window.userAllowedToEdit = <%= current_user.has_admin_access? %>
 	window.currentMonth = <%= Date.today.month %>
 	window.currentYear = <%= Date.today.year %>
+	window.masterCalendar = 'true'
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>

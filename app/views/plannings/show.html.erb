@@ -15,6 +15,7 @@
 	window.userAllowedToEdit = <%= !current_user.schedule_readonly? %>
 	window.currentMonth = <%= Date.today.month %>
 	window.currentYear = <%= Date.today.year %>
+	window.masterCalendar = 'false'
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
@@ -105,7 +106,13 @@
 					</div>
 				</div>
 				<div id="planning-top-right-action-container" class="no-print">
-					<%= link_to '<i class="glyphicon glyphicon-envelope" style="color:white"></i>リマインダー'.html_safe, nurse_new_reminder_email_path(@nurse), remote: true, style: "margin-right:5px;max-height:40px", class: "btn btn-colibri-light-gray text-white btn-sm" if @nurse.present? && @nurse.phone_mail.present? && !current_user.schedule_readonly? %>
+					<div
+						id="new-reminder-email"
+						data-url=""
+						style="margin-right:5px;max-height:40px;display:none"
+						class="btn btn-colibri-light-gray text-white btn-sm">
+							<i class="glyphicon glyphicon-envelope" style="color:white"></i>リマインダー
+					</div>
 					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 				</div>
 			</div>

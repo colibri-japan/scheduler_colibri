@@ -2545,6 +2545,11 @@ $(document).on('turbolinks:load', function(){
     $.getScript(url)
   })
 
+  $('#new-reminder-email').click(function(){
+    let url = document.getElementById('new-reminder-email').dataset.url 
+    $.getScript(url)
+  })
+
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()
   }

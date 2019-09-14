@@ -102,7 +102,7 @@ let createCalendar = () => {
                     let data = {};
                     data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
                     data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                    if (window.currentResourceId !== 'all' && window.defaultResourceType !== 'all') {
+                    if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
                         let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                         data[resourceArgument] = window.currentResourceId || window.defaultResourceId
                     }

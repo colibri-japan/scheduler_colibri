@@ -54,17 +54,17 @@
             
             <div class="form-group">
                 <%= form.label :default_master_view, "マスターレイアウト", class: "colibri-form-label-dark" %>
-                <%= form.select :default_master_view, options_for_select([['日','agendaDayWithoutResources'], ['週', 'agendaWeek'], ['月','month']], @corporation.default_master_view), class: "form-control" %>
+                <%= form.select :default_master_view, options_for_select([['日','timeGridDay'], ['週', 'timeGridWeek'], ['月','dayGridMonth']], @corporation.default_master_view), class: "form-control" %>
             </div>
 
             <div class="form-group">
                 <%= form.label :default_individual_view, "個別レイアウト", class: "colibri-form-label-dark" %>
-                <%= form.select :default_individual_view, options_for_select([['日', 'agendaDay'], ['週','agendaWeek'], ['月','month']], @corporation.default_individual_view), class: "form-control" %>
+                <%= form.select :default_individual_view, options_for_select([['日', 'timeGridDay'], ['週','timeGridWeek'], ['月','dayGridMonth']], @corporation.default_individual_view), class: "form-control" %>
             </div>
 
             <div class="form-group">
                 <%= form.label :default_view, "従業員.#{client_resource_name(@corporation.business_vertical)}全員.チーム分けレイアウト", class: "colibri-form-label-dark" %>
-                <%= form.select :default_view, options_for_select([['日', 'agendaDay'], ['週横','timelineWeek']], @corporation.default_view), class: "form-control" %>
+                <%= form.select :default_view, options_for_select([['日', 'resourceTimeGridDay'], ['週','resourceTimelineWeek']], @corporation.default_view), class: "form-control" %>
             </div>
 
             <div class="form-group">

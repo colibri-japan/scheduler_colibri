@@ -129,9 +129,8 @@ class RecurringAppointment < ApplicationRecord
 				title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
 				start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min).try(:strftime, date_format),
 				end: (DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i).try(:strftime, date_format),
-				resourceId: options[:patient_resource] == true ? self.patient_id : self.nurse_id,
-				private_event: false,
-				service_type: self.title,
+				resourceIds: ["patient_#{self.patient_id}", "nurse_#{self.nurse_id}"],
+				serviceType: self.title,
 				service_id: self.service_id,
 				patient: {
 					name: self.patient.try(:name),

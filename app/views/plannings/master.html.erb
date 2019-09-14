@@ -1,0 +1,158 @@
+<%= javascript_tag do %>
+	window.appointmentsUrl = '<%= j planning_appointments_path(@planning) %>'
+	window.privateEventsUrl = '<%= j planning_private_events_path(@planning) %>'
+	window.defaultResourceView = '<%= j @corporation.default_view || 'resourceTimeGridDay' %>'
+	window.defaultView = '<%= j @corporation.default_individual_view || 'timeGridWeek' %>'
+	window.eventsUrl1 = '<%= j planning_recurring_appointments_path(@planning, format: :json) %>'
+	window.eventsUrl2 = ''
+	window.resourceUrl = '<%= j calendar_resources_url(current_user, @corporation, false) %>'
+	window.resourceLabel = '従業員'
+	window.defaultResourceType = '<%= j current_user.default_resource_type || "nurses" %>'
+	window.defaultResourceId = '<%= j current_user.default_resource_id || "all" %>'
+	window.selectActionUrl = "<%= j new_planning_recurring_appointment_path(@planning) %>";
+	window.minTime = '<%= j @corporation.business_start_hour %>'
+	window.maxTime = '<%= j @corporation.business_end_hour %>'
+	window.firstDay = '<%= j @corporation.default_first_day.to_s %>'
+	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
+	window.userAllowedToEdit = <%= current_user.has_admin_access? %>
+	window.currentMonth = <%= Date.today.month %>
+	window.currentYear = <%= Date.today.year %>
+<% end %>
+
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+
+<div data-controller="calendar">
+	<div id="resource-list-container" class="no-print">
+		<div id="toggle-patients-nurses-wrapper">
+			<div id="toggle-switch-patients" class="no-print btn btn-colibri-light-gray colibri-toggle-switch" style="display:none">
+				<div style="display:inline-block" class="colibri-toggle-text-left"><%= client_resource_name(@corporation.business_vertical) %></div>
+				<div class="btn btn-light colibri-toggle-handle colibri-handle-left"></div>
+			</div>
+			<div id="toggle-switch-nurses" class="no-print btn btn-colibri-light-gray colibri-toggle-switch">
+				<div class="btn btn-light colibri-toggle-handle colibri-handle-right"></div>
+				<div style="display:inline-block" class="colibri-toggle-text-right">従業員</div>
+			</div>
+		</div>
+		<div  id="resource-container" class="scrollbar-custom colibri-scrollbar-dark">
+			<div id="patients-resource" class="no-print hide-resource">
+				<div class="nurses-resource-subsection-title resource-title-selectable"
+					id="patient_all"
+					data-resource-type="patient"
+					data-resource-id="all"
+					data-fc-resource-url="<%= corporation_patients_url(@corporation, include_undefined: true, resource_type: 'appointments', planning_id: @planning.id, format: :json) %>"
+					data-action="click->calendar#navigate">
+						全<%= client_resource_name(@corporation.business_vertical) %>
+				</div>
+				
+    				<% @patients_grouped_by_kana.each do |kana, patients| %>
+					<div class="nurses-resource-subsection-title">
+						<%= kana %>
+					</div>
+					<% patients.each do |patient| %>
+						<p 
+							id="patient_<%= patient.id %>" 
+							data-resource-type="patient" 
+							data-resource-id="<%= patient.id %>" 
+							class="resource-list-element" 
+							data-action="click->calendar#navigate">
+							<%= patient.try(:name) %>
+						</p>
+					<% end %>
+				<% end %>
+			</div>
+			<div id="nurses-resource" class="no-print">
+
+				<div class="nurses-resource-subsection-title resource-title-selectable" 
+					id="nurse_all"
+					data-resource-type="nurse"
+					data-resource-id="all"
+					data-fc-resource-url="<%= corporation_nurses_url(@corporation, include_undefined: true, format: :json) %>"
+					data-action="click->calendar#navigate">
+						従業員全員
+				</div>
+
+				<% today = Date.today %>
+				<% @grouped_nurses.each do |group_name, nurses| %>
+					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' 
+						data-resource-id="<%= @teams_id_by_name[group_name] %>" 
+						data-resource-type="team" 
+						data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json, include_undefined: true, team_id: @teams_id_by_name[group_name]) if @teams_id_by_name.present? %>"
+						class="nurses-resource-subsection-title <%= 'resource-title-selectable' if @teams_id_by_name.present? %>" 
+						id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>'
+						data-action="<%= 'click->calendar#navigate' if @teams_id_by_name.present? %>">
+							<%= group_name %>
+					</div>
+					<% nurses.each do |nurse| %>
+						<p 
+							id="nurse_<%= nurse.id %>" 
+							data-resource-type="nurse" 
+							data-resource-id="<%= nurse.id %>" 
+							class="resource-list-element" 
+							data-action="click->calendar#navigate">
+							<%= nurse.try(:name) %>
+						</p>
+					<% end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+
+	<div id="detail-container">
+		<div id="detail-planning-container">
+			<div id="detail-planning-title">
+				<div id="planning-nurse-information">
+					<div class="planning-resource-module-title">
+						<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
+						<button id="resource-details-button" class="btn btn-sm btn-mid-light"  style="margin-bottom:10px">詳細</button>
+					</div>
+				</div>
+				<div id="planning-top-right-action-container" class="no-print">
+					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
+				</div>
+			</div>
+
+			<div id="planning-container">
+				<div id="calendar"></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div id="resource-details-panel" 
+	data-resource-url=""
+	style="display: none">
+</div>
+
+<% if current_user.has_admin_access? %>
+    <div id="drag-drop-master" class="modal fade" style="display:none">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="colibri-small-title">サービスのコピー.移動</h1>
+                    <button type="button" data-dismiss="modal" class="close close-drag-drop-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>新規データ：</p>
+                    <div id="drag-drop-master-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn btn-colibri-light btn-pointer close-drag-drop-modal">キャンセル</div>
+                    <div class="btn btn-info text-white btn-pointer" id="master-drag-move">移動する</div>
+                    <div class="btn btn-info text-white btn-pointer" id="master-drag-copy">コピーする</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div id="colibri-batch-master-action-button" class="no-print batch-action-button" data-url="">
+		<div class="colibri-glyphicon-container">
+			<span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
+		</div>
+	</div>
+
+    <%= render 'plannings/nurse_overlap_modal' %>
+<% end %>
+
+
+

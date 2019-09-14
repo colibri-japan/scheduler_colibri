@@ -9,10 +9,9 @@
         json.title "#{recurring_appointment.patient.try(:name)} - #{recurring_appointment.nurse.try(:name)}"
         json.start DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min).strftime(date_format)
         json.end (DateTime.new(appointment.year, appointment.month, appointment.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + recurring_appointment.duration.to_i).strftime(date_format)
-        json.resourceId recurring_appointment.nurse_id
-        json.private_event false
-        json.service_type recurring_appointment.title
-        json.description recurring_appointment.description ||= ''
+        json.resourceIds ["patient_#{recurring_appointment.patient_id}", "nurse_#{recurring_appointment.nurse_id}"]
+        json.serviceType recurring_appointment.title || ''
+        json.description recurring_appointment.description || ''
         json.patient do  
             json.name recurring_appointment.patient.try(:name)
             json.address recurring_appointment.patient.try(:address) 

@@ -12,11 +12,9 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
     @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
 
-    patient_resource = params[:patient_resource].present?
-
     if stale?(@recurring_appointments)
       respond_to do |format|
-        format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end], patient_resource: patient_resource).flatten!}
+        format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end]).flatten!}
         format.js
       end
     end

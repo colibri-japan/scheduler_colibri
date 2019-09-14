@@ -1,8 +1,8 @@
 class PlanningsController < ApplicationController
 	before_action :set_corporation
 	before_action :set_planning, except: [:recent_patients_report] 
-	before_action :fetch_patients_grouped_by_kana, only: [:show, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
-	before_action :fetch_nurses_grouped_by_team, only: [:show, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
+	before_action :fetch_patients_grouped_by_kana, only: [:show, :master, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
+	before_action :fetch_nurses_grouped_by_team, only: [:show, :master, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
 
 
 	def show 
@@ -12,6 +12,7 @@ class PlanningsController < ApplicationController
 	
 	def master 
 		authorize @planning, :same_corporation_as_current_user?
+		set_main_nurse
 	end
 
 	def all_patients

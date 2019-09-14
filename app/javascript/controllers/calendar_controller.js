@@ -87,9 +87,9 @@ let createCalendar = () => {
                     let data = {};
                     data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
                     data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                    if (window.currentResourceId !== 'all') {
-                        let resourceArgument = `${window.currentResourceType}_id`
-                        data[resourceArgument] = window.currentResourceId
+                    if (window.currentResourceId !== 'all' && window.defaultResourceType !== 'all') {
+                        let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
+                        data[resourceArgument] = window.currentResourceId || window.defaultResourceId
                     }
                     $.ajax({
                         url: url1,
@@ -102,6 +102,7 @@ let createCalendar = () => {
             {
                 events: function (fetchInfo, successCallback, failureCallback) {
                     let url2 = window.eventsUrl2
+
                     let data = {}
                     data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
                     data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')

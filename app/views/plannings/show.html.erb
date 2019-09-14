@@ -1,6 +1,4 @@
 <%= javascript_tag do %>
-	window.appointmentsUrl = '<%= j planning_appointments_path(@planning) %>'
-	window.privateEventsUrl = '<%= j planning_private_events_path(@planning) %>'
 	window.defaultResourceView = '<%= j @corporation.default_view || 'resourceTimeGridDay' %>'
 	window.defaultView = '<%= j @corporation.default_individual_view || 'timeGridWeek' %>'
 	window.eventsUrl1 = '<%= j planning_appointments_path(@planning, format: :json) %>'
@@ -136,7 +134,7 @@
 				<div class="modal-body">
 					<p>下記の編集がセーブされます：</p>
 					<div id="drag-drop-content"></div>
-				</div>
+				</div>	
 				<div class="modal-footer">
 					<div class="btn btn-colibri-light btn-pointer close-drag-drop-modal">キャンセル</div>
 					<div class="btn btn-info text-white btn-pointer" id="drag-drop-save">セーブする</div>

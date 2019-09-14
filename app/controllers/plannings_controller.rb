@@ -9,6 +9,10 @@ class PlanningsController < ApplicationController
 		authorize @planning, :same_corporation_as_current_user?
 		set_main_nurse
 	end
+	
+	def master 
+		authorize @planning, :same_corporation_as_current_user?
+	end
 
 	def all_patients
 		authorize @planning, :same_corporation_as_current_user?

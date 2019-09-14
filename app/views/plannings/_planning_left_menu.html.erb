@@ -6,7 +6,7 @@
 			<% unless current_user.has_restricted_access? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= resource_payable_path %>" id="go-to-payable" title="給与.請求">給</li>
 			<% end %>
-			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  resource_master_path %>" title="マスター">マ</li>
+			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  planning_master_path(@planning) %>" title="マスター">マ</li>
 			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%= patients_path %>" title="設定"><span class='glyphicon glyphicon-cog' style="<%= view == 'settings' ? 'color:white' : 'color:#97A0A8' %>;font-size:25px"></span></li>
 		</ul>
 	</div>

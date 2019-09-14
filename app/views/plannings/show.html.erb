@@ -19,7 +19,7 @@
 	window.currentYear = <%= Date.today.year %>
 <% end %>
 
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_master_path: planning_nurse_master_path(@planning, @main_nurse), resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'resource', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
 
 <div data-controller="calendar">
 	<div id="resource-list-container" class="no-print">

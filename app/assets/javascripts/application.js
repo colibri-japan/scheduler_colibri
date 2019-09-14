@@ -2564,6 +2564,29 @@ $(document).on('turbolinks:load', function(){
     }
   })
 
+  $('#toggle-switch-recurring-appointments').click(function(){
+    $(this).hide()
+    $('#toggle-switch-wished-slots').show()
+    window.selectActionUrl = window.createWishedSlotUrl
+    window.eventsUrl1 = window.wishedSlotsUrl
+    window.eventsUrl2 = ''
+    if (window.fullCalendar) {
+      window.fullCalendar.refetchEvents()
+    }
+  })
+
+  $('#toggle-switch-wished-slots').click(function(){
+    $(this).hide()
+    $('#toggle-switch-recurring-appointments').show()
+    window.eventsUrl1 = window.recurringAppointmentsUrl
+    window.eventsUrl2 = window.wishedSlotsUrl + '?background=true'
+    window.selectActionUrl = window.createRecurringAppointmentURL
+    if (window.fullCalendar) {
+      window.fullCalendar.refetchEvents()
+    }
+  })
+
+
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()
   }

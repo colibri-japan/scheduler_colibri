@@ -118,18 +118,22 @@ let createCalendar = () => {
                 events: function (fetchInfo, successCallback, failureCallback) {
                     let url2 = window.eventsUrl2
 
-                    let data = {}
-                    data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
-                    data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                    if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
-                        let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
-                        data[resourceArgument] = window.currentResourceId || window.defaultResourceId
+                    if (url2) {
+                        let data = {}
+                        data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
+                        data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
+                        if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
+                            let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
+                            data[resourceArgument] = window.currentResourceId || window.defaultResourceId
+                        }
+                        $.ajax({
+                            url: url2,
+                            type: 'GET',
+                            data: data
+                        }).then(data => successCallback(data))
+                    } else {
+                        successCallback([])
                     }
-                    $.ajax({
-                        url: url2,
-                        type: 'GET',
-                        data: data
-                    }).then(data => successCallback(data))
                 },
                 id: 'url2'
             }
@@ -446,6 +450,18 @@ let toggleNurseReminderButton = () => {
     } 
 }
 
+let toggleWishedSlotsButton = () => {
+    if (window.masterCalendar === 'true') {
+        let wishedSlotsButton = document.getElementById('wished-slots-toggle-switch') 
+        let individualNurse = (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceType !== 'all') || (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all')
+        if (individualNurse) {
+            wishedSlotsButton.style.display = 'block'
+        } else {
+            wishedSlotsButton.style.display = 'none'
+        }
+    }
+}
+
 let updateSelectize = () => {
     if ($('#nurse_resource_filter').length > 0) {
         $('#nurse_resource_filter').selectize()[0].selectize.clear()
@@ -523,6 +539,7 @@ export default class extends Controller {
         this.toggleDetailsButton()
         toggleNurseReminderButton()
         toggleNurseFilterButton()
+        toggleWishedSlotsButton()
 
         return
     }
@@ -561,6 +578,7 @@ export default class extends Controller {
         this.toggleDetailsButton()
         toggleNurseReminderButton()
         toggleNurseFilterButton()
+        toggleWishedSlotsButton()
 
         return
     }

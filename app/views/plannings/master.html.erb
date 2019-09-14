@@ -1,5 +1,8 @@
 <%= javascript_tag do %>
 	window.wishedSlotsUrl = "<%= j planning_wished_slots_path(@planning) %>";
+	window.recurringAppointmentsUrl = '<%= j planning_recurring_appointments_path(@planning, format: :json) %>'
+	window.createWishedSlotUrl = "<%= j new_planning_wished_slot_url(@planning) %>"
+	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";
 	window.defaultResourceView = '<%= j @corporation.default_view || 'resourceTimeGridDay' %>'
 	window.defaultView = '<%= j @corporation.default_individual_view || 'timeGridWeek' %>'
 	window.eventsUrl1 = '<%= j planning_recurring_appointments_path(@planning, format: :json) %>'
@@ -107,6 +110,16 @@
 					</div>
 				</div>
 				<div id="planning-top-right-action-container" class="no-print">
+					<div id="wished-slots-toggle-switch" style="margin-right:5px;margin-left: 5px;display:none">
+						<div id="toggle-switch-recurring-appointments" class="no-print btn btn-colibri-light-gray colibri-toggle-switch">
+							<div style="display:inline-block" class="colibri-toggle-text-left">サービス追加</div>
+							<div class="btn btn-light colibri-toggle-handle colibri-handle-left"></div>
+						</div>
+						<div id="toggle-switch-wished-slots" class="no-print btn btn-colibri-light colibri-toggle-switch" style="display:none">
+							<div class="btn colibri-toggle-handle colibri-handle-right" style="background-color:white"></div>
+							<div style="display:inline-block" class="colibri-toggle-text-right">シフト希望日</div>
+						</div>
+					</div>
 					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 				</div>
 			</div>

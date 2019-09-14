@@ -72,6 +72,21 @@ let createCalendar = () => {
             makeTimeAxisPrintFriendly()
         },
 
+        dayRender: function (info) {
+            let holidays = JSON.parse(window.holidays);
+            if (holidays.length > 0) {
+                let dates = [];
+                for (let holidayObject of holidays) {
+                    dates.push(moment(holidayObject["date"]).format("YYYY-MM-DD"))
+                }
+
+                if (dates.indexOf(moment(info.date).format('YYYY-MM-DD')) > -1) {
+                    let day_number = $("[data-date = " + moment(info.date).format('YYYY-MM-DD') + "] > span");
+                    day_number.css('color', '#ff304f')
+                }
+            }
+        },
+
         resources: function (fetchInfo, successCallback, failureCallback) {
             if (window.resourceUrl) {
                 let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'

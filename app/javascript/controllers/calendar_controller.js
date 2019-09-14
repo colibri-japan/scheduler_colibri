@@ -448,8 +448,15 @@ export default class extends Controller {
     }
 
     initializeResource() {
-        let resourceType = window.currentResourceType || window.defaultResourceType || 'nurses'
+        let resourceType = window.currentResourceType || window.defaultResourceType || 'nurse'
         let resourceId = window.currentResourceId || window.defaultResourceId || 'all'
+
+        if (resourceType === 'patient') {
+            document.getElementById('toggle-switch-nurses').style.display = 'none'
+            document.getElementById('toggle-switch-patients').style.display = 'block'
+            document.getElementById('patients-resource').classList.remove('hide-resource')
+            document.getElementById('nurses-resource').classList.add('hide-resource')
+        }
 
         let selectedItem = document.getElementById(`${resourceType}_${resourceId}`)
 

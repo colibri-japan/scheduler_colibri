@@ -7,7 +7,7 @@
 	window.eventsUrl2 = ''
 	window.resourceUrl = '<%= j calendar_resources_url(current_user, @corporation, false) %>'
 	window.resourceLabel = '従業員'
-	window.defaultResourceType = '<%= j current_user.default_resource_type || "nurses" %>'
+	window.defaultResourceType = '<%= j current_user.default_resource_type || "nurse" %>'
 	window.defaultResourceId = '<%= j current_user.default_resource_id || "all" %>'
 	window.selectActionUrl = "<%= j new_planning_recurring_appointment_path(@planning) %>";
 	window.minTime = '<%= j @corporation.business_start_hour %>'

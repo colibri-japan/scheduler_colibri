@@ -5,7 +5,7 @@
 	window.eventsUrl2 = '<%= j planning_private_events_path(@planning, format: :json) %>'
 	window.resourceUrl = '<%= j calendar_resources_url(current_user, @corporation, true) %>'
 	window.resourceLabel = '従業員'
-	window.defaultResourceType = '<%= j current_user.default_resource_type || "nurses" %>'
+	window.defaultResourceType = '<%= j current_user.default_resource_type || "nurse" %>'
 	window.defaultResourceId = '<%= j current_user.default_resource_id || "all" %>'
 	window.selectActionUrl = "<%= j new_calendar_event_path %>";
 	window.minTime = '<%= j @corporation.business_start_hour %>'

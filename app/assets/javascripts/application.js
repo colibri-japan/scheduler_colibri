@@ -2536,6 +2536,10 @@ let availabilitiesDate = () => {
   })
 }
 
+let updateSelectize = () => {
+  $('#nurse_resource_filter').selectize()[0].selectize.clear()
+}
+
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 
@@ -2548,6 +2552,20 @@ $(document).on('turbolinks:load', function(){
   $('#new-reminder-email').click(function(){
     let url = document.getElementById('new-reminder-email').dataset.url 
     $.getScript(url)
+  })
+
+  $('#nurse_resource_filter').selectize({
+    plugins: ['remove_button']
+  })
+
+  $('#nurse_resource_filter').on('change', function(){
+    let nurse_ids = $(this).val()
+    let resourceUrl = window.resourceUrl 
+    let connector = resourceUrl.indexOf('?') === -1 ? '?' : '&'
+    window.resourceUrl = `${resourceUrl}${connector}nurse_ids=${nurse_ids}`
+    if (window.fullCalendar) {
+      window.fullCalendar.refetchResources()
+    }
   })
 
   if ($('#posts-widget-container').length > 0) {

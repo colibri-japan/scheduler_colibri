@@ -8,6 +8,8 @@ class PlanningsController < ApplicationController
 	def show 
 		authorize @planning, :same_corporation_as_current_user?
 		set_main_nurse
+
+		@nurses = @corporation.nurses.displayable.not_archived
 	end
 	
 	def master 

@@ -9,7 +9,6 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import jaLocale from '@fullcalendar/core/locales/ja'
 
-
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
@@ -419,20 +418,27 @@ let updatePayableUrl = () => {
     document.getElementById('go-to-payable').dataset.url = targetUrl
 }
 
+let toggleNurseFilterButton = () => {
+    let nurseFilterWrapper = document.getElementById('nurse_filter_wrapper')
+    if (nurseFilterWrapper) {
+        let allNurseView = (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.defaultResourceType === 'nurse' && window.defaultResourceId === 'all')
+        if (allNurseView) {
+            nurseFilterWrapper.style.display = 'block'
+        } else {
+            nurseFilterWrapper.style.display = 'none'
+        }
+    }
+}
+
 let toggleNurseReminderButton = () => {
     if (window.masterCalendar === 'false') {
-        if (window.currentResourceType && window.currentResourceId) {
-            if (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') {
-                let reminderButton = document.getElementById('new-reminder-email')
-                reminderButton.dataset.url = `/nurses/${window.currentResourceId}/new_reminder_email`
-                reminderButton.style.display = 'block'
-            }
+        let reminderButton = document.getElementById('new-reminder-email')
+        let nurseResource = (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceView !== 'all')
+        if (nurseResource) {
+            reminderButton.dataset.url = `/nurses/${window.currentResourceId}/new_reminder_email`
+            reminderButton.style.display = 'block'
         } else {
-            if (window.defaultResourceType === 'nurse' && window.defaultResourceView !== 'all') {
-                let reminderButton = document.getElementById('new-reminder-email')
-                reminderButton.dataset.url = `/nurses/${window.defaultResourceId}/new_reminder_email`
-                reminderButton.style.display = 'block'
-            }
+            reminderButton.style.display = 'none'
         }
     } 
 }
@@ -507,6 +513,7 @@ export default class extends Controller {
 
         this.toggleDetailsButton()
         toggleNurseReminderButton()
+        toggleNurseFilterButton()
 
         return
     }
@@ -531,6 +538,8 @@ export default class extends Controller {
 
         document.getElementById('resource-details-panel').style.display = 'none'
 
+        updateSelectize()
+
         updatePayableUrl()
         
         removeEvents()
@@ -542,6 +551,7 @@ export default class extends Controller {
 
         this.toggleDetailsButton()
         toggleNurseReminderButton()
+        toggleNurseFilterButton()
 
         return
     }

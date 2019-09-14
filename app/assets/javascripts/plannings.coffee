@@ -174,14 +174,6 @@ $(document).on 'turbolinks:load', ->
 
   if $('#colibri-salary-rules-index').length > 0
     $.getScript('/salary_rules.js')
-
-  if $('#nurse_resource_filter').length > 0
-    $('#nurse_resource_filter').selectize
-      plugins: ['remove_button']
-    $('#nurse_resource_filter').on 'change', ->
-      window.selected_resource_ids = $(this).val()
-      $('.calendar').fullCalendar('refetchResources')
-      $('.master_calendar').fullCalendar('refetchResources')
       
   $('#availabilities-print').click ->
     $('#availabilities-form').modal()

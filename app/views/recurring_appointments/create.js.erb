@@ -4,24 +4,22 @@
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
 
-  if (typeof calendar === 'undefined') {
-    let calendar;
+  if (typeof renderEvent === 'undefined') {
+    let renderEvent
   }
-  if ($('.calendar').length > 0) {
-    calendar = $('.calendar');
-  } else if ($('.patient_calendar').length > 0) {
-    calendar = $('.patient_calendar');
-  } else if ($('.nurse_calendar').length > 0) {
-    calendar = $('.nurse_calendar');
-  } else if ($('.master_calendar').length > 0) {
-    calendar = $('.master_calendar');
-  }
-    if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
-      calendar.fullCalendar(
-        'renderEvents',
-        jQuery.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
-      );
+  
+  renderEvent = (window.currentResourceType === 'team') || (!window.currentResourceType && window.defaultResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @recurring_appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @recurring_appointment.patient_id %>'].includes(window.currentResourceId) ) ||  (!window.currentResourceType && (window.defaultResourceType === 'nurse' && ['all', '<%= @recurring_appointment.nurse_id %>'].includes(window.defaultResourceId)) || (window.defaultResourceType === 'patient' && ['all', '<%= @recurring_appointment.patient_id %>'].includes(window.defaultResourceId)) )
+
+  console.log(renderEvent) 
+
+  if (window.fullCalendar && renderEvent) {
+    console.log('rendering event')
+    events = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
+    for (let event of events) {
+      console.log(event)
+      window.fullCalendar.addEvent(event)
     }
+  }
 
   $('#remote_container').html('<%= j render "new_individual_appointments" %>');
   $('#new_individual_appointments').modal('show');

@@ -3,22 +3,10 @@
 <% else %>
   $('.modal').modal('hide');
 
-  let calendar;
-  if ($('.calendar').length > 0) {
-    calendar = $('.calendar');
-  } else if ($('.patient_calendar').length > 0) {
-    calendar = $('.patient_calendar');
-  } else if ($('.nurse_calendar').length > 0) {
-    calendar = $('.nurse_calendar');
-  } else if ($('.master_calendar').length > 0) {
-    calendar = $('.master_calendar');
+  if (window.fullCalendar) {
+    let eventToRemove = window.fullCalendar.getEventById('<%= "recurring_#{@recurring_appointment.id}" %>')
+    eventToRemove.remove()
+    window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"))
   }
-
-  calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>');
-  calendar.fullCalendar(
-    'renderEvents', 
-    $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe  %>"), 
-    false
-  );
 
 <% end %>

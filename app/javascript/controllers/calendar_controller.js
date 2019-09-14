@@ -170,7 +170,15 @@ let createCalendar = () => {
         eventClick: function (info) {
             if (window.userAllowedToEdit) {
                 let dateClicked = dateFormatter.format(info.event.start)
-                $.getScript(info.event.extendedProps.edit_url + '?date=' + dateClicked);
+                $.getScript(info.event.extendedProps.edit_url + '?date=' + dateClicked, function(){
+                    if (info.event.extendedProps.eventType === 'recurring_appointment') {
+                        let view_start = moment(info.view.currentStart).format('YYYY-MM-DD HH:mm')
+                        let view_end = moment(info.view.currentEnd).format('YYYY-MM-DD HH:mm')
+                        let date_clicked = moment(info.event.start).format('YYYY-MM-DD HH:mm')
+                        setHiddenStartAndEndFields(view_start, view_end)
+                        terminateRecurringAppointment(date_clicked, view_start, view_end)
+                    }
+                });
             }
         },
 
@@ -183,10 +191,15 @@ let createCalendar = () => {
             $.getScript(window.selectActionUrl, function () {
                 setAppointmentRange(selectStart, selectEnd, info.view);
                 setPrivateEventRange(selectStart, selectEnd, info.view);
-                setRecurringAppointmentRange(selectStart, selectEnd, info.view);
                 appointmentSelectizeNursePatient();
                 privateEventSelectizeNursePatient();
-                recurringAppointmentSelectizeNursePatient()
+                if (window.selectActionUrl === '/plannings/62/recurring_appointments/new') {
+                    setRecurringAppointmentRange(selectStart, selectEnd, info.view);
+                    recurringAppointmentSelectizeNursePatient()
+                    let view_start = moment(info.view.currentStart).format('YYYY-MM-DD HH:mm')
+                    let view_end = moment(info.view.currentEnd).format('YYYY-MM-DD HH:mm')
+                    setHiddenStartAndEndFields(view_start, view_end)
+                }
             });
 
             this.unselect()
@@ -363,6 +376,31 @@ let setRecurringAppointmentRange = (start, end, view) => {
     }
 
 }
+
+let setHiddenStartAndEndFields = (start, end) => {
+    $('#start').val(start)
+    $('#end').val(end)
+}
+
+let terminateRecurringAppointment = (date, start, end) => {
+
+    $('#recurring-appointment-terminate').text(moment(date).format('M月DD日') + '以降削除');
+    let data = {
+        t_date: moment(date).format('YYYY-MM-DD HH:mm'),
+        start: moment(start).format('YYYY-MM-DD HH:mm'),
+        end: moment(end).format('YYYY-MM-DD HH:mm')
+    };
+    $('#recurring-appointment-terminate').click(function () {
+        let message = confirm('サービスの繰り返しが' + moment(date).format('M月DD日') + '以降削除されます')
+        if (message) {
+            $.ajax({
+                url: $(this).data('terminate-url'),
+                data: data,
+                type: 'PATCH'
+            })
+        }
+    })
+} 
 
 let handleAppointmentOverlapRevert = (revertFunc) => {
     $('#nurse-overlap-modal').on('shown.bs.modal', function () {

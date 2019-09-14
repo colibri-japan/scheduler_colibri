@@ -4,34 +4,30 @@
     $('.modal').modal('hide');
     $('.modal-backdrop').remove();
 
-    if (typeof calendar === 'undefined') {
-      let calendar;
-    }
-    if ($('.calendar').length > 0) {
-      calendar = $('.calendar');
-    } else if ($('.patient_calendar').length > 0) {
-      calendar = $('.patient_calendar');
-    } else if ($('.nurse_calendar').length > 0) {
-      calendar = $('.nurse_calendar');
-    } else if ($('.master_calendar').length > 0) {
-      calendar = $('.master_calendar');
+    if (typeof renderEvent === 'undefined') {
+      let renderEvent
     }
 
-    calendar.fullCalendar('removeEvents', '<%= "recurring_#{@recurring_appointment.id}" %>' );
-    if (window.nurseId == <%= @recurring_appointment.nurse_id %> || window.patientId == <%= @recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
-      calendar.fullCalendar(
-        'renderEvents',
-        $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe  %>"), 
-        false
-      );
+    if (typeof renderNewEvent === 'undefined') {
+      let renderNewEvent
     }
+  
+    renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @recurring_appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @recurring_appointment.patient_id %>'].includes(window.currentResourceId)) 
+
+    if (window.fullCalendar) {
+      let eventToRemove = window.fullCalendar.getEventById('<%= "recurring_#{@recurring_appointment.id}" %>')
+      eventToRemove.remove()
+
+      if (renderEvent) {
+        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"))
+      }
+    }
+
+    renderNewEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @new_recurring_appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @new_recurring_appointment.patient_id %>'].includes(window.currentResourceId))
+
     <% if @new_recurring_appointment.present? %>
-      if (window.nurseId == <%= @new_recurring_appointment.nurse_id %> || window.patientId == <%= @new_recurring_appointment.patient_id %> || window.generalPlanning == 'true') {
-        calendar.fullCalendar(
-          'renderEvents',
-          $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe  %>"), 
-          false
-        )
+      if (renderNewEvent) {
+        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe %>"))
       }
     <% end %>
 

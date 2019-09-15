@@ -447,7 +447,7 @@ let toggleNurseFilterButton = () => {
 let toggleNurseReminderButton = () => {
     if (window.masterCalendar === 'false') {
         let reminderButton = document.getElementById('new-reminder-email')
-        let nurseResource = (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceView !== 'all')
+        let nurseResource = (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId !== 'all')
         if (nurseResource) {
             reminderButton.dataset.url = `/nurses/${window.currentResourceId}/new_reminder_email`
             reminderButton.style.display = 'block'

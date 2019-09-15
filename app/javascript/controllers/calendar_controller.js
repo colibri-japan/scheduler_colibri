@@ -676,12 +676,15 @@ export default class extends Controller {
 
     toggleDetailsButton() {
         let detailsButton = document.getElementById('resource-details-button')
-        if (window.currentResourceType === 'team' || window.currentResourceId === 'all') {
-
+        if (window.currentResourceType === 'team' || window.currentResourceId === 'all' || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all'))) {
             detailsButton.style.display = 'none'
         } else {
             detailsButton.style.display = 'inline-block'
-            detailsButton.dataset.resourceUrl = `/${window.currentResourceType}s/${window.currentResourceId}.js`
+            if (window.currentResourceType && window.currentResourceId) {
+                detailsButton.dataset.resourceUrl = `/${window.currentResourceType}s/${window.currentResourceId}.js`
+            } else {
+                detailsButton.dataset.resourceUrl = `/${window.defaultResourceType}s/${window.defaultResourceId}.js`
+            }
         }
     }
 

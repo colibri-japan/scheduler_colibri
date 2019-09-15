@@ -1,15 +1,17 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
 
-<% @appointments.each do |appointment| %>
-    if (window.fullCalendar) {
-        let event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
-        event.remove()
+if (window.fullCalendar) {
+    window.fullCalendar.batchRendering(function(){
+        <% @appointments.each do |appointment| %>
+            let event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
+            event.remove()
 
-        let renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= appointment.patient_id %>'].includes(window.currentResourceId) )
-        
-        if (renderEvent) {
-            window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"))
-        }
-    }
-<% end %>
+            let renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= appointment.patient_id %>'].includes(window.currentResourceId) )
+                
+            if (renderEvent) {
+                window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"), 'url1')
+            }
+        <% end %>
+    })
+}

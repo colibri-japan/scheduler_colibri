@@ -60,7 +60,7 @@ pathname = window.location.pathname;
       eventToRemove.remove()
 
       if (renderEvent) {
-        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
+        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"), 'url1')
       }
     }
 

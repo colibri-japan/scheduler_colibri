@@ -11,6 +11,6 @@ if (window.fullCalendar) {
   eventToRemove.remove() 
 
   if (renderEvent) {
-    window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"))
+    window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"), 'url2')
   }
 }

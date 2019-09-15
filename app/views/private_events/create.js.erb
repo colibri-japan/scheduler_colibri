@@ -7,5 +7,5 @@ if (typeof renderEvent === 'undefined') {
 renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@private_event.patient_id}" %>', '<%= "nurse_#{@private_event.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@private_event.patient_id}" %>', '<%= "nurse_#{@private_event.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
 
 if (window.fullCalendar && renderEvent) {
-  window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"))
+  window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"), 'url2')
 }

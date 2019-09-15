@@ -146,6 +146,20 @@ let createCalendar = () => {
                 info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)'
             }
 
+            if (['recurring_appointment', 'appointment'].includes(info.event.extendedProps.eventType)) {
+                if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
+                    let title = info.event.extendedProps.nurse ? info.event.extendedProps.nurse.name : ''
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                } else {
+                    let title = info.event.extendedProps.patient ? info.event.extendedProps.patient.name : ''
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                }
+            }
+
             let popoverTitle = info.event.extendedProps.serviceType
 
             let popoverContent

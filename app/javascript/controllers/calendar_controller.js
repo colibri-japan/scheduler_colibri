@@ -537,12 +537,14 @@ let updateMasterReflectButton = () => {
 }
 
 let updateMasterEventsUrl = () => {
-    if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
-        window.eventsUrl1 = window.recurringAppointmentsUrl
-        window.eventsUrl2 = ''
-    } else {
-        window.eventsUrl1 = window.recurringAppointmentsUrl
-        window.eventsUrl2 = window.wishedSlotsUrl + '?background=true'
+    if (window.masterCalendar === 'true') {
+        if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
+            window.eventsUrl1 = window.recurringAppointmentsUrl
+            window.eventsUrl2 = ''
+        } else {
+            window.eventsUrl1 = window.recurringAppointmentsUrl
+            window.eventsUrl2 = window.wishedSlotsUrl + '?background=true'
+        }
     }
 }
 

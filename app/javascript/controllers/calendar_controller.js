@@ -497,6 +497,8 @@ let toggleWishedSlotsButton = () => {
     if (window.masterCalendar === 'true') {
         let wishedSlotsButton = document.getElementById('wished-slots-toggle-switch') 
         let individualNurse = (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceType !== 'all') || (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all')
+        document.getElementById('toggle-switch-wished-slots').style.display = 'none'
+        document.getElementById('toggle-switch-recurring-appointments').style.display = 'block'
         if (individualNurse) {
             wishedSlotsButton.style.display = 'block'
         } else {
@@ -527,6 +529,16 @@ let updateMasterReflectButton = () => {
             reflectButton.style.display = 'block'
             reflectButton.dataset.url = `/${window.defaultResourceType}s/${window.defaultResourceId}/new_master_to_schedule`
         }
+    }
+}
+
+let updateMasterEventsUrl = () => {
+    if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
+        window.eventsUrl1 = window.recurringAppointmentsUrl
+        window.eventsUrl2 = ''
+    } else {
+        window.eventsUrl1 = window.recurringAppointmentsUrl
+        window.eventsUrl2 = window.wishedSlotsUrl + '?background=true'
     }
 }
 
@@ -603,6 +615,7 @@ export default class extends Controller {
         toggleNurseFilterButton()
         toggleWishedSlotsButton()
         updateMasterReflectButton()
+        updateMasterEventsUrl()
 
         return
     }
@@ -630,8 +643,8 @@ export default class extends Controller {
         updateSelectize()
 
         updatePayableUrl()
-        
         removeEvents()
+        updateMasterEventsUrl()
               
         window.fullCalendar.refetchResources()
         window.fullCalendar.refetchEvents()

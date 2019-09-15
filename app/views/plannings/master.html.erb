@@ -58,6 +58,7 @@
 							id="patient_<%= patient.id %>" 
 							data-resource-type="patient" 
 							data-resource-id="<%= patient.id %>" 
+							data-fc-resource-url=""
 							class="resource-list-element" 
 							data-action="click->calendar#navigate">
 							<%= patient.try(:name) %>
@@ -91,6 +92,7 @@
 						<p 
 							id="nurse_<%= nurse.id %>" 
 							data-resource-type="nurse" 
+							data-fc-resource-url=""
 							data-resource-id="<%= nurse.id %>" 
 							class="resource-list-element" 
 							data-action="click->calendar#navigate">

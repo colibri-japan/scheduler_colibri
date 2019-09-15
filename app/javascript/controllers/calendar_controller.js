@@ -94,6 +94,8 @@ let createCalendar = () => {
             if (window.resourceUrl) {
                 let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
                 let url = `${window.resourceUrl}${connector}start=${moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')}&end=${moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')}`
+                console.log('resource url')
+                console.log(url)
                 $.getScript(url).then(data => successCallback($.parseJSON(data)))
             }
         },
@@ -103,12 +105,14 @@ let createCalendar = () => {
                 events: function (fetchInfo, successCallback, failureCallback) {
                     let url1 = window.eventsUrl1
                     let data = {};
+
                     data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
                     data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
                     if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
                         let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                         data[resourceArgument] = window.currentResourceId || window.defaultResourceId
                     }
+
                     $.ajax({
                         url: url1,
                         type: 'GET',
@@ -129,6 +133,7 @@ let createCalendar = () => {
                             let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                             data[resourceArgument] = window.currentResourceId || window.defaultResourceId
                         }
+
                         $.ajax({
                             url: url2,
                             type: 'GET',
@@ -163,7 +168,7 @@ let createCalendar = () => {
                 }
             }
 
-            let popoverTitle = info.event.extendedProps.serviceType
+            let popoverTitle = info.event.extendedProps.serviceType || ''
 
             let popoverContent
             if (info.event.extendedProps.patient && info.event.extendedProps.patient.address) {
@@ -750,9 +755,7 @@ export default class extends Controller {
 
         selectedItem.classList.add('resource-selected')
 
-        if (selectedItem.dataset.fcResourceUrl) {
-            window.resourceUrl = selectedItem.dataset.fcResourceUrl
-        }
+        window.resourceUrl = selectedItem.dataset.fcResourceUrl
 
         this.resourceNameTarget.textContent = selectedItem.textContent
 
@@ -780,9 +783,7 @@ export default class extends Controller {
         updateCalendarHeader()
         toggleResourceView()
 
-        if (event.target.dataset.fcResourceUrl) {
-            window.resourceUrl = event.target.dataset.fcResourceUrl
-        }
+        window.resourceUrl = event.target.dataset.fcResourceUrl
 
         document.getElementById('resource-details-panel').style.display = 'none'
 

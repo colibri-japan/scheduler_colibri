@@ -56,14 +56,17 @@ let createCalendar = () => {
             },
             'dayGrid': {
                 slotLabelFormat: { day: 'numeric' },
+                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'}
             },
             'resourceTimeGridDay': {
-                resourceLabelText: window.resourceLabel
+                resourceLabelText: window.resourceLabel,
+                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'}
             },
             'resourceTimelineWeek': {
                 slotDuration: { days: 1 },
                 resourceAreaWidth: '10%',
-                resourceLabelText: window.resourceLabel
+                resourceLabelText: window.resourceLabel,
+                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'}
             }
         },
 

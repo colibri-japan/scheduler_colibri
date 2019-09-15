@@ -508,6 +508,121 @@ let updateMasterEventsUrl = () => {
     }
 }
 
+let humanizeFrequency = (frequency) => {
+    switch (frequency) {
+        case 0:
+            return '毎週';
+            break;
+        case 1:
+            return '第一、三、五週目';
+            break;
+        case 2:
+            return 'その日のみ'
+            break;
+        case 3:
+            return '第二、四週目';
+            break;
+        case 4:
+            return '第一週目';
+            break;
+        case 5:
+            return '最後の週';
+            break;
+        default:
+    }
+}
+
+let masterDragOptions = (eventDropInfo) => {
+    let frequency = humanizeFrequency(eventDropInfo.event.extendedProps.frequency);
+    let newAppointmentDetails = `${moment(eventDropInfo.event.start).format('[(]dd[)]')}${frequency} ${moment(eventDropInfo.event.start).format('LT')} ~ ${moment(eventDropInfo.event.end).format('LT')}`
+    let minutes = moment.duration(eventDropInfo.delta).asMinutes();
+    let previousStart = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
+    let startTime = moment(eventDropInfo.view.activeStart).format('YYYY-MM-DD')
+    let endTime = moment(eventDropInfo.view.activeEnd).format('YYYY-MM-DD')
+    let newNurseId;
+    let newPatientId;
+    let newPatientName;
+    let newNurseName;
+
+    if (window.currentResourceType === 'team' || window.currentResourceId === 'all' || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all'))) {
+        if (window.currentResourceType === 'nurse' || (!window.currentResourceType && window.defaultResourceType === 'nurse')) {
+            newNurseId = eventDropInfo.newResource.id 
+            newPatientId = eventDropInfo.event.extendedProps.patient_id
+            newNurseName = eventDropInfo.newResource.title 
+            newPatientName = eventDropInfo.event.extendedProps.patient.name
+        } else if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
+            newPatientId = eventDropInfo.newResource.id 
+            newNurseId = eventDropInfo.event.extendedProps.nurse_id 
+            newPatientName = eventDropInfo.newResource.title 
+            newNurseName = eventDropInfo.event.extendedProps.nurse.name 
+        }
+    } else {
+        newNurseId = eventDropInfo.event.extendedProps.nurse_id 
+        newNurseName = eventDropInfo.event.extendedProps.nurse.name 
+        newPatientId = eventDropInfo.event.extendedProps.patient_id 
+        newPatientName = eventDropInfo.event.extendedProps.patient.name 
+    }
+
+    $('#drag-drop-master-content').html(`<p>従業員：${newNurseName} / ${window.clientResourceName} : ${newPatientName} </p><p>${newAppointmentDetails}</p>`)
+
+    $('#drag-drop-master').modal({ backdrop: 'static' })
+
+    $('.close-drag-drop-modal').click(function () {
+        revertFunc()
+        $('.modal').modal('hide');
+        $('.modal-backdrop').remove();
+    })
+    
+    $('#master-drag-copy').one('click', function () {
+        $('.modal').modal('hide');
+        $('.modal-backdrop').remove();
+        $.ajax({
+            url: `${window.planningPath}/recurring_appointments.js?start=${startTime}&end=${endTime}`,
+            type: 'POST',
+            data: {
+                recurring_appointment: {
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
+                    frequency: eventDropInfo.event.extendedProps.frequency,
+                    service_id: eventDropInfo.event.extendedProps.service_id,
+                    color: eventDropInfo.event.backgroundColor,
+                    anchor: moment(eventDropInfo.event.start).format('YYYY-MM-DD'),
+                    end_day: moment(eventDropInfo.event.end).format('YYYY-MM-DD'),
+                    starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                    ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm')
+                },
+            },
+            success: function (data) {
+                $(".popover").remove();
+            }
+        });
+        eventDropInfo.revert();
+    })
+    $('#master-drag-move').one('click', function () {
+        $.ajax({
+            url: `${eventDropInfo.event.extendedProps.base_url}.js?start=${startTime}&end=${endTime}`,
+            type: 'PATCH',
+            data: {
+                recurring_appointment: {
+                    starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                    ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
+                    anchor: moment(eventDropInfo.event.start).format('YYYY-MM-DD'),
+                    end_day: moment(eventDropInfo.event.end).format('YYYY-MM-DD'),
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId,
+                    editing_occurrences_after: previousStart.format('YYYY-MM-DD'),
+                    synchronize_appointments: 1
+                }
+            },
+            success: function(){
+                $('.modal').modal('hide');
+                $('.modal-backdrop').remove();
+            }
+        })
+        $(".popover").remove();
+    })
+}
+
 let nonMasterDragOptions = (eventDropInfo) => {
     let minutes = moment.duration(eventDropInfo.delta).asMinutes();
     let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");

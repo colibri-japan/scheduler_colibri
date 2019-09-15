@@ -16,7 +16,7 @@ $('.modal').modal('hide');
       newEvents = events = $.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>")
       
       for (let newEvent of newEvents) {
-        window.fullCalendar.addEvent(newEvent)
+        window.fullCalendar.addEvent(newEvent, 'url1')
       }
     })
   }

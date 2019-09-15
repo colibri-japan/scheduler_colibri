@@ -13,9 +13,8 @@ $('.modal').modal('hide');
     if (renderEvent && window.fullCalendar) {
         window.fullCalendar.batchRendering(function(){
             events = $.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>")
-            console.log(events)
             for (let event of events) {
-                window.fullCalendar.addEvent(event)
+                window.fullCalendar.addEvent(event, 'url1')
             }
         })
     }

@@ -15,7 +15,7 @@
       let newEvents = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
 
       for (let newEvent of newEvents) {
-        window.fullCalendar.addEvent(newEvent)
+        window.fullCalendar.addEvent(newEvent, 'url1')
       }
     })
   }

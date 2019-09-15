@@ -14,7 +14,7 @@
     window.fullCalendar.batchRendering(function(){
       events = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
       for (let event of events) {
-        window.fullCalendar.addEvent(event)
+        window.fullCalendar.addEvent(event, 'url1')
       }
     })
   }

@@ -292,9 +292,8 @@ let setWishedSlotRange = (start, end, view) => {
     $('#wished_slot_end_day_1i').val(moment(end).format('YYYY'));
     $('#wished_slot_end_day_2i').val(moment(end).format('M'));
     $('#wished_slot_end_day_3i').val(moment(end).format('D'));
-    if (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') {
-        $("#wished_slot_nurse_id").val(window.nurseId);
-    }
+    let nurseId = window.currentResourceId || window.defaultResourceId
+    $("#wished_slot_nurse_id").val(nurseId);
 }
 
 let setPrivateEventRange = (start, end, view) => {
@@ -316,11 +315,10 @@ let setPrivateEventRange = (start, end, view) => {
         $('#private_event_ends_at_4i').val(moment(end).format('HH'));
         $('#private_event_ends_at_5i').val(moment(end).format('mm'));
     }
-    if (window.currentResourceType === 'nurse' && window.currentResourceId && window.currentResourceId !== 'all') {
-        $("#private_event_nurse_id").val(window.currentResourceId);
-    }
-    if (window.currentResourceType === 'patient' && window.currentResourceId && window.currentResourceId !== 'all') {
-        $("#private_event_patient_id").val(window.currentResourceId);
+    if (window.currentResourceType && window.currentResourceType !== 'team' && window.currentResourceId !== 'all') {
+        $(`#private_event_${window.currentResourceType}_id`).val(window.currentResourceId);
+    } else if (window.defaultResourceType !== 'team' && window.currentResourceType !== 'all') {
+        $(`#private_event_${window.defaultResourceType}_id`).val(window.defaultResourceId);
     }
 
 }

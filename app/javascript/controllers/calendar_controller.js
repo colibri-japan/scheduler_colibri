@@ -191,8 +191,10 @@ let createCalendar = () => {
             $.getScript(window.selectActionUrl, function () {
                 setAppointmentRange(selectStart, selectEnd, info.view);
                 setPrivateEventRange(selectStart, selectEnd, info.view);
+                setWishedSlotRange(selectStart, selectEnd, info.view)
                 appointmentSelectizeNursePatient();
                 privateEventSelectizeNursePatient();
+                wishedSlotsSelectize()
                 if (window.selectActionUrl === '/plannings/62/recurring_appointments/new') {
                     setRecurringAppointmentRange(selectStart, selectEnd, info.view);
                     recurringAppointmentSelectizeNursePatient()
@@ -380,6 +382,11 @@ let setRecurringAppointmentRange = (start, end, view) => {
 let setHiddenStartAndEndFields = (start, end) => {
     $('#start').val(start)
     $('#end').val(end)
+}
+
+
+let wishedSlotsSelectize = () => {
+    $('#wished_slot_nurse_id').selectize()
 }
 
 let terminateRecurringAppointment = (date, start, end) => {

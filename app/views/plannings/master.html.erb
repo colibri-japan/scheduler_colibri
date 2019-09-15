@@ -20,6 +20,7 @@
 	window.currentMonth = <%= Date.today.month %>
 	window.currentYear = <%= Date.today.year %>
 	window.masterCalendar = 'true'
+	window.planningPath = '<%= j planning_path(@planning) %>'
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
@@ -158,10 +159,12 @@
         </div>
     </div>
 
-	<div id="colibri-batch-master-action-button" class="no-print batch-action-button" data-url="">
-		<div class="colibri-glyphicon-container">
-			<span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
-		</div>
+	<div id="colibri-master-action-button" 
+		class="no-print batch-action-button" 
+		data-url="">
+			<div class="colibri-glyphicon-container">
+				<span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
+			</div>
 	</div>
 
     <%= render 'plannings/nurse_overlap_modal' %>

@@ -1458,6 +1458,9 @@ let submitReflect = () => {
     let month = $('#master-reflect-month').val()
     let url = $(this).data('submit-url') + '?month=' + month + '&year=' + year;
 
+    console.log('reflect url:')
+    console.log(url)
+
     $.ajax({
       url: url,
       type: 'PATCH',

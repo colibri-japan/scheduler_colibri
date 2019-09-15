@@ -87,7 +87,7 @@ $(document).on 'turbolinks:load', ->
     trigger: 'click'
     placement: 'top'
 
-  $('#colibri-batch-master-action-button').click ->
+  $('#colibri-master-action-button').click ->
     $.getScript($(this).data('url'))
     return
   

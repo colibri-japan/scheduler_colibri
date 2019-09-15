@@ -1,5 +1,6 @@
 <%= javascript_tag do %>
 	window.defaultResourceView = '<%= j @corporation.default_view || 'resourceTimeGridDay' %>'
+	window.clientResourceName = '<%= j client_resource_name(@corporation.business_vertical) %>'
 	window.defaultView = '<%= j @corporation.default_individual_view || 'timeGridWeek' %>'
 	window.eventsUrl1 = '<%= j planning_appointments_path(@planning, format: :json) %>'
 	window.eventsUrl2 = '<%= j planning_private_events_path(@planning, format: :json) %>'

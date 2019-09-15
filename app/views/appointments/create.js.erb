@@ -31,31 +31,12 @@ $('.modal').modal('hide')
 
 
 <% else %>
-  if (typeof fullcalendar === 'undefined') {
-    let fullcalendar;
-  }
-  if ($('.calendar').length > 0) {
-    fullcalendar = $('.calendar');
-  } else if ($('.patient_calendar').length > 0) {
-    fullcalendar = $('.patient_calendar');
-  } else if ($('.nurse_calendar').length > 0) {
-    fullcalendar = $('.nurse_calendar');
-  } else {
-    fullcalendar = ''
-  }
-
-  if (fullcalendar && window.nurseId == <%= @appointment.nurse_id %>  || window.patientId == <%= @appointment.patient_id %> || window.generalPlanning == 'true' ) {
-    fullcalendar.fullCalendar(
-      'renderEvent',
-      $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>")
-    )
-  }
 
   if (typeof renderEvent === 'undefined') {
     let renderEvent
   }
   
-  renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @appointment.patient_id %>'].includes(window.currentResourceId) )
+  renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
 
   if (window.fullCalendar && renderEvent) {
     window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))

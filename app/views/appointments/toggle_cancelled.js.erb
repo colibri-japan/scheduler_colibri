@@ -21,36 +21,19 @@
       Turbolinks.reload()
     <% end %>
   } else {
-    if (typeof fullcalendar === 'undefined') {
-      let fullcalendar;
-    }
-    if ($('.calendar').length > 0) {
-      fullcalendar = $('.calendar');
-    } else if ($('.patient_calendar').length > 0) {
-      fullcalendar = $('.patient_calendar');
-    } else if ($('.nurse_calendar').length > 0) {
-      fullcalendar = $('.nurse_calendar');
-    } else if ($('.master_calendar').length > 0) {
-      fullcalendar = $('.master_calendar');
-    } else {
-      fullcalendar = ''
-    }
 
-    if (fullcalendar) {
-      fullcalendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
-
-      fullcalendar.fullCalendar(
-        'renderEvent', 
-        $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-        false
-      );
+    if (typeof renderEvent === 'undefined') {
+      let renderEvent
     }
-
+  
+    renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
 
     if (window.fullCalendar) {
       let event_to_remove = window.fullCalendar.getEventById('<%= "appointment_#{@appointment.id}" %>')
       event_to_remove.remove()
-      window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
+      if (renderEvent) {
+        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"))
+      }
     }
 
     <% if @appointment.cancelled? && @corporation.detailed_cancellation_options %>

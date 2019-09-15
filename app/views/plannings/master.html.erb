@@ -1,5 +1,6 @@
 <%= javascript_tag do %>
 	window.wishedSlotsUrl = "<%= j planning_wished_slots_path(@planning) %>";
+	window.clientResourceName = '<%= j client_resource_name(@corporation.business_vertical) %>'
 	window.recurringAppointmentsUrl = '<%= j planning_recurring_appointments_path(@planning, format: :json) %>'
 	window.createWishedSlotUrl = "<%= j new_planning_wished_slot_url(@planning) %>"
 	window.createRecurringAppointmentURL = "<%= j new_planning_recurring_appointment_url(@planning) %>";

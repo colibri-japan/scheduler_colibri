@@ -171,14 +171,14 @@ let createCalendar = () => {
             if (window.userAllowedToEdit) {
                 let dateClicked = dateFormatter.format(info.event.start)
                 $.getScript(info.event.extendedProps.edit_url + '?date=' + dateClicked, function(){
-                    let view_start = moment(info.view.currentStart).format('YYYY-MM-DD HH:mm')
-                    let view_end = moment(info.view.currentEnd).format('YYYY-MM-DD HH:mm')
-                    let date_clicked = moment(info.event.start).format('YYYY-MM-DD HH:mm')
+                    let screenStart = moment(info.view.activeStart).format('YYYY-MM-DD HH:mm')
+                    let screenEnd = moment(info.view.activeEnd).format('YYYY-MM-DD HH:mm')
+                    let dateClicked = moment(info.event.start).format('YYYY-MM-DD HH:mm')
                     if (info.event.extendedProps.eventType === 'recurring_appointment') {
-                        terminateRecurringAppointment(date_clicked, view_start, view_end)
+                        terminateRecurringAppointment(dateClicked, screenStart, screenEnd)
                     }
                     if (['recurring_appointment', 'wished_slot'].includes(info.event.extendedProps.eventType)) {
-                        setHiddenStartAndEndFields(view_start, view_end)
+                        setHiddenStartAndEndFields(screenStart, screenEnd)
                     }
                 });
             }
@@ -187,6 +187,8 @@ let createCalendar = () => {
         select: function (info) {
             let selectEnd = info.end
             let selectStart = info.start
+            let screenStart = moment(info.view.activeStart).format('YYYY-MM-DD HH:mm')
+            let screenEnd = moment(info.view.activeEnd).format('YYYY-MM-DD HH:mm')
             if (selectEnd - selectStart <= 900000) {
                 selectEnd.setMinutes(selectStart.getMinutes() + 30)
             }
@@ -198,12 +200,10 @@ let createCalendar = () => {
                 if (window.selectActionUrl.includes('/recurring_appointments/new')) {
                     setRecurringAppointmentRange(selectStart, selectEnd, info.view);
                     recurringAppointmentSelectizeNursePatient()
-                    let view_start = moment(info.view.currentStart).format('YYYY-MM-DD HH:mm')
-                    let view_end = moment(info.view.currentEnd).format('YYYY-MM-DD HH:mm')
-                    setHiddenStartAndEndFields(view_start, view_end)
+                    setHiddenStartAndEndFields(screenStart, screenEnd)
                 } else if (window.selectActionUrl.includes('/wished_slots/new')) {
                     setWishedSlotRange(selectStart, selectEnd, info.view)
-                    setHiddenStartAndEndFields(selectStart, selectEnd)
+                    setHiddenStartAndEndFields(screenStart, screenEnd)
                     wishedSlotsSelectize()
                 }
             });

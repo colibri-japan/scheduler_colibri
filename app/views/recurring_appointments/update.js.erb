@@ -25,17 +25,22 @@
         }
 
         if (renderEvent) {
-          let newEvents = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe %>")
-
-          for (let newEvent of newEvents) {
-            window.fullCalendar.addEvent(newEvent)
+          let eventsToRender = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
+          for (let event of eventsToRender) {
+            window.fullCalendar.addEvent(event)
           }
         }
+
         <% if @new_recurring_appointment.present? %>
-          if (renderNewEvent) {
-            window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe %>"))
+          if (renderEvent) {
+            let newEvents = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe %>")
+
+            for (let newEvent of newEvents) {
+              window.fullCalendar.addEvent(newEvent)
+            }
           }
         <% end %>
+
       })
     }
 

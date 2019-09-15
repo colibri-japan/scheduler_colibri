@@ -11,10 +11,12 @@
   renderEvent = (window.currentResourceType === 'team') || (!window.currentResourceType && window.defaultResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @recurring_appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @recurring_appointment.patient_id %>'].includes(window.currentResourceId) ) ||  (!window.currentResourceType && (window.defaultResourceType === 'nurse' && ['all', '<%= @recurring_appointment.nurse_id %>'].includes(window.defaultResourceId)) || (window.defaultResourceType === 'patient' && ['all', '<%= @recurring_appointment.patient_id %>'].includes(window.defaultResourceId)) )
 
   if (window.fullCalendar && renderEvent) {
-    events = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
-    for (let event of events) {
-      window.fullCalendar.addEvent(event)
-    }
+    window.fullCalendar.batchRendering(function(){
+      events = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
+      for (let event of events) {
+        window.fullCalendar.addEvent(event)
+      }
+    })
   }
 
   $('#remote_container').html('<%= j render "new_individual_appointments" %>');

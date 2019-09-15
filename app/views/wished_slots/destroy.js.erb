@@ -4,8 +4,10 @@ $('.modal-backdrop').remove();
   if (window.fullCalendar) {
     events = window.fullCalendar.getEvents()
     for (let event of events) {
-      if (event.id === '<%= j "wished_slot_#{@wished_slot.id}" %>') {
-        event.remove()
-      }
+      window.fullCalendar.batchRendering(function(){
+        if (event.id === '<%= j "wished_slot_#{@wished_slot.id}" %>') {
+          event.remove()
+        }
+      })
     }
   }

@@ -11,10 +11,12 @@ $('.modal').modal('hide');
     renderEvent = (window.currentResourceId === '<%= j @wished_slot.nurse_id.to_s %>') || (!window.currentResourceId && window.defaultResourceId === '<%= j @wished_slot.nurse_id.to_s %>')
 
     if (renderEvent && window.fullCalendar) {
-        events = $.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>")
-        console.log(events)
-        for (let event of events) {
-            window.fullCalendar.addEvent(event)
-        }
+        window.fullCalendar.batchRendering(function(){
+            events = $.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>")
+            console.log(events)
+            for (let event of events) {
+                window.fullCalendar.addEvent(event)
+            }
+        })
     }
 <% end %>

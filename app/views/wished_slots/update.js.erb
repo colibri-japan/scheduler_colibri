@@ -4,18 +4,20 @@ $('.modal').modal('hide');
   alert('エラーが発生したため、シフト希望が編集されませんでした')
 <% else %>
   if (window.fullCalendar) {
-    let events = window.fullCalendar.getEvents()
+    window.fullCalendar.batchRendering(function(){
+      let events = window.fullCalendar.getEvents()
 
-    for (let event of events) {
-      if (event.id === '<%= j "wished_slot_#{@wished_slot.id}" %>') {
-        event.remove()
+      for (let event of events) {
+        if (event.id === '<%= j "wished_slot_#{@wished_slot.id}" %>') {
+          event.remove()
+        }
       }
-    }
 
-    newEvents = events = $.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>")
-    
-    for (let newEvent of newEvents) {
-      window.fullCalendar.addEvent(newEvent)
-    }
+      newEvents = events = $.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>")
+      
+      for (let newEvent of newEvents) {
+        window.fullCalendar.addEvent(newEvent)
+      }
+    })
   }
 <% end %>

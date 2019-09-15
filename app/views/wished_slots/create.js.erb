@@ -3,17 +3,18 @@ $('.modal').modal('hide');
 <% if @wished_slot.errors.any? %>
     alert('エラーが発生したため、シフト希望がセーブされませんでした')
 <% else %>
-    if (typeof calendar === 'undefined') {
-        let calendar;
-    }
-    if ($('.master_calendar').length > 0) {
-      calendar = $('.master_calendar');
+   
+    if (typeof renderEvent === 'undefined') {
+        let renderEvent
     }
 
-    if (window.nurseId == <%= @wished_slot.nurse_id %>) {
-        calendar.fullCalendar(
-            'renderEvents',
-            jQuery.parseJSON("<%= j render(partial: 'wished_slots/wished_slot', locals: {wished_slot: @wished_slot}).html_safe %>")
-        )
+    renderEvent = (window.currentResourceId === '<%= j @wished_slot.nurse_id.to_s %>') || (!window.currentResourceId && window.defaultResourceId === '<%= j @wished_slot.nurse_id.to_s %>')
+
+    if (renderEvent && window.fullCalendar) {
+        events = $.parseJSON("<%= j render(partial: 'wished_slots/wished_slot.json', locals: {wished_slot: @wished_slot}).html_safe %>")
+        console.log(events)
+        for (let event of events) {
+            window.fullCalendar.addEvent(event)
+        }
     }
 <% end %>

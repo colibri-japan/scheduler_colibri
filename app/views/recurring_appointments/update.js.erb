@@ -15,11 +15,20 @@
     renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @recurring_appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @recurring_appointment.patient_id %>'].includes(window.currentResourceId)) 
 
     if (window.fullCalendar) {
-      let eventToRemove = window.fullCalendar.getEventById('<%= "recurring_#{@recurring_appointment.id}" %>')
-      eventToRemove.remove()
+      let events = window.fullCalendar.getEvents()
+      for (let event of events) {
+        if (event.id === '<%= j "recurring_#{@recurring_appointment.id}" %>') {
+          event.remove()
+        }
+      }
 
       if (renderEvent) {
-        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"))
+        console.log('will render events')
+        let newEvents = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe %>")
+
+        for (let newEvent of newEvents) {
+          window.fullCalendar.addEvent(newEvent)
+        }
       }
     }
 

@@ -4,9 +4,18 @@
   $('.modal').modal('hide');
 
   if (window.fullCalendar) {
-    let eventToRemove = window.fullCalendar.getEventById('<%= "recurring_#{@recurring_appointment.id}" %>')
-    eventToRemove.remove()
-    window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>"))
+    let events = window.fullCalendar.getEvents()
+    for (let event of events) {
+      if (event.id === '<%= j "recurring_#{@recurring_appointment.id}" %>') {
+        event.remove()
+      }
+    }
+
+    let newEvents = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @recurring_appointment}).html_safe %>")
+
+    for (let newEvent of newEvents) {
+      window.fullCalendar.addEvent(newEvent)
+    }
   }
 
 <% end %>

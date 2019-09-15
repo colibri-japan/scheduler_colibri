@@ -6,8 +6,12 @@
   $('.modal-backdrop').remove();
 
   if (window.fullCalendar) {
-    let eventToRemove = window.fullCalendar.getEventById('<%= "recurring_#{@recurring_appointment.id}" %>')
-    eventToRemove.remove()
+    let events = window.fullCalendar.getEvents()
+    for (let event of events) {
+      if (event.id === '<%= j "recurring_#{@recurring_appointment.id}" %>') {
+        event.remove()
+      }
+    }
   }
 
 

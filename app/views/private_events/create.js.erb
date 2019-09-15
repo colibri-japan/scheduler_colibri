@@ -1,32 +1,10 @@
 $('.modal').modal('hide');
 
-if (typeof fullcalendar === 'undefined') {
-  let fullcalendar;
-}
-
-if ($('.calendar').length > 0) {
-  fullcalendar = $('.calendar');
-} else if ($('.patient_calendar').length > 0) {
-  fullcalendar = $('.patient_calendar');
-} else if ($('.nurse_calendar').length > 0) {
-  fullcalendar = $('.nurse_calendar');
-} else {
-  fullcalendar = ''
-}
-
-if (fullcalendar && window.nurseId == <%= @private_event.nurse_id || 0 %> || window.patientId == <%= @private_event.patient_id || 0 %> || window.generalPlanning == 'true') {
-  fullcalendar.fullCalendar(
-    'renderEvent', 
-    jQuery.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"),
-    false
-  );
-}
-
 if (typeof renderEvent === 'undefined') {
   let renderEvent
 }
 
-renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= @private_event.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= @private_event.patient_id %>'].includes(window.currentResourceId) )
+renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@private_event.patient_id}" %>', '<%= "nurse_#{@private_event.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@private_event.patient_id}" %>', '<%= "nurse_#{@private_event.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
 
 if (window.fullCalendar && renderEvent) {
   window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"))

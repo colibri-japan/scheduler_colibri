@@ -1,24 +1,8 @@
 $('.modal').modal('hide');
 
-if (typeof fullcalendar === 'undefined') {
-  let fullcalendar;
-}
-
-if ($('.calendar').length > 0) {
-  fullcalendar = $('.calendar');
-} else if ($('.patient_calendar').length > 0) {
-  fullcalendar = $('.patient_calendar');
-} else if ($('.nurse_calendar').length > 0) {
-  fullcalendar = $('.nurse_calendar');
-} else {
-  fullcalendar = ''
-}
-
-if (fullcalendar) {
-  fullcalendar.fullCalendar('removeEvents', '<%= "private_event_#{@private_event.id}" %>');
-}
-
 if (window.fullCalendar) {
   let event = window.fullCalendar.getEventById('<%= "private_event_#{@private_event.id}" %>')
-  event.remove()
+  if (event) {
+    event.remove()
+  }
 }

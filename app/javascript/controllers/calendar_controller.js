@@ -628,7 +628,7 @@ let masterDragOptions = (eventDropInfo) => {
     $('#drag-drop-master').modal({ backdrop: 'static' })
 
     $('.close-drag-drop-modal').click(function () {
-        revertFunc()
+        eventDropInfo.revert()
         $('.modal').modal('hide');
         $('.modal-backdrop').remove();
     })

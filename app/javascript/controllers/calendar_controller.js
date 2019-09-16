@@ -60,6 +60,7 @@ let createCalendar = () => {
             },
             'resourceTimeGridDay': {
                 resourceLabelText: window.resourceLabel,
+                slotLabelFormat: {hour: 'numeric', minute: '2-digit'},
                 eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'}
             },
             'resourceTimelineWeek': {

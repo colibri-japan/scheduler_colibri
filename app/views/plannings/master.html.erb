@@ -114,6 +114,9 @@
 					</div>
 				</div>
 				<div id="planning-top-right-action-container" class="no-print">
+					<div id="nurse_filter_wrapper" style="display:none;margin-right:5px;text-align:left">
+						<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
+					</div>
 					<div id="wished-slots-toggle-switch" style="margin-right:5px;margin-left: 5px;display:none">
 						<div id="toggle-switch-recurring-appointments" class="no-print btn btn-colibri-light-gray colibri-toggle-switch">
 							<div style="display:inline-block" class="colibri-toggle-text-left">サービス追加</div>

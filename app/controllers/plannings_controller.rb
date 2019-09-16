@@ -15,6 +15,8 @@ class PlanningsController < ApplicationController
 	def master 
 		authorize @planning, :same_corporation_as_current_user?
 		set_main_nurse
+		
+		@nurses = @corporation.nurses.displayable.not_archived
 	end
 
 	def all_patients

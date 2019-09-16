@@ -2542,7 +2542,7 @@ let availabilitiesDate = () => {
 $(document).on('turbolinks:load', function(){
   initializeCalendar()
 
-
+  
   $('#resource-details-button').click(function(){
     let url = document.getElementById('resource-details-button').dataset.resourceUrl 
     $.getScript(url)

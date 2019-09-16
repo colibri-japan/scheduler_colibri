@@ -29,6 +29,8 @@ let header = {
     right: 'timeGridDay,timeGridWeek,dayGridMonth'
 }
 
+$.fn.overflownY = function () { var e = this[0]; return e.scrollHeight > e.clientHeight; }
+
 let createCalendar = () => {
     let calendar = new Calendar(document.getElementById('calendar'), {
         plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, resourcePlugin, resourceTimeGridPlugin, resourceTimelinePlugin],
@@ -148,7 +150,19 @@ let createCalendar = () => {
             }
         ],
 
+        eventDragStart: function (info) {
+            window.eventDragging = true;
+        },
+
+        eventDragStop: function (info) {
+            window.eventDragging = false;
+        },
+
         eventRender: function (info) {
+            if (window.eventDragging) {
+                return
+            }
+
             if (info.event.extendedProps.cancelled) {
                 info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)'
             } else if (info.event.extendedProps.edit_requested) {
@@ -178,16 +192,38 @@ let createCalendar = () => {
                 popoverContent = info.event.extendedProps.description
             }
 
+            window.popoverFocusAllowed = true;
+
             $(info.el).popover({
                 html: true,
                 title: popoverTitle,
                 content: popoverContent,
                 placement: 'top',
                 container: 'body',
-                trigger: 'hover'
+                trigger: 'manual'
+            }).on('mouseenter', function () {
+                if (window.popoverFocusAllowed) {
+                    window.popoverFocusAllowed = false
+                    var _this = this;
+                    $(_this).popover('show');
+                    $('.popover').on('mouseleave', function () {
+                        $(_this).popover('hide');
+                    });
+                }
             }).on('mouseleave', function () {
-                $('.popover').remove()
-            })
+                var _this = this
+                var condition = $('.popover-body').overflownY();
+                if (condition) {
+                    setTimeout(function () {
+                        if (!$('.popover:hover').length) {
+                            $(_this).popover('hide');
+                        }
+                    }, 300);
+                } else {
+                    $(_this).popover('hide')
+                }
+                window.popoverFocusAllowed = true
+            });
         },
 
         eventClick: function (info) {

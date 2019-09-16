@@ -51,6 +51,7 @@ let createCalendar = () => {
         displayEventEnd: true,
         editable: true,
         height: function () {
+            console.log(screen.height - 240)
             return (screen.height - 240)
         },
         views: {

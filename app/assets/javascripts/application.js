@@ -11,15 +11,12 @@
 // about supported directives.
 //
 //= require jquery
-//= require fullcalendar
-//= require scheduler
 //= require turbolinks
 //= require popper
 //= require bootstrap
 //= require bootstrap4-toggle.min
 //= require moment.min
 //= require popper
-//= require locale-all
 //= require daterangepicker
 //= require selectize
 //= require Chart.bundle

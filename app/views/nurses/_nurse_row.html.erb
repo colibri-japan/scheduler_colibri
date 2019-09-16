@@ -1,0 +1,13 @@
+<td><%= nurse.name %></td>
+<td><%= nurse.phone_number %></td>
+<td><%= nurse.phone_mail %></td>
+<td>
+  <% if nurse.full_timer == true %>
+    <span class="glyphicon glyphicon-ok" style="color: #42B97C"></span>
+  <% end %> 
+</td>
+<td>
+  <% if nurse.reminderable == true %>
+    <span class="glyphicon glyphicon-envelope" style="color: #FFAA00"></span>
+  <% end %> 
+</td>

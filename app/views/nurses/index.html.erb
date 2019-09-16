@@ -20,7 +20,7 @@
       <tbody>
         <% @nurses.each do |nurse| %>
           <% cache nurse do  %>
-            <tr class="nurse-clickable-row" data-link="<%= edit_nurse_path(nurse, format: :js) %>">
+            <tr class="nurse-clickable-row" id="nurse_row_<%= nurse.id %>" data-link="<%= edit_nurse_path(nurse, format: :js) %>">
               <td><%= nurse.name %></td>
               <td><%= nurse.phone_number %></td>
               <td><%= nurse.phone_mail %></td>

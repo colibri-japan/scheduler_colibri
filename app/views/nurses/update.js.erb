@@ -1,0 +1,9 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+if ($('#nurse_row_<%= @nurse.id %>').length > 0) {
+    $('#nurse_row_<%= @nurse.id %>').empty()
+    $('#nurse_row_<%= @nurse.id %>').html("<%= j render 'nurse_row', nurse: @nurse %>")
+}
+if ($('#resource-details-button').length > 0) {
+    $('#resource-details-button').click()
+}

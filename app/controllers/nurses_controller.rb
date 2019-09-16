@@ -96,8 +96,10 @@ class NursesController < ApplicationController
 
     respond_to do |format|
       if @nurse.update(params)
+        format.js
         format.html {redirect_back(fallback_location: authenticated_root_path, notice: '従業員の情報がアップデートされました')}
       else
+        format.js
         format.html {redirect_back(fallback_location: authenticated_root_path, alert: '従業員の情報のアップデートが失敗しました')}
       end
     end

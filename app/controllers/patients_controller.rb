@@ -94,6 +94,7 @@ class PatientsController < ApplicationController
         format.js
         format.html { redirect_back(fallback_location: authenticated_root_path, notice: '利用者様の情報がアップデートされました') }
       else
+        format.js
         format.html { redirect_back(fallback_location: authenticated_root_path, alert: '利用者様の情報のアップデートが失敗しました') }
       end
     end

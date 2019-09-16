@@ -1,4 +1,4 @@
-<%= form_with(model: nurse, local: true) do |form| %>
+<%= form_with(model: nurse, local: nurse.new_record?) do |form| %>
   <% if nurse.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(nurse.errors.count, "error") %> prohibited this nurse from being saved:</h2>

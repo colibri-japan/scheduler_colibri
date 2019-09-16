@@ -1,3 +1,9 @@
 $('.modal').modal('hide');
-$('#<%= @patient.id %>').empty()
-$('#<%= @patient.id %>').html("<%= j render 'patient_row', patient: @patient %>")
+$('.modal-backdrop').remove();
+if ($('#patient_row_<%= @patient.id %>').length > 0) {
+    $('#patient_row_<%= @patient.id %>').empty()
+    $('#patient_row_<%= @patient.id %>').html("<%= j render 'patient_row', patient: @patient %>")
+}
+if ($('#resource-details-button').length > 0) {
+    $('#resource-details-button').click()
+}

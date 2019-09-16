@@ -556,7 +556,7 @@ let humanizeFrequency = (frequency) => {
 
 let masterDragOptions = (eventDropInfo) => {
     let frequency = humanizeFrequency(eventDropInfo.event.extendedProps.frequency);
-    let newAppointmentDetails = `${moment(eventDropInfo.event.start).format('[(]dd[)]')}${frequency} ${moment(eventDropInfo.event.start).format('LT')} ~ ${moment(eventDropInfo.event.end).format('LT')}`
+    let newAppointmentDetails = `${moment(eventDropInfo.event.start).locale('ja').format('[(]dd[)]')}${frequency} ${moment(eventDropInfo.event.start).locale('ja').format('LT')} ~ ${moment(eventDropInfo.event.end).locale('ja').format('LT')}`
     let minutes = moment.duration(eventDropInfo.delta).asMinutes();
     let previousStart = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
     let startTime = moment(eventDropInfo.view.activeStart).format('YYYY-MM-DD')
@@ -567,20 +567,17 @@ let masterDragOptions = (eventDropInfo) => {
     let newNurseName;
 
     if ((eventDropInfo.newResource === eventDropInfo.oldResource) || (!eventDropInfo.newResource)) {
-        console.log('no change in resource, or no resource')
         newNurseId = eventDropInfo.event.extendedProps.nurse_id
         newNurseName = eventDropInfo.event.extendedProps.nurse.name
         newPatientId = eventDropInfo.event.extendedProps.patient_id
         newPatientName = eventDropInfo.event.extendedProps.patient.name 
     } else {
         if (eventDropInfo.newResource.extendedProps.model_name === 'patient') {
-            console.log('resource patient')
             newPatientId = eventDropInfo.newResource.extendedProps.record_id
             newNurseId = eventDropInfo.event.extendedProps.nurse_id
             newPatientName = eventDropInfo.newResource.title
             newNurseName = eventDropInfo.event.extendedProps.nurse.name 
         } else if (eventDropInfo.newResource.extendedProps.model_name === 'nurse') {
-            console.log('resource nurse')
             newNurseId = eventDropInfo.newResource.extendedProps.record_id
             newPatientId = eventDropInfo.event.extendedProps.patient_id
             newNurseName = eventDropInfo.newResource.title
@@ -652,33 +649,39 @@ let nonMasterDragOptions = (eventDropInfo) => {
     let minutes = moment.duration(eventDropInfo.delta).asMinutes();
     let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
     let previous_end = moment(eventDropInfo.event.end).subtract(minutes, "minutes");
-    let previousAppointment = `${previous_start.format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.format('LT')}`
-    let newAppointment = `${moment(eventDropInfo.event.start).format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).format('LT')}`
+    let previousAppointment = `${previous_start.locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.locale('ja').format('LT')}`
+    let newAppointment = `${moment(eventDropInfo.event.start).locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).locale('ja')    .format('LT')}`
     let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
     let patient_name = eventDropInfo.event.extendedProps.patient.name
     let newPatientId
     let newNurseId
-    console.log('new resource, old resource')
-    console.log(eventDropInfo.newResource)
-    console.log(eventDropInfo.oldResource)
+    let newResourceType
+    let newResourceTitle
+    let changeInResource
     if ((eventDropInfo.newResource === eventDropInfo.oldResource) || (!eventDropInfo.newResource)) {
-        console.log('no resource, or resource has not changed')
         newPatientId = eventDropInfo.event.extendedProps.patient_id
         newNurseId = eventDropInfo.event.extendedProps.nurse_id
     } else {
-        console.log('resource has changed')
         if (eventDropInfo.newResource.extendedProps.model_name === 'nurse') {
-            console.log('resource is nurse')
             newPatientId = eventDropInfo.event.extendedProps.patient_id
             newNurseId = eventDropInfo.newResource.extendedProps.record_id 
+            newResourceType = '従業員'
+            newResourceTitle = eventDropInfo.newResource.title
         } else if (eventDropInfo.newResource.extendedProps.model_name === 'patient') {
-            console.log('resource id patient')
             newPatientId = eventDropInfo.newResource.extendedProps.record_id
             newNurseId = eventDropInfo.event.extendedProps.nurse_id
+            newResourceType = '利用者'
+            newResourceTitle = eventDropInfo.newResource.title
         }
     }
 
-    $('#drag-drop-content').html(`<p>従業員：${nurse_name} / ${window.clientResourceName}: ${patient_name} </p><p>${previousAppointment} >> </p><p>${newAppointment}</p>`)
+    if (newResourceTitle && newResourceType) {
+        changeInResource = `<p>新規${newResourceType}: ${newResourceTitle}</p>`
+    } else {
+        changeInResource = ''
+    }
+
+    $('#drag-drop-content').html(`<p>従業員：${nurse_name} / ${window.clientResourceName}: ${patient_name} </p>${changeInResource}<p>${previousAppointment} >> </p><p>${newAppointment}</p>`)
 
     $('#drag-drop-modal').modal()
 

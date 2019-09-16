@@ -44,6 +44,7 @@ let createCalendar = () => {
         header: header,
         eventColor: '#7AD5DE',
         selectable: true,
+        eventDurationEditable: false,
         minTime: window.minTime,
         maxTime: window.maxTime,
         refetchResourcesOnNavigate: true,

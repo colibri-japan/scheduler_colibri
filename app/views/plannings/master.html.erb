@@ -80,7 +80,7 @@
 				<% today = Date.today %>
 				<% @grouped_nurses.each do |group_name, nurses| %>
 					<div id='<%= "team_#{@teams_id_by_name[group_name]}" if @teams_id_by_name.present? %>' 
-						data-resource-id="<%= @teams_id_by_name[group_name] %>" 
+						data-resource-id="<%= @teams_id_by_name[group_name] if @teams_id_by_name.present? %>" 
 						data-resource-type="team" 
 						data-fc-resource-url="<%= corporation_nurses_url(@corporation, format: :json, include_undefined: true, team_id: @teams_id_by_name[group_name]) if @teams_id_by_name.present? %>"
 						class="nurses-resource-subsection-title <%= 'resource-title-selectable' if @teams_id_by_name.present? %>" 

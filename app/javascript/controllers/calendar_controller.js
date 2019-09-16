@@ -59,7 +59,8 @@ let createCalendar = () => {
             },
             'dayGrid': {
                 slotLabelFormat: { day: 'numeric' },
-                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'}
+                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
+                eventLimit: 6
             },
             'resourceTimeGridDay': {
                 resourceLabelText: window.resourceLabel,
@@ -70,7 +71,8 @@ let createCalendar = () => {
                 slotDuration: { days: 1 },
                 resourceAreaWidth: '10%',
                 resourceLabelText: window.resourceLabel,
-                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'}
+                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
+                eventLimit: 6
             }
         },
 
@@ -98,8 +100,6 @@ let createCalendar = () => {
             if (window.resourceUrl) {
                 let connector = window.resourceUrl.indexOf('?') === -1 ? '?' : '&'
                 let url = `${window.resourceUrl}${connector}start=${moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')}&end=${moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')}`
-                console.log('resource url')
-                console.log(url)
                 $.getScript(url).then(data => successCallback($.parseJSON(data)))
             }
         },
@@ -160,6 +160,10 @@ let createCalendar = () => {
         },
 
         eventRender: function (info) {
+
+        },
+
+        eventPositioned: function(info) {
             if (window.eventDragging) {
                 return
             }

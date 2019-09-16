@@ -51,11 +51,6 @@
                 <%= form.label :business_end_hour, "日終了時間", class: "colibri-form-label-dark" %>
                 <%= form.select :business_end_hour, options_for_select([['16:00', '16:00:00'], ['17:00', '17:00:00'], ['18:00', '18:00:00'], ['19:00', '19:00:00'], ['20:00', '20:00:00'], ['21:00', '21:00:00'], ['22:00', '22:00:00'], ['23:00', '23:00:00'], ['24:00','24:00:00']], @corporation.business_end_hour), class: "form-control" %>
             </div>
-            
-            <div class="form-group">
-                <%= form.label :default_master_view, "マスターレイアウト", class: "colibri-form-label-dark" %>
-                <%= form.select :default_master_view, options_for_select([['日','timeGridDay'], ['週', 'timeGridWeek'], ['月','dayGridMonth']], @corporation.default_master_view), class: "form-control" %>
-            </div>
 
             <div class="form-group">
                 <%= form.label :default_individual_view, "個別レイアウト", class: "colibri-form-label-dark" %>
@@ -65,6 +60,11 @@
             <div class="form-group">
                 <%= form.label :default_view, "従業員.#{client_resource_name(@corporation.business_vertical)}全員.チーム分けレイアウト", class: "colibri-form-label-dark" %>
                 <%= form.select :default_view, options_for_select([['日', 'resourceTimeGridDay'], ['週','resourceTimelineWeek']], @corporation.default_view), class: "form-control" %>
+            </div>
+            
+            <div class="form-group">
+                <%= form.label :default_master_view, "個別マスターレイアウト", class: "colibri-form-label-dark" %>
+                <%= form.select :default_master_view, options_for_select([['日','timeGridDay'], ['週', 'timeGridWeek'], ['月','dayGridMonth']], @corporation.default_master_view), class: "form-control" %>
             </div>
 
             <div class="form-group">

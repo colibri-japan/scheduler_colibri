@@ -159,10 +159,6 @@ let createCalendar = () => {
             window.eventDragging = false;
         },
 
-        eventRender: function (info) {
-
-        },
-
         eventPositioned: function(info) {
             if (window.eventDragging) {
                 return
@@ -170,8 +166,10 @@ let createCalendar = () => {
 
             if (info.event.extendedProps.cancelled) {
                 info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)'
+                info.el.classList.add('colibri-cancelled')
             } else if (info.event.extendedProps.edit_requested) {
                 info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px)'
+                info.el.classList.add('colibri-edit-requested')
             }
 
             if (['recurring_appointment', 'appointment'].includes(info.event.extendedProps.eventType)) {

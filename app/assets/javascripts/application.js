@@ -11,6 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require fullcalendar
+//= require scheduler
 //= require turbolinks
 //= require popper
 //= require bootstrap

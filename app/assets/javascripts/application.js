@@ -2591,6 +2591,20 @@ $(document).on('turbolinks:load', function(){
     }
   })
 
+  $('#availabilities-print').click(function(){
+    $('#availabilities-form').modal()
+    availabilitiesDate()
+  })
+
+  $('#confirm-availabilities-print').click(function(){
+    date = $('#availabilities_date').val()
+    text = $('#availabilities_text').val().replace(/\n/g, '<br />')
+    if (date) {
+      window.open($(this).data('link') + '?date=' + date + '&text=' + text, '_blank')
+    } else {
+      alert('期間を選択してください')
+    }
+  })
 
   if ($('#posts-widget-container').length > 0) {
     initializePostsWidget()

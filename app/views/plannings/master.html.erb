@@ -124,6 +124,7 @@
 							<div style="display:inline-block" class="colibri-toggle-text-right">シフト希望日</div>
 						</div>
 					</div>
+					<div class="btn btn-colibri-light-gray text-white" style='margin-right:5px' id="availabilities-print"><i class="glyphicon glyphicon-print" style="color:white;font-size:1em"></i>空き時間</div>
 					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 				</div>
 			</div>
@@ -172,6 +173,33 @@
 
     <%= render 'plannings/nurse_overlap_modal' %>
 <% end %>
+
+<div id="availabilities-form" class="modal fade" style='display:none'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+		<div class="modal-header">
+			<h1 class="colibri-small-title">空き時間プリント</h1>
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+		</div>
+		<div class="modal-body">
+
+			<div class='form-group'>
+				<%= label_tag :date, "○○日の週", class: 'colibri-form-label-dark' %><span class='required-field'>*</span>
+				<%= text_field_tag :date, value=nil, {class: "form-control", id: :availabilities_date} %>
+			</div>
+
+			<div class='form-group'>
+				<%= label_tag :text, "備考", class: 'colibri-form-label-dark' %>
+				<%= text_area_tag :text, value=@corporation.availabilities_default_text, {class: "form-control", id: :availabilities_text, rows: "8"} %>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+			<div id="confirm-availabilities-print" class="btn btn-info text-white btn-pointer" data-link="<%= nurses_master_availabilities_path(format: :pdf) %>">プリント</div>
+		</div>
+	</div>
+  </div>
+</div>
 
 
 

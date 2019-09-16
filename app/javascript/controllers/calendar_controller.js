@@ -517,16 +517,22 @@ let toggleNurseReminderButton = () => {
     } 
 }
 
-let toggleWishedSlotsButton = () => {
+let toggleWishedSlotsAndPrintAvailabilitiesButton = () => {
     if (window.masterCalendar === 'true') {
         let wishedSlotsButton = document.getElementById('wished-slots-toggle-switch') 
         let individualNurse = (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId !== 'all') || (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all')
+        let printAvailabilitiesButton = document.getElementById('availabilities-print')
         document.getElementById('toggle-switch-wished-slots').style.display = 'none'
         document.getElementById('toggle-switch-recurring-appointments').style.display = 'block'
         if (individualNurse) {
             wishedSlotsButton.style.display = 'block'
+            printAvailabilitiesButton.style.display = 'none'
         } else {
             wishedSlotsButton.style.display = 'none'
+            printAvailabilitiesButton.style.display = 'none'
+            if ((window.currentResourceId === 'all' & window.currentResourceType === 'nurse') || (!window.currentResourceId && window.defaultResourceId === 'all' && window.defaultResourceType === 'nurse')) {
+                printAvailabilitiesButton.style.display = 'block'
+            }
         }
     }
 }
@@ -832,7 +838,7 @@ export default class extends Controller {
         this.toggleDetailsButton()
         toggleNurseReminderButton()
         toggleNurseFilterButton()
-        toggleWishedSlotsButton()
+        toggleWishedSlotsAndPrintAvailabilitiesButton()
         updateMasterReflectButton()
         updateMasterEventsUrl()
 
@@ -871,7 +877,7 @@ export default class extends Controller {
         this.toggleDetailsButton()
         toggleNurseReminderButton()
         toggleNurseFilterButton()
-        toggleWishedSlotsButton()
+        toggleWishedSlotsAndPrintAvailabilitiesButton()
         updateMasterReflectButton()
 
         return

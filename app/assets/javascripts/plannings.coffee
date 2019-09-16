@@ -151,10 +151,6 @@ $(document).on 'turbolinks:load', ->
   if $('#colibri-salary-rules-index').length > 0
     $.getScript('/salary_rules.js')
       
-  $('#availabilities-print').click ->
-    $('#availabilities-form').modal()
-    availabilitiesDate()
-    return 
 
   $('#service-type-filter').click ->
     $('#service_type_filter_content').toggle()
@@ -162,15 +158,6 @@ $(document).on 'turbolinks:load', ->
 
   if $('#category-subcontainer').length > 0
     $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val())
-    
-  $('#confirm-availabilities-print').click -> 
-    date = $('#availabilities_date').val()
-    text = $('#availabilities_text').val().replace(/\n/g, '<br />')
-    if date
-      window.open($(this).data('link') + '?date=' + date + '&text=' + text, '_blank')
-    else
-      alert('期間を選択してください')
-    return
 
   if $('#cm_filter').length > 0
     $('#cm_filter').selectize 

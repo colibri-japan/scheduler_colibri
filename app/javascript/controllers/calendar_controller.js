@@ -520,7 +520,7 @@ let toggleNurseReminderButton = () => {
 let toggleWishedSlotsButton = () => {
     if (window.masterCalendar === 'true') {
         let wishedSlotsButton = document.getElementById('wished-slots-toggle-switch') 
-        let individualNurse = (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceType !== 'all') || (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all')
+        let individualNurse = (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId !== 'all') || (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all')
         document.getElementById('toggle-switch-wished-slots').style.display = 'none'
         document.getElementById('toggle-switch-recurring-appointments').style.display = 'block'
         if (individualNurse) {

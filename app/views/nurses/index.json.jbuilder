@@ -1,5 +1,6 @@
 json.array!(@nurses) do |nurse|
-	json.id nurse.id
+	json.id "nurse_#{nurse.id}"
 	json.title nurse.name
-	json.is_nurse_resource true
+	json.model_name 'nurse'
+	json.record_id nurse.id
 end

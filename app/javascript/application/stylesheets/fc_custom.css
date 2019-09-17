@@ -917,4 +917,55 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
         /* don't display any button-related controls */
     }
 
+    
+    /* hide now indicator */
+    .fc-now-indicator {
+      display: none;
+    }
+
+    /* custom Colibri styles 
+    -------------------------------------------------------------------------------------------------*/
+
+    span.fc-time {
+      font-size: 1em !important;
+    }
+
+
+    /* more visible dates */
+    .fc-day-header {
+      font-weight: bold;
+      font-size: 1.35em;
+    }
+
+    .fc-axis {
+      width: 7% !important;
+    }
+
+    .bolder-calendar-time-axis {
+      font-size: 1.25em;
+      font-weight: bold;
+    }
+
+
+    /* make event borders thicker */
+
+    .fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.fc-draggable {
+      border-width: 2.5px !important;
+    }
+
+    .fc-time-grid-event.fc-v-event.fc-event.fc-start.fc-end.fc-draggable.fc-resizable {
+      border-width: 5px !important;
+    }
+
+    /* do not hide background events */
+    td.fc-bgevent, div.fc-bgevent {
+      -webkit-print-color-adjust: exact !important;
+    }
+
+    /* making horizontal lines thicker for 9:00 12:00 15:00 18:00 */
+    .thick-calendar-line {
+      border-top: 3px solid #ccc !important;
+    }
+
+
 }

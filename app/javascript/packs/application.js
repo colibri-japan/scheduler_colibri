@@ -21,3 +21,5 @@ import "controllers"
 
 require("@rails/ujs").start()
 require("turbolinks").start()
+
+import '../application/stylesheets/fc_custom.css'

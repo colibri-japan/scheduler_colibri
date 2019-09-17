@@ -47,6 +47,7 @@ let createCalendar = () => {
         eventDurationEditable: false,
         minTime: window.minTime,
         maxTime: window.maxTime,
+        firstDay: window.firstDay,
         refetchResourcesOnNavigate: true,
         displayEventEnd: true,
         editable: true,

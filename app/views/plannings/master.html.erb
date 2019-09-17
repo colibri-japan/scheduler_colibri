@@ -22,6 +22,7 @@
 	window.currentYear = <%= Date.today.year %>
 	window.masterCalendar = 'true'
 	window.planningPath = '<%= j planning_path(@planning) %>'
+	window.firstDay = <%= @corporation.default_first_day %>
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>

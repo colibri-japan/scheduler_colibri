@@ -606,11 +606,6 @@ div.popover-body {
 		margin-left: 40px;
 	}
 
-	.fc-title {
-		font-size: 1.8em !important;
-		font-weight: bold !important;
-	}
-
 	#resource-details-button {
 		display: none !important;
 	}
@@ -620,19 +615,6 @@ div.popover-body {
 	}
 
 
-	.fc-event.fc-draggable.colibri-edit-requested {
-		background-image: repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px) !important;
-	  -webkit-print-color-adjust: exact;
-	}
-	
-	.fc-event.fc-draggable.colibri-cancelled {
-		background-image: repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px) !important;
-	  -webkit-print-color-adjust: exact;
-	}
-
-	.fc-event .fc-resizer {
-	display: none; }
-
 	span.fc-time {
 		font-size: 1em !important;
 	}
@@ -640,11 +622,7 @@ div.popover-body {
 
 
 
-	/* more visible dates */
-	.fc-day-header {
-		font-weight: bold;
-		font-size: 1.35em;
-	}
+
 
 	/* some styles for dashboard print */
 
@@ -681,6 +659,83 @@ div.popover-body {
 	html, body {
 		height: auto;
 	}
+
+    .fc-event .fc-resizer {
+        display: block !important;
+    }
+
+    .fc-event.fc-draggable.colibri-edit-requested {
+		background-image: repeating-linear-gradient(45deg, #C8F6DF, #C8F6DF 5px, #99E6BF 5px, #99E6BF 10px) !important;
+	  -webkit-print-color-adjust: exact;
+	}
+	
+	.fc-event.fc-draggable.colibri-cancelled {
+		background-image: repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px) !important;
+	  -webkit-print-color-adjust: exact;
+    }
+    
+    .fc-bg,
+    .fc-bgevent-skeleton,
+    .fc-highlight-skeleton,
+    .fc-mirror-skeleton,
+    .fc-bgevent-container,
+    .fc-business-container,
+    .fc-highlight-container,
+    .fc-mirror-container {
+        display: block !important;
+    }
+
+    .fc tbody .fc-row {
+        height: inherit !important;
+        /* undo height that JS set in distributeHeight */
+        min-height: 39px !important;
+        /* undo the min-height from each view's specific stylesheet */
+    }
+
+    .fc-time-grid {
+        min-height: 100% !important;
+    }
+
+    .fc-timeGrid-view {
+        display: block !important;
+    }
+
+    .fc-axis {
+        display: 'table-cell' !important;
+    }
+
+    .fc-slats,
+    .fc-time-grid hr {
+        /* this hr is used when height is underused and needs to be filled */
+        display: block !important;
+        /* important overrides inline declaration */
+    }
+
+    /* let the container that holds the events be naturally positioned and create real height */
+    .fc-time-grid .fc-content-skeleton {
+        position: relative !important;
+    }
+
+
+    /* kill the horizontal spacing made by the event container. event margins will be done below */
+    .fc-time-grid .fc-event-container {
+        margin: inherit !important;
+    }
+
+	.fc-day-header {
+		font-weight: bold;
+		font-size: 1.35em;
+    }
+    
+	.fc-title {
+		font-size: 1.8em !important;
+		font-weight: bold !important;
+    }
+    
+    .fc-time-grid .fc-event {
+        position: absolute !important;
+        margin: 3px 2px !important;
+    }
 
   
 }

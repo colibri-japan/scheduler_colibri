@@ -885,7 +885,11 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
 
 	.fc td.fc-limited {
 		display: table-cell !important;
-	}
+  }
+  
+  .fc-title {
+    font-weight: bold;
+  }
 
 	.fc-popover {
 		display: none;
@@ -926,8 +930,8 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
     /* custom Colibri styles 
     -------------------------------------------------------------------------------------------------*/
 
-    span.fc-time {
-      font-size: 1em !important;
+    div.fc-time > span {
+      font-size: 1.1em !important;
     }
 
 

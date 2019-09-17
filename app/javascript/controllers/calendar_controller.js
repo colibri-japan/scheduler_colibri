@@ -333,7 +333,7 @@ let setPrivateEventRange = (start, end, view) => {
     $('#private_event_starts_at_3i').val(moment(start).format('D'));
     $('#private_event_starts_at_4i').val(moment(start).format('HH'));
     $('#private_event_starts_at_5i').val(moment(start).format('mm'));
-    if (['dayGridMonth', 'timelineWeek'].includes(view.type) && moment(start).add(1, 'day').format('YYYY-MM-DD') === moment(end).format('YYYY-MM-DD')) {
+    if (['dayGridMonth', 'resourceTimelineWeek'].includes(view.type) && moment(start).add(1, 'day').format('YYYY-MM-DD') === moment(end).format('YYYY-MM-DD')) {
         $('#private_event_ends_at_1i').val(moment(start).format('Y'));
         $('#private_event_ends_at_2i').val(moment(start).format('M'));
         $('#private_event_ends_at_3i').val(moment(start).format('D'));
@@ -360,7 +360,7 @@ let setAppointmentRange = (start, end, view) => {
     $('#appointment_starts_at_3i').val(moment(start).format('D'));
     $('#appointment_starts_at_4i').val(moment(start).format('HH'));
     $('#appointment_starts_at_5i').val(moment(start).format('mm'));
-    if (['dayGridMonth', 'timelineWeek'].includes(view.type) && moment(start).add(1, 'day').format('YYYY-MM-DD') === moment(end).format('YYYY-MM-DD')) {
+    if (['dayGridMonth', 'resourceTimelineWeek'].includes(view.type) && moment(start).add(1, 'day').format('YYYY-MM-DD') === moment(end).format('YYYY-MM-DD')) {
         $('#appointment_ends_at_1i').val(moment(start).format('YYYY'));
         $('#appointment_ends_at_2i').val(moment(start).format('M'));
         $('#appointment_ends_at_3i').val(moment(start).format('D'));
@@ -387,7 +387,7 @@ let setRecurringAppointmentRange = (start, end, view) => {
     $('#recurring_appointment_anchor_3i').val(moment(start).format('D'));
     $('#recurring_appointment_starts_at_4i').val(moment(start).format('HH'));
     $('#recurring_appointment_starts_at_5i').val(moment(start).format('mm'));
-    if (['dayGridMonth', 'timelineWeek'].includes(view.type) && moment(start).add(1, 'day').format('YYYY-MM-DD') === moment(end).format('YYYY-MM-DD')) {
+    if (['dayGridMonth', 'resourceTimelineWeek'].includes(view.type) && moment(start).add(1, 'day').format('YYYY-MM-DD') === moment(end).format('YYYY-MM-DD')) {
         $('#recurring_appointment_end_day_1i').val(moment(start).format('YYYY'));
         $('#recurring_appointment_end_day_2i').val(moment(start).format('M'));
         $('#recurring_appointment_end_day_3i').val(moment(start).format('D'));

@@ -10,7 +10,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import jaLocale from '@fullcalendar/core/locales/ja'
 require('selectize')
 
-import '@fullcalendar/core/main.css';
+import '../application/stylesheets/fc_custom.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';

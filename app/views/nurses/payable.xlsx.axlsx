@@ -53,12 +53,31 @@ wb.styles do |s|
 			sheet.add_row
 			sheet.add_row
 
-			line_item_header = sheet.add_row ['','','手当名', '','','','額'], style: [nil,nil, table_header_centered, table_header_centered,table_header_centered,table_header_centered, table_header_centered]
-			sheet.merge_cells line_item_header.cells[(2..5)]
-			@salary_line_items.each do |salary_line_item|
-				line_item_row = sheet.add_row ['','', salary_line_item_title_with_counts(salary_line_item), '','','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
-				sheet.merge_cells line_item_row.cells[(2..5)]
+			presence_of_line_items_without_rule = @salary_line_items.where(salary_rule_id: nil).present?
+
+			header_content = @salary_line_items.where(salary_rule_id: nil).present? ? ['','','日付', '手当名','','','額'] : ['','','手当名', '','','','額'] 
+
+			line_item_header = sheet.add_row header_content, style: [nil,nil, table_header_centered, table_header_centered,table_header_centered,table_header_centered, table_header_centered]
+			if presence_of_line_items_without_rule
+				sheet.merge_cells line_item_header.cells[(3..5)]
+			else
+				sheet.merge_cells line_item_header.cells[(2..5)]
 			end
+
+			@salary_line_items.each do |salary_line_item|
+				if presence_of_line_items_without_rule
+					if salary_line_item.salary_rule_id.present? 
+						line_item_row = sheet.add_row ['','', '', salary_line_item_title_with_counts(salary_line_item),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
+					else 
+						line_item_row = sheet.add_row ['','', "#{salary_line_item.service_date.strftime('%-d日')} #{weekday(salary_line_item.service_date)}", salary_line_item_title_with_counts(salary_line_item),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
+					end
+					sheet.merge_cells line_item_row.cells[(3..5)]
+				else 
+					line_item_row = sheet.add_row ['','', salary_line_item_title_with_counts(salary_line_item), '','','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
+					sheet.merge_cells line_item_row.cells[(2..5)]
+				end
+			end
+
 			sum_line_items = @salary_line_items.sum(:total_wage)
 			sheet.add_row ['','','','','','手当合計', sum_line_items], style: align_center
 		end

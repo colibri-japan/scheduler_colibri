@@ -261,18 +261,31 @@ let createCalendar = () => {
                 selectEnd.setMinutes(selectStart.getMinutes() + 30)
             }
             $.getScript(window.selectActionUrl, function () {
-                setAppointmentRange(selectStart, selectEnd, info.view);
-                setPrivateEventRange(selectStart, selectEnd, info.view);
-                appointmentSelectizeNursePatient();
-                privateEventSelectizeNursePatient();
+                let resourceType
+
                 if (window.selectActionUrl.includes('/recurring_appointments/new')) {
                     setRecurringAppointmentRange(selectStart, selectEnd, info.view);
-                    recurringAppointmentSelectizeNursePatient()
                     setHiddenStartAndEndFields(screenStart, screenEnd)
+                    resourceType = 'recurring_appointment'
                 } else if (window.selectActionUrl.includes('/wished_slots/new')) {
                     setWishedSlotRange(selectStart, selectEnd, info.view)
                     setHiddenStartAndEndFields(screenStart, screenEnd)
+                    resourceType = 'wished_slot'
+                } else if (window.selectActionUrl.includes('/calendar_events/new')) {
+                    setAppointmentRange(selectStart, selectEnd, info.view);
+                    setPrivateEventRange(selectStart, selectEnd, info.view);
+                    resourceType = 'calendar_event'
+                }
+                if (info.resource) {
+                    setResource(resourceType, info.resource)
+                }
+                if (resourceType === 'recurring_appointment') {
+                    recurringAppointmentSelectizeNursePatient()
+                } else if (resourceType === 'wished_slot') {
                     wishedSlotsSelectize()
+                } else if (resourceType === 'calendar_event') {
+                    appointmentSelectizeNursePatient();
+                    privateEventSelectizeNursePatient();
                 }
             });
 
@@ -347,11 +360,12 @@ let setPrivateEventRange = (start, end, view) => {
         $('#private_event_ends_at_4i').val(moment(end).format('HH'));
         $('#private_event_ends_at_5i').val(moment(end).format('mm'));
     }
-    if (window.currentResourceType && window.currentResourceType !== 'team' && window.currentResourceId !== 'all') {
-        $(`#private_event_${window.currentResourceType}_id`).val(window.currentResourceId);
-    } else if (window.defaultResourceType !== 'team' && window.currentResourceType !== 'all') {
-        $(`#private_event_${window.defaultResourceType}_id`).val(window.defaultResourceId);
-    }
+
+    let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+
+    if (individualView) {
+        $(`#private_event_${window.currentResourceType || window.defaultResourceType}_id`).val(window.currentResourceId || window.defaultResourceId);
+    } 
 
 }
 
@@ -375,10 +389,10 @@ let setAppointmentRange = (start, end, view) => {
         $('#appointment_ends_at_5i').val(moment(end).format('mm'));
     }
 
-    if (window.currentResourceType && window.currentResourceType !== 'team' && window.currentResourceId !== 'all') {
-        $(`#appointment_${window.currentResourceType}_id`).val(window.currentResourceId);
-    } else if (window.defaultResourceType !== 'team' && window.currentResourceType !== 'all') {
-        $(`#appointment_${window.defaultResourceType}_id`).val(window.defaultResourceId);
+    let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+
+    if (individualView) {
+        $(`#appointment_${window.currentResourceType || window.defaultResourceType}_id`).val(window.currentResourceId || window.defaultResourceId);
     }
 }
 
@@ -401,10 +415,21 @@ let setRecurringAppointmentRange = (start, end, view) => {
         $('#recurring_appointment_ends_at_4i').val(moment(end).format('HH'));
         $('#recurring_appointment_ends_at_5i').val(moment(end).format('mm'));
     }
-    if (window.currentResourceType && window.currentResourceType !== 'team' && window.currentResourceId !== 'all') {
-        $(`#recurring_appointment_${window.currentResourceType}_id`).val(window.currentResourceId);
-    } else if (window.defaultResourceType !== 'team' && window.currentResourceType !== 'all') {
-        $(`#recurring_appointment_${window.currentResourceType}_id`).val(window.currentResourceId);
+
+    let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+
+    if (individualView) {
+        $(`#recurring_appointment_${window.currentResourceType || window.defaultResourceType}_id`).val(window.currentResourceId || window.defaultResourceId);
+    } 
+
+}
+
+let setResource = (eventType, resource) => {
+    if (eventType === 'calendar_event') {
+        $(`#appointment_${resource.extendedProps.model_name}_id`).val(resource.extendedProps.record_id)
+        $(`#private_event_${resource.extendedProps.model_name}_id`).val(resource.extendedProps.record_id)
+    } else {
+        $(`#${eventType}_${resource.extendedProps.model_name}_id`).val(resource.extendedProps.record_id)
     }
 
 }

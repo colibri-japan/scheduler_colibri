@@ -21,20 +21,22 @@
 		</p>
 	</div>
 
-    <% if current_user.corporation_admin? %>
+    <% unless current_user.has_restricted_access? %>
         <div id="patient-dashboard" style='display:flex'>
             <div class="patient-dashboard-panel" style='width:calc(75% - 5px);margin-right:5px'>
                 <div class="patient-dashboard-panel-title">
                     <%= @selected_month %>月のまとめ
                 </div>
                 <div class="patient-dashboard-panel-body" style='display:flex'>
-					<div id="payment-summary" style="height:125px;padding-right:10px;min-width:200px;border-right:0.5px #ccc solid">
-						基本給: <%= "#{@nurse.monthly_wage || 0}¥" if @nurse.full_timer? %><br/>
-                    	サービス：<%= sum_appointments = @nurse.full_timer ? 0 : (@appointments_till_today.sum(:total_wage) || 0)%>¥<br/>
-                    	手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
-                    	合計：<%= total_wage = (@nurse.monthly_wage || 0) + sum_salary_line_items + sum_appointments || 0 %>¥<br/>
-						キャンセル数:<%= @appointments_till_today.where(cancelled: true).size %><br/>
-					</div>
+					<% if current_user.corporation_admin? %>
+						<div id="payment-summary" style="height:125px;padding-right:10px;min-width:200px;border-right:0.5px #ccc solid">
+							基本給: <%= "#{@nurse.monthly_wage || 0}¥" if @nurse.full_timer? %><br/>
+							サービス：<%= sum_appointments = @nurse.full_timer ? 0 : (@appointments_till_today.sum(:total_wage) || 0)%>¥<br/>
+							手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
+							合計：<%= total_wage = (@nurse.monthly_wage || 0) + sum_salary_line_items + sum_appointments || 0 %>¥<br/>
+							キャンセル数:<%= @appointments_till_today.where(cancelled: true).size %><br/>
+						</div>
+					<% end %>
 					<div id="hours-worked-pied-container" style="padding-left:10px">
 						<%= pie_chart [['稼働時間', @percentage_of_time_worked], ['予定時間', @percentage_of_time_pending]], donut: true,  width: '100px', height: '100px', suffix: '%', legend: false, colors: ['#ffc107', '#e4e4e4'] %>
 					</div>
@@ -55,10 +57,12 @@
                 </div>
                 <div class="patient-dashboard-panel-body">
                     <table class="table">
-                        <tr>
-                            <td style='width:60%'>給与明細書</td>
-                            <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i>xlsx'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class: 'btn btn-sm btn-colibri-light-gray text-white' %></td>
-                        </tr>
+						<% if current_user.corporation_admin? %>
+							<tr>
+								<td style='width:60%'>給与明細書</td>
+								<td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i>xlsx'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class: 'btn btn-sm btn-colibri-light-gray text-white' %></td>
+							</tr>
+						<% end %>
                     </table>
                 </div>
             </div>

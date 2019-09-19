@@ -23,7 +23,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'actionview', '>= 5.1.6.2'
 
 # Upgrade nokogiri
-gem 'nokogiri', '>= 1.8.5'
+gem 'nokogiri',  '>= 1.10.4'
 
 # Upgrade ffi
 gem 'ffi', '>= 1.9.24'
@@ -56,7 +56,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'ice_cube'
 
 #user session and registration management
-gem 'devise', '>= 4.6.0'
+gem 'devise', '>= 4.7.1'
 
 #add invitable to devise
 gem 'devise_invitable'

@@ -88,7 +88,7 @@
                     <% invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
                       <% array_of_service_and_shifts_hashes.each do |hash_of_service_and_shifts| %>
                         <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
-                          <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="page-break-inside:avoid;height:29px">
+                          <tr style="page-break-inside:avoid;height:29px">
                               <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
                               <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
                               <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= @corporation.name %></td>
@@ -101,7 +101,7 @@
                               <% end %>
                               <td><%= shift[:previsional].count %></td>
                           </tr>
-                          <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="height:29px">
+                          <tr style="height:29px">
                               <td>実績</td>
                               <% (@first_day..@last_day).each do |date| %>
                                   <td><%= shift[:provided].include?(date.to_date) ? '1' : '' %></td>
@@ -119,7 +119,7 @@
                     <% shift_line_count = invoicing_summary[:inside_insurance_scope].sum {|category_hash, array_of_service_and_shifts_hashes| array_of_service_and_shifts_hashes.sum {|hash| hash[:shifts_hash].count } } %>
                     <% if shift_line_count < 10 %>
                         <% (10 - shift_line_count).times do %>
-                            <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                            <tr>
                                 <td rowspan="2"></td>
                                 <td rowspan="2"></td>
                                 <td rowspan="2"></td>
@@ -129,7 +129,7 @@
                                 <% end %>
                                 <td></td>
                             </tr>
-                            <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                            <tr>
                                 <td>実績</td>
                                 <% 31.times do %>
                                     <td></td>
@@ -232,7 +232,7 @@
                         <% count = 0 %>
                         <% invoicing_summary[:outside_insurance_scope].each do |hash_of_service_and_shifts| %>
                             <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
-                                <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="page-break-inside:avoid;height:29px">
+                                <tr style="page-break-inside:avoid;height:29px">
                                     <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
                                     <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= hash_of_service_and_shifts[:service_hash][:title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
                                     <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= @corporation.name %></td>
@@ -245,7 +245,7 @@
                                     <% end %>
                                     <td><%= shift[:previsional].count %></td>
                                 </tr>
-                                <tr class="<%= 'gray_row' unless count % 2 == 0 %>" style="height:29px">
+                                <tr style="height:29px">
                                     <td>実績</td>
                                     <% (@first_day..@last_day).each do |date| %>
                                         <td><%= shift[:provided].include?(date.to_date) ? '1' : '' %></td>
@@ -262,7 +262,7 @@
                         <% shift_line_count = invoicing_summary[:outside_insurance_scope].sum {|service_shift_hash| service_shift_hash[:shifts_hash].size } %>
                         <% if shift_line_count < 10 %>
                             <% (10 - shift_line_count).times do %>
-                                <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                                <tr>
                                     <td rowspan="2"></td>
                                     <td rowspan="2"></td>
                                     <td rowspan="2"></td>
@@ -272,7 +272,7 @@
                                     <% end %>
                                     <td></td>
                                 </tr>
-                                <tr class="<%= 'gray_row' unless count % 2 == 0 %>">
+                                <tr>
                                     <td>実績</td>
                                     <% 31.times do %>
                                         <td></td>

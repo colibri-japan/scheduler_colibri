@@ -1,8 +1,8 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
   before_action :set_patient, except: [:index, :create, :new]
-  before_action :set_planning, only: [:show, :master, :payable]
-  before_action :set_printing_option, only: [:show, :master]
+  before_action :set_planning, only: [:show, :payable]
+  before_action :set_printing_option, only: [:show]
   before_action :set_caveats, only: [:new, :edit]
 
   def index
@@ -32,20 +32,11 @@ class PatientsController < ApplicationController
   def show
     authorize @patient, :same_corporation_as_current_user?
 
-    #reporting line that needs to be changed
     @nurses_with_services = Nurse.joins(:appointments).select("nurses.*, sum(appointments.duration) as sum_appointments_duration").where(appointments: {patient_id: @patient.id, archived_at: nil, cancelled: false, edit_requested: false}).displayable.not_archived.group('nurses.id').order('sum_appointments_duration DESC')
     
     respond_to do |format|
       format.js 
-      format.html 
     end
-  end
-
-  def master
-    authorize @planning, :same_corporation_as_current_user?
-
-    @patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
-    fetch_nurses_grouped_by_team
   end
 
   def edit

@@ -1,8 +1,8 @@
 class PlanningsController < ApplicationController
 	before_action :set_corporation
 	before_action :set_planning, except: [:recent_patients_report] 
-	before_action :fetch_patients_grouped_by_kana, only: [:show, :master, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
-	before_action :fetch_nurses_grouped_by_team, only: [:show, :master, :all_patients, :all_nurses, :all_patients_master, :all_nurses_master]
+	before_action :fetch_patients_grouped_by_kana, only: [:show, :master]
+	before_action :fetch_nurses_grouped_by_team, only: [:show, :master]
 
 
 	def show 
@@ -21,23 +21,6 @@ class PlanningsController < ApplicationController
 		@nurses = @corporation.nurses.displayable.not_archived
 	end
 
-	def all_patients
-		authorize @planning, :same_corporation_as_current_user?
-	end
-	
-	def all_nurses
-		authorize @planning, :same_corporation_as_current_user?
-		@nurses = @corporation.nurses.displayable
-	end
-	
-	def all_patients_master
-		authorize @planning, :same_corporation_as_current_user?
-	end
-	
-	def all_nurses_master
-		authorize @planning, :same_corporation_as_current_user?
-		@nurses = @corporation.nurses.displayable
-	end
 
 	def new_master_to_schedule
 		authorize current_user, :has_admin_access?

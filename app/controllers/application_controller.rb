@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
     @corporation = Corporation.cached_find(current_user.corporation_id)
   end
 
+  def set_printing_option
+    @printing_option = @corporation.printing_option
+  end
+
   def set_planning
     @planning = @corporation.planning
   end

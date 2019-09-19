@@ -607,6 +607,16 @@ let updateMasterEventsUrl = () => {
     }
 }
 
+let updatePrintOptions = () => {
+    if (window.masterCalendar === 'true') {
+        if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
+            window.printDates = window.printPatientDates
+        } else {
+            window.printDates = window.printNurseDates
+        }
+    }
+}
+
 let humanizeFrequency = (frequency) => {
     switch (frequency) {
         case 0:
@@ -874,6 +884,7 @@ export default class extends Controller {
         toggleWishedSlotsAndPrintAvailabilitiesButton()
         updateMasterReflectButton()
         updateMasterEventsUrl()
+        updatePrintOptions()
 
         return
     }
@@ -912,6 +923,7 @@ export default class extends Controller {
         toggleNurseFilterButton()
         toggleWishedSlotsAndPrintAvailabilitiesButton()
         updateMasterReflectButton()
+        updatePrintOptions()
 
         return
     }

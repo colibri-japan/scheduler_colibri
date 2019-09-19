@@ -23,6 +23,9 @@
 	window.masterCalendar = 'true'
 	window.planningPath = '<%= j planning_path(@planning) %>'
 	window.firstDay = <%= @corporation.default_first_day %>
+	window.printNurseDates = <%= @printing_option.print_nurse_dates_in_master %>
+	window.printPatientDates = <%= @printing_option.print_patient_dates_in_master %>
+	window.printDates = ['team','nurse'].includes(window.defaultResourceType) ? printNurseDates  : printPatientDates
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>

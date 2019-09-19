@@ -8,6 +8,7 @@ class PlanningsController < ApplicationController
 	def show 
 		authorize @planning, :same_corporation_as_current_user?
 		set_main_nurse
+		set_printing_option
 
 		@nurses = @corporation.nurses.displayable.not_archived
 	end
@@ -15,7 +16,8 @@ class PlanningsController < ApplicationController
 	def master 
 		authorize @planning, :same_corporation_as_current_user?
 		set_main_nurse
-		
+		set_printing_option
+
 		@nurses = @corporation.nurses.displayable.not_archived
 	end
 

@@ -100,6 +100,40 @@ class PatientsController < ApplicationController
     end
   end
 
+  def teikyohyo
+    authorize current_user, :has_access_to_salary_line_items?
+    authorize @patient, :same_corporation_as_current_user?
+
+    @first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
+    @last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
+    @end_of_today_in_japan = (Time.current + 9.hours).end_of_day < @last_day ? (Time.current + 9.hours).end_of_day : @last_day
+  
+    @appointments_till_today = @patient.appointments.not_archived.in_range(@first_day..@end_of_today_in_japan).includes(:nurse).order(starts_at: 'asc')
+
+    @invoicing_summary = @patient.invoicing_summary(@first_day..@end_of_today_in_japan)
+
+    @cancelled_but_invoiceable_appointments = @appointments_till_today.where(cancelled: true).where.not(total_invoiced: [0, nil])
+    
+    respond_to do |format|
+      format.html 
+      format.pdf do
+        render pdf: "#{@patient.name}様_提供表_#{@first_day.strftime('%Jy年%Jm月')}分",
+        page_size: 'A4',
+        layout: 'pdf.html',
+        orientation: 'landscape',
+        encoding: 'UTF-8',
+        margin: {
+          top: 5,
+          bottom: 10,
+          left: 7,
+          right: 7
+        },
+        zoom: 1,
+        dpi: 75
+      end 
+    end
+  end
+
   def new_master_to_schedule
     authorize current_user, :has_admin_access?
   end

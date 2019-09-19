@@ -100,7 +100,11 @@ module PatientsHelper
                 patient.second_care_manager.care_manager_corporation.try(:name)
             end
         else
-            patient.care_manager.care_manager_corporation.name
+            if patient.care_manager.present?
+                patient.care_manager.care_manager_corporation.try(:name)
+            else
+                ''
+            end
         end
     end
     

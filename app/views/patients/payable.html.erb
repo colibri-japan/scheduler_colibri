@@ -44,6 +44,10 @@
                             <td style='width:60%'>コメント付きサービス</td>
                             <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> pdf'.html_safe, patient_commented_appointments_path(@patient, {m: @selected_month, y: @selected_year, format: 'pdf'}), target: :_blank, class: 'btn btn-sm btn-success text-white' %></td>
                         </tr>
+                        <tr>
+                            <td style='width:60%'>提供表</td>
+                            <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> pdf'.html_safe, patient_teikyohyo_path(@patient, {m: @selected_month, y: @selected_year, format: 'pdf'}), target: :_blank, class: 'btn btn-sm btn-success text-white' %></td>
+                        </tr>
                     </table>
                 </div>
             </div>

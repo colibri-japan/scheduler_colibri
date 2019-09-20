@@ -1,4 +1,8 @@
 $('tbody > tr').remove()
-$('tbody').html("<%= j render partial: 'posts/post_table', collection: @posts.to_a.reverse, as: :post %>")
+<% if params[:order_by_patient].present? %>
+    $('tbody').html("<%= j render 'posts/patient_post_table' %>")
+<% else %>
+    $('tbody').html("<%= j render partial: 'posts/post_table', collection: @posts.to_a.reverse, as: :post %>")
+<% end %>
 $('#posts-excel-button').attr("href", "<%= posts_path(format: 'xlsx', params: {range_end: params[:range_end], range_start: params[:range_start], author_ids: params[:author_ids], patient_ids: params[:patient_ids]}) %>")
 clickableTableRowPost() 

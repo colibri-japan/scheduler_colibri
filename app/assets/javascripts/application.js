@@ -1483,6 +1483,27 @@ $(document).on('turbolinks:load', function(){
     $.getScript(url)
   })
 
+  $('#sort-posts-by-patient-tag').click(function(){
+    let range_start 
+    let range_end
+    if ($('#posts_date_range').data('daterangepicker')) {
+      range_start = $('#posts_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm')
+      range_end = $('#posts_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm')
+    }
+
+    let queryData = {
+      range_start: range_start,
+      range_end: range_end,
+      patient_ids: $('#posts_patient_ids_filter').val(),
+      author_ids: $('#posts_author_ids_filter').val(),
+      order_by_patient: true
+    }
+    $.ajax({
+      url: '/posts.js',
+      data: queryData
+    })
+  })
+
   $('#new-reminder-email').click(function(){
     let url = document.getElementById('new-reminder-email').dataset.url 
     $.getScript(url)

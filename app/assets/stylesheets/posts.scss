@@ -33,3 +33,12 @@
 .post-clickable-row:hover {
     cursor: pointer,
 }
+
+
+@media print {
+
+  .break-page-on-print {
+    page-break-after: always !important;
+  }
+
+}

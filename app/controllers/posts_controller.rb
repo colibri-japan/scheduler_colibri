@@ -35,8 +35,15 @@ class PostsController < ApplicationController
         else
             @posts = @corporation.cached_recent_posts
         end
-
         fetch_post_readers
+
+        if params[:order_by_patient].present? 
+            ids = @posts.map {|p| p.patients.ids}.flatten.uniq.compact.map &:to_i
+            patients = Patient.where(id: ids)
+            @posts = patients.joins(:posts).includes(:posts).order('patients.kana collate "C" ASC, posts.published_at DESC')
+            @posts = @posts.where('posts.published_at BETWEEN ? and ?', params[:range_start], params[:range_end]) if params[:range_start].present? && params[:range_end].present?
+            @posts.where('posts.author_id = ?', params[:author_ids]) if params[:author_ids].present? && (params[:author_ids].map(&:to_i) - @users.ids).empty?
+        end
 
         respond_to do |format|
             format.html

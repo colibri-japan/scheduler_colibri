@@ -54,7 +54,7 @@
   <% if wished_slot.new_record? %>
     <div class="form-group">
       <%= form.label :nurse_id, "従業員名", class: "colibri-form-label-dark" %>
-      <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, wished_slot.nurse_id), {}, {required: true, id: :wished_slot_nurse_id } %>
+      <%= form.select :nurse_id, grouped_options_for_select(@grouped_nurses_for_select, wished_slot.nurse_id), {}, {required: true, id: :wished_slot_nurse_id } %>
     </div>
   <% end %>
 

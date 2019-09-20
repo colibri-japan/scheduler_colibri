@@ -2,7 +2,7 @@ class PrivateEventsController < ApplicationController
 	before_action :set_private_event, only: [:show, :edit, :update, :destroy]
 	before_action :set_planning
 	before_action :set_corporation
-	before_action :set_nurses, only: :edit
+	before_action :set_grouped_nurses, only: :edit
 	before_action :set_patients, only: :edit
 
 
@@ -100,11 +100,11 @@ class PrivateEventsController < ApplicationController
 	def set_planning
 		@planning = Planning.find(params[:planning_id])
 	end
-		
-	def set_nurses
-		@nurses = @corporation.nurses.displayable.order_by_kana
+
+	def set_grouped_nurses
+		@grouped_nurses_for_select = @corporation.cached_nurses_grouped_by_fulltimer_for_select
 	end
-				
+	
 	def set_patients
 		@patients = @corporation.cached_active_patients_ordered_by_kana
 	end

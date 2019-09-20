@@ -62,6 +62,24 @@ class Corporation < ApplicationRecord
 		}
 	end
 
+	def cached_nurses_grouped_by_fulltimer_for_select
+		Rails.cache.fetch([self, 'nurses_grouped_by_fulltimer_for_select']) {
+			{
+				'正社員' => nurses.not_archived.full_timers.order_by_kana.pluck(:name, :id),
+				'非正社員' => nurses.not_archived.part_timers.order_by_kana.pluck(:name, :id)
+			}
+		}
+	end
+
+	def cached_displayable_nurses_grouped_by_fulltimer_for_select
+		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_fulltimer_for_select']) {
+			{
+				'正社員' => nurses.displayable.not_archived.full_timers.order_by_kana.pluck(:name, :id),
+				'非正社員' => nurses.displayable.not_archived.part_timers.order_by_kana.pluck(:name, :id)
+			}
+		}
+	end
+
 	def cached_displayable_nurses_grouped_by_fulltimer
 		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_fulltimer']) {
 			{

@@ -2,7 +2,7 @@ class RecurringAppointmentsController < ApplicationController
   before_action :set_recurring_appointment, only: [:show, :edit, :archive, :from_master_to_general, :terminate, :create_individual_appointments]
   before_action :set_planning
   before_action :set_corporation
-  before_action :set_nurses, only: [:new, :edit]
+  before_action :set_grouped_nurses, only: [:new, :edit]
   before_action :set_patients, only: [:new, :edit]
 
 
@@ -105,8 +105,8 @@ class RecurringAppointmentsController < ApplicationController
       @recurring_appointment = RecurringAppointment.find(params[:id])
     end
 
-    def set_nurses
-      @nurses = @corporation.nurses.displayable.not_archived.order_by_kana
+    def set_grouped_nurses
+      @grouped_nurses_for_select = @corporation.cached_displayable_nurses_grouped_by_fulltimer_for_select
     end
 
     def set_patients

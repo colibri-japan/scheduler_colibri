@@ -55,7 +55,7 @@
 
       <div class="form-group">
         <%= form.label :nurse_id, "従業員名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
-        <%= form.select :nurse_id, grouped_options_for_select(@nurses.group_full_timer_for_select, recurring_appointment.nurse_id), {}, {required: true, id: :recurring_appointment_nurse_id} %>
+        <%= form.select :nurse_id, grouped_options_for_select(@grouped_nurses_for_select, recurring_appointment.nurse_id), {}, {required: true, id: :recurring_appointment_nurse_id} %>
       </div>
 
       <div class="form-group">

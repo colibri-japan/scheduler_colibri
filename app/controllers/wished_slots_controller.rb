@@ -23,7 +23,7 @@ class WishedSlotsController < ApplicationController
 
 	def new
 		authorize current_user, :has_admin_access?
-		set_nurses
+		set_grouped_nurses
 		
 		@wished_slot = WishedSlot.new(rank: 2)
 	end
@@ -69,8 +69,8 @@ class WishedSlotsController < ApplicationController
 	    @planning = Planning.find(params[:planning_id])
 	end
 		
-    def set_nurses
-        @nurses = @corporation.nurses.all.order_by_kana
+    def set_grouped_nurses
+        @grouped_nurses_for_select = @corporation.cached_displayable_nurses_grouped_by_fulltimer_for_select
     end
 
 	def wished_slot_params

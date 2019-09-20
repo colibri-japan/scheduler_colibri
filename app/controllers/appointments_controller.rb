@@ -43,11 +43,10 @@ class AppointmentsController < ApplicationController
   def edit  
     authorize @planning, :same_corporation_as_current_user?
 
-    @nurses = @corporation.nurses.not_archived.order_by_kana
-    @patients = @corporation.patients.active.order_by_kana
+    @grouped_nurses_for_select = @corporation.cached_nurses_grouped_by_fulltimer_for_select
+    @patients = @corporation.cached_active_patients_ordered_by_kana
     @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).includes(:owner)
     @services_with_recommendations = @corporation.cached_most_used_services_for_select
-    @recurring_appointment = RecurringAppointment.find(@appointment.recurring_appointment_id) if @appointment.recurring_appointment_id.present?
   end
 
   # POST /appointments

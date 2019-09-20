@@ -4,12 +4,11 @@ json.array! @private_events.each do |private_event|
     
     json.id "private_event_#{private_event.id}"
     
-    json.extract! private_event, :patient_id, :nurse_id, :edit_requested
+    json.extract! private_event, :patient_id, :nurse_id, :edit_requested, :title
     json.start private_event.starts_at.try(:strftime, date_format)
     json.end private_event.ends_at.try(:strftime, date_format)
     json.description private_event.description ? private_event.description : ''
     json.serviceType private_event.title || ''
-    json.title "#{private_event.patient.try(:name)} #{private_event.nurse.try(:name)}: #{private_event.title}" 
 
     json.displayable true
     json.patient do 

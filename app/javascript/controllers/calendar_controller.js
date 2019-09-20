@@ -190,6 +190,18 @@ let createCalendar = () => {
                         info.event.setProp('title', title)
                     }
                 }
+            } else if (info.event.extendedProps.eventType === 'private_event') {
+                if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
+                    let title = (info.event.extendedProps.nurse && info.event.extendedProps.nurse.name) ? `${info.event.extendedProps.nurse.name}: ${info.event.extendedProps.serviceType}` : info.event.title 
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                } else {
+                    let title = (info.event.extendedProps.patient && info.event.extendedProps.patient.name) ? `${info.event.extendedProps.patient.name}様: ${info.event.extendedProps.serviceType}` : info.event.title 
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                }
             }
 
             let popoverTitle = info.event.extendedProps.serviceType || ''

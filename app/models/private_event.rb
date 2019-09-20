@@ -18,7 +18,7 @@ class PrivateEvent < ApplicationRecord
 		date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 		{
 			id: "private_event_#{self.id}",
-			title: "#{self.nurse.try(:name)} #{self.patient.try(:name)}:#{self.title}",
+			title: self.title,
 			start: self.starts_at.try(:strftime, date_format),
 			end: self.ends_at.try(:strftime, date_format),
 			patient_id: self.patient_id,

@@ -1,6 +1,6 @@
 {
-  "application.css": "/packs/css/application-6846ebeb.css",
-  "application.css.map": "/packs/css/application-6846ebeb.css.map",
+  "application.css": "/packs/css/application-8e8898aa.css",
+  "application.css.map": "/packs/css/application-8e8898aa.css.map",
   "application.js": "/packs/js/application-1f6e8bf4abae1f5298d6.js",
   "application.js.map": "/packs/js/application-1f6e8bf4abae1f5298d6.js.map",
   "bootstrap_custom.js": "/packs/js/bootstrap_custom-09af3f5f363d51257ec6.js",
@@ -8,13 +8,13 @@
   "entrypoints": {
     "application": {
       "css": [
-        "/packs/css/application-6846ebeb.css"
+        "/packs/css/application-8e8898aa.css"
       ],
       "js": [
         "/packs/js/application-1f6e8bf4abae1f5298d6.js"
       ],
       "css.map": [
-        "/packs/css/application-6846ebeb.css.map"
+        "/packs/css/application-8e8898aa.css.map"
       ],
       "js.map": [
         "/packs/js/application-1f6e8bf4abae1f5298d6.js.map"

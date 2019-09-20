@@ -891,6 +891,7 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   div.fc-content > div.fc-title {
     font-weight: bold !important;
     font-size: 2em !important;
+    color: black;
   }
 
 	.fc-popover {
@@ -960,11 +961,11 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
     /* make event borders thicker */
 
     .fc-day-grid-event, .fc-h-event, .fc-event, .fc-start, .fc-end, .fc-draggable {
-      border-width: 4px !important;
+      border-width: 4.5px !important;
     }
 
     .fc-time-grid-event, .fc-v-event, .fc-event, .fc-start, .fc-end, .fc-draggable, .fc-resizable {
-      border-width: 4px !important;
+      border-width: 4.5px !important;
     }
 
     /* do not hide background events */

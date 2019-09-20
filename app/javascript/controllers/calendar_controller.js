@@ -52,7 +52,6 @@ let createCalendar = () => {
         displayEventEnd: true,
         editable: true,
         height: function () {
-            console.log(screen.height - 240)
             return (screen.height - 240)
         },
         views: {
@@ -831,7 +830,6 @@ export default class extends Controller {
     static targets = [ 'resourceName' ]
     
     connect() {
-        console.log('connected')
         this.initializeResource()
         this.renderCalendar()
     }

@@ -1,8 +1,8 @@
 {
   "application.css": "/packs/css/application-8e8898aa.css",
   "application.css.map": "/packs/css/application-8e8898aa.css.map",
-  "application.js": "/packs/js/application-f7f638ba19b7c99872de.js",
-  "application.js.map": "/packs/js/application-f7f638ba19b7c99872de.js.map",
+  "application.js": "/packs/js/application-69a6cb51ff6d80b6ec10.js",
+  "application.js.map": "/packs/js/application-69a6cb51ff6d80b6ec10.js.map",
   "bootstrap_custom.js": "/packs/js/bootstrap_custom-09af3f5f363d51257ec6.js",
   "bootstrap_custom.js.map": "/packs/js/bootstrap_custom-09af3f5f363d51257ec6.js.map",
   "entrypoints": {
@@ -11,13 +11,13 @@
         "/packs/css/application-8e8898aa.css"
       ],
       "js": [
-        "/packs/js/application-f7f638ba19b7c99872de.js"
+        "/packs/js/application-69a6cb51ff6d80b6ec10.js"
       ],
       "css.map": [
         "/packs/css/application-8e8898aa.css.map"
       ],
       "js.map": [
-        "/packs/js/application-f7f638ba19b7c99872de.js.map"
+        "/packs/js/application-69a6cb51ff6d80b6ec10.js.map"
       ]
     },
     "bootstrap_custom": {

@@ -34,14 +34,21 @@
     cursor: pointer,
 }
 
-tr.break-page-on-print {
-  break-after: page !important;
-}
 
 @media print {
-
-  tr.break-page-on-print {
-    break-after: page !important;
+    
+  table#post-table > tbody::after {
+    content: '';
+    display: block;
+    page-break-after: always !important;
+    page-break-inside: avoid;
+    page-break-before: avoid;
   }
+
+  tbody.break-page-on-print {
+    break-after: page !important;
+    page-break-after: always !important;
+  }
+
 
 }

@@ -34,11 +34,14 @@
     cursor: pointer,
 }
 
+tr.break-page-on-print {
+  break-after: page !important;
+}
 
 @media print {
 
-  .break-page-on-print {
-    page-break-after: always !important;
+  tr.break-page-on-print {
+    break-after: page !important;
   }
 
 }

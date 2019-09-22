@@ -1,7 +1,7 @@
 <% @invoicing_summary_per_patient.each do |patient, invoicing_summary| %>
     <div class="teikyohyo-container">
         <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
-        <div class="total_credits">合計：<%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits], delimiter: ',') %>単位</div>
+        <div class="total_credits">合計：<%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits_with_bonus], delimiter: ',') %>単位</div>
         <div class="teikyohyo_1_header">
             <table class="table table-bordered table-bordered-pdf  table-centered">
                 <tr>

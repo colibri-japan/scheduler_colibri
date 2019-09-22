@@ -581,6 +581,119 @@ div.popover-body {
 	page-break-after: always;
 }
 
+@media screen and (orientation: portrait) and (max-width: 760px) {
+
+	/* styles for navigation bar */
+	#header-navigation {
+		display: none;
+	}
+
+	.main-page {
+		padding-top: 0;
+	}
+	
+	/* styles for planning left menu */
+	
+	#planning-menu-container {
+		height: 60px;
+		width: 100%;
+		position: fixed;
+		top: auto;
+		bottom: 0 !important;
+		left: 0;
+		background-color: #354553;
+		padding-top: 0;
+		z-index: 15;
+	}
+	
+	
+	ul.nav-tabs {
+		list-style: none;
+		text-align: center;
+		border-bottom: 0;
+		padding-top: 0;
+	}
+	
+	li.planning-menu-items {
+		margin-left: 20px;
+		margin-right: 20px;
+		padding-bottom: 0;
+		display: list-item !important;
+		float: left !important;
+		width: auto;
+	}
+
+	/* styles dashboard and other content container */
+
+	#colibri-dashboard-container {
+		margin-left: 3px;
+		margin-right: 3px;
+		margin-top: 3px;
+		margin-bottom: 80px;
+	}
+
+	#planning-page-wrapper {
+		width: 100vw;
+	}
+
+	#resource-list-container {
+		background-color: #606E7C;
+		border: 0.5px solid #606E7C;
+		display: flex;
+		flex-direction: column;
+		overflow:hidden;
+		height: 100%;
+		min-width: 130px;
+		width:10vw;
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		overflow-x: hidden;
+		padding-top: 3px;
+		padding-bottom: 60px;
+		display: none;
+	}
+
+	#detail-container {
+		margin: 5px;
+		display: flex;
+		position: absolute;
+		width: 100%;
+		max-width: none;
+		top: 0;
+		left: 0;
+	}
+
+	#detail-planning-title {
+		width: 100%;
+	}
+	
+	#planning-container {
+		width: 100%;
+		
+	}
+
+	#detail-planning-container {
+		width: 100%;
+	}
+
+	/* Hide batch action button */
+
+	#colibri-batch-action-button {
+		display: none;
+	}
+
+	#colibri-master-action-button {
+		display: none;
+	}
+
+	/* Hide print button */
+	#print-button {
+		display: none;
+	}
+}
+
 @media print {
 
 	@page {

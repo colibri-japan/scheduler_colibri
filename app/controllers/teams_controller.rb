@@ -24,28 +24,7 @@ class TeamsController < ApplicationController
             redirect_to teams_path, notice: '新規チームが登録されました'
         end
     end
-    
-    def show
-        @planning = Planning.find(params[:planning_id])
-        @team = Team.find(params[:id]) 
 
-        authorize @planning, :same_corporation_as_current_user?
-        authorize @team, :same_corporation_as_current_user?
-        
-        fetch_patients_grouped_by_kana
-        fetch_nurses_grouped_by_team
-    end
-    
-    def master 
-        @planning = Planning.find(params[:planning_id])
-        @team = Team.find(params[:id]) 
-        
-        authorize @planning, :same_corporation_as_current_user?
-        authorize @team, :same_corporation_as_current_user?
-
-        fetch_patients_grouped_by_kana
-        fetch_nurses_grouped_by_team
-    end
 
     def payable
         @planning = Planning.find(params[:planning_id])

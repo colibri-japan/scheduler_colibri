@@ -30,7 +30,7 @@
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
 
-<div data-controller="calendar">
+<div id="planning-page-wrapper" data-controller="calendar">
 	<div id="resource-list-container" class="no-print">
 		<div id="toggle-patients-nurses-wrapper">
 			<div id="toggle-switch-patients" class="no-print btn btn-colibri-light-gray colibri-toggle-switch" style="display:none">

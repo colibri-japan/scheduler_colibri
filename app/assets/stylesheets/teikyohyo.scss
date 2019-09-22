@@ -1,5 +1,7 @@
 .teikyohyo-container {
-    page-break-after: always;
+    display: block;
+    clear: both;
+    page-break-after: always !important;
     break-after: page !important;
     font-size: 0.9em;
 }

@@ -9,6 +9,9 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import jaLocale from '@fullcalendar/core/locales/ja'
 require('selectize')
+var moment = require('moment')
+import 'moment/locale/ja'
+moment.locale('ja')
 
 import '../application/stylesheets/fc_custom.css';
 import '@fullcalendar/daygrid/main.css';
@@ -59,7 +62,8 @@ let createCalendar = () => {
                 slotLabelFormat: { hour: 'numeric', minute: '2-digit' },
             },
             'timeGridDay': {
-                titleFormat: {year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'}
+                titleFormat: {year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'},
+                columnHeaderFormat: {month: 'numeric', day: 'numeric', weekday: 'short'}
             },
             'dayGrid': {
                 slotLabelFormat: { day: 'numeric' },
@@ -162,6 +166,10 @@ let createCalendar = () => {
 
         eventDragStop: function (info) {
             window.eventDragging = false;
+        },
+
+        datesRender: function(info) {
+            responsiveHeader(info.view)
         },
 
         eventPositioned: function(info) {
@@ -433,6 +441,21 @@ let setRecurringAppointmentRange = (start, end, view) => {
         $(`#recurring_appointment_${window.currentResourceType || window.defaultResourceType}_id`).val(window.currentResourceId || window.defaultResourceId);
     } 
 
+}
+
+let responsiveHeader = (view) => {
+    if (view.type === 'timeGridWeek') {
+        if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches) {
+            let dayHeaders = $('.fc-day-header')
+            if (dayHeaders) {
+                dayHeaders.each(function(index, element) {
+                    let newDate = `${moment(element.dataset.date).locale('ja').format('dd')}<br/>${moment(element.dataset.date).format('M/D')}`
+                    element.innerHTML = newDate
+                })
+
+            }
+        }
+    }
 }
 
 let setResource = (eventType, resource) => {

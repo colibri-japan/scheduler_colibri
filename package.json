@@ -17,6 +17,7 @@
     "coffee-loader": "^0.9.0",
     "coffeescript": "1.12.7",
     "jquery": "^3.4.1",
+    "moment": "^2.24.0",
     "popper.js": "^1.15.0",
     "selectize": "^0.12.6",
     "stimulus": "^1.1.1",

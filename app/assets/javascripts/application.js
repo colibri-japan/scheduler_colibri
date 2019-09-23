@@ -1593,9 +1593,12 @@ $(document).on('turbolinks:load', function(){
   })
 
   if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches) {
-    console.log('matched media')
     $('div.planning-resource-module-title').click(function(){
       $('#resource-list-container').show()
+    })
+
+    $('.resource-list-element, .resource-title-selectable').click(function(){
+      $('#resource-list-container').hide()
     })
 
     $('#close-resource').click(function(){

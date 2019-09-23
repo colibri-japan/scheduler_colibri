@@ -130,7 +130,7 @@
 	}
 }
 
-@media screen and (orientation: portrait){
+@media screen and (orientation: portrait) and (min-width: 760px) {
 	.colibri-dashboard-big-container {
 		height: auto;
 		flex-direction: column-reverse;

@@ -733,6 +733,21 @@ div.popover-body {
 		margin-bottom: 80px;
 	}
 
+	.colibri-dashboard-big-container {
+		height: auto;
+		flex-direction: column-reverse;
+	}
+
+	.colibri-dashboard-container-column-large {
+		width: 100%;
+		height: 140vh;
+	}
+
+	.colibri-dashboard-container-column-narrow {
+		width: 100%;
+		height: 70vh;
+	}
+
 	#planning-page-wrapper {
 		width: 100vw;
 	}
@@ -777,6 +792,12 @@ div.popover-body {
 
 	#detail-planning-container {
 		width: 100%;
+	}
+
+	#payable-container {
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
 	}
 
 	/* Hide batch action button */

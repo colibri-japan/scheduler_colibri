@@ -8,6 +8,14 @@
 <%= render 'plannings/settings_submenu', view: 'patients' %>
 
 <div id="settings-container">
+  <div id="detail-planning-title">
+		<div id="payable-menu">
+			<span class="glyphicon glyphicon-menu-hamburger"></span>
+		</div>
+		<p class="planning-activity-module-title setting-title">
+      従業員一覧
+		</p>
+	</div>
   <%= link_to "+新規#{client_resource_name(@corporation.business_vertical)}", new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
   
   <div style="display:flex;justify-content:space-between;margin-top:30px">

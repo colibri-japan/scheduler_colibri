@@ -5,7 +5,14 @@
 
 <div id="settings-container">
     <div id="planning-options" >
-        <h1 class="colibri-small-title"><%= corporation_resource_name(@corporation.business_vertical) %>設定</h1>
+        <div id="detail-planning-title">
+            <div id="payable-menu">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </div>
+            <p class="planning-activity-module-title setting-title">
+                <%= corporation_resource_name(@corporation.business_vertical) %>設定
+            </p>
+        </div>
         <%= form_for @corporation do |form| %>
           <div class="colibri-form-subsection" style="margin-top:25px">
             <div class='colibri-form-subsection-title'>基本情報</div>

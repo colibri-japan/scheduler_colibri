@@ -3,6 +3,14 @@
 <%= render 'plannings/settings_submenu', view: "services" %>
 
 <div id="settings-container">
+  <div id="detail-planning-title">
+		<div id="payable-menu">
+			<span class="glyphicon glyphicon-menu-hamburger"></span>
+		</div>
+		<p class="planning-activity-module-title setting-title">
+      サービスタイプ一覧
+		</p>
+	</div>
   <%= link_to '+新規サービスタイプ', new_service_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
   
   <div id="index-table-container">

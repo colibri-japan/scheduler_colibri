@@ -4,7 +4,14 @@
 
 <div id="settings-container">
     <div id="printing-options" >
-        <h1 class="colibri-small-title">印刷オプション</h1>
+        <div id="detail-planning-title">
+            <div id="payable-menu">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </div>
+            <p class="planning-activity-module-title setting-title">
+                印刷オプション
+            </p>
+        </div>
 
         <%= form_for [@corporation, @printing_option] do |form| %>
 

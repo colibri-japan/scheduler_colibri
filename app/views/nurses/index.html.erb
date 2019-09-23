@@ -3,6 +3,14 @@
 <%= render 'plannings/settings_submenu', view: 'nurses' %>
 
 <div id="settings-container">
+  <div id="detail-planning-title">
+		<div id="payable-menu">
+			<span class="glyphicon glyphicon-menu-hamburger"></span>
+		</div>
+		<p class="planning-activity-module-title setting-title">
+      利用者一覧
+		</p>
+	</div>
   <%= link_to '+新規従業員', new_nurse_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
   
   <div id="index-table-container">

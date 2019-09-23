@@ -807,7 +807,8 @@ div.popover-body {
 	#payable-container {
 		width: 100%;
 		max-width: 100%;
-		margin: 0;
+		margin: 0px 0px 50px 0px;
+		padding: 10px 5px 5px 5px;
 	}
 
 	/* Hide batch action button */
@@ -875,6 +876,66 @@ div.popover-body {
 
 	#patients-resource {
 		padding-bottom: 0px;
+	}
+
+	#colibri-master-action-button {
+		display: none !important;
+	}
+
+	/* payable view styles */
+
+	#payable-menu {
+		display: block;
+	}
+
+	.patient-left-panel {
+		margin: 0;
+		width: 100%;
+	}
+
+	.patient-dashboard-panel-body {
+		overflow-y: hidden;
+	}
+
+	.patient-right-panel {
+		display: none;
+	}
+
+	#payable-table-commands {
+		display: none;
+	}
+
+	#payable-query {
+		display: block;
+		margin-top: 10px;
+	}
+
+	#detail-planning-title {
+		justify-content: left;
+	}
+
+	/* Settings view layouts */
+
+	#settings-menu-container {
+		height: calc(100% - 50px);
+		width: 200px;
+		position: fixed;
+		z-index: 0;
+		top: 0px;
+		left: 0px;
+		padding-top: 10px;
+		background-color: #606E7C;
+		border: 0.5px solid #606E7C;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		overflow-y: scroll;
+		display: none;
+	}
+
+	#settings-container {
+		width: 100%;
+		margin: 10px 5px 5px 5px;
 	}
 
 	/* Scrollbar layout */

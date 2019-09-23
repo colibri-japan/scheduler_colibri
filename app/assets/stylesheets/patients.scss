@@ -33,6 +33,19 @@
 	border-radius: 3px;
 }
 
+#payable-menu {
+	display: none;
+}
+
+.patient-left-panel {
+	width:calc(75% - 5px);
+	margin-right:5px;
+}
+
+.patient-right-panel {
+	width:34%
+}
+
 .patient-dashboard-panel-title {
 	margin: 3px;
 	border-bottom: 0.5px solid #ccc;

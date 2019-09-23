@@ -1591,5 +1591,16 @@ $(document).on('turbolinks:load', function(){
   }, function(){
     $('#account-dropdown-icon').css({'color': 'white'})
   })
+
+  if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches) {
+    console.log('matched media')
+    $('div.planning-resource-module-title').click(function(){
+      $('#resource-list-container').show()
+    })
+
+    $('#close-resource').click(function(){
+      $('#resource-list-container').hide()
+    })
+  }
 }); 
 

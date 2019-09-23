@@ -779,17 +779,19 @@ div.popover-body {
 	}
 
 	#detail-container {
-		margin: 5px;
+		padding: 5px;
 		display: flex;
 		position: absolute;
 		width: 100%;
 		max-width: none;
 		top: 0;
 		left: 0;
+		margin: 0px 0px 50px 0px;
 	}
 
 	#detail-planning-title {
 		width: 100%;
+		margin-bottom: 10px;
 	}
 	
 	#planning-container {
@@ -799,6 +801,7 @@ div.popover-body {
 
 	#detail-planning-container {
 		width: 100%;
+		margin: 0 0 0 0;
 	}
 
 	#payable-container {
@@ -821,6 +824,60 @@ div.popover-body {
 	#print-button {
 		display: none;
 	}
+
+	/* Fullcalendar custom smartphone layouts */
+
+	.fc-center {
+		display: none;
+	}
+
+	/* Calendar view layouts */
+
+	button#resource-details-button {
+		display: none !important;
+	}
+
+	div#new-reminder-email {
+		display: none !important;
+	}
+
+	#resource-name-wrapper {
+		padding-right: 5px;
+	}
+
+	#resource-search-icon {
+		display: inline;
+	}
+
+	#toggle-patients-nurses-wrapper {
+		margin-left: 3px;
+	}
+
+	#close-resource-list {
+		display: block;
+		text-align: right;
+		color: white;
+	}
+
+	#resource-list-container {
+		height: calc(100% - 50px);
+	}
+
+	#resource-container {
+		height: 100%;
+		overflow-y: scroll;
+		overflow-x: hide;
+	}
+
+	#nurses-resource {
+		padding-bottom: 0px;
+	}
+
+	#patients-resource {
+		padding-bottom: 0px;
+	}
+
+	/* Scrollbar layout */
 
 
 }

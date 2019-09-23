@@ -241,8 +241,8 @@ li.account-settings-li:hover {
 
 ul.nav.nav-tabs {
 	list-style: none;
-	text-align: center;
-	border-bottom: 0px;
+	text-align: center !important;
+	border-bottom: 0px !important;
 	padding-top: 5px;
 }
 
@@ -706,11 +706,18 @@ div.popover-body {
 		padding-top: 0;
 		z-index: 15;
 	}
+
+	.nav-tabs {
+		border-bottom: 0px !important;
+	}
 	
 	
 	ul.nav-tabs {
 		list-style: none;
 		text-align: center;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		border-bottom: 0;
 		padding-top: 0;
 	}
@@ -719,7 +726,7 @@ div.popover-body {
 		margin-left: 20px;
 		margin-right: 20px;
 		padding-bottom: 0;
-		display: list-item !important;
+		display: block;
 		float: left !important;
 		width: auto;
 	}

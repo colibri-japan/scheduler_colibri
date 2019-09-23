@@ -583,6 +583,107 @@ div.popover-body {
 
 @media screen and (orientation: portrait) and (max-width: 760px) {
 
+	/* styles for home page */
+
+	#blog-link-container {
+		display: none;
+	}
+
+	#pages-nav-right {
+		display: flex;
+		justify-content: center;
+	}
+
+
+	img#colibri-logo {
+		height: 30px;
+		width: 30px;
+		margin-left:3px;
+		margin-top:3px;
+		margin-right: -8px;
+	}
+
+	#nav-contact-button {
+		display: none;
+	}
+
+	#presentation-text {
+		width: 100%;
+		padding-top: 0;
+	}
+
+	#top-subsection {
+		margin-top: 100px;
+		flex-direction: column-reverse;
+	}
+
+	#presentation-images-banner {
+		width: 100%;
+		margin-bottom: 40px;
+	}
+
+	.colibri-home-presentation-title {
+		font-size: 1.6em;
+		line-height: 1.6em;
+	}
+
+	.colibri-home-subsection {
+		padding: 50px 20px 50px 20px;
+	}
+
+	#shift-issue-details {
+		margin-top: 15px;
+		width: 100%;
+		max-width: none;
+	}
+
+	footer {
+		background-color: #324e7b;
+		color: white;
+		padding: 35px 20px 80px 20px;
+	}
+
+	#colibri-footer {
+		flex-direction: column-reverse;
+	}
+
+	#footer-brand-container {
+		width: 100%;
+		max-width: none;
+	}
+
+	.footer-colibri-information-title {
+		font-size: 1.7em;
+	}
+
+	.footer-colibri-information-container {
+		width: 100%;
+		max-width: none;
+		margin-bottom: 30px;
+	}
+
+	/* styles for contact page */
+
+	#colibri-contact-form-container {
+		margin-top: 60px;
+	}
+
+	#contact-form-login-button {
+		display: none;
+	}
+
+	/* styles for login page */
+
+	.colibri-devise-form {
+		width: 90%;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 90px;
+		margin-bottom: 40px;
+		background-color: #fff;
+		padding: 20px 20px 20px 20px;
+	}
+
 	/* styles for navigation bar */
 	#header-navigation {
 		display: none;
@@ -692,6 +793,8 @@ div.popover-body {
 	#print-button {
 		display: none;
 	}
+
+
 }
 
 @media print {

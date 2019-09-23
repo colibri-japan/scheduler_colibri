@@ -5,7 +5,7 @@
 <%= content_for :content do %>
 <nav id="colibri-pages-nav">
     <div id="brand-container">
-      <%= image_tag 'colibri_logo_full_pink.svg', size: '55', style: 'margin-left:6px;margin-top:3px' %>
+      <%= image_tag 'colibri_logo_full_pink.svg', size: '55', id: 'colibri-logo' %>
       <div id="brand-name">Colibri</div>
     </div>
     <div id="pages-nav-right">
@@ -15,7 +15,7 @@
               <%= link_to 'アプリへ', authenticated_root_path, title: 'ホームページ.ダッシュボード' %>  
             </li>
     	    <% else %>
-    	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>
+    	      <li class="li-float-right btn btn-mid-light" id="contact-form-login-button"><%= link_to 'ログイン', new_user_session_path %></li>
     	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ホームページへ', unauthenticated_root_path %></li>
             <li class="li-float-right" style="padding-top:10px" id="blog-link-container"><a href="https://colibri.hatenablog.jp/" target="_blank" id="colibri-blog-link">公式ブログ</a></li>
     	    <% end %>

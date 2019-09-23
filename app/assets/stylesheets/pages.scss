@@ -8,9 +8,9 @@
     height: 10vh;
     display: flex;
     justify-content: space-between;
-    -webkit-box-shadow: 0 8px 6px -6px #999;
-    -moz-box-shadow: 0 8px 6px -6px #999;
-    box-shadow: 0 8px 6px -6px #999;
+    -webkit-box-shadow: 0 4px 2px -2px #ccc;
+    -moz-box-shadow: 0 4px 2px -2px #ccc;
+    box-shadow: 0 4px 2px -2px #ccc;
 }
 
 #colibri-pages-nav > #brand-container > #brand-name {
@@ -50,6 +50,11 @@
     font-size: 2.7em;
     max-width: 66%;
     text-align: center;
+}
+
+#presentation-text {
+    width:45%;
+    padding-top:35px;
 }
 
 #colibri-presentation {
@@ -222,43 +227,31 @@ footer {
     text-decoration:underline;
 }
 
+#shift-issue-details {
+    font-size:0.7em;
+    max-width:50%;
+}
+
+#presentation-images-banner {
+    width: 55%;
+}
+
+#colibri-logo {
+    margin-left:12px;
+    margin-top:3px;
+}
+
 
 
 @media screen and (orientation: portrait) {
     
-    #colibri-pages-nav {
-        font-size: 2.4em;
-    }
 
     #blog-link-container {
         margin-top: 13px;
-        font-size: 1.4em;
-    }
-
-    #colibri-logo {
-        margin-top: 28px !important;
-        margin-right: -15px;
-    }
-
-    #pages-nav-right > ul > li > a {
-        font-size: 2em !important;
-    }
-
-    #top-subsection {
-        margin-top: 50px;
     }
 
     #colibri-banner-text {
-        font-size: 4.8em;
         max-width:90%;
-    }
-
-    .colibri-home-presentation-title {
-        font-size: 2em;
-    }
-
-    .home-subsection-content {
-        font-size: 2em;
     }
 
     .align-text-right-home {
@@ -273,16 +266,7 @@ footer {
         flex-direction: column;
     }
 
-    .colibri-home-subsection {
-        padding: 120px 50px 120px 50px;
-    }
-
-    .colibri-home-subsection-title {
-        font-size: 3em;
-    }
-
     .colibri-merits-subsection > div > p {
-        font-size: 2em;
         max-width: 90%;
         margin-left: auto;
         margin-right: auto;
@@ -290,12 +274,7 @@ footer {
     }
 
     .home-page-text-box > div {
-        font-size: 2em;
         max-width: 90%;
-    }
-
-    .contact-us-button-container >  a {
-        font-size: 2em;
     }
 
     .colibri-self-photo-container {
@@ -308,22 +287,13 @@ footer {
     }
 
     .founder-bio > p {
-        font-size: 2em;
         line-height: 1.3em;
     }
 
-    .founder-bio-important {
-        font-size: 1.6em;
-    }
-
     #footer-brand-name {
-        font-size: 2em;
         font-weight: bold;
     }
 
-    .footer-colibri-information-container {
-        font-size: 1.6em;
-    }
 
     .home-subsection-image-container {
         width: 100%;

@@ -29,20 +29,13 @@
 @media screen and (orientation: portrait) {
 
     #colibri-contact-form-container {
-        padding: 70px 20px 70px 20px;
-        width: 90%;
+        padding: 20px 20px 20px 20px;
+        width: 80%;
     }
+
     #colibri-contact-form-title {
-        font-size: 3em;
+        font-size: 1.6em;
         margin-bottom: 40px;
     }
-    .colibri-form-label-dark.home {
-        font-size: 1.6em;
-    }
-    .form-group.actions.home > input{
-        font-size: 2em;
-    }
-    input.form-control.home, textarea.form-control.home {
-        font-size: 1.6em;
-    }
+
 }

@@ -55,7 +55,13 @@ let createCalendar = () => {
         displayEventEnd: true,
         editable: true,
         height: function () {
-            return (screen.height - 240)
+            var height
+            if (window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+                height = 'auto'
+            } else {
+                height = (screen.height - 240)
+            }
+            return height
         },
         views: {
             'timeGrid': {

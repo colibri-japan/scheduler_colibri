@@ -1,5 +1,6 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
+$('.popover').remove();
 $('#remote_container').html('<%= j render "edit" %>');
 $('#edit_appointment').modal('show');
 appointmentSelectize();

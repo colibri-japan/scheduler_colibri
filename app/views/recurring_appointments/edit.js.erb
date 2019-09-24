@@ -1,5 +1,6 @@
 $('.modal').modal('hide');
 $('#remote_container').html('<%= j render "edit" %>');
+$('.popover').remove();
 $('#edit_recurring_appointment').modal('show');
 recurringAppointmenSelectizeTitle();
 recurringAppointmentSelectizeNursePatient();

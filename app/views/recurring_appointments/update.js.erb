@@ -3,6 +3,8 @@
 <% else %>
     $('.modal').modal('hide');
     $('.modal-backdrop').remove();
+    $('.popover').remove();
+
 
     if (typeof renderEvent === 'undefined') {
       let renderEvent

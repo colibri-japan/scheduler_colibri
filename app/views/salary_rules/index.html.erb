@@ -3,11 +3,11 @@
 <%= render 'plannings/settings_submenu', view: "salary_rules" %>
 
 <div id="settings-container">
-  <div id="index-table-container">
+  <div id="index-table-container" class="table-responsive">
 
     <div id="detail-planning-title">
       <div id="payable-menu">
-        <span class="glyphicon glyphicon-menu-hamburger"></span>
+        <%= image_tag 'hamburger_icon.svg', size: '28', class: 'hamburger_menu'  %>
       </div>
       <p class="planning-activity-module-title setting-title">
         手当一覧
@@ -18,9 +18,9 @@
 
     <table class='table table-hover' id="salary_rules_table">
       <thead>
-        <th>手当名</th>
-        <th>対象従業員</th>
-        <th>対象サービス</th>
+        <th style="width:30%;min-width:100px">手当名</th>
+        <th style="width:30%;min-width:100px">対象従業員</th>
+        <th style="width:30%;min-width:100px">対象サービス</th>
       </thead>
       <tbody id="salary-rules-table">
         <%= render @salary_rules %>

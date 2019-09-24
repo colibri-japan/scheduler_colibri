@@ -5,7 +5,7 @@
 <div id="settings-container">
   <div id="detail-planning-title">
 		<div id="payable-menu">
-			<span class="glyphicon glyphicon-menu-hamburger"></span>
+			<%= image_tag 'hamburger_icon.svg', size: '28', class: 'hamburger_menu'  %>
 		</div>
 		<p class="planning-activity-module-title setting-title">
       チーム管理
@@ -16,8 +16,8 @@
     <table class="table <%= 'table-hover' if current_user.has_admin_access? %>">
       <thead>
         <tr>
-          <th style="width: 30%">チーム名</th>
-          <th style="width: 70%">従業員名</th>
+          <th style="width:30%">チーム名</th>
+          <th style="width:70%">従業員名</th>
         </tr>
       </thead>
       <tbody>

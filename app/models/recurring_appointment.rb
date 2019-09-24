@@ -180,8 +180,6 @@ class RecurringAppointment < ApplicationRecord
 			UpdateIndividualAppointmentsWorker.perform_async(self.id)
 		elsif synchronize_appointments && editing_occurrences_after.present? 
 			new_recurring_id = RecurringAppointment.where(original_id: self.id).last.id
-			puts 'found new recurring'
-			puts new_recurring_id
 			UpdateIndividualAppointmentsWorker.perform_async(new_recurring_id)
 		end
 	end

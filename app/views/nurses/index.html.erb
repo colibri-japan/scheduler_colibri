@@ -5,23 +5,23 @@
 <div id="settings-container">
   <div id="detail-planning-title">
 		<div id="payable-menu">
-			<span class="glyphicon glyphicon-menu-hamburger"></span>
+			<%= image_tag 'hamburger_icon.svg', size: '28', class: 'hamburger_menu'  %>
 		</div>
 		<p class="planning-activity-module-title setting-title">
-      利用者一覧
+      従業員一覧
 		</p>
 	</div>
   <%= link_to '+新規従業員', new_nurse_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
   
-  <div id="index-table-container">
+  <div id="index-table-container" class="table-responsive">
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="table-important-fields">名前</th>
-          <th class="table-important-fields">電話番号</th>
-          <th class="table-important-fields">メール</th>
-          <th class="table-important-fields">正社員</th>
-          <th class="table-important-fields">リマインダー</th>
+          <th class="table-important-fields" style="min-width:100px">名前</th>
+          <th class="table-important-fields" style="min-width:120px">電話番号</th>
+          <th class="table-important-fields" style="min-width:120px">メール</th>
+          <th class="table-important-fields" style="min-width:100px">正社員</th>
+          <th class="table-important-fields" style="min-width:130px">リマインダー</th>
         </tr>
       </thead>
 

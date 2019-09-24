@@ -4,7 +4,7 @@ module SalaryRulesHelper
     end
 
     def target_all_services(salary_rule)
-        salary_rule.target_all_services ? '全サービスタイプ' : '指定のサービスタイプ'
+        salary_rule.target_all_services ? '全サービス' : '指定のサービス'
     end
 
     def salary_calculation(salary_rule)

@@ -5,7 +5,7 @@
 <div id="settings-container">
   <div id="detail-planning-title">
 		<div id="payable-menu">
-			<span class="glyphicon glyphicon-menu-hamburger"></span>
+			<%= image_tag 'hamburger_icon.svg', size: '28', class: 'hamburger_menu'  %>
 		</div>
 		<p class="planning-activity-module-title setting-title">
       サービスタイプ一覧
@@ -13,14 +13,14 @@
 	</div>
   <%= link_to '+新規サービスタイプ', new_service_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
   
-  <div id="index-table-container">
+  <div id="index-table-container" class="table-responsive">
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="table-important-fields">サービスタイプ</th>
-          <th class="table-important-fields"><%= invoicing_field_by_vertical(@corporation.business_vertical) %></th>
-          <th class="table-important-fields">デフォルト時給.単価</th>
-          <th class="table-important-fields">給与計算方法</th>
+          <th class="table-important-fields" style="min-width:140px">サービスタイプ</th>
+          <th class="table-important-fields" style="min-width:80px"><%= invoicing_field_by_vertical(@corporation.business_vertical) %></th>
+          <th class="table-important-fields" style="min-width:100px">時給.単価</th>
+          <th class="table-important-fields" style="min-width:120px">計算方法</th>
         </tr>
       </thead>
 

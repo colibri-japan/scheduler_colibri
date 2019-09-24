@@ -5,7 +5,7 @@
 <div id="settings-container">
   <div id="detail-planning-title">
 		<div id="payable-menu">
-			<span class="glyphicon glyphicon-menu-hamburger"></span>
+			<%= image_tag 'hamburger_icon.svg', size: '28', class: 'hamburger_menu'  %>
 		</div>
 		<p class="planning-activity-module-title setting-title">
       ユーザー管理
@@ -13,13 +13,13 @@
 	</div>
   <%= link_to '+事業所内のメンバーを招待する', new_user_invitation_path, class: 'btn btn-info text-white btn-margin-top' %>
 
-  <div id="index-table-container">
+  <div id="index-table-container" class="table-responsive">
     <table class="table <%= 'table-hover' if current_user.corporation_admin? %>">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>メール</th>
-          <th>権限</th>
+          <th style="min-width:100px">名前</th>
+          <th style="min-width:120px">メール</th>
+          <th style="min-width:300px">権限</th>
         </tr>
       </thead>
 

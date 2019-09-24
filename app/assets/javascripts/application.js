@@ -1604,6 +1604,14 @@ $(document).on('turbolinks:load', function(){
     $('#close-resource').click(function(){
       $('#resource-list-container').hide()
     })
+
+    $('#payable-menu').click(function(){
+      $('#settings-menu-container').show()
+    })
+
+    $('#close-settings').click(function(){
+      $('#settings-menu-container').hide()
+    })
   }
 }); 
 

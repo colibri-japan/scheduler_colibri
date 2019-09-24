@@ -1,6 +1,7 @@
 <div id="settings-menu-container" class="no-print">
 	<div id="settings-menu-list">
         <ul id="settings-list">
+          <li class="setting-list-element close" id="close-settings">&times;</li>
           <li class="settings-list-header">データ</li>
             <li id="patients" class="settings-list-element <%= "settings-list-element-selected" if view == "patients" %>"><%= link_to "#{client_resource_name(@corporation.business_vertical)}一覧", patients_path, class: 'settings-list-url' %></li>
             <li id="nurses" class="settings-list-element <%= "settings-list-element-selected" if view == "nurses" %>"><%= link_to '従業員一覧', nurses_path, class: 'settings-list-url' %></li>

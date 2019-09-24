@@ -1593,7 +1593,7 @@ $(document).on('turbolinks:load', function(){
   })
 
   if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches) {
-    $('div.planning-resource-module-title').click(function(){
+    $('#planning-nurse-information').click(function(){
       $('#resource-list-container').show()
     })
 

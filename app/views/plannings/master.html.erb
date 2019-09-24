@@ -113,8 +113,11 @@
 
 	<div id="detail-container">
 		<div id="detail-planning-container">
-			<div id="detail-planning-title">
+			<div id="detail-planning-title" style="justify-content:space-between">
 				<div id="planning-nurse-information">
+					<div id="payable-menu">
+						<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+					</div>
 					<div class="planning-resource-module-title">
 						<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
 						<button id="resource-details-button" class="btn btn-sm btn-mid-light"  style="margin-bottom:10px">詳細</button>

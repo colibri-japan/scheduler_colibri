@@ -903,7 +903,6 @@ div.popover-body {
 	}
 
 	.patient-left-panel {
-		margin: 0;
 		width: 100%;
 	}
 
@@ -926,6 +925,18 @@ div.popover-body {
 
 	#detail-planning-title {
 		justify-content: left;
+	}
+
+	#payable-title {
+		margin-top:5px;
+	}
+
+	#payable-query {
+		padding-left: 12px;
+	}
+
+	.planning-activity-module-title {
+		padding-left: 4px;
 	}
 
 	/* Settings view layouts */

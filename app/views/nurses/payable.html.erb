@@ -12,7 +12,7 @@
 <div id="payable-container">
 	<div id="detail-planning-title">
 		<div id="payable-menu">
-			<span class="glyphicon glyphicon-menu-hamburger"></span>
+			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
 		</div>
 		<p class="planning-activity-module-title" id="payable-title">
 			<%= "#{@nurse.name}の給与" %>
@@ -91,16 +91,16 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th style="width:11%;min-width:30px"><%= sort_link(@sort_direction) %></th>
-					<th style="width:13%">タイプ</th>
-					<th style="width:11%"><%= client_resource_name(@corporation.business_vertical) %>名</th>
-					<th style="width:10%">提供時間</th>
-					<th style="width:10%">開始~終了</th>
+					<th style="width:11%;min-width:70px"><%= sort_link(@sort_direction) %></th>
+					<th style="width:13%;min-width:120px">タイプ</th>
+					<th style="width:11%;min-width:120px"><%= client_resource_name(@corporation.business_vertical) %>名</th>
+					<th style="width:10%;min-width:90px">提供時間</th>
+					<th style="width:10%;min-width:120px">開始~終了</th>
 					<% if current_user.corporation_admin? %>
-						<th style="width:8%">給与</th>
+						<th style="width:8%;min-width:100px">給与</th>
 					<% end %>
-					<th style="width:18%" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @appointments_till_today.size %></span></th>
-					<th style="width:8%">編集</th>
+					<th style="width:18%;min-width:180px" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @appointments_till_today.size %></span></th>
+					<th style="width:8%;min-width:70px">編集</th>
 				</tr>
 				
 			</thead>

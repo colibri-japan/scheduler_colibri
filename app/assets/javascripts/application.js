@@ -1612,6 +1612,10 @@ $(document).on('turbolinks:load', function(){
     $('#close-settings').click(function(){
       $('#settings-menu-container').hide()
     })
+
+    $('#payable-menu').click(function(){
+      $('#resource-list-container').show()
+    })
   }
 }); 
 

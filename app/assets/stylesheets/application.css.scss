@@ -581,6 +581,171 @@ div.popover-body {
 	page-break-after: always;
 }
 
+@media screen and (orientation: landscape) and (max-width: 900px) {
+	/* navigation styles */
+
+	#colibri-scheduler-nav {
+		display: none;
+	}
+
+	.main-page {
+		padding-top: 0px;
+	}
+
+	#planning-menu-container {
+		height: 100%;
+		padding-top: 0px;
+	}
+
+	#planning-menu-list {
+		height: 100%;
+	}
+	
+	ul.nav-tabs {
+		height: 100%;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+
+	li.planning-menu-items {
+		display: block;
+	}
+
+	/* calendar layout styles */
+
+	#close-resource-list {
+		display: block;
+		text-align: right;
+		color: white;
+	}
+
+	#resource-list-container {
+		height: 100%;
+		min-width: 130px;
+		width:10vw;
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 50;
+		overflow-x: hidden;
+		padding-top: 3px;
+		padding-bottom: 60px;
+		display: none;
+	}
+
+	#resource-container {
+		height: 100%;
+		overflow-y: scroll;
+		overflow-x: hide;
+	}
+
+
+	#resource-name-wrapper {
+		padding-right: 5px;
+		padding-top: 0px;
+		padding-left: 6px;
+		margin-bottom: 5px;
+	}
+
+	#nurses-resource {
+		padding-bottom: 0px;
+	}
+
+	#patients-resource {
+		padding-bottom: 0px;
+	}
+
+
+	#planning-nurse-information {
+		display: flex;
+	}
+
+	/* Hide batch action button */
+
+	#colibri-batch-action-button {
+		display: none;
+	}
+
+	#colibri-master-action-button {
+		display: none;
+	}
+
+	/* Hide print button */
+	#print-button {
+		display: none;
+	}
+
+	/* container styles */
+
+	#payable-container {
+		width: calc(100% - 50px);
+		max-width: none;
+		margin-left: 50px;
+	}
+
+	#detail-container {
+		position: absolute;
+		width: calc(100% - 50px);
+		max-width: none;
+		top: 0;
+		left: 0;
+		margin-left: 50px;
+		padding: 0px 5px 0px 5px;
+	}
+
+	/* payable view styles */
+
+	#resource-list-container {
+		display: none;
+	}
+
+	#payable-menu {
+		display: block;
+	}
+
+	.patient-left-panel {
+		width: 100%;
+	}
+
+	.patient-dashboard-panel-body {
+		overflow-y: hidden;
+	}
+
+	.patient-right-panel {
+		display: none;
+	}
+
+	#payable-table-commands {
+		display: none;
+	}
+
+	#payable-query {
+		display: block;
+		margin-top: 10px;
+	}
+
+	#detail-planning-title {
+		justify-content: left;
+	}
+
+	#payable-title {
+		margin-top:5px;
+	}
+
+	#payable-query {
+		padding-left: 12px;
+	}
+
+	.planning-activity-module-title {
+		padding-left: 4px;
+	}
+}
+
 @media screen and (orientation: portrait) and (max-width: 760px) {
 
 	/* styles for home page */

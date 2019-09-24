@@ -1592,8 +1592,8 @@ $(document).on('turbolinks:load', function(){
     $('#account-dropdown-icon').css({'color': 'white'})
   })
 
-  if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches) {
-    $('#planning-nurse-information').click(function(){
+  if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+    $('#payable-menu').click(function(){
       $('#resource-list-container').show()
     })
 

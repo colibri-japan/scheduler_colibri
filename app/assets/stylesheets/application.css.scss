@@ -744,6 +744,64 @@ div.popover-body {
 	.planning-activity-module-title {
 		padding-left: 4px;
 	}
+
+	/* settings page */
+
+	#patients-excel {
+		display: none;
+	}
+
+
+	p.setting-title {
+		margin-left: 7px;
+		margin-top: 6px;
+		margin-bottom: 0px;
+	}
+
+	#settings-menu-container {
+		height: 100%;
+		width: 200px;
+		position: fixed;
+		z-index: 10;
+		top: 0px;
+		left: 50px;
+		padding-top: 10px;
+		background-color: #606E7C;
+		border: 0.5px solid #606E7C;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		overflow-y: scroll;
+		display: none;
+	}
+
+	#settings-container {
+		margin: 0px 0px 0px 50px;
+		width: calc(100% - 50px);
+		padding: 10px 5px 5px 5px;
+	}
+
+	#close-settings {
+		display: list-item;
+		margin-bottom: 10px;
+	}
+
+	#settings-menu-list {
+		margin-top: 0px;
+	}
+
+	#index-table-container {
+		margin-top: 0px;
+	}
+
+	.edit_corporation {
+		margin-bottom: 70px;
+	}
+
+	.edit_printing_option {
+		margin-bottom: 70px;
+		margin-left:20px;	
+	}
 }
 
 @media screen and (orientation: portrait) and (max-width: 760px) {

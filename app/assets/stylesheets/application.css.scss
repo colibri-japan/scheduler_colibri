@@ -1065,6 +1065,23 @@ div.popover-body {
 
 	/* Calendar view layouts */
 
+	#planning-header {
+		width: 100vw;
+		margin-left: -5px;
+		box-shadow: 0 4px 2px -2px #ccc;
+		margin-bottom: 10px;
+	}
+
+	#planning-header-submenu {
+		display: flex;
+	}
+
+	.header-submenu-item {
+		text-align: center;
+		flex-grow: 1;
+		border: 0.5px solid #ccc;	
+	}
+
 	button#resource-details-button {
 		display: none !important;
 	}
@@ -1148,6 +1165,7 @@ div.popover-body {
 	}
 
 	#detail-planning-title {
+		padding-left: 5px;
 		justify-content: left;
 	}
 

@@ -104,28 +104,35 @@
 	</div>
 	<div id="detail-container">
 		<div id="detail-planning-container">
-			<div id="detail-planning-title"  style="justify-content:space-between">
-				<div id="planning-nurse-information">
-					<div id="payable-menu">
-						<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+			<div id="planning-header">
+				<div id="detail-planning-title"  style="justify-content:space-between">
+					<div id="planning-nurse-information">
+						<div id="payable-menu">
+							<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+						</div>
+						<div class="planning-resource-module-title">
+							<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
+							<button id="resource-details-button" class="btn btn-sm btn-mid-light resource-details-button"  style="margin-bottom:10px">詳細</button>
+						</div>
 					</div>
-					<div class="planning-resource-module-title">
-						<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
-						<button id="resource-details-button" class="btn btn-sm btn-mid-light"  style="margin-bottom:10px">詳細</button>
+					<div id="planning-top-right-action-container" class="no-print">
+						<div
+							id="new-reminder-email"
+							data-url=""
+							style="margin-right:5px;max-height:40px;display:none"
+							class="btn btn-colibri-light-gray text-white btn-sm">
+								<i class="glyphicon glyphicon-envelope" style="color:white"></i>リマインダー
+						</div>
+						<div id="nurse_filter_wrapper" style="display:none;margin-right:5px;text-align:left">
+							<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
+						</div>
+						<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 					</div>
 				</div>
-				<div id="planning-top-right-action-container" class="no-print">
-					<div
-						id="new-reminder-email"
-						data-url=""
-						style="margin-right:5px;max-height:40px;display:none"
-						class="btn btn-colibri-light-gray text-white btn-sm">
-							<i class="glyphicon glyphicon-envelope" style="color:white"></i>リマインダー
-					</div>
-					<div id="nurse_filter_wrapper" style="display:none;margin-right:5px;text-align:left">
-						<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
-					</div>
-					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
+				<div id="planning-header-submenu">
+					<div class="header-submenu-item">シフト</div>
+					<div class="header-submenu-item resource-details-button">詳細</div>
+					<div class="header-submenu-item">記録</div>
 				</div>
 			</div>
 

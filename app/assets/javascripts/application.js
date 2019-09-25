@@ -1478,7 +1478,7 @@ let availabilitiesDate = () => {
 
 $(document).on('turbolinks:load', function(){
   
-  $('#resource-details-button').click(function(){
+  $('.resource-details-button').click(function(){
     let url = document.getElementById('resource-details-button').dataset.resourceUrl 
     $.getScript(url)
   })

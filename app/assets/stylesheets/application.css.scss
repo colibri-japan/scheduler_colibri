@@ -582,6 +582,13 @@ div.popover-body {
 }
 
 @media screen and (orientation: landscape) and (max-width: 900px) {
+	
+	/* login styles */
+
+	input:focus, select:focus, textarea:focus {
+		font-size: 16px;
+	}
+	
 	/* navigation styles */
 
 	#colibri-scheduler-nav {
@@ -807,6 +814,11 @@ div.popover-body {
 
 @media screen and (orientation: portrait) and (max-width: 760px) {
 
+	/* login styles*/
+
+	input:focus, select:focus, textarea:focus {
+		font-size: 16px;
+	}
 	/* styles for home page */
 
 	#blog-link-container {

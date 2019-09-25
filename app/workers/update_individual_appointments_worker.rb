@@ -6,30 +6,47 @@ class UpdateIndividualAppointmentsWorker
         recurring_appointment = RecurringAppointment.find(recurring_appointment_id)
 
         appointments = Appointment.not_archived.where(recurring_appointment_id: recurring_appointment_id).order(starts_at: :asc)
-
+        
         if appointments.present?
+            year_and_months_updated = appointments.pluck(:starts_at).map {|d| [d.year, d.month]}.uniq 
+    
+            puts 'current year months'
+            puts year_and_months_updated
 
-            delta = (recurring_appointment.anchor - appointments.first.starts_at.to_date).to_i.remainder(7)
 
+            #delete appointments unless completion report is present
             appointments.each do |appointment|
+                appointment.delete unless appointment.completion_report.present?
+            end
 
-                appointment.starts_at = DateTime.new(appointment.starts_at.year, appointment.starts_at.month, appointment.starts_at.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min) + delta.days
-                appointment.ends_at = DateTime.new(appointment.ends_at.year, appointment.ends_at.month, appointment.ends_at.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + delta.days
-                appointment.color = recurring_appointment.color 
-                appointment.description = recurring_appointment.description 
+            # create appointments in this range
+
+
+            occurrences = recurring_appointment.appointments(recurring_appointment.anchor - 1.day, appointments.last.starts_at.end_of_month)
+
+            new_appointments = []
+
+            occurrences.each do |occurrence|
+                appointment = Appointment.new
+
+                appointment.starts_at = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.starts_at.hour, recurring_appointment.starts_at.min)
+                appointment.ends_at = DateTime.new(occurrence.year, occurrence.month, occurrence.day, recurring_appointment.ends_at.hour, recurring_appointment.ends_at.min) + (recurring_appointment.duration.to_i)
+                appointment.color = recurring_appointment.color
+                appointment.description = recurring_appointment.description
                 appointment.title = recurring_appointment.title 
                 appointment.nurse_id = recurring_appointment.nurse_id 
                 appointment.patient_id = recurring_appointment.patient_id 
-                appointment.service_id = recurring_appointment.service_id  
+                appointment.service_id = recurring_appointment.service_id
+                appointment.planning_id = recurring_appointment.planning_id
                 appointment.should_request_edit_for_overlapping_appointments = true
                 appointment.recurring_appointment_id = recurring_appointment.id
+                
+                new_appointments << appointment
+            end
 
-                appointment.save
-            end 
+            Appointment.import(new_appointments)
 
-            years_and_months_updated = appointments.pluck(:starts_at).map {|d| [d.year, d.month]}.uniq
-
-            years_and_months_updated.each do |year, month|
+            year_and_months_updated.each do |year, month|
                 RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(recurring_appointment.nurse_id, year, month)
             end
         end

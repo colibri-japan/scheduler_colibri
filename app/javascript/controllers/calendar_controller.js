@@ -73,8 +73,7 @@ let createCalendar = () => {
             },
             'dayGrid': {
                 slotLabelFormat: { day: 'numeric' },
-                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
-                eventLimit: 6
+                eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'}
             },
             'resourceTimeGridDay': {
                 resourceLabelText: window.resourceLabel,

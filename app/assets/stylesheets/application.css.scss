@@ -1149,6 +1149,16 @@ div.popover-body {
 		display: flex;
 	}
 
+	#resource-details-panel {
+		width: 100%;
+		height: calc(100vh - 150px);
+		overflow-y: scroll;
+		position: absolute;
+		bottom: 55px;
+		z-index: 11;
+		border: 0px;
+	}
+
 	/* payable view styles */
 
 	#payable-menu {

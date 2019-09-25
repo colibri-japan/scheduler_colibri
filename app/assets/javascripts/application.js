@@ -1477,6 +1477,12 @@ let availabilitiesDate = () => {
 }
 
 $(document).on('turbolinks:load', function(){
+
+  $(window).resize(function(){
+    if (window.fullCalendar) {
+      window.fullCalendar.setOption('height', (window.innerHeight - 160))
+    }
+  })
   
   $('.resource-details-button').click(function(){
     let url = document.getElementById('resource-details-button').dataset.resourceUrl 

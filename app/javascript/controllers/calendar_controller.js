@@ -59,7 +59,7 @@ let createCalendar = () => {
             if (window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
                 height = 'auto'
             } else {
-                height = (screen.height - 240)
+                height = (window.innerHeight - 160)
             }
             return height
         },

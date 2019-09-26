@@ -853,6 +853,18 @@ let nonMasterDragOptions = (eventDropInfo) => {
     })
 }
 
+let toggleHeaderSubmenu = () => {
+    if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+        let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+
+        if (individualView) {
+            $('#planning-header-submenu').show()
+        } else {
+            $('#planning-header-submenu').hide()
+        }
+    }
+}
+
 export default class extends Controller {
 
     static targets = [ 'resourceName' ]
@@ -925,6 +937,7 @@ export default class extends Controller {
         updateMasterReflectButton()
         updateMasterEventsUrl()
         updatePrintOptions()
+        toggleHeaderSubmenu()
 
         return
     }
@@ -964,6 +977,7 @@ export default class extends Controller {
         toggleWishedSlotsAndPrintAvailabilitiesButton()
         updateMasterReflectButton()
         updatePrintOptions()
+        toggleHeaderSubmenu()
 
         return
     }

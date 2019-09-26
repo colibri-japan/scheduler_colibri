@@ -1,0 +1,37 @@
+<div id="resource-details-wrapper">
+    <div class="resource-details-main-title">
+        実施記録
+    </div>
+    <div id="uncompleted-reports" class="resource-details-subsection">
+        <div class="resource-details-subsection-title">
+            書き残し（<%= "#{@appointments_without_reports.size}件" %>）
+        </div>
+        <div class="resource-details-subsection-body">
+            <table class="table">
+                <% @appointments_without_reports.each do |appointment| %>
+                    <tr>
+                        <td><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
+                        <td><%= appointment.starts_at.strftime("%-m/%-d %H:%M") %></td>
+                        <td>作成</td>
+                    </tr>
+                <% end %>
+            </table>
+        </div>
+    </div>
+    <div id="completed-reports" class="resource-details-subsection">
+        <div class="resource-details-subsection-title">
+            過去の記録
+        </div>
+        <div class="resource-details-subsection-body">
+            <table class="table">
+                <% @recent_completion_reports.each do |completion_report| %>
+                    <tr>
+                        <td><%= appointment_resource_name(completion_report.appointment, params[:resource_type]) %></td>
+                        <td><%= completion_report.appointment.starts_at.strftime("%-m/%-d %H:%M") %></td>
+                        <td>編集</td>
+                    </tr>
+                <% end %>
+            </table>
+        </div>
+    </div>
+</div>

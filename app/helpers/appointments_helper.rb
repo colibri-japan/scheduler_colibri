@@ -47,4 +47,12 @@ module AppointmentsHelper
         appointment.cancelled? ? "(キャンセル)" : appointment.try(:title)
     end
 
+    def appointment_resource_name(appointment, resource_type)
+        if resource_type === 'patient'
+            appointment.nurse.try(:name)
+        else
+            "#{appointment.patient.try(:name)}様"
+        end
+    end
+
 end

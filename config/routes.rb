@@ -50,8 +50,10 @@ Rails.application.routes.draw do
   resources :posts
 
   resources :appointments, except: [:destroy, :new] do
-    resources :completion_reports, only: [:new, :create, :edit, :update]
+    resources :completion_reports, except: [:index, :destroy]
   end
+
+  resources :completion_reports, only:[:index, :destroy]
 
   resources :nurses do
     resources :salary_line_items, except: [:new]

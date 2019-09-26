@@ -865,6 +865,13 @@ let toggleHeaderSubmenu = () => {
     }
 }
 
+let switchBackToCalendarOnNavigate = () => {
+    if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+        $('#resource-details-wrapper').remove()
+        $('#calendar').show()
+    }   
+}
+
 export default class extends Controller {
 
     static targets = [ 'resourceName' ]
@@ -938,6 +945,7 @@ export default class extends Controller {
         updateMasterEventsUrl()
         updatePrintOptions()
         toggleHeaderSubmenu()
+        switchBackToCalendarOnNavigate()
 
         return
     }
@@ -978,6 +986,7 @@ export default class extends Controller {
         updateMasterReflectButton()
         updatePrintOptions()
         toggleHeaderSubmenu()
+        switchBackToCalendarOnNavigate()
 
         return
     }

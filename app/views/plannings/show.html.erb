@@ -164,7 +164,22 @@
 	</div>
 	
 	<%= render 'plannings/nurse_overlap_modal' %>
-	<%= render 'plannings/batch_action_button' %>
+
+	<div id='colibri-batch-action-button' class='no-print batch-action-button'>
+		<div class='colibri-glyphicon-container'>
+			<span class='glyphicon glyphicon-pencil batch-action-pencil'></span>
+			<div id='batch-action-menu' style='display:none'>
+				<span class='glyphicon-action-button glyphicon glyphicon-print'></span><span id='print-button'> 印刷</span><br/>
+				<span class='glyphicon glyphicon-envelope glyphicon-action-button'></span><span data-url='' id='new-reminder-email'> リマインダ</span><br/>
+				<span class='glyphicon glyphicon-search glyphicon-action-button'></span><%= link_to ' 従業員検索', nurses_smart_search_path, remote: true, class: 'action-button-url' %><br/>
+				<span class='glyphicon glyphicon-th-list glyphicon-action-button'></span><%= link_to '  調整中リスト', new_appointments_batch_request_edit_path, remote: true, class: 'action-button-url' %><br/>
+				<span class='glyphicon glyphicon-remove glyphicon-action-button'></span><%= link_to '  キャンセル', new_appointments_batch_cancel_path, remote: true, class: 'action-button-url' %><br/>
+				<span class='glyphicon glyphicon-trash glyphicon-action-button'></span><%= link_to '  削除', new_appointments_batch_archive_path, remote: true, class: 'action-button-url' %><br/>
+			</div>
+		</div>
+	</div>
+
+
 <% end %>
 
 

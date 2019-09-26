@@ -1576,6 +1576,30 @@ $(document).on('turbolinks:load', function(){
     initializeActivitiesWidget()
   }
 
+  $('#colibri-batch-action-button').on('shown.bs.popover', function(){
+    var text = $('#print-button').html()
+    alert(`the text is : ${text}`)
+    $('#print-button').click(function(){
+      console.log('print button clicked')
+      window.print()
+    })
+  })
+
+  var popoverContent = $('#batch-action-menu').html()
+
+  $('#colibri-batch-action-button').popover({
+    html: true,
+    title: '',
+    content: popoverContent,
+    trigger: 'click',
+    placement: 'top'
+  })
+  
+  $('body').on('click', 'span#print-button', function(){
+    window.print()
+  })
+
+
   $.fn.modal.Constructor.prototype._enforceFocus = function () { };
 
   $('#account-settings').click(function(){

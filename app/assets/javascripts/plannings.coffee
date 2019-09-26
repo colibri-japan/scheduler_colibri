@@ -66,15 +66,6 @@ $(document).on 'turbolinks:load', ->
     return
 
 
-  popoverContent = $('#batch-action-menu').html()
-
-  $('#colibri-batch-action-button').popover
-    html: true
-    title: ''
-    content: popoverContent
-    trigger: 'click'
-    placement: 'top'
-
   $('#colibri-master-action-button').click ->
     $.getScript($(this).data('url'))
     return

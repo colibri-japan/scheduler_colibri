@@ -542,6 +542,22 @@ p.master-reflect-option {
 	justify-content: space-between;
 }
 
+/* styles for completion reports index */
+
+.resource-details-subsection-title {
+	margin-left: 5px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.resource-details-subsection-body {
+	color: #4F4F4F;
+}
+
+.write-completion-report {
+	color: #4F4F4F;
+}
+
 @media print {
 	#index-container {
 		width: 95%;

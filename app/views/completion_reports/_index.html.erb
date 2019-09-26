@@ -1,6 +1,5 @@
 <div id="resource-details-wrapper">
     <div class="resource-details-main-title">
-        実施記録
     </div>
     <div id="uncompleted-reports" class="resource-details-subsection">
         <div class="resource-details-subsection-title">
@@ -10,9 +9,9 @@
             <table class="table">
                 <% @appointments_without_reports.each do |appointment| %>
                     <tr>
-                        <td><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
-                        <td><%= appointment.starts_at.strftime("%-m/%-d %H:%M") %></td>
-                        <td>作成</td>
+                        <td style="width:40%"><%= "#{l(appointment.starts_at, format: '%-m/%-d (%a) %H:%M')}" %></td>
+                        <td style="width:40%"><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
+                        <td style="width:20%"><%= link_to '<span class="glyphicon glyphicon-edit write-completion-report"></span>'.html_safe, new_appointment_completion_report_path(appointment), remote: true %></td>
                     </tr>
                 <% end %>
             </table>
@@ -26,9 +25,9 @@
             <table class="table">
                 <% @recent_completion_reports.each do |completion_report| %>
                     <tr>
-                        <td><%= appointment_resource_name(completion_report.appointment, params[:resource_type]) %></td>
-                        <td><%= completion_report.appointment.starts_at.strftime("%-m/%-d %H:%M") %></td>
-                        <td>編集</td>
+                        <td style="width:40%"><%= "#{l(completion_report.appointment.starts_at, format: '%-m/%-d (%a) %H:%M')}" %></td>
+                        <td style="width:40%"><%= appointment_resource_name(completion_report.appointment, params[:resource_type]) %></td>
+                        <td style="width:20%"><%= link_to '<span class="glyphicon glyphicon-file write-completion-report"></span>'.html_safe, edit_appointment_completion_report_path(completion_report.appointment, completion_report), remote: true %></td>
                     </tr>
                 <% end %>
             </table>

@@ -861,6 +861,17 @@ let switchBackToCalendarOnNavigate = () => {
     }   
 }
 
+let toggleNurseReminderButton = () => {
+    if (window.masterCalendar === 'false') {
+        let nurseResource = (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId !== 'all')
+        if (nurseResource) {
+            $('#new-reminder-email').show()
+        } else {
+            $('#new-reminder-email').hide()
+        }
+    }
+}
+
 export default class extends Controller {
 
     static targets = [ 'resourceName' ]
@@ -935,6 +946,7 @@ export default class extends Controller {
         updatePrintOptions()
         toggleHeaderSubmenu()
         switchBackToCalendarOnNavigate()
+        toggleNurseReminderButton()
 
         return
     }
@@ -956,6 +968,7 @@ export default class extends Controller {
         window.resourceUrl = event.target.dataset.fcResourceUrl
 
         document.getElementById('resource-details-panel').style.display = 'none'
+        $('.popover').remove()
 
         updateSelectize()
 
@@ -976,6 +989,7 @@ export default class extends Controller {
         updatePrintOptions()
         toggleHeaderSubmenu()
         switchBackToCalendarOnNavigate()
+        toggleNurseReminderButton()
 
         return
     }

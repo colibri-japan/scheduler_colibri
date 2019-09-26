@@ -1576,15 +1576,6 @@ $(document).on('turbolinks:load', function(){
     initializeActivitiesWidget()
   }
 
-  $('#colibri-batch-action-button').on('shown.bs.popover', function(){
-    var text = $('#print-button').html()
-    alert(`the text is : ${text}`)
-    $('#print-button').click(function(){
-      console.log('print button clicked')
-      window.print()
-    })
-  })
-
   var popoverContent = $('#batch-action-menu').html()
 
   $('#colibri-batch-action-button').popover({
@@ -1598,7 +1589,13 @@ $(document).on('turbolinks:load', function(){
   $('body').on('click', 'span#print-button', function(){
     window.print()
   })
-
+  
+  $('body').on('click', 'span#new-reminder-email', function(){
+    let nurseResource = (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId !== 'all')
+    if (nurseResource) {
+      $.getScript(`/nurses/${window.currentResourceId || window.defaultResourceId}/new_reminder_email`)
+    }
+  })
 
   $.fn.modal.Constructor.prototype._enforceFocus = function () { };
 

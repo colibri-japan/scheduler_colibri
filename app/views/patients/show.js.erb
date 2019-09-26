@@ -1,6 +1,16 @@
-$('#resource-details-panel').empty()
-$('#resource-details-panel').append("<%= j render('patients/details').html_safe %>")
-$('#resource-details-panel').show()
+
+if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+    console.log('matched media')
+    $('#resource-details-wrapper')
+    $('#calendar').hide()
+    $('#planning-container').append("<%= j render('patients/details').html_safe %>")
+} else {
+    console.log('no media match')
+    $('#resource-details-panel').empty()
+    $('#resource-details-panel').append("<%= j render('patients/details').html_safe %>")
+    $('#resource-details-panel').show()
+}
+
 $('#see-more-resource-history-button').click(function(){
     $('#more-resource-history').toggle()
 })

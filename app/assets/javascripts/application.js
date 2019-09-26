@@ -1598,6 +1598,11 @@ $(document).on('turbolinks:load', function(){
     $('#account-dropdown-icon').css({'color': 'white'})
   })
 
+  $('#header-calendar-button').click(function(){
+    $('#resource-details-wrapper').remove()
+    $('#calendar').show()
+  })
+
   if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
     $('#payable-menu').click(function(){
       $('#resource-list-container').show()

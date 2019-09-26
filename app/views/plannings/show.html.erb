@@ -126,7 +126,7 @@
 						<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 					</div>
 				</div>
-				<div id="nurse_filter_wrapper" style="display:none;margin-right:5px;text-align:left">
+				<div id="nurse_filter_wrapper" style="display:none;margin-left:5px;text-align:left">
 					<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
 				</div>
 				<div id="planning-header-submenu">

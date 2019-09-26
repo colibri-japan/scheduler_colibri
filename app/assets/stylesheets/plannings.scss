@@ -150,6 +150,7 @@ li.planning-menu-selected {
 #detail-planning-title {
 	display: flex;
 	justify-content: space-between;
+	flex-grow: 1;
 }
 
 #detail-planning-container {
@@ -529,6 +530,11 @@ p.master-reflect-option {
 		#FD9BA6 !important;
 	background-size: 2.5px 2.5px !important;
 	opacity: 1 !important;
+}
+
+#planning-header {
+	display: flex;
+	justify-content: space-between;
 }
 
 @media print {

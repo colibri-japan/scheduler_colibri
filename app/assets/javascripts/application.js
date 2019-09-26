@@ -1603,6 +1603,22 @@ $(document).on('turbolinks:load', function(){
     $('#calendar').show()
   })
 
+  $('.reports-index-button').click(function () {
+    var data = {};
+    data['resource_type'] = window.currentResourceType || window.defaultResourceType
+    if (window.currentResourceType === 'nurse' || (!window.currentResourceType && window.defaultResourceType === 'nurse')) {
+      data['nurse_id'] = window.currentResourceId || window.defaultResourceId
+    } else if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
+      data['patient_id'] = window.currentResourceId || window.defaultResourceId
+    }
+
+    $.ajax({
+      type: 'GET',
+      url: '/completion_reports.js',
+      data: data
+    })
+  })
+
   if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
     $('#payable-menu').click(function(){
       $('#resource-list-container').show()
@@ -1628,25 +1644,7 @@ $(document).on('turbolinks:load', function(){
       $('#resource-list-container').show()
     })
 
-    $('#header-report-button').click(function(){
-      console.log('clicked header')
-      var data = {};
-      data['resource_type'] = window.currentResourceType || window.defaultResourceType
-      if (window.currentResourceType === 'nurse' || (!window.currentResourceType && window.defaultResourceType === 'nurse')) {
-        console.log('nurse resource')
-        data['nurse_id'] = window.currentResourceId || window.defaultResourceId
-      } else if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
-        console.log('patient resource')
-        data['patient_id'] = window.currentResourceId || window.defaultResourceId
-      }
-      console.log('data')
-      console.log(data)
-      $.ajax({
-        type: 'GET',
-        url: '/completion_reports.js',
-        data: data
-      })
-    })
+
   }
 }); 
 

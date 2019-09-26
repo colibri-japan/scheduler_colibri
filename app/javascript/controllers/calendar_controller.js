@@ -576,18 +576,7 @@ let toggleNurseFilterButton = () => {
     }
 }
 
-let toggleNurseReminderButton = () => {
-    if (window.masterCalendar === 'false') {
-        let reminderButton = document.getElementById('new-reminder-email')
-        let nurseResource = (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId !== 'all')
-        if (nurseResource) {
-            reminderButton.dataset.url = `/nurses/${window.currentResourceId}/new_reminder_email`
-            reminderButton.style.display = 'block'
-        } else {
-            reminderButton.style.display = 'none'
-        }
-    } 
-}
+
 
 let toggleWishedSlotsAndPrintAvailabilitiesButton = () => {
     if (window.masterCalendar === 'true') {
@@ -938,7 +927,7 @@ export default class extends Controller {
         this.resourceNameTarget.textContent = selectedItem.textContent
 
         this.toggleDetailsButton()
-        toggleNurseReminderButton()
+        this.toggleReportsButton()
         toggleNurseFilterButton()
         toggleWishedSlotsAndPrintAvailabilitiesButton()
         updateMasterReflectButton()
@@ -980,7 +969,7 @@ export default class extends Controller {
         this.resourceNameTarget.textContent = event.target.textContent
 
         this.toggleDetailsButton()
-        toggleNurseReminderButton()
+        this.toggleReportsButton()
         toggleNurseFilterButton()
         toggleWishedSlotsAndPrintAvailabilitiesButton()
         updateMasterReflectButton()
@@ -1001,6 +990,17 @@ export default class extends Controller {
                 detailsButton.dataset.resourceUrl = `/${window.currentResourceType}s/${window.currentResourceId}.js`
             } else {
                 detailsButton.dataset.resourceUrl = `/${window.defaultResourceType}s/${window.defaultResourceId}.js`
+            }
+        }
+    }
+
+    toggleReportsButton() {
+        if (window.masterCalendar === 'false') {
+            let reportsButton = document.getElementById('display-completion-reports')
+            if (window.currentResourceType === 'team' || window.currentResourceId === 'all' || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all'))) {
+                reportsButton.style.display = 'none'
+            } else {
+                reportsButton.style.display = 'inline-block'
             }
         }
     }

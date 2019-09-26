@@ -4,6 +4,7 @@
     <div id="uncompleted-reports" class="resource-details-subsection">
         <div class="resource-details-subsection-title">
             書き残し（<%= "#{@appointments_without_reports.size}件" %>）
+            <button class="close" id="close-reports-index" onclick="$('#resource-details-panel').toggle()">&times;</button>
         </div>
         <div class="resource-details-subsection-body">
             <table class="table">

@@ -387,10 +387,12 @@ th {
 
 .btn-mid-light {
 	background-color: #e4e4e4;
+	color: #4f5b66;
 }
 
 .btn-mid-light:hover {
 	background-color: #C5C5C5;
+	color: #4f5b66;
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
@@ -670,6 +672,15 @@ div.popover-body {
 
 	#planning-nurse-information {
 		display: flex;
+	}
+
+	
+	#close-reports-index {
+		display: none;
+	}
+
+	#display-completion-reports {
+		display: none !important;
 	}
 
 	/* Hide batch action button */
@@ -1168,6 +1179,13 @@ div.popover-body {
 		display: none;
 	}
 
+	#close-reports-index {
+		display: none;
+	}
+
+	#display-completion-reports {
+		display: none !important;
+	}
 
 
 	/* payable view styles */

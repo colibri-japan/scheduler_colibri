@@ -112,18 +112,11 @@
 						</div>
 						<div class="planning-resource-module-title">
 							<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
-							<button id="resource-details-button" class="btn btn-sm btn-mid-light resource-details-button"  style="margin-bottom:10px">詳細</button>
 						</div>
 					</div>
 					<div id="planning-top-right-action-container" class="no-print">
-						<div
-							id="new-reminder-email"
-							data-url=""
-							style="margin-right:5px;max-height:40px;display:none"
-							class="btn btn-colibri-light-gray text-white btn-sm">
-								<i class="glyphicon glyphicon-envelope" style="color:white"></i>リマインダー
-						</div>
-						<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
+						<button id="resource-details-button" class="btn btn-mid-light resource-details-button" style="margin-bottom:10px;margin-right:4px"><span class="glyphicon glyphicon-user"></span> 詳細</button>
+                        <button id="display-completion-reports" class="btn btn-mid-light reports-index-button" style="margin-bottom:10px"><span class="glyphicon glyphicon-file"></span> 実施記録</button>
 					</div>
 				</div>
 				<div id="nurse_filter_wrapper" style="display:none;margin-left:5px;text-align:left">
@@ -132,7 +125,7 @@
 				<div id="planning-header-submenu">
 					<div class="header-submenu-item" id="header-calendar-button">シフト</div>
 					<div class="header-submenu-item resource-details-button">詳細</div>
-					<div class="header-submenu-item" id="header-report-button">記録</div>
+					<div class="header-submenu-item reports-index-button" id="header-report-button">記録</div>
 				</div>
 			</div>
 
@@ -146,7 +139,8 @@
 
 <div id="resource-details-panel" 
 	data-resource-url=""
-	style="display: none">
+	style="display: none"
+	class="scrollbar-custom colibri-scrollbar-light">
 </div>
 
 <% unless current_user.schedule_readonly? %>

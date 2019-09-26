@@ -1167,6 +1167,8 @@ div.popover-body {
 		display: none;
 	}
 
+
+
 	/* payable view styles */
 
 	#payable-menu {
@@ -1196,7 +1198,15 @@ div.popover-body {
 
 	#detail-planning-title {
 		padding-left: 5px;
-		justify-content: left;
+		justify-content: space-between;
+	}
+
+	#nurse_filter_wrapper {
+		margin: 5px;
+	}
+
+	#availabilities-print {
+		display: none !important;
 	}
 
 	#payable-title {

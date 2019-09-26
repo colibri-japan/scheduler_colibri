@@ -113,32 +113,39 @@
 
 	<div id="detail-container">
 		<div id="detail-planning-container">
-			<div id="detail-planning-title" style="justify-content:space-between">
-				<div id="planning-nurse-information">
-					<div id="payable-menu">
-						<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+			<div id="planning-header">
+				<div id="detail-planning-title">
+					<div id="planning-nurse-information">
+						<div id="payable-menu">
+							<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+						</div>
+						<div class="planning-resource-module-title">
+							<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
+							<button id="resource-details-button" class="btn btn-sm btn-mid-light resource-details-button"  style="margin-bottom:10px">詳細</button>
+						</div>
 					</div>
-					<div class="planning-resource-module-title">
-						<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
-						<button id="resource-details-button" class="btn btn-sm btn-mid-light resource-details-button"  style="margin-bottom:10px">詳細</button>
+					<div id="planning-top-right-action-container" class="no-print">
+						<div id="wished-slots-toggle-switch" style="margin-right:5px;margin-left: 5px;display:none">
+							<div id="toggle-switch-recurring-appointments" class="no-print btn btn-colibri-light-gray colibri-toggle-switch">
+								<div style="display:inline-block" class="colibri-toggle-text-left">サービス追加</div>
+								<div class="btn btn-light colibri-toggle-handle colibri-handle-left"></div>
+							</div>
+							<div id="toggle-switch-wished-slots" class="no-print btn btn-colibri-light colibri-toggle-switch" style="display:none">
+								<div class="btn colibri-toggle-handle colibri-handle-right" style="background-color:white"></div>
+								<div style="display:inline-block" class="colibri-toggle-text-right">シフト希望日</div>
+							</div>
+						</div>
+						<div class="btn btn-colibri-light-gray text-white" style='margin-right:5px' id="availabilities-print"><i class="glyphicon glyphicon-print" style="color:white;font-size:1em"></i>空き時間</div>
+						<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 					</div>
 				</div>
-				<div id="planning-top-right-action-container" class="no-print">
-					<div id="nurse_filter_wrapper" style="display:none;margin-right:5px;text-align:left">
-						<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
-					</div>
-					<div id="wished-slots-toggle-switch" style="margin-right:5px;margin-left: 5px;display:none">
-						<div id="toggle-switch-recurring-appointments" class="no-print btn btn-colibri-light-gray colibri-toggle-switch">
-							<div style="display:inline-block" class="colibri-toggle-text-left">サービス追加</div>
-							<div class="btn btn-light colibri-toggle-handle colibri-handle-left"></div>
-						</div>
-						<div id="toggle-switch-wished-slots" class="no-print btn btn-colibri-light colibri-toggle-switch" style="display:none">
-							<div class="btn colibri-toggle-handle colibri-handle-right" style="background-color:white"></div>
-							<div style="display:inline-block" class="colibri-toggle-text-right">シフト希望日</div>
-						</div>
-					</div>
-					<div class="btn btn-colibri-light-gray text-white" style='margin-right:5px' id="availabilities-print"><i class="glyphicon glyphicon-print" style="color:white;font-size:1em"></i>空き時間</div>
-					<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
+				<div id="nurse_filter_wrapper" style="display:none;margin-right:5px;text-align:left">
+					<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
+				</div>
+				<div id="planning-header-submenu">
+					<div class="header-submenu-item" id="header-calendar-button">シフト</div>
+					<div class="header-submenu-item resource-details-button">詳細</div>
+					<div class="header-submenu-item">記録</div>
 				</div>
 			</div>
 

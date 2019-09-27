@@ -1,9 +1,7 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :archive, :toggle_verified, :new_cancellation_fee, :toggle_second_verified, :toggle_cancelled, :toggle_edit_requested]
   before_action :set_corporation
-  before_action :set_planning, except: [:new_batch_archive, :new_batch_cancel, :new_cancellation_fee, :new_batch_request_edit, :batch_archive_confirm, :batch_cancel_confirm, :batch_request_edit_confirm]
-  before_action :new_batch_action, only: [:new_batch_archive, :new_batch_cancel, :new_batch_request_edit]
-  before_action :confirm_batch_action, only: [:batch_cancel_confirm, :batch_archive_confirm, :batch_request_edit_confirm]
+  before_action :set_planning
 
   # GET /appointments
   # GET /appointments.json
@@ -122,10 +120,44 @@ class AppointmentsController < ApplicationController
 	def new_cancellation_fee
 	end
 
-  def new_batch_archive
+  def new_batch_action
+      @nurses = @corporation.nurses.displayable.order_by_kana
+      @patients = @corporation.patients.active.order_by_kana
   end
 
-  def batch_archive_confirm
+  def batch_action_confirm
+      @planning = @corporation.planning
+
+      range_array = params[:date_range].split('-')
+      range = Range.new(range_array[0].to_datetime, range_array[1].to_datetime) rescue Date.today.beginning_of_day..Date.today.end_of_day 
+
+      @appointments = @planning.appointments.includes(:patient, :nurse).in_range(range).order(:starts_at)
+
+      @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
+      @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
+
+      if params[:action_type] == "edit_request" || params[:action_type] == "cancel"
+        @appointments = @appointments.not_archived
+      elsif params[:action_type] == "archive"
+        cancelled = params[:cancelled]
+        edit_requested = params[:edit_requested]
+        if edit_requested == 'false' && cancelled == 'false'
+          @appointments = @appointments.where('cancelled is false AND edit_requested is false')
+        elsif edit_requested == 'undefined' && cancelled == 'undefined' 
+        elsif edit_requested == 'undefined' && cancelled == 'false'
+          @appointments = @appointments.where(cancelled: false)
+        elsif edit_requested == 'false' && cancelled == 'undefined'
+          @appointments = @appointments.where('(edit_requested is false) OR (edit_requested is true AND cancelled is true)')
+        elsif edit_requested == 'true' && cancelled == 'false'
+          @appointments = @appointments.where(edit_requested: true, cancelled: false)
+        elsif edit_requested == 'undefined' && cancelled == 'true'
+          @appointments = @appointments.where(cancelled: true)
+        elsif edit_requested == 'true' && cancelled == 'true'
+          @appointments = @appointments.where('cancelled is true OR edit_requested is true')
+        end
+      end
+
+      @action_type = params[:action_type]
   end
 
   def batch_archive
@@ -140,11 +172,6 @@ class AppointmentsController < ApplicationController
     batch_recalculate_bonus
   end  
 
-  def new_batch_cancel
-  end
-
-  def batch_cancel_confirm
-  end
 
   def batch_cancel
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
@@ -156,11 +183,6 @@ class AppointmentsController < ApplicationController
     batch_recalculate_bonus
   end
 
-  def new_batch_request_edit
-  end
-
-  def batch_request_edit_confirm
-  end
 
   def batch_request_edit 
     planning_id = @corporation.planning.id 
@@ -189,7 +211,6 @@ class AppointmentsController < ApplicationController
     set_planning 
     
     @revenue_grouped_by_month = @planning.appointments.edit_not_requested.not_archived.includes(:service).joins(:service).in_range((Date.today - 5.months).beginning_of_month..Date.today.end_of_day).revenue_grouped_by_month
-    puts @revenue_grouped_by_month
   end
 
 
@@ -197,37 +218,6 @@ class AppointmentsController < ApplicationController
     # Use methods to share common setup or constraints between actions.
     def set_appointment
       @appointment = Appointment.find(params[:id])
-    end
-
-    def new_batch_action
-      @nurses = @corporation.nurses.displayable.order_by_kana
-      @patients = @corporation.patients.active.order_by_kana
-    end
-
-    def confirm_batch_action
-      planning_id = @corporation.planning.id
-
-      @appointments = Appointment.not_archived.where(planning_id: planning_id).overlapping(params[:range_start]..params[:range_end]).order(:starts_at)
-
-      @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
-      @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
-      cancelled = params[:cancelled]
-      edit_requested = params[:edit_requested]
-
-      if edit_requested == 'false' && cancelled == 'false'
-        @appointments = @appointments.where('cancelled is false AND edit_requested is false')
-      elsif edit_requested == 'undefined' && cancelled == 'undefined' 
-      elsif edit_requested == 'undefined' && cancelled == 'false'
-        @appointments = @appointments.where(cancelled: false)
-      elsif edit_requested == 'false' && cancelled == 'undefined'
-        @appointments = @appointments.where('(edit_requested is false) OR (edit_requested is true AND cancelled is true)')
-      elsif edit_requested == 'true' && cancelled == 'false'
-        @appointments = @appointments.where(edit_requested: true, cancelled: false)
-      elsif edit_requested == 'undefined' && cancelled == 'true'
-        @appointments = @appointments.where(cancelled: true)
-      elsif edit_requested == 'true' && cancelled == 'true'
-        @appointments = @appointments.where('cancelled is true OR edit_requested is true')
-      end
     end
 
     def create_activity_for_update

@@ -285,58 +285,6 @@ let teamMembersSelectize = () => {
 }
 
 
-let batchActionFormButton = () => {
-  if (typeof actionButton === 'undefined') {
-    let actionButton;
-  }
-  if (typeof actionUrl === 'undefined') {
-    let actionUrl;
-  }
-
-  if ($('#new-batch-request-edit-submit').length > 0) {
-    actionButton = $('#new-batch-request-edit-submit');
-    actionUrl = '/batch_request_edit_confirm/appointments.js'
-  } else if ($('#new-batch-cancel-submit').length > 0) {
-    actionButton = $('#new-batch-cancel-submit');
-    actionUrl = '/batch_cancel_confirm/appointments.js'
-  } else if ($('#new-batch-archive-submit').length > 0) {
-    actionButton = $('#new-batch-archive-submit');
-    actionUrl = '/batch_archive_confirm/appointments.js'
-  }
-
-  actionButton.click(function(){
-    let cancelledAndEditRequested = evaluateCancelledAndEditRequested();
-    let edit_requested;
-    let cancelled;
-
-    if (cancelledAndEditRequested == -1) {
-      alert('通常.調整中.キャンセルのどちらかを選択してください');
-      return
-    } else {
-      if (!cancelledAndEditRequested) {
-        edit_requested = 'undefined';
-        cancelled = 'undefined'
-      } else {
-        edit_requested = cancelledAndEditRequested['edit_requested'];
-        cancelled = cancelledAndEditRequested['cancelled']
-      }
-      appointment_filters = {
-        nurse_ids: $('#nurse_id_filter').val(),
-        patient_ids: $('#patient_id_filter').val(),
-        range_start: $('#date_range').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm'),
-        range_end: $('#date_range').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm'),
-        edit_requested: edit_requested,
-        cancelled: cancelled
-      }
-      $.ajax({
-        url: actionUrl,
-        data: appointment_filters,
-        type: 'GET'
-      })
-    }
-  });
-}
-
 let evaluateCancelledAndEditRequested = () => {
 
   if ($('#normal_filter').length < 1 && $('#edit_requested_filter').length < 1 && $('#cancelled_filter').length < 1) {
@@ -368,11 +316,19 @@ let evaluateCancelledAndEditRequested = () => {
 
 let initializeBatchActionForm = () => {
   $("#colibri-batch-action-button").popover('hide')
-  $('#nurse_id_filter').selectize({
+  $('#select_action_type').selectize()
+  $('#select_action_type').change(function(){
+    if ($(this).val() === 'archive') {
+      $('#archive-filter-tag').show()
+    } else {
+      $('#archive-filter-tag').hide()
+    }
+  })
+  $('#nurse_ids').selectize({
     delimiter: ',',
     plugins: ['remove_button']
   })
-  $('#patient_id_filter').selectize({
+  $('#patient_ids').selectize({
     delimiter: ',',
     plugins: ['remove_button']
   })
@@ -414,40 +370,6 @@ let initializeBatchActionForm = () => {
       firstDay: 1
     }
   })
-  batchActionFormButton()
-}
-
-let confirmBatchAction = () => {
-  let array = [];
-  $('.appointment_row').map(function(){
-    array.push($(this).attr('id'))
-  })
-  appointment_ids = {
-    appointment_ids: array
-  }
-
-  $('#batch-request-edit-confirm-submit').click(function(){
-    $.ajax({
-      url: $(this).data('submit-path'),
-      data: appointment_ids,
-      type: 'PATCH'
-    })
-  })
-  $('#batch-cancel-confirm-submit').click(function () {
-    $.ajax({
-      url: $(this).data('submit-path'),
-      data: appointment_ids,
-      type: 'PATCH'
-    })
-  })
-  $('#batch-archive-confirm-submit').click(function () {
-    $.ajax({
-      url: $(this).data('submit-path'),
-      data: appointment_ids,
-      type: 'PATCH'
-    })
-  })
-
 }
 
 

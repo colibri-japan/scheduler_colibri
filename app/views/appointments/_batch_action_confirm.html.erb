@@ -1,0 +1,29 @@
+<div id="batch_action_confirm" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title"><%= batch_action_title(@action_type) %></h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+				<%= render partial: 'batch_action_appointments_table', locals: {appointments: @appointments} %>
+			</div>
+
+            <%= form_with url: batch_action_url(@action_type), method: :patch do |f| %>
+
+            <% @appointments.ids.each do |id| %>
+                <%= f.hidden_field :appointment_ids, multiple: true, value: id %>
+            <% end %>
+            <%= f.hidden_field :action_type, value: @action_type %>
+
+			<div class="modal-footer">
+				<%= link_to '戻る', new_appointments_batch_action_path, remote: true, class:'btn btn-light' %>
+				<%= f.submit batch_action_submit_title(@action_type), class: "btn #{batch_action_submit_style(@action_type)}", remote: true %>
+			</div>
+
+            <% end %>
+		</div>
+	</div>
+
+</div>

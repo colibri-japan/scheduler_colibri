@@ -55,4 +55,56 @@ module AppointmentsHelper
         end
     end
 
+    def batch_action_title(action_type)
+        case action_type
+        when 'cancel'
+            'キャンセルするサービスの確認'
+        when 'edit_requested'
+            '調整中リスト追加の確認'
+        when 'archive'
+            '削除するサービスの確認'
+        else
+            ''
+        end
+    end
+
+    def batch_action_url(action_type)
+        case action_type
+        when 'cancel'
+            appointments_batch_cancel_path
+        when 'edit_requested'
+            appointments_batch_request_edit_path
+        when 'archive'
+            appointments_batch_archive_path
+        else
+            ''
+        end
+    end
+
+    def batch_action_submit_title(action_type)
+        case action_type
+        when 'cancel'
+            'キャンセル'
+        when 'edit_requested'
+            '調整中へ'
+        when 'archive'
+            '削除する'
+        else
+            ''
+        end
+    end
+
+    def batch_action_submit_style(action_type)
+        case action_type
+        when 'cancel'
+            'btn-danger'
+        when 'edit_requested'
+            'btn-success'
+        when 'archive'
+            'btn-secondary'
+        else
+            ''
+        end
+    end
+
 end

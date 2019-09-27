@@ -1,9 +1,16 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
 
-<% @appointments.each do |appointment| %>
-    if (window.fullCalendar) {
-        let event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
-        event.remove()
-    }
-<% end %>
+if (window.fullCalendar) {
+    window.fullCalendar.batchRendering(function(){
+        <% @appointments.each do |appointment| %>
+            if (typeof(event) === 'undefined') {
+                let event 
+            }
+            let event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
+            if (event) {
+                event.remove()
+            }
+        <% end %>
+    })
+}

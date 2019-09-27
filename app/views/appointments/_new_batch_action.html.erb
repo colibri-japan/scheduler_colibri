@@ -1,0 +1,49 @@
+<div id="new_batch_action" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">一斉に編集する</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+            <%= form_tag(appointments_batch_action_confirm_path, method: 'get', remote: 'true') do %>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <%= label_tag :action_type, "アクション", class: "colibri-form-label-dark" %><span class='required-field'>*</span> 
+                        <%= select_tag :action_type, options_for_select([['調整中リストへ', :edit_requested],['キャンセル', :cancel],['削除', :archive]]), id: :select_action_type %>
+                    </div>
+
+                    <div class="form-group">
+                        <%= label_tag :date_range, "対象期間", class: "colibri-form-label-dark" %><span class='required-field'>*</span> 
+                        <%= text_field_tag :date_range, value=nil, {class: 'form-control'} %>
+                    </div>
+
+                    <div class="form-group">
+                        <%= label_tag :nurse_ids, "従業員フィルタ", class: "colibri-form-label-dark" %>
+                        <%= select_tag :nurse_ids, grouped_options_for_select(@nurses.group_full_timer_for_select), {multiple: true} %>
+                    </div>
+                    
+                    <div class="form-group">
+                        <%= label_tag :patient_ids, "#{client_resource_name(@corporation.business_vertical)}フィルタ", class: "colibri-form-label-dark" %>
+                        <%= select_tag :patient_ids, options_from_collection_for_select(@patients, :id, :name, {prompt: "#{corporation_resource_name(@corporation.business_vertical)}選択"}), {multiple: true} %>
+                    </div>
+
+                    <div class="form-group" id="archive-filter-tag" style="display:none">
+                    	<%= label_tag :cancelled_and_edit_requested_filter, "通常", class: "colibri-form-label-dark" %>
+                        <%= check_box_tag :normal_filter, 'normal', checked = true %>
+                        <%= label_tag :cancelled_and_edit_requested_filter, "調整中", class: "colibri-form-label-dark colibri-radio" %>
+                        <%= check_box_tag :edit_requested_filter, 'edit_requested', checked = true %>
+                        <%= label_tag :cancelled_and_edit_requested_filter, "キャンセル", class: "colibri-form-label-dark colibri-radio" %>
+                        <%= check_box_tag :cancelled_filter, 'cancelled', checked = true %>
+                    </div>
+                </div>
+
+                <div class= "modal-footer">
+                    <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+                    <%= submit_tag '検索する', class: 'btn btn-info', remote: true %>
+                </div>
+            <% end %>
+		</div>
+	</div>
+
+</div>

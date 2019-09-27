@@ -1,0 +1,4 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "batch_action_confirm" %>');
+$('#batch_action_confirm').modal('show');

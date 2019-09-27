@@ -1,5 +1,6 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
+$('#colibri-batch-action-button').click()
 
 <% if @nurse.phone_mail.present? %>
     $('#remote_container').html('<%= j render "new_reminder_email" %>');

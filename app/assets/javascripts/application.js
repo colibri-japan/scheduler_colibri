@@ -1592,6 +1592,7 @@ $(document).on('turbolinks:load', function(){
       window.fullCalendar.setOption('height', 'auto')
     }
     window.print()
+    $('#colibri-batch-action-button').click()
   })
   
   $('body').on('click', 'span#new-reminder-email', function(){

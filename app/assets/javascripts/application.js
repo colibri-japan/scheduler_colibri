@@ -1587,6 +1587,10 @@ $(document).on('turbolinks:load', function(){
   })
   
   $('body').on('click', 'span#print-button', function(){
+    if (window.fullCalendar && (window.fullCalendar.view.type === 'dayGridMonth')) {
+      window.fullCalendar.setOption('aspectRatio', 1)
+      window.fullCalendar.setOption('height', 'auto')
+    }
     window.print()
   })
   

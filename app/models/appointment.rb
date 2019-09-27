@@ -96,6 +96,10 @@ class Appointment < ApplicationRecord
         end
 	end
 
+	def weekend_holiday_salary_line_item?
+		!self.starts_at.on_weekday? || HolidayJp.between(self.starts_at.beginning_of_day, self.ends_at.end_of_day).present?
+	end
+
 	def as_json(options = {})
 		date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 		{
@@ -223,9 +227,11 @@ class Appointment < ApplicationRecord
 			self.total_credits = self.service.try(:unit_credits)
 			self.total_invoiced = self.service.try(:invoiced_amount)
 			if self.service.nurse_service_wages.where(nurse_id: self.nurse_id).present?
-				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)) : (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
+				unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:weekend_unit_wage) || self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0) : (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
+				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply) : unit_wage_to_apply
 			else
-				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * (self.service.unit_wage || 0)) : self.service.unit_wage
+				unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.weekend_unit_wage || self.service.unit_wage || 0) : (self.service.unit_wage || 0)
+				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply) : unit_wage_to_apply
 			end
 		end
 	end

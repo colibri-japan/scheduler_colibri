@@ -968,7 +968,6 @@ export default class extends Controller {
         window.resourceUrl = event.target.dataset.fcResourceUrl
 
         document.getElementById('resource-details-panel').style.display = 'none'
-        $('.popover').remove()
 
         updateSelectize()
 

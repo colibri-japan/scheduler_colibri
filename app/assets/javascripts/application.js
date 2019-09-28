@@ -1498,12 +1498,10 @@ $(document).on('turbolinks:load', function(){
     initializeActivitiesWidget()
   }
 
-  var popoverContent = $('#batch-action-menu').html()
-
   $('#colibri-batch-action-button').popover({
     html: true,
     title: '',
-    content: popoverContent,
+    content: $('#batch-action-menu').html(),
     trigger: 'click',
     placement: 'top'
   })
@@ -1566,6 +1564,34 @@ $(document).on('turbolinks:load', function(){
       data: data
     })
   })
+
+  $('.resource-title-selectable, .resource-list-element').click(function(){
+    $('#colibri-batch-action-button').popover('hide')
+    if (['team', 'patient'].includes($(this).data('resource-type')) || $(this).data('resource-id') === 'all') {
+      $('#new-reminder-email').empty()
+      $('#colibri-batch-action-button').popover('dispose')
+      $('#colibri-batch-action-button').popover({
+        html: true,
+        title: '',
+        content: $('#batch-action-menu').html(),
+        trigger: 'click',
+        placement: 'top'
+      })
+    } else {
+      $('#colibri-batch-action-button').popover('dispose')
+      $('#new-reminder-email').html($('#reminder-container').html())
+      $('#colibri-batch-action-button').popover({
+        html: true,
+        title: '',
+        content: $('#batch-action-menu').html(),
+        trigger: 'click',
+        placement: 'top'
+      })
+
+    }
+  })
+
+  $('.resource-list-element')
 
   if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
     $('#payable-menu').click(function(){

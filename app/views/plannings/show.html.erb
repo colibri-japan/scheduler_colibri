@@ -171,13 +171,18 @@
 		<div class='colibri-glyphicon-container'>
 			<span class='glyphicon glyphicon-pencil batch-action-pencil'></span>
 			<div id='batch-action-menu' style='display:none'>
-				<span class='glyphicon-action-button glyphicon glyphicon-print'></span><span id='print-button'> 印刷</span><br/>
-				<span class='glyphicon glyphicon-envelope glyphicon-action-button'></span><span id='new-reminder-email'>リマインダー</span><br/>
+				<span id='print-button'><i class='glyphicon-action-button glyphicon glyphicon-print'></i> 印刷<br/></span>
+				<span id='new-reminder-email'><i class='glyphicon glyphicon-envelope glyphicon-action-button'></i>リマインダー<br/></span>
 				<span class='glyphicon glyphicon-search glyphicon-action-button'></span><%= link_to ' 従業員検索', nurses_smart_search_path, remote: true, class: 'action-button-url' %><br/>
 				<span class='glyphicon glyphicon-cog glyphicon-action-button'></span><%= link_to '  一斉の編集', new_appointments_batch_action_path, remote: true, class: 'action-button-url' %><br/>
 			</div>
 		</div>
 	</div>
+
+	<div id="reminder-container" style="display:none">
+		<i class='glyphicon glyphicon-envelope glyphicon-action-button'></i>リマインダー<br/>
+	</div>
+	
 
 
 <% end %>

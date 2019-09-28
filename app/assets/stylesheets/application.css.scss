@@ -600,6 +600,10 @@ div.popover-body {
 	input:focus, select:focus, textarea:focus {
 		font-size: 16px;
 	}
+
+	.devise-input {
+		font-size: 16px;
+	}
 	
 	/* navigation styles */
 
@@ -650,6 +654,10 @@ div.popover-body {
 		margin-right: auto;
 		display: flex;
 		justify-content: center;
+	}
+
+	.selectize-input {
+		white-space: nowrap;
 	}
 
 	#resource-list-container {
@@ -867,6 +875,10 @@ div.popover-body {
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.devise-input {
+		font-size: 16px;
 	}
 
 	/* styles for home page */
@@ -1136,6 +1148,10 @@ div.popover-body {
 
 	#planning-header-submenu {
 		display: flex;
+	}
+
+	.selectize-input {
+		white-space: nowrap;
 	}
 
 	.header-submenu-item {

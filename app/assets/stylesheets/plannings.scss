@@ -567,6 +567,22 @@ p.master-reflect-option {
 	color: #4F4F4F;
 }
 
+/* styles for left menu backdrop */
+
+#menu-backdrop {
+	display: none;
+}
+
+#settings-menu {
+	display: flex;
+}
+
+p.setting-title {
+	margin-left: 6px;
+	margin-bottom: 0;
+	line-height: 1.5em;
+}
+
 @media print {
 	#index-container {
 		width: 95%;

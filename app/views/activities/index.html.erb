@@ -6,14 +6,17 @@
 
 <%= render 'plannings/settings_submenu', view: 'activities' %>
 
+<div id="menu-backdrop">
+</div>
+
 <div id="settings-container">
   	<div id="detail-planning-title">
-		<div id="payable-menu">
+		<div id="settings-menu">
 			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+			<p class="planning-activity-module-title setting-title">
+				編集履歴
+			</p>
 		</div>
-		<p class="planning-activity-module-title setting-title">
-			編集履歴
-		</p>
 	</div>
 	<div id="activity-filter">
 		<%= select_tag('nurse-filter', options_from_collection_for_select(@nurses, 'id', 'name', selected: @nurse_id), prompt: "全従業員") %>

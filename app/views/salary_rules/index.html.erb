@@ -2,16 +2,19 @@
 
 <%= render 'plannings/settings_submenu', view: "salary_rules" %>
 
+<div id="menu-backdrop">
+</div>
+
 <div id="settings-container">
   <div id="index-table-container" class="table-responsive">
 
     <div id="detail-planning-title">
-      <div id="payable-menu">
+      <div id="settings-menu">
         <%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+        <p class="planning-activity-module-title setting-title">
+          手当一覧
+        </p>
       </div>
-      <p class="planning-activity-module-title setting-title">
-        手当一覧
-      </p>
     </div>
 
     <%= link_to '+新規手当', new_salary_rule_path, remote: true, class: 'btn btn-info no-print', style: 'margin-left:5px;margin-top:8px;margin-bottom:6px' %>

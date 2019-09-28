@@ -2,15 +2,18 @@
 
 <%= render 'plannings/settings_submenu', view: "printing_options" %>
 
+<div id="menu-backdrop">
+</div>
+
 <div id="settings-container">
     <div id="printing-options" >
         <div id="detail-planning-title">
-            <div id="payable-menu">
+            <div id="settings-menu">
                 <%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+                <p class="planning-activity-module-title setting-title">
+                    印刷オプション
+                </p>
             </div>
-            <p class="planning-activity-module-title setting-title">
-                印刷オプション
-            </p>
         </div>
 
         <%= form_for [@corporation, @printing_option] do |form| %>

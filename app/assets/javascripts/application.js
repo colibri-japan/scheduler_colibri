@@ -1570,29 +1570,40 @@ $(document).on('turbolinks:load', function(){
   if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
     $('#payable-menu').click(function(){
       $('#resource-list-container').show()
+      $('#menu-backdrop').show()
     })
-
+    
     $('.resource-list-element, .resource-title-selectable').click(function(){
       $('#resource-list-container').hide()
+      $('#menu-backdrop').hide()
     })
 
-    $('#close-resource').click(function(){
+    $('#menu-backdrop').click(function(){
+      $(this).hide()
       $('#resource-list-container').hide()
-    })
-
-    $('#payable-menu').click(function(){
-      $('#settings-menu-container').show()
-    })
-
-    $('#close-settings').click(function(){
       $('#settings-menu-container').hide()
     })
-
-    $('#payable-menu').click(function(){
-      $('#resource-list-container').show()
+    
+    $('#close-resource').click(function(){
+      $('#resource-list-container').hide()
+      $('#menu-backdrop').hide()
     })
-
-
+    
+    $('#payable-menu').click(function(){
+      $('#settings-menu-container').show()
+      $('#resource-list-container').show()
+      $('#menu-backdrop').show()
+    })
+    
+    $('#settings-menu').click(function(){
+      $('#settings-menu-container').show()
+      $('#menu-backdrop').show()
+    })
+    
+    $('#close-settings').click(function(){
+      $('#settings-menu-container').hide()
+      $('#menu-backdrop').hide()
+    })
   }
 }); 
 

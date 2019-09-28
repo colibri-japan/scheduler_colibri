@@ -9,7 +9,8 @@
 
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'nurse', view: 'payable'} %>
 
-
+<div id="menu-backdrop">
+</div>
 <div id="payable-container">
 	<% if current_user.corporation_admin? %>
 

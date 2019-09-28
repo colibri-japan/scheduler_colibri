@@ -2,14 +2,17 @@
 
 <%= render 'plannings/settings_submenu', view: 'care_manager_corporations' %>
 
+<div id="menu-backdrop">
+</div>
+
 <div id="settings-container">
   <div id="detail-planning-title">
-		<div id="payable-menu">
+		<div id="settings-menu">
 			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+      <p class="planning-activity-module-title setting-title" >
+        ケアマネ一覧
+      </p>
 		</div>
-		<p class="planning-activity-module-title setting-title" >
-      ケアマネ一覧
-		</p>
 	</div>
   <%= link_to '+居宅介護支援事業所', new_care_manager_corporation_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
   

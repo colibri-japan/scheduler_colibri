@@ -2,14 +2,16 @@
 
 <%= render 'plannings/settings_submenu', view: 'nurses' %>
 
+<div id="menu-backdrop">
+</div>
 <div id="settings-container">
   <div id="detail-planning-title">
-		<div id="payable-menu">
+		<div id="settings-menu">
 			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+      <p class="planning-activity-module-title setting-title">
+        従業員一覧
+      </p>
 		</div>
-		<p class="planning-activity-module-title setting-title">
-      従業員一覧
-		</p>
 	</div>
   <%= link_to '+新規従業員', new_nurse_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
   

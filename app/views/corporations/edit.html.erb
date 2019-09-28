@@ -2,16 +2,18 @@
 
 <%= render 'plannings/settings_submenu', view: "schedule_settings" %>
 
+<div id="menu-backdrop">
+</div>
 
 <div id="settings-container">
     <div id="planning-options" >
         <div id="detail-planning-title">
-            <div id="payable-menu">
+            <div id="settings-menu">
                 <%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+                <p class="planning-activity-module-title setting-title">
+                    <%= corporation_resource_name(@corporation.business_vertical) %>設定
+                </p>
             </div>
-            <p class="planning-activity-module-title setting-title">
-                <%= corporation_resource_name(@corporation.business_vertical) %>設定
-            </p>
         </div>
         <%= form_for @corporation do |form| %>
           <div class="colibri-form-subsection" style="margin-top:25px">

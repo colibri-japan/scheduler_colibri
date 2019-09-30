@@ -122,7 +122,7 @@
 					</div>
 				</div>
 				<div id="nurse_filter_wrapper" style="display:none;margin-left:5px;text-align:left">
-					<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true, style: 'width:400px'} %>
+					<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true} %>
 				</div>
 				<div id="planning-header-submenu">
 					<div class="header-submenu-item" id="header-calendar-button">シフト</div>

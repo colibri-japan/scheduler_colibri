@@ -334,6 +334,16 @@ ul.chosen-results {
 	display: none;
 }
 
+#nurse_filter_wrapper {
+	min-width: 400px;
+}
+
+#nurse_filter_wrapper > .selectize-control {
+	width: 400px;
+}
+
+
+
 #settings-menu-list {
 	text-align: right;
 	margin-top: 15px;

@@ -352,6 +352,14 @@ th {
 	display: none;
 }
 
+.print-only-table {
+	display: none;
+}
+
+.print-only-thead {
+	display:none;
+}
+
 .small-side-margins {
 	margin-left: 5px;
 	margin-right: 5px;
@@ -598,6 +606,14 @@ div.popover-body {
 	}
 	.print-only {
 		display: block;
+	}
+
+	.print-only-table {
+		display: table;
+	}
+
+	.print-only-thead {
+		display: table-header-group;
 	}
 
 	.print-master-no-view {

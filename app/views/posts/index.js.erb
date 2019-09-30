@@ -1,6 +1,9 @@
 $('tbody').remove()
+$('#patient_post_table').remove()
+$('.print-only-head').remove()
+$('#post-displayable-thead').addClass('no-print')
 <% if params[:order_by_patient].present? %>
-    $('table#post-table').append("<%= j render 'posts/patient_post_table' %>")
+    $('#post-table-container').append("<%= j render 'posts/patient_post_table' %>")
 <% else %>
     $('table#post-table').append("<%= j render partial: 'posts/post_table' %>")
 <% end %>

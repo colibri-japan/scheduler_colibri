@@ -1,11 +1,20 @@
+<thead class="print-only-thead print-only-head">
+  <tr>
+      <th class="table-important-fields" style="width:9%">日付</th>
+      <th class="table-important-fields" style="width:14%">送信者</th>
+      <th class="table-important-fields" id="sort-posts-by-patient-tag" style="width:14%;cursor:pointer">利用者タグ<span class="glyphicon glyphicon-chevron-down" style="font-size:0.7em;cursor:pointer"></span></th>
+      <th class="table-important-fields" style="width:44%">メッセージ</th>
+      <th class="table-important-fields" style="width:19%">既読</th>
+  </tr>
+</thead>  
 <tbody>
   <% @posts.to_a.reverse.each do |post| %>
     <tr id="post-<%= post.id %>" class='post-clickable-row' data-url="<%= edit_post_path(post) %>">
-      <td><%= post.published_at.strftime("%Y年") %><br/><%= post.published_at.strftime("%-m月%-d日") %></td>
-      <td><%= post.author.try(:name) %></td>
-      <td class='td-patient-tag'><%= post.patients.map(&:name).join('、') %></td>
-      <td class='td-post-body'><%= simple_format(post.body) %></td>
-      <td class='td-post-readers'><%= @posts_readers[post.id].join('、') %></td>
+      <td style="width:9%"><%= post.published_at.strftime("%Y年") %><br/><%= post.published_at.strftime("%-m月%-d日") %></td>
+      <td style="width:14%"><%= post.author.try(:name) %></td>
+      <td style="width:14%" class='td-patient-tag'><%= post.patients.map(&:name).join('、') %></td>
+      <td style="width:44%" class='td-post-body'><%= simple_format(post.body) %></td>
+      <td style="width:19%" class='td-post-readers'><%= @posts_readers[post.id].join('、') %></td>
     </tr>
   <% end %>
 <tbody>

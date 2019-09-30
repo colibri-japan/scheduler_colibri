@@ -1,13 +1,28 @@
-<% @posts.each do |patient| %>
-  <tbody class="break-page-on-print" style="position:relative">
-    <% patient.posts.each do |post| %>
-      <tr id="post-<%= post.id %>" class='post-clickable-row' data-url="<%= edit_post_path(post) %>">
-          <td><%= post.published_at.strftime("%Y年") %><br/><%= post.published_at.strftime("%-m月%-d日") %></td>
-          <td><%= post.author.try(:name) %></td>
-          <td class='td-patient-tag'><%= patient.name %></td>
-          <td class='td-post-body'><%= simple_format(post.body) %></td>
-          <td class='td-post-readers'><%= @posts_readers[post.id].join('、') %></td>
-      </tr>
-    <% end %>
-  </tbody>
-<% end %>
+<div id="patient_post_table" style="width:100%">
+  <% @posts.each do |patient| %>
+    <div class="break-page-on-print" style="width:100%;page-break-after:always">
+      <table class="table print-only-table" style="width:100%">
+        <thead style="width:100%">
+          <tr style="width:100%">
+            <th class="table-important-fields" style="width:9%">日付</th>
+            <th class="table-important-fields" style="width:14%">送信者</th>
+            <th class="table-important-fields" id="sort-posts-by-patient-tag" style="width:14%;cursor:pointer">利用者タグ<span class="glyphicon glyphicon-chevron-down" style="font-size:0.7em;cursor:pointer"></span></th>
+            <th class="table-important-fields" style="width:44%">メッセージ</th>
+            <th class="table-important-fields" style="width:19%">既読</th>
+          </tr>
+        </thead>  
+        <tbody>
+        </tbody>
+      </table>
+      <% patient.posts.each do |post| %>
+        <div id="post-<%= post.id %>" class='post-clickable-row' style="display:flex;width:100%;border-bottom:0.5px solid #ccc;font-size:13px" data-url="<%= edit_post_path(post) %>">
+            <div style="padding:12px;width:9%"><%= post.published_at.strftime("%Y年") %><br/><%= post.published_at.strftime("%-m月%-d日") %></div>
+            <div style="padding:12px;width:14%"><%= post.author.try(:name) %></div>
+            <div style="padding:12px;width:14%" class='td-patient-tag'><%= patient.name %></div>
+            <div style="padding:12px;width:44%" class='td-post-body'><%= simple_format(post.body) %></div>
+            <div style="padding:12px;width:19%" class='td-post-readers'><%= @posts_readers[post.id].join('、') %></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

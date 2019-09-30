@@ -23,7 +23,7 @@
 	/* navigation styles */
 
 	#colibri-scheduler-nav {
-		display: none;
+		display: none !important;
 	}
 
 	.main-page {
@@ -52,10 +52,59 @@
 
 	li.planning-menu-items {
 		display: block;
+    }
+    
+    /* Fullcalendar layouts */
+
+    .fc-center {
+        display: none;
+    }
+
+    /* calendar layout styles */
+
+    #availabilities-print {
+        display: none;
+    }
+
+    #detail-planning-container {
+        width: 100%;
+    }
+
+    #detail-planning-title {
+        justify-content: space-between;
+    }
+
+	#planning-header {
+		width: 100%;
+		margin-left: -5px;
+		box-shadow: 0 4px 2px -2px #ccc;
+		margin-bottom: 10px;
+		display: block;
+    }
+
+    #resource-detail-header {
+        display: none;
+    }
+
+	#resource-details-wrapper {
+		width: 100%;
+	}
+    
+    #resource-details-button {
+        display: none !important;
+    }
+
+	#planning-header-submenu {
+		display: flex;
+    }
+
+	.header-submenu-item {
+		text-align: center;
+		flex-grow: 1;
+		border: 0.5px solid #ccc;	
 	}
 
-	/* calendar layout styles */
-
+    
 	#close-resource-list {
 		display: block;
 		text-align: right;
@@ -155,8 +204,10 @@
 	#payable-container {
 		width: calc(100% - 50px);
 		max-width: none;
-		margin-left: 50px;
-	}
+        margin-left: 50px;
+        top: 0px;
+    }
+
 
 	#detail-container {
 		position: absolute;

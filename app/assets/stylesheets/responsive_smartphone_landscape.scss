@@ -279,6 +279,23 @@
 		padding-left: 4px;
 	}
 
+	#export-data {
+		display: none;
+	}
+
+	.forty-percent-width {
+		width: calc(100% - 10px);
+	}
+
+	.sixty-percent-width {
+		width: calc(100% - 10px);
+	}
+
+	.colibri-dashboard-container-row {
+		overflow-x: auto;
+		height: 70vh;
+	}
+
 	/* settings page */
 
 	#patients-excel {

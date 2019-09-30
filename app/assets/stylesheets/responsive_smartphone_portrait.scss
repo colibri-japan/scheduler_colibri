@@ -127,7 +127,7 @@
 	}
 
 	.main-page {
-		padding-top: 0;
+		padding-top: 0px !important;
 	}
 	
 	/* styles for planning left menu */
@@ -250,7 +250,7 @@
 	#payable-container {
 		width: 100%;
 		max-width: 100%;
-		margin: 0px 0px 50px 0px;
+		margin: 0px 0px 90px 0px;
 		padding: 10px 5px 5px 5px;
 	}
 
@@ -457,6 +457,26 @@
 
 	.planning-activity-module-title {
 		padding-left: 4px;
+	}
+
+
+	#export-data {
+		display: none;
+	}
+
+	.forty-percent-width {
+		width: calc(100% - 10px);
+	}
+
+	.sixty-percent-width {
+		width: calc(100% - 10px);
+	}
+
+
+	.colibri-dashboard-container-row {
+		overflow-x: auto;
+		height: auto;
+		flex-direction: column;
 	}
 
 	/* Settings view layouts */

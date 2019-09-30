@@ -1402,7 +1402,9 @@ $(document).on('turbolinks:load', function(){
 
   $(window).resize(function(){
     if (window.fullCalendar) {
-      window.fullCalendar.setOption('height', (window.innerHeight - 160))
+      if (!window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches && !window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+        window.fullCalendar.setOption('height', (window.innerHeight - 160))
+      }
     }
   })
   

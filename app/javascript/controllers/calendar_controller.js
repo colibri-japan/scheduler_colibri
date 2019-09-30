@@ -463,7 +463,7 @@ let setRecurringAppointmentRange = (start, end, view) => {
 
 let responsiveHeader = (view) => {
     if (view.type === 'timeGridWeek') {
-        if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches) {
+        if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
             let dayHeaders = $('.fc-day-header')
             if (dayHeaders) {
                 dayHeaders.each(function(index, element) {

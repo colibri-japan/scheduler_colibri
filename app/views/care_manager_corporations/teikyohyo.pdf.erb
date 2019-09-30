@@ -1,5 +1,5 @@
 <% @invoicing_summary_per_patient.each do |patient, invoicing_summary| %>
-    <div class="teikyohyo-container">
+    <div class="teikyohyo-container" style="page-break-after:always">
         <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="total_credits">合計：<%= number_with_delimiter(invoicing_summary[:summary_data][:total_credits_with_bonus], delimiter: ',') %>単位</div>
         <div class="teikyohyo_1_header">
@@ -146,7 +146,7 @@
     </div>
 
     <% if invoicing_summary[:outside_insurance_scope].present? %>
-        <div class="teikyohyo-container">
+        <div class="teikyohyo-container" style="page-break-after:always">
             <div class="teikyohyo_title">保険外サービス提供表</div>
             <div class="teikyohyo_1_header">
                 <table class="table table-bordered table-bordered-pdf  table-centered">
@@ -289,7 +289,7 @@
 
     <% end %>
 
-    <div class="teikyohyo-container">
+    <div class="teikyohyo-container" style="page-break-after:always">
         <div class="teikyohyo_title">サービス提供票別表 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
         <div class="teikyohyo_subtitle">区分支給限度管理.利用者負担計算</div>
         <div class="teikyohyo_2_subcontainer">

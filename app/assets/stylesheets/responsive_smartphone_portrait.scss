@@ -1,0 +1,511 @@
+@media screen and (orientation: portrait) and (max-width: 760px) {
+
+	/* login styles*/
+
+	input:focus, select:focus, textarea:focus {
+		font-size: 16px;
+	}
+
+	#flash {
+		position: fixed !important;
+		top: 0px !important;
+		z-index: 35;
+		text-align: center;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.devise-input {
+		font-size: 16px;
+	}
+
+	/* styles for home page */
+
+	#blog-link-container {
+		display: none;
+	}
+
+	#pages-nav-right {
+		display: flex;
+		justify-content: center;
+	}
+
+
+	img#colibri-logo {
+		height: 30px;
+		width: 30px;
+		margin-left:3px;
+		margin-top:3px;
+		margin-right: -8px;
+	}
+
+	#nav-contact-button {
+		display: none;
+	}
+
+	#presentation-text {
+		width: 100%;
+		padding-top: 0;
+	}
+
+	#top-subsection {
+		margin-top: 100px;
+		flex-direction: column-reverse;
+	}
+
+	#presentation-images-banner {
+		width: 100%;
+		margin-bottom: 40px;
+	}
+
+	.colibri-home-presentation-title {
+		font-size: 1.6em;
+		line-height: 1.6em;
+	}
+
+	.colibri-home-subsection {
+		padding: 50px 20px 50px 20px;
+	}
+
+	#shift-issue-details {
+		margin-top: 15px;
+		width: 100%;
+		max-width: none;
+	}
+
+	footer {
+		background-color: #324e7b;
+		color: white;
+		padding: 35px 20px 80px 20px;
+	}
+
+	#colibri-footer {
+		flex-direction: column-reverse;
+	}
+
+	#footer-brand-container {
+		width: 100%;
+		max-width: none;
+	}
+
+	.footer-colibri-information-title {
+		font-size: 1.7em;
+	}
+
+	.footer-colibri-information-container {
+		width: 100%;
+		max-width: none;
+		margin-bottom: 30px;
+	}
+
+	/* styles for contact page */
+
+	#colibri-contact-form-container {
+		margin-top: 60px;
+	}
+
+	#contact-form-login-button {
+		display: none;
+	}
+
+	/* styles for login page */
+
+	.colibri-devise-form {
+		width: 90%;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 90px;
+		margin-bottom: 40px;
+		background-color: #fff;
+		padding: 20px 20px 20px 20px;
+	}
+
+	/* styles for navigation bar */
+	#header-navigation {
+		display: none;
+	}
+
+	.main-page {
+		padding-top: 0;
+	}
+	
+	/* styles for planning left menu */
+	
+	#planning-menu-container {
+		height: 60px;
+		width: 100%;
+		position: fixed;
+		top: auto;
+		bottom: 0 !important;
+		left: 0;
+		background-color: #354553;
+		padding-top: 0;
+		z-index: 15;
+	}
+
+	.nav-tabs {
+		border-bottom: 0px !important;
+	}
+	
+	
+	ul.nav-tabs {
+		list-style: none;
+		text-align: center;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 0;
+		padding-top: 0;
+	}
+	
+	li.planning-menu-items {
+		margin-left: 20px;
+		margin-right: 20px;
+		padding-bottom: 0;
+		display: block;
+		float: left !important;
+		width: auto;
+	}
+
+	/* styles dashboard and other content container */
+
+	#colibri-dashboard-container {
+		margin-left: 3px;
+		margin-right: 3px;
+		margin-top: 3px;
+		margin-bottom: 80px;
+	}
+
+	.colibri-dashboard-big-container {
+		height: auto;
+		flex-direction: column-reverse;
+	}
+
+	.colibri-dashboard-container-column-large {
+		width: 100%;
+		height: 140vh;
+	}
+
+	.colibri-dashboard-container-column-narrow {
+		width: 100%;
+		height: 70vh;
+	}
+
+	#planning-page-wrapper {
+		width: 100vw;
+	}
+
+	#resource-list-container {
+		background-color: #606E7C;
+		border: 0.5px solid #606E7C;
+		display: flex;
+		flex-direction: column;
+		overflow:hidden;
+		height: 100%;
+		min-width: 150px;
+		width:10vw;
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		overflow-x: hidden;
+		padding-top: 3px;
+		padding-bottom: 60px;
+		display: none;
+	}
+
+	#detail-container {
+		padding: 5px;
+		display: flex;
+		position: absolute;
+		width: 100%;
+		max-width: none;
+		top: 0;
+		left: 0;
+		margin: 0px 0px 120px 0px;
+	}
+
+	p.setting-title {
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+
+	#detail-planning-title {
+		width: 100%;
+		margin-bottom: 10px;
+		margin-top:15px;
+	}
+	
+	#planning-container {
+		width: 100%;
+		
+	}
+
+	#detail-planning-container {
+		width: 100%;
+		margin: 0 0 0 0;
+	}
+
+	#payable-container {
+		width: 100%;
+		max-width: 100%;
+		margin: 0px 0px 50px 0px;
+		padding: 10px 5px 5px 5px;
+	}
+
+	/* Hide batch action button */
+
+	#colibri-batch-action-button {
+		display: none;
+	}
+
+	#colibri-master-action-button {
+		display: none;
+	}
+
+	/* Hide print button */
+	#print-button {
+		display: none;
+	}
+
+	/* Fullcalendar custom smartphone layouts */
+
+	.fc-center {
+		display: none;
+	}
+
+	/* Calendar view layouts */
+
+	#planning-header {
+		width: 100vw;
+		margin-left: -5px;
+		box-shadow: 0 4px 2px -2px #ccc;
+		margin-bottom: 10px;
+		display: block;
+	}
+
+	#planning-header-submenu {
+		display: flex;
+	}
+
+	.selectize-input {
+		white-space: nowrap;
+	}
+
+	.header-submenu-item {
+		text-align: center;
+		flex-grow: 1;
+		border: 0.5px solid #ccc;	
+	}
+
+	button#resource-details-button {
+		display: none !important;
+	}
+
+	div#new-reminder-email {
+		display: none !important;
+	}
+
+	#resource-name-wrapper {
+		padding-right: 5px;
+		padding-top: 0px;
+		padding-left: 6px;
+		margin-bottom: 5px;
+	}
+
+	#resource-search-icon {
+		display: inline;
+	}
+
+	#toggle-patients-nurses-wrapper {
+		margin-left: 3px;
+	}
+
+	#close-resource-list {
+		display: block;
+		text-align: right;
+		font-size: 1.2em;
+		color: white;
+		margin-right: 6px;
+	}
+
+	#toggle-patients-nurses-wrapper {
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		display: flex;
+		justify-content: center;
+	}
+
+	#menu-backdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 7;
+		height: 100vh;
+		width: 100vw;
+		background-color: black;
+		opacity: 0.6;
+	}
+
+	#resource-list-container {
+		height: calc(100% - 50px);
+	}
+
+	#resource-container {
+		height: 100%;
+		overflow-y: scroll;
+		overflow-x: hide;
+	}
+
+	#nurses-resource {
+		padding-bottom: 0px;
+	}
+
+	#patients-resource {
+		padding-bottom: 0px;
+	}
+
+	#colibri-master-action-button {
+		display: none !important;
+	}
+
+	#planning-nurse-information {
+		display: flex;
+	}
+
+	#resource-details-panel {
+		width: 100%;
+		height: calc(100vh - 150px);
+		overflow-y: scroll;
+		position: absolute;
+		bottom: 55px;
+		z-index: 11;
+		border: 0px;
+	}
+
+	#resource-details-wrapper {
+		width: 100%;
+	}
+
+	#resource-detail-header {
+		display: none;
+	}
+
+	#close-reports-index {
+		display: none;
+	}
+
+	#display-completion-reports {
+		display: none !important;
+	}
+
+
+	/* payable view styles */
+
+	#payable-menu {
+		display: block;
+	}
+
+	.patient-left-panel {
+		width: 100%;
+	}
+
+	.patient-dashboard-panel-body {
+		overflow-y: hidden;
+	}
+
+	.patient-right-panel {
+		display: none;
+	}
+
+	#payable-table-commands {
+		display: none;
+	}
+
+	#payable-query {
+		display: block;
+		margin-top: 10px;
+	}
+
+	#detail-planning-title {
+		padding-left: 5px;
+		justify-content: space-between;
+	}
+
+	#nurse_filter_wrapper {
+		margin: 5px;
+	}
+
+	#availabilities-print {
+		display: none !important;
+	}
+
+	#payable-title {
+		margin-top:5px;
+	}
+
+	#payable-query {
+		padding-left: 12px;
+	}
+
+	.planning-activity-module-title {
+		padding-left: 4px;
+	}
+
+	/* Settings view layouts */
+
+	#patients-excel {
+		display: none;
+	}
+
+	#settings-menu-container {
+		height: calc(100% - 50px);
+		width: 200px;
+		position: fixed;
+		z-index: 10;
+		top: 0px;
+		left: 0px;
+		padding-top: 10px;
+		background-color: #606E7C;
+		border: 0.5px solid #606E7C;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		overflow-y: auto;
+		display: none;
+	}
+
+	#settings-container {
+		margin: 0px 0px 0px 0px;
+		width: 100%;
+		padding: 10px 5px 5px 5px;
+	}
+
+	#close-settings {
+		display: list-item;
+		margin-bottom: 10px;
+	}
+
+	#settings-menu-list {
+		margin-top: 0px;
+	}
+
+	#index-table-container {
+		margin-top: 0px;
+	}
+
+	.edit_corporation {
+		margin-bottom: 70px;
+	}
+
+	.edit_printing_option {
+		margin-bottom: 70px;
+		margin-left:20px;	
+	}
+
+	/* Scrollbar layout */
+
+
+}

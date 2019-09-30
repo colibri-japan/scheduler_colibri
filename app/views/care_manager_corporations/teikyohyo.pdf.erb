@@ -1,3 +1,4 @@
+<div style="overflow:visible!important">
 <% @invoicing_summary_per_patient.each do |patient, invoicing_summary| %>
     <div class="teikyohyo-container" style="page-break-after:always">
         <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
@@ -527,3 +528,4 @@
         
     </div>
 <% end %>
+</div>

@@ -857,6 +857,25 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   z-index: 1;
 }
 
+/* Timeline week, display event time on a different line than title */
+
+.fc-timeline-event.fc-event.fc-h-event {
+  flex-direction: column;
+}
+
+.fc-time-wrap {
+  display: block;
+  line-height: 0.8;
+}
+
+.fc-time-wrap > span {
+  line-height: 0.8;
+}
+
+.fc-title-wrap {
+  display: block;
+}
+
 
 @media print {
 

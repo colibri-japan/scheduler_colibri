@@ -58,7 +58,17 @@
 
     .fc-center {
         display: none;
-    }
+	}
+
+	.fc-title.title-responsive {
+		font-size: 1.1em;
+		color: black;
+	}
+
+	.fc-time.fc-time-responsive {
+		font-size: 0.8em;
+		color: black;
+	}
 
     /* calendar layout styles */
 

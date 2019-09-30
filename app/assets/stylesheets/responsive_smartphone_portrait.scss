@@ -275,9 +275,16 @@
 		display: none;
 	}
 
-	.fc-title.title-week-responsive {
+	.fc-title.title-responsive {
 		font-size: 1.1em;
 		color: black;
+	}
+
+	.fc-time.fc-time-responsive {
+		font-size: 0.7em;
+		color: black;
+		font-weight: normal;
+		display: block;
 	}
 
 	/* Calendar view layouts */

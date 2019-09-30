@@ -77,6 +77,7 @@ let createCalendar = () => {
             },
             'resourceTimeGridDay': {
                 resourceLabelText: window.resourceLabel,
+                displayEventTime: false,
                 slotLabelFormat: {hour: 'numeric', minute: '2-digit'},
                 eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
                 titleFormat: {year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'}
@@ -183,14 +184,26 @@ let createCalendar = () => {
             }
 
             if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+                var titleTag = info.el.querySelector('.fc-title')
+                if (titleTag) {
+                    titleTag.classList.add('title-responsive')
+                }
                 if (['timeGridDay', 'timeGridWeek'].includes(info.view.type)) {
                     var timeTag = info.el.querySelector('.fc-time')
                     if (timeTag) {
                         timeTag.remove()
                     }
-                    var titleTag = info.el.querySelector('.fc-title')
-                    if (titleTag) {
-                        titleTag.classList.add('title-week-responsive')
+                } else if (info.view.type === 'resourceTimelineWeek') {
+                    var timeTag = info.el.querySelector('.fc-time')
+                    if (timeTag) {
+                        timeTag.classList.add('fc-time-responsive')
+                    }
+                } else if (info.view.type === 'dayGridMonth') {
+                    var timeTag = info.el.querySelector('.fc-time')
+                    if (timeTag) {
+                        var newDate = timeTag.innerHTML.match(/[^ -]*/i)[0]
+                        timeTag.innerHTML = newDate 
+                        timeTag.classList.add('fc-time-responsive')
                     }
                 }
             }

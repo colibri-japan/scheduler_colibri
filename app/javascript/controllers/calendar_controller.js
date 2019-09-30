@@ -182,6 +182,19 @@ let createCalendar = () => {
                 return
             }
 
+            if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+                if (['timeGridDay', 'timeGridWeek'].includes(info.view.type)) {
+                    var timeTag = info.el.querySelector('.fc-time')
+                    if (timeTag) {
+                        timeTag.remove()
+                    }
+                    var titleTag = info.el.querySelector('.fc-title')
+                    if (titleTag) {
+                        titleTag.classList.add('title-week-responsive')
+                    }
+                }
+            }
+
             if (info.event.extendedProps.cancelled) {
                 info.el.style.backgroundImage = 'repeating-linear-gradient(45deg, #FFBFBF, #FFBFBF 5px, #FF8484 5px, #FF8484 10px)'
                 info.el.classList.add('colibri-cancelled')

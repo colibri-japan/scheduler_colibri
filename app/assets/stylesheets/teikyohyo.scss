@@ -2,6 +2,7 @@
     display: block;
     clear: both;
     page-break-after: always !important;
+    page-break-inside: avoid;
     break-after: page !important;
     font-size: 0.9em;
 }

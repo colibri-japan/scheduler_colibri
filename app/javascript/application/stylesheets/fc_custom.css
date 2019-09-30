@@ -876,6 +876,19 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   display: block;
 }
 
+.fc-view-container {
+  overflow-x: auto;
+  width: auto;
+}
+
+thead.fc-header {
+  width: auto;
+}
+
+.fc-view.fc-resourceTimeGridDay-view > table {
+  width: auto;
+}
+
 
 @media print {
 

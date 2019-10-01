@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   before_action :set_corporation
   before_action :set_main_nurse, only: :index
+  layout 'print_only', only: :extended_daily_summary
 
 
   def index
@@ -27,25 +28,29 @@ class DashboardController < ApplicationController
   def extended_daily_summary
     @planning = @corporation.planning
 
-    query_day = params[:q].to_date
+    @query_day = params[:q].to_date
     team = Team.find(params[:team_id]) if params[:team_id] != 'undefined'
 
-    appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: query_day.beginning_of_month.beginning_of_day..query_day.end_of_day).includes(:patient, :nurse)
+    appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: @query_day.beginning_of_month.beginning_of_day..@query_day.end_of_day).includes(:patient, :nurse)
 
     if team.present?
       appointments = appointments.where(nurse_id: team.nurses.displayable.ids)
     end
 
     #daily summary
-    @daily_appointments = appointments.in_range(query_day.beginning_of_day..query_day.end_of_day).includes(:verifier, :second_verifier).order('nurse_id, starts_at desc')
+    @daily_appointments = appointments.in_range(@query_day.beginning_of_day..@query_day.end_of_day).includes(:verifier, :second_verifier).order('nurse_id, starts_at desc')
     @female_patients_ids = @corporation.patients.female.ids 
     @male_patients_ids = @corporation.patients.male.ids
 
     #weekly  summary, from monday to query date
-    @weekly_appointments = appointments.where(starts_at: (query_day - (query_day.strftime('%u').to_i - 1).days).beginning_of_day..query_day.end_of_day)
+    @weekly_appointments = appointments.where(starts_at: (@query_day - (@query_day.strftime('%u').to_i - 1).days).beginning_of_day..@query_day.end_of_day)
     
     #monthly summary, until end of today
-		@monthly_appointments = appointments
+    @monthly_appointments = appointments
+    
+    respond_to do |format|
+      format.html
+    end
   end
 
   private

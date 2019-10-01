@@ -1593,7 +1593,45 @@ $(document).on('turbolinks:load', function(){
     }
   })
 
-  $('.resource-list-element')
+  $('#extended-daily-report').click(function(){
+    $('#extended-daily-summary-modal').modal('show')
+    $('#summary_team_select').selectize()
+    $('#extended_report_date').daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      minYear: 2016,
+      maxYear: 2030,
+      locale: {
+        format: 'YYYY年MM月DD日',
+        daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土"
+        ],
+        monthNames: [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+        ],
+        firstDay: 1
+      }
+    })
+  })
+
+
 
   if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
     $('#payable-menu').click(function(){

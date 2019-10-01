@@ -1,3 +1,5 @@
+/* teikyohyo styles */
+
 .teikyohyo-container {
     display: block;
     clear: both;
@@ -69,4 +71,34 @@ html {
 body {
     margin: 0;
     padding: 0;
+}
+
+/* extended summary styles */
+
+.colibri-dashboard-container-row {
+	width: 100%;
+	height: auto;
+	display: flex;
+}
+
+.colibri-dashboard-container-row-large {
+	width: 100%;
+	height: auto;
+	display: flex;
+}
+
+.colibri-dashboard-subcontainer {
+	background-color: white;
+	margin: 5px;
+	padding: 4px;
+	border: 0.5px solid #ccc;
+	flex: 1;
+	width: calc(100% - 10px);
+}
+
+
+.colibri-subcontainer-header {
+	border-bottom: 0.5px solid #ccc;
+	padding-bottom: 4px;
+	height: 33px;
 }

@@ -46,24 +46,7 @@ class PlanningsController < ApplicationController
 
 		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0)
 		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59, 59)
-		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
-
-		#@salary_line_items_till_today = SalaryLineItem.joins(:nurse).where(planning_id: @planning.id, cancelled: false, archived_at: nil, service_date: first_day..last_day)
-
-		#appointments : since beginning of month
-		today = Date.today
-		appointments = @planning.appointments.operational.in_range(first_day..last_day).includes(:patient, :nurse)
-		
-		##daily summary
-		@daily_appointments = appointments.in_range(last_day.beginning_of_day..last_day).includes(:verifier, :second_verifier).order('nurse_id, starts_at desc')
-    	@female_patients_ids = @corporation.patients.female.ids
-    	@male_patients_ids = @corporation.patients.male.ids
-		
-    	##weekly summary, from monday to today
-    	@weekly_appointments = appointments.in_range((last_day - (last_day.strftime('%u').to_i - 1).days).beginning_of_day..last_day)
-		
-		##monthly summary, until end of today
-		@monthly_appointments = appointments	
+		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day	
 	end
 
 	def all_patients_payable

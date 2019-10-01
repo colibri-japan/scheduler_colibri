@@ -39,22 +39,6 @@ class TeamsController < ApplicationController
         @nurse = current_user.nurse_id.present? ? current_user.nurse : @team.nurses.displayable.order_by_kana.first
         fetch_nurses_grouped_by_team
         fetch_patients_grouped_by_kana
-
-    	#appointments : since beginning of month
-        today = Date.today 
-        nurse_ids = @team.nurses.displayable.pluck(:id)
-        appointments = @planning.appointments.operational.where(nurse_id: nurse_ids).in_range(today.beginning_of_month.beginning_of_day..today.end_of_day ).includes(:patient, :nurse)
-
-	    #daily summary
-    	@daily_appointments = appointments.in_range(today.beginning_of_day..today.end_of_day).includes(:verifier, :second_verifier).order('nurse_id, starts_at desc')
-    	@female_patients_ids = @corporation.patients.female.ids 
-    	@male_patients_ids = @corporation.patients.male.ids
-		
-    	#weekly summary, from monday to today
-    	@weekly_appointments = appointments.in_range((today - (today.strftime('%u').to_i - 1).days).beginning_of_day..today.end_of_day)
-
-		#monthly summary, until end of today
-        @monthly_appointments = appointments
     end
 
     def edit

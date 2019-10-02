@@ -1,7 +1,11 @@
 module SalaryLineItemsHelper
 
-    def salary_line_item_title_with_counts(salary_line_item)
-        salary_line_item.service_counts == 1 ?  salary_line_item.try(:title) : "#{salary_line_item.try(:title)}(x#{salary_line_item.service_counts})"
+    def salary_line_item_title_with_counts(salary_line_item, operator)
+        if operator == 0
+            salary_line_item.service_counts == 1 ?  salary_line_item.try(:title) : "#{salary_line_item.try(:title)}(x#{salary_line_item.service_counts})"
+        else
+            salary_line_item.try(:title)
+        end
     end
 
     def sort_link(sort_direction)

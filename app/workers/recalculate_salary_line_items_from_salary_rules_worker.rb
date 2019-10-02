@@ -26,6 +26,7 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         targeted_appointments = targeted_appointments.where('starts_at >= ?', @nurse.date_from_worked_months(salary_rule.min_months_worked)) if salary_rule.min_months_worked.present?
         targeted_appointments = targeted_appointments.where('starts_at <= ?', @nurse.date_from_worked_months(salary_rule.max_months_worked)) if salary_rule.max_months_worked.present?
 
+
         case salary_rule.date_constraint
         when 1
             #holidays
@@ -39,28 +40,75 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         appointments_count = targeted_appointments.size 
         appointments_duration = targeted_appointments.sum(:duration)
 
+        #verify if met goals
+        met_goals = true 
+
+        if salary_rule.min_monthly_service_count.present? && (!salary_rule.max_monthly_service_count.present?)
+          met_goals = appointments_count >= salary_rule.min_monthly_service_count
+          appointments_count = appointments_count >= salary_rule.min_monthly_service_count ? (appointments_count - salary_rule.min_monthly_service_count) : 0
+        elsif salary_rule.max_monthly_service_count.present? && (!salary_rule.min_monthly_service_count.present?)
+          met_goals = appointments_count <= salary_rule.max_monthly_service_count
+          appointments_count = appointments_count <= salary_rule.max_monthly_service_count ? appointments_count : salary_rule.max_monthly_service_count
+        elsif salary_rule.min_monthly_service_count.present? && salary_rule.max_monthly_service_count.present? 
+          met_goals = (appointments_count >= salary_rule.min_monthly_service_count) && (appointments_count <= salary_rule.max_monthly_service_count)
+          if appointments_count <= salary_rule.min_monthly_service_count
+            appointments_count = salary_rule.min_monthly_service_count
+          elsif appointments_count >= salary_rule.max_monthly_service_count
+            appointments_count = salary_rule.max_monthly_service_count
+          else
+            appointments_count -= salary_rule.min_monthly_service_count
+          end
+        end
+        
+        #filtering duration from goals
+        if salary_rule.min_monthly_hours_worked.present? && (!salary_rule.max_monthly_hours_worked.present?)
+          met_goals = appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600)
+          appointments_duration = appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600) ? (appointments_duration - (salary_rule.min_monthly_hours_worked * 3600)) : 0
+        elsif salary_rule.max_monthly_hours_worked.present? && (!salary_rule.min_monthly_hours_worked.present?)
+          met_goals = appointments_duration <= (salary_rule.max_monthly_hours_worked * 3600)
+          appointments_duration = appointments_duration <= (salary_rule.max_monthly_hours_worked * 3600) ? appointments_duration : salary_rule.max_monthly_hours_worked * 3600
+        elsif salary_rule.min_monthly_hours_worked.present? && salary_rule.max_monthly_hours_worked.present? 
+          met_goals = (appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600)) && (appointments_duration <= (salary_rule.max_monthly_hours_worked * 3600))
+          if appointments_duration <= (salary_rule.min_monthly_hours_worked * 3600)
+            appointments_duration = salary_rule.min_monthly_hours_worked * 3600
+          elsif appointments_duration >= (salary_rule.max_monthly_hours_worked * 3600)
+            appointments_duration = salary_rule.max_monthly_hours_worked * 3600
+          end
+        end
+
+        puts 'met goals'
+        puts met_goals
+
+
         # substract number of days worked from appointments count if only_count_between_appointments
         if salary_rule.only_count_between_appointments?
           day_count = targeted_appointments.present? ? targeted_appointments.pluck(:starts_at).map(&:to_date).uniq.size : 0
           appointments_count -= day_count
         end
 
-        #calculating total_wage
-        if salary_rule.operator == 0
-            if salary_rule.hour_based
-                total_wage = (appointments_duration / 60) * (salary_rule.argument.to_f / 60) || 0
-            else
-                total_wage = appointments_count * salary_rule.argument.to_f || 0
-            end
-        elsif salary_rule.operator == 1
-            total_wage = targeted_appointments.sum(:total_wage) * salary_rule.argument.to_f || 0
+        #calculate total wage in function of operator
+        case salary_rule.operator
+        when 0
+            #add arg per count
+            total_wage = (appointments_count || 0) * (salary_rule.argument.to_f || 0) 
+        when 1
+            #add arg per hour
+            total_wage = (appointments_duration || 0) * (salary_rule.argument.to_f || 0) / 3600
+        when 2 
+            #multiply salary by arg
+            total_wage = (targeted_appointments.sum(:total_wage) || 0 ) * (salary_rule.argument.to_f || 0)
+        when 3
+            #add arg only once if goals are met
+            total_wage = met_goals ? (salary_rule.argument || 0) : 0
         else
             total_wage = 0
         end
         
         #creating/updating provided service
-        salary_line_item_from_rule = salary_rule.salary_line_items.where(nurse_id: nurse_id, planning_id: corporation.planning.id, title: salary_rule.title, hour_based_wage: salary_rule.hour_based).in_range(@start_of_month..@end_of_month).first_or_create
-        salary_line_item_from_rule.update_columns(service_counts: appointments_count, service_duration: appointments_duration, total_wage: total_wage, updated_at: Time.current, service_date: @end_of_today.beginning_of_day)
+        if met_goals
+          salary_line_item_from_rule = salary_rule.salary_line_items.where(nurse_id: nurse_id, planning_id: corporation.planning.id, title: salary_rule.title, hour_based_wage: salary_rule.calculate_from_hours?).in_range(@start_of_month..@end_of_month).first_or_create
+          salary_line_item_from_rule.update_columns(service_counts: appointments_count, service_duration: appointments_duration, total_wage: total_wage, updated_at: Time.current, service_date: @end_of_today.beginning_of_day)
+        end
     end
   end
 

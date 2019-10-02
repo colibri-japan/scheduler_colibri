@@ -8,6 +8,17 @@ module SalaryRulesHelper
     end
 
     def salary_calculation(salary_rule)
-        "#{salary_rule.operator == 0 ? '+ ' : 'x ' }#{salary_rule.operator == 0 ? salary_rule.argument.to_i : salary_rule.argument}¥#{salary_rule.hour_based ? ' /時' : ' /回'}"
+        case salary_rule.operator
+        when 0
+            "+#{salary_rule.argument.to_i}/回"
+        when 1
+            "+#{salary_rule.argument.to_i}/時"
+        when 2
+            "給与計 * #{salary_rule.argument}"
+        when 3
+            "定額"
+        else
+            ""
+        end
     end
 end

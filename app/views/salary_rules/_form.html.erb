@@ -12,28 +12,29 @@
 
   </div>
 
-  <div class='blue-background-form'>
-    <div class="modal-subsection-title-sm">従業員フィルタ</div>
+  <div class="blue-background-form">
+    <div class="modal-subsection-title-sm">目標.条件</div>
 
     <div class="form-group">
-      <%= form.check_box :target_all_nurses, checked: salary_rule.target_all_nurses && !@nurse.present?, id: 'all_nurses_selected_checkbox' %>
-    </div>
-
-    <% nurse_id_list = @nurse.present? ? @nurse.id : salary_rule.nurse_id_list %>
-
-    <div class="form-group" id="form_nurse_id_list_group">
-      <%= form.label :nurse_id_list, "選択する", class: "colibri-form-label-dark" %>
-      <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
+      <%= form.label :min_monthly_service_count, "案件数目標（月）" %>
+      <%= form.number_field :min_monthly_service_count,  {step: 1, style: 'width:50px'} %>件から
+      <%= form.number_field :max_monthly_service_count, {step: 1, style: 'width:50px'} %>件まで
     </div>
 
     <div class="form-group">
-      <%= form.label :min_days_worked, "稼動日数" %>
+      <%= form.label :min_monthly_hours_worked, "勤務時間目標（月）" %>
+      <%= form.number_field :min_monthly_hours_worked,  {step: 1, style: 'width:50px'} %>時間から
+      <%= form.number_field :max_monthly_hours_worked, {step: 1, style: 'width:50px'} %>時間まで
+    </div>
+
+    <div class="form-group">
+      <%= form.label :min_days_worked, "合計稼動日数" %>
       <%= form.number_field :min_days_worked,  {step: 1, style: 'width:50px'} %>日から
       <%= form.number_field :max_days_worked, {step: 1, style: 'width:50px'} %>まで
     </div>
 
     <div class="form-group">
-      <%= form.label :min_days_worked, "稼動期間" %>
+      <%= form.label :min_months_worked, "合計稼動期間" %>
       <%= form.number_field :min_months_worked,  {step: 1, style: 'width:50px'} %>ヵ月目から
       <%= form.number_field :max_months_worked, {step: 1, style: 'width:50px'} %>ヵ月目まで
     </div>
@@ -47,6 +48,22 @@
   </div>
 
   <div class='modal-body'>
+    <div class="modal-subsection-title-sm">従業員フィルタ</div>
+
+    <div class="form-group">
+      <%= form.check_box :target_all_nurses, checked: salary_rule.target_all_nurses && !@nurse.present?, id: 'all_nurses_selected_checkbox' %>
+    </div>
+
+    <% nurse_id_list = @nurse.present? ? @nurse.id : salary_rule.nurse_id_list %>
+
+    <div class="form-group" id="form_nurse_id_list_group">
+      <%= form.label :nurse_id_list, "選択する", class: "colibri-form-label-dark" %>
+      <%= form.select :nurse_id_list, grouped_options_for_select(@nurses.group_full_timer_for_select, nurse_id_list), {}, multiple: true, id: 'target-nurse-ids' %>
+    </div>
+
+  </div>
+
+  <div class='blue-background-form'>
     <div class="modal-subsection-title-sm">サービスフィルタ</div>
     <% if @nurse.present? %>
       <div class="form-group">
@@ -73,13 +90,12 @@
 
   </div>
 
-  <div class='blue-background-form'>
+  <div class='modal-body'>
     <div class="modal-subsection-title-sm">手当計算式</div>
 
     <div class="form-group">
-      <%= form.select :operator, options_for_select([['+', 0], ['x', 1]], salary_rule.operator) %>
+      <%= form.select :operator, options_for_select([['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['+', 3]], salary_rule.operator) %>
       <%= form.number_field :argument, {step: 0.01} %>
-      <%= form.select :hour_based, options_for_select([['/時間', true], ['/回数', false]], salary_rule.hour_based), {}, {id: :salary_rule_hour_based} %>
     </div>
 
     <div class="form-group" id="only_count_between_appointments_group" style="<%= 'display:none' if salary_rule.hour_based? %>">

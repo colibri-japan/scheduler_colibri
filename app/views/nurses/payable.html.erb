@@ -177,9 +177,9 @@
 				<% @salary_line_items.each do |salary_line_item| %>
 					<tr>
 						<td><%= salary_line_item.service_date.strftime("%-m月%-d日") %></td>
-						<td><%= salary_line_item_title_with_counts(salary_line_item) %></td>
+						<td><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
 						<td></td>
-						<td><%= from_seconds_to_hours_minutes(salary_line_item.service_duration) %></td>
+						<td><%= from_seconds_to_hours_minutes(salary_line_item.service_duration) if salary_line_item.salary_rule.try(:operator) == 1 %></td>
 						<td><%= salary_calculation(salary_line_item.salary_rule) if salary_line_item.salary_rule.present? %></td>
 						<td><%= "#{salary_line_item.total_wage}¥" %></td>
 						<td></td>

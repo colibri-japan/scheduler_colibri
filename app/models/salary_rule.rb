@@ -12,6 +12,10 @@ class SalaryRule < ApplicationRecord
     before_create :set_expiry, if: :one_time_salary_rule
     after_create :create_salary_line_item, if: :one_time_salary_rule
 
+    def calculate_from_hours?
+        operator == 1
+    end
+
     private
 
     def set_expiry
@@ -39,19 +43,25 @@ class SalaryRule < ApplicationRecord
             appointments_count = targeted_appointments.size || 0
             appointments_duration = targeted_appointments.sum(:duration) || 0
 
-            if self.operator == 0
-                if self.hour_based 
-                    total_wage = (appointments_duration / 60) * (self.argument.to_f / 60) || 0
-                else
-                    total_wage = appointments_count * self.argument.to_f || 0
-                end
-            elsif self.operator == 1
-                total_wage = targeted_appointments.sum(:total_wage) * self.argument.to_f || 0
+            #calculate total wage in function of operator
+            case self.operator
+            when 0
+                #add arg per count
+                total_wage = (appointments_count || 0) * (self.argument.to_f || 0) 
+            when 1
+                #add arg per hour
+                total_wage = (appointments_duration || 0) * (self.argument.to_f || 0) / 3600
+            when 2 
+                #multiply salary by arg
+                total_wage = (targeted_appointments.sum(:total_wage) || 0 ) * (self.argument.to_f || 0)
+            when 3
+                #add arg only once
+                total_wage = self.argument || 0
             else
                 total_wage = 0
             end
 
-            SalaryLineItem.create(nurse_id: nurse.id, planning_id: corporation.planning.id, service_date: (Time.current + 9.hours), title: self.title, hour_based_wage: self.hour_based, service_counts: appointments_count, service_duration: appointments_duration, total_wage: total_wage)
+            SalaryLineItem.create(nurse_id: nurse.id, planning_id: corporation.planning.id, service_date: (Time.current + 9.hours), title: self.title, hour_based_wage: self.calculate_from_hours?, service_counts: appointments_count, service_duration: appointments_duration, total_wage: total_wage)
         end
     end
 

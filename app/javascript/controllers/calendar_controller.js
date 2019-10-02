@@ -973,6 +973,7 @@ export default class extends Controller {
         toggleHeaderSubmenu()
         switchBackToCalendarOnNavigate()
         toggleNurseReminderButton()
+        this.updatePrintInfo(selectedItem)
 
         return
     }
@@ -1015,6 +1016,7 @@ export default class extends Controller {
         toggleHeaderSubmenu()
         switchBackToCalendarOnNavigate()
         toggleNurseReminderButton()
+        this.updatePrintInfo(event.target)
 
         return
     }
@@ -1040,6 +1042,30 @@ export default class extends Controller {
                 reportsButton.style.display = 'none'
             } else {
                 reportsButton.style.display = 'inline-block'
+            }
+        }
+    }
+
+    updatePrintInfo(selectedElement) {
+        let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+        document.getElementById('resource-print-address').innerHTML = ''
+        document.getElementById('resource-print-phone').innerHTML = ''
+        document.getElementById('resource-print-description').innerHTML = ''
+        if (individualView) {
+            if (window.printPatientInfo && selectedElement.dataset.resourceType === "patient" || (window.printNurseInfo && selectedElement.dataset.resourceType === 'nurse')) {
+                let address = selectedElement.dataset.resourceAddress
+                let phoneNumber = selectedElement.dataset.resourcePhone
+                let description = selectedElement.dataset.resourceDescription
+    
+                if (address) {
+                    document.getElementById('resource-print-address').innerHTML = `<i class="glyphicon glyphicon-home"></i> ${address}`
+                }
+                if (phoneNumber) {
+                    document.getElementById('resource-print-phone').innerHTML = `<i class="glyphicon glyphicon-phone"></i> ${phoneNumber}`
+                }
+                if (description) {
+                    document.getElementById('resource-print-description').innerHTML = `備考： ${description}`
+                }
             }
         }
     }

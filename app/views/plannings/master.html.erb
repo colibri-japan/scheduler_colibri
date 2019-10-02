@@ -26,6 +26,8 @@
 	window.printNurseDates = <%= @printing_option.print_nurse_dates_in_master %>
 	window.printPatientDates = <%= @printing_option.print_patient_dates_in_master %>
 	window.printDates = ['team','nurse'].includes(window.defaultResourceType) ? printNurseDates  : printPatientDates
+	window.printPatientInfo = <%= @printing_option.print_patient_description_in_master %>
+	window.printNurseInfo = <%= @printing_option.print_nurse_description_in_master %>
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
@@ -66,6 +68,9 @@
 							data-resource-type="patient" 
 							data-resource-id="<%= patient.id %>" 
 							data-fc-resource-url=""
+							data-resource-description="<%= patient.description %>"
+							data-resource-phone="<%= patient.phone_number %>"
+							data-resource-address="<%= patient.address %>"
 							class="resource-list-element" 
 							data-action="click->calendar#navigate">
 							<%= patient.try(:name) %>
@@ -101,6 +106,9 @@
 							data-resource-type="nurse" 
 							data-fc-resource-url=""
 							data-resource-id="<%= nurse.id %>" 
+							data-resource-description="<%= nurse.description %>"
+							data-resource-phone="<%= nurse.phone_number %>"
+							data-resource-address="<%= nurse.address %>"
 							class="resource-list-element" 
 							data-action="click->calendar#navigate">
 							<%= nurse.try(:name) %>
@@ -148,6 +156,12 @@
 					<div class="header-submenu-item resource-details-button">詳細</div>
 					<div class="header-submenu-item">記録</div>
 				</div>
+			</div>
+
+			<div id="resource-print-info" class="print-only">
+				<span id="resource-print-address"></span>
+				<span id="resource-print-phone"></span><br/>
+				<span id="resource-print-description"></span>
 			</div>
 
 			<div id="planning-container">

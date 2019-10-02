@@ -1010,7 +1010,18 @@ thead.fc-header {
       border-top: 3px solid #ccc !important;
     }
 
+    /* allow page break inside calendar */
 
+    tbody.fc-widget-content > tr {
+      page-break-inside: auto !important;
+    }
 
+    td.fc-widget-content {
+      page-break-inside: auto !important;
+    }
+
+    div.fc-scroller {
+      page-break-inside: auto !important;
+    }
 }
 

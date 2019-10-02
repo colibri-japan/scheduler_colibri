@@ -61,6 +61,10 @@ $(document).on 'turbolinks:load', ->
       $('.fc-day-header.fc-fri').html('金')
       $('.fc-day-header.fc-sat').html('土')
       $('.fc-day-header.fc-sun').html('日')
+    if window.fullCalendar && (window.fullCalendar.view.type == 'dayGridMonth') 
+      window.fullCalendar.setOption('aspectRatio', 1)
+      window.fullCalendar.setOption('height', 'auto')
+
     window.print()
     return
 

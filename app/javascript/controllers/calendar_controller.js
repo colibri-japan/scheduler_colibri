@@ -94,6 +94,12 @@ let createCalendar = () => {
         viewSkeletonRender: function (info) {
             drawHourMarks()
             makeTimeAxisPrintFriendly()
+            if (info.view.type !== 'dayGridMonth') {
+                $('.fc-center').addClass('no-print')
+            } else {
+                $('.fc-center').removeClass('no-print')
+            }
+
         },
 
         dayRender: function (info) {

@@ -54,7 +54,6 @@ $(document).on 'turbolinks:load', ->
 
   $('#print-button').click ->
     if window.printDates == false
-      $('.fc-center').addClass('no-print')
       $('.fc-day-header.fc-mon').html('月')
       $('.fc-day-header.fc-tue').html('火')
       $('.fc-day-header.fc-wed').html('水')

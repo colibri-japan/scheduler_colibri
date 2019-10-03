@@ -84,7 +84,7 @@ let createCalendar = () => {
             },
             'resourceTimelineWeek': {
                 slotDuration: { days: 1 },
-                resourceAreaWidth: '10%',
+                resourceAreaWidth: '15%',
                 resourceLabelText: window.resourceLabel,
                 eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
                 eventLimit: 6
@@ -100,6 +100,26 @@ let createCalendar = () => {
                 $('.fc-center').removeClass('no-print')
             }
 
+        },
+
+        resourceRender: function(renderInfo) {
+
+            if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+                var resourceLength = window.fullCalendar.getResources().length
+                var calendarContainer = document.getElementsByClassName('fc-view')
+                var maxLength = window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches ? 7 : 11
+                if (renderInfo.view.type === 'resourceTimeGridDay') {
+                    if (resourceLength >= maxLength) {
+                        var parent = document.getElementsByClassName('fc-view-container')
+                        var newWidth = parent[0].offsetWidth + 28 * (resourceLength - 7)
+                        calendarContainer[0].style.width = `${newWidth}px`
+                    } else {
+                        calendarContainer[0].style.width = '100%'
+                    }
+                } else if (renderInfo.view.type === 'resourceTimelineWeek' && window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches) {
+                    calendarContainer[0].style.width = '600px'
+                }
+            }
         },
 
         dayRender: function (info) {

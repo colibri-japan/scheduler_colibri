@@ -62,8 +62,7 @@ class RecurringAppointment < ApplicationRecord
 			when 6
 				#every week except the last one
 				schedule.add_recurrence_rule IceCube::Rule.weekly(1)
-				exception_time = end_of_month - (end_of_month.wday - day_of_week) % 7
-				schedule.add_exception_time(exception_time)
+				schedule.add_exception_rule IceCube::Rule.monthly(1).day_of_week(day_of_week => [-1])
 			when 7
 				#every other week
 				schedule.add_recurrence_rule IceCube::Rule.weekly(2)

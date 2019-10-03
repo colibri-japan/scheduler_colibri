@@ -29,7 +29,7 @@ class DashboardController < ApplicationController
     @planning = @corporation.planning
 
     @query_day = params[:q].to_date
-    team = Team.find(params[:team_id]) if params[:team_id] != 'undefined'
+    team = Team.find(params[:team_id]) if params[:team_id].present?
 
     appointments = Appointment.operational.where(planning_id: @planning.id, starts_at: @query_day.beginning_of_month.beginning_of_day..@query_day.end_of_day).includes(:patient, :nurse)
 

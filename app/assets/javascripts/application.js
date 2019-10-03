@@ -1510,7 +1510,7 @@ $(document).on('turbolinks:load', function(){
   
   $('body').on('click', '#print-button', function(){
     if (window.fullCalendar && (window.fullCalendar.view.type === 'dayGridMonth')) {
-      window.fullCalendar.setOption('aspectRatio', 1)
+      window.fullCalendar.setOption('aspectRatio', 1.4)
       window.fullCalendar.setOption('height', 'auto')
     }
     if (window.printDates && window.printDates === false) {

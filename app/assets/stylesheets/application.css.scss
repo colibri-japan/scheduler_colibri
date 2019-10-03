@@ -601,6 +601,10 @@ div.popover-body {
 		margin: 5mm 5mm 5mm 5mm;
 	}
 
+	.main-page {
+		padding-top: 0px;
+	}
+
 	.no-print {
 		display: none !important;
 	}
@@ -676,6 +680,10 @@ div.popover-body {
 	
 	html, body {
 		height: auto;
+	}
+
+	#detail-planning-container {
+		margin-top: 0px;
 	}
 
 }

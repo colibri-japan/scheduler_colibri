@@ -1031,5 +1031,10 @@ thead.fc-header {
     div.fc-day-grid {
       page-break-inside: auto !important;
     }
+
+    div.fc-row {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
 }
 

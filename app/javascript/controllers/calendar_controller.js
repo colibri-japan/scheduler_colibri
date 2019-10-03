@@ -90,7 +90,9 @@ let createCalendar = () => {
             }
         },
 
+
         viewSkeletonRender: function (info) {
+            console.log('skeleton callback')
             drawHourMarks()
             makeTimeAxisPrintFriendly()
             if (info.view.type !== 'dayGridMonth') {
@@ -98,7 +100,6 @@ let createCalendar = () => {
             } else {
                 $('.fc-center').removeClass('no-print')
             }
-
         },
 
         resourceRender: function(renderInfo) {
@@ -201,6 +202,21 @@ let createCalendar = () => {
 
         datesRender: function(info) {
             responsiveHeader(info.view)
+
+            if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+                var titleText = document.getElementsByClassName('fc-center')[0].childNodes[0]
+                if (info.view.type === 'resourceTimeGridDay') {
+                    var fullDate = titleText.textContent
+                    var date
+                    if (fullDate.length >= 10) {
+                        date = fullDate.substr(5)
+                        titleText.innerText = date
+                    }
+                    titleText.style.display = 'block'
+                } else {
+                    titleText.style.display = 'none'
+                }
+            }
         },
 
         eventPositioned: function(info) {

@@ -56,8 +56,10 @@
     
     /* Fullcalendar layouts */
 
-    .fc-center {
-        display: none;
+    .fc-center > h2 {
+		color: black;
+		font-weight: bold;
+		font-size: 1.1em;
 	}
 
 	.fc-title.title-responsive {

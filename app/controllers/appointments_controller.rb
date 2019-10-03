@@ -136,6 +136,7 @@ class AppointmentsController < ApplicationController
       @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
       @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
 
+
       if params[:action_type] == "edit_request" || params[:action_type] == "cancel"
         @appointments = @appointments.not_archived
       elsif params[:action_type] == "archive"

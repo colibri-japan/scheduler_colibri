@@ -2,4 +2,12 @@ $('.modal').modal('hide');
 $('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "new_batch_action" %>');
 $('#new_batch_action').modal('show');
+
+if ((window.currentResourceType === 'nurse' || (!window.currentResourceType && window.defaultResourceType === 'nurse')) && (window.currentResourceId !== 'all' || !window.currentResourceId && window.defaultResourceId !== 'all')) {
+    $('#nurse_ids').val(window.currentResourceId || window.defaultResourceId)
+}
+if ((window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) && (window.currentResourceId !== 'all' || !window.currentResourceId && window.defaultResourceId !== 'all')) {
+    $('#patient_ids').val(window.currentResourceId || window.defaultResourceId)
+}
+
 initializeBatchActionForm()

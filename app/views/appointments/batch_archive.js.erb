@@ -7,7 +7,7 @@ if (window.fullCalendar) {
             if (typeof(event) === 'undefined') {
                 let event 
             }
-            let event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
+            event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
             if (event) {
                 event.remove()
             }

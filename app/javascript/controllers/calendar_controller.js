@@ -77,8 +77,7 @@ let createCalendar = () => {
             },
             'resourceTimeGridDay': {
                 resourceLabelText: window.resourceLabel,
-                displayEventTime: false,
-                slotLabelFormat: {hour: 'numeric', minute: '2-digit'},
+                slotLabelFormat: {hour:  'numeric', minute: '2-digit'},
                 eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
                 titleFormat: {year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'}
             },
@@ -111,7 +110,7 @@ let createCalendar = () => {
                 if (renderInfo.view.type === 'resourceTimeGridDay') {
                     if (resourceLength >= maxLength) {
                         var parent = document.getElementsByClassName('fc-view-container')
-                        var newWidth = parent[0].offsetWidth + 28 * (resourceLength - 7)
+                        var newWidth = parent[0].offsetWidth + 35 * (resourceLength - 7)
                         calendarContainer[0].style.width = `${newWidth}px`
                     } else {
                         calendarContainer[0].style.width = '100%'
@@ -224,7 +223,8 @@ let createCalendar = () => {
                     if (timeTag) {
                         timeTag.classList.add('fc-time-responsive')
                     }
-                } else if (info.view.type === 'dayGridMonth') {
+                } 
+                if (['dayGridMonth', 'resourceTimeGridDay'].includes(info.view.type)) {
                     var timeTag = info.el.querySelector('.fc-time')
                     if (timeTag) {
                         var newDate = timeTag.innerHTML.match(/[^ -]*/i)[0]

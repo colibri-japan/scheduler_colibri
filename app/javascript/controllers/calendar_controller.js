@@ -204,17 +204,20 @@ let createCalendar = () => {
             responsiveHeader(info.view)
 
             if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
-                var titleText = document.getElementsByClassName('fc-center')[0].childNodes[0]
-                if (info.view.type === 'resourceTimeGridDay') {
-                    var fullDate = titleText.textContent
-                    var date
-                    if (fullDate.length >= 10) {
-                        date = fullDate.substr(5)
-                        titleText.innerText = date
+                var fcCenter = document.getElementsByClassName('fc-center')[0]
+                if (fcCenter) {
+                    var title = fcCenter.childNodes[0]
+                    if (info.view.type === 'resourceTimeGridDay') {
+                        var fullDate = title.textContent
+                        var date
+                        if (fullDate.length >= 10) {
+                            date = fullDate.substr(5)
+                            title.innerText = date
+                        }
+                        title.style.display = 'block'
+                    } else {
+                        title.style.display = 'none'
                     }
-                    titleText.style.display = 'block'
-                } else {
-                    titleText.style.display = 'none'
                 }
             }
         },

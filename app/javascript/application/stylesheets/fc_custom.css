@@ -1012,7 +1012,11 @@ thead.fc-header {
 
     /* allow page break inside calendar */
 
-    tbody.fc-widget-content > tr {
+    tbody.fc-body {
+      page-break-inside: auto !important;
+    }
+
+    tbody.fc-body > tr {
       page-break-inside: auto !important;
     }
 

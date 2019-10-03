@@ -1508,10 +1508,19 @@ $(document).on('turbolinks:load', function(){
     placement: 'top'
   })
   
-  $('body').on('click', 'span#print-button', function(){
+  $('body').on('click', '#print-button', function(){
     if (window.fullCalendar && (window.fullCalendar.view.type === 'dayGridMonth')) {
       window.fullCalendar.setOption('aspectRatio', 1)
       window.fullCalendar.setOption('height', 'auto')
+    }
+    if (window.printDates === false) {
+      $('.fc-day-header.fc-mon').html('月')
+      $('.fc-day-header.fc-tue').html('火')
+      $('.fc-day-header.fc-wed').html('水')
+      $('.fc-day-header.fc-thu').html('木')
+      $('.fc-day-header.fc-fri').html('金')
+      $('.fc-day-header.fc-sat').html('土')
+      $('.fc-day-header.fc-sun').html('日')
     }
     window.print()
     $('#colibri-batch-action-button').click()

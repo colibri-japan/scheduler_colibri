@@ -1027,5 +1027,9 @@ thead.fc-header {
     div.fc-scroller {
       page-break-inside: auto !important;
     }
+
+    div.fc-day-grid {
+      page-break-inside: auto !important;
+    }
 }
 

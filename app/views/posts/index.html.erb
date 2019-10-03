@@ -5,7 +5,7 @@
     <div id='posts-filters-container' class='no-print' style="margin-bottom:5px;display:flex;justify-content:space-between">
         <div style='width:29%'><span class='colibri-form-label-dark'>期間</span><%= text_field_tag :posts_date_range, value=nil, class: 'form-control' %></div>
         <div style='width:29%'><span class='colibri-form-label-dark'>送信者</span><%= select_tag :posts_author_ids_filter, options_from_collection_for_select(@users, :id, :name, {prompt: '送信元選択'}), {multiple: true} %></div>
-        <div style='width:29%'><span class='colibri-form-label-dark'>利用者タグ</span><%= select_tag :posts_patient_ids_filter, options_for_select(@patients_for_select, {prompt: '利用者選択'}), {multiple: true} %></div>
+        <div style='width:29%'><span class='colibri-form-label-dark'>利用者名</span><%= select_tag :posts_patient_ids_filter, options_for_select(@patients_for_select, {prompt: '利用者選択'}), {multiple: true} %></div>
         <div style="margin-top:23px"><button class='btn btn-info' id='posts-search-button'>検索する</button></div>
     </div>
 
@@ -20,7 +20,7 @@
                 <tr>
                     <th class="table-important-fields" style="width:9%">日付</th>
                     <th class="table-important-fields" style="width:14%">送信者</th>
-                    <th class="table-important-fields" id="sort-posts-by-patient-tag" style="width:14%;cursor:pointer">利用者タグ<span class="glyphicon glyphicon-chevron-down" style="font-size:0.7em;cursor:pointer"></span></th>
+                    <th class="table-important-fields" id="sort-posts-by-patient-tag" style="width:14%;cursor:pointer">利用者名<span class="glyphicon glyphicon-chevron-down" style="font-size:0.7em;cursor:pointer"></span></th>
                     <th class="table-important-fields" style="width:44%">メッセージ</th>
                     <th class="table-important-fields" style="width:19%">既読</th>
                 </tr>

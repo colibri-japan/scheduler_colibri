@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191002081110) do
+ActiveRecord::Schema.define(version: 20191007162701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -216,7 +216,10 @@ ActiveRecord::Schema.define(version: 20191002081110) do
     t.integer "blood_oxygen_rate"
     t.integer "breathe_rate"
     t.integer "body_weight"
+    t.string "reportable_type"
+    t.bigint "reportable_id"
     t.index ["appointment_id"], name: "index_completion_reports_on_appointment_id"
+    t.index ["reportable_type", "reportable_id"], name: "index_completion_reports_on_reportable_type_and_reportable_id"
   end
 
   create_table "corporations", force: :cascade do |t|

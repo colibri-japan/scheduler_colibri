@@ -13,6 +13,7 @@ class RecurringAppointment < ApplicationRecord
 	belongs_to :original, class_name: 'RecurringAppointment', optional: true
 	belongs_to :service, optional: true
 	has_many :appointments, dependent: :destroy
+	has_one :completion_report, as: :reportable
 
 	before_validation :calculate_duration
 	before_validation :calculate_end_day

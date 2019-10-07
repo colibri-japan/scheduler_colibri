@@ -14,7 +14,7 @@ class Appointment < ApplicationRecord
 	belongs_to :service
 	belongs_to :verifier, class_name: 'User', optional: true
 	belongs_to :second_verifier, class_name: 'User', optional: true
-	has_one :completion_report, dependent: :destroy
+	has_one :completion_report, as: :reportable, dependent: :destroy
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
 	before_validation :set_title_from_service_title

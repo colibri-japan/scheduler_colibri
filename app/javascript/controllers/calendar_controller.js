@@ -45,7 +45,6 @@ let createCalendar = () => {
         defaultView: window.defaultView,
         locale: jaLocale,
         header: header,
-        eventColor: '#7AD5DE',
         selectable: window.userAllowedToEdit,
         eventDurationEditable: false,
         minTime: window.minTime,
@@ -92,7 +91,6 @@ let createCalendar = () => {
 
 
         viewSkeletonRender: function (info) {
-            console.log('skeleton callback')
             drawHourMarks()
             makeTimeAxisPrintFriendly()
             if (info.view.type !== 'dayGridMonth') {

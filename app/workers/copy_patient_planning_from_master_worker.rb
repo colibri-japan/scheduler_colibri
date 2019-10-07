@@ -28,7 +28,6 @@ class CopyPatientPlanningFromMasterWorker
           planning_id: recurring_appointment.planning_id,
           recurring_appointment_id: recurring_appointment.id,
           service_id: recurring_appointment.service_id,
-          duration: recurring_appointment.duration,
           should_request_edit_for_overlapping_appointments: true
         )
         new_appointment.run_callbacks(:save) { false }

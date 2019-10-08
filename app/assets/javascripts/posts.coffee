@@ -1,9 +1,4 @@
 $(document).on 'turbolinks:load', ->
-  $('#posts_author_ids_filter').selectize
-    plugins: ['remove_button']
-
-  $('#posts_patient_ids_filter').selectize
-    plugins: ['remove_button'] 
 
   $('input[name="posts_date_range"]').focus ->
     $(this).daterangepicker

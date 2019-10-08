@@ -389,24 +389,6 @@ let submitReflect = () => {
   })
 }
 
-let postSelectize = () => {
-  $('#post_patient_id').selectize({
-    plugins: ['remove_button']
-  });
-}
-
-
-let clickableTableRowPost = () => {
-  $('tr.post-clickable-row').click(function() {
-    $.getScript($(this).data('url'));
-  });
-};
-
-let clickablePost = () => {
-  $('.post-clickable').click(function(){
-    $.getScript($(this).data('url'))
-  })
-}
 
 let patientDatePicker = () => {
   let datepickerlocale = {
@@ -621,9 +603,6 @@ let postsTimePicker = () => {
   })
 }
 
-let initializePostsWidget = () => {
-  $.getScript('/posts_widget.js')
-}
 
 let initializeActivitiesWidget = () => {
   $.getScript('/activities_widget.js')
@@ -1491,10 +1470,6 @@ $(document).on('turbolinks:load', function(){
       alert('期間を選択してください')
     }
   })
-
-  if ($('#posts-widget-container').length > 0) {
-    initializePostsWidget()
-  }
 
   if ($('#activities-widget-container').length > 0) {
     initializeActivitiesWidget()

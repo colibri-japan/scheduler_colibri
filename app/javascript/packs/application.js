@@ -23,3 +23,5 @@ require("@rails/ujs").start()
 require("turbolinks").start()
 
 import '../application/stylesheets/application.css'
+
+import '../application/javascripts/posts.js'

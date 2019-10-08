@@ -124,15 +124,9 @@ $(document).on 'turbolinks:load', ->
     $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val())
 
   if $('#cm_filter').length > 0
-    $('#cm_filter').selectize 
-      plugins: ['remove_button']
-      placeholder: '検索する...'
     filterCmCorporations()
 
   if $('#cm_teikyohyo_filter').length > 0
-    $('#cm_teikyohyo_filter').selectize 
-      plugins: ['remove_button']
-      placeholder: '検索する...'
     filterCmTeikyohyo()
 
   if $('#revenue-report').length > 0

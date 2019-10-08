@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require rails-ujs
 //= require turbolinks
 //= require popper
 //= require bootstrap
@@ -18,7 +19,6 @@
 //= require moment.min
 //= require popper
 //= require daterangepicker
-//= require selectize
 //= require Chart.bundle
 //= require chartkick
 //= require_tree .
@@ -33,11 +33,6 @@ var myDefaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList;
 
 myDefaultWhiteList.a = ['data-remote', 'href']
 
-
-let privateEventSelectizeNursePatient = () => {
-  $('#private_event_nurse_id').selectize()
-  $('#private_event_patient_id').selectize()
-}
 
 let editAfterDate = () => {
   $('#delete-recurring-appointment').hide();
@@ -147,10 +142,6 @@ let serviceLinkClick = () => {
 
 
 let sendReminder = () => {
-  $('#custom-email-days').selectize({
-    plugins: ['remove_button'],
-  })
-
   $('#send-email-reminder').click(function () {
     let customSubject = $('#nurse_custom_email_subject').val();
     let customMessage = $('#nurse_custom_email_message').val();
@@ -174,7 +165,6 @@ let sendReminder = () => {
 
 let saveUserRole = () => {
   $('#save-user-role').click(function () {
-    console.log('saveUserRole called')
     var user_data;
     user_data = {
       user: {
@@ -190,82 +180,8 @@ let saveUserRole = () => {
 };
 
 
-let humanizeFrequency = (frequency) => {
-  console.log(frequency)
-  switch(frequency) {
-    case 0:
-      return '毎週';
-      break;
-    case 1:
-      return '第一、三、五週目';
-      break;
-    case 2:
-      return 'その日のみ'
-      break;
-    case 3:
-      return '第二、四週目';
-      break;
-    case 4:
-      return '第一週目';
-      break;
-    case 5:
-      return '最後の週';
-      break;
-    default:
-  }
-}
 
 
-
-let recurringAppointmenSelectizeTitle = () => {
-  $('#recurring_appointment_service_id').selectize()
-};
-
-let recurringAppointmentSelectizeNursePatient = () => {
-  $('#recurring_appointment_nurse_id').selectize();
-  $('#recurring_appointment_patient_id').selectize();
-}
-
-let appointmentSelectizeNursePatient = () => {
-  $('#appointment_nurse_id').selectize();
-  $('#appointment_patient_id').selectize();
-}
-
-let appointmentSelectize = () => {
-  $('#appointment_service_id').selectize()
-}
-
-let skillsSelectize = () => {
-  $('#nurse_skill_list').selectize({
-    delimiter: ',',
-    persist: false,
-    create: true,
-    plugins: ['remove_button'],
-    render: {
-      option_create: function (data, escape) {
-        return '<div class="create">新規スキル <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  })
-}
-
-let wishedSlotsSelectize = () => {
-  $('#wished_slot_nurse_id').selectize()
-}
-
-let caveatsSelectize = () => {
-  $('#patient_caveat_list').selectize({
-    delimiter: ',',
-    persist: false,
-    create: true,
-    plugins: ['remove_button'],
-    render: {
-      option_create: function (data, escape) {
-        return '<div class="create">新規特徴 <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  });
-};
 
 let toggleServiceHourBasedWage = () => {
   $('#service_hour_based_wage').bootstrapToggle({
@@ -277,60 +193,14 @@ let toggleServiceHourBasedWage = () => {
   })
 };
 
-let teamMembersSelectize = () => {
-  $('#team_member_ids').selectize({
-    plugins: ['remove_button'],
-    persist: false,
-  })
-}
-
-
-let evaluateCancelledAndEditRequested = () => {
-
-  if ($('#normal_filter').length < 1 && $('#edit_requested_filter').length < 1 && $('#cancelled_filter').length < 1) {
-    return false;
-  } else {
-    let normal_filter = $('#normal_filter').is(':checked');
-    let edit_requested_filter = $('#edit_requested_filter').is(':checked');
-    let cancelled_filter = $('#cancelled_filter').is(':checked');
-  
-    if (normal_filter && !edit_requested_filter && !cancelled_filter) {
-      return {edit_requested: false, cancelled: false}
-    } else if (normal_filter && edit_requested_filter && cancelled_filter) {
-      return {edit_requested: 'undefined', cancelled: 'undefined'}
-    } else if (normal_filter && edit_requested_filter && !cancelled_filter) {
-      return {edit_requested: 'undefined', cancelled: false}
-    } else if (normal_filter && !edit_requested_filter && cancelled_filter) {
-      return {edit_requested: false, cancelled: 'undefined'}
-    } else if (!normal_filter && edit_requested_filter && !cancelled_filter) {
-      return {edit_requested: true, cancelled: false}
-    } else if (!normal_filter && !edit_requested_filter && cancelled_filter) {
-      return {edit_requested: 'undefined', cancelled: true}
-    } else if (!normal_filter && edit_requested_filter && cancelled_filter) {
-      return {edit_requested: true, cancelled: true}
-    } else {
-      return -1
-    }
-  }
-}
-
 let initializeBatchActionForm = () => {
   $("#colibri-batch-action-button").popover('hide')
-  $('#select_action_type').selectize()
   $('#select_action_type').change(function(){
     if ($(this).val() === 'archive') {
       $('#archive-filter-tag').show()
     } else {
       $('#archive-filter-tag').hide()
     }
-  })
-  $('#nurse_ids').selectize({
-    delimiter: ',',
-    plugins: ['remove_button']
-  })
-  $('#patient_ids').selectize({
-    delimiter: ',',
-    plugins: ['remove_button']
   })
   $('input[name="date_range"]').daterangepicker({
     timePicker: true,
@@ -425,10 +295,6 @@ let patientDatePicker = () => {
       locale: datepickerlocale
     })
   })
-}
-
-let nursePatientSelectize = () => {
-  $('#patient_nurse_id').selectize()
 }
 
 let downloadTeamsReport = () => {
@@ -617,9 +483,6 @@ let fixHeightForTimelineWeekView = () => {
 
 
 let filterAppointmentCategory = () => {
-  $('#service_type_filter').selectize({
-    plugins: ['remove_button']
-  })
   $('#refresh-service-types').click(function(){
     $.getScript('/appointments_by_category_report/appointments?y=' + $('#query_year').val() + '&m=' + $('#query_month').val() + '&categories=' + $('#service_type_filter').val())
   })
@@ -686,10 +549,6 @@ let newPostReminderLayout = () => {
 }
 
 
-let selectizeServiceToMerge = () => {
-  $('#service_to_merge').selectize()
-}
-
 let submitMerge = () => {
   $('#merge-submit').click(function(){
     var destination_service_id = $('#service_to_merge').val();
@@ -713,15 +572,7 @@ let submitMerge = () => {
 let salaryRulesFormLayout = () => {
   bootstrapToggleForAllNursesCheckbox();
   bootstrapToggleForAllServicesCheckbox();
-  toggleNurseIdList();
-  toggleNurseIdForm();
   toggleServiceTitleList();
-  $('#target-nurse-ids').selectize({
-    plugins: ['remove_button']
-  })
-  $('#target-service-titles').selectize({
-    plugins: ['remove_button']
-  })
   serviceDaterangepicker();
 }
 
@@ -859,51 +710,7 @@ let bootstrapToggleForAllNursesCheckbox = () => {
   })
 }
 
-let wishesSelectize = () => {
-  $('#nurse_wish_list').selectize({
-    delimiter: ',',
-    persist: false,
-    create: true,
-    plugins: ['remove_button'],
-    render: {
-      option_create: function (data, escape) {
-        return '<div class="create">新規希望 <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  })
-}
 
-let wishedAreasSelectize = () => {
-  $('#nurse_wished_area_list').selectize({
-    delimiter: ',',
-    persist: false,
-    create: true,
-    plugins: ['remove_button'],
-    render: {
-      option_create: function (data, escape) {
-        return '<div class="create">新規希望エリア <strong>' + escape(data.input) + '</strong>&hellip;</div>'
-      }
-    }
-  })
-}
-
-let selectizeForSmartSearch = () => {
-  $('#nurse_skills_tags').selectize({
-    delimiter: ',',
-    persist: false,
-    plugins: ['remove_button']
-  })
-  $('#nurse_wishes_tags').selectize({
-    delimiter: ',',
-    persist: false,
-    plugins: ['remove_button']
-  })
-  $('#nurse_wished_areas_tags').selectize({
-    delimiter: ',',
-    persist: false,
-    plugins: ['remove_button']
-  })
-}
 
 let submitSmartSearch = () => {
   $('#submit-smart-search').click(function(){
@@ -924,28 +731,6 @@ let bootstrapToggleForAllServicesCheckbox = () => {
     size: 'small',
     width: 170
   })
-}
-
-let toggleNurseIdList = () => {
-  $('#all_nurses_selected_checkbox').on('change', function(){
-    $selectize = $('#target-nurse-ids').selectize()
-    selectize = $selectize[0].selectize 
-    toggleNurseIdForm()
-  })
-}
-
-let toggleNurseIdForm = () => {
-  if ($('#all_nurses_selected_checkbox').is(':checked')) {
-    $('#form_nurse_id_list_group').hide()
-    $('#target_nurse_by_filter_group').hide()
-    $('#target-nurse-ids').val('')
-    if (typeof(selectize) !== 'undefined') {
-      selectize.clear(true)
-    }
-  } else {
-    $('#target_nurse_by_filter_group').show()
-    $('#form_nurse_id_list_group').show()
-  }
 }
 
 let toggleServiceTitleList = () => {
@@ -1001,11 +786,6 @@ let validateKatakana = () => {
   })
 }
 
-let selectizeInsurancePolicy = () => {
-  $('#patient-insurance-policy').selectize({
-    plugins: ['remove_button']
-  })
-}
 
 let addSecondServiceCategory = () => {
   $('#add-second-service-type').click(function(){
@@ -1038,7 +818,6 @@ let newBonusForm = () => {
 
 let validateBonusForm = () => {
   $('#new_salary_rule').submit(function () {
-    let condition;
     let range_is_absent = $('#salary_rule_service_date_range_start').val() == "" && $('#salary_rule_service_date_range_end').val() == "";
     let both_range_present = $('#salary_rule_service_date_range_start').val() !== "" && $('#salary_rule_service_date_range_end').val() !== "";
     let range_in_correct_order = moment($('#salary_rule_service_date_range_start').val()).isBefore($('#salary_rule_service_date_range_end').val());
@@ -1058,17 +837,6 @@ let validateBonusForm = () => {
   })
 }
 
-let completionFormLayout = () => {
-  $('#completion_details_washing_details').selectize({
-    plugins: ['remove_button'],
-  })
-  $('#completion_report_activities_done_with_the_patient').selectize({
-    plugins: ['remove_button'],
-  })
-  $('#completion_report_cleanup').selectize({
-    plugins: ['remove_button'],
-  })
-}
 
 let toggleRecalculateCredits = () => {
   $('#service_recalculate_previous_credits_and_invoice').bootstrapToggle({
@@ -1147,10 +915,7 @@ let handleAppointmentOverlapRevert = (revertFunc) => {
   })
 }
 
-let patientCaremanagerSelectize = () => {
-  $('#patient_care_manager').selectize()
-  $('#patient_second_care_manager').selectize()
-}
+
 
 let patientWarekiFields = () => {
   $('#patient_kaigo_certification_validity_start_era').change(function(){
@@ -1263,29 +1028,7 @@ let set_birthday = () => {
   $('#patient_birthday').val(wareki_date)
 }
 
-let scrollPosition
 
-document.addEventListener('turbolinks:load', function () {
-  if (scrollPosition) {
-    window.scrollTo.apply(window, scrollPosition)
-    scrollPosition = null
-  }
-}, false)
-
-Turbolinks.reload = () => {
-  scrollPosition = [window.scrollX, window.scrollY]
-  Turbolinks.visit(window.location)
-}
-
-let resourceScroll
-
-document.addEventListener('turbolinks:load', function() {
-  menu_presence_condition = $('#resource-container').length > 0
-  if (window.resourceScroll && menu_presence_condition) {
-    $('#resource-container').scrollTop(window.resourceScroll);
-    window.resourceSroll = null
-  }
-})
 
 let adaptServiceInvoiceFields = () => {
   $('#service_inside_insurance_scope').change(function(){
@@ -1418,9 +1161,6 @@ $(document).on('turbolinks:load', function(){
     $.getScript(url)
   })
 
-  $('#nurse_resource_filter').selectize({
-    plugins: ['remove_button']
-  })
 
   $('#nurse_resource_filter').on('change', function(){
     let nurse_ids = $(this).val()
@@ -1579,7 +1319,6 @@ $(document).on('turbolinks:load', function(){
 
   $('#extended-daily-report').click(function(){
     $('#extended-daily-summary-modal').modal('show')
-    $('#summary_team_select').selectize()
     $('#extended_report_date').daterangepicker({
       singleDatePicker: true,
       showDropdowns: true,

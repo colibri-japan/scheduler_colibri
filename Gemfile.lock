@@ -266,7 +266,6 @@ GEM
       tilt
     scout_apm (2.6.0)
       parser
-    selectize-rails (0.12.6)
     selenium-webdriver (3.142.4)
       childprocess (>= 0.5, < 3.0)
       rubyzip (~> 1.2, >= 1.2.2)
@@ -365,7 +364,6 @@ DEPENDENCIES
   rubyzip (>= 1.2.2)
   sass-rails (~> 5.0)
   scout_apm
-  selectize-rails
   selenium-webdriver
   sidekiq
   turbolinks (~> 5)

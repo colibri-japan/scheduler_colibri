@@ -6,6 +6,7 @@ $('#colibri-batch-action-button').click()
     $('#remote_container').html('<%= j render "new_reminder_email" %>');
     $('#reminder-email-modal').modal('show');
     sendReminder()
+    selectizeCustomEmailDays()
 <% else %>
     alert('従業員のメールアドレスを登録してください。')
 <% end %>

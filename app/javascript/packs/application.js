@@ -25,3 +25,5 @@ require("turbolinks").start()
 import '../application/stylesheets/application.css'
 
 import '../application/javascripts/posts.js'
+import '../application/javascripts/selectize_functions.js'
+import '../application/javascripts/turbolinks_scroll.js'

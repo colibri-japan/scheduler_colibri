@@ -2,12 +2,6 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-patientSelect2 = ->
-  $('#patient_caveat_list').select2
-    tags: true,
-    theme: 'bootstrap',
-    language: 'ja'
-  return
 
 $(document).on 'turbolinks:load', ->
   

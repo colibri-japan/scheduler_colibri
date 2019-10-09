@@ -2,4 +2,9 @@ $('.modal').modal('hide');
 $('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "new" %>');
 $('#new_completion_report').modal({backdrop: 'static'});
+
 completionFormSelectize()
+
+$('.toggleable-subsection-title').click(function(){
+    $(this).next().toggle()
+})

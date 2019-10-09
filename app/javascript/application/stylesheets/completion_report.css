@@ -1,0 +1,9 @@
+.toggleable-subsection-title:hover {
+    cursor: pointer;
+}
+
+.completion-report-glyphicon {
+    font-size:0.7em;
+    cursor:pointer;
+    margin-left: 4px;
+}

@@ -1,22 +1,22 @@
-<%= form_with model: completion_report, url: [@appointment, completion_report] do |form| %>
+<%= form_with model: completion_report, url: [@reportable, completion_report] do |form| %>
 
     <div class="blue-background-form">
         <div class="modal-subsection-title">サービス情報</div>
 
         <div class="form-row">
             <div class="col">
-              利用者名：<%= @appointment.patient.try(:name) %>様
+              利用者名：<%= @reportable.patient.try(:name) %>様
             </div>
             <div class="col">
-              内容：<%= @appointment.title %>
+              内容：<%= @reportable.title %>
             </div>
         </div>
         <div class="form-row">
             <div class="col ">
-              従業員：<%= @appointment.nurse.try(:name) %>
+              従業員：<%= @reportable.nurse.try(:name) %>
             </div>
             <div class="col">
-              稼働時間：<%= from_seconds_to_hours_minutes(@appointment.ends_at - @appointment.starts_at) %>
+              稼働時間：<%= from_seconds_to_hours_minutes(@reportable.ends_at - @reportable.starts_at) %>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
           </div>
         </div>
 
-        <% if @nurse.profession == 1 %>
+        <% if @reportable.nurse.try(:profession) == 1 %>
           <div class="form-row">
             <div class="form-group col-md-4">
               <%= form.label :heart_rate_bpm, '脈拍', class: 'colibri-form-label-dark' %>

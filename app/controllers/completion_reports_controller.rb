@@ -1,19 +1,25 @@
 class CompletionReportsController < ApplicationController
 
   before_action :set_corporation
-  before_action :set_appointment, except: :index
+  before_action :set_reportable, except: :index
   before_action :set_planning
   before_action :set_completion_report, only: [:update, :edit, :destroy]
 
   def new
-    @completion_report = CompletionReport.new
+    if @reportable.class.name == 'Appointment'
+      master_report = @reportable.recurring_appointment.try(:completion_report)
+      @completion_report = master_report.present? ? master_report.dup : CompletionReport.new
+      @completion_report.reportable = @reportable
+    else
+      @completion_report = CompletionReport.new
+    end
   end
 
   def create
     authorize @planning, :same_corporation_as_current_user?
     
     @completion_report = CompletionReport.new(completion_report_params)
-    @completion_report.appointment_id = @appointment.id
+    @completion_report.reportable = @reportable
     
     @completion_report.save 
   end
@@ -44,9 +50,12 @@ class CompletionReportsController < ApplicationController
 
   private
 
-  def set_appointment
-    @appointment = Appointment.find(params[:appointment_id])
-    @nurse = @appointment.nurse
+  def set_reportable
+    if params[:appointment_id].present? 
+      @reportable = Appointment.find(params[:appointment_id])
+    elsif params[:recurring_appointment_id].present? 
+      @reportable = RecurringAppointment.find(params[:recurring_appointment_id])
+    end
   end
 
   def set_completion_report

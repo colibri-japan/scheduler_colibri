@@ -1,3 +1,5 @@
+require("turbolinks").start()
+
 let scrollPosition
 
 document.addEventListener('turbolinks:load', function () {

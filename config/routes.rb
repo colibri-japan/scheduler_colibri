@@ -53,6 +53,10 @@ Rails.application.routes.draw do
     resources :completion_reports, except: [:index, :destroy]
   end
 
+  resources :recurring_appointments do 
+    resources :completion_reports, except: [:index, :destroy]
+  end
+
   resources :completion_reports, only:[:index, :destroy]
 
   resources :nurses do

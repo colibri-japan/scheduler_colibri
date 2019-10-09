@@ -11,13 +11,10 @@
 // about supported directives.
 //
 //= require jquery
-//= require rails-ujs
-//= require turbolinks
 //= require popper
 //= require bootstrap
 //= require bootstrap4-toggle.min
 //= require moment.min
-//= require popper
 //= require daterangepicker
 //= require Chart.bundle
 //= require chartkick

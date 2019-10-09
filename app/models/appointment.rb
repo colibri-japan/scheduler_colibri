@@ -9,7 +9,7 @@ class Appointment < ApplicationRecord
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
 	belongs_to :planning
-	belongs_to :original, class_name: 'Appointment', optional: true
+	belongs_to :original_recurring_appointment, class_name: 'RecurringAppointment', optional: true
 	belongs_to :recurring_appointment, optional: true
 	belongs_to :service
 	belongs_to :verifier, class_name: 'User', optional: true

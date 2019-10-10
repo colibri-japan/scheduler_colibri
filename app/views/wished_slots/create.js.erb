@@ -1,5 +1,5 @@
 $('.modal').modal('hide');
-$('.popover').remove();
+$('.popover').popover('hide');
 
 <% if @wished_slot.errors.any? %>
     alert('エラーが発生したため、シフト希望がセーブされませんでした')

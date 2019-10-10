@@ -39,16 +39,32 @@
     <%= form.select(:frequency,  options_for_select([['毎週', 1], ['隔週', 2], ['第一週目', 3], ['毎月最後の週', 4], ['その日のみ',0]]), {required: true}, id: :wished_slot_frequency) %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :anchor, "開始", class: "colibri-form-label-dark" %>
-    <%= form.date_select :anchor, id: :wished_slot_anchor %> ー
-    <%= form.time_select :starts_at, id: :wished_slot_start %>
+  <div class="form-group colibri-datetime-group">
+    <div>
+      <%= form.label :anchor, "開始", class: "colibri-form-label-dark", style: 'min-width:45px' %>
+    </div>
+    <div class="colibri-datetime-input-container">
+      <div class="colibri-date-input">
+        <%= form.date_select :anchor, id: :recurring_appointment_anchor, class: "form-control" %><span class="colibri-datetime-separator">—</span> 
+      </div>
+      <div>
+        <%= form.time_select :starts_at, minute_step: 5 %>
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :anchor, "終了", class: "colibri-form-label-dark" %>
-    <%= form.date_select :end_day, id: :wished_slot_anchor %> ー
-    <%= form.time_select :ends_at, id: :wished_slot_end %>
+  <div class="form-group colibri-datetime-group">
+    <div>
+      <%= form.label :end_day, "終了", class: "colibri-form-label-dark", style: 'min-width:45px' %>
+    </div>
+    <div class="colibri-datetime-input-container">
+      <div class="colibri-date-input">
+        <%= form.date_select :end_day, id: :recurring_appointment_anchor, class: "form-control" %><span class="colibri-datetime-separator">—</span> 
+      </div>
+      <div>
+        <%= form.time_select :ends_at, minute_step: 5 %>
+      </div>
+    </div>
   </div>
 
   <% if wished_slot.new_record? %>

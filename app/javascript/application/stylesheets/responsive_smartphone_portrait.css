@@ -549,7 +549,23 @@
 		margin-left:20px;	
 	}
 
-	/* Scrollbar layout */
+	/* Forms layouts */
+
+	#appointment_starts_at_4i:before {
+		content: '\A';
+	}
+
+	.colibri-datetime-input-container {
+		flex-direction: column;
+	}
+
+	.colibri-datetime-separator {
+		display: none;
+	}
+
+	.colibri-date-input {
+		margin-bottom: 4px;
+	}
 
 
 }

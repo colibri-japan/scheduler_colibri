@@ -38,14 +38,32 @@
       <%= form.collection_select(:patient_id, @patients, :id, :name, {prompt: ''}, {id: :private_event_patient_id}) %>
     </div>
 
-    <div class="form-group">
-      <%= form.label :start_time, "開始日時", class: "colibri-form-label-dark" %>
-      <%= form.datetime_select :starts_at, id: :private_event_start_time, class: "form-control", minute_step: 5 %>
+    <div class="form-group colibri-datetime-group">
+      <div>
+        <%= form.label :starts_at, "開始日時", class: "colibri-form-label-dark", style: 'min-width:80px' %>
+      </div>
+      <div class="colibri-datetime-input-container">
+        <div class="colibri-date-input">
+          <%= form.date_select :starts_at %><span class="colibri-datetime-separator">—</span> 
+        </div>
+        <div>
+          <%= form.time_select :starts_at, ignore_date: true, minute_step: 5 %>
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <%= form.label :end_time, "終了日時", class: "colibri-form-label-dark" %>
-      <%= form.datetime_select :ends_at, id: :private_event_end_time, class: "form-control", minute_step: 5 %>
+    <div class="form-group colibri-datetime-group">
+      <div>
+        <%= form.label :ends_at, "終了日時", class: "colibri-form-label-dark", style: 'min-width:80px' %>
+      </div>
+      <div class="colibri-datetime-input-container">
+        <div class="colibri-date-input">
+          <%= form.date_select :ends_at %><span class="colibri-datetime-separator">—</span> 
+        </div>
+        <div>
+          <%= form.time_select :ends_at, ignore_date: true, minute_step: 5 %>
+        </div>
+      </div>
     </div>
 
 

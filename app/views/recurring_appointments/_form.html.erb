@@ -64,16 +64,36 @@
         <%= form.collection_select(:patient_id, @patients, :id, :name, {}, {required: true, id: :recurring_appointment_patient_id}) %>
       </div>
 
-      <div class="form-group">
-        <%= form.label :anchor, "開始", class: "colibri-form-label-dark" if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
-        <%= form.date_select :anchor, id: :recurring_appointment_anchor, class: "form-control" if recurring_appointment.new_record? %> <%= "ー" if recurring_appointment.new_record? %>
-        <%= form.time_select :starts_at, {minute_step: 5} if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
+      <div class="form-group colibri-datetime-group">
+        <div>
+          <%= form.label :anchor, "開始", class: "colibri-form-label-dark", style: 'min-width:50px' %>
+        </div>
+        <div class="colibri-datetime-input-container">
+          <% if @recurring_appointment.new_record? %>
+          <div class="colibri-date-input">
+            <%= form.date_select :anchor, id: :recurring_appointment_anchor, class: "form-control" %><span class="colibri-datetime-separator">—</span> 
+          </div>
+          <% end %>
+          <div>
+            <%= form.time_select :starts_at, minute_step: 5 %>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <%= form.label :end_day, "終了", class: "colibri-form-label-dark" if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
-        <%= form.date_select :end_day, id: :recurring_appointment_anchor, class: "form-control" if recurring_appointment.new_record? %> <%= "ー" if recurring_appointment.new_record? %>
-        <%= form.time_select :ends_at, {minute_step: 5} if recurring_appointment.new_record? || recurring_appointment.duration == 0 %>
+      <div class="form-group colibri-datetime-group">
+        <div>
+          <%= form.label :end_day, "終了", class: "colibri-form-label-dark", style: 'min-width:50px' %>
+        </div>
+        <div class="colibri-datetime-input-container">
+          <% if @recurring_appointment.new_record? %>
+          <div class="colibri-date-input">
+            <%= form.date_select :end_day, id: :recurring_appointment_anchor, class: "form-control" %><span class="colibri-datetime-separator">—</span> 
+          </div>
+          <% end %>
+          <div>
+            <%= form.time_select :ends_at, minute_step: 5 %>
+          </div>
+        </div>
       </div>
 
       <div class="form-group">

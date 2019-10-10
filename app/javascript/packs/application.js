@@ -16,7 +16,6 @@
 // const imagePath = (name) => images(name, true)
 
 import './bootstrap_custom.js'
-
 import "controllers"
 
 require("@rails/ujs").start()

@@ -8,7 +8,10 @@ import resourcePlugin from '@fullcalendar/resource-common'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import jaLocale from '@fullcalendar/core/locales/ja'
+
 require('selectize')
+require('selectize/dist/css/selectize.bootstrap3.css')
+
 var moment = require('moment')
 import 'moment/locale/ja'
 moment.locale('ja')

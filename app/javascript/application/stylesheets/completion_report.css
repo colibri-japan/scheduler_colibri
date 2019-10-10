@@ -2,7 +2,7 @@
     cursor: pointer;
 }
 
-.completion-report-glyphicon {
+.glyphicon.completion-report-glyphicon {
     font-size:0.7em;
     cursor:pointer;
     margin-left: 4px;

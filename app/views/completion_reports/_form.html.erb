@@ -122,9 +122,9 @@
     </div>
 
     <div class="blue-background-form" id="personal_care">
-        <div class="modal-subsection-title toggleable-subsection-title">身体介護<span class="glyphicon glyphicon-chevron-down completion-report-glyphicon" style="font-size:0.7em;cursor:pointer"></span></div>
+        <div class="modal-subsection-title toggleable-subsection-title">身体介護<span class="glyphicon glyphicon-chevron-down completion-report-glyphicon"></span></div>
         
-        <div class="toggleable-subsection" style='<%= "display:none" unless @completion_report.with_personal_care? %>'>
+        <div class="toggleable-subsection" style='<%= "display:none" unless @reportable.class.name == 'RecurringAppointment' || @completion_report.with_personal_care? %>'>
           <div class="modal-subsection-title-sm">排泄</div>
           <div class="form-row">
             <div class="col">
@@ -383,7 +383,7 @@
     <div class="modal-body" id="medical_care">
         <div class="modal-subsection-title toggleable-subsection-title">医療<span class="glyphicon glyphicon-chevron-down completion-report-glyphicon"></span></div>
 
-        <div class="toggleable-subsection" style='<%= "display:none" unless @completion_report.with_medical_care? %>'>
+        <div class="toggleable-subsection" style='<%= "display:none" unless @reportable.class.name == 'RecurringAppointment' || @completion_report.with_medical_care? %>'>
           <div class="form-row">
             <div class="from-group col-md-4">
               <%= form.label :assisted_to_take_medication, "服薬介助.確認", class: 'colibri-form-label-dark' do  %>
@@ -427,9 +427,9 @@
     </div>
 
     <div class="blue-background-form" id="handicap_care">
-        <div class="modal-subsection-title toggleable-subsection-title">自立支援<span class="glyphicon glyphicon-chevron-down completion-report-glyphicon" style="font-size:0.7em;cursor:pointer"></span></div>
+        <div class="modal-subsection-title toggleable-subsection-title">自立支援<span class="glyphicon glyphicon-chevron-down completion-report-glyphicon"></span></div>
 
-        <div class="toggleable-subsection" style='<%= "display:none" unless @completion_report.with_handicap_care? %>'>
+        <div class="toggleable-subsection" style='<%= "display:none" unless @reportable.class.name == 'RecurringAppointment' || @completion_report.with_handicap_care? %>'>
           <div class="form-group">
               <%= form.label :activities_done_with_the_patient, "共に行う", class: 'colibri-form-label-dark' %>
               <%= form.select :activities_done_with_the_patient, options_for_select([['掃除', 0], ['洗濯', 1],['衣類整理', 2],['調理', 3],['買い物', 4]], completion_report.activities_done_with_the_patient), {prompt: '選択する'}, {multiple: true, id: 'completion_report_activities_done_with_the_patient'} %>
@@ -464,11 +464,11 @@
     </div>
 
     <div class="modal-body" id="house_care">
-        <div class="modal-subsection-title toggleable-subsection-title">生活援助<span class="glyphicon glyphicon-chevron-down completion-report-glyphicon" style="font-size:0.7em;cursor:pointer"></span></div>
+        <div class="modal-subsection-title toggleable-subsection-title">生活援助<span class="glyphicon glyphicon-chevron-down completion-report-glyphicon"></span></div>
         
-        <div class="toggleable-subsection" style='<%= "display:none" unless @completion_report.with_house_care? %>'>
-          <div class="modal-subsection-title-sm toggleable-subsection-title">掃除</div>
-          <div class="toggleable-subsection">
+        <div class="toggleable-subsection" style='<%= "display:none" unless @reportable.class.name == 'RecurringAppointment' || @completion_report.with_house_care? %>'>
+          <div class="modal-subsection-title-sm">掃除</div>
+          <div>
             <div class="form-row">
               <div class="form-group col-md-2">
                 <%= form.label :clean_up, "清掃", class: 'colibri-form-label-dark' %>
@@ -557,8 +557,8 @@
           </div>
 
           <div class="colibri-form-subsection-separator"></div>
-          <div class="modal-subsection-title-sm  toggleable-subsection-title">調理</div>
-          <div class="toggleable-subsection">
+          <div class="modal-subsection-title-sm">調理</div>
+          <div>
             <div class="form-row">
               <div class="form-group col-md-3">
                 <%= form.label :set_the_table, "下拵え", class: 'colibri-form-label-dark' do  %>
@@ -587,8 +587,8 @@
           </div>
 
           <div class="colibri-form-subsection-separator"></div>
-          <div class="modal-subsection-title-sm toggleable-subsection-title">買い物など</div>
-          <div clss="toggleable-subsection">
+          <div class="modal-subsection-title-sm">買い物など</div>
+          <div>
             <div class="form-row">
               <div class="form-group col-md-5">
                 <%= form.label :grocery_shopping, "日常品などの買い物", class: 'colibri-form-label-dark' do  %>

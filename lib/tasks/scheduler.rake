@@ -19,10 +19,6 @@ task :calculate_salaries_from_salary_rules => :environment do
 	end
 end
 
-task :increment_days_worked => :environment do 
-	Nurse.increment_days_worked_if_has_worked_yesterday
-end
-
 task :refresh_target_nurses_for_salary_rules => :environment do
 	SalaryRule.refresh_targeted_nurses
 end

@@ -178,9 +178,4 @@ class Nurse < ApplicationRecord
 			end
 		end
 	end
-
-	def self.increment_days_worked_if_has_worked_yesterday
-		Nurse.joins(:appointments).where(appointments: {cancelled: false, edit_requested: false, archived_at: nil, starts_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day}).update_all("days_worked = days_worked + 1")
-	end
-
 end

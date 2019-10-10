@@ -21,8 +21,8 @@
         </div>
 
         <div class='btn btn-secondary btn-sm text-white' id='recurring-appointment-terminate' data-terminate-url="<%= planning_recurring_appointment_terminate_path(@planning, recurring_appointment) %>">サービス停止</div>
-        <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 全繰り返し削除'.html_safe, planning_recurring_appointment_archive_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm', data: {confirm: '全ての繰り返しが削除されます。実績は全てキャンセルされます。'}  %>
-        <%= link_to "<i class='glyphicon glyphicon-file' style='color:white;font-size:12px'></i> #{completion_report_text(recurring_appointment)}".html_safe, url_for_recurring_completion_report(recurring_appointment), remote: true, class: 'btn btn-secondary btn-sm' %>
+        <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 全繰り返し削除'.html_safe, planning_recurring_appointment_archive_path(@planning, recurring_appointment), method: :patch, remote: true, class: 'btn btn-secondary btn-sm btn-margin-bottom', data: {confirm: '全ての繰り返しが削除されます。実績は全てキャンセルされます。'}  %>
+        <%= link_to "<i class='glyphicon glyphicon-file' style='color:white;font-size:12px'></i> #{completion_report_text(recurring_appointment)}".html_safe, url_for_recurring_completion_report(recurring_appointment), remote: true, class: 'btn btn-secondary btn-sm btn-margin-bottom' %>
     </div>
   <% end %>
 

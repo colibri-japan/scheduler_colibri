@@ -15,10 +15,10 @@
 
     <div id="form-options-container" class="blue-background-form">
       <div class="modal-subsection-title">簡易編集</div>
-      <%= link_to "<i class='glyphicon glyphicon-file' style='color:white;font-size:12px'></i> #{completion_report_text(appointment)}".html_safe, completion_report_url_helper(appointment), class: 'btn btn-secondary btn-sm', remote: true %>
-      <%= link_to "<i class='glyphicon glyphicon-th-list' style='color:white;font-size:12px'></i> #{toggle_edit_requested_text(appointment)}".html_safe, planning_appointment_toggle_edit_requested_path(@planning, appointment, params: {patient_resource: params[:patient_resource]}), method: :patch, class: 'btn btn-secondary btn-sm', remote: true unless appointment.new_record? %>
-      <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> #{toggle_cancel_text(appointment)}".html_safe, planning_appointment_toggle_cancelled_path(@planning, appointment, params: {patient_resource: params[:patient_resource]}), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>
-      <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 削除'.html_safe, planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm', data: {confirm: 'サービスが削除され、スケジュールから消えます。'}, remote: true unless appointment.new_record? %>
+      <%= link_to "<i class='glyphicon glyphicon-file' style='color:white;font-size:12px'></i> #{completion_report_text(appointment)}".html_safe, completion_report_url_helper(appointment), class: 'btn btn-secondary btn-sm btn-margin-bottom', remote: true %>
+      <%= link_to "<i class='glyphicon glyphicon-th-list' style='color:white;font-size:12px'></i> #{toggle_edit_requested_text(appointment)}".html_safe, planning_appointment_toggle_edit_requested_path(@planning, appointment, params: {patient_resource: params[:patient_resource]}), method: :patch, class: 'btn btn-secondary btn-sm btn-margin-bottom', remote: true unless appointment.new_record? %>
+      <%= link_to "<i class='glyphicon glyphicon-remove' style='color:white;font-size:12px'></i> #{toggle_cancel_text(appointment)}".html_safe, planning_appointment_toggle_cancelled_path(@planning, appointment, params: {patient_resource: params[:patient_resource]}), method: :patch, class: 'btn btn-secondary btn-sm btn-margin-bottom', data: {confirm: confirm_cancel_message(appointment)}, remote: true unless appointment.new_record? %>
+      <%= link_to '<i class="glyphicon glyphicon-trash" style="color:white;font-size:12px"></i> 削除'.html_safe, planning_appointment_archive_path(@planning, appointment), method: :patch, class: 'btn btn-secondary btn-sm btn-margin-bottom', data: {confirm: 'サービスが削除され、スケジュールから消えます。'}, remote: true unless appointment.new_record? %>
     </div>
   
   <% end %>
@@ -74,7 +74,7 @@
 
 
     <div class="form-group">
-      <%= form.label :color, "カラー", class: "colibri-form-label-dark" %>
+      <%= form.label :color, "カラー", class: "colibri-form-label-dark", style: 'min-width:75px' %>
       <%= form.select :color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], appointment.color), id: :appointment_color %>
   　</div> 
 

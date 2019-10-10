@@ -76,10 +76,6 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
           end
         end
 
-        puts 'met goals'
-        puts met_goals
-
-
         # substract number of days worked from appointments count if only_count_between_appointments
         if salary_rule.only_count_between_appointments?
           day_count = targeted_appointments.present? ? targeted_appointments.pluck(:starts_at).map(&:to_date).uniq.size : 0

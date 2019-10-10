@@ -63,10 +63,10 @@
         <%= form.label :ends_at, "終了日時", class: "colibri-form-label-dark", style: 'min-width:80px' %>
       </div>
       <div class="colibri-datetime-input-container">
-        <div>
+        <div class="colibri-date-input">
           <%= form.date_select :ends_at %><span class="colibri-datetime-separator">—</span> 
         </div>
-        <div class="colibri-time-input">
+        <div>
           <%= form.time_select :ends_at, ignore_date: true, minute_step: 5 %>
         </div>
       </div>

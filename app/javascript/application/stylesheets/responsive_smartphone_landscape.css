@@ -321,6 +321,14 @@
 		display: none;
 	}
 
+	.hamburger_menu {
+		display: inline-block;
+		margin-right: 6px;
+	}
+
+	#logout {
+		display: inline-block;
+	}
 
 	p.setting-title {
 		margin-top: 0px;
@@ -371,4 +379,7 @@
 		margin-bottom: 70px;
 		margin-left:20px;	
 	}
+
+
+
 }

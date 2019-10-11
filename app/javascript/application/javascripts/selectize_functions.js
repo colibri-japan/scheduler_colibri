@@ -213,4 +213,8 @@ document.addEventListener('turbolinks:load', function () {
     })
 
     $('#summary_team_select').selectize()
+
+    $('#user_nurse_id').selectize()
+
+    $('#user_default_calendar_option').selectize()
 })

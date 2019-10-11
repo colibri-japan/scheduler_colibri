@@ -44,7 +44,6 @@
     <div class="main-page">
       <div id="account-settings-dropdown" style="display: none">
           <ul id="account-settings-ul">
-              <li class="account-settings-li" data-url="<%= edit_user_registration_path(current_user) %>">アカウント設定</li>
               <li id="logout-li"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'account-settings-a' %></li>
           </ul>
           

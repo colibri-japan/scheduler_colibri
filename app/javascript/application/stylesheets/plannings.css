@@ -349,11 +349,10 @@ ul.chosen-results {
 	width: 60%;
 }
 
-
-
 #settings-menu-list {
 	text-align: right;
 	margin-top: 15px;
+	margin-bottom: 30px;
 }
 
 #settings-container {
@@ -378,7 +377,6 @@ ul.chosen-results {
 
 #printing-options {
 	max-width: 340px;
-	margin-bottom: 30px;
 }
 
 .colibri-xs-title {
@@ -578,6 +576,10 @@ p.master-reflect-option {
 	color: #4F4F4F;
 }
 
+.hamburger_menu {
+	display: none;
+}
+
 /* styles for left menu backdrop */
 
 #menu-backdrop {
@@ -588,8 +590,12 @@ p.master-reflect-option {
 	display: flex;
 }
 
+#logout {
+	display: none;
+	margin-top: 25px;
+}
+
 p.setting-title {
-	margin-left: 6px;
 	margin-bottom: 0;
 	line-height: 1.5em;
 }

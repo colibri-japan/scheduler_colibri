@@ -14,11 +14,15 @@
               <li id="users" class="settings-list-element <%= "settings-list-element-selected" if view == "users" %>"><%= link_to 'ユーザー招待.権限', users_path, class: 'settings-list-url' %></li>
               <li id="services" class="settings-list-element <%= "settings-list-element-selected" if view == "services" %>"><%= link_to 'サービスタイプ一覧', services_path, class: 'settings-list-url' %></li>
               <li id="salary_rules" class="settings-list-element <%= "settings-list-element-selected" if view == "salary_rules" %>"><%= link_to '手当一覧', salary_rules_path, class: 'settings-list-url' %></li>
-            <li class="settings-list-header" style="margin-top:15px">設定.履歴</li>
-              <li id="activities" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to '編集履歴', planning_activities_path(@planning), class: 'settings-list-url' %></li>
+          <% end %>
+          <li class="settings-list-header" style="margin-top:15px">設定.履歴</li>
+            <li id="user_options" class="settings-list-element <%= "settings-list-element-selected" if view == "user_options" %>"><%= link_to '個人設定', edit_user_registration_path(current_user), class: 'settings-list-url' %></li>
+            <% if current_user.has_admin_access? %>
               <li id="settings" class="settings-list-element <%= "settings-list-element-selected" if view == "schedule_settings" %>"><%= link_to '事業所設定', edit_corporation_path(@corporation), class: 'settings-list-url' %></li>
               <li id="printing-options" class="settings-list-element <%= "settings-list-element-selected" if view == "printing_options" %>"><%= link_to '印刷オプション', planning_printing_option_path(@planning, @corporation.printing_option), class: 'settings-list-url' %></li>
-          <% end %>
+              <li id="activities" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to '編集履歴', planning_activities_path(@planning), class: 'settings-list-url' %></li>
+            <% end %>
+            <li id="logout" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'settings-list-url' %></li>
         </ul>
 	</div>
 </div>

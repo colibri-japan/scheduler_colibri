@@ -504,6 +504,15 @@
 		display: none;
 	}
 
+	.hamburger_menu {
+		display: inline-block;
+		margin-right: 6px;
+	}
+
+	#logout {
+		display: inline-block;
+	}
+
 	#settings-menu-container {
 		height: calc(100% - 50px);
 		width: 200px;

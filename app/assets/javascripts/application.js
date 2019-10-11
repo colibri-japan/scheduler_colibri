@@ -1130,6 +1130,10 @@ $(document).on('turbolinks:load', function(){
   $('.resource-details-button').click(function(){
     let url = document.getElementById('resource-details-button').dataset.resourceUrl 
     $.getScript(url)
+    
+    if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+      $('#colibri-batch-action-button').hide()
+    }
   })
 
   $('#sort-posts-by-patient-tag').click(function(){
@@ -1275,6 +1279,7 @@ $(document).on('turbolinks:load', function(){
   $('#header-calendar-button').click(function(){
     $('#resource-details-wrapper').remove()
     $('#calendar').show()
+    $('#colibri-batch-action-button').show()
   })
 
   $('.reports-index-button').click(function () {
@@ -1291,6 +1296,10 @@ $(document).on('turbolinks:load', function(){
       url: '/completion_reports.js',
       data: data
     })
+
+    if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+      $('#colibri-batch-action-button').hide()
+    }
   })
 
   $('.resource-title-selectable, .resource-list-element').click(function(){

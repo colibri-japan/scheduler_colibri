@@ -82,7 +82,7 @@
 
     #detail-planning-container {
 		width: 100%;
-		margin: 0px 0px 120px 0px;
+		margin: 0px 0px 150px 0px;
     }
 
     #detail-planning-title {
@@ -214,11 +214,14 @@
 	/* Hide batch action button */
 
 	#colibri-batch-action-button {
-		display: none;
+		height: 60px;
+		width: 60px;
+		border-radius: 60px;
 	}
 
-	#colibri-master-action-button {
-		display: none !important;
+	span.glyphicon.glyphicon-pencil.batch-action-pencil {
+		line-height: 45px;
+		font-size: 1.2em;
 	}
 
 	/* Hide print button */

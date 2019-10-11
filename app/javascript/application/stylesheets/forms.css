@@ -1,0 +1,14 @@
+.colibri-input {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0px 4px 0px 4px;
+    text-align: right;
+}
+
+.colibri-input.input-text-left {
+    text-align: left;
+}
+
+.colibri-input.additional-padding {
+    padding: 3px 6px 3px 6px;
+}

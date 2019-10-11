@@ -51,12 +51,12 @@
         <div class="form-row">
           <div class="form-group col-md-5">
             <%= form.label :body_temperature, "体温", class: 'colibri-form-label-dark' %>
-            <%= form.number_field :body_temperature, {step: 0.1, style: 'width:60px;font-size:0.9em'} %> °C
+            <%= form.number_field :body_temperature, {step: 0.1, class: 'colibri-input', style: 'width:60px'} %><span class="colibri-form-label-dark"> °C</span>
           </div>
           <div class="form-group col-md-7">
             <%= form.label :blood_pressure_systolic, "血圧", class: 'colibri-form-label-dark'  %>
-            <%= form.number_field :blood_pressure_systolic, {step: 1, style: 'width:60px'} %>/
-            <%= form.number_field :blood_pressure_diastolic, {step: 1, style: 'width:60px'} %>
+            <%= form.number_field :blood_pressure_systolic, {step: 1, class: 'colibri-input', style: 'width:60px'} %><span class="colibri-form-label-dark"> /</span>
+            <%= form.number_field :blood_pressure_diastolic, {step: 1, class: 'colibri-input', style: 'width:60px'} %>
           </div>
         </div>
 
@@ -127,25 +127,25 @@
         <div class="toggleable-subsection" style='<%= "display:none" unless @reportable.class.name == 'RecurringAppointment' || @completion_report.with_personal_care? %>'>
           <div class="modal-subsection-title-sm">排泄</div>
           <div class="form-row">
-            <div class="col">
+            <div class="form-group col-md-3">
               <%= form.label :assisted_bathroom, "トイレ介助", class: 'colibri-form-label-dark' do  %>
                   <%= form.check_box :assisted_bathroom %>
                   トイレ介助
               <% end %>
             </div>
-            <div class="col">
+            <div class="form-group col-md-3">
               <%= form.label :assisted_portable_bathroom, "Pトイレ介助", class: 'colibri-form-label-dark' do  %>
                   <%= form.check_box :assisted_portable_bathroom %>
                   Pトイレ介助
               <% end %>
             </div>
-            <div class="col">
+            <div class="form-group col-md-3">
               <%= form.label :changed_diapers, "おむつ交換", class: 'colibri-form-label-dark' do  %>
                   <%= form.check_box :changed_diapers %>
                   おむつ交換
               <% end %>
             </div>
-            <div class="col">
+            <div class="form-group col-md-3">
               <%= form.label :changed_bed_pad, "パッド交換", class: 'colibri-form-label-dark' do  %>
                   <%= form.check_box :changed_bed_pad %>
                   パッド交換
@@ -174,16 +174,16 @@
                   <%= form.check_box :patient_urinated %>
                   排尿
               <% end %>
-              <%= form.number_field :urination_count, {step: 1, style: 'width:50px'} %>回
-              ( <%= form.number_field :amount_of_urine, {step: 1, style: 'width:50px'} %> cc)
+              <%= form.number_field :urination_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class="colibri-form-label-dark"> 回</span>
+              <%= form.number_field :amount_of_urine, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class="colibri-form-label-dark"> cc</span>
             </div>
             <div class="form-group col-md-6">
               <%= form.label :patient_defecated, "排便", class: 'colibri-form-label-dark' do  %>
                 <%= form.check_box :patient_defecated %>
                 排便
               <% end %>
-              <%= form.number_field :defecation_count, {step: 1, style: 'width:50px'} %>回
-              (性状 <%= form.text_field :visual_aspect_of_feces, style: 'width:50px' %> )
+              <%= form.number_field :defecation_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class="colibri-form-label-dark"> 回</span>
+              <span class="colibri-form-label-dark"> 性状 </span><%= form.text_field :visual_aspect_of_feces, class: 'colibri-input', style: 'width:50px' %>
             </div>
           </div>
 
@@ -221,14 +221,14 @@
                   <%= form.radio_button :patient_ate_full_plate, 0, {class: 'radio-inline'} %>
                   残量
               <% end %>
-              ( <%= form.number_field :ratio_of_leftovers, style: 'width:50px' %> )
+              ( <%= form.number_field :ratio_of_leftovers, class: 'colibri-input', style: 'width:50px' %> )
             </div>
             <div class="form-group col-md-5">
               <%= form.label :patient_hydrated, "水分補給", class: 'colibri-form-label-dark' do  %>
                   <%= form.check_box :patient_hydrated %>
                   水分補給
               <% end %>
-              ( <%= form.number_field :amount_of_liquid_drank, {step: 1, style: 'width:50px'} %> cc)
+              ( <%= form.number_field :amount_of_liquid_drank, {step: 1, class: 'colibri-input', style: 'width:50px'} %> cc)
             </div>
 
           </div>
@@ -237,14 +237,14 @@
               <%= form.label :meal_specificities, "特段の調理", class: 'colibri-form-label-dark' %>
             </div>
             <div class="from-group col-md-9">
-              <%= form.text_field :meal_specificities, style: 'width:100%' %>
+              <%= form.text_field :meal_specificities, class: 'colibri-input input-text-left additional-padding', style: 'width:100%' %>
             </div>
           </div>
 
           <div class="colibri-form-subsection-separator"></div>
           <div class="modal-subsection-title-sm">清拭.入浴</div>
           <div class="form-row">
-            <div class="col">
+            <div class="from-group col-md-5">
               <%= form.label :full_or_partial_body_wash, "清拭" %>
               <%= form.label :full_or_partial_body_wash_1, "全身", class: 'colibri-form-label-dark' do %>
                   <%= form.radio_button :full_or_partial_body_wash, 1, {class: 'radio-inline'} %>
@@ -255,7 +255,7 @@
                   部分
               <% end %>
             </div>
-            <div class="col">
+            <div class="from-group col-md-5">
               <%= form.label :hands_and_feet_wash, "部分浴" %>
               <%= form.label :hands_and_feet_wash_1, "手", class: 'colibri-form-label-dark' do %>
                   <%= form.radio_button :hands_and_feet_wash, 1, {class: 'radio-inline'} %>
@@ -266,7 +266,7 @@
                   足
               <% end %>
             </div>
-            <div class="col">
+            <div class="from-group col-md-2">
               <%= form.label :hair_wash, "洗髪", class: 'colibri-form-label-dark' do  %>
                   <%= form.check_box :hair_wash %>
                   洗髪
@@ -357,7 +357,7 @@
                   外出同行
               <% end %>
               <%= form.label :patient_destination_place, "行先", class: 'colibri-form-label-dark'  %>
-              <%= form.text_field :patient_destination_place %>
+              <%= form.text_field :patient_destination_place, class: 'colibri-input additional-padding input-text-left' %>
             </div>
           </div>
 
@@ -420,7 +420,7 @@
             </div>
             <div class="from-group col-md-10">
               <%= form.label :remarks_around_medication, "医療行為の準備.後片付け", class: 'colibri-form-label-dark'  %>
-              <%= form.text_field :remarks_around_medication %>
+              <%= form.text_field :remarks_around_medication, class: 'colibri-input additional-padding input-text-left' %>
             </div>
           </div>
         </div>
@@ -607,13 +607,13 @@
 
             <div class="form-group">
                 <%= form.label :amount_received_for_shopping, "預り金", class: 'colibri-form-label-dark' %>
-                <%= form.number_field :amount_received_for_shopping, style: "width:70px" %>
+                <%= form.number_field :amount_received_for_shopping, class: 'colibri-input', style: "width:70px" %>
 
                 <%= form.label :amount_spent_for_shopping, "買い物", class: 'colibri-form-label-dark' %>
-                <%= form.number_field :amount_spent_for_shopping, style: "width:70px" %>
+                <%= form.number_field :amount_spent_for_shopping, class: 'colibri-input', style: "width:70px" %>
 
                 <%= form.label :change_left_after_shopping, "おつり", class: 'colibri-form-label-dark' %>
-                <%= form.number_field :change_left_after_shopping, style: "width:70px" %>
+                <%= form.number_field :change_left_after_shopping, class: 'colibri-input', style: "width:70px" %>
 
             </div>
             <div class="form-row">

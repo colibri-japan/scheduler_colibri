@@ -50,10 +50,6 @@ $(document).on 'turbolinks:load', ->
     $('#patients-resource').toggleClass('hide-resource')
     $('#nurses-resource').toggleClass('hide-resource')
     return
-
-  $('#colibri-master-action-button').click ->
-    $.getScript($(this).data('url'))
-    return
   
   $('#teams-report').click ->
     $('.modal').modal('hide')

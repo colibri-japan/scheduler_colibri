@@ -1153,11 +1153,6 @@ $(document).on('turbolinks:load', function(){
     })
   })
 
-  $('#new-reminder-email').click(function(){
-    let url = document.getElementById('new-reminder-email').dataset.url 
-    $.getScript(url)
-  })
-
 
   $('#nurse_resource_filter').on('change', function(){
     let nurse_ids = $(this).val()
@@ -1242,6 +1237,16 @@ $(document).on('turbolinks:load', function(){
     let nurseResource = (window.currentResourceType === 'nurse' && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceType === 'nurse' && window.defaultResourceId !== 'all')
     if (nurseResource) {
       $.getScript(`/nurses/${window.currentResourceId || window.defaultResourceId}/new_reminder_email`)
+    }
+  })
+  
+  $('body').on('click', 'span#colibri-master-action-button', function(){
+    console.log('clicked master reflect button')
+    let individualResource = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+    if (individualResource) {
+      $.getScript(`/${window.currentResourceType || window.defaultResourceType}s/${window.currentResourceId || window.defaultResourceId}/new_master_to_schedule`)
+    } else {
+      $.getScript(`${window.planningPath}/new_master_to_schedule`)
     }
   })
 

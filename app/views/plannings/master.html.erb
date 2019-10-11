@@ -130,7 +130,6 @@
 						</div>
 						<div class="planning-resource-module-title">
 							<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
-							<button id="resource-details-button" class="btn btn-sm btn-mid-light resource-details-button"  style="margin-bottom:10px">詳細</button>
 						</div>
 					</div>
 					<div id="planning-top-right-action-container" class="no-print">
@@ -144,8 +143,8 @@
 								<div style="display:inline-block" class="colibri-toggle-text-right">シフト希望日</div>
 							</div>
 						</div>
+						<button id="resource-details-button" class="btn btn-mid-light resource-details-button" style="height:41px;margin-bottom:10px;margin-right:4px"><span class="glyphicon glyphicon-user"></span> 詳細</button>
 						<div class="btn btn-colibri-light-gray text-white" style='margin-right:5px' id="availabilities-print"><i class="glyphicon glyphicon-print" style="color:white;font-size:1em"></i>空き時間</div>
-						<div class="btn btn-colibri-light-gray text-white btn-sm" id="print-button" style='max-height:40px'><span class="glyphicon glyphicon-print" style="color:white"></span>印刷</div>
 					</div>
 				</div>
 				<div id="nurse_filter_wrapper" style="display:none;margin-left:5px;text-align:left">
@@ -154,7 +153,6 @@
 				<div id="planning-header-submenu">
 					<div class="header-submenu-item" id="header-calendar-button">シフト</div>
 					<div class="header-submenu-item resource-details-button">詳細</div>
-					<div class="header-submenu-item">記録</div>
 				</div>
 			</div>
 
@@ -198,12 +196,15 @@
         </div>
     </div>
 
-	<div id="colibri-master-action-button" 
-		class="no-print batch-action-button" 
-		data-url="">
-			<div class="colibri-glyphicon-container">
-				<span class="glyphicon glyphicon-pencil batch-action-pencil"></span>
+	<div id='colibri-batch-action-button' class='no-print batch-action-button'>
+		<div class='colibri-glyphicon-container'>
+			<span class='glyphicon glyphicon-pencil batch-action-pencil'></span>
+			<div id='batch-action-menu' style='display:none'>
+				<span id='print-button'><i class='glyphicon-action-button glyphicon glyphicon-print'></i> 印刷<br/></span>
+				<span class='glyphicon glyphicon-search glyphicon-action-button'></span><%= link_to ' 従業員検索', nurses_smart_search_path, remote: true, class: 'action-button-url' %><br/>
+				<span id="colibri-master-action-button"><%= image_tag('copy_planning_1.svg', size: '19') %> 反映へ</span>
 			</div>
+		</div>
 	</div>
 
     <%= render 'plannings/nurse_overlap_modal' %>

@@ -678,26 +678,6 @@ let updateSelectize = () => {
     }
 }
 
-let updateMasterReflectButton = () => {
-    if (window.masterCalendar === 'true') {
-        let reflectButton = document.getElementById('colibri-master-action-button')
-        
-        if (reflectButton) {
-            if (window.currentResourceType === 'team' || (!window.currentResourceType && window.defaultResourceType === 'team')) {
-                reflectButton.style.display = 'none'
-            } else if (window.currentResourceId === 'all' || (!window.currentResourceId && window.defaultResourceId === 'all')) {
-                reflectButton.style.display = 'block'
-                reflectButton.dataset.url = `${window.planningPath}/new_master_to_schedule`
-            } else if (window.currentResourceType && window.currentResourceId) {
-                reflectButton.style.display = 'block'
-                reflectButton.dataset.url = `/${window.currentResourceType}s/${window.currentResourceId}/new_master_to_schedule`
-            } else if (!window.currentResourceType) {
-                reflectButton.style.display = 'block'
-                reflectButton.dataset.url = `/${window.defaultResourceType}s/${window.defaultResourceId}/new_master_to_schedule`
-            }
-        }
-    }
-}
 
 let updateMasterEventsUrl = () => {
     if (window.masterCalendar === 'true') {
@@ -1015,7 +995,6 @@ export default class extends Controller {
         this.toggleReportsButton()
         toggleNurseFilterButton()
         toggleWishedSlotsAndPrintAvailabilitiesButton()
-        updateMasterReflectButton()
         updateMasterEventsUrl()
         updatePrintOptions()
         toggleHeaderSubmenu()
@@ -1060,7 +1039,6 @@ export default class extends Controller {
         this.toggleReportsButton()
         toggleNurseFilterButton()
         toggleWishedSlotsAndPrintAvailabilitiesButton()
-        updateMasterReflectButton()
         updatePrintOptions()
         toggleHeaderSubmenu()
         toggleNurseReminderButton()

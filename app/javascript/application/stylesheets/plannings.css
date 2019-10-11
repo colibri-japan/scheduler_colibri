@@ -455,6 +455,10 @@ ul.chosen-results {
 	margin-top: 5px;
 }
 
+#colibri-master-action-button:hover {
+	cursor:pointer;
+}
+
 .batch-action-button {
 	position: fixed;
 	text-align: center;

@@ -196,19 +196,22 @@
         </div>
     </div>
 
-	<div id='colibri-batch-action-button' class='no-print batch-action-button'>
-		<div class='colibri-glyphicon-container'>
-			<span class='glyphicon glyphicon-pencil batch-action-pencil'></span>
-			<div id='batch-action-menu' style='display:none'>
-				<span id='print-button'><i class='glyphicon-action-button glyphicon glyphicon-print'></i> 印刷<br/></span>
-				<span class='glyphicon glyphicon-search glyphicon-action-button'></span><%= link_to ' 従業員検索', nurses_smart_search_path, remote: true, class: 'action-button-url' %><br/>
-				<span id="colibri-master-action-button"><%= image_tag('copy_planning_1.svg', size: '19') %> 反映へ</span>
-			</div>
-		</div>
-	</div>
 
     <%= render 'plannings/nurse_overlap_modal' %>
 <% end %>
+
+<div id='colibri-batch-action-button' class='no-print batch-action-button'>
+	<div class='colibri-glyphicon-container'>
+		<span class='glyphicon glyphicon-pencil batch-action-pencil'></span>
+		<div id='batch-action-menu' style='display:none'>
+			<span id='print-button'><i class='glyphicon-action-button glyphicon glyphicon-print'></i> 印刷<br/></span>
+			<% if current_user.has_admin_access? %>
+				<span class='glyphicon glyphicon-search glyphicon-action-button'></span><%= link_to ' 従業員検索', nurses_smart_search_path, remote: true, class: 'action-button-url' %><br/>
+				<span id="colibri-master-action-button"><%= image_tag('copy_planning_1.svg', size: '19') %> 反映へ</span>
+			<% end %>
+		</div>
+	</div>
+</div>
 
 <div id="availabilities-form" class="modal fade" style='display:none'>
   <div class="modal-dialog">

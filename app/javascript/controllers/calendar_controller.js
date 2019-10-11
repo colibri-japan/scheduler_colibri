@@ -1032,10 +1032,11 @@ export default class extends Controller {
             el.classList.remove('resource-selected')
         }
         event.target.classList.add('resource-selected')
-
+        
         window.currentResourceType = event.target.dataset.resourceType
         window.currentResourceId = event.target.dataset.resourceId
         window.resourceLabel = window.currentResourceType === 'patient' ? '利用者' : '従業員'
+        switchBackToCalendarOnNavigate()
         
         updateCalendarHeader()
         toggleResourceView()
@@ -1062,7 +1063,6 @@ export default class extends Controller {
         updateMasterReflectButton()
         updatePrintOptions()
         toggleHeaderSubmenu()
-        switchBackToCalendarOnNavigate()
         toggleNurseReminderButton()
         this.updatePrintInfo(event.target)
 

@@ -177,28 +177,17 @@ window.patientCaremanagerSelectize = () => {
     $('#patient_second_care_manager').selectize()
 }
 
-let toggleNurseIdForm = () => {
+window.toggleNurseIdForm = function () {
     if ($('#all_nurses_selected_checkbox').is(':checked')) {
         $('#form_nurse_id_list_group').hide()
         $('#target_nurse_by_filter_group').hide()
         $('#target-nurse-ids').val('')
-        if (typeof (selectize) !== 'undefined') {
-            selectize.clear(true)
-        }
     } else {
         $('#target_nurse_by_filter_group').show()
         $('#form_nurse_id_list_group').show()
     }
 }
-window.toggleNurseIdForm = toggleNurseIdForm
 
-window.toggleNurseIdList = () => {
-    $('#all_nurses_selected_checkbox').on('change', function () {
-        $selectize = $('#target-nurse-ids').selectize()
-        selectize = $selectize[0].selectize
-        toggleNurseIdForm()
-    })
-}
 
 document.addEventListener('turbolinks:load', function () {
     $('#posts_author_ids_filter').selectize({

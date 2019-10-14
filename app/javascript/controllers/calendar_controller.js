@@ -932,24 +932,17 @@ export default class extends Controller {
     
     connect() {
         this.initializeResource()
-        this.renderCalendar()
+        if (document.documentElement.hasAttribute('data-turbolinks-preview')) {
+            return
+        } else {
+            this.renderCalendar()
+        }
     }
 
     renderCalendar() {
-        if (window.fullCalendar) {
-            this.initializeView()
-            let response = window.fullCalendar.render()
-    
-            if (typeof reponse === 'undefined') {
-                window.fullCalendar = createCalendar()
-                this.initializeView()
-                window.fullCalendar.render()
-            }
-        } else {
-            window.fullCalendar = createCalendar()
-            this.initializeView()
-            window.fullCalendar.render()  
-        }
+        window.fullCalendar = createCalendar()
+        this.initializeView()
+        window.fullCalendar.render()  
     }
 
     initializeView() {

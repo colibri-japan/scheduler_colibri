@@ -16,7 +16,6 @@ var moment = require('moment')
 import 'moment/locale/ja'
 moment.locale('ja')
 
-import '../application/stylesheets/fc_custom.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';

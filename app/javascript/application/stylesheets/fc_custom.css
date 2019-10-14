@@ -863,6 +863,12 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   flex-direction: column;
 }
 
+.fc-timeline-event.fc-event {
+  position: absolute;
+  display: flex;
+  border-radius: 0px;
+}
+
 .fc-time-wrap {
   display: block;
   line-height: 0.8;

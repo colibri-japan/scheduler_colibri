@@ -25,6 +25,7 @@ class CopyPlanningFromMasterWorker
           description: recurring_appointment.description,
           planning_id: recurring_appointment.planning_id,
           recurring_appointment_id: recurring_appointment.id,
+          original_recurring_appointment_id: recurring_appointment.id,
           service_id: recurring_appointment.service_id,
           should_request_edit_for_overlapping_appointments: true
         )

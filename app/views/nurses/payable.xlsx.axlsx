@@ -67,13 +67,13 @@ wb.styles do |s|
 			@salary_line_items.each do |salary_line_item|
 				if presence_of_line_items_without_rule
 					if salary_line_item.salary_rule_id.present? 
-						line_item_row = sheet.add_row ['','', '', salary_line_item_title_with_counts(salary_line_item),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
+						line_item_row = sheet.add_row ['','', '', salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
 					else 
-						line_item_row = sheet.add_row ['','', "#{salary_line_item.service_date.strftime('%-d日')} #{weekday(salary_line_item.service_date)}", salary_line_item_title_with_counts(salary_line_item),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
+						line_item_row = sheet.add_row ['','', "#{salary_line_item.service_date.strftime('%-d日')} #{weekday(salary_line_item.service_date)}", salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
 					end
 					sheet.merge_cells line_item_row.cells[(3..5)]
 				else 
-					line_item_row = sheet.add_row ['','', salary_line_item_title_with_counts(salary_line_item), '','','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
+					line_item_row = sheet.add_row ['','', salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5), '','','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
 					sheet.merge_cells line_item_row.cells[(2..5)]
 				end
 			end

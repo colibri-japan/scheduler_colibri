@@ -160,6 +160,7 @@ class RecurringAppointment < ApplicationRecord
 			new_recurring.original_id = self.id
 
 			if new_recurring.save 
+				copy_completion_report(new_recurring)
 				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
 				synchronize_appointments = self.synchronize_appointments
 				editing_occurrences_after_date = self.editing_occurrences_after.to_date
@@ -181,6 +182,14 @@ class RecurringAppointment < ApplicationRecord
 		elsif synchronize_appointments && editing_occurrences_after.present? 
 			new_recurring_id = RecurringAppointment.where(original_id: self.id).last.id
 			UpdateIndividualAppointmentsWorker.perform_async(new_recurring_id)
+		end
+	end
+
+	def copy_completion_report(new_recurring_appointment)
+		if self.completion_report.present? && new_recurring_appointment.present?
+			new_report = self.completion_report.dup 
+			new_report.reportable = new_recurring_appointment
+			new_report.save 
 		end
 	end
 

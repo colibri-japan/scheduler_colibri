@@ -33,7 +33,7 @@ class RecurringAppointment < ApplicationRecord
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :exclude_self, -> id { where.not(id: id) }
 	scope :not_terminated_at, -> date { where('(termination_date IS NULL) OR (termination_date > ?)', date) }
-	scope :occurs_in_range, -> range { select {|r| r.occurs_between?(range.first, range.last) } }
+	scope :occurs_in_range, -> range { select {|r| r.has_occurrences_between?(range.first, range.last) } }
 
 	def schedule
 		@schedule ||= begin
@@ -92,7 +92,7 @@ class RecurringAppointment < ApplicationRecord
 		schedule.occurrences_between(start_date.to_date, end_date.to_date)
 	end
 
-	def occurs_between?(start_date, end_date)
+	def has_occurrences_between?(start_date, end_date)
 		schedule.occurs_between?(start_date.to_date, end_date.to_date)
 	end
 

@@ -246,7 +246,7 @@ class NursesController < ApplicationController
   end
 
   def convert_wareki_dates(params)
-    params[:contract_date] = Date.parse(params[:contract_date]) rescue nil
+    params[:contract_date] = Date.parse_jp_date(params[:contract_date]) rescue nil
     params
   end
 

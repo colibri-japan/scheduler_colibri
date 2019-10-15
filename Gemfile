@@ -73,8 +73,6 @@ gem 'rails-i18n', '~> 5.1'
 #authorizations
 gem 'pundit'
 
-#japanese dates
-gem 'wareki', '0.4.0'
 
 #create excel templates with axlsx
 gem 'rubyzip', '>= 1.2.2'

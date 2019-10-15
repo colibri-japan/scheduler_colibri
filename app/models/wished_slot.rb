@@ -18,7 +18,7 @@ class WishedSlot < ApplicationRecord
   validates :frequency, inclusion: 0..4
 
   scope :unavailabilities, -> { where(rank: 0) }
-	scope :occurs_in_range, -> range { select {|w| w.occurs_between?(range.first, range.last) } }
+	scope :occurs_in_range, -> range { select {|w| w.has_occurrences_between?(range.first, range.last) } }
 
   def schedule
     @schedule ||= begin
@@ -49,13 +49,13 @@ class WishedSlot < ApplicationRecord
   end
 
   def wished_slot_occurrences(start_date, end_date)
-  	start_frequency = start_date ? start_date.to_date : Date.today - 1.year
-    end_frequency = end_date ? end_date.to_date : Date.today + 1.year
+  	start_frequency = start_date.present? ? start_date.to_date : Date.today - 1.year
+    end_frequency = end_date.present? ? end_date.to_date : Date.today + 1.year
   	schedule.occurrences_between(start_frequency, end_frequency)
   end
 
 
-  def occurs_between?(range_start, range_end)
+  def has_occurrences_between?(range_start, range_end)
 		schedule.occurs_between?(range_start.to_date, range_end.to_date)
   end
 
@@ -94,12 +94,11 @@ class WishedSlot < ApplicationRecord
   end
 
   def as_json(options = {})
-    occurrences = self.wished_slot_occurrences(options[:start_time], options[:end_time])
     returned_json_array = []
     date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 
-    occurrences.each do |occurrence|
-      occurrence_object = {
+    self.wished_slot_occurrences(options[:start_time], options[:end_time]).each do |occurrence|
+      returned_json_array << {
         allDay: all_day?,
         id: "wished_slot_#{self.id}",
         title: title_from_rank,
@@ -121,7 +120,6 @@ class WishedSlot < ApplicationRecord
         base_url: "/plannings/#{planning_id}/wished_slots/#{id}",
         edit_url: "/plannings/#{planning_id}/wished_slots/#{id}/edit"
       }
-      returned_json_array << occurrence_object
     end
 
     returned_json_array

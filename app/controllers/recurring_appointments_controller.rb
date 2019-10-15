@@ -7,17 +7,21 @@ class RecurringAppointmentsController < ApplicationController
 
 
   def index
-    @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).not_archived.includes(:patient, :nurse)
+    report = MemoryProfiler.report do
+      @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).not_archived.includes(:patient, :nurse)
 
-    @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
-    @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
+      @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
+      @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
 
-    if stale?(@recurring_appointments)
-      respond_to do |format|
-        format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end]).flatten}
-        format.js
+      if stale?(@recurring_appointments)
+        respond_to do |format|
+          format.json {render json: @recurring_appointments.as_json(start_time: params[:start], end_time: params[:end]).flatten}
+          format.js
+        end
       end
     end
+
+    report.pretty_print(to_file: 'recurring_index.txt')
   end
 
   def show

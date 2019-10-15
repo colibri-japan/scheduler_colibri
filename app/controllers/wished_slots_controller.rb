@@ -13,7 +13,7 @@ class WishedSlotsController < ApplicationController
 
 		if stale?(@wished_slots)
 			respond_to do |format|
-				format.json { render json: @wished_slots.as_json(background: background).flatten }
+				format.json { render json: @wished_slots.as_json(start_time: params[:start], end_time: params[:end], background: background).flatten }
 			end
 		end
 	end

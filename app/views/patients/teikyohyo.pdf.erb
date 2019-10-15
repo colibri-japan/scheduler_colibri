@@ -1,6 +1,6 @@
 
 <div class="teikyohyo-container">
-    <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
+    <div class="teikyohyo_title">サービス提供票 <%= @first_day.to_date.j_year_month %></div>
     <div class="total_credits">合計：<%= number_with_delimiter(@invoicing_summary[:summary_data][:total_credits], delimiter: ',') %>単位</div>
     <div class="teikyohyo_1_header">
         <table class="table table-bordered table-bordered-pdf  table-centered">
@@ -12,7 +12,7 @@
                 <td style="width:10%"><%= first_care_manager_corporation_title(@patient.kaigo_level) %></td>
                 <td colspan="2" style="width:20%"><%= first_care_manager_corporation_name(@patient) %></td>
                 <td rowspan="2" style="width:11%">作成年月日</td>
-                <td rowspan="2" style="width:12%"><%= Date.today.strftime('%Jf') %></td>
+                <td rowspan="2" style="width:12%"><%= Date.today.to_jp_date %></td>
             </tr>
             <tr>
                 <td>担当者名</td>
@@ -34,7 +34,7 @@
             </tr>
             <tr>
                 <td rowspan="3">生年月日</td>
-                <td rowspan="3"><%= "#{@patient.birthday.try(:strftime, '%Jf')}" %></td>
+                <td rowspan="3"><%= "#{@patient.birthday.try(:to_jp_date)}" %></td>
                 <td>性別</td>
                 <td>要介護状態区分</td>
                 <% kaigo_level_has_changed = @patient.previous_kaigo_level.present? && (@first_day..@last_day).include?(@patient.kaigo_certification_validity_start) %>
@@ -42,7 +42,7 @@
                 <td rowspan="3">区分支給限度基準額</td>
                 <td rowspan="3" style="width:10%"><%= maximum_budget(@patient.current_kaigo_level) %></td>
                 <td rowspan="3" style="width:10%">限度額適用期間</td>
-                <td rowspan="3"><%= "#{@patient.kaigo_certification_validity_start.try(:strftime, "%Jy年%Jm月")}" %><br/>~<br/><%= "#{@patient.kaigo_certification_validity_end.try(:strftime, '%Jy年%Jm月')}" %></td>
+                <td rowspan="3"><%= "#{@patient.kaigo_certification_validity_start.try(:j_year_month)}" %><br/>~<br/><%= "#{@patient.kaigo_certification_validity_end.try(:j_year_month)}" %></td>
                 <td rowspan="2">前月までの短期入所利用日数</td>
             </tr>
             <tr>
@@ -51,7 +51,7 @@
                 <td><%= kaigo_level_has_changed ? kaigo_level_text(@patient.kaigo_level) : ''  %></td>
             </tr>
             <tr>
-                <td><%= kaigo_level_has_changed ? @patient.kaigo_certification_validity_start.strftime("%Jf") : '' %></td>
+                <td><%= kaigo_level_has_changed ? @patient.kaigo_certification_validity_start.to_jp_date : '' %></td>
                 <td><span style="color:white">//</span></td>
             </tr>
         </table>
@@ -158,7 +158,7 @@
                     <td style="width:10%"><%= first_care_manager_corporation_title(@patient.kaigo_level) %></td>
                     <td colspan="2" style="width:20%"><%= first_care_manager_corporation_name(@patient) %></td>
                     <td rowspan="2" style="width:11%">作成年月日</td>
-                    <td rowspan="2" style="width:12%"><%= Date.today.strftime('%Jf') %></td>
+                    <td rowspan="2" style="width:12%"><%= Date.today.to_jp_date %></td>
                 </tr>
                 <tr>
                     <td>担当者名</td>
@@ -180,7 +180,7 @@
                 </tr>
                 <tr>
                     <td rowspan="3">生年月日</td>
-                    <td rowspan="3"><%= "#{@patient.birthday.try(:strftime, '%Jf')}" %></td>
+                    <td rowspan="3"><%= "#{@patient.birthday.try(:to_jp_date)}" %></td>
                     <td>性別</td>
                     <td>要介護状態区分</td>
                     <% kaigo_level_has_changed = @patient.previous_kaigo_level.present? && (@first_day..@last_day).include?(@patient.kaigo_certification_validity_start) %>
@@ -188,7 +188,7 @@
                     <td rowspan="3">区分支給限度基準額</td>
                     <td rowspan="3" style="width:10%"><%= maximum_budget(@patient.current_kaigo_level) %></td>
                     <td rowspan="3" style="width:10%">限度額適用期間</td>
-                    <td rowspan="3"><%= "#{@patient.kaigo_certification_validity_start.try(:strftime, "%Jy年%Jm月")}" %><br/>~<br/><%= "#{@patient.kaigo_certification_validity_end.try(:strftime, '%Jy年%Jm月')}" %></td>
+                    <td rowspan="3"><%= "#{@patient.kaigo_certification_validity_start.try(:j_year_month)}" %><br/>~<br/><%= "#{@patient.kaigo_certification_validity_end.try(:j_year_month)}" %></td>
                     <td rowspan="2">前月までの短期入所利用日数</td>
                 </tr>
                 <tr>
@@ -197,7 +197,7 @@
                     <td><%= kaigo_level_has_changed ? kaigo_level_text(@patient.kaigo_level) : ''  %></td>
                 </tr>
                 <tr>
-                    <td><%= kaigo_level_has_changed ? @patient.kaigo_certification_validity_start.strftime("%Jf") : '' %></td>
+                    <td><%= kaigo_level_has_changed ? @patient.kaigo_certification_validity_start.to_jp_date : '' %></td>
                     <td><span style="color:white">//</span></td>
                 </tr>
             </table>
@@ -290,7 +290,7 @@
  <% end %>
 
  <div class="teikyohyo-container">
-    <div class="teikyohyo_title">サービス提供票別表 <%= @first_day.to_date.strftime("%Jy年%Jm月") %></div>
+    <div class="teikyohyo_title">サービス提供票別表 <%= @first_day.to_date.j_year_month %></div>
     <div class="teikyohyo_subtitle">区分支給限度管理.利用者負担計算</div>
     <div class="teikyohyo_2_subcontainer">
         <table class="table table-bordered table-bordered-pdf  table-centered">

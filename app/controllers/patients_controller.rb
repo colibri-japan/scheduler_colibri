@@ -117,7 +117,7 @@ class PatientsController < ApplicationController
     respond_to do |format|
       format.html 
       format.pdf do
-        render pdf: "#{@patient.name}様_提供表_#{@first_day.strftime('%Jy年%Jm月')}分",
+        render pdf: "#{@patient.name}様_提供表_#{@first_day.j_full_year}#{@first_day.strftime('%-m月')}分",
         page_size: 'A4',
         layout: 'pdf.html',
         orientation: 'landscape',
@@ -184,7 +184,7 @@ class PatientsController < ApplicationController
       respond_to do |format|
         format.html 
         format.pdf do
-          render pdf: "#{@patient.name}様_サービス編集内容_#{@first_day.strftime('%Jy年%Jm月')}分",
+          render pdf: "#{@patient.name}様_サービス編集内容_#{@first_day.j_full_year}#{@first_day.strftime('%-m月')}分",
           page_size: 'A4',
           layout: 'pdf.html',
           orientation: 'portrait',
@@ -227,10 +227,15 @@ class PatientsController < ApplicationController
   end
 
   def convert_wareki_dates(params)
-    params[:kaigo_certification_date] = Date.parse(params[:kaigo_certification_date]) rescue nil
-    params[:kaigo_certification_validity_end] = Date.parse(params[:kaigo_certification_validity_end]) rescue nil
-    params[:kaigo_certification_validity_start] = Date.parse(params[:kaigo_certification_validity_start]) rescue nil
-    params[:birthday] = Date.parse(params[:birthday]) rescue nil
+    params[:kaigo_certification_date] = Date.parse_jp_date(params[:kaigo_certification_date]) rescue nil
+    params[:kaigo_certification_validity_end] = Date.parse_jp_date(params[:kaigo_certification_validity_end]) rescue nil
+    params[:kaigo_certification_validity_start] = Date.parse_jp_date(params[:kaigo_certification_validity_start]) rescue nil
+    puts 'birthday before and after'
+    puts params[:birthday]
+    puts params[:birthday].class.name
+    puts Date.parse_jp_date(params[:birthday])
+    params[:birthday] = Date.parse_jp_date(params[:birthday]) rescue nil
+    puts params[:birthday]
     params
   end
 

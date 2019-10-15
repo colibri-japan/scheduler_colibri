@@ -147,7 +147,7 @@ module PatientsHelper
 
     def kaigo_certification_validity(patient)
         if patient.present?
-            "#{patient.kaigo_certification_validity_start.try(:strftime, "%Jf")} ~ \x0A #{patient.kaigo_certification_validity_end.try(:strftime, "%Jf")}"
+            "#{patient.kaigo_certification_validity_start.try(:to_jp_date)} ~ \x0A #{patient.kaigo_certification_validity_end.try(:to_jp_date)}"
         else
             ""
         end

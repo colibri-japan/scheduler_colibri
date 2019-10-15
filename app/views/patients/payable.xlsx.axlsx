@@ -29,9 +29,9 @@ wb.styles do |s|
         sheet.add_row
         sheet.merge_cells "A5:J5"
 
-        sheet.add_row ['利用者指名', @patient.name, '', '', '', '', '', '', '発行日', Date.today.strftime('%Jf')]
+        sheet.add_row ['利用者指名', @patient.name, '', '', '', '', '', '', '発行日', Date.today.to_jp_date]
         sheet.merge_cells "B6:G6"
-        sheet.add_row ['住所', @patient.address, '', '', '','', '', '', '利用年月', "#{Date.new(@selected_year.to_i, @selected_month.to_i, 1).strftime('%Jy年%Jm月')}"]
+        sheet.add_row ['住所', @patient.address, '', '', '','', '', '', '利用年月', "#{Date.new(@selected_year.to_i, @selected_month.to_i, 1).j_year_month}"]
         sheet.merge_cells "B7:G7"
         care_manager_corporation_name = @patient.care_manager.care_manager_corporation.name if @patient.care_manager.present? && @patient.care_manager.care_manager_corporation.present?
         sheet.add_row ['居宅介護支援事業所', care_manager_corporation_name,'', '', '', '', '', '', '', '']

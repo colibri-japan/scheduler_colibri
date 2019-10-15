@@ -61,7 +61,7 @@ class CareManagerCorporationsController < ApplicationController
       respond_to do |format|
         format.html 
         format.pdf do
-          render pdf: "#{@care_manager_corporation.name}様_提供表_#{@first_day.strftime('%Jy年%Jm月')}分",
+          render pdf: "#{@care_manager_corporation.name}様_提供表_#{@first_day.j_full_year}#{@first_day.strftime('%-m月')}分",
           page_size: 'A4',
           layout: 'pdf.html',
           orientation: 'landscape',
@@ -94,7 +94,7 @@ class CareManagerCorporationsController < ApplicationController
       respond_to do |format|
         format.html 
         format.pdf do
-          render pdf: "#{@care_manager_corporation.name}様_サービス編集内容_#{@first_day.strftime('%Jy年%Jm月')}分",
+          render pdf: "#{@care_manager_corporation.name}様_サービス編集内容_#{@first_day.j_full_year}#{@first_day.strftime('%-m月')}分",
           page_size: 'A4',
           layout: 'pdf.html',
           orientation: 'portrait',

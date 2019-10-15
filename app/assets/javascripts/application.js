@@ -985,6 +985,15 @@ let set_contract_date = () => {
   let year = $('#nurse_contract_date_year').val() || ''
   let month = $('#nurse_contract_date_month').val() || ''
   let day = $('#nurse_contract_date_day').val() || ''
+  if (year.length === 1) {
+    year = `0${year}`
+  }
+  if (month.length === 1) {
+    month = `0${month}`
+  }
+  if (day.length === 1) {
+    day = `0${day}`
+  }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
   $('#nurse_contract_date').val(wareki_date)
 }
@@ -994,6 +1003,15 @@ let set_kaigo_certification_validity_end = () => {
   let year = $('#patient_kaigo_certification_validity_end_year').val() || ''
   let month = $('#patient_kaigo_certification_validity_end_month').val() || ''
   let day = $('#patient_kaigo_certification_validity_end_day').val() || ''
+  if (year.length === 1) {
+    year = `0${year}`
+  }
+  if (month.length === 1) {
+    month = `0${month}`
+  }
+  if (day.length === 1) {
+    day = `0${day}`
+  }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
   $('#patient_kaigo_certification_validity_end').val(wareki_date)
 }
@@ -1003,6 +1021,15 @@ let set_kaigo_certification_validity_start = () => {
   let year = $('#patient_kaigo_certification_validity_start_year').val() || ''
   let month = $('#patient_kaigo_certification_validity_start_month').val() || ''
   let day = $('#patient_kaigo_certification_validity_start_day').val() || ''
+  if (year.length === 1) {
+    year = `0${year}`
+  }
+  if (month.length === 1) {
+    month = `0${month}`
+  }
+  if (day.length === 1) {
+    day = `0${day}`
+  }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
   $('#patient_kaigo_certification_validity_start').val(wareki_date)
 }
@@ -1012,6 +1039,15 @@ let set_kaigo_certification_date = () => {
   let year = $('#patient_kaigo_certification_date_year').val() || ''
   let month = $('#patient_kaigo_certification_date_month').val() || ''
   let day = $('#patient_kaigo_certification_date_day').val() || ''
+  if (year.length === 1) {
+    year = `0${year}`
+  }
+  if (month.length === 1) {
+    month = `0${month}`
+  }
+  if (day.length === 1) {
+    day = `0${day}`
+  }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
   $('#patient_kaigo_certification_date').val(wareki_date)
 }
@@ -1021,6 +1057,15 @@ let set_birthday = () => {
   let year = $('#patient_birthday_year').val() || ''
   let month = $('#patient_birthday_month').val() || ''
   let day = $('#patient_birthday_day').val() || ''
+  if (year.length === 1) {
+    year = `0${year}`
+  }
+  if (month.length === 1) {
+    month = `0${month}`
+  }
+  if (day.length === 1) {
+    day = `0${day}`
+  }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
   $('#patient_birthday').val(wareki_date)
 }

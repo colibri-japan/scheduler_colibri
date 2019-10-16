@@ -19,7 +19,3 @@ task :calculate_salaries_from_salary_rules => :environment do
 	end
 end
 
-task :refresh_target_nurses_for_salary_rules => :environment do
-	SalaryRule.refresh_targeted_nurses
-end
-

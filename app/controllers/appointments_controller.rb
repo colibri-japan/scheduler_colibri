@@ -9,13 +9,13 @@ class AppointmentsController < ApplicationController
     authorize @planning, :same_corporation_as_current_user?
 
     if params[:nurse_id].present? 
-      @appointments = @planning.appointments.not_archived.where(nurse_id: params[:nurse_id]).includes(:patient, :nurse, :recurring_appointment)
+      @appointments = @planning.appointments.not_archived.where(nurse_id: params[:nurse_id]).includes(:patient, :nurse)
     elsif params[:patient_id].present?
-      @appointments = @planning.appointments.not_archived.where(patient_id: params[:patient_id]).includes(:patient, :nurse, :recurring_appointment)
+      @appointments = @planning.appointments.not_archived.where(patient_id: params[:patient_id]).includes(:patient, :nurse)
     elsif params[:team_id].present? 
-      @appointments = @planning.appointments.not_archived.where(nurse_id: Team.find(params[:team_id]).nurses.pluck(:id)).includes(:patient, :nurse, :recurring_appointment)
+      @appointments = @planning.appointments.not_archived.where(nurse_id: Team.find(params[:team_id]).nurses.pluck(:id)).includes(:patient, :nurse)
     else
-     @appointments = @planning.appointments.not_archived.includes(:patient, :nurse, :recurring_appointment)
+    @appointments = @planning.appointments.not_archived.includes(:patient, :nurse)
     end
 
     if params[:start].present? && params[:end].present? 
@@ -29,7 +29,6 @@ class AppointmentsController < ApplicationController
         format.json {render json: @appointments.as_json(patient_resource: patient_resource)}
       end
     end
-
   end
 
   # GET /appointments/1

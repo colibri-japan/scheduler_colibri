@@ -50,14 +50,6 @@ class Appointment < ApplicationRecord
 		where('((appointments.starts_at >= ? AND appointments.starts_at < ?) OR (appointments.ends_at > ? AND appointments.ends_at <= ?)) OR (appointments.starts_at < ? AND appointments.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
 	end
 
-	def recurring_appointment_path
-		if self.recurring_appointment.present? 
-			"/plannings/#{self.planning_id}/recurring_appointments/#{self.recurring_appointment_id}/edit"
-		else 
-			''
-		end
-	end
-
 	def verified?
 		verified_at.present?
 	end
@@ -126,10 +118,7 @@ class Appointment < ApplicationRecord
 				address: self.patient.try(:address)
 			},
 			eventType: 'appointment',
-			frequency: self.recurring_appointment.try(:frequency),
-			base_url: "/plannings/#{self.planning_id}/appointments/#{self.id}",
-			edit_url: "/plannings/#{self.planning_id}/appointments/#{self.id}/edit",
-			recurring_appointment_path: self.recurring_appointment_path
+			eventId: self.id
 		}
 	end
 

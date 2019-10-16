@@ -335,7 +335,7 @@ let createCalendar = () => {
         eventClick: function (info) {
             if (window.userAllowedToEdit) {
                 let dateClicked = dateFormatter.format(info.event.start)
-                $.getScript(info.event.extendedProps.edit_url + '?date=' + dateClicked, function(){
+                $.getScript(`${window.planningPath}/${info.event.extendedProps.eventType}s/${info.event.extendedProps.eventId}/edit.js?date=${dateClicked}`, function(){
                     let screenStart = moment(info.view.activeStart).format('YYYY-MM-DD HH:mm')
                     let screenEnd = moment(info.view.activeEnd).format('YYYY-MM-DD HH:mm')
                     let dateClicked = moment(info.event.start).format('YYYY-MM-DD HH:mm')
@@ -792,7 +792,7 @@ let masterDragOptions = (eventDropInfo) => {
     })
     $('#master-drag-move').one('click', function () {
         $.ajax({
-            url: `${eventDropInfo.event.extendedProps.base_url}.js?start=${startTime}&end=${endTime}`,
+            url: `${window.planningPath}/recurring_appointments/${eventDropInfo.event.extendedProps.eventId}.js?start=${startTime}&end=${endTime}`,
             type: 'PATCH',
             data: {
                 recurring_appointment: {
@@ -884,7 +884,7 @@ let nonMasterDragOptions = (eventDropInfo) => {
         }
         handleAppointmentOverlapRevert(eventDropInfo.revert)
         $.ajax({
-            url: `${eventDropInfo.event.extendedProps.base_url}.js`,
+            url: `${window.planningPath}/${eventDropInfo.event.extendedProps.eventType}s/${eventDropInfo.event.extendedProps.eventId}.js`,
             type: 'PATCH',
             data: ajaxData,
             success: function () {

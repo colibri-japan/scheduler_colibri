@@ -13,6 +13,7 @@ json.array! @appointments.each do |appointment|
         json.resourceIds ["nurse_#{appointment.nurse_id}", "patient_#{appointment.patient_id}"]
         json.serviceType appointment.title || ''
         json.eventType 'appointment'
+        json.eventId appointment.id
 
         json.patient do 
             json.name appointment.patient.name 
@@ -23,11 +24,5 @@ json.array! @appointments.each do |appointment|
             json.name appointment.nurse.name
         end
 
-        json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
-
         json.borderColor appointment.borderColor
-
-        json.base_url planning_appointment_path(@planning, appointment)
-        json.edit_url edit_planning_appointment_path(@planning, appointment)
-        json.recurring_appointment_path "/plannings/#{@planning.id}/recurring_appointments/#{appointment.recurring_appointment_id}/edit" if appointment.recurring_appointment_id.present?
 end

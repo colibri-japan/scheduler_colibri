@@ -18,11 +18,6 @@ json.patient do
 end
 json.serviceType appointment.title || ''
 
-json.frequency appointment.recurring_appointment.frequency if appointment.recurring_appointment_id.present?
-
 json.borderColor appointment.borderColor    
 json.eventType 'appointment'
-
-json.base_url planning_appointment_path(appointment.planning, appointment)
-json.edit_url edit_planning_appointment_path(appointment.planning, appointment)
-json.recurring_appointment_path "/plannings/#{appointment.planning_id}/recurring_appointments/#{appointment.recurring_appointment_id}/edit" if appointment.recurring_appointment_id.present?
+json.eventId appointment.id

@@ -21,9 +21,5 @@ json.array! slots do |slot|
 	json.className background_wished_slot_css(wished_slot)
 	json.borderColor wished_slot.color_from_rank unless params[:background] == 'true'
 	json.eventType 'wished_slot'
-
-
-	json.base_url planning_wished_slot_path(@planning, wished_slot)
-	json.update_url planning_wished_slot_path(@planning, wished_slot, method: :patch)
-	json.edit_url edit_planning_wished_slot_path(@planning, wished_slot)
+	json.eventId wished_slot.id
 end

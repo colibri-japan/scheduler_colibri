@@ -140,8 +140,7 @@ class RecurringAppointment < ApplicationRecord
 					name: self.nurse.try(:name)
 				},
 				eventType: 'recurring_appointment',
-				base_url: "/plannings/#{self.planning_id}/recurring_appointments/#{self.id}",
-				edit_url: "/plannings/#{self.planning_id}/recurring_appointments/#{self.id}/edit"
+				eventId: self.id
 			}
 		end
 

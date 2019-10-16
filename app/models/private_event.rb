@@ -28,14 +28,12 @@ class PrivateEvent < ApplicationRecord
 			resourceIds: ["nurse_#{self.nurse_id}", "patient_#{self.patient_id}"],
 			allDay: self.all_day?,
 			color: '#ff7777',
-			base_url: "/plannings/#{self.planning_id}/private_events/#{self.id}",
-			edit_url: "/plannings/#{self.planning_id}/private_events/#{self.id}/edit",
-			displayable: true,
 			serviceType: self.title || '',
 			nurse: {
 				name: self.nurse.try(:name),
 			},
 			eventType: 'private_event',
+			eventId: self.id,
 			patient: {
 				name: self.patient.try(:name),
 				address: self.patient.try(:address)

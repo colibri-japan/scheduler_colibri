@@ -115,10 +115,9 @@ class WishedSlot < ApplicationRecord
         private_event: false,
         serviceType: title_from_rank,
         eventType: 'wished_slot',
+        eventId: self.id,
         className: ApplicationController.helpers.background_wished_slot_css(self),
-        rendering: options[:background] == true ? 'background' : '',
-        base_url: "/plannings/#{planning_id}/wished_slots/#{id}",
-        edit_url: "/plannings/#{planning_id}/wished_slots/#{id}/edit"
+        rendering: options[:background] == true ? 'background' : ''
       }
     end
 

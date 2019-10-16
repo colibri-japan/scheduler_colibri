@@ -20,9 +20,6 @@
             json.name recurring_appointment.nurse.try(:name)
         end
         json.eventType 'recurring_appointment'
-
-        json.base_url planning_recurring_appointment_path(@planning, recurring_appointment)
-        json.update_url planning_recurring_appointment_path(@planning, recurring_appointment, method: :patch)
-        json.edit_url edit_planning_recurring_appointment_path(@planning, recurring_appointment)
+        json.eventId recurring_appointment.id
     end
 end

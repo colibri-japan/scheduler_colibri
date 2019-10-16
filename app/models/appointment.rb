@@ -89,7 +89,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def weekend_holiday_salary_line_item?
-		!self.starts_at.on_weekday? || HolidayJp.between(self.starts_at.beginning_of_day, self.ends_at.end_of_day).present?
+		!self.starts_at.on_weekday? || HolidayJp.holiday?(self.starts_at.to_date)
 	end
 
 	def as_json(options = {})

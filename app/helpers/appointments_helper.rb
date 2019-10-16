@@ -1,5 +1,17 @@
 module AppointmentsHelper
 
+    def from_seconds_to_hours_minutes(seconds)
+        if seconds.present?
+            minutes = (seconds / 60) % 60 
+            hours = seconds / (60 * 60)
+
+            format("%02d:%02d", hours, minutes)
+        else
+            '00:00'
+        end
+
+    end
+
     def date_and_time(appointment)
         "#{appointment.starts_at.strftime('%-m月%-d日')} #{appointment.starts_at.strftime('%-H:%M')} ~ #{appointment.ends_at.strftime('%-H:%M')}"
     end
@@ -34,7 +46,7 @@ module AppointmentsHelper
 
     
     def weekend_holiday_appointment_css(appointment)
-        if HolidayJp.between(appointment.starts_at.beginning_of_day, appointment.ends_at.end_of_day).present? || appointment.starts_at.wday == 0
+        if HolidayJp.holiday?(appointment.starts_at.to_date) || appointment.starts_at.wday == 0
             "sunday-holiday-provided-service"
         elsif appointment.starts_at.wday == 6
             "saturday-provided-service"

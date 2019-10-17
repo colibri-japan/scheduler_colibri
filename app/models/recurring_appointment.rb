@@ -114,34 +114,38 @@ class RecurringAppointment < ApplicationRecord
 
 	def as_json(options = {})
 		date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
-
+		default_hash = {
+			allDay: self.all_day?,
+			id: "recurring_#{self.id}",
+			color: self.color,
+			frequency: self.frequency,
+			description: self.description || '',
+			patient_id: self.patient_id,
+			nurse_id: self.nurse_id,
+			termination_date: self.termination_date,
+			title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
+			start: self.starts_at,
+			end: self.ends_at,
+			resourceIds: ["patient_#{self.patient_id}", "nurse_#{self.nurse_id}"],
+			serviceType: self.title,
+			service_id: self.service_id,
+			patient: {
+				name: self.patient.try(:name),
+				address: self.patient.try(:address)
+			},
+			nurse: {
+				name: self.nurse.try(:name)
+			},
+			eventType: 'recurring_appointment',
+			eventId: self.id
+		}
 		returned_json_array = []
+
 		self.appointments(options[:start_time], options[:end_time]).each do |occurrence|
-			returned_json_array << {
-				allDay: self.all_day?,
-				id: "recurring_#{self.id}",
-				color: self.color,
-				frequency: self.frequency,
-				description: self.description || '',
-				patient_id: self.patient_id,
-				nurse_id: self.nurse_id,
-				termination_date: self.termination_date,
-				title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
-				start: DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min).try(:strftime, date_format),
-				end: (DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i).try(:strftime, date_format),
-				resourceIds: ["patient_#{self.patient_id}", "nurse_#{self.nurse_id}"],
-				serviceType: self.title,
-				service_id: self.service_id,
-				patient: {
-					name: self.patient.try(:name),
-					address: self.patient.try(:address)
-				},
-				nurse: {
-					name: self.nurse.try(:name)
-				},
-				eventType: 'recurring_appointment',
-				eventId: self.id
-			}
+			occurrence_hash = default_hash.dup 
+			occurrence_hash[:start] = DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.starts_at.hour, self.starts_at.min).try(:strftime, date_format)
+			occurrence_hash[:end] = (DateTime.new(occurrence.year, occurrence.month, occurrence.day, self.ends_at.hour, self.ends_at.min) + self.duration.to_i).try(:strftime, date_format)
+			returned_json_array << occurrence_hash
 		end
 
 		returned_json_array

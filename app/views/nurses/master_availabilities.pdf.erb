@@ -32,6 +32,6 @@
 
 <div style="font-size:1.7em;text-align:right">○:空きあり  △:多少空きあり  ✕:要相談</div>
 
-<div style='margin-top:30px;border:0.5px solid black;white-space:pre-wrap;font-size:1.4em'><%= simple_format(@text) if @text.present? %></div>
+<div style='margin-top:30px;border:0.5px solid black;white-space:pre-wrap;font-size:1.4em'><%= simple_format(@corporation.availabilities_default_text) %></div>
 
 <div style='margin-bottom:10px;font-size:2.2em;font-weight:bold;text-align:center'><%= @corporation.name %>   連絡先：<%= @corporation.try(:phone_number) %></div> 

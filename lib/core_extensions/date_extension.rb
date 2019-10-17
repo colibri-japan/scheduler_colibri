@@ -50,19 +50,11 @@ class Date
     end
 
     def self.parse_jp_date(jp_date = Date.today.to_jp_date)
-        puts 'parsing date'
         if jp_date.size == 11
-            puts 'right size'
-
             jis_era = WAREKI_ERA.key(jp_date[0..1])
             jis_year = jp_date[2..3]
             jis_month = jp_date[5..6]
             jis_day = jp_date[8..9]
-
-            puts 'string to parse'
-            puts "#{jis_era}#{jis_year}.#{jis_month}.#{jis_day}"
-            puts 'parsed string'
-            puts self.jisx0301("#{jis_era}#{jis_year}.#{jis_month}.#{jis_day}")
 
             self.jisx0301("#{jis_era}#{jis_year}.#{jis_month}.#{jis_day}") rescue nil
         else

@@ -1381,7 +1381,7 @@ $(document).on('turbolinks:load', function(){
       minYear: 2016,
       maxYear: 2030,
       locale: {
-        format: 'YYYY年MM月DD日',
+        format: 'YYYY-MM-DD',
         daysOfWeek: [
           "日",
           "月",

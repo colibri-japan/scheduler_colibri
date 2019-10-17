@@ -186,22 +186,18 @@ class NursesController < ApplicationController
   end
 
   def master_availabilities
-    @query_day = params[:date].to_date rescue nil
-    @text = params[:text]
-
-    @master_availabilities = @query_day.present? ? @corporation.nurses.displayable.master_availabilities_per_slot_and_wday(@query_day) : []
-
-    respond_to do |format|
-      format.pdf do 
-        render pdf: '空き情報',
-        page_size: 'A4',
-        layout: 'pdf.html',
-        orientation: 'landscape',
-        encoding: 'UTF-8',
-        zoom: 1,
-        dpi: 75
-      end
-    end
+    EmailMasterAvailabilitiesWorker.perform_async(params[:date], current_user.id)
+    #respond_to do |format|
+    #  format.pdf do 
+    #    render pdf: '空き情報',
+    #    page_size: 'A4',
+    #    layout: 'pdf.html',
+    #    orientation: 'landscape',
+    #    encoding: 'UTF-8',
+    #    zoom: 1,
+    #    dpi: 75
+    #  end
+    #end
   end
 
   def recalculate_salary

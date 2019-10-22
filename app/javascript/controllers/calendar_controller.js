@@ -232,12 +232,14 @@ let createCalendar = () => {
                 if (titleTag) {
                     titleTag.classList.add('title-responsive')
                 }
-                if (['timeGridDay', 'timeGridWeek'].includes(info.view.type)) {
+                if (info.view.type === 'timeGridWeek') {
                     var timeTag = info.el.querySelector('.fc-time')
                     if (timeTag) {
-                        timeTag.remove()
+                        var newDate = timeTag.innerHTML.match(/[^ -]*/i)[0]
+                        timeTag.innerHTML = newDate 
+                        timeTag.classList.add('fc-time-responsive')
                     }
-                } else if (info.view.type === 'resourceTimelineWeek') {
+                } else if (['timeGridDay', 'resourceTimelineWeek'].includes(info.view.type)) {
                     var timeTag = info.el.querySelector('.fc-time')
                     if (timeTag) {
                         timeTag.classList.add('fc-time-responsive')

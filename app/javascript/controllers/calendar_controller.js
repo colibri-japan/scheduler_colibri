@@ -207,10 +207,10 @@ let createCalendar = () => {
                 var fcCenter = document.getElementsByClassName('fc-center')[0]
                 if (fcCenter) {
                     var title = fcCenter.childNodes[0]
-                    if (info.view.type === 'resourceTimeGridDay') {
-                        var fullDate = title.textContent
-                        var date
-                        if (fullDate.length >= 10) {
+                    var fullDate = title.textContent
+                    var date
+                    if (info.view.type === 'resourceTimeGridDay' || info.view.type === 'dayGridMonth') {
+                        if (fullDate.length >= 7) {
                             date = fullDate.substr(5)
                             title.innerText = date
                         }

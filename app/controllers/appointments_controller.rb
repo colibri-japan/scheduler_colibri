@@ -19,14 +19,12 @@ class AppointmentsController < ApplicationController
     end
 
     if params[:start].present? && params[:end].present? 
-      @appointments = @appointments.overlapping(params[:start]..params[:end])
+      @appointments = @appointments.in_range(params[:start]..params[:end])
     end
-
-    patient_resource = params[:patient_resource].present?
 
     if stale?(@appointments)
       respond_to do |format|
-        format.json {render json: @appointments.as_json(patient_resource: patient_resource)}
+        format.json {render json: @appointments.as_json}
       end
     end
   end

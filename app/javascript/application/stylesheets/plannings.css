@@ -463,7 +463,7 @@ ul.chosen-results {
 	position: fixed;
 	text-align: center;
 	vertical-align: middle;
-	z-index: 10;
+	z-index: 6;
 	width: 56px;
 	height: 56px;
 	border-radius: 50px;
@@ -631,7 +631,7 @@ p.setting-title {
 		height: auto !important;
 	}
 
-	#colibri-batch-action-button, #colibri-batch-master-action-button {
+	#colibri-batch-action-button {
 		height: 90px;
 		width: 90px;
 		border-radius: 90px;

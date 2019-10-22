@@ -74,6 +74,10 @@
 		display: block;
 	}
 
+	.responsive-landscape-only {
+		display: inline;
+	}
+
     /* calendar layout styles */
 
     #availabilities-print {
@@ -217,6 +221,11 @@
 		height: 60px;
 		width: 60px;
 		border-radius: 60px;
+	}
+
+	.batch-action-button {
+		bottom: 35px;
+		right: 35px;
 	}
 
 	span.glyphicon.glyphicon-pencil.batch-action-pencil {

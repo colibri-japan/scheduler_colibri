@@ -261,6 +261,11 @@
 		width: 60px;
 		border-radius: 60px;
 	}
+
+	.batch-action-button {
+		bottom: 80px;
+		right: 20px;
+	}
 	
 	span.glyphicon.glyphicon-pencil.batch-action-pencil {
 		line-height: 45px;

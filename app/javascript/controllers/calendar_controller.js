@@ -232,7 +232,7 @@ let createCalendar = () => {
                 if (titleTag) {
                     titleTag.classList.add('title-responsive')
                 }
-                if (info.view.type === 'timeGridWeek') {
+                if (info.view.type === 'resourceTimeGridDay') {
                     var timeTag = info.el.querySelector('.fc-time')
                     if (timeTag) {
                         var newDate = timeTag.innerHTML.match(/[^ -]*/i)[0]
@@ -245,11 +245,12 @@ let createCalendar = () => {
                         timeTag.classList.add('fc-time-responsive')
                     }
                 } 
-                if (['dayGridMonth', 'resourceTimeGridDay'].includes(info.view.type)) {
+                if (['dayGridMonth', 'timeGridWeek'].includes(info.view.type)) {
                     var timeTag = info.el.querySelector('.fc-time')
                     if (timeTag) {
-                        var newDate = timeTag.innerHTML.match(/[^ -]*/i)[0]
-                        timeTag.innerHTML = newDate 
+                        var startTime = timeTag.innerHTML.match(/[^ -]*/i)[0]
+                        var endTime = timeTag.innerHTML.substr(timeTag.innerHTML.indexOf('-'))
+                        timeTag.innerHTML = `${startTime}<span class="responsive-landscape-only">${endTime}</span>`
                         timeTag.classList.add('fc-time-responsive')
                     }
                 }

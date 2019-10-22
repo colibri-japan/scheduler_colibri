@@ -48,8 +48,7 @@ class NursesController < ApplicationController
   def show
     authorize @nurse, :same_corporation_as_current_user?
 
-    #reporting lines that need to be changed
-    @patients_with_services = Patient.joins(:appointments).select("patients.*, sum(appointments.duration) as sum_duration").where(appointments: {nurse_id: @nurse.id, archived_at: nil, cancelled: false, edit_requested: false}).active.group('patients.id').order('sum_duration DESC')
+    @patients_with_services = Patient.joins(:appointments).select("patients.name,sum(appointments.duration) as sum_duration").where(appointments: {nurse_id: @nurse.id, archived_at: nil, cancelled: false, edit_requested: false}).active.group('patients.id').order('sum_duration DESC').to_a
     @appointments_grouped_by_category = @nurse.appointments.operational.where(planning_id: @planning.id).in_range((Date.today - 2.months)..Date.today).grouped_by_weighted_category
     
     respond_to do |format|

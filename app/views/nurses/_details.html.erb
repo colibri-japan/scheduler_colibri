@@ -24,7 +24,7 @@
 			<% if @nurse.days_worked.present? %>
 				<tr>
 					<td class="details-table-head">稼動日数</td>
-					<td><%= @nurse.days_worked %>日</td>
+					<td><%= @nurse.days_worked_at(Date.today) %>日</td>
 				</tr>
 			<% end %>
 			<% if @nurse.description.present? %>
@@ -37,14 +37,14 @@
 	</div>
 	<div id="service-history-block">
 		<div class='resource-details-block-title'>過去の<%= client_resource_name(@corporation.business_vertical) %></div>
-		<% @patients_with_services.limit(3).each_with_index do |patient, index| %>
+		<% @patients_with_services[0..2].each_with_index do |patient, index| %>
 			<div class="resource-history"><%= index + 1 %><%= " - #{patient.name}様：" %><%= from_seconds_to_hours_minutes(patient.sum_duration) %></div>
 		<% end %>
-		<% if @patients_with_services.all[2..-1].present? %>
+		<% if @patients_with_services[3..-1].present? %>
 			<div class="resource-history">
 				<button class='btn btn-sm btn-light' id="see-more-resource-history-button">もっと見る</button>
 				<div id="more-resource-history" style="display: none">
-					<%= @patients_with_services.all[2..-1].map{|patient| patient.name }.join(', ') %>
+					<%= @patients_with_services[3..-1].map{|patient| patient.name }.join(', ') %>
 				</div>
 			</div>
 		<% end %>

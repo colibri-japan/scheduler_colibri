@@ -35,7 +35,7 @@ class CompletionReportsController < ApplicationController
 
   def index
     now_in_japan = Time.current.in_time_zone('Tokyo')
-    @appointments_without_reports = Appointment.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).where('appointments.starts_at between ? and ?', (now_in_japan - 7.days), now_in_japan).order(starts_at: :desc).limit(20)
+    @appointments_without_reports = Appointment.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.where('appointments.starts_at between ? and ?', (now_in_japan - 7.days), now_in_japan).order(starts_at: :desc).limit(20)
     @recent_completion_reports = CompletionReport.includes(reportable: [:nurse, :patient]).from_appointments.joins('left join appointments on appointments.id = completion_reports.reportable_id').where('appointments.starts_at between ? and ?', (now_in_japan - 7.days), now_in_japan).order('appointments.starts_at desc').limit(20)
     
     @appointments_without_reports = @appointments_without_reports.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present?

@@ -14,11 +14,11 @@ class RecalculateNurseMonthlyWageWorker
 
                 if nurse_service_wage.present?
                     unit_wage_to_apply = appointment.weekend_holiday_salary_line_item? ? (nurse_service_wage.weekend_unit_wage || nurse_service_wage.unit_wage || 0) : (nurse_service_wage.unit_wage || 0)
-                    total_wage = appointment.service.hour_based_wage? ? ((appointment.duration.to_f || 0) / 3600) * unit_wage_to_apply : unit_wage_to_apply
+                    total_wage = appointment.service.hour_based_wage? ? ((appointment.duration.to_f || 0) / 3600) * unit_wage_to_apply.to_i : unit_wage_to_apply.to_i
                     appointment.update_column(:total_wage, total_wage)
                 else
                     unit_wage_to_apply = appointment.weekend_holiday_salary_line_item? ? (appointment.service.weekend_unit_wage || appointment.service.unit_wage || 0) : (appointment.service.unit_wage || 0)
-                    total_wage = appointment.service.hour_based_wage? ? ((appointment.duration.to_f || 0) / 3600) * unit_wage_to_apply : unit_wage_to_apply
+                    total_wage = appointment.service.hour_based_wage? ? ((appointment.duration.to_f || 0) / 3600) * unit_wage_to_apply.to_i : unit_wage_to_apply.to_i
                     appointment.update_column(:total_wage, total_wage)
                 end
             end

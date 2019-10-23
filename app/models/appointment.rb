@@ -217,10 +217,10 @@ class Appointment < ApplicationRecord
 			self.total_invoiced = self.service.try(:invoiced_amount)
 			if self.service.nurse_service_wages.where(nurse_id: self.nurse_id).present?
 				unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:weekend_unit_wage) || self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0) : (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
-				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply) : unit_wage_to_apply
+				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i) : unit_wage_to_apply.to_i
 			else
 				unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.weekend_unit_wage || self.service.unit_wage || 0) : (self.service.unit_wage || 0)
-				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply) : unit_wage_to_apply
+				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i) : unit_wage_to_apply.to_i
 			end
 		end
 	end

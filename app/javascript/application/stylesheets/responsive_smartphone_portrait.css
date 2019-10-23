@@ -436,10 +436,6 @@
 		width: 100%;
 	}
 
-	.patient-dashboard-panel-body {
-		overflow-y: hidden;
-	}
-
 	.patient-right-panel {
 		display: none;
 	}

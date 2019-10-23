@@ -38,9 +38,7 @@ class NursesController < ApplicationController
 
     respond_to do |format|
       format.html 
-      if stale?(nurses)
-        format.json {render json: @nurses.as_json}
-      end
+      format.json {render json: @nurses.as_json}
     end
 
   end

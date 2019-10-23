@@ -23,9 +23,7 @@ class PatientsController < ApplicationController
     respond_to do |format|
       format.html
       format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"一覧_#{Date.today.strftime('%Y年%-m月%-d日')}.xlsx\""}
-      if stale?(@patients)
-        format.json {render json: @patients.as_json}
-      end
+      format.json {render json: @patients.as_json}
     end
   end
 

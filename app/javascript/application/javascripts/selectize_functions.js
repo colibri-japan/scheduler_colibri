@@ -217,4 +217,16 @@ document.addEventListener('turbolinks:load', function () {
     $('#user_nurse_id').selectize()
 
     $('#user_default_calendar_option').selectize()
+
+    $('#nurse_resource_filter').on('change', function () {
+        let nurse_ids = $(this).val()
+        let resourceUrl = window.resourceUrl
+        if (nurse_ids && resourceUrl) {
+            let connector = resourceUrl.indexOf('?') === -1 ? '?' : '&'
+            window.resourceUrl = `${resourceUrl}${connector}nurse_ids=${nurse_ids}`
+            if (window.fullCalendar) {
+                window.fullCalendar.refetchResources()
+            }
+        }
+    })
 })

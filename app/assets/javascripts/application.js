@@ -1203,18 +1203,6 @@ $(document).on('turbolinks:load', function(){
   })
 
 
-  $('#nurse_resource_filter').on('change', function(){
-    let nurse_ids = $(this).val()
-    let resourceUrl = window.resourceUrl 
-    if (nurse_ids && resourceUrl) {
-      let connector = resourceUrl.indexOf('?') === -1 ? '?' : '&'
-      window.resourceUrl = `${resourceUrl}${connector}nurse_ids=${nurse_ids}`
-      if (window.fullCalendar) {
-        window.fullCalendar.refetchResources()
-      }
-    }
-  })
-
   $('#toggle-switch-recurring-appointments').click(function(){
     $(this).hide()
     $('#toggle-switch-wished-slots').show()

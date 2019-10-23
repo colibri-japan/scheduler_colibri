@@ -6,8 +6,6 @@ class ServicesController < ApplicationController
 
     def index
         @services = @corporation.services.without_nurse_id.order_by_title
-
-        fresh_when etag: @services, last_modified: @services.maximum(:updated_at)
     end
 
     def new

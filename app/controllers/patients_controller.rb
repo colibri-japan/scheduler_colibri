@@ -20,11 +20,11 @@ class PatientsController < ApplicationController
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
     
-    if stale?(@patients)
-      respond_to do |format|
-        format.html
+    respond_to do |format|
+      format.html
+      format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"一覧_#{Date.today.strftime('%Y年%-m月%-d日')}.xlsx\""}
+      if stale?(@patients)
         format.json {render json: @patients.as_json}
-        format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"一覧_#{Date.today.strftime('%Y年%-m月%-d日')}.xlsx\""}
       end
     end
   end
@@ -230,12 +230,7 @@ class PatientsController < ApplicationController
     params[:kaigo_certification_date] = Date.parse_jp_date(params[:kaigo_certification_date]) rescue nil
     params[:kaigo_certification_validity_end] = Date.parse_jp_date(params[:kaigo_certification_validity_end]) rescue nil
     params[:kaigo_certification_validity_start] = Date.parse_jp_date(params[:kaigo_certification_validity_start]) rescue nil
-    puts 'birthday before and after'
-    puts params[:birthday]
-    puts params[:birthday].class.name
-    puts Date.parse_jp_date(params[:birthday])
     params[:birthday] = Date.parse_jp_date(params[:birthday]) rescue nil
-    puts params[:birthday]
     params
   end
 

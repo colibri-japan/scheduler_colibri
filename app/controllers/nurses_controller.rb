@@ -36,9 +36,9 @@ class NursesController < ApplicationController
 
     @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
 
-    if stale?(nurses)
-      respond_to do |format|
-        format.html 
+    respond_to do |format|
+      format.html 
+      if stale?(nurses)
         format.json {render json: @nurses.as_json}
       end
     end

@@ -79,8 +79,13 @@
       <tbody>
         <% @deactivated_patients.each do |patient| %>
           <% cache patient do %>
-            <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient) %>" id="patient_row_<%= patient.id %>">
-              <%= render 'patient_row', patient: patient %>
+            <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>" id='<%= "patient_row_#{patient.id}" %>'>
+              <td><%= patient.name %></td>
+              <% if @corporation.elderly_care_and_nursing? %>
+                <td><%= "#{patient.date_of_contract.strftime("%Y年%-m月%-d日")} ~ " if patient.date_of_contract.present? %><%= patient.end_of_contract.strftime("%Y年%-m月%-d日") if patient.end_of_contract.present? %></td>
+              <% end %>
+              <td><%= patient.phone_number %></td>
+              <td><%= patient.address %></td>
             </tr>
           <% end %>
         <% end %>

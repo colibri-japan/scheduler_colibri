@@ -7,10 +7,15 @@ class RecurringAppointmentsController < ApplicationController
 
 
   def index
-    @recurring_appointments = @planning.recurring_appointments.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).not_archived.includes(:patient, :nurse)
+    @recurring_appointments = RecurringAppointment.where('(recurring_appointments.termination_date IS NULL) OR ( recurring_appointments.termination_date > ?)', params[:start].to_date.beginning_of_day).not_archived.includes(:patient, :nurse)
 
-    @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
-    @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) if params[:patient_id].present? && params[:patient_id] != 'undefined'
+    if params[:nurse_id].present? && params[:nurse_id] != 'undefined'
+      @recurring_appointments = @recurring_appointments.where(nurse_id: params[:nurse_id]) 
+    elsif params[:patient_id].present? && params[:patient_id] != 'undefined'
+      @recurring_appointments = @recurring_appointments.where(patient_id: params[:patient_id]) 
+    else
+      @recurring_appointments = @recurring_appointments.where(planning_id: @planning.id)
+    end
 
     if stale?(@recurring_appointments)
       respond_to do |format|

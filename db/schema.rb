@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191022195729) do
+ActiveRecord::Schema.define(version: 20191023144637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(version: 20191022195729) do
     t.index ["recurring_appointment_id"], name: "index_appointments_on_recurring_appointment_id"
     t.index ["second_verifier_id"], name: "index_appointments_on_second_verifier_id"
     t.index ["service_id"], name: "index_appointments_on_service_id"
+    t.index ["starts_at", "nurse_id"], name: "index_appointments_on_starts_at_and_nurse_id"
+    t.index ["starts_at", "patient_id"], name: "index_appointments_on_starts_at_and_patient_id"
     t.index ["starts_at", "planning_id"], name: "index_appointments_on_starts_at_and_planning_id"
     t.index ["verifier_id"], name: "index_appointments_on_verifier_id"
   end
@@ -336,6 +338,7 @@ ActiveRecord::Schema.define(version: 20191022195729) do
     t.date "kaigo_certification_date"
     t.integer "second_care_manager_id"
     t.index ["care_manager_id"], name: "index_patients_on_care_manager_id"
+    t.index ["corporation_id", "kana"], name: "index_patients_on_corporation_id_and_kana"
     t.index ["corporation_id"], name: "index_patients_on_corporation_id"
     t.index ["nurse_id"], name: "index_patients_on_nurse_id"
   end
@@ -431,8 +434,10 @@ ActiveRecord::Schema.define(version: 20191022195729) do
     t.integer "duration"
     t.bigint "service_id"
     t.datetime "termination_date"
+    t.index ["nurse_id", "termination_date"], name: "index_recurring_appointments_on_nurse_id_and_termination_date"
     t.index ["nurse_id"], name: "index_recurring_appointments_on_nurse_id"
     t.index ["original_id"], name: "index_recurring_appointments_on_original_id"
+    t.index ["patient_id", "termination_date"], name: "index_recurring_appointments_on_patient_id_and_termination_date"
     t.index ["patient_id"], name: "index_recurring_appointments_on_patient_id"
     t.index ["planning_id", "termination_date"], name: "index_recurring_planning_termination"
     t.index ["planning_id"], name: "index_recurring_appointments_on_planning_id"

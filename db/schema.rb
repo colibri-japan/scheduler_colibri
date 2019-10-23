@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191023144637) do
+ActiveRecord::Schema.define(version: 20191023154434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -399,9 +399,9 @@ ActiveRecord::Schema.define(version: 20191023144637) do
     t.datetime "updated_at", null: false
     t.bigint "patient_id"
     t.boolean "edit_requested", default: false
-    t.index ["nurse_id"], name: "index_private_events_on_nurse_id"
-    t.index ["patient_id"], name: "index_private_events_on_patient_id"
-    t.index ["planning_id"], name: "index_private_events_on_planning_id"
+    t.index ["nurse_id", "starts_at", "ends_at"], name: "index_private_events_on_nurse_id_and_starts_at_and_ends_at"
+    t.index ["patient_id", "starts_at", "ends_at"], name: "index_private_events_on_patient_id_and_starts_at_and_ends_at"
+    t.index ["planning_id", "starts_at", "ends_at"], name: "index_private_events_on_planning_id_and_starts_at_and_ends_at"
   end
 
   create_table "read_marks", id: :serial, force: :cascade do |t|

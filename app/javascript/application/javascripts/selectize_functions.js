@@ -34,6 +34,33 @@ window.appointmentSelectize = () => {
     $('#appointment_service_id').selectize()
 }
 
+window.colorSelectize = () => {
+    $('#color-select').selectize({
+        render: {
+            option: function (data, escape) {
+                var color = data.value;
+                return (
+                    '<div class="option" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding-right:35px"><div>' +
+                    escape(data.text) +
+                    '</div><div style="background-color: ' +
+                    color +
+                    '; height: 7px; width: 50px;border-radius: 25px;"></div></div>'
+                );
+            },
+            item: function (data, escape) {
+                var colors = data.value;
+                return (
+                    '<div class="option" style="display:flex;width:calc(100% - 8px);justify-content:space-between;align-items:center;padding-right:31px"><div>' +
+                    escape(data.text) +
+                    '</div><div style="background-color: ' +
+                    colors +
+                    '; height: 7px; width: 50px; border-radius: 25px;"></div></div>'
+                );
+            }
+        }
+    })
+}
+
 window.skillsSelectize = () => {
     $('#nurse_skill_list').selectize({
         delimiter: ',',

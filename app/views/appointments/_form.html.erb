@@ -73,9 +73,14 @@
     </div>
 
 
-    <div class="form-group">
-      <%= form.label :color, "カラー", class: "colibri-form-label-dark", style: 'min-width:75px' %>
-      <%= form.select :color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], appointment.color), id: :appointment_color %>
+    <div class="form-group" style="display:flex">
+      <div>
+        <%= form.label :color, "カラー", class: "colibri-form-label-dark", style: 'min-width:75px' %>
+      </div>
+      <div style="width:200px">
+        <%= form.select :color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], appointment.color), {}, {id: 'color-select'} %>
+      </div>
+
   　</div> 
 
     <div class="form-group">

@@ -50,7 +50,7 @@ window.colorSelectize = () => {
             item: function (data, escape) {
                 var colors = data.value;
                 return (
-                    '<div style="width:calc(100%-4px);display:inline-block;padding-right:31px"><div class="option" style="display:flex;width:100%;justify-content:space-between;align-items:center"><div>' +
+                    '<div style="width:calc(100% - 6px);margin:0 auto"><div class="option" style="display:flex;width:100%;justify-content:space-between;align-items:center;padding-right:31px"><div>' +
                     escape(data.text) +
                     '</div><div style="background-color: ' +
                     colors +

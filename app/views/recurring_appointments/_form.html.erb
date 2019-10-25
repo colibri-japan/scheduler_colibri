@@ -66,7 +66,7 @@
 
       <div class="form-group colibri-datetime-group">
         <div>
-          <%= form.label :anchor, "開始", class: "colibri-form-label-dark", style: 'min-width:50px' %>
+          <%= form.label :anchor, "開始", class: "colibri-form-label-dark", style: 'min-width:60px' %>
         </div>
         <div class="colibri-datetime-input-container">
           <% if @recurring_appointment.new_record? %>
@@ -82,7 +82,7 @@
 
       <div class="form-group colibri-datetime-group">
         <div>
-          <%= form.label :end_day, "終了", class: "colibri-form-label-dark", style: 'min-width:50px' %>
+          <%= form.label :end_day, "終了", class: "colibri-form-label-dark", style: 'min-width:60px' %>
         </div>
         <div class="colibri-datetime-input-container">
           <% if @recurring_appointment.new_record? %>
@@ -98,9 +98,9 @@
 
       <div class="form-group" style="display:flex">
         <div>
-          <%= form.label :color, "カラー", class: "colibri-form-label-dark" %>
+          <%= form.label :color, "カラー", class: "colibri-form-label-dark", style: 'min-width:60px' %>
         </div>
-        <div style="width:300px">
+        <div style="width:200px">
           <%= form.select :color,  options_for_select([['デフォルト', '#7AD5DE'], ['青', '#3D9BF3'], ['緑', '#3BC359'], ['ピンク', '#EE59A6'], ['紫', '#A587F6'], ['オレンジ', '#F98050'], ['黄色', '#FBC32D'], ['赤', '#EE584C']], recurring_appointment.color), {}, id: 'color-select' %>
         </div>
       </div> 

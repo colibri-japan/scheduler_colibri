@@ -106,10 +106,6 @@ gem 'oj'
 #multi json to always pick the fastest json backend 
 gem 'multi_json'
 
-# carrierwave and fog AWS to upload and permanently store files
-gem 'carrierwave'
-gem 'fog-aws'
-
 #gem for importing popper js
 gem 'popper_js', '~> 1.14.5'
 
@@ -150,10 +146,10 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'sys-proctable', '1.1.5'
+  gem 'derailed_benchmarks'
   gem 'web-console', '>= 3.3.0'
 end
-
-gem 'rails_12factor', group: :production
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

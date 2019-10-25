@@ -50,11 +50,11 @@ window.colorSelectize = () => {
             item: function (data, escape) {
                 var colors = data.value;
                 return (
-                    '<div class="option" style="display:flex;width:calc(100% - 8px);justify-content:space-between;align-items:center;padding-right:31px"><div>' +
+                    '<div style="width:calc(100%-4px);display:inline-block;padding-right:31px"><div class="option" style="display:flex;width:100%;justify-content:space-between;align-items:center"><div>' +
                     escape(data.text) +
                     '</div><div style="background-color: ' +
                     colors +
-                    '; height: 7px; width: 50px; border-radius: 25px;"></div></div>'
+                    '; height: 7px; width: 50px; border-radius: 25px;"></div></div></div>'
                 );
             }
         }

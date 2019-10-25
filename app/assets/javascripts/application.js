@@ -1257,7 +1257,7 @@ $(document).on('turbolinks:load', function(){
       window.fullCalendar.setOption('aspectRatio', 1.4)
       window.fullCalendar.setOption('height', 'auto')
     }
-    if (window.printDates && window.printDates === false) {
+    if (!window.printDates) {
       $('.fc-day-header.fc-mon').html('月')
       $('.fc-day-header.fc-tue').html('火')
       $('.fc-day-header.fc-wed').html('水')

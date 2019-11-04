@@ -14,7 +14,7 @@
 }
 
 #colibri-pages-nav > #brand-container > #brand-name {
-    color: #393e46 !important;
+    color: black;
     font-size: 1.7em;
     display: flex;
     justify-content: center;
@@ -36,20 +36,9 @@
     color: white !important;
 }
 
-#colibri-banner {
-    height: 95vh;
-    background-color: #ff9090;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#colibri-banner-text {
-    color: white;
-    font-size: 2.7em;
-    max-width: 66%;
-    text-align: center;
+#top-subsection {
+    margin-bottom: 0px;
+    padding: 70px 50px 0px 50px;
 }
 
 #presentation-text {
@@ -64,7 +53,7 @@
 }
 
 .colibri-home-presentation-title {
-    font-size: 1.6em;
+    font-size: 2.4em;
     line-height: 1.9em;
 }
 
@@ -111,7 +100,7 @@ footer {
 }
 
 .colibri-home-subsection {
-    color: #393e46;
+    color: black;
     padding: 70px 50px 70px 50px;
     width: 100%;
 }
@@ -241,6 +230,54 @@ footer {
     margin-top:3px;
 }
 
+#colibri-issues-head {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#colibri-issues {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.issue-container {
+    flex: 1;
+    max-width: 300px;
+    background-color: #F7F9FE;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.issue-body {
+    margin-bottom: 30px;
+}
+
+.issue-title {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.home-subsection-detailed-content {
+    display: flex;
+}
+
+.detailed-content-container {
+    margin: 20px;
+    flex: 1;
+}
+
+.detailed-content-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
 
 
 @media screen and (orientation: portrait) {

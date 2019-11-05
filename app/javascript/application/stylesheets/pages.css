@@ -179,11 +179,11 @@ footer {
     padding-left: 0pt;
 }
 
-.aws-certification {
+.list-style-p {
     margin-bottom: 0px;
 }
 
-.aws-certification::before {
+.list-style-p::before {
     content: '•';
     color: left;
 }

@@ -218,7 +218,9 @@ li.planning-menu-selected {
 }
 
 
-.resource-list-element, a.planning-list-element.colorize, .master-list-element {
+p.resource-list-element, a.planning-list-element.colorize, .master-list-element {
+	font-size: 13px;
+	line-height: 18px;
 	padding-bottom: 3px;
 	padding-top: 3px;
 	margin-bottom: 0;

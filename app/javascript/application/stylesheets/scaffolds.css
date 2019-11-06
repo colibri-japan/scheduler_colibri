@@ -7,10 +7,13 @@ body {
   line-height: 18px;
 }
 
-p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
+ol, ul, td {
   font-size: 13px;
   line-height: 18px;
+}
+
+p {
+  font-family: verdana, arial, helvetica, sans-serif;
 }
 
 pre {

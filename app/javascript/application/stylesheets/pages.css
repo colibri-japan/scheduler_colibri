@@ -120,9 +120,13 @@ footer {
     width: 100%;
 }
 
+.margin-md {
+    margin: 20px;
+}
+
 .aligned-left-home {
     flex-direction: row-reverse;
- }
+}
 
 .align-text-right-home {
     text-align: right;
@@ -135,6 +139,7 @@ footer {
 .home-subsection-content-container {
     margin-top: 30px;
     display: flex;
+    width: 100%;
 }
 
 .colibri-subsection-content-container {
@@ -180,10 +185,19 @@ footer {
 
 .home-subsection-content {
     height: 100%;
+    width: 50%;
+}
+
+.shadowed-img {
+    box-shadow: 0px 0px 30px 6px #bbb;
 }
 
 .flex-1 {
     flex: 1;
+}
+
+.add-margin-left-md {
+    margin-left: 20px;
 }
 
 .add-padding-left {
@@ -415,6 +429,7 @@ footer {
 
     .home-subsection-content {
         width: 100%;
+        flex: 2;
     }
 
     .home-subsection-content-container {

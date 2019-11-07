@@ -152,19 +152,15 @@ footer {
     width: 100%;
 }
 
-.colibri-subsection-icon {
-    flex: 1;
-}
-
 .home-subsection-subtitle {
-    font-size: 1.6em;
+    font-size: 1.8em;
     margin-bottom: 20px;
 }
 
 .colibri-subsection {
-    flex:5;
-    padding: 20px 80px 20px 15px;
+    padding: 20px 15px 20px 15px;
 }
+
 
 #heroku-and-salesforce {
     margin-top: 25px;
@@ -176,6 +172,12 @@ footer {
 .heroku-and-salesforce-logo {
     text-align: center;
     height: 80px;
+}
+
+#joinus-page-container {
+    max-width: 850px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 

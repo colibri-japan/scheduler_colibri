@@ -17,26 +17,26 @@
 
     <div class="form-group">
       <%= form.label :min_monthly_service_count, "案件数目標（月）" %>
-      <%= form.number_field :min_monthly_service_count,  {step: 1, style: 'width:50px'} %>件から
-      <%= form.number_field :max_monthly_service_count, {step: 1, style: 'width:50px'} %>件まで
+      <%= form.number_field :min_monthly_service_count,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>件から
+      <%= form.number_field :max_monthly_service_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %>件まで
     </div>
 
     <div class="form-group">
       <%= form.label :min_monthly_hours_worked, "勤務時間目標（月）" %>
-      <%= form.number_field :min_monthly_hours_worked,  {step: 1, style: 'width:50px'} %>時間から
-      <%= form.number_field :max_monthly_hours_worked, {step: 1, style: 'width:50px'} %>時間まで
+      <%= form.number_field :min_monthly_hours_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間から
+      <%= form.number_field :max_monthly_hours_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間まで
     </div>
 
     <div class="form-group">
       <%= form.label :min_days_worked, "合計稼動日数" %>
-      <%= form.number_field :min_days_worked,  {step: 1, style: 'width:50px'} %>日から
-      <%= form.number_field :max_days_worked, {step: 1, style: 'width:50px'} %>まで
+      <%= form.number_field :min_days_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>日から
+      <%= form.number_field :max_days_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>まで
     </div>
 
     <div class="form-group">
       <%= form.label :min_months_worked, "合計稼動期間" %>
-      <%= form.number_field :min_months_worked,  {step: 1, style: 'width:50px'} %>ヵ月目から
-      <%= form.number_field :max_months_worked, {step: 1, style: 'width:50px'} %>ヵ月目まで
+      <%= form.number_field :min_months_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>ヵ月目から
+      <%= form.number_field :max_months_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>ヵ月目まで
     </div>
 
     <% if @corporation.elderly_care_and_nursing? %>
@@ -95,7 +95,7 @@
 
     <div class="form-group">
       <%= form.select :operator, options_for_select([['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['+', 3]], salary_rule.operator) %>
-      <%= form.number_field :argument, {step: 0.01} %>
+      <%= form.number_field :argument, {step: 0.01, class: 'colibri-input'} %>
     </div>
 
     <div class="form-group" id="only_count_between_appointments_group" style="<%= 'display:none' if salary_rule.hour_based? %>">

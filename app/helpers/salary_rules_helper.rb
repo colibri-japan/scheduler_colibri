@@ -10,13 +10,13 @@ module SalaryRulesHelper
     def salary_calculation(salary_rule)
         case salary_rule.operator
         when 0
-            "+#{salary_rule.argument.to_i}/回"
+            "+#{salary_rule.argument.to_i}円/回"
         when 1
-            "+#{salary_rule.argument.to_i}/時"
+            "+#{salary_rule.argument.to_i}円/時"
         when 2
             "給与計 * #{salary_rule.argument}"
         when 3
-            "定額"
+            "+#{salary_rule.argument.to_i}円"
         else
             ""
         end

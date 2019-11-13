@@ -6,6 +6,7 @@
     top: 0px;
     width: 100%;
     height: 10vh;
+    min-height: 50px;
     display: flex;
     justify-content: space-between;
     -webkit-box-shadow: 0 4px 2px -2px #ccc;
@@ -45,6 +46,10 @@ a#brand-name {
 #top-subsection {
     margin-bottom: 0px;
     padding: 70px 50px 0px 50px;
+}
+
+.colibri-security-head {
+    display: flex;
 }
 
 #presentation-text {
@@ -175,6 +180,10 @@ footer {
 
 #security-icon-container {
     width: 30%;
+}
+
+.colibri-security-icon {
+    max-width: 100%;    
 }
 
 .colibri-subsection-centered {

@@ -19,6 +19,53 @@
 	.devise-input {
 		font-size: 16px;
 	}
+
+	/* Home page layouts */
+
+	#presentation-text {
+		width: 100%;
+	}
+
+	#presentation-images-banner {
+		display: none;
+	}
+
+	.colibri-home-subsection {
+		padding: 45px;
+	}
+
+	#colibri-issues {
+		flex-direction: column;
+	}
+
+	.issue-container {
+		max-width: none;
+	}
+
+	.issue-body {
+		padding: 0 15px;
+	}
+
+	#colibri-purpose-body {
+		max-width: 80%;
+	}
+
+	.home-subsection-detailed-content {
+		flex-direction: column;
+	}
+
+	.founder-bio {
+		width: 75%;
+	}
+
+	.colibri-subsection-content-container {
+		flex-direction: column;
+		margin: 0;
+	}
+
+	.colibri-subsection {
+		padding: 25px 0;
+	}
 	
 	/* navigation styles */
 
@@ -52,7 +99,71 @@
 
 	li.planning-menu-items {
 		display: block;
-    }
+	}
+	
+	#colibri-nav-container {
+		display: none;
+	}
+
+	#colibri-nav-right-list {
+		display: none;
+	}
+
+	#colibri-mobile-nav {
+		display: block;
+		margin-right: 20px;
+	}
+
+
+	#close-nav-mobile {
+		font-size: 3.5em;
+		padding-bottom: 7px;
+	}
+
+	#colibri-mobile-menu {
+		border-top: 2px solid #ccc;
+		border-left: 2px solid #ccc;
+		position: fixed;
+		top: 50px;
+		right: 0;
+		height: calc(100vh - 50px);
+		width: 50vw;
+		z-index: 30;
+		background-color: white;
+		padding: 7px 15px 7px 15px;
+		overflow-y: auto;
+	}
+
+	.menu-item {
+		border-bottom: 2px dotted #ccc;
+	}
+
+	.menu-item-title {
+		display: block;
+		padding:10px;
+		width: 100%;
+		font-size: 1.1em;
+		font-weight: 500;
+	}
+
+	.menu-sub-item {
+		margin-left: 20px;
+		padding: 4px;
+	}
+
+	/* Contact form layouts */
+
+	#contact-form-background {
+		padding: 80px 0 40px 0;
+		height: auto;
+
+	}
+
+	#colibri-contact-form-container {
+		width: 75%;
+		display: block;
+		position: relative;
+	}
     
     /* Fullcalendar layouts */
 

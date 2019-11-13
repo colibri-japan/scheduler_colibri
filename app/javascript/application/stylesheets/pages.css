@@ -171,6 +171,7 @@ footer {
 }
 
 .colibri-subsection {
+    flex: 1;
     padding: 20px 15px 20px 15px;
 }
 

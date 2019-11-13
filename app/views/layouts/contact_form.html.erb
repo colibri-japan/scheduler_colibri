@@ -20,17 +20,19 @@
           <li><a href="/pages/security">セキュリティー</a></li>
         </ul>
       </div>
-      <div class="dropdown colibri-nav-dropdown">
-        <div class="dropdown-toggle colibri-nav-li" data-toggle="dropdown">
-          もっと便利に<i class="glyphicon caret" style="font-size:10px;margin-left:2px"></i>
+      <% if false %>
+        <div class="dropdown colibri-nav-dropdown">
+          <div class="dropdown-toggle colibri-nav-li" data-toggle="dropdown">
+            もっと便利に<i class="glyphicon caret" style="font-size:10px;margin-left:2px"></i>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="/pages/data">経営データの分析</a></li>
+            <li><a href="/pages/posts">掲示板.情報共有</a></li>
+            <li><a href="/pages/todolist">シフトToDoリスト</a></li>
+            <li><a href="/pages/availabilities">従業員の空き情報.希望</a></li>
+          </ul>
         </div>
-        <ul class="dropdown-menu">
-          <li><a href="/pages/data">経営データの分析</a></li>
-          <li><a href="/pages/posts">掲示板.情報共有</a></li>
-          <li><a href="/pages/todolist">シフトToDoリスト</a></li>
-          <li><a href="/pages/availabilities">従業員の空き情報.希望</a></li>
-        </ul>
-      </div>
+      <% end %>
       <div class="colibri-nav-li"><a href="https://colibri.hatenablog.jp/" target="_blank">コリブロ</a></div>
       <div class="colibri-nav-li"><a href="/pages/join_us" name="採用">採用</a></div>
     </div>
@@ -68,18 +70,20 @@
       <div class="menu-sub-item"><a href="/pages/security">セキュリティー</a></div>
     </div>
   </div>
-  <div class="menu-item">
-    <div class="menu-item-title toggle-submenu" style="display:flex;justify-content:space-between">
-      <div>もっと便利に</div>
-      <div><i class="glyphicon glyphicon-chevron-down" style="font-weight:normal;font-size:0.7em"></i></div>
+  <% if false %>
+    <div class="menu-item">
+      <div class="menu-item-title toggle-submenu" style="display:flex;justify-content:space-between">
+        <div>もっと便利に</div>
+        <div><i class="glyphicon glyphicon-chevron-down" style="font-weight:normal;font-size:0.7em"></i></div>
+      </div>
+      <div class="menu-sub-item-container" style="display:none">
+        <div class="menu-sub-item"><a href="/pages/data">経営データの分析</a></div>
+        <div class="menu-sub-item"><a href="/pages/posts">掲示板.情報共有</a></div>
+        <div class="menu-sub-item"><a href="/pages/todolist">シフトToDoリスト</a></div>
+        <div class="menu-sub-item"><a href="/pages/availabilities">従業員の空き情報.希望</a></div>
+      </div>
     </div>
-    <div class="menu-sub-item-container" style="display:none">
-      <div class="menu-sub-item"><a href="/pages/data">経営データの分析</a></div>
-      <div class="menu-sub-item"><a href="/pages/posts">掲示板.情報共有</a></div>
-      <div class="menu-sub-item"><a href="/pages/todolist">シフトToDoリスト</a></div>
-      <div class="menu-sub-item"><a href="/pages/availabilities">従業員の空き情報.希望</a></div>
-    </div>
-  </div>
+  <% end %>
   <div class="menu-item">
     <a class="menu-item-title" href="https://colibri.hatenablog.jp/" target="_blank">コリブロ</a>
   </div>

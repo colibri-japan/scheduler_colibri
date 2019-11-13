@@ -9,19 +9,13 @@ class UpdateIndividualAppointmentsWorker
         
         if appointments.present?
             year_and_months_updated = appointments.pluck(:starts_at).map {|d| [d.year, d.month]}.uniq 
-    
-            puts 'current year months'
-            puts year_and_months_updated
-
 
             #delete appointments unless completion report is present
             appointments.each do |appointment|
                 appointment.delete unless appointment.completion_report.present?
             end
 
-            # create appointments in this range
-
-
+            # create appointments in this range  
             occurrences = recurring_appointment.appointments(recurring_appointment.anchor - 1.day, appointments.last.starts_at.end_of_month)
 
             new_appointments = []
@@ -41,6 +35,7 @@ class UpdateIndividualAppointmentsWorker
                 appointment.should_request_edit_for_overlapping_appointments = true
                 appointment.recurring_appointment_id = recurring_appointment.id
                 
+                appointment.run_callbacks(:save) { false }
                 new_appointments << appointment
             end
 

@@ -169,6 +169,17 @@ footer {
     padding: 20px 15px 20px 15px;
 }
 
+#colibri-security-text {
+    width: 70%;
+}
+
+#security-icon-container {
+    width: 30%;
+}
+
+.colibri-subsection-centered {
+	margin-bottom: 60px;
+}
 
 #heroku-and-salesforce {
     margin-top: 25px;
@@ -204,6 +215,7 @@ footer {
 
 .shadowed-img {
     box-shadow: 0px 0px 30px 6px #bbb;
+    max-width: 100%;
 }
 
 

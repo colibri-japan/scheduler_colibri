@@ -9,20 +9,66 @@
       <%= link_to 'Colibri', unauthenticated_root_path, id: 'brand-name' %>
     </div>
     <div id="pages-nav-right">
-    	<ul>
-    	    <% if user_signed_in? %>
-            <li class="li-float-right btn btn-mid-light" style="margin-right: 8px">
-              <%= link_to 'アプリへ', authenticated_root_path, title: 'ホームページ.ダッシュボード' %>  
-            </li>
-    	    <% else %>
-    	      <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ホームページへ', unauthenticated_root_path %></li>
-    	      <li class="li-float-right" style="padding-top:10px" id="blog-link-container"><a href="https://colibri.hatenablog.jp/" target="_blank" id="colibri-blog-link">公式ブログ</a></li>
-            <% end %>
+    	<ul id="colibri-nav-right-list">
+    	  <% if user_signed_in? %>
+          <li class="li-float-right btn btn-mid-light" style="margin-right: 8px">
+            <%= link_to 'アプリへ', authenticated_root_path, title: 'ホームページ.ダッシュボード' %>  
+          </li>
+    	  <% else %>
+    	    <li class="li-float-right btn btn-mid-light" id="nav-login-button"><%= link_to 'ホームページへ', unauthenticated_root_path %></li>
+    	    <li class="li-float-right" style="padding-top:10px" id="blog-link-container"><a href="https://colibri.hatenablog.jp/" target="_blank" id="colibri-blog-link">公式ブログ</a></li>
+        <% end %>
     	</ul>
+      <div id="colibri-mobile-nav">
+        <div id="hamburger-nav-mobile">
+          <%= image_tag 'hamburger_icon.svg', width: '40px' %>
+        </div>
+        <div id="close-nav-mobile" style="display:none">
+          &times;
+        </div>
+      </div>
     <div>
-
 </nav>
   
+
+<div id="colibri-mobile-menu">
+  <div class="menu-item">
+    <div class="menu-item-title toggle-submenu" style="display:flex;justify-content:space-between">
+      <div>Colibriとは</div>
+      <div><i class="glyphicon glyphicon-chevron-down" style="font-weight:normal;font-size:0.7em"></i></div>
+    </div>
+    <div class="menu-sub-item-container" style="display:none">
+      <div class="menu-sub-item"><a href="/pages/home">トップページ</a></div>
+      <div class="menu-sub-item"><a href="/pages/features">機能詳細</a></div>
+      <div class="menu-sub-item"><a href="/pages/security">セキュリティー</a></div>
+    </div>
+  </div>
+  <div class="menu-item">
+    <div class="menu-item-title toggle-submenu" style="display:flex;justify-content:space-between">
+      <div>もっと便利に</div>
+      <div><i class="glyphicon glyphicon-chevron-down" style="font-weight:normal;font-size:0.7em"></i></div>
+    </div>
+    <div class="menu-sub-item-container" style="display:none">
+      <div class="menu-sub-item"><a href="/pages/data">経営データの分析</a></div>
+      <div class="menu-sub-item"><a href="/pages/posts">掲示板.情報共有</a></div>
+      <div class="menu-sub-item"><a href="/pages/todolist">シフトToDoリスト</a></div>
+      <div class="menu-sub-item"><a href="/pages/availabilities">従業員の空き情報.希望</a></div>
+    </div>
+  </div>
+  <div class="menu-item">
+    <a class="menu-item-title" href="https://colibri.hatenablog.jp/" target="_blank">コリブロ</a>
+  </div>
+  <div class="menu-item">
+    <a class="menu-item-title" href="/pages/join_us" name="採用">採用</a>
+  </div>
+  <div class="menu-item">
+    <%= link_to 'お問い合わせ', new_contact_form_path, id:'nav-contact-form-link', class: "menu-item-title" %>
+  </div>
+  <div class="menu-item">
+  	<%= link_to 'ログイン', new_user_session_path, class: "menu-item-title" %>
+  </div>
+</div>
+
 <% end %>
 
 <%= render template: 'layouts/application'%>

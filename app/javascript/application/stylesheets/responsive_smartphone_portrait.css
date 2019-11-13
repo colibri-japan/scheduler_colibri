@@ -88,6 +88,10 @@
 		flex-direction: column;
 	}
 
+	.detailed-content-container {
+		margin: 30px 0 0 0;
+	}
+
 	#blog-link-container {
 		display: none;
 	}
@@ -116,8 +120,24 @@
 	}
 
 	#top-subsection {
-		margin-top: 100px;
+		margin-top: 85px;
 		flex-direction: column-reverse;
+		padding-left: 15px;
+		padding-right: 15px;
+		margin-bottom: 30px;
+	}
+
+	.margin-md {
+		margin: 0px;
+	}
+
+	#colibri-issues-head {
+		margin-bottom: 20px;
+	}
+
+	.issue-container {
+		margin: 10px;
+		margin-bottom: 20px;
 	}
 
 	#presentation-images-banner {
@@ -139,6 +159,30 @@
 		width: 100%;
 		max-width: none;
 	}
+
+	.colibri-subsection-content-container {
+		flex-direction: column;
+		margin: 0;
+	}
+
+	.colibri-subsection {
+		padding: 0;
+		margin-bottom: 45px;
+	}
+
+
+	#heroku-and-salesforce {
+		flex-direction: column;
+	}
+
+	
+#colibri-security-text {
+    width: 100%;
+}
+
+#security-icon-container {
+	width: 100%;
+}
 
 	footer {
 		background-color: #1B263B;

@@ -4,19 +4,18 @@
         <p id="brand">Colibri</p>
     </div>
 
-
-    	<ul>
-    	    <% if user_signed_in? %>
-            <li id="account-settings">
-                <p class="colibri-nav-link colibri-nav-username"><%= current_user.name %><span id='account-dropdown-icon' class='glyphicon glyphicon-chevron-down' style="color:white;font-size:0.7em"></span></p>
-            </li>
-            <li>
-              <%= link_to 'ホーム', authenticated_root_path,title: 'ホームページ.ダッシュボード', class: 'colibri-nav-link' %>  
-            </li>
-    	    <% else %>
-    	      <li><%= link_to 'ログイン', new_user_session_path, class: 'colibri-nav-link' %></li>
-    	      <li><%= link_to 'ホームページ', unauthenticated_root_path, class: 'colibri-nav-link' %></li>
-    	    <% end %>
-    	</ul>
+    <ul>
+        <% if user_signed_in? %>
+          <li id="account-settings">
+              <p class="colibri-nav-link colibri-nav-username"><%= current_user.name %><span id='account-dropdown-icon' class='glyphicon glyphicon-chevron-down' style="color:white;font-size:0.7em"></span></p>
+          </li>
+          <li>
+            <%= link_to 'ホーム', authenticated_root_path,title: 'ホームページ.ダッシュボード', class: 'colibri-nav-link' %>  
+          </li>
+        <% else %>
+          <li><%= link_to 'ログイン', new_user_session_path, class: 'colibri-nav-link' %></li>
+          <li><%= link_to 'ホームページ', unauthenticated_root_path, class: 'colibri-nav-link' %></li>
+        <% end %>
+    </ul>
 
 </nav>

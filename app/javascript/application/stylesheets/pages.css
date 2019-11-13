@@ -38,8 +38,8 @@ a#brand-name {
     margin-left: 8px;
 }
 
-#nav-contact-form-link {
-    color: white !important;
+#colibri-mobile-nav {
+    display: none;
 }
 
 #top-subsection {
@@ -134,6 +134,14 @@ footer {
 
 .colibri-nav-dropdown {
     line-height:60px;
+}
+
+#colibri-nav-hamburger {
+    display: none;
+}
+
+#colibri-mobile-menu {
+    display: none;
 }
 
 .heroku-and-salesforce-body {

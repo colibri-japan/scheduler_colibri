@@ -19,4 +19,5 @@ document.addEventListener('turbolinks:load', function () {
     $('.toggle-submenu').click(function(){
         $(this).next().toggle()
     })
+
 })

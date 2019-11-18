@@ -1,3 +1,4 @@
+
 class Patient < ApplicationRecord
 	acts_as_taggable
 	acts_as_taggable_on :caveats
@@ -251,11 +252,13 @@ class Patient < ApplicationRecord
 		services_inside_insurance_scope.group_by {|service_hash| service_hash[:insurance_service_category] }.each do |category_id, service_hashes|
 			category_sub_total_credits = service_hashes.sum {|service_hash| service_hash[:sum_total_credits] || 0 }
 			category_bonus_credits = ([11,102].include?(category_id.to_i) && corporation.invoicing_bonus_ratio.present?) ? (category_sub_total_credits * (corporation.invoicing_bonus_ratio - 1)).round : 0
+			category_second_bonus_credits = ([11,102].include?(category_id.to_i) && corporation.invoicing_bonus_ratio!= 1) ? (category_sub_total_credits * (corporation.second_invoicing_bonus_ratio - 1)).round : 0
 			category_summary = {
 				insurance_category_id: category_id,
 				category_sub_total_credits: category_sub_total_credits,
 				category_bonus_credits: category_bonus_credits,
-				category_total_credits: category_sub_total_credits + category_bonus_credits
+				category_second_bonus_credits: category_second_bonus_credits,
+				category_total_credits: category_sub_total_credits + category_bonus_credits + category_second_bonus_credits
 			}
 			array_of_service_and_shifts_hashed = []
 			service_hashes.each do |service_hash|
@@ -270,7 +273,7 @@ class Patient < ApplicationRecord
 		summary_hash[:inside_insurance_scope] = inside_insurance_scope_hash 
 
 		total_credits = summary_hash[:inside_insurance_scope].sum {|category_summary, services_hashes| category_summary[:category_sub_total_credits] || 0 }
-		total_bonus_credits = summary_hash[:inside_insurance_scope].sum {|category_summary, services_hashes| category_summary[:category_bonus_credits] || 0 }
+		total_bonus_credits = summary_hash[:inside_insurance_scope].sum {|category_summary, services_hashes| (category_summary[:category_bonus_credits] || 0) + (category_summary[:category_second_bonus_credits] || 0 ) }
 		total_credits_with_bonus = summary_hash[:inside_insurance_scope].sum {|category_summary, services_hashes| category_summary[:category_total_credits] || 0 }
 		credits_within_max_budget = total_credits > current_max_credits ? current_max_credits : total_credits
 		credits_with_bonus_within_max_budget = total_credits_with_bonus > current_max_credits ? current_max_credits : total_credits_with_bonus

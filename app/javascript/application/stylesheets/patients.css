@@ -13,6 +13,8 @@
 	color: #85929E;
 }
 
+
+
 .toggle-active-element:hover {
 	font-weight: bold;
 	border-bottom: 2px solid #5f6368;
@@ -40,6 +42,10 @@
 
 .patient-right-panel {
 	width:34%
+}
+
+.patient-right-panel > div.patient-dashboard-panel-body {
+	overflow-y: auto;
 }
 
 .patient-dashboard-panel-title {

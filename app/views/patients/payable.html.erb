@@ -92,6 +92,15 @@
                                 <td></td>
                             </tr>
                         <% end %>
+                        <% if category_hash[:insurance_category_id].to_i == 11 && @corporation.second_invoicing_bonus_ratio != 1 %>
+                            <tr>
+                                <td><%= corporation_second_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
+                                <td></td>
+                                <td></td>
+                                <td><%= category_hash[:category_second_bonus_credits] %></td>
+                                <td></td>
+                            </tr>
+                        <% end %>
                         <tr>
                             <td><%= "#{insurance_category_name(category_hash[:insurance_category_id].to_i)}合計" %></td>
                             <td></td>

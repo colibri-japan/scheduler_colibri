@@ -367,6 +367,29 @@
                                 <td></td>
                             </tr>
                         <% end %>
+                        <% if array_of_service_and_shifts_hashes.count > 0 && category_hash[:insurance_category_id].to_i == 11 && @corporation.second_invoicing_bonus_ratio != 1 %>
+                            <tr>
+                                <td><%= @corporation.name %></td>
+                                <td><%= @corporation.identifier %></td>
+                                <td><%= corporation_second_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
+                                <td><%= corporation_second_bonus_service_code(@corporation, category_hash[:insurance_category_id].to_i) %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>1</td>
+                                <td>(<%= number_with_delimiter(category_hash[:category_second_bonus_credits], delimiter: ',') %>)</td>
+                                <td></td>
+                                <td>(<%= number_with_delimiter(category_hash[:category_second_bonus_credits], delimiter: ',') %>)</td>
+                                <td></td>
+                                <td>(<%= number_with_delimiter(category_hash[:category_second_bonus_credits], delimiter: ',') %>)</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        <% end %>
                         <% if invoicing_summary[:inside_insurance_scope].size > 1 %>
                             <tr>
                                 <td><%= @corporation.name %></td>

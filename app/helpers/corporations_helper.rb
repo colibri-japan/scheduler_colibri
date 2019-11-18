@@ -65,15 +65,29 @@ module CorporationsHelper
         end
     end
 
+    def corporation_second_bonus_official_text(corporation, insurance_category_id)
+        if insurance_category_id == 11
+            case corporation.second_invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.042
+                "訪問介護特定処遇改善加算II"
+            when 1.063
+                "訪問介護特定処遇改善加算I"
+            else
+            end
+        end
+    end
+
     def corporation_bonus_service_code(corporation, insurance_category_id)
         if insurance_category_id == 11
             case corporation.invoicing_bonus_ratio
             when 1
                 ""
             when 1.055
-                "116275"
+                "116271"
             when 1.1
-                "116275"
+                "116274"
             when 1.137
                 "116275"
             else
@@ -84,10 +98,23 @@ module CorporationsHelper
                 ""
             when 1.055
                 "A26271"
-            when 1.1
+            when 1.063
                 "A26270"
-            when 1.137
-                "A26269"
+            else
+            end
+        else
+        end
+    end
+
+    def corporation_second_bonus_service_code(corporation, insurance_category_id)
+        if insurance_category_id == 11
+            case corporation.second_invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.042
+                "116278"
+            when 1.063
+                "116279"
             else
             end
         else

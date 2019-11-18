@@ -151,6 +151,11 @@
                 </div>
 
                 <div class="form-group">
+                    <%= form.label :second_invoicing_bonus_ratio, "特定処遇改善加算", class: "colibri-form-label-dark" %>
+                    <%= form.select :second_invoicing_bonus_ratio, options_for_select([['加算I - 6.3%', 1.063], ['加算Ⅱ - 4.2%', 1.042]], @corporation.second_invoicing_bonus_ratio),  {include_blank: "選択する"} %>
+                </div>
+
+                <div class="form-group">
                     <%= form.label :credits_to_jpy_ratio, "単位数.単価", class: "colibri-form-label-dark" %>
                     <%= form.number_field :credits_to_jpy_ratio, step: 0.01, class: "form-control" %>
                 </div>

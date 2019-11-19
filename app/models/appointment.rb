@@ -213,14 +213,21 @@ class Appointment < ApplicationRecord
 			self.total_wage = 0
 		elsif self.cancelled? && !self.will_save_change_to_cancelled?
 		else
-			self.total_credits = self.service.try(:unit_credits)
-			self.total_invoiced = self.service.try(:invoiced_amount)
-			if self.service.nurse_service_wages.where(nurse_id: self.nurse_id).present?
-				unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:weekend_unit_wage) || self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0) : (self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first.try(:unit_wage) || 0)
-				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i) : unit_wage_to_apply.to_i
+			if self.service.present?
+				self.total_credits = self.service.unit_credits
+				self.total_invoiced = self.service.invoiced_amount
+				first_nurse_service_wages = self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first
+				if first_nurse_service_wages.present?
+					unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (first_nurse_service_wages.weekend_unit_wage || first_nurse_service_wages.unit_wage || 0) : (first_nurse_service_wages.unit_wage || 0)
+					self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i) : unit_wage_to_apply.to_i
+				else
+					unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.weekend_unit_wage || self.service.unit_wage || 0) : (self.service.unit_wage || 0)
+					self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i) : unit_wage_to_apply.to_i
+				end
 			else
-				unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.weekend_unit_wage || self.service.unit_wage || 0) : (self.service.unit_wage || 0)
-				self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i) : unit_wage_to_apply.to_i
+				self.total_credits = 0
+				self.total_invoiced = 0
+				self.total_wage = 0
 			end
 		end
 	end
@@ -231,7 +238,6 @@ class Appointment < ApplicationRecord
 	end
 
 	def do_not_overlap
-		puts 'validating overlap'
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.archived? || self.edit_requested? || self.cancelled?

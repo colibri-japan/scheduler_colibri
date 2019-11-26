@@ -74,6 +74,7 @@
       <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label-dark" %>
       <%  hour_based = service.new_record? ? @service.corporation.hour_based_payroll : service.hour_based_wage %>
       <%= form.check_box :hour_based_wage, checked: hour_based, id: :service_hour_based_wage %>
+      <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "単価はサービスごとに金額が発生します。時給はサービスの稼動時間 * 時給の四捨五入で計算されます。<br/><br/>例：時給1470円、45分のサービスの給与は1102.5の四捨五入の1103円です"}  %>
     </div>
 
     <div class="form-group">

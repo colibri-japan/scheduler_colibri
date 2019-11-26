@@ -25,6 +25,7 @@
       <%= form.label :min_monthly_hours_worked, "勤務時間目標（月）" %>
       <%= form.number_field :min_monthly_hours_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間から
       <%= form.number_field :max_monthly_hours_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間まで
+      <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "例：20時間から30時間の場合。20時間目から29時間59分59秒までが対象です。<br/><br/>50 ≤ 勤務時間 < 60"}  %>
     </div>
 
     <div class="form-group">

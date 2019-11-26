@@ -24,8 +24,7 @@ class RecalculateNurseMonthlyWageWorker
             end
         end
 
-        #delete and recalculate wages from salary rules, leave manually added bonuses as is
-        nurse.salary_line_items.from_salary_rules.in_range(start_of_month..end_of_month).delete_all
+        #recalculate bonuses
         RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(nurse_id, year, month)
 
     end

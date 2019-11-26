@@ -11,6 +11,10 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
     corporation = @nurse.corporation
     targeted_salary_rules = corporation.salary_rules.targeting_nurse(nurse_id.to_s).not_expired_at(now_in_japan)
     
+    #delete existing salary line items for cleaner calculation
+    @nurse.salary_line_items.from_salary_rules.in_range(@start_of_month..@end_of_month).delete_all
+
+    #calculate salary line items
     targeted_salary_rules.each do |salary_rule|
         next if skip_because_of_worked_days_constraint(salary_rule)
         next if skip_because_of_worked_duration_constraint(salary_rule)
@@ -65,10 +69,10 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
           met_goals = appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600)
           appointments_duration = appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600) ? (appointments_duration - (salary_rule.min_monthly_hours_worked * 3600)) : 0
         elsif salary_rule.max_monthly_hours_worked.present? && (!salary_rule.min_monthly_hours_worked.present?)
-          met_goals = appointments_duration <= (salary_rule.max_monthly_hours_worked * 3600)
+          met_goals = appointments_duration < (salary_rule.max_monthly_hours_worked * 3600)
           appointments_duration = appointments_duration <= (salary_rule.max_monthly_hours_worked * 3600) ? appointments_duration : salary_rule.max_monthly_hours_worked * 3600
         elsif salary_rule.min_monthly_hours_worked.present? && salary_rule.max_monthly_hours_worked.present? 
-          met_goals = (appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600)) && (appointments_duration <= (salary_rule.max_monthly_hours_worked * 3600))
+          met_goals = (appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600)) && (appointments_duration < (salary_rule.max_monthly_hours_worked * 3600))
           if appointments_duration <= (salary_rule.min_monthly_hours_worked * 3600)
             appointments_duration = salary_rule.min_monthly_hours_worked * 3600
           elsif appointments_duration >= (salary_rule.max_monthly_hours_worked * 3600)

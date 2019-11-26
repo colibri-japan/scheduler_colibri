@@ -35,9 +35,9 @@ module.exports = function(api) {
           exclude: ['transform-typeof-symbol'],
           targets: {
             browsers: [
-              "> 1%",
-              "Firefox >= 52",
-              "IE11"
+              "last 1 version",
+              "not dead",
+              "> 1%"
             ]
           }
         }

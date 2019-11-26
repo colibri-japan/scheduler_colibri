@@ -387,9 +387,9 @@ footer {
 
 #colibri-issues {
     display: flex;
+    text-align: left;
     margin-left: auto;
     margin-right: auto;
-    text-align: left;
 }
 
 .issue-container {

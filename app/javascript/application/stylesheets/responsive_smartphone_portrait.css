@@ -88,6 +88,7 @@
 		flex-direction: column;
 	}
 
+
 	.home-subsection-detailed-content {
 		flex-direction: column;
 	}
@@ -142,6 +143,8 @@
 	.issue-container {
 		margin: 10px;
 		margin-bottom: 20px;
+		max-width: none;
+		width: calc(100% - 20px);
 	}
 
 	#presentation-images-banner {

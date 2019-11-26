@@ -10,15 +10,19 @@
       <%= link_to 'Colibri', unauthenticated_root_path, id: 'brand-name' %>
     </div>
     <div id="colibri-nav-container">
-      <div class="dropdown colibri-nav-dropdown">
-        <div class="dropdown-toggle colibri-nav-li colibri-nav-hover" data-toggle="dropdown">
-          Colibriとは<i class="glyphicon caret" style="font-size:10px;margin-left:2px"></i>
+      <div class="colibri-dropdown colibri-nav-dropdown">
+        <div onclick="colibriDropdown()" class="dropbtn colibri-nav-li colibri-nav-hover" style="margin-left:2px;display:flex">
+          <div style="margin-right:8px;margin-left:8px">Colibriとは</div>
+          <div  style="margin-right:8px;display:flex;align-items:center">
+            <div class="colibri-arrow-down">
+          </div>
+          </div>
         </div>
-        <ul class="dropdown-menu">
-          <li><a href="/pages/home">トップページ</a></li>
-          <li><a href="/pages/features">機能詳細</a></li>
-          <li><a href="/pages/security">セキュリティー</a></li>
-        </ul>
+        <div id="colibriDropdown" class="colibri-dropdown-content">
+          <a href="/pages/home" style="border-top-left-radius:3px;border-top-right-radius:3px">トップページ</a>
+          <a href="/pages/features">機能詳細</a>
+          <a href="/pages/security" style="border-bottom-left-radius: 3px;border-bottom-right-radius:3px">セキュリティー</a>
+        </div>
       </div>
       <% if false %>
         <div class="dropdown colibri-nav-dropdown colibri-nav-hover">

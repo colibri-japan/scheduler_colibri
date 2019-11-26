@@ -32,7 +32,15 @@ module.exports = function(api) {
           useBuiltIns: 'entry',
           corejs: 3,
           modules: false,
-          exclude: ['transform-typeof-symbol']
+          exclude: ['transform-typeof-symbol'],
+          targets: {
+            browsers: [
+              "> 1%",
+              "Firefox >= 52",
+              "IE11"
+            ],
+            uglify: true
+          }
         }
       ]
     ].filter(Boolean),

@@ -37,7 +37,10 @@ module.exports = function(api) {
             browsers: [
               "last 3 versions",
               "not dead",
-              "> 1%"
+              "> 1%",
+              "ie 11",
+              "ie 10",
+              "ie 9"
             ]
           }
         }

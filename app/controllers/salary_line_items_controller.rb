@@ -17,8 +17,6 @@ class SalaryLineItemsController < ApplicationController
 	end
 
 	def update
-		@salary_line_item.skip_callbacks_except_calculate_total_wage = true
-
 		respond_to do |format|
 			if @salary_line_item.update(salary_line_item_params)
 				format.js

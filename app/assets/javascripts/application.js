@@ -1312,6 +1312,7 @@ $(document).on('turbolinks:load', function(){
   $('#header-calendar-button').click(function(){
     $('#resource-details-wrapper').remove()
     $('#calendar').show()
+    window.fullCalendar.render()
     $('#colibri-batch-action-button').show()
   })
 

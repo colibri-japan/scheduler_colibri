@@ -72,7 +72,8 @@
 
     <div class="form-group">
       <%= form.label :hour_based_wage, "給与計算方法", class: "colibri-form-label-dark" %>
-      <%= form.check_box :hour_based_wage, checked: @service.corporation.hour_based_payroll, id: :service_hour_based_wage %>
+      <%  hour_based = service.new_record? ? @service.corporation.hour_based_payroll : service.hour_based_wage %>
+      <%= form.check_box :hour_based_wage, checked: hour_based, id: :service_hour_based_wage %>
     </div>
 
     <div class="form-group">

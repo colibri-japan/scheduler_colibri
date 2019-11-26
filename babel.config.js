@@ -35,7 +35,7 @@ module.exports = function(api) {
           exclude: ['transform-typeof-symbol'],
           targets: {
             browsers: [
-              "last 1 version",
+              "last 3 versions",
               "not dead",
               "> 1%"
             ]

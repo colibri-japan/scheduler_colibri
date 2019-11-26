@@ -38,8 +38,7 @@ module.exports = function(api) {
               "> 1%",
               "Firefox >= 52",
               "IE11"
-            ],
-            uglify: true
+            ]
           }
         }
       ]

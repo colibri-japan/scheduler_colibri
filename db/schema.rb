@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191128033058) do
+ActiveRecord::Schema.define(version: 20191128034640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,18 @@ ActiveRecord::Schema.define(version: 20191128033058) do
     t.integer "body_weight"
     t.string "reportable_type"
     t.bigint "reportable_id"
+    t.boolean "batch_assisted_bathroom", default: false
+    t.boolean "batch_assisted_meal", default: false
+    t.boolean "batch_assisted_bed_bath", default: false
+    t.boolean "batch_assisted_partial_bath", default: false
+    t.boolean "batch_assisted_total_bath", default: false
+    t.boolean "batch_assisted_cosmetics", default: false
+    t.boolean "batch_assisted_house_cleaning", default: false
+    t.boolean "batch_assisted_laundry", default: false
+    t.boolean "batch_assisted_bedmake", default: false
+    t.boolean "batch_assisted_storing_furniture", default: false
+    t.boolean "batch_assisted_cooking", default: false
+    t.boolean "batch_assisted_groceries", default: false
     t.index ["appointment_id"], name: "index_completion_reports_on_appointment_id"
     t.index ["reportable_type", "reportable_id"], name: "index_completion_reports_on_reportable_type_and_reportable_id"
   end

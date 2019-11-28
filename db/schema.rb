@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191116031415) do
+ActiveRecord::Schema.define(version: 20191128033058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(version: 20191116031415) do
     t.text "availabilities_default_text"
     t.integer "business_vertical", default: 0
     t.decimal "second_invoicing_bonus_ratio", default: "1.0"
+    t.boolean "simple_reports", default: false
   end
 
   create_table "nurse_service_wages", force: :cascade do |t|

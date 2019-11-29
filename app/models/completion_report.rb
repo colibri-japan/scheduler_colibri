@@ -10,14 +10,14 @@ class CompletionReport < ApplicationRecord
     end
 
     def with_bathroom_assistance?
-        assisted_bathroom? || assisted_portable_bathroom? ||  changed_diapers? ||
+        batch_assisted_bathroom? || assisted_bathroom? || assisted_portable_bathroom? ||  changed_diapers? ||
         changed_bed_pad? || changed_stained_clothes? || wiped_patient? || patient_urinated? ||
         urination_count.present? || amount_of_urine.present? || patient_defecated? ||
         defecation_count.present? || visual_aspect_of_feces.present? 
     end
 
     def with_feeding?
-        patient_maintains_good_posture_while_eating? || explained_menu_to_patient? ||
+        batch_assisted_meal? || patient_maintains_good_posture_while_eating? || explained_menu_to_patient? ||
         assisted_patient_to_eat? || patient_ate_full_plate.present? || ratio_of_leftovers.present? || 
         patient_hydrated? || amount_of_liquid_drank.present? || meal_specificities.present?
     end
@@ -55,7 +55,7 @@ class CompletionReport < ApplicationRecord
     end
 
     def with_house_care?
-        with_house_cleaning? || with_laundry? || with_bed_make? || with_clothes_arranging? ||
+        batch_assisted_house_cleaning? || with_house_cleaning? || with_laundry? || with_bed_make? || with_clothes_arranging? ||
          with_house_cooking? || with_shopping?
     end
 
@@ -64,24 +64,24 @@ class CompletionReport < ApplicationRecord
     end
 
     def with_laundry?
-        washed_clothes? || dried_clothes? || stored_clothes? || ironed_clothes?
+        batch_assisted_laundry? || washed_clothes? || dried_clothes? || stored_clothes? || ironed_clothes?
     end
 
     def with_bed_make?
-        changed_bed_sheets? || changed_bed_cover? 
+        batch_assisted_bedmake? || changed_bed_sheets? || changed_bed_cover? 
     end
 
     def with_clothes_arranging?
-        rearranged_clothes? || repaired_clothes? || dried_the_futon?
+        batch_assisted_storing_furniture? || rearranged_clothes? || repaired_clothes? || dried_the_futon?
     end
 
     def with_house_cooking?
-        set_the_table? || cooked_for_the_patient? || cleaned_the_table? || 
+        batch_assisted_cooking? || set_the_table? || cooked_for_the_patient? || cleaned_the_table? || 
         remarks_around_cooking.present?
     end
 
     def with_shopping?
-        grocery_shopping? ||  medecine_shopping? || amount_received_for_shopping.present? ||
+        batch_assisted_groceries? || grocery_shopping? ||  medecine_shopping? || amount_received_for_shopping.present? ||
         amount_spent_for_shopping.present? || change_left_after_shopping? || shopping_items.present?
     end
 

@@ -30,6 +30,18 @@ class Nurse < ApplicationRecord
 	scope :part_timers, -> { where(full_timer: false) }
 	scope :not_archived, -> { where(archived_at: nil) }
 
+	def self.without_appointments_between(start_time, end_time, margin)
+		start_time -= margin.to_i.minutes 
+		end_time += margin.to_i.minutes
+		where.not(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).ids.uniq)
+	end
+	
+	def self.without_private_events_between(start_time, end_time, margin)
+		start_time -= margin.to_i.minutes 
+		end_time += margin.to_i.minutes
+		where.not(id: self.left_outer_joins(:private_events).where('private_events.starts_at between ? and ? OR private_events.ends_at between ? and ? OR (private_events.starts_at < ? AND private_events.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).ids.uniq)
+	end
+
 	def self.group_full_timer_for_select
 		{
 			'正社員' => where(full_timer: true).order_by_kana.map{|nurse| [nurse.name, nurse.id]},

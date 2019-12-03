@@ -178,6 +178,11 @@ window.selectizeForSmartSearch = () => {
         persist: false,
         plugins: ['remove_button']
     })
+    $('#team_ids').selectize({
+        delimiter: ',',
+        persist: false,
+        plugins: ['remove_button']
+    })
 }
 
 

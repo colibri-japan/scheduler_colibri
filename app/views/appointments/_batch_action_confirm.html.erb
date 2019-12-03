@@ -10,7 +10,7 @@
 				<%= render partial: 'batch_action_appointments_table', locals: {appointments: @appointments} %>
 			</div>
 
-            <%= form_with url: batch_action_url(@action_type), method: :patch do |f| %>
+            <%= form_with url: batch_action_url(@action_type), method: :get do |f| %>
 
             <% @appointments.ids.each do |id| %>
                 <%= f.hidden_field :appointment_ids, multiple: true, value: id %>

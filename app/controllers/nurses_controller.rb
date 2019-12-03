@@ -114,13 +114,15 @@ class NursesController < ApplicationController
   end
 
   def smart_search
+    @teams = @corporation.teams
   end
 
   def smart_search_results
-    @nurses = @corporation.nurses.not_archived.includes(:skills, :wishes, :wished_areas)
-    @nurses = @nurses.tagged_with(params[:skill_list], on: :skills, any: true) if params[:skill_list].present?
-    @nurses = @nurses.tagged_with(params[:wish_list], on: :wishes, any: true) if params[:wish_list].present?
-    @nurses = @nurses.tagged_with(params[:wished_area_list], on: :wished_areas, any: true) if params[:wished_area_list].present?
+    @nurses = @corporation.nurses.not_archived.includes(:skills, :wishes, :wished_areas).order_by_kana
+    @nurses = @nurses.where(team_id: params[:team_ids]) if params[:team_ids].present?
+    @nurses = @nurses.tagged_with(params[:skills], on: :skills, any: true) if params[:skills].present?
+    @nurses = @nurses.tagged_with(params[:wishes], on: :wishes, any: true) if params[:wishes].present?
+    @nurses = @nurses.tagged_with(params[:wished_areas], on: :wished_areas, any: true) if params[:wished_areas].present?
   end
 
   def new_reminder_email
@@ -184,17 +186,6 @@ class NursesController < ApplicationController
 
   def master_availabilities
     EmailMasterAvailabilitiesWorker.perform_async(params[:date], current_user.id)
-    #respond_to do |format|
-    #  format.pdf do 
-    #    render pdf: '空き情報',
-    #    page_size: 'A4',
-    #    layout: 'pdf.html',
-    #    orientation: 'landscape',
-    #    encoding: 'UTF-8',
-    #    zoom: 1,
-    #    dpi: 75
-    #  end
-    #end
   end
 
   def recalculate_salary

@@ -6,36 +6,35 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
-            <div class="modal-body">
-                <% if false %>
-                    <div class="form-row">
-                        <%= label_tag :gender_0, "男性", class: 'col-md-2' %>
-                        <%= radio_button_tag :gender, "0", class: 'col-md-3' %>
-                        <%= label_tag :gender_1, "女性", class: 'col-md-2' %>
-                        <%= radio_button_tag :gender, "1", class: 'col-md-3' %>
+            <%= form_tag(nurses_smart_search_results_path, method: 'get', remote: true) do %>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <%= label_tag :team_ids, 'チーム', class: 'colibri-form-label-dark' %>
+                        <%= select_tag :team_ids, options_from_collection_for_select(@teams, 'id', 'team_name'), {multiple: true, id: :team_ids} %>
                     </div>
-                <% end %>
 
-                <div class="form-group">
-                    <%= label_tag :skills, 'スキル', class: 'colibri-form-label-dark' %>
-                    <%= select_tag :skills, options_from_collection_for_select(@skills, 'name', 'name'), {multiple: true, id: :nurse_skills_tags} %>
+                    <div class="form-group">
+                        <%= label_tag :skills, 'スキル', class: 'colibri-form-label-dark' %>
+                        <%= select_tag :skills, options_from_collection_for_select(@skills, 'name', 'name'), {multiple: true, id: :nurse_skills_tags} %>
+                    </div>
+
+                    <div class="form-group">
+                        <%= label_tag :wishes, '希望内容', class: 'colibri-form-label-dark' %>
+                        <%= select_tag :wishes, options_from_collection_for_select(@wishes, 'name', 'name'), {multiple: true, id: :nurse_wishes_tags} %>
+                    </div>
+
+                    <div class="form-group">
+                        <%= label_tag :wished_areas, '希望エリア', class: 'colibri-form-label-dark' %>
+                        <%= select_tag :wished_areas, options_from_collection_for_select(@wished_areas, 'name', 'name'), {multiple: true, id: :nurse_wished_areas_tags} %>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <%= label_tag :wishes, '希望内容', class: 'colibri-form-label-dark' %>
-                    <%= select_tag :wishes, options_from_collection_for_select(@wishes, 'name', 'name'), {multiple: true, id: :nurse_wishes_tags} %>
+                <div class="modal-footer">
+                    <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+                    <%= submit_tag '検索する', class: 'btn btn-info text-white', remote: true %>
                 </div>
-
-                <div class="form-group">
-                    <%= label_tag :wished_areas, '希望エリア', class: 'colibri-form-label-dark' %>
-                    <%= select_tag :wished_areas, options_from_collection_for_select(@wished_areas, 'name', 'name'), {multiple: true, id: :nurse_wished_areas_tags} %>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
-                <div class="btn btn-info text-white" id="submit-smart-search" data-url="<%= nurses_smart_search_results_path %>">検索する</div>
-            </div>
+            <% end %>
 
 		</div>
 	</div>

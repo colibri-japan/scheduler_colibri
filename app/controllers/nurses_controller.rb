@@ -120,6 +120,11 @@ class NursesController < ApplicationController
   def smart_search_results
     @nurses = @corporation.nurses.not_archived.includes(:skills, :wishes, :wished_areas).order_by_kana
     @nurses = @nurses.where(team_id: params[:team_ids]) if params[:team_ids].present?
+    if params[:availabilities_start].present? && params[:availabilities_end].present?
+      @nurses = @nurses.without_appointments_between(params[:availabilities_start].to_datetime, params[:availabilities_end].to_datetime, 15)
+        .without_private_events_between(params[:availabilities_start].to_datetime, params[:availabilities_end].to_datetime, 15)
+        .without_unavailabilities((params[:availabilities_start].to_datetime - 15.minutes)..(params[:availabilities_end].to_datetime + 15.minutes))
+    end
     @nurses = @nurses.tagged_with(params[:skills], on: :skills, any: true) if params[:skills].present?
     @nurses = @nurses.tagged_with(params[:wishes], on: :wishes, any: true) if params[:wishes].present?
     @nurses = @nurses.tagged_with(params[:wished_areas], on: :wished_areas, any: true) if params[:wished_areas].present?

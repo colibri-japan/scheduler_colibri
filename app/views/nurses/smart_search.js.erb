@@ -6,3 +6,23 @@ $('#remote_container').html('<%= j render "smart_search" %>');
 $('#nurse_smart_search').modal('show');
 selectizeForSmartSearch()
 submitSmartSearch()
+
+$('#availabilities_start_time').daterangepicker({
+            timePicker: true,
+            singleDatePicker:true,
+            timePicker24Hour: true,
+            timePickerIncrement: 10,
+            locale: {
+                format: 'YYYY/MM/DD - HH:mm'
+            }
+        })
+
+$('#availabilities_end_time').daterangepicker({
+            timePicker: true,
+            singleDatePicker:true,
+            timePicker24Hour: true,
+            timePickerIncrement: 10,
+            locale: {
+                format: 'YYYY/MM/DD - HH:mm'
+            }
+        })

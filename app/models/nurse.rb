@@ -32,7 +32,8 @@ class Nurse < ApplicationRecord
 
 	def self.without_appointments_between(start_time, end_time, margin)
 		start_time -= margin.to_i.minutes 
-		end_time += margin.to_i.minutes
+		end_time += margin.to_i.minutes 
+
 		where.not(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).ids.uniq)
 	end
 	

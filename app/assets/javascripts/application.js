@@ -206,7 +206,7 @@ let initializeBatchActionForm = () => {
     startDate: moment().set({'hour': 6, 'minute': 0}),
     endDate: moment().set({ 'hour': 21, 'minute': 0}),
     locale: {
-      format: 'M/D H:mm',
+      format: 'YYYY/M/D H:mm',
       applyLabel: "選択する",
       cancelLabel: "取消",
       fromLabel: "",

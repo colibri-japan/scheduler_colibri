@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
   enum role: {
+    nurse_restricted: 5,
     schedule_readonly: 4, 
     schedule_restricted: 0, 
     schedule_restricted_with_salary_line_items: 1, 
@@ -37,7 +38,7 @@ class User < ApplicationRecord
 	scope :registered, -> { where.not(name: ['', nil]) }
 
   def has_restricted_access?
-    schedule_restricted? || schedule_readonly?
+    schedule_restricted? || schedule_readonly? || nurse_restricted?
   end
 
   def has_admin_access?

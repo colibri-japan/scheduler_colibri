@@ -118,7 +118,8 @@ class Appointment < ApplicationRecord
 				address: self.patient.try(:address)
 			},
 			eventType: 'appointment',
-			eventId: self.id
+			eventId: self.id,
+			completion_report_id: self.completion_report.try(:id)
 		}
 	end
 

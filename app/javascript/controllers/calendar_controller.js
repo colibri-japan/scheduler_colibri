@@ -21,6 +21,7 @@ import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
 import '@fullcalendar/timeline/main.css';
 import '@fullcalendar/resource-timeline/main.css';
+import { InlineFunctions } from "terser"
 
 let resourceHeader = {
     left: 'prev,next today',
@@ -336,7 +337,15 @@ let createCalendar = () => {
         },
 
         eventClick: function (info) {
-            if (window.userAllowedToEdit) {
+            if (window.userHasRestrictedAccess) {
+                if (info.event.extendedProps.eventType === 'appointment') {
+                    if (info.event.extendedProps.completion_report_id) {
+                        $.getScript(`/appointments/${info.event.extendedProps.eventId}/completion_reports/${info.event.extendedProps.completion_report_id}/edit`)
+                    } else {
+                        $.getScript(`/appointments/${info.event.extendedProps.eventId}/completion_reports/new`)
+                    }
+                }
+            } else {
                 let dateClicked = dateFormatter.format(info.event.start)
                 $.getScript(`${window.planningPath}/${info.event.extendedProps.eventType}s/${info.event.extendedProps.eventId}/edit.js?date=${dateClicked}`, function(){
                     let screenStart = moment(info.view.activeStart).format('YYYY-MM-DD HH:mm')
@@ -624,20 +633,22 @@ let removeEvents = () => {
 }
 
 let updatePayableUrl = () => {
-    let baseUrl = window.location.href 
-    if (baseUrl.includes('/master')) {
-        baseUrl = baseUrl.replace('/master', '')
+    if (!window.userHasRestrictedAccess) {
+        let baseUrl = window.location.href 
+        if (baseUrl.includes('/master')) {
+            baseUrl = baseUrl.replace('/master', '')
+        }
+        let targetUrl
+        if (window.currentResourceType === 'team' || window.currentResourceId !== 'all') {
+            targetUrl = `${baseUrl}/${window.currentResourceType}s/${window.currentResourceId}/payable?m=${window.currentMonth}&y=${window.currentYear}`
+        } else if (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') {
+            targetUrl = `${baseUrl}/all_nurses_payable?m=${window.currentMonth}&y=${window.currentYear}`
+        } else if (window.currentResourceType === 'patient' && window.currentResourceId === 'all') {
+            targetUrl = `${baseUrl}/all_patients_payable?m=${window.currentMonth}&y=${window.currentYear}`
+        }
+    
+        document.getElementById('go-to-payable').dataset.url = targetUrl
     }
-    let targetUrl
-    if (window.currentResourceType === 'team' || window.currentResourceId !== 'all') {
-        targetUrl = `${baseUrl}/${window.currentResourceType}s/${window.currentResourceId}/payable?m=${window.currentMonth}&y=${window.currentYear}`
-    } else if (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') {
-        targetUrl = `${baseUrl}/all_nurses_payable?m=${window.currentMonth}&y=${window.currentYear}`
-    } else if (window.currentResourceType === 'patient' && window.currentResourceId === 'all') {
-        targetUrl = `${baseUrl}/all_patients_payable?m=${window.currentMonth}&y=${window.currentYear}`
-    }
-
-    document.getElementById('go-to-payable').dataset.url = targetUrl
 }
 
 let toggleNurseFilterButton = () => {

@@ -21,6 +21,91 @@
         </div>
     </div>
 
+    <% if @reportable.class.name == 'Appointment' %>
+      <div class="modal-body">
+        <div class="form-group">
+            <%= batch_assisted_bathroom_checked(completion_report.batch_assisted_bathroom).html_safe %>
+            <%= assisted_bathroom_checked(completion_report.assisted_bathroom).html_safe %>
+            <%= assisted_portable_bathroom_checked(completion_report.assisted_portable_bathroom).html_safe %>
+            <%= changed_diapers_checked(completion_report.changed_diapers).html_safe %>
+            <%= changed_bed_pad_checked(completion_report.changed_bed_pad).html_safe %>
+            <%= changed_stained_clothes_checked(completion_report.changed_stained_clothes).html_safe %>
+            <%= wiped_patient_checked(completion_report.wiped_patient).html_safe %>
+            <%= patient_urinated_checked(completion_report.patient_urinated).html_safe %>
+            <%= patient_defecated_checked(completion_report.patient_defecated).html_safe %>
+
+            <%= batch_assisted_meal_checked(completion_report.batch_assisted_meal).html_safe %>
+            <%= patient_maintains_good_posture_while_eating_checked(completion_report.patient_maintains_good_posture_while_eating).html_safe %>
+            <%= explained_menu_to_patient_checked(completion_report.explained_menu_to_patient).html_safe %>
+            <%= assisted_patient_to_eat_checked(completion_report.assisted_patient_to_eat).html_safe %>
+            <%= patient_hydrated_checked(completion_report.patient_hydrated).html_safe %>
+
+
+            <%= batch_assisted_bed_bath_checked(completion_report.batch_assisted_bed_bath).html_safe %>
+            <%= batch_assisted_partial_bath_checked(completion_report.batch_assisted_partial_bath).html_safe %>
+            <%= batch_assisted_total_bath_checked(completion_report.batch_assisted_total_bath).html_safe %>
+            <%= batch_assisted_cosmetics_checked(completion_report.batch_assisted_cosmetics).html_safe %>
+            <%= full_or_partial_body_wash_checked(completion_report.full_or_partial_body_wash).html_safe %>
+            <%= hands_and_feet_wash_checked(completion_report.hands_and_feet_wash).html_safe %>
+            <%= hair_wash_checked(completion_report.hair_wash).html_safe %>
+            <%= bath_or_shower_checked(completion_report.bath_or_shower).html_safe %>
+            <%= face_wash_checked(completion_report.face_wash).html_safe %>
+            <%= mouth_wash_checked(completion_report.mouth_wash).html_safe %>
+            <%= washing_details_checked(completion_report.washing_details).html_safe %>
+            <%= changed_clothes_checked(completion_report.changed_clothes).html_safe %>
+
+            <%= assisted_patient_to_change_body_posture_checked(completion_report.assisted_patient_to_change_body_posture) %> 
+            <%= assisted_patient_to_transfer_checked(completion_report.assisted_patient_to_transfer) %> 
+            <%= assisted_patient_to_move_checked(completion_report.assisted_patient_to_move) %> 
+            <%= commuted_to_the_hospital_checked(completion_report.commuted_to_the_hospital) %> 
+            <%= assisted_patient_to_shop_checked(completion_report.assisted_patient_to_shop) %> 
+            <%= assisted_patient_to_go_somewhere_checked(completion_report.assisted_patient_to_go_somewhere) %>
+
+            <%= assisted_patient_to_go_out_of_bed_checked(completion_report.assisted_patient_to_go_out_of_bed) %>  
+            <%= assisted_patient_to_go_to_bed_checked(completion_report.assisted_patient_to_go_to_bed) %>  
+
+            <%= assisted_to_take_medication_checked(completion_report.assisted_to_take_medication) %>
+            <%= assisted_to_apply_a_cream_checked(completion_report.assisted_to_apply_a_cream) %>
+            <%= assisted_to_take_eye_drops_checked(completion_report.assisted_to_take_eye_drops) %>
+            <%= assisted_to_extrude_mucus_checked(completion_report.assisted_to_extrude_mucus) %>
+            <%= assisted_to_take_suppository_checked(completion_report.assisted_to_take_suppository) %>
+
+            <%= activities_done_with_the_patient_checked(completion_report.activities_done_with_the_patient) %>
+            <%= trained_patient_to_communicate_checked(completion_report.trained_patient_to_communicate) %>
+            <%= trained_patient_to_memorize_checked(completion_report.trained_patient_to_memorize) %>
+            <%= watch_after_patient_safety_checked(completion_report.watch_after_patient_safety) %>
+
+            <%= batch_assisted_house_cleaning_checked(completion_report.batch_assisted_house_cleaning).html_safe %>
+            <%= clean_up_checked(completion_report.clean_up).html_safe %>
+            <%= took_out_trash_checked(completion_report.took_out_trash).html_safe %>
+
+            <%= batch_assisted_laundry_checked(completion_report.batch_assisted_laundry).html_safe %>
+            <%= washed_clothes_checked(completion_report.washed_clothes).html_safe %>
+            <%= dried_clothes_checked(completion_report.dried_clothes).html_safe %>
+            <%= stored_clothes_checked(completion_report.stored_clothes).html_safe %>
+            <%= ironed_clothes_checked(completion_report.ironed_clothes).html_safe %>
+
+            <%= batch_assisted_bedmake_checked(completion_report.batch_assisted_bedmake).html_safe %>
+            <%= changed_bed_sheets_checked(completion_report.changed_bed_sheets).html_safe %>
+            <%= changed_bed_cover_checked(completion_report.changed_bed_cover).html_safe %>
+
+            <%= batch_assisted_storing_furniture_checked(completion_report.batch_assisted_storing_furniture).html_safe %>
+            <%= rearranged_clothes_checked(completion_report.rearranged_clothes).html_safe %>
+            <%= repaired_clothes_checked(completion_report.repaired_clothes).html_safe %>
+            <%= dried_the_futon_checked(completion_report.dried_the_futon).html_safe %>
+            
+            <%= batch_assisted_cooking_checked(completion_report.batch_assisted_cooking).html_safe %>
+            <%= set_the_table_checked(completion_report.set_the_table).html_safe %>
+            <%= cooked_for_the_patient_checked(completion_report.cooked_for_the_patient).html_safe %>
+            <%= cleaned_the_table_checked(completion_report.cleaned_the_table).html_safe %>
+
+            <%= batch_assisted_groceries_checked(completion_report.batch_assisted_groceries).html_safe %>
+            <%= grocery_shopping_checked(completion_report.grocery_shopping).html_safe %>
+            <%= medecine_shopping_checked(completion_report.medecine_shopping).html_safe %>
+        </div>
+      </div>
+    <% end %>
+
     <% if !@corporation.simple_reports? %>
       <div class="modal-body" id="preliminary_check">
         <div class="modal-subsection-title">

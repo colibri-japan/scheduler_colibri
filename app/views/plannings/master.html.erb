@@ -34,7 +34,7 @@
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
 
 <div id="planning-page-wrapper" data-controller="calendar">
-	<div id="resource-list-container" class="no-print">
+	<div id="resource-list-container" class="no-print" style="<%= 'display:none' if current_user.nurse_restricted? %>">
 		<div id="close-resource-list">
 			<span class="close" id="close-resource">&times;</span>
 		</div>
@@ -121,12 +121,12 @@
 	</div>
 	<div id="menu-backdrop">
 	</div>
-	<div id="detail-container">
+	<div id="detail-container"  class="<%= 'nurse-restricted-detail-container' if current_user.nurse_restricted? %>">
 		<div id="detail-planning-container">
 			<div id="planning-header">
 				<div id="detail-planning-title">
 					<div id="planning-nurse-information">
-						<div id="payable-menu">
+						<div id="payable-menu" style="<%= 'display:none' if current_user.nurse_restricted? %>">
 							<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
 						</div>
 						<div class="planning-resource-module-title">
@@ -201,18 +201,20 @@
     <%= render 'plannings/nurse_overlap_modal' %>
 <% end %>
 
-<div id='colibri-batch-action-button' class='no-print batch-action-button'>
-	<div class='colibri-glyphicon-container'>
-		<span class='glyphicon glyphicon-pencil batch-action-pencil'></span>
-		<div id='batch-action-menu' style='display:none'>
-			<span id='print-button'><i class='glyphicon-action-button glyphicon glyphicon-print'></i> 印刷<br/></span>
-			<% if current_user.has_admin_access? %>
-				<span class='glyphicon glyphicon-search glyphicon-action-button'></span><%= link_to ' 従業員検索', nurses_smart_search_path, remote: true, class: 'action-button-url' %><br/>
-				<span id="colibri-master-action-button"><%= image_tag('copy_planning_1.svg', size: '19') %> 反映へ</span>
-			<% end %>
+<% if !current_user.nurse_restricted? && !current_user.schedule_restricted? %>
+	<div id='colibri-batch-action-button' class='no-print batch-action-button'>
+		<div class='colibri-glyphicon-container'>
+			<span class='glyphicon glyphicon-pencil batch-action-pencil'></span>
+			<div id='batch-action-menu' style='display:none'>
+				<span id='print-button'><i class='glyphicon-action-button glyphicon glyphicon-print'></i> 印刷<br/></span>
+				<% if current_user.has_admin_access? %>
+					<span class='glyphicon glyphicon-search glyphicon-action-button'></span><%= link_to ' 従業員検索', nurses_smart_search_path, remote: true, class: 'action-button-url' %><br/>
+					<span id="colibri-master-action-button"><%= image_tag('copy_planning_1.svg', size: '19') %> 反映へ</span>
+				<% end %>
+			</div>
 		</div>
 	</div>
-</div>
+<% end %>
 
 <div id="availabilities-form" class="modal fade" style='display:none'>
   <div class="modal-dialog">

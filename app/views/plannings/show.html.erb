@@ -31,7 +31,7 @@
 
 
 <div id="planning-page-wrapper" data-controller="calendar">
-	<div id="resource-list-container" class="no-print">
+	<div id="resource-list-container" class="no-print" style="<%= 'display:none' if current_user.nurse_restricted? %>">
 		<div id="close-resource-list">
 			<span id="close-resource">&times;</span>
 		</div>
@@ -114,12 +114,12 @@
 	</div>
 	<div id="menu-backdrop">
 	</div>
-	<div id="detail-container">
+	<div id="detail-container" class="<%= 'nurse-restricted-detail-container' if current_user.nurse_restricted? %>">
 		<div id="detail-planning-container">
 			<div id="planning-header">
 				<div id="detail-planning-title">
 					<div id="planning-nurse-information">
-						<div id="payable-menu">
+						<div id="payable-menu" style="<%= 'display:none' if current_user.nurse_restricted? %>">
 							<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
 						</div>
 						<div class="planning-resource-module-title">
@@ -161,7 +161,7 @@
 	class="scrollbar-custom colibri-scrollbar-light">
 </div>
 
-<% unless current_user.schedule_readonly? %>
+<% if !current_user.schedule_readonly? && !current_user.nurse_restricted? %>
 	<div id="drag-drop-modal" class="modal fade" style="display:none">
 		<div class="modal-dialog">
 			<div class="modal-content">

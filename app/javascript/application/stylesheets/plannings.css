@@ -627,6 +627,15 @@ p.setting-title {
 	}
 }
 
+@media screen and (orientation: landscape) and (min-width: 900px) {
+	/* layout only for desktop */
+	#detail-container.nurse-restricted-detail-container {
+		max-width: none;
+		width: calc(100vw - 55px);
+	}
+}
+
+
 @media screen and (orientation: portrait) {
 	div .fc-scroller {
 		overflow: visible !important;

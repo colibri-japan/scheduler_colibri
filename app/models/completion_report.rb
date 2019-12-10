@@ -4,6 +4,10 @@ class CompletionReport < ApplicationRecord
     scope :from_appointments, -> { where(reportable_type: 'Appointment') }
     scope :from_recurring_appointments, -> { where(reportable_type: 'RecurringAppointment') }
 
+    def with_anything_checked?
+        with_personal_care? || with_handicap_care? || with_medical_care? ||  with_house_care?
+    end
+
     def with_personal_care?
         with_bathroom_assistance? || with_feeding? || with_body_cleaning? ||
         with_grooming? || with_movement_assistance? || with_bed_assistance?

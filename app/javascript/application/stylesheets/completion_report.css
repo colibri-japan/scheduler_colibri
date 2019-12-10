@@ -7,3 +7,8 @@
     cursor:pointer;
     margin-left: 4px;
 }
+
+.report-checkmark {
+    margin-right: 3px;
+    padding-bottom: 2px;
+}

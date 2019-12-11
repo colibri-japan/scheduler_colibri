@@ -178,8 +178,9 @@ Rails.application.routes.draw do
   get 'care_manager_corporations/:id/commented_appointments' => 'care_manager_corporations#commented_appointments', as: :care_manager_corporation_commented_appointments
 
   authenticated :user do  
-    root  to: 'dashboard#index', as: :authenticated_root
+    root  to: 'users#current_user_home', as: :authenticated_root
   end
+
   unauthenticated do 
     root to: 'pages#show', page: 'home', as: :unauthenticated_root
   end

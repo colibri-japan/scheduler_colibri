@@ -26,6 +26,14 @@ class UsersController < ApplicationController
       redirect_to users_path
     end
   end
+
+  def current_user_home
+    if current_user.has_admin_access?
+      redirect_to dashboard_index_path
+    else
+      redirect_to @corporation.planning
+    end
+  end
   
   private
 

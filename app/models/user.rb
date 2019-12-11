@@ -23,7 +23,7 @@ class User < ApplicationRecord
   }
   # schedule_readonly: master and non master schedule readonly, no access to provided services
   # schedule restricted: master readonly, no access to provided services
-  # schedule restricted with provided services: master readonly, limited access to provided services
+  # schedule restricted with salary line items: master readonly, limited access to provided services
   # schedule admin: master edit, limited access to provided services
   # corporation admin: master edit, full access to provided services and salaries 
 

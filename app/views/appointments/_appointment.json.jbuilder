@@ -17,6 +17,7 @@ json.patient do
     json.address appointment.patient.address 
 end
 json.serviceType appointment.title || ''
+json.completion_report_id appointment.completion_report.try(:id)
 
 json.borderColor appointment.borderColor    
 json.eventType 'appointment'

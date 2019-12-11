@@ -8,6 +8,9 @@
 			<% unless current_user.has_restricted_access? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= resource_payable_path %>" id="go-to-payable" title="給与.請求">給</li>
 			<% end %>
+			<% if current_user.nurse_restricted? %>
+				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'reports' %>" data-url="<%= completion_reports_path(params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}) %>" title="実施記録"><span class="glyphicon glyphicon-file"  style="<%= view == 'reports' ? 'color:white' : 'color:#97A0A8' %>;margin-left:3px;font-size:24px"></span></li>
+			<% end %>
 			<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  planning_master_path(@planning) %>" title="マスター">マ</li>
 			<% unless current_user.role == "nurse_restricted" %>
 				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%= patients_path %>" title="設定"><span class='glyphicon glyphicon-cog' style="<%= view == 'settings' ? 'color:white' : 'color:#97A0A8' %>;font-size:25px"></span></li>

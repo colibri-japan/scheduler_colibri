@@ -198,7 +198,12 @@
     #detail-planning-container {
 		width: 100%;
 		margin: 0px 0px 150px 0px;
-    }
+	}
+	
+	#completion-reports-container {
+		width:100%;
+		margin-left: 0px;
+	}
 
     #detail-planning-title {
         justify-content: space-between;

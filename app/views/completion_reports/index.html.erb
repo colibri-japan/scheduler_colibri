@@ -1,0 +1,68 @@
+<%= javascript_tag do %>
+	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
+	window.currentMonth = <%= Date.today.month %>
+	window.currentYear = <%= Date.today.year %>
+<% end %>
+
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'reports', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+
+
+<div id="planning-page-wrapper">
+	<div id="detail-container" class="<%= 'nurse-restricted-detail-container' if current_user.nurse_restricted? %>">
+		<div id="completion-reports-container">
+			<div style="width:100%">
+				<div style="width:100%">
+					<div class='no-print' style='margin-left:5px'>
+						<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
+						<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
+						<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
+					</div>
+					<div class="resource-details-subsection-title">
+						書き残し
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="width:40%">サービス日時</th>
+								<th style="width:40%">利用者様</th>
+								<th style="width:20%">記録</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% @appointments_without_reports.each do |appointment| %>
+								<tr>
+									<td style="width:40%"><%= "#{l(appointment.starts_at, format: '%-m/%-d (%a) %H:%M')}" %></td>
+									<td style="width:40%"><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
+									<td style="width:20%"><%= link_to '<span class="glyphicon glyphicon-edit write-completion-report"></span>'.html_safe, new_appointment_completion_report_path(appointment), remote: true %></td>
+								</tr>
+							<% end %>
+						</tbody>
+					</table>
+
+					<div class="resource-details-subsection-title">
+						過去の記録
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>サービス日時</th>
+								<th>利用者様</th>
+								<th>記録</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% @recent_completion_reports.each do |completion_report| %>
+								<tr>
+									<td style="width:40%"><%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d (%a) %H:%M')}" %></td>
+									<td style="width:40%"><%= appointment_resource_name(completion_report.reportable, params[:resource_type]) %></td>
+									<td style="width:20%"><%= link_to '<span class="glyphicon glyphicon-file write-completion-report"></span>'.html_safe, edit_appointment_completion_report_path(completion_report.reportable, completion_report), remote: true %></td>
+								</tr>
+							<% end %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

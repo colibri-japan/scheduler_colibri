@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     resources :salary_line_items, except: [:new]
     resources :bonuses, only: :new
     resources :nurse_service_wages, only: :index
+    resources :completion_reports, only: :index
   end
 
   resources :corporations do

@@ -134,11 +134,13 @@
 				<div id="nurse_filter_wrapper" style="display:none;margin-left:5px;text-align:left">
 					<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true} %>
 				</div>
-				<div id="planning-header-submenu">
-					<div class="header-submenu-item" id="header-calendar-button">シフト</div>
-					<div class="header-submenu-item resource-details-button">詳細</div>
-					<div class="header-submenu-item reports-index-button" id="header-report-button">記録</div>
-				</div>
+				<% unless current_user.nurse_restricted? %>
+					<div id="planning-header-submenu">
+						<div class="header-submenu-item" id="header-calendar-button">シフト</div>
+						<div class="header-submenu-item resource-details-button">詳細</div>
+						<div class="header-submenu-item reports-index-button" id="header-report-button">記録</div>
+					</div>
+				<% end %>
 			</div>
 
 			<div id="resource-print-info" class="print-only">

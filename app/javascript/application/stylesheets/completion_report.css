@@ -12,3 +12,10 @@
     margin-right: 3px;
     padding-bottom: 2px;
 }
+
+#completion-reports-container {
+    min-width: 500px;
+    max-width: 800px;
+    overflow-x: scroll;
+    margin-left: 15px;
+}

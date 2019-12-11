@@ -3,10 +3,73 @@ $('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "new" %>');
 $('#new_bonus').modal('show');
 newBonusForm()
+
+$('#salary_rule_service_date').focus(function(){
+  $(this).daterangepicker({
+    singleDatePicker: true,
+    locale: {
+      format: 'YYYY-MM-DD',
+      applyLabel: "選択する",
+      cancelLabel: "取消",
+      daysOfWeek: [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+      ],
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月"
+      ],
+      firstDay: 1
+    }
+  })
+})
+
+$('#new_salary_rule').submit(function () {
+  let range_is_absent = $('#salary_rule_service_date').val() == "";
+  if (range_is_absent) {
+    alert('サービス期間を指定してください')
+    return false
+  } 
+})
+
+newBonusForm()
+
 salaryRulesFormLayout()
 salaryRulesSelectize()
-applyNurseFilterToSalaryService()
 toggleNurseIdForm()
 $('#all_nurses_selected_checkbox').on('change', function () {
     toggleNurseIdForm()
+})
+
+$('#all_services_selected_checkbox').bootstrapToggle({
+  onstyle: 'info',
+  offstyle: 'secondary',
+  on: '全サービスタイプ対象',
+  off: 'サービスタイプ選択',
+  size: 'small',
+  width: 180
+})
+
+$('#include_bonuses_checkbox').bootstrapToggle({
+    on: '手当も対象',
+    off: '手当は対象外',
+    onstyle: 'info',
+    offstyle: 'secondary',
+    width: 180,
+    size: 'small'
 })

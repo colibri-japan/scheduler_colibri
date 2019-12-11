@@ -11,3 +11,12 @@ $('#all_nurses_selected_checkbox').on('change', function () {
 })
 
 initializeTooltips()
+
+$('#all_services_selected_checkbox').bootstrapToggle({
+  onstyle: 'info',
+  offstyle: 'secondary',
+  on: '全サービスタイプ対象',
+  off: 'サービスタイプ選択',
+  size: 'small',
+  width: 180
+})

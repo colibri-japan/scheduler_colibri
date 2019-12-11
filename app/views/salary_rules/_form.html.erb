@@ -12,41 +12,43 @@
 
   </div>
 
-  <div class="blue-background-form">
-    <div class="modal-subsection-title-sm">目標.条件</div>
+  <% unless @nurse.present? %>
+    <div class="blue-background-form">
+      <div class="modal-subsection-title-sm">目標.条件</div>
 
-    <div class="form-group">
-      <%= form.label :min_monthly_service_count, "案件数目標（月）" %>
-      <%= form.number_field :min_monthly_service_count,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>件から
-      <%= form.number_field :max_monthly_service_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %>件まで
-    </div>
-
-    <div class="form-group">
-      <%= form.label :min_monthly_hours_worked, "勤務時間目標（月）" %>
-      <%= form.number_field :min_monthly_hours_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間から
-      <%= form.number_field :max_monthly_hours_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間まで
-      <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "例：20時間から30時間の場合。20時間目から29時間59分59秒までが対象です。<br/><br/>50 ≤ 勤務時間 < 60"}  %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :min_days_worked, "合計稼動日数" %>
-      <%= form.number_field :min_days_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>日から
-      <%= form.number_field :max_days_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>まで
-    </div>
-
-    <div class="form-group">
-      <%= form.label :min_months_worked, "合計稼動期間" %>
-      <%= form.number_field :min_months_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>ヵ月目から
-      <%= form.number_field :max_months_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>ヵ月目まで
-    </div>
-
-    <% if @corporation.elderly_care_and_nursing? %>
       <div class="form-group">
-        <%= form.label :only_count_days_inside_insurance_scope, "保険内サービスを含む日数のみ", class: "colibri-form-label-dark" %>
-        <%= form.check_box :only_count_days_inside_insurance_scope %>
+        <%= form.label :min_monthly_service_count, "案件数目標（月）" %>
+        <%= form.number_field :min_monthly_service_count,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>件から
+        <%= form.number_field :max_monthly_service_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %>件まで
       </div>
-    <% end %>
-  </div>
+
+      <div class="form-group">
+        <%= form.label :min_monthly_hours_worked, "勤務時間目標（月）" %>
+        <%= form.number_field :min_monthly_hours_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間から
+        <%= form.number_field :max_monthly_hours_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>時間まで
+        <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "例：20時間から30時間の場合。20時間目から29時間59分59秒までが対象です。<br/><br/>50 ≤ 勤務時間 < 60"}  %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :min_days_worked, "合計稼動日数" %>
+        <%= form.number_field :min_days_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>日から
+        <%= form.number_field :max_days_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>まで
+      </div>
+
+      <div class="form-group">
+        <%= form.label :min_months_worked, "合計稼動期間" %>
+        <%= form.number_field :min_months_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>ヵ月目から
+        <%= form.number_field :max_months_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>ヵ月目まで
+      </div>
+
+      <% if @corporation.elderly_care_and_nursing? %>
+        <div class="form-group">
+          <%= form.label :only_count_days_inside_insurance_scope, "保険内サービスを含む日数のみ", class: "colibri-form-label-dark" %>
+          <%= form.check_box :only_count_days_inside_insurance_scope %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class='modal-body'>
     <div class="modal-subsection-title-sm">従業員フィルタ</div>
@@ -68,9 +70,8 @@
     <div class="modal-subsection-title-sm">サービスフィルタ</div>
     <% if @nurse.present? %>
       <div class="form-group">
-        <%= form.label :service_date_range_start, "期間", class: "colibri-form-label-dark" %><span class='required-field'>*</span><br/>
-        <%= form.text_field :service_date_range_start, id: 'salary_rule_service_date_range_start' %> ~ 
-        <%= form.text_field :service_date_range_end, id: 'salary_rule_service_date_range_end' %>
+        <%= form.label :service_date, "対象日", class: "colibri-form-label-dark" %><span class='required-field'>*</span><br/>
+        <%= form.text_field :service_date, id: 'salary_rule_service_date', class: 'colibri-input', style: 'width:180px' %>
       </div>
     <% end %>
 
@@ -80,7 +81,6 @@
     </div>
 
     <div class="form-group">
-      <%= form.label :target_all_services, "対象タイプ", class: "colibri-form-label-dark" %>
       <%= form.check_box :target_all_services, checked: salary_rule.target_all_services, id: 'all_services_selected_checkbox' %>
     </div>
 
@@ -89,20 +89,22 @@
       <%= form.collection_select :service_title_list, @services, :title, :title, {}, multiple: true, id: 'target-service-titles' %>
     </div>
 
+    <div class="form-group" id="only_count_between_appointments_group" style="<%= 'display:none' if salary_rule.hour_based? %>">
+      <%= form.label :only_count_between_appointments, "サービスの間の回数のみ", class: "colibri-form-label-dark" %>
+      <%= form.check_box :only_count_between_appointments, id: :only_count_between_appointments_checkbox %>
+    </div>
+
   </div>
 
   <div class='modal-body'>
     <div class="modal-subsection-title-sm">手当計算式</div>
 
     <div class="form-group">
-      <%= form.select :operator, options_for_select([['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['+', 3]], salary_rule.operator) %>
+      <% operators = @nurse.present? ? [['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['(給与 + 手当) x', 4], ['+', 3]] : [['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['+', 3]] %>
+      <%= form.select :operator, options_for_select(operators, salary_rule.operator) %>
       <%= form.number_field :argument, {step: 0.01, class: 'colibri-input'} %>
     </div>
 
-    <div class="form-group" id="only_count_between_appointments_group" style="<%= 'display:none' if salary_rule.hour_based? %>">
-      <%= form.label :only_count_between_appointments, "サービスの間の回数のみ", class: "colibri-form-label-dark" %>
-      <%= form.check_box :only_count_between_appointments, id: :only_count_between_appointments_checkbox %>
-    </div>
   </div>
   <% if @nurse.present? %>
     <%= form.hidden_field :one_time_salary_rule, value: true %>

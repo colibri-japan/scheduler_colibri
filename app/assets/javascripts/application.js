@@ -568,9 +568,7 @@ let submitMerge = () => {
 
 let salaryRulesFormLayout = () => {
   bootstrapToggleForAllNursesCheckbox();
-  bootstrapToggleForAllServicesCheckbox();
   toggleServiceTitleList();
-  serviceDaterangepicker();
 }
 
 let filterCmCorporations = () => {
@@ -616,84 +614,6 @@ let nurseMonthlyWageField = () => {
   }
 }
 
-let serviceDaterangepicker = () => {
-  $('#salary_rule_service_date_range_start').focus(function(){
-    $(this).daterangepicker({
-      singleDatePicker: true,
-      timePicker: true,
-      timePicker24Hour: true,
-      timePickerIncrement: 15,
-      startDate: moment().subtract(15, 'days'),
-      locale: {
-        format: 'YYYY-MM-DD H:mm',
-        applyLabel: "選択する",
-        cancelLabel: "取消",
-        daysOfWeek: [
-          "日",
-          "月",
-          "火",
-          "水",
-          "木",
-          "金",
-          "土"
-        ],
-        monthNames: [
-          "1月",
-          "2月",
-          "3月",
-          "4月",
-          "5月",
-          "6月",
-          "7月",
-          "8月",
-          "9月",
-          "10月",
-          "11月",
-          "12月"
-        ],
-        firstDay: 1
-      }
-    })
-  })
-  $('#salary_rule_service_date_range_end').focus(function(){
-    $(this).daterangepicker({
-      singleDatePicker: true,
-      timePicker: true,
-      timePicker24Hour: true,
-      timePickerIncrement: 15,
-      startDate: moment(),
-      locale: {
-        format: 'YYYY-MM-DD H:mm',
-        applyLabel: "選択する",
-        cancelLabel: "取消",
-        daysOfWeek: [
-          "日",
-          "月",
-          "火",
-          "水",
-          "木",
-          "金",
-          "土"
-        ],
-        monthNames: [
-          "1月",
-          "2月",
-          "3月",
-          "4月",
-          "5月",
-          "6月",
-          "7月",
-          "8月",
-          "9月",
-          "10月",
-          "11月",
-          "12月"
-        ],
-        firstDay: 1
-      }
-    })
-  })
-}
 
 
 let bootstrapToggleForAllNursesCheckbox = () => {
@@ -719,16 +639,6 @@ let submitSmartSearch = () => {
   })
 }
 
-let bootstrapToggleForAllServicesCheckbox = () => {
-  $('#all_services_selected_checkbox').bootstrapToggle({
-    onstyle: 'info',
-    offstyle: 'secondary',
-    on: '全サービスタイプ',
-    off: 'サービスタイプ選択',
-    size: 'small',
-    width: 170
-  })
-}
 
 let toggleServiceTitleList = () => {
   $('#all_services_selected_checkbox').on('change', function(){
@@ -798,7 +708,6 @@ let addSecondServiceCategory = () => {
 }
 
 let newBonusForm = () => {
-  validateBonusForm()
   $('#bonus-provided-service-button').click(function () {
     $('.toggle-model-button').removeClass('btn-colibri-light-blue');
     $(this).addClass('btn-colibri-light-blue');
@@ -811,27 +720,6 @@ let newBonusForm = () => {
     $('#salary-rule-form-container').show();
     $('#provided-service-form-container').hide();
   });
-}
-
-let validateBonusForm = () => {
-  $('#new_salary_rule').submit(function () {
-    let range_is_absent = $('#salary_rule_service_date_range_start').val() == "" && $('#salary_rule_service_date_range_end').val() == "";
-    let both_range_present = $('#salary_rule_service_date_range_start').val() !== "" && $('#salary_rule_service_date_range_end').val() !== "";
-    let range_in_correct_order = moment($('#salary_rule_service_date_range_start').val()).isBefore($('#salary_rule_service_date_range_end').val());
-
-    if (range_is_absent) {
-      alert('サービス期間を指定してください')
-      return false
-    } else if (!range_is_absent && !both_range_present) {
-      alert('サービス期間の開始と終了を両方指定してください')
-      return false
-    } else if (!range_is_absent && both_range_present && !range_in_correct_order) {
-      alert('サービス期間の終了を開始より過去の日に指定してください')
-      return false
-    } else if (!range_is_absent && both_range_present && range_in_correct_order) {
-      return true
-    }
-  })
 }
 
 

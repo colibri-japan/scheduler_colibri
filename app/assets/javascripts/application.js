@@ -1324,6 +1324,8 @@ $(document).on('turbolinks:load', function(){
     } else if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
       data['patient_id'] = window.currentResourceId || window.defaultResourceId
     }
+    data['m'] = window.currentMonth
+    data['y'] = window.currentYear
 
     $.ajax({
       type: 'GET',

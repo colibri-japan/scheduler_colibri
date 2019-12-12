@@ -228,7 +228,7 @@ module CompletionReportsHelper
     end
     
     def watch_after_patient_safety_checked(watch_after_patient_safety)
-        watch_after_patient_safety ? "<div>#{image_tag('checkmark.svg', width: '15px', class: 'report-checkmark')}安全の見守り</div>" : "" 
+        watch_after_patient_safety ? "<div>#{image_tag('checkmark.svg', width: '15px', class: 'report-checkmark')}転倒予防の声かけ・見守り</div>" : "" 
     end
     
     def clean_up_checked(clean_up)

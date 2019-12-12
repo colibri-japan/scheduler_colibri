@@ -202,6 +202,9 @@ window.completionFormSelectize = () => {
     $('#completion_report_cleanup').selectize({
         plugins: ['remove_button'],
     })
+    $('#completion_report_watched_after_patient_safety_doing').selectize({
+        plugins: ['remove_button'],
+    })
 }
 
 window.patientCaremanagerSelectize = () => {

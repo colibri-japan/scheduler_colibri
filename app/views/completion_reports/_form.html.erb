@@ -624,11 +624,17 @@
                       記憶への働きかけ
                   <% end %>
                 </div>
-                <div class="form-group  col-md-3">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
                   <%= form.label :watch_after_patient_safety, "安全の見守り", class: 'colibri-form-label-dark' do  %>
                       <%= form.check_box :watch_after_patient_safety %>
-                      見守り
+                      転倒予防の声かけ・見守り
                   <% end %>
+                </div>
+                <div class="form-group col-md-6">
+                  <%= form.select :watched_after_patient_safety_doing, options_for_select([['入浴', 0], ['更衣', 1],['移動', 2]], completion_report.watched_after_patient_safety_doing), {prompt: '選択する'}, {multiple: true, id: 'completion_report_watched_after_patient_safety_doing'} %>
                 </div>
               </div>
 

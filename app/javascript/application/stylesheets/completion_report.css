@@ -11,9 +11,16 @@
 .report-checkmark {
     margin-right: 3px;
     padding-bottom: 2px;
+    font-size: 8px;
+    color: #42B97C;
 }
 
 #completion-reports-container {
     width: 100%;
     margin-left: 15px;
+}
+
+.report-prefilled-item {
+    color: black;
+    font-size: 1.1em;
 }

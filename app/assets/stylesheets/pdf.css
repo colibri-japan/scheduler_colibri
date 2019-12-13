@@ -1,3 +1,5 @@
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
 
 .teikyohyo-container {
     display: block;
@@ -89,4 +91,82 @@ body {
 	border-bottom: 0.5px solid #ccc;
 	padding-bottom: 4px;
 	height: 33px;
+}
+
+/* nurse payable pdf layouts */
+
+.nurse-payable-title {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.nurse-payable-corporation-name {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.nurse-payable-date-and-nurse-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nurse-payable-date {
+    padding: 5px;
+    border: 1px solid black;
+    float: left;
+}
+
+.nurse-name-container {
+    float: right;
+}
+
+.nurse-payable-nurse-name {
+    padding: 5px;
+    border: 1px solid black;  
+}
+
+.pdf-table-full {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.pdf-table-full > thead > tr > th {
+    font-weight: bolder;
+    font-size: 1.1em;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+
+
+thead {
+    display: table-header-group;
+}
+
+tfoot { display: table-row-group }
+
+tr { page-break-inside: avoid }
+
+.pdf-table-full > tr {
+    page-break-inside: avoid;
+}
+
+.pdf-table-full > tbody > tr > td {
+    border-bottom: 1px solid #ccc;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.pdf-table-small {
+    width: 100%;
+    border-collapse: collapse   ;
+}
+
+.pdf-table-small > tbody > tr > td {
+    border: 1px solid black;
+}
+
+.pdf-table-small > tbody > tr > th {
+    border: 1px solid black;
 }

@@ -172,6 +172,15 @@ class NursesController < ApplicationController
     respond_to do |format|
       format.html
       format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"給与明細書_#{@nurse.try(:name)}_#{params[:y]}年#{params[:m]}月.xlsx\""}
+      format.pdf do
+        render pdf: "#{@nurse.try(:name)}_給与支払明細_#{params[:y]}年#{params[:m]}月",
+        page_size: 'A4',
+        layout: 'pdf.html',
+        orientation: 'portrait',
+        encoding: 'UTF-8',
+        zoom: 1,
+        dpi: 75
+      end 
     end
   end
 

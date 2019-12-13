@@ -1,0 +1,120 @@
+<div class="nurse-payable-title">
+    給与支払明細書
+</div>
+
+<div class="nurse-payable-corporation-name">
+    <%= @corporation.name %>
+</div>
+
+<div class="nurse-payable-date-and-nurse-name" style="margin-bottom:20px">
+    <span class="nurse-payable-date"><%= "#{params[:y]}年#{params[:m]}月" %></span>  
+    <span class="nurse-name-container">従業員名：<span class="nurse-payable-nurse-name"><%= @nurse.name %></span></span>
+</div>
+
+<div>
+    <table class="pdf-table-full">
+        <thead>
+        <tr>
+            <th>日付</th>
+            <th>利用者名</th>
+            <th>サービス種類</th>
+            <th>開始</th>
+            <th>終了</th>
+            <th>稼働時間</th>
+            <th>給与</th>
+        </tr>
+        </thead>
+        <tbody>
+            <% @appointments_till_today.each do |appointment| %>
+                <% total_wage = @nurse.full_timer ? '' : appointment.try(:total_wage) %>
+                <tr>
+                    <td><%= "#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}" %></td>
+                    <td><%= "#{appointment.patient.try(:name)}様" %></td>
+                    <td><%= appointment_title_in_excel(appointment) %></td>
+                    <td><%= appointment.starts_at.try(:strftime, "%H:%M") %></td>
+                    <td><%= appointment.ends_at.try(:strftime, "%H:%M") %></td>
+                    <td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
+                    <td><%= total_wage %></td>
+                </tr>
+            <% end %>
+            <% unless @nurse.full_timer? %>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>合計：</td>
+                    <td>￥<%= @appointments_till_today.sum(:total_wage) %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
+
+<% if @salary_line_items.present? %>
+    <div style="width:70%;margin-top:30px">
+        <div style="margin-left:auto">
+            <table class="pdf-table-full">
+                <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>手当名</th>
+                    <th>額</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% @salary_line_items.each do |salary_line_item| %>
+                        <tr>
+                            <td><%= "#{salary_line_item.service_date.strftime('%-d日')} #{weekday(salary_line_item.service_date)}" %></td>
+                            <td><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
+                            <td><%= salary_line_item.try(:total_wage) %></td>
+                        </tr>
+                    <% end %>
+                    <tr>
+                        <td></td>
+                        <td>合計：</td>
+                        <td>￥<%= @salary_line_items.sum(:total_wage) %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<% end %>
+
+
+<div style="width:25%;margin-top:30px">
+    <table class="pdf-table-small" style="page-break-inside:avoid">
+      <tbody>
+        <tr> 
+            <th>勤務日数</th>   
+            <td><%= @total_days_worked %></td>
+        </tr>
+        <tr>
+            <th>勤務時間</th>   
+            <td><%= from_seconds_to_hours_minutes(@total_time_worked) %></td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<div style="width:20%;margin-top:30px">
+    <table class="pdf-table-small" style='page-break-inside:avoid'>
+      <tbody>
+        <tr> 
+            <th>基本給合計</th>
+            <td>￥<%= @nurse.full_timer ? @nurse.try(:monthly_wage) : @appointments_till_today.sum(:total_wage) %></td>
+        </tr>
+        <% if @salary_line_items.present? %>
+            <tr> 
+                <th>手当合計</th>
+                <td>￥<%= @salary_line_items.sum(:total_wage) %></td>
+            </tr>
+        <% end %>
+        <tr> 
+            <th>合計</th>
+            <td>￥<%= (@appointments_till_today.sum(:total_wage) || 0) + (@salary_line_items.sum(:total_wage) || 0) %></td>
+        </tr>
+      </tbody>
+    </table>
+</div>

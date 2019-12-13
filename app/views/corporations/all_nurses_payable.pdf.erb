@@ -1,0 +1,125 @@
+<% @data.each do |nurse, data| %>
+    <div class="nurse-payable-title">
+        給与支払明細書
+    </div>
+
+    <div class="nurse-payable-corporation-name">
+        <%= @corporation.name %>
+    </div>
+
+    <div class="nurse-payable-date-and-nurse-name" style="margin-bottom:20px">
+        <span class="nurse-payable-date"><%= "#{@year}年#{@month}月" %></span>  
+        <span class="nurse-name-container">従業員名：<span class="nurse-payable-nurse-name"><%= nurse.name %></span></span>
+    </div>
+
+    <div style="padding-top:20px">
+        <table class="pdf-table-full">
+            <thead>
+                <tr>
+                    <th style="width:14%">日付</th>
+                    <th style="width:20%">利用者名</th>
+                    <th style="width:24%">サービス種類</th>
+                    <th style="width:10%">開始</th>
+                    <th style="width:10%">終了</th>
+                    <th style="width:10%">稼働時間</th>
+                    <th style="width:12%;text-align:right">給与</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data[:appointments].each do |appointment| %>
+                    <% total_wage = nurse.full_timer ? '' : appointment.try(:total_wage) %>
+                    <tr>
+                        <td><%= "#{appointment.starts_at.try(:strftime, '%-d日')} #{weekday(appointment.try(:starts_at))}" %></td>
+                        <td><%= "#{appointment.patient.try(:name)}様" %></td>
+                        <td><%= appointment_title_in_excel(appointment) %></td>
+                        <td><%= appointment.starts_at.try(:strftime, "%H:%M") %></td>
+                        <td><%= appointment.ends_at.try(:strftime, "%H:%M") %></td>
+                        <td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
+                        <td style="text-align:right"><%= total_wage %></td>
+                    </tr>
+                <% end %>
+                <% unless nurse.full_timer? %>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>合計：</td>
+                        <td style="text-align:right">￥<%= data[:appointments].sum(:total_wage) %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+    <% if data[:salary_line_items].present? %>
+        <div style="width:100%">
+            <div style="margin-left:auto;width:50%;margin-top:30px;page-break-inside:avoid">
+                <table class="pdf-table-full">
+                    <thead>
+                        <tr>
+                            <th>日付</th>
+                            <th>手当名</th>
+                            <th style="text-align:right">額</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data[:salary_line_items].each do |salary_line_item| %>
+                            <tr>
+                                <td><%= "#{salary_line_item.service_date.try(:strftime,'%-d日')} #{weekday(salary_line_item.try(:service_date))}" %></td>
+                                <td><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
+                                <td style="text-align:right"><%= salary_line_item.try(:total_wage) %></td>
+                            </tr>
+                        <% end %>
+                        <tr>
+                            <td></td>
+                            <td>合計：</td>
+                            <td style="text-align:right">￥<%= data[:salary_line_items].sum(:total_wage) %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% end %>
+
+    <div style="width:100%">
+        <div style="width:25%;margin-top:30px;margin-left:auto;page-break-inside:avoid">
+            <table class="pdf-table-small" style="page-break-inside:avoid">
+            <tbody>
+                <tr> 
+                    <th>勤務日数</th>   
+                    <td><%= data[:total_days_worked] %></td>
+                </tr>
+                <tr>
+                    <th>勤務時間</th>   
+                    <td><%= from_seconds_to_hours_minutes(data[:total_time_worked]) %></td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="width:100%">
+        <div style="width:20%;margin-top:30px;page-break-inside:avoid;margin-left:auto;page-break-after:always">
+            <table class="pdf-table-small" style='page-break-inside:avoid'>
+            <tbody>
+                <tr> 
+                    <th>基本給合計</th>
+                    <td>￥<%= nurse.full_timer ? nurse.try(:monthly_wage) : data[:appointments].sum(:total_wage) %></td>
+                </tr>
+                <% if data[:salary_line_items].present? %>
+                    <tr> 
+                        <th>手当合計</th>
+                        <td>￥<%= data[:salary_line_items].sum(:total_wage) %></td>
+                    </tr>
+                <% end %>
+                <tr> 
+                    <th>合計</th>
+                    <td>￥<%= (data[:appointments].sum(:total_wage) || 0) + (data[:salary_line_items].sum(:total_wage) || 0) %></td>
+                </tr>
+            </tbody>
+            </table>
+        </div>  
+    </div>
+<% end %>

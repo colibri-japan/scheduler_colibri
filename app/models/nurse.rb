@@ -36,6 +36,11 @@ class Nurse < ApplicationRecord
 
 		where.not(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).ids.uniq)
 	end
+
+	def self.with_appointments_between(start_time, end_time)
+		#get only nurses that have appointments in this given range
+		where(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).ids.uniq)
+	end
 	
 	def self.without_private_events_between(start_time, end_time, margin)
 		start_time -= margin.to_i.minutes 
@@ -138,6 +143,20 @@ class Nurse < ApplicationRecord
 		end
 
 		return_array
+	end
+
+	def self.payable_summary_for(range)
+		return_hash = {}
+
+		Nurse.where(id: self.ids).each do |nurse|
+			nurse_data = {}
+			appointments_data = nurse.appointments.in_range(range).operational
+			salary_line_items_data = nurse.salary_line_items.not_from_appointments.in_range(range)
+
+			return_hash[nurse] = {appointments: appointments_data, salary_line_items: salary_line_items_data, total_days_worked: appointments_data.pluck(:starts_at).map {|e| e.to_date}.uniq.size, total_time_worked: appointments_data.sum(:duration)} 
+		end
+
+		return_hash
 	end
 
 	def days_worked_at(date, options = {})

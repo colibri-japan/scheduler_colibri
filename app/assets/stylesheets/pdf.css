@@ -104,7 +104,7 @@ body {
 
 .nurse-payable-corporation-name {
     text-align: right;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .nurse-payable-date-and-nurse-name {
@@ -125,6 +125,8 @@ body {
 .nurse-payable-nurse-name {
     padding: 5px;
     border: 1px solid black;  
+    font-size: 1.3em;
+    font-weight: bold;
 }
 
 .pdf-table-full {
@@ -165,6 +167,7 @@ tr { page-break-inside: avoid }
 
 .pdf-table-small > tbody > tr > td {
     border: 1px solid black;
+    text-align: center;
 }
 
 .pdf-table-small > tbody > tr > th {

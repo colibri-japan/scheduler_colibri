@@ -112,12 +112,8 @@ body {
 .nurse-payable-date {
     padding: 5px;
     border: 1px solid black;
-    float: left;
 }
 
-.nurse-name-container {
-    float: right;
-}
 
 .nurse-payable-nurse-name {
     padding: 5px;

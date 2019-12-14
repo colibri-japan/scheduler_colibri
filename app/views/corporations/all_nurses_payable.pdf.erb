@@ -7,9 +7,12 @@
         <%= @corporation.name %>
     </div>
 
-    <div class="nurse-payable-date-and-nurse-name" style="margin-bottom:20px">
-        <span class="nurse-payable-date"><%= "#{@year}年#{@month}月" %></span>  
-        <span class="nurse-name-container">従業員名：<span class="nurse-payable-nurse-name"><%= nurse.name %></span></span>
+    <div class="nurse-payable-date-and-nurse-name" style="width:100%">
+        <div class="nurse-name-container" style="margin-left:auto;width:30%;text-align:right">従業員名：<span class="nurse-payable-nurse-name"><%= nurse.name %></span></div>
+    </div>
+
+    <div style="width:100%">
+        <span class="nurse-payable-date"><%= "#{@year}年#{@month}月" %></span> 
     </div>
 
     <div style="padding-top:20px">
@@ -46,7 +49,7 @@
                         <td></td>
                         <td></td>
                         <td>合計：</td>
-                        <td style="text-align:right">￥<%= data[:appointments].sum(:total_wage) %></td>
+                        <td style="text-align:right;font-weight:bold">￥<%= data[:appointments].sum(:total_wage) %></td>
                     </tr>
                 <% end %>
             </tbody>
@@ -75,7 +78,7 @@
                         <tr>
                             <td></td>
                             <td>合計：</td>
-                            <td style="text-align:right">￥<%= data[:salary_line_items].sum(:total_wage) %></td>
+                            <td style="text-align:right;font-weight:bold">￥<%= data[:salary_line_items].sum(:total_wage) %></td>
                         </tr>
                     </tbody>
                 </table>
@@ -116,7 +119,7 @@
                 <% end %>
                 <tr> 
                     <th>合計</th>
-                    <td>￥<%= (data[:appointments].sum(:total_wage) || 0) + (data[:salary_line_items].sum(:total_wage) || 0) %></td>
+                    <td style="font-weight:bold">￥<%= (data[:appointments].sum(:total_wage) || 0) + (data[:salary_line_items].sum(:total_wage) || 0) %></td>
                 </tr>
             </tbody>
             </table>

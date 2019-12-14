@@ -63,7 +63,7 @@ class CreateSalaryLineItemFromOneTimeSalaryRuleWorker
     def calculate_bonus_wage(nurse, date)
         # ignore salary rules that are calculated only once a month, ignore salary_rule
         total_bonus_wage = 0
-        targeted_salary_rules = @corporation.salary_rules.not_expired_at(Time.current).where.not(operator: 3).where.not(id: @salary_rule.id)
+        targeted_salary_rules = @corporation.salary_rules.not_expired_at(Time.current).where.not(operator: 3).where.not(id: @salary_rule.id).targeting_nurse(["#{nurse.id}"])
 
         targeted_salary_rules.each do |rule|
             #date contraint for a given date

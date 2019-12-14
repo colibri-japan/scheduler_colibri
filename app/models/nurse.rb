@@ -150,8 +150,8 @@ class Nurse < ApplicationRecord
 
 		Nurse.where(id: self.ids).each do |nurse|
 			nurse_data = {}
-			appointments_data = nurse.appointments.in_range(range).operational
-			salary_line_items_data = nurse.salary_line_items.not_from_appointments.in_range(range)
+			appointments_data = nurse.appointments.in_range(range).operational.order(:starts_at)
+			salary_line_items_data = nurse.salary_line_items.not_from_appointments.in_range(range).order(:title)
 
 			return_hash[nurse] = {appointments: appointments_data, salary_line_items: salary_line_items_data, total_days_worked: appointments_data.pluck(:starts_at).map {|e| e.to_date}.uniq.size, total_time_worked: appointments_data.sum(:duration)} 
 		end

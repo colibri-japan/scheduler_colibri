@@ -38,7 +38,7 @@
                         <td><%= appointment.starts_at.try(:strftime, "%H:%M") %></td>
                         <td><%= appointment.ends_at.try(:strftime, "%H:%M") %></td>
                         <td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
-                        <td style="text-align:right"><%= total_wage %></td>
+                        <td style="text-align:right"><%= number_with_delimiter(total_wage, delimiter: ',') %></td>
                     </tr>
                 <% end %>
                 <% unless nurse.full_timer? %>
@@ -49,14 +49,14 @@
                         <td></td>
                         <td></td>
                         <td>合計：</td>
-                        <td style="text-align:right;font-weight:bold">￥<%= data[:appointments].sum(:total_wage) %></td>
+                        <td style="text-align:right;font-weight:bold">￥<%= number_with_delimiter(data[:appointments].sum(:total_wage), delimiter: ',') %></td>
                     </tr>
                 <% end %>
             </tbody>
         </table>
     </div>
 
-    <% if data[:salary_line_items].present? %>
+    <% if data[:salary_line_items].present? && data[:salary_line_items].sum(:total_wage) > 0 %>
         <div style="width:100%">
             <div style="margin-left:auto;width:50%;margin-top:30px;page-break-inside:avoid">
                 <table class="pdf-table-full">
@@ -73,14 +73,14 @@
                             <tr>
                                 <td style="text-align:left"><%= "#{salary_line_item.service_date.try(:strftime,'%-d日')} #{weekday(salary_line_item.try(:service_date))}" unless  salary_line_item.salary_rule_id.present? %></td>
                                 <td style="text-align:left"><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
-                                <td style="text-align:right"><%= salary_line_item.try(:total_wage) %></td>
+                                <td style="text-align:right"><%= number_with_delimiter(salary_line_item.try(:total_wage), delimiter: ',') %></td>
                             </tr>
                           <% end %>
                         <% end %>
                         <tr>
                             <td></td>
                             <td>合計：</td>
-                            <td style="text-align:right;font-weight:bold">￥<%= data[:salary_line_items].sum(:total_wage) %></td>
+                            <td style="text-align:right;font-weight:bold">￥<%= number_with_delimiter(data[:salary_line_items].sum(:total_wage), delimiter: ',') %></td>
                         </tr>
                     </tbody>
                 </table>
@@ -111,17 +111,17 @@
             <tbody>
                 <tr> 
                     <th>基本給合計</th>
-                    <td>￥<%= nurse.full_timer ? nurse.try(:monthly_wage) : data[:appointments].sum(:total_wage) %></td>
+                    <td>￥<%= number_with_delimiter(nurse.full_timer ? nurse.try(:monthly_wage) : data[:appointments].sum(:total_wage), delimiter: ',') %></td>
                 </tr>
                 <% if data[:salary_line_items].present? %>
                     <tr> 
                         <th>手当合計</th>
-                        <td>￥<%= data[:salary_line_items].sum(:total_wage) %></td>
+                        <td>￥<%= number_with_delimiter(data[:salary_line_items].sum(:total_wage), delimiter: ',') %></td>
                     </tr>
                 <% end %>
                 <tr> 
                     <th>合計</th>
-                    <td style="font-weight:bold">￥<%= (data[:appointments].sum(:total_wage) || 0) + (data[:salary_line_items].sum(:total_wage) || 0) %></td>
+                    <td style="font-weight:bold">￥<%= number_with_delimiter((data[:appointments].sum(:total_wage) || 0) + (data[:salary_line_items].sum(:total_wage) || 0), delimiter: ',') %></td>
                 </tr>
             </tbody>
             </table>

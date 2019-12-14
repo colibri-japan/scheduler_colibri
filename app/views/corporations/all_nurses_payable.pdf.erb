@@ -69,11 +69,13 @@
                     </thead>
                     <tbody>
                         <% data[:salary_line_items].each do |salary_line_item| %>
+                          <% if salary_line_item.total_wage.present? && salary_line_item.total_wage > 0 %>
                             <tr>
-                                <td><%= "#{salary_line_item.service_date.try(:strftime,'%-d日')} #{weekday(salary_line_item.try(:service_date))}" unless  salary_line_item.salary_rule_id.present? %></td>
-                                <td><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
-                                <td style="text-align:right"><%= salary_line_item.try(:total_wage) %></td>
+                                <td style="text-align:left"><%= "#{salary_line_item.service_date.try(:strftime,'%-d日')} #{weekday(salary_line_item.try(:service_date))}" unless  salary_line_item.salary_rule_id.present? %></td>
+                                <td style="text-align:left"><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
+                                <td style="text-align:left" style="text-align:right"><%= salary_line_item.try(:total_wage) %></td>
                             </tr>
+                          <% end %>
                         <% end %>
                         <tr>
                             <td></td>

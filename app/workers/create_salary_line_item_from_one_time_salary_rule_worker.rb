@@ -42,7 +42,13 @@ class CreateSalaryLineItemFromOneTimeSalaryRuleWorker
                 #multiply salary plus bonus by arg
                 total_bonus_wage = calculate_bonus_wage(nurse, @targeted_date)
 
+                puts 'bonus and appointments total + grand total'
+
+                puts total_bonus_wage
+                puts appointments_total_wage
+                
                 total_wage = ((total_bonus_wage + appointments_total_wage) * (@salary_rule.argument.to_f || 0)).ceil
+                puts total_wage
             else
                 total_wage = 0
             end
@@ -93,6 +99,10 @@ class CreateSalaryLineItemFromOneTimeSalaryRuleWorker
                 #multiply salary by arg
                 salary_rule_wage = appointments_for_bonus_total_wage * (rule.argument.to_f || 0)
             end
+
+            puts 'rule title and wage'
+            puts rule.title 
+            puts salary_rule_wage
 
             total_bonus_wage += salary_rule_wage
         end

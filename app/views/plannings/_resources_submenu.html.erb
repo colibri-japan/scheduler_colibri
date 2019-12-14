@@ -17,10 +17,16 @@
 			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= link_to_all_patients_from_view(view, @planning, {month: @selected_month, year: @selected_year}) %>">全<%= client_resource_name(@corporation.business_vertical) %></div>
 			
 			<% @patients_grouped_by_kana.each do |kana, patients| %>
-				<div class="nurses-resource-subsection-title"><%= kana %></div>
-				<% patients.each do |patient| %>
-					<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'patient' && patient.id == @patient.try(:id) %>" data-url="<%= link_to_planning_patient_from_view(view, @planning, patient, {month: @selected_month, year: @selected_year}) %>"><%= patient.try(:name) %></p>
-				<% end %>
+				<div class="nurses-resource-subsection-title nurse-subsection-toggleable resource-title-selectable">
+					<%= kana %>
+					<span style="float:right;<%= 'display:none' if @patient.present? && patients.ids.include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_down.svg', width: '17px' %></span>
+					<span style="float:right;<%= 'display:none' unless @patient.present? && patients.ids.include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_up.svg', width: '17px' %></span>
+				</div>
+				<div class="nurse-subsection-toggleable" style="<%= 'display:none' unless @patient.present? && patients.ids.include?(@patient.id) %>">
+					<% patients.each do |patient| %>
+						<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if individual_resource == 'true' && resource_type == 'patient' && patient.id == @patient.try(:id) %>" data-url="<%= link_to_planning_patient_from_view(view, @planning, patient, {month: @selected_month, year: @selected_year}) %>"><%= patient.try(:name) %></p>
+					<% end %>
+				</div>
 			<% end %>
 		</div>
 		<div id="nurses-resource" class="no-print <%= 'hide-resource' if resource_type == 'patient' %>">

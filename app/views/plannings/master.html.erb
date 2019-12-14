@@ -59,24 +59,28 @@
 						全<%= client_resource_name(@corporation.business_vertical) %>
 				</div>
 				
-    				<% @patients_grouped_by_kana.each do |kana, patients| %>
-					<div class="nurses-resource-subsection-title">
+    			<% @patients_grouped_by_kana.each do |kana, patients| %>
+					<div class="nurses-resource-subsection-title nurse-subsection-toggleable resource-title-selectable">
 						<%= kana %>
+						<span style="float:right" class="toggle-down"><%= image_tag 'menu_thin_chevron_down.svg', width: '17px' %></span>
+						<span style="float:right;display:none" class="toggle-down"><%= image_tag 'menu_thin_chevron_up.svg', width: '17px' %></span>
 					</div>
-					<% patients.each do |patient| %>
-						<p 
-							id="patient_<%= patient.id %>" 
-							data-resource-type="patient" 
-							data-resource-id="<%= patient.id %>" 
-							data-fc-resource-url=""
-							data-resource-description="<%= patient.description %>"
-							data-resource-phone="<%= patient.phone_number %>"
-							data-resource-address="<%= patient.address %>"
-							class="resource-list-element" 
-							data-action="click->calendar#navigate">
-							<%= patient.try(:name) %>
-						</p>
-					<% end %>
+					<div class="nurse-subsection-toggleable" style="display:none">
+						<% patients.each do |patient| %>
+							<p 
+								id="patient_<%= patient.id %>" 
+								data-resource-type="patient" 
+								data-resource-id="<%= patient.id %>" 
+								data-fc-resource-url=""
+								data-resource-description="<%= patient.description %>"
+								data-resource-phone="<%= patient.phone_number %>"
+								data-resource-address="<%= patient.address %>"
+								class="resource-list-element" 
+								data-action="click->calendar#navigate">
+								<%= patient.try(:name) %>
+							</p>
+						<% end %>
+					</div>
 				<% end %>
 			</div>
 			<div id="nurses-resource" class="no-print">

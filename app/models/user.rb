@@ -21,6 +21,7 @@ class User < ApplicationRecord
     schedule_admin: 2, 
     corporation_admin: 3
   }
+  # nurse_restricted: master and non master readonly + reporting allowed.
   # schedule_readonly: master and non master schedule readonly, no access to provided services
   # schedule restricted: master readonly, no access to provided services
   # schedule restricted with salary line items: master readonly, limited access to provided services

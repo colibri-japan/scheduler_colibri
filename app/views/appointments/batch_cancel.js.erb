@@ -16,8 +16,9 @@ if (window.fullCalendar) {
                 if (typeof(renderEvent) === 'undefined') {
                     let renderEvent 
                 }
-                renderEvent = (window.currentResourceType === 'team') || (window.currentResourceType === 'nurse' && ['all', '<%= appointment.nurse_id %>'].includes(window.currentResourceId)) || (window.currentResourceType === 'patient' && ['all', '<%= appointment.patient_id %>'].includes(window.currentResourceId) )
-                
+
+                renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
+
                 if (renderEvent) {
                     window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"), 'url1')
                 }

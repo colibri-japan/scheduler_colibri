@@ -1039,7 +1039,7 @@ export default class extends Controller {
         window.fullCalendar.refetchResources()
         window.fullCalendar.refetchEvents()
 
-        this.updateResourceTitle()
+        this.updateResourceTitle(event)
         
         this.toggleDetailsButton()
         this.toggleReportsButton()
@@ -1053,7 +1053,7 @@ export default class extends Controller {
         return
     }
 
-    updateResourceTitle() {
+    updateResourceTitle(event) {
         if (event.target.dataset.resourceType === 'patient' && event.target.dataset.resourceId !== 'all') {
             this.resourceNameTarget.textContent = `${event.target.textContent.trim()}様`
         } else {

@@ -5,7 +5,7 @@ class TeamsController < ApplicationController
     def index 
         @planning = @corporation.planning 
         set_main_nurse
-        @teams = @corporation.teams.includes(:nurses).where(nurses: {displayable: true})
+        @teams = @corporation.teams.includes(:nurses)
         @nurses_without_any_team = @corporation.nurses.displayable.where(team_id: nil)
     end
 

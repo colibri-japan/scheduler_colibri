@@ -51,9 +51,9 @@ class ApplicationController < ActionController::Base
 	
 	def reorder_nurses_grouped_by_team
 		my_team = current_user.nurse.team.team_name 
-		new_keys = [[my_team] + [@grouped_nurses.keys - [my_team]]].flatten
+    new_keys = [[my_team] + [@grouped_nurses.keys - [my_team] - ['チーム所属なし']] + ['チーム所属なし']].flatten
 		ordered_grouped_nurses = {}
-		new_keys.map { |key| ordered_grouped_nurses[key] = @grouped_nurses[key] }
+    new_keys.map { |key| ordered_grouped_nurses[key] = @grouped_nurses[key] }
 		@grouped_nurses = ordered_grouped_nurses
 	end
 

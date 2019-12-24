@@ -225,9 +225,11 @@ window.toggleNurseIdForm = function () {
 
 
 document.addEventListener('turbolinks:load', function () {
+
     $('#posts_author_ids_filter').selectize({
         plugins: ['remove_button']
     })
+
 
     $('#posts_patient_ids_filter').selectize({
         plugins: ['remove_button']
@@ -263,5 +265,11 @@ document.addEventListener('turbolinks:load', function () {
                 window.fullCalendar.refetchResources()
             }
         }
+    })
+})
+
+document.addEventListener("turbolinks:before-cache", function(){
+    $('.selectized').each(function(){
+        $(this)[0].selectize.destroy()
     })
 })

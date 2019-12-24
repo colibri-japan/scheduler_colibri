@@ -1298,8 +1298,10 @@ $(document).on('turbolinks:load', function(){
     })
     
     $('.resource-list-element, .resource-title-selectable').click(function(){
-      $('#resource-list-container').hide()
-      $('#menu-backdrop').hide()
+      if (!$(this).hasClass('nurse-subsection-toggleable')) {
+        $('#resource-list-container').hide()
+        $('#menu-backdrop').hide()
+      }
     })
 
     $('#menu-backdrop').click(function(){

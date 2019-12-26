@@ -129,9 +129,12 @@ gem 'unread'
 #webkit html to pdf
 gem 'wicked_pdf'
 
-#memory use management
+#memory measurement tools
 gem 'scout_apm', group: :production
 gem 'memory_profiler'
+
+#push notifications
+gem 'rpush'
 
 group :production do 
   gem 'wkhtmltopdf-heroku', '2.12.4'

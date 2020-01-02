@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191212062750) do
+ActiveRecord::Schema.define(version: 20191227150150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -622,6 +622,8 @@ ActiveRecord::Schema.define(version: 20191212062750) do
     t.boolean "is_active", default: true
     t.string "default_resource_type"
     t.string "default_resource_id"
+    t.string "android_fcm_token"
+    t.string "ios_fcm_token"
     t.index ["corporation_id"], name: "index_users_on_corporation_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

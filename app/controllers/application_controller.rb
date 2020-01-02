@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :save_device_token, if: :user_signed_in?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -67,7 +68,12 @@ class ApplicationController < ActionController::Base
   
   def fetch_patients_grouped_by_kana
 		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
-	end
+  end
+  
+  def save_device_token
+    current_user.update(android_fcm_token: params[:android_fcm_token]) if params[:android_fcm_token].present?
+    current_user.update(ios_fcm_token: params[:ios_fcm_token]) if params[:ios_fcm_token].present?
+  end
   
 end
 

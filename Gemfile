@@ -12,7 +12,7 @@ gem 'rails', '~> 5.1.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '>= 3.12.2'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -30,7 +30,7 @@ gem 'nokogiri',  '>= 1.10.4'
 gem 'ffi', '>= 1.9.24'
 
 # Upgrade loofah
-gem 'loofah', '>= 2.2.3'
+gem 'loofah', '>= 2.3.1'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -76,12 +76,12 @@ gem 'pundit'
 
 
 #create excel templates with axlsx
-gem 'rubyzip', '>= 1.2.2'
+gem 'rubyzip', '>= 1.3.0'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 
 #charting library
-gem 'chartkick', '>= 3.2.0'
+gem 'chartkick', '>= 3.3.0'
 
 #glyphicons
 gem 'bootstrap-glyphicons', '~> 0.0.1'

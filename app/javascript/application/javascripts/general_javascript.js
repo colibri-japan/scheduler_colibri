@@ -52,6 +52,10 @@ document.addEventListener('turbolinks:load', function () {
         $(this).find('span').toggle()
     })
 
+    $('.nurse-subsection-toggleable p').click(function(e){
+        e.stopPropagation()
+    })
+
 
 
 })

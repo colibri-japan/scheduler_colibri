@@ -16,8 +16,6 @@ module CorporationsHelper
 
     def corporation_resource_name(business_vertical)
         case business_vertical
-        when 'elderly_care_and_nursing'
-            "事業所"
         when 'temporary_staffing'
             "企業"
         else
@@ -27,7 +25,9 @@ module CorporationsHelper
 
     def service_categories_by_vertical(business_vertical)
         case business_vertical
-        when 'elderly_care_and_nursing'
+        when 'elderly_care'
+            ServicesHelper::SERVICE_CATEGORIES_FOR_NURSING
+        when 'home_nursing'
             ServicesHelper::SERVICE_CATEGORIES_FOR_NURSING
         when 'temporary_staffing'
             ServicesHelper::SERVICE_CATEGORIES_FOR_STAFFING

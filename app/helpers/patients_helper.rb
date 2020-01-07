@@ -2,8 +2,6 @@ module PatientsHelper
 
     def client_resource_name(business_vertical)
         case business_vertical
-        when 'elderly_care_and_nursing'
-            "利用者"
         when 'temporary_staffing'
             "顧客"
         else

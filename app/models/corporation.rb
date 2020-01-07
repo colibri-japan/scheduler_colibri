@@ -17,9 +17,14 @@ class Corporation < ApplicationRecord
 	after_commit :flush_cache
 
 	enum business_vertical: {
-		elderly_care_and_nursing: 0,
-		temporary_staffing: 1
+		elderly_care: 0,
+		temporary_staffing: 1,
+		home_nursing: 2
 	}
+
+	def elderly_care_and_nursing?
+		elderly_care? || home_nursing?
+	end
 
 	def reminder_email_days(date)
 		if self.weekend_reminder_option == 0

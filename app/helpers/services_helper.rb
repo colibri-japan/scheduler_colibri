@@ -11,12 +11,14 @@ module ServicesHelper
 
     def invoicing_field_by_vertical(business_vertical)
         case business_vertical
-        when 'elderly_care_and_nursing'
+        when 'elderly_care'
+            '単位数'
+        when 'home_nursing'
             '単位数'
         when 'temporary_staffing'
             '単価'
         else
-            "事業所"
+            ""
         end
     end
 

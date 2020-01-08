@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :detect_device_format
   before_action :save_device_token, if: :user_signed_in?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -20,6 +21,21 @@ class ApplicationController < ActionController::Base
   end
 
   private 
+
+  def detect_device_format
+    case request.user_agent
+    when /iPad/i
+      request.variant = :tablet
+    when /iPhone/i
+      request.variant = :phone
+    when /Android/i && /mobile/i
+      request.variant = :phone
+    when /Android/i
+      request.variant = :tablet
+    when /Windows Phone/i
+      request.variant = :phone
+    end
+  end
 
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore

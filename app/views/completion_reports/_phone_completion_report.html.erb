@@ -1,0 +1,13 @@
+<div class="phone_activity_container">
+    <div class="activity_header">
+        <div class="activity_back_button">
+            <%= image_tag "back_arrow_white.svg", width: '25px', class: 'activity_back_icon' %>
+        </div>
+        <div class="activity_title">
+            新規実施記録
+        </div>
+    </div>
+    <div class="activity_body">
+        <%= render 'form', completion_report: @completion_report %>
+    </div>
+</div>

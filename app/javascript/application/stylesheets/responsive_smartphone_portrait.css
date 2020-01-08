@@ -246,6 +246,47 @@
 	.main-page {
 		padding-top: 0px !important;
 	}
+
+	/* general app-like styles */
+
+	.phone_activity_container {
+		width: 100vw;
+		height: 100vh;
+		position: relative;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		background-color: white;
+	}
+
+	.activity_header {
+		height: 48px;
+		background-color: #0B0033;
+		color: white;
+		display: flex;
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+
+	.activity_back_button {
+		line-height: 48px;
+	}
+
+	.activity_back_icon {
+		line-height: 48px;
+	}
+
+	.activity_title {
+		font-size: 1.5em;
+		margin-left: 12px;
+		line-height: 48px;
+	}
+
+	.activity_body {
+		height: calc(100vh - 48px);
+		background-color: white;
+	}
+
 	
 	/* styles for planning left menu */
 	
@@ -256,9 +297,26 @@
 		top: auto;
 		bottom: 0 !important;
 		left: 0;
-		background-color: #354553;
+		background-color: #FBFDFB;
+		border-top: 0.5px solid #ccc;
 		padding-top: 0;
 		z-index: 15;
+	}
+
+	.glyphicon-default {
+		color:rgb(180, 190, 199);
+	}
+
+	.glyphicon-selected {
+		color: rgb(115, 120, 124);
+	}
+
+	li.planning-menu-items {
+		color:rgb(180, 190, 199);
+	}
+
+	li.planning-menu-selected {
+		color: rgb(115, 120, 124);
 	}
 
 	.nav-tabs {

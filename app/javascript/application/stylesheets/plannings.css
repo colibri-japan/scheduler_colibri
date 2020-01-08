@@ -13,6 +13,13 @@
 	padding-top: 60px;
 }
 
+.glyphicon-selected {
+	color: white;
+}
+
+.glyphicon-default {
+	color:#97A0A8;
+}
 
 
 #planning-show-main {

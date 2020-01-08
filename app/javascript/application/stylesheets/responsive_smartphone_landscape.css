@@ -80,6 +80,24 @@
 	#planning-menu-container {
 		height: 100%;
 		padding-top: 0px;
+		background-color: #FBFDFB;
+		border-right: 0.5px solid #ccc;
+	}
+
+	.glyphicon-default {
+		color:rgb(180, 190, 199);
+	}
+
+	.glyphicon-selected {
+		color: rgb(115, 120, 124);
+	}
+
+	li.planning-menu-items {
+		color:rgb(180, 190, 199);
+	}
+	
+	li.planning-menu-selected {
+		color: rgb(115, 120, 124);
 	}
 
 	#planning-menu-list {

@@ -13,6 +13,11 @@ class CompletionReportsController < ApplicationController
     else
       @completion_report = CompletionReport.new
     end
+
+    respond_to do |format|
+      format.js 
+      format.js.phone
+    end
   end
 
   def create

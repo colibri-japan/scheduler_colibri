@@ -148,7 +148,7 @@ class Nurse < ApplicationRecord
 	def self.payable_summary_for(range)
 		return_hash = {}
 
-		Nurse.where(id: self.ids).each do |nurse|
+		Nurse.where(id: self.ids).order_by_kana.each do |nurse|
 			nurse_data = {}
 			appointments_data = nurse.appointments.in_range(range).operational.order(:starts_at)
 			salary_line_items_data = nurse.salary_line_items.not_from_appointments.in_range(range).order(:title)

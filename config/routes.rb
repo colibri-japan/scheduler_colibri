@@ -100,6 +100,7 @@ Rails.application.routes.draw do
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin
   get 'users/:id/edit_role' => 'users#edit_role', as: :edit_user_role
   patch 'users/:id/update_role' => 'users#update_role', as: :update_user_role
+  get 'users/current_user_home' => 'users#current_user_home', as: :current_user_home
   
   #custom routes for nurses
   get 'plannings/:planning_id/nurses/:id/payable' => 'nurses#payable', as: :planning_nurse_payable

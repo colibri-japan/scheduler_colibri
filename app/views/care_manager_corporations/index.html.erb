@@ -6,51 +6,57 @@
 </div>
 
 <div id="settings-container">
-  <div id="detail-planning-title">
-		<div id="settings-menu">
-			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
-      <p class="planning-activity-module-title setting-title" >
-        ケアマネ一覧
-      </p>
-		</div>
-	</div>
-  <%= link_to '+居宅介護支援事業所', new_care_manager_corporation_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
-  
-  <div id="index-table-container" class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th style="width:40%;min-width:150px">名前</th>
-          <th style="width:20%;min-width:120px">電話</th>
-          <th style="width:20%;min-width:150px">住所</th>
-          <th colspan="2" style="width:20%;min-width:200px">アクション</th>
-        </tr>
-      </thead>
-      <tbody>
-          <% @care_manager_corporations.each do |care_manager_corporation| %>
-            <tr>
-            <td class="table-important-fields"><%= care_manager_corporation.name %></td>
-            <td class="table-important-fields"><%= care_manager_corporation.phone_number %></td>
-            <td class="table-important-fields"><%= care_manager_corporation.address %></td>
-            <td class="table-important-fields"><%= link_to '編集', edit_care_manager_corporation_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-secondary text-white' %></td>
-            <td class="table-important-fields"><%= link_to '+ケアマネ', new_care_manager_corporation_care_manager_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-info text-white' %></td>
-          </tr>
-          <% care_manager_corporation.care_managers.each do |care_manager| %>
-            <tr class="nurse-clickable-row" id="care_manager_<%= care_manager.id %>" data-link="<%= edit_care_manager_corporation_care_manager_path(care_manager_corporation, care_manager) %>">
-              <td><%= care_manager.name %></td>
-              <td><%= care_manager.phone_number %></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          <% end %>
-        <% end %>
-
-      </tbody>
-    </table>
+  <div id="planning-header">
+    <div id="detail-planning-title">
+      <div id="settings-menu">
+        <div id="payable-menu">
+          <%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
+        </div>
+        <p class="planning-activity-module-title setting-title" >
+          ケアマネ一覧
+        </p>
+      </div>
+    </div>
   </div>
 
+  <div class="settings-body">
 
+    <%= link_to '+居宅介護支援事業所', new_care_manager_corporation_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
+    
+    <div id="index-table-container" class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:40%;min-width:150px">名前</th>
+            <th style="width:20%;min-width:120px">電話</th>
+            <th style="width:20%;min-width:150px">住所</th>
+            <th colspan="2" style="width:20%;min-width:200px">アクション</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% @care_manager_corporations.each do |care_manager_corporation| %>
+              <tr>
+              <td class="table-important-fields"><%= care_manager_corporation.name %></td>
+              <td class="table-important-fields"><%= care_manager_corporation.phone_number %></td>
+              <td class="table-important-fields"><%= care_manager_corporation.address %></td>
+              <td class="table-important-fields"><%= link_to '編集', edit_care_manager_corporation_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-secondary text-white' %></td>
+              <td class="table-important-fields"><%= link_to '+ケアマネ', new_care_manager_corporation_care_manager_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-info text-white' %></td>
+            </tr>
+            <% care_manager_corporation.care_managers.each do |care_manager| %>
+              <tr class="nurse-clickable-row" id="care_manager_<%= care_manager.id %>" data-link="<%= edit_care_manager_corporation_care_manager_path(care_manager_corporation, care_manager) %>">
+                <td><%= care_manager.name %></td>
+                <td><%= care_manager.phone_number %></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            <% end %>
+          <% end %>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 

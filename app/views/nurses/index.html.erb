@@ -5,52 +5,58 @@
 <div id="menu-backdrop">
 </div>
 <div id="settings-container">
-  <div id="detail-planning-title">
-		<div id="settings-menu">
-			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
-      <p class="planning-activity-module-title setting-title">
-        従業員一覧
-      </p>
-		</div>
-	</div>
-  <%= link_to '+新規従業員', new_nurse_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
-  
-  <div id="index-table-container" class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th class="table-important-fields" style="min-width:100px">名前</th>
-          <th class="table-important-fields" style="min-width:120px">電話番号</th>
-          <th class="table-important-fields" style="min-width:120px">メール</th>
-          <th class="table-important-fields" style="min-width:100px">正社員</th>
-          <th class="table-important-fields" style="min-width:130px">リマインダー</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @nurses.each do |nurse| %>
-          <% cache nurse do  %>
-            <tr class="nurse-clickable-row" id="nurse_row_<%= nurse.id %>" data-link="<%= edit_nurse_path(nurse, format: :js) %>">
-              <td><%= nurse.name %></td>
-              <td><%= nurse.phone_number %></td>
-              <td><%= nurse.phone_mail %></td>
-              <td>
-                <% if nurse.full_timer == true %>
-                  <span class="glyphicon glyphicon-ok" style="color: #42B97C"></span>
-                <% end %> 
-              </td>
-              <td>
-                <% if nurse.reminderable == true %>
-                  <span class="glyphicon glyphicon-envelope" style="color: #FFAA00"></span>
-                <% end %> 
-              </td>
-            </tr>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
+  <div id="planning-header">
+    <div id="detail-planning-title">
+      <div id="settings-menu">
+        <div id="payable-menu">
+          <%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
+        </div>
+        <p class="planning-activity-module-title setting-title">
+          従業員一覧
+        </p>
+      </div>
+    </div>
   </div>
 
+  <div class="settings-body">
+    <%= link_to '+新規従業員', new_nurse_path, remote: true, class: 'btn btn-info text-white btn-margin-top' %>
+    
+    <div id="index-table-container" class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="table-important-fields" style="min-width:100px">名前</th>
+            <th class="table-important-fields" style="min-width:120px">電話番号</th>
+            <th class="table-important-fields" style="min-width:120px">メール</th>
+            <th class="table-important-fields" style="min-width:100px">正社員</th>
+            <th class="table-important-fields" style="min-width:130px">リマインダー</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @nurses.each do |nurse| %>
+            <% cache nurse do  %>
+              <tr class="nurse-clickable-row" id="nurse_row_<%= nurse.id %>" data-link="<%= edit_nurse_path(nurse, format: :js) %>">
+                <td><%= nurse.name %></td>
+                <td><%= nurse.phone_number %></td>
+                <td><%= nurse.phone_mail %></td>
+                <td>
+                  <% if nurse.full_timer == true %>
+                    <span class="glyphicon glyphicon-ok" style="color: #42B97C"></span>
+                  <% end %> 
+                </td>
+                <td>
+                  <% if nurse.reminderable == true %>
+                    <span class="glyphicon glyphicon-envelope" style="color: #FFAA00"></span>
+                  <% end %> 
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 </div>
 

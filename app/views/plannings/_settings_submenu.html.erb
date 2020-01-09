@@ -22,7 +22,7 @@
               <li id="printing-options" class="settings-list-element <%= "settings-list-element-selected" if view == "printing_options" %>"><%= link_to '印刷オプション', planning_printing_option_path(@planning, @corporation.printing_option), class: 'settings-list-url' %></li>
               <li id="activities" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to '編集履歴', planning_activities_path(@planning), class: 'settings-list-url' %></li>
             <% end %>
-            <li id="logout" class="settings-list-element <%= "settings-list-element-selected" if view == "activities" %>"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'settings-list-url' %></li>
+            <li id="logout" class="settings-list-element"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'settings-list-url' %></li>
         </ul>
 	</div>
 </div>

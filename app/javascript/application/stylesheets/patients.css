@@ -13,6 +13,11 @@
 	color: #85929E;
 }
 
+.patients-submenu {
+	display:flex;
+	justify-content:space-between;
+	margin-top:30px;
+}
 
 
 .toggle-active-element:hover {

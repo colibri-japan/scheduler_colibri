@@ -408,6 +408,10 @@
 	p.setting-title {
 		margin-top: 0px;
 		margin-bottom: 0px;
+		line-height: 48px;
+		color: white;
+		font-size: 1.3em;
+		font-weight: normal;
 	}
 
 	
@@ -429,7 +433,7 @@
 		width: 100%;
 		max-width: 100%;
 		margin: 0px 0px 90px 0px;
-		padding: 10px 5px 5px 5px;
+		padding: 0px;
 	}
 
 	/* Hide batch action button */
@@ -652,6 +656,25 @@
 		margin-top: 10px;
 	}
 
+	.payable-body {
+		padding: 5px;
+	}
+
+	#payable-title-wrapper {
+		height: 48px;
+		background-color: #120056;
+		line-height: 48px;
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+
+	.colibri-xs-title.colibri-payable-title {
+		font-size: 1.3em;
+		font-weight: normal;
+		color: white;
+		line-height: 48px;
+	}
+
 	#detail-planning-title {
 		margin: 0px;
 		justify-content: space-between;
@@ -741,7 +764,11 @@
 	#settings-container {
 		margin: 0px 0px 0px 0px;
 		width: 100%;
-		padding: 10px 5px 5px 5px;
+		padding: 0px;
+	}
+
+	.settings-body {
+		padding: 5px;
 	}
 
 	#close-settings {
@@ -751,10 +778,11 @@
 
 	#settings-menu-list {
 		margin-top: 0px;
+		line-height: 48px;
 	}
 
 	#index-table-container {
-		margin-top: 0px;
+		margin-top: 10px;
 	}
 
 	.edit_corporation {
@@ -764,6 +792,16 @@
 	.edit_printing_option {
 		margin-bottom: 70px;
 		margin-left:20px;	
+	}
+
+	.patients-submenu {
+		display:flex;
+		justify-content:space-between;
+		margin-top:15px;
+	}
+
+	#account-edit-body {
+		padding: 0px;
 	}
 
 	/* Forms layouts */

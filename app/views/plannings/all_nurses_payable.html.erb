@@ -16,11 +16,12 @@
 
 		<div id="payable-title-wrapper">
 			<div id="payable-menu">
-				<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+				<%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
 			</div>
-			<div class='colibri-xs-title no-print' style='margin-left:5px'>統計.データ</div>
+			<div class='colibri-xs-title colibri-payable-title no-print' style='margin-left:5px'>統計.データ</div>
 		</div>
-		<div class='no-print' style='margin-left:5px'>
+
+		<div class='no-print' style='margin-left:5px;margin-top: 5px;'>
 			<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
 			<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
 			<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>

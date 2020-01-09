@@ -9,51 +9,82 @@
 
 <div id="menu-backdrop">
 </div>
+
 <div id="settings-container">
-  <div id="detail-planning-title">
-		<div id="settings-menu">
-      <%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
-      <p class="planning-activity-module-title setting-title">
-        利用者一覧
-      </p>
-		</div>
-	</div>
-  <%= link_to "+新規#{client_resource_name(@corporation.business_vertical)}", new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
-  
-  <div style="display:flex;justify-content:space-between;margin-top:30px">
-    <div id="toggle-active-patients-menu" style="display:flex">
-      <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px">サービス実施中 (<%= @patients.sum {|k,v| v.length} %>)</div>
-      <div id="deactivated-patients" class="toggle-active-element">サービス終了 (<%= @deactivated_patients.count %>)</div>
-    </div>
-    <div id="patients-excel">
-      <%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:15px"></i> エクセル'.html_safe, patients_path(format: :xlsx), class: 'btn btn-colibri-light-gray' %>
+  <div id="planning-header">
+    <div id="detail-planning-title">
+      <div id="settings-menu">
+        <div id="payable-menu">
+          <%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
+        </div>
+        <p class="planning-activity-module-title setting-title">
+          利用者一覧
+        </p>
+      </div>
     </div>
   </div>
 
-  <div id="index-table-container" class="table-responsive">
-    <table id="active-patients-table" class="table table-hover">
-      <thead>
-        <tr>
-          <th style="min-width:100px"><%= client_resource_name(@corporation.business_vertical) %>名</th>
-          <% if @corporation.elderly_care_and_nursing? %>
-            <th style="min-width:120px">契約期間</th>
+  <div class="settings-body">
+    <%= link_to "+新規#{client_resource_name(@corporation.business_vertical)}", new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
+    
+    <div class="patients-submenu">
+      <div id="toggle-active-patients-menu" style="display:flex">
+        <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px">サービス実施中 (<%= @patients.sum {|k,v| v.length} %>)</div>
+        <div id="deactivated-patients" class="toggle-active-element">サービス終了 (<%= @deactivated_patients.count %>)</div>
+      </div>
+      <div id="patients-excel">
+        <%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:15px"></i> エクセル'.html_safe, patients_path(format: :xlsx), class: 'btn btn-colibri-light-gray' %>
+      </div>
+    </div>
+
+    <div id="index-table-container" class="table-responsive">
+      <table id="active-patients-table" class="table table-hover">
+        <thead>
+          <tr>
+            <th style="min-width:100px"><%= client_resource_name(@corporation.business_vertical) %>名</th>
+            <% if @corporation.elderly_care_and_nursing? %>
+              <th style="min-width:120px">契約期間</th>
+            <% end %>
+            <th style="min-width:120px">電話番号</th>
+            <th style="min-width:120px">住所</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @patients.each do |kana, patients| %>
+            <tr>
+              <th class='table-important-fields'><%= kana %></th>
+              <% if @corporation.elderly_care_and_nursing? %>
+                <th></th>
+              <% end %>
+              <th></th>
+              <th></th>
+            </tr>
+            <% patients.each do |patient| %>
+              <% cache patient do %>
+                <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>" id='<%= "patient_row_#{patient.id}" %>'>
+                  <td><%= patient.name %></td>
+                  <% if @corporation.elderly_care_and_nursing? %>
+                    <td><%= "#{patient.date_of_contract.strftime("%Y年%-m月%-d日")} ~ " if patient.date_of_contract.present? %><%= patient.end_of_contract.strftime("%Y年%-m月%-d日") if patient.end_of_contract.present? %></td>
+                  <% end %>
+                  <td><%= patient.phone_number %></td>
+                  <td><%= patient.address %></td>
+                </tr>
+              <% end %>
+            <% end %>
           <% end %>
+        </tbody>
+      </table>
+
+      <table id="deactivated-patients-table" class="table table-hover" style="display:none">
+        <thead>
+          <th style="min-width:100px">名前</th>
+          <th style="min-width:120px">契約期間</th>
           <th style="min-width:120px">電話番号</th>
           <th style="min-width:120px">住所</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @patients.each do |kana, patients| %>
-          <tr>
-            <th class='table-important-fields'><%= kana %></th>
-            <% if @corporation.elderly_care_and_nursing? %>
-              <th></th>
-            <% end %>
-            <th></th>
-            <th></th>
-          </tr>
-          <% patients.each do |patient| %>
+        </thead>
+        <tbody>
+          <% @deactivated_patients.each do |patient| %>
             <% cache patient do %>
               <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>" id='<%= "patient_row_#{patient.id}" %>'>
                 <td><%= patient.name %></td>
@@ -65,34 +96,10 @@
               </tr>
             <% end %>
           <% end %>
-        <% end %>
-      </tbody>
-    </table>
-
-    <table id="deactivated-patients-table" class="table table-hover" style="display:none">
-      <thead>
-        <th style="min-width:100px">名前</th>
-        <th style="min-width:120px">契約期間</th>
-        <th style="min-width:120px">電話番号</th>
-        <th style="min-width:120px">住所</th>
-      </thead>
-      <tbody>
-        <% @deactivated_patients.each do |patient| %>
-          <% cache patient do %>
-            <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>" id='<%= "patient_row_#{patient.id}" %>'>
-              <td><%= patient.name %></td>
-              <% if @corporation.elderly_care_and_nursing? %>
-                <td><%= "#{patient.date_of_contract.strftime("%Y年%-m月%-d日")} ~ " if patient.date_of_contract.present? %><%= patient.end_of_contract.strftime("%Y年%-m月%-d日") if patient.end_of_contract.present? %></td>
-              <% end %>
-              <td><%= patient.phone_number %></td>
-              <td><%= patient.address %></td>
-            </tr>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
-    
+        </tbody>
+      </table>
+      
+    </div>
   </div>
-
   
 </div>

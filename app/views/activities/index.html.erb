@@ -10,22 +10,28 @@
 </div>
 
 <div id="settings-container">
-  	<div id="detail-planning-title">
-		<div id="settings-menu">
-			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
-			<p class="planning-activity-module-title setting-title">
-				編集履歴
-			</p>
+	<div id="planning-header">
+		<div id="detail-planning-title">
+			<div id="settings-menu">
+				<div id="payable-menu">
+					<%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
+				</div>
+				<p class="planning-activity-module-title setting-title">
+					編集履歴
+				</p>
+			</div>
 		</div>
 	</div>
-	<div id="activity-filter">
-		<%= select_tag('nurse-filter', options_from_collection_for_select(@nurses, 'id', 'name', selected: @nurse_id), prompt: "全従業員") %>
-		<%= select_tag('patient-filter', options_from_collection_for_select(@patients, 'id', 'name', selected: @patient_id), prompt: "全利用者") %>
-		<%= select_tag('user-filter', options_from_collection_for_select(@users, 'id', 'name', selected: @user_id), prompt: "全ユーザー") %>
-	</div>
+	<div class="settings-body">
+		<div id="activity-filter">
+			<%= select_tag('nurse-filter', options_from_collection_for_select(@nurses, 'id', 'name', selected: @nurse_id), prompt: "全従業員") %>
+			<%= select_tag('patient-filter', options_from_collection_for_select(@patients, 'id', 'name', selected: @patient_id), prompt: "全利用者") %>
+			<%= select_tag('user-filter', options_from_collection_for_select(@users, 'id', 'name', selected: @user_id), prompt: "全ユーザー") %>
+		</div>
 
-	<% @activities.each do |activity| %>
-		<%= render partial: 'activities/activity', locals: {activity: activity} %>
-	<% end %>
+		<% @activities.each do |activity| %>
+			<%= render partial: 'activities/activity', locals: {activity: activity} %>
+		<% end %>
+	</div>
 </div>
 

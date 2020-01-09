@@ -6,29 +6,34 @@
 </div>
 
 <div id="settings-container">
-  <div id="index-table-container" class="table-responsive">
-
+  <div id="planning-header">
     <div id="detail-planning-title">
       <div id="settings-menu">
-        <%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+        <div id="payable-menu">
+          <%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
+        </div>
         <p class="planning-activity-module-title setting-title">
           手当一覧
         </p>
       </div>
     </div>
+  </div>
 
+  <div class="settings-body">
     <%= link_to '+新規手当', new_salary_rule_path, remote: true, class: 'btn btn-info no-print text-white', style: 'margin-left:5px;margin-top:8px;margin-bottom:6px' %>
 
-    <table class='table table-hover' id="salary_rules_table">
-      <thead>
-        <th style="width:30%;min-width:100px">手当名</th>
-        <th style="width:30%;min-width:100px">対象従業員</th>
-        <th style="width:30%;min-width:100px">対象サービス</th>
-        <th style="width:30%;min-width:100px">計算式</th>
-      </thead>
-      <tbody id="salary-rules-table">
-        <%= render @salary_rules %>
-      </tbody>
-    </table>
+    <div id="index-table-container" class="table-responsive">
+      <table class='table table-hover' id="salary_rules_table">
+        <thead>
+          <th style="width:30%;min-width:100px">手当名</th>
+          <th style="width:30%;min-width:100px">対象従業員</th>
+          <th style="width:30%;min-width:100px">対象サービス</th>
+          <th style="width:30%;min-width:100px">計算式</th>
+        </thead>
+        <tbody id="salary-rules-table">
+          <%= render @salary_rules %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

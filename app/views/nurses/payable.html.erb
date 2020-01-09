@@ -11,272 +11,276 @@
 
 <div id="menu-backdrop">
 </div>
-<div id="payable-container">
 
+<div id="payable-container">
 	<div id="payable-title-wrapper">
 		<div id="payable-menu">
-			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+			<%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
 		</div>
-		<div class='colibri-xs-title no-print' style='margin-left:5px'>
+		<div class='colibri-xs-title colibri-payable-title no-print' style='margin-left:5px'>
             <%= "#{@nurse.name}の給与" %>
         </div>
 	</div>
-	<div class='no-print' style='margin-left:5px'>
-		<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
-		<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
-		<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
-	</div>
 
-    <% unless current_user.has_restricted_access? %>
-        <div id="patient-dashboard" style='display:flex'>
-            <div class="patient-dashboard-panel patient-left-panel">
-                <div class="patient-dashboard-panel-title">
-                    <%= @selected_month %>月のまとめ
-                </div>
-                <div class="patient-dashboard-panel-body" style='display:flex'>
-					<% if current_user.corporation_admin? %>
-						<div id="payment-summary" style="height:125px;padding-right:10px;min-width:200px;border-right:0.5px #ccc solid">
-							基本給: <%= "#{@nurse.monthly_wage || 0}¥" if @nurse.full_timer? %><br/>
-							サービス：<%= sum_appointments = @nurse.full_timer ? 0 : (@appointments_till_today.sum(:total_wage) || 0)%>¥<br/>
-							手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
-							合計：<%= total_wage = (@nurse.monthly_wage || 0) + sum_salary_line_items + sum_appointments || 0 %>¥<br/>
-							キャンセル数:<%= @appointments_till_today.where(cancelled: true).size %><br/>
-						</div>
-					<% end %>
-					<div id="hours-worked-pied-container" style="padding-left:10px">
-						<%= pie_chart [['稼働時間', @percentage_of_time_worked], ['予定時間', @percentage_of_time_pending]], donut: true,  width: '100px', height: '100px', suffix: '%', legend: false, colors: ['#ffc107', '#e4e4e4'] %>
-					</div>
-					<div id="payable-dashboard" style="padding-right:10px;min-width:150px">
-						<div class="payable-dashboard-text-container">
-							<p class="payable-dashboard-line">稼働時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_worked) %></span></p>
-							<p class="payable-dashboard-line">予定時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_pending) %></span></p>
-						</div>
-					</div>
-					<div id="chart-and-details-container" style="height:125px;border-left:0.5px #ccc solid;padding-left:10px">
-						<%= pie_chart @appointments_grouped_by_category.map { |k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, donut: true, suffix: '%', height: '100px', width: "#{@appointments_grouped_by_category.size > 4 ? '260px' : '210px'}", legend: 'right', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] if @appointments_grouped_by_category.present? %>
-					</div>
-                </div>
-            </div>
-            <div  class="patient-dashboard-panel patient-right-panel">
-                <div class="patient-dashboard-panel-title">
-                    <%= @selected_month %>月の書類
-                </div>
-                <div class="patient-dashboard-panel-body">
-                    <table class="table">
-						<% if current_user.corporation_admin? %>
-							<tr>
-								<td style='width:60%'>給与明細書</td>
-								<td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i>xlsx'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class: 'btn btn-sm btn-colibri-light-gray text-white' %></td>
-							</tr>
-						<% end %>
-                    </table>
-                </div>
-            </div>
-        </div>
-    <% end %>
-
-	<div id='payable-table-commands' style='margin-top:20px'>
-	    <div id="add-provided-service-line">
-			<% if @nurse.full_timer? && current_user.corporation_admin? %>
-				<div id="nurse_monthly_wage" class="btn <%= @nurse.monthly_wage.present? ? 'btn-colibri-light-gray' : 'btn-info' %> text-white"><%= manage_nurse_monthly_wage_text(@nurse) %></div>
-			<% end %>
-			<% if current_user.corporation_admin? %>
-				<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true %>
-				<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_nurse_service_wages_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true  %>
-				<%= link_to '給与リフレッシュ', nurse_recalculate_salary_path(@nurse, params: {m: @selected_month, y: @selected_year}), method: :patch, class: 'btn btn-colibri-light-gray text-white' %>
-			<% end %>
+	<div class="payable-body">
+		
+		<div class='no-print' style='margin-left:5px'>
+			<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
+			<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
+			<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
 		</div>
-	</div>
 
-	<div class="colibri-payable-subtitle">実績.手当詳細</div>
-
-	<div class="table-responsive-md" style="overflow-x:scroll">
-		<table class="table">
-			<thead>
-				<tr>
-					<th style="width:11%;min-width:70px"><%= sort_link(@sort_direction) %></th>
-					<th style="width:13%;min-width:110px">タイプ</th>
-					<th style="width:11%;min-width:100px"><%= client_resource_name(@corporation.business_vertical) %>名</th>
-					<th style="width:10%;min-width:90px">提供時間</th>
-					<th style="width:10%;min-width:120px">開始~終了</th>
-					<% if current_user.corporation_admin? %>
-						<th style="width:8%;min-width:100px">給与</th>
-					<% end %>
-					<th style="width:18%;min-width:180px" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @appointments_till_today.size %></span></th>
-					<th style="width:8%;min-width:70px">編集</th>
-				</tr>
-				
-			</thead>
-
-			<tbody>
-				<% @appointments_till_today.each do |appointment| %>
-				<tr>
-					<td class="<%= weekend_holiday_appointment_css(appointment) %>"><%= appointment.starts_at.strftime("%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
-					<td><%= appointment.title %></td>
-					<td><%= appointment.patient.try(:name) %> </td>
-					<td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
-					<td><%= "#{appointment.starts_at.try(:strftime,'%H:%M')}~#{appointment.ends_at.try(:strftime,'%H:%M')}"  %></td>
-					<% if current_user.corporation_admin? %>
-						<td id="service-total-<%= appointment.id %>"><%= "#{appointment.total_wage}¥" unless @nurse.full_timer %></td>
-					<% end %>
-					<td style="width:9%">
-					<div style="display:flex" id='appointment-<%= appointment.id %>'>
-						<div class='<%= 'cancelled-provided-service' if appointment.cancelled? %> <%= 'edit-requested-provided-service' if appointment.edit_requested? %>' style="display:flex">
-							<% if appointment.cancelled? %>
-								<span>キャンセル</span>
-							<% elsif appointment.edit_requested? %>
-								<span>調整中</span>
-							<% else %>
-								<% if appointment.verified? %>
-								<div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-								<%= link_to "#{appointment.verifier.try(:name)} #{appointment.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
-								<% else %>
-								<%= link_to '確認１', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.verified? %>
-								<% end %>
-							<% end %>
+		<% unless current_user.has_restricted_access? %>
+			<div id="patient-dashboard" style='display:flex'>
+				<div class="patient-dashboard-panel patient-left-panel">
+					<div class="patient-dashboard-panel-title">
+						<%= @selected_month %>月のまとめ
+					</div>
+					<div class="patient-dashboard-panel-body" style='display:flex'>
+						<% if current_user.corporation_admin? %>
+							<div id="payment-summary" style="height:125px;padding-right:10px;min-width:200px;border-right:0.5px #ccc solid">
+								基本給: <%= "#{@nurse.monthly_wage || 0}¥" if @nurse.full_timer? %><br/>
+								サービス：<%= sum_appointments = @nurse.full_timer ? 0 : (@appointments_till_today.sum(:total_wage) || 0)%>¥<br/>
+								手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
+								合計：<%= total_wage = (@nurse.monthly_wage || 0) + sum_salary_line_items + sum_appointments || 0 %>¥<br/>
+								キャンセル数:<%= @appointments_till_today.where(cancelled: true).size %><br/>
+							</div>
+						<% end %>
+						<div id="hours-worked-pied-container" style="padding-left:10px">
+							<%= pie_chart [['稼働時間', @percentage_of_time_worked], ['予定時間', @percentage_of_time_pending]], donut: true,  width: '100px', height: '100px', suffix: '%', legend: false, colors: ['#ffc107', '#e4e4e4'] %>
+						</div>
+						<div id="payable-dashboard" style="padding-right:10px;min-width:150px">
+							<div class="payable-dashboard-text-container">
+								<p class="payable-dashboard-line">稼働時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_worked) %></span></p>
+								<p class="payable-dashboard-line">予定時間: <span class="payable-dashboard-important"><%= from_seconds_to_hours_minutes(@total_time_pending) %></span></p>
+							</div>
+						</div>
+						<div id="chart-and-details-container" style="height:125px;border-left:0.5px #ccc solid;padding-left:10px">
+							<%= pie_chart @appointments_grouped_by_category.map { |k,v| [category_name_by_key(k), v[:weighted_service_duration_percentage]]}, donut: true, suffix: '%', height: '100px', width: "#{@appointments_grouped_by_category.size > 4 ? '260px' : '210px'}", legend: 'right', colors: ['#7AD5DE', '#FFDA62', '#FD9BA6', '#ADF7B6', '#336699', '#F7934C', '#9CAFB7'] if @appointments_grouped_by_category.present? %>
 						</div>
 					</div>
-					</td>
-					<td style='width:9%'>
-					<div style="display:flex" id='appointment-second-verified-<%= appointment.id %>'>
-						<div style="display:flex">
-							<% if appointment.cancelled? %>
-								<%= link_to '+手当', appointment_new_cancellation_fee_path(appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
-							<% elsif appointment.edit_requested? %>
-							<% else %>
-								<% if appointment.second_verified? %>
-									<div><span class='glyphicon glyphicon-check' style="color: #42B97C"></span></div>
-									<%= link_to "#{appointment.second_verifier.try(:name)}#{appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
-								<% else %>
-									<%= link_to '確認２', toggle_second_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.second_verified? %>
-								<% end %>
-							<% end %>
-						</div>
+				</div>
+				<div  class="patient-dashboard-panel patient-right-panel">
+					<div class="patient-dashboard-panel-title">
+						<%= @selected_month %>月の書類
 					</div>
-					</td>
-					<td>
-						<%= link_to '編集', edit_planning_appointment_path(@planning, appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
-					</td>
-				</tr>
+					<div class="patient-dashboard-panel-body">
+						<table class="table">
+							<% if current_user.corporation_admin? %>
+								<tr>
+									<td style='width:60%'>給与明細書</td>
+									<td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i>xlsx'.html_safe, planning_nurse_payable_path(@planning, @nurse, params: {y: params[:y], m: params[:m]}, format: 'xlsx'), class: 'btn btn-sm btn-colibri-light-gray text-white' %></td>
+								</tr>
+							<% end %>
+						</table>
+					</div>
+				</div>
+			</div>
+		<% end %>
+
+		<div id='payable-table-commands' style='margin-top:20px'>
+			<div id="add-provided-service-line">
+				<% if @nurse.full_timer? && current_user.corporation_admin? %>
+					<div id="nurse_monthly_wage" class="btn <%= @nurse.monthly_wage.present? ? 'btn-colibri-light-gray' : 'btn-info' %> text-white"><%= manage_nurse_monthly_wage_text(@nurse) %></div>
 				<% end %>
 				<% if current_user.corporation_admin? %>
+					<%= link_to '+手当を追加する', new_nurse_bonus_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true %>
+					<%= link_to "#{@nurse.try(:name)}の給与テーブル", nurse_nurse_service_wages_path(@nurse), class: 'btn btn-colibri-light-gray text-white', remote: true  %>
+					<%= link_to '給与リフレッシュ', nurse_recalculate_salary_path(@nurse, params: {m: @selected_month, y: @selected_year}), method: :patch, class: 'btn btn-colibri-light-gray text-white' %>
+				<% end %>
+			</div>
+		</div>
+
+		<div class="colibri-payable-subtitle">実績.手当詳細</div>
+
+		<div class="table-responsive-md" style="overflow-x:scroll">
+			<table class="table">
+				<thead>
+					<tr>
+						<th style="width:11%;min-width:70px"><%= sort_link(@sort_direction) %></th>
+						<th style="width:13%;min-width:110px">タイプ</th>
+						<th style="width:11%;min-width:100px"><%= client_resource_name(@corporation.business_vertical) %>名</th>
+						<th style="width:10%;min-width:90px">提供時間</th>
+						<th style="width:10%;min-width:120px">開始~終了</th>
+						<% if current_user.corporation_admin? %>
+							<th style="width:8%;min-width:100px">給与</th>
+						<% end %>
+						<th style="width:18%;min-width:180px" colspan="2">確認<span style="font-weight:bold"><%= "(未確認#{@unverified_services_count}件)" if @unverified_services_count > 0 && @unverified_services_count != @appointments_till_today.size %></span></th>
+						<th style="width:8%;min-width:70px">編集</th>
+					</tr>
+					
+				</thead>
+
+				<tbody>
+					<% @appointments_till_today.each do |appointment| %>
+					<tr>
+						<td class="<%= weekend_holiday_appointment_css(appointment) %>"><%= appointment.starts_at.strftime("%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
+						<td><%= appointment.title %></td>
+						<td><%= appointment.patient.try(:name) %> </td>
+						<td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
+						<td><%= "#{appointment.starts_at.try(:strftime,'%H:%M')}~#{appointment.ends_at.try(:strftime,'%H:%M')}"  %></td>
+						<% if current_user.corporation_admin? %>
+							<td id="service-total-<%= appointment.id %>"><%= "#{appointment.total_wage}¥" unless @nurse.full_timer %></td>
+						<% end %>
+						<td style="width:9%">
+						<div style="display:flex" id='appointment-<%= appointment.id %>'>
+							<div class='<%= 'cancelled-provided-service' if appointment.cancelled? %> <%= 'edit-requested-provided-service' if appointment.edit_requested? %>' style="display:flex">
+								<% if appointment.cancelled? %>
+									<span>キャンセル</span>
+								<% elsif appointment.edit_requested? %>
+									<span>調整中</span>
+								<% else %>
+									<% if appointment.verified? %>
+									<div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
+									<%= link_to "#{appointment.verifier.try(:name)} #{appointment.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+									<% else %>
+									<%= link_to '確認１', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.verified? %>
+									<% end %>
+								<% end %>
+							</div>
+						</div>
+						</td>
+						<td style='width:9%'>
+						<div style="display:flex" id='appointment-second-verified-<%= appointment.id %>'>
+							<div style="display:flex">
+								<% if appointment.cancelled? %>
+									<%= link_to '+手当', appointment_new_cancellation_fee_path(appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
+								<% elsif appointment.edit_requested? %>
+								<% else %>
+									<% if appointment.second_verified? %>
+										<div><span class='glyphicon glyphicon-check' style="color: #42B97C"></span></div>
+										<%= link_to "#{appointment.second_verifier.try(:name)}#{appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+									<% else %>
+										<%= link_to '確認２', toggle_second_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.second_verified? %>
+									<% end %>
+								<% end %>
+							</div>
+						</div>
+						</td>
+						<td>
+							<%= link_to '編集', edit_planning_appointment_path(@planning, appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
+						</td>
+					</tr>
+					<% end %>
+					<% if current_user.corporation_admin? %>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><span id="total-salary-label" style="font-weight:bold;float:right">実績小計</span></td>
+							<td id="total-salary" style="font-weight:bold"><%= sum_appointments %>¥</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					<% end %>
+
+				<% if current_user.corporation_admin? %>
+					<% @salary_line_items.each do |salary_line_item| %>
+						<tr>
+							<td><%= salary_line_item.service_date.strftime("%-m月%-d日") %></td>
+							<td><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
+							<td></td>
+							<td><%= from_seconds_to_hours_minutes(salary_line_item.service_duration) if salary_line_item.salary_rule.try(:operator) == 1 %></td>
+							<td><%= salary_calculation(salary_line_item.salary_rule) if salary_line_item.salary_rule.present? %></td>
+							<td><%= "#{salary_line_item.total_wage}¥" %></td>
+							<td></td>
+							<td></td>
+							<td><%= link_to '編集', edit_nurse_salary_line_item_path(@nurse, salary_line_item), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' unless salary_line_item.salary_rule.present? %></td>
+						</tr>
+					<% end %>
 					<tr>
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><span id="total-salary-label" style="font-weight:bold;float:right">実績小計</span></td>
-						<td id="total-salary" style="font-weight:bold"><%= sum_appointments %>¥</td>
+						<td><span style="font-weight:bold;float:right">手当小計</span></td>
+						<td style="font-weight:bold"><%= sum_salary_line_items =  @salary_line_items.sum(:total_wage) ||0 %>¥</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><span style="font-weight:bold;float:right;margin:0">実績.手当合計</span></td>
+						<td style="font-weight:bold"><%= total_wage %>¥</td>
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
 				<% end %>
 
-			<% if current_user.corporation_admin? %>
-				<% @salary_line_items.each do |salary_line_item| %>
+				</tbody>
+				
+			</table>
+		</div>
+
+
+
+		<div class="colibri-payable-subtitle">実績サービスタイプ小計</div>
+		<table class="table" style='margin-bottom:30px'>
+			<thead>
+				<tr>
+					<th>タイプ</th>
+					<th>提供時間</th>
+					<th>回数</th>
+					<% if current_user.corporation_admin? %>
+						<th>給与計</th>
+					<% end %>
+				</tr>
+			</thead>
+			<tbody class="text-not-bold">
+				<% @grouped_appointments.each do |appointment_group| %>
 					<tr>
-						<td><%= salary_line_item.service_date.strftime("%-m月%-d日") %></td>
-						<td><%= salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5) %></td>
-						<td></td>
-						<td><%= from_seconds_to_hours_minutes(salary_line_item.service_duration) if salary_line_item.salary_rule.try(:operator) == 1 %></td>
-						<td><%= salary_calculation(salary_line_item.salary_rule) if salary_line_item.salary_rule.present? %></td>
-						<td><%= "#{salary_line_item.total_wage}¥" %></td>
-						<td></td>
-						<td></td>
-						<td><%= link_to '編集', edit_nurse_salary_line_item_path(@nurse, salary_line_item), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' unless salary_line_item.salary_rule.present? %></td>
+						<td><%= appointment_group.title %></td>
+						<td><%= from_seconds_to_hours_minutes(appointment_group.sum_duration) if appointment_group.sum_duration > 0 %></td>
+						<td><%= appointment_group.count %></td>
+						<% if current_user.corporation_admin? %>
+							<td><%= "#{appointment_group.sum_total_wage}¥" unless @nurse.full_timer? %></td>
+						<% end %>
 					</tr>
 				<% end %>
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><span style="font-weight:bold;float:right">手当小計</span></td>
-					<td style="font-weight:bold"><%= sum_salary_line_items =  @salary_line_items.sum(:total_wage) ||0 %>¥</td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>実績小計</td>
+					<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 })  %></td>
+					<td><%= @grouped_appointments.sum {|group| group.count || 0 } %></td>
+					<% if current_user.corporation_admin? %>
+						<td><span style="font-weight:bold"><%="#{@grouped_appointments.sum {|group| group.sum_total_wage || 0 }}¥" unless @nurse.full_timer? %></span></td>
+					<% end %>
 				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td><span style="font-weight:bold;float:right;margin:0">実績.手当合計</span></td>
-					<td style="font-weight:bold"><%= total_wage %>¥</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			<% end %>
-
 			</tbody>
-			
 		</table>
 	</div>
 
+	<% if @nurse.full_timer? %>
+		<div id="manage_nurse_monthly_wage" class="modal fade" style="display:none">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="colibri-small-title"><%= @nurse.name %>の基本給</h1>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
 
+					<%= form_with(model: @nurse, local: true) do |form| %>
+						<div class="modal-body">
 
-	<div class="colibri-payable-subtitle">実績サービスタイプ小計</div>
-	<table class="table" style='margin-bottom:30px'>
-		<thead>
-			<tr>
-				<th>タイプ</th>
-				<th>提供時間</th>
-				<th>回数</th>
-				<% if current_user.corporation_admin? %>
-					<th>給与計</th>
-				<% end %>
-			</tr>
-		</thead>
-		<tbody class="text-not-bold">
-			<% @grouped_appointments.each do |appointment_group| %>
-				<tr>
-					<td><%= appointment_group.title %></td>
-					<td><%= from_seconds_to_hours_minutes(appointment_group.sum_duration) if appointment_group.sum_duration > 0 %></td>
-					<td><%= appointment_group.count %></td>
-					<% if current_user.corporation_admin? %>
-						<td><%= "#{appointment_group.sum_total_wage}¥" unless @nurse.full_timer? %></td>
-					<% end %>
-				</tr>
-			<% end %>
-			<tr>
-				<td>実績小計</td>
-				<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 })  %></td>
-				<td><%= @grouped_appointments.sum {|group| group.count || 0 } %></td>
-				<% if current_user.corporation_admin? %>
-					<td><span style="font-weight:bold"><%="#{@grouped_appointments.sum {|group| group.sum_total_wage || 0 }}¥" unless @nurse.full_timer? %></span></td>
-				<% end %>
-			</tr>
-		</tbody>
-	</table>
-</div>
+							<div class="form-group">
+								<%= form.label :monthly_wage, '基本給', class:"colibri-form-label-dark" %>
+								<%= form.number_field :monthly_wage, class: "form-control" %>
+							</div>
 
-<% if @nurse.full_timer? %>
-	<div id="manage_nurse_monthly_wage" class="modal fade" style="display:none">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="colibri-small-title"><%= @nurse.name %>の基本給</h1>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-				</div>
-
-				<%= form_with(model: @nurse, local: true) do |form| %>
-					<div class="modal-body">
-
-						<div class="form-group">
-							<%= form.label :monthly_wage, '基本給', class:"colibri-form-label-dark" %>
-							<%= form.number_field :monthly_wage, class: "form-control" %>
 						</div>
 
-					</div>
-
-					<div class="modal-footer">
-						<div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
-						<%= form.submit 'セーブする', class:'btn btn-info' %>
-					</div>
-				<% end %>
+						<div class="modal-footer">
+							<div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+							<%= form.submit 'セーブする', class:'btn btn-info' %>
+						</div>
+					<% end %>
+				</div>
 			</div>
 		</div>
 	</div>

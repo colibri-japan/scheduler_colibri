@@ -12,227 +12,229 @@
 <div id="payable-container">
 	<div id="payable-title-wrapper">
 		<div id="payable-menu">
-			<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+			<%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
 		</div>
-		<div class='colibri-xs-title no-print' style='margin-left:5px'>
+		<div class='colibri-xs-title colibri-payable-title no-print' style='margin-left:5px'>
             <%= "#{@patient.name}の実績" %>
         </div>
 	</div>
-	<div class='no-print' style='margin-left:5px'>
-		<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
-		<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
-		<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
-	</div>
 
-    <% if current_user.corporation_admin? %>
-        <div id="patient-dashboard" style='display:flex'>
-            <div class="patient-dashboard-panel patient-left-panel">
-                <div class="patient-dashboard-panel-title">
-                    <%= @selected_month %>月のまとめ
-                </div>
-                <div class="patient-dashboard-panel-body">
-                    請求額：<%= @invoicing_summary[:summary_data][:final_amount_paid_by_patient] %>¥<br/>
-                    総売り上げ：<%= @invoicing_summary[:summary_data][:total_invoiced] %>¥<br/>
-                </div>
-            </div>
-            <div class="patient-dashboard-panel patient-right-panel">
-                <div class="patient-dashboard-panel-title">
-                    <%= @selected_month %>月の書類
-                </div>
-                <div class="patient-dashboard-panel-body">
-                    <table class="table">
-                        <tr>
-                            <td style='width:60%'>請求書</td>
-                            <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i>xlsx'.html_safe, planning_patient_payable_path(@planning, @patient, {m: @selected_month, y: @selected_year, format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
-                        </tr>
-                        <tr>
-                            <td style='width:60%'>コメント付きサービス</td>
-                            <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> pdf'.html_safe, patient_commented_appointments_path(@patient, {m: @selected_month, y: @selected_year, format: 'pdf'}), target: :_blank, class: 'btn btn-sm btn-success text-white' %></td>
-                        </tr>
-                        <tr>
-                            <td style='width:60%'>提供表</td>
-                            <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> pdf'.html_safe, patient_teikyohyo_path(@patient, {m: @selected_month, y: @selected_year, format: 'pdf'}), target: :_blank, class: 'btn btn-sm btn-success text-white' %></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+    <div class="payable-body">
+        <div class='no-print'>
+            <%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
+            <%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
+            <button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
         </div>
-    <% end %>
 
-    <% if current_user.has_admin_access?  %>
+        <% if current_user.corporation_admin? %>
+            <div id="patient-dashboard" style='display:flex'>
+                <div class="patient-dashboard-panel patient-left-panel">
+                    <div class="patient-dashboard-panel-title">
+                        <%= @selected_month %>月のまとめ
+                    </div>
+                    <div class="patient-dashboard-panel-body">
+                        請求額：<%= @invoicing_summary[:summary_data][:final_amount_paid_by_patient] %>¥<br/>
+                        総売り上げ：<%= @invoicing_summary[:summary_data][:total_invoiced] %>¥<br/>
+                    </div>
+                </div>
+                <div class="patient-dashboard-panel patient-right-panel">
+                    <div class="patient-dashboard-panel-title">
+                        <%= @selected_month %>月の書類
+                    </div>
+                    <div class="patient-dashboard-panel-body">
+                        <table class="table">
+                            <tr>
+                                <td style='width:60%'>請求書</td>
+                                <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i>xlsx'.html_safe, planning_patient_payable_path(@planning, @patient, {m: @selected_month, y: @selected_year, format: 'xlsx'}), class: 'btn btn-sm btn-success text-white' %></td>
+                            </tr>
+                            <tr>
+                                <td style='width:60%'>コメント付きサービス</td>
+                                <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> pdf'.html_safe, patient_commented_appointments_path(@patient, {m: @selected_month, y: @selected_year, format: 'pdf'}), target: :_blank, class: 'btn btn-sm btn-success text-white' %></td>
+                            </tr>
+                            <tr>
+                                <td style='width:60%'>提供表</td>
+                                <td style='width:40%'><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:14px"></i> pdf'.html_safe, patient_teikyohyo_path(@patient, {m: @selected_month, y: @selected_year, format: 'pdf'}), target: :_blank, class: 'btn btn-sm btn-success text-white' %></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <% end %>
 
-        <div class="colibri-payable-subtitle">請求の詳細</div>
+        <% if current_user.has_admin_access?  %>
+
+            <div class="colibri-payable-subtitle">請求の詳細</div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <th style="min-width:170px">サービス内容</th>
+                        <th style="min-width:80px">単位数</th>
+                        <th style="min-width:70px">回数</th>
+                        <th style="min-width:90px">単位計</th>
+                        <th style="min-width:100px">額</th>
+                    </thead>
+                    <tbody>
+                        <% @invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
+                            <% array_of_service_and_shifts_hashes.each do |service_shift_hash| %>
+                                <tr>
+                                    <td><%= service_shift_hash[:service_hash][:official_title] %></td>
+                                    <td><%= service_shift_hash[:service_hash][:unit_credits] %></td>
+                                    <td><%= service_shift_hash[:service_hash][:calculation_method] == 2 ? day_count_for_hiwari_service(service_shift_hash[:service_hash][:count]) : service_shift_hash[:service_hash][:count] %></td>
+                                    <td><%= service_shift_hash[:service_hash][:sum_total_credits] %></td>
+                                    <td></td>
+                                </tr>
+                            <% end %>
+                            <% if [11,102].include?(category_hash[:insurance_category_id].to_i) && @corporation.invoicing_bonus_ratio.present? %>
+                                <tr>
+                                    <td><%= corporation_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><%= category_hash[:category_bonus_credits] %></td>
+                                    <td></td>
+                                </tr>
+                            <% end %>
+                            <% if category_hash[:insurance_category_id].to_i == 11 && @corporation.second_invoicing_bonus_ratio != 1 %>
+                                <tr>
+                                    <td><%= corporation_second_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><%= category_hash[:category_second_bonus_credits] %></td>
+                                    <td></td>
+                                </tr>
+                            <% end %>
+                            <tr>
+                                <td><%= "#{insurance_category_name(category_hash[:insurance_category_id].to_i)}合計" %></td>
+                                <td></td>
+                                <td></td>
+                                <td><%= category_hash[:category_total_credits] %></td>
+                                <td></td>
+                            </tr>
+                        <% end %>
+                        <tr style='border-top:2px solid #ddd !important'>
+                            <td colspan="3">区分支給限度額内</td>
+                            <td><%= @invoicing_summary[:summary_data][:credits_with_bonus_within_max_budget] %></td>
+                            <td><%= @invoicing_summary[:summary_data][:total_invoiced_inside_insurance_scope] %>¥</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">区分支給限度額内の利用者請求額</td>
+                            <td><%= @invoicing_summary[:summary_data][:amount_within_insurance_paid_by_patient] %>¥</td>
+                        </tr>
+                        <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] > 0  %>
+                            <tr>
+                                <td colspan="3">公費1負担額</td>
+                                <td></td>
+                                <td>(<%= @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] %>)¥</td>
+                            </tr>
+                        <% end %>
+                        <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] > 0  %>
+                            <tr>
+                                <td colspan="3">公費2負担額</td>
+                                <td></td>
+                                <td>(<%= @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] %>)¥</td>
+                            </tr>
+                        <% end %>
+                        <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] + @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] > 0 %>
+                            <tr>
+                                <td colspan="4">区分支給限度額内の利用者請求額(公費計算後)</td>
+                                <td><%= @invoicing_summary[:summary_data][:total_paid_by_patient_from_insurance] %>¥</td>
+                            </tr>
+                        <% end %>
+                        <tr>
+                            <td colspan="3">区分支給限度額を超える単位</td>
+                            <td><%= @invoicing_summary[:summary_data][:credits_with_bonus_exceeding_max_budget] %></td>
+                            <td><%= @invoicing_summary[:summary_data][:amount_in_excess_from_insurance_paid_by_patient] %>¥</td>
+                        </tr>
+                        <% @invoicing_summary[:outside_insurance_scope].each do |service_and_shifts_hash| %>
+                            <tr style="<%= 'border-top:2px solid #ddd !important' if @invoicing_summary[:outside_insurance_scope].index(service_and_shifts_hash) == 0 %>">
+                                <td><%= service_and_shifts_hash[:service_hash][:title] %></td>
+                                <td></td>
+                                <td><%= service_and_shifts_hash[:service_hash][:count] %></td>
+                                <td></td>
+                                <td><%= service_and_shifts_hash[:service_hash][:sum_total_invoiced] %>¥</td>
+                            </tr>
+                        <% end %>
+                        <tr>
+                            <td colspan="4">保険対象外合計</td>
+                            <td><%= @invoicing_summary[:summary_data][:amount_paid_by_patient_outside_insurance] %>¥</td>
+                        </tr>
+                        <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
+                            <td colspan="4">合計</td>
+                            <td><%= @invoicing_summary[:summary_data][:final_amount_paid_by_patient] %>¥</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <% end %>
+
+
+	    <div class="colibri-payable-subtitle" style='margin-top:50px'>実績詳細</div>
 
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" style='margin-bottom:100px'>
                 <thead>
-                    <th style="min-width:170px">サービス内容</th>
-                    <th style="min-width:80px">単位数</th>
-                    <th style="min-width:70px">回数</th>
-                    <th style="min-width:90px">単位計</th>
-                    <th style="min-width:100px">額</th>
+                    <tr>
+                        <th style="width:11%;min-width:70px">日付</th>
+                        <th style="width:13%;min-width:120px">タイプ</th>
+                        <th style="width:11%;min-width:120px">従業員</th>
+                        <th style="width:10%;min-width:90px">提供時間</th>
+                        <th style="width:10%;min-width:120px">開始~終了</th>
+                        <th style="width:18%;min-width:180px" colspan="2">確認<span style="font-weight:bold"></span></th>
+                        <th style="width:8%;min-width:70px">編集</th>
+                    </tr>
                 </thead>
+
                 <tbody>
-                    <% @invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
-                        <% array_of_service_and_shifts_hashes.each do |service_shift_hash| %>
-                            <tr>
-                                <td><%= service_shift_hash[:service_hash][:official_title] %></td>
-                                <td><%= service_shift_hash[:service_hash][:unit_credits] %></td>
-                                <td><%= service_shift_hash[:service_hash][:calculation_method] == 2 ? day_count_for_hiwari_service(service_shift_hash[:service_hash][:count]) : service_shift_hash[:service_hash][:count] %></td>
-                                <td><%= service_shift_hash[:service_hash][:sum_total_credits] %></td>
-                                <td></td>
-                            </tr>
-                        <% end %>
-                        <% if [11,102].include?(category_hash[:insurance_category_id].to_i) && @corporation.invoicing_bonus_ratio.present? %>
-                            <tr>
-                                <td><%= corporation_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
-                                <td></td>
-                                <td></td>
-                                <td><%= category_hash[:category_bonus_credits] %></td>
-                                <td></td>
-                            </tr>
-                        <% end %>
-                        <% if category_hash[:insurance_category_id].to_i == 11 && @corporation.second_invoicing_bonus_ratio != 1 %>
-                            <tr>
-                                <td><%= corporation_second_bonus_official_text(@corporation, category_hash[:insurance_category_id].to_i) %></td>
-                                <td></td>
-                                <td></td>
-                                <td><%= category_hash[:category_second_bonus_credits] %></td>
-                                <td></td>
-                            </tr>
-                        <% end %>
+                    <% @appointments_till_today.each do |appointment| %>
                         <tr>
-                            <td><%= "#{insurance_category_name(category_hash[:insurance_category_id].to_i)}合計" %></td>
-                            <td></td>
-                            <td></td>
-                            <td><%= category_hash[:category_total_credits] %></td>
-                            <td></td>
+                            <td class="<%= weekend_holiday_appointment_css(appointment) %>"><%= appointment.starts_at.try(:strftime,"%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
+                            <td><%= appointment.title %></td>
+                            <td><%= appointment.nurse.try(:name) %> </td>
+                            <td><%= from_seconds_to_hours_minutes(appointment.duration) if appointment.duration.present? %></td>
+                            <td><%= "#{appointment.starts_at.try(:strftime,'%H:%M')}~#{appointment.ends_at.try(:strftime,'%H:%M')}" %></td>
+                            <td style="width:9%">
+                                <div style="display:flex" id='appointment-<%= appointment.id %>'>
+                                    <div class='<%= 'cancelled-provided-service' if appointment.cancelled? %> <%= 'edit-requested-provided-service' if appointment.edit_requested? %>' style="display:flex">
+                                        <% if appointment.cancelled? %>
+                                            <span>キャンセル</span>
+                                        <% elsif appointment.edit_requested? %>
+                                            <span>調整中リスト</span>
+                                        <% else %>
+                                            <% if appointment.verified? %>
+                                            <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
+                                            <%= link_to "#{appointment.verifier.try(:name)} #{appointment.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+                                            <% else %>
+                                            <%= link_to '確認１', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.verified? %>
+                                            <% end %>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style='width:9%'>
+                                <div style="display:flex" id='appointment-second-verified-<%= appointment.id %>'>
+                                    <div style="display:flex">
+                                        <% if appointment.cancelled? %>
+                                            <%= link_to '+手当', appointment_new_cancellation_fee_path(appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
+                                        <% elsif appointment.edit_requested? %>
+                                        <% else %>
+                                            <% if appointment.second_verified? %>
+                                                <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
+                                                <%= link_to "#{appointment.second_verifier.try(:name)}#{appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+                                            <% else %>
+                                                <%= link_to '確認２', toggle_second_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.second_verified? %>
+                                            <% end %>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <%= link_to '編集', edit_planning_appointment_path(@planning, appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white'  %>
+                            </td>
                         </tr>
                     <% end %>
-                    <tr style='border-top:2px solid #ddd !important'>
-                        <td colspan="3">区分支給限度額内</td>
-                        <td><%= @invoicing_summary[:summary_data][:credits_with_bonus_within_max_budget] %></td>
-                        <td><%= @invoicing_summary[:summary_data][:total_invoiced_inside_insurance_scope] %>¥</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">区分支給限度額内の利用者請求額</td>
-                        <td><%= @invoicing_summary[:summary_data][:amount_within_insurance_paid_by_patient] %>¥</td>
-                    </tr>
-                    <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] > 0  %>
-                        <tr>
-                            <td colspan="3">公費1負担額</td>
-                            <td></td>
-                            <td>(<%= @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] %>)¥</td>
-                        </tr>
-                    <% end %>
-                    <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] > 0  %>
-                        <tr>
-                            <td colspan="3">公費2負担額</td>
-                            <td></td>
-                            <td>(<%= @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] %>)¥</td>
-                        </tr>
-                    <% end %>
-                    <% if @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_1] + @invoicing_summary[:summary_data][:amount_paid_by_public_assistance_2] > 0 %>
-                        <tr>
-                            <td colspan="4">区分支給限度額内の利用者請求額(公費計算後)</td>
-                            <td><%= @invoicing_summary[:summary_data][:total_paid_by_patient_from_insurance] %>¥</td>
-                        </tr>
-                    <% end %>
-                    <tr>
-                        <td colspan="3">区分支給限度額を超える単位</td>
-                        <td><%= @invoicing_summary[:summary_data][:credits_with_bonus_exceeding_max_budget] %></td>
-                        <td><%= @invoicing_summary[:summary_data][:amount_in_excess_from_insurance_paid_by_patient] %>¥</td>
-                    </tr>
-                    <% @invoicing_summary[:outside_insurance_scope].each do |service_and_shifts_hash| %>
-                        <tr style="<%= 'border-top:2px solid #ddd !important' if @invoicing_summary[:outside_insurance_scope].index(service_and_shifts_hash) == 0 %>">
-                            <td><%= service_and_shifts_hash[:service_hash][:title] %></td>
-                            <td></td>
-                            <td><%= service_and_shifts_hash[:service_hash][:count] %></td>
-                            <td></td>
-                            <td><%= service_and_shifts_hash[:service_hash][:sum_total_invoiced] %>¥</td>
-                        </tr>
-                    <% end %>
-                    <tr>
-                        <td colspan="4">保険対象外合計</td>
-                        <td><%= @invoicing_summary[:summary_data][:amount_paid_by_patient_outside_insurance] %>¥</td>
-                    </tr>
-                    <tr style='border-top:2px solid #ddd !important;font-weight:bold;font-size:1.3em'>
-                        <td colspan="4">合計</td>
-                        <td><%= @invoicing_summary[:summary_data][:final_amount_paid_by_patient] %>¥</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
-
-    <% end %>
-
-
-	<div class="colibri-payable-subtitle" style='margin-top:50px'>実績詳細</div>
-
-    <div class="table-responsive">
-        <table class="table" style='margin-bottom:100px'>
-            <thead>
-                <tr>
-                    <th style="width:11%;min-width:70px">日付</th>
-                    <th style="width:13%;min-width:120px">タイプ</th>
-                    <th style="width:11%;min-width:120px">従業員</th>
-                    <th style="width:10%;min-width:90px">提供時間</th>
-                    <th style="width:10%;min-width:120px">開始~終了</th>
-                    <th style="width:18%;min-width:180px" colspan="2">確認<span style="font-weight:bold"></span></th>
-                    <th style="width:8%;min-width:70px">編集</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <% @appointments_till_today.each do |appointment| %>
-                    <tr>
-                        <td class="<%= weekend_holiday_appointment_css(appointment) %>"><%= appointment.starts_at.try(:strftime,"%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
-                        <td><%= appointment.title %></td>
-                        <td><%= appointment.nurse.try(:name) %> </td>
-                        <td><%= from_seconds_to_hours_minutes(appointment.duration) if appointment.duration.present? %></td>
-                        <td><%= "#{appointment.starts_at.try(:strftime,'%H:%M')}~#{appointment.ends_at.try(:strftime,'%H:%M')}" %></td>
-                        <td style="width:9%">
-                            <div style="display:flex" id='appointment-<%= appointment.id %>'>
-                                <div class='<%= 'cancelled-provided-service' if appointment.cancelled? %> <%= 'edit-requested-provided-service' if appointment.edit_requested? %>' style="display:flex">
-                                    <% if appointment.cancelled? %>
-                                        <span>キャンセル</span>
-                                    <% elsif appointment.edit_requested? %>
-                                        <span>調整中リスト</span>
-                                    <% else %>
-                                        <% if appointment.verified? %>
-                                        <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-                                        <%= link_to "#{appointment.verifier.try(:name)} #{appointment.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
-                                        <% else %>
-                                        <%= link_to '確認１', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.verified? %>
-                                        <% end %>
-                                    <% end %>
-                                </div>
-                            </div>
-                        </td>
-                        <td style='width:9%'>
-                            <div style="display:flex" id='appointment-second-verified-<%= appointment.id %>'>
-                                <div style="display:flex">
-                                    <% if appointment.cancelled? %>
-                                        <%= link_to '+手当', appointment_new_cancellation_fee_path(appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white' %>
-                                    <% elsif appointment.edit_requested? %>
-                                    <% else %>
-                                        <% if appointment.second_verified? %>
-                                            <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
-                                            <%= link_to "#{appointment.second_verifier.try(:name)}#{appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
-                                        <% else %>
-                                            <%= link_to '確認２', toggle_second_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.second_verified? %>
-                                        <% end %>
-                                    <% end %>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <%= link_to '編集', edit_planning_appointment_path(@planning, appointment), remote: true, class: 'btn btn-sm btn-colibri-light-gray text-white'  %>
-                        </td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
     </div>
 	
 </div>

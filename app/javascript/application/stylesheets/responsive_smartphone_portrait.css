@@ -279,11 +279,11 @@
 
 	.activity_back_icon {
 		line-height: 48px;
+		margin-right: 12px;
 	}
 
 	.activity_title {
 		font-size: 1.3em;
-		margin-left: 12px;
 		line-height: 48px;
 	}
 
@@ -396,7 +396,7 @@
 	}
 
 	#detail-container {
-		display: flex;
+		display: block;
 		position: absolute;
 		width: 100%;
 		max-width: none;
@@ -456,6 +456,19 @@
 
 	/* Hide print button */
 	#print-button {
+		display: none;
+	}
+
+	/* Other planning and master related styles */
+
+	#planning-top-right-action-container {
+		line-height: 48px;
+		margin-bottom: 0px;
+		padding-top: 5px;
+		vertical-align: middle;
+	}
+
+	#planning-top-right-action-container {
 		display: none;
 	}
 

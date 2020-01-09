@@ -131,7 +131,7 @@
 				<div id="detail-planning-title">
 					<div id="planning-nurse-information">
 						<div id="payable-menu" style="<%= 'display:none' if current_user.nurse_restricted? %>">
-							<%= image_tag 'hamburger_icon.svg', size: '35', class: 'hamburger_menu'  %>
+							<%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
 						</div>
 						<div class="planning-resource-module-title">
 							<span data-target="calendar.resourceName" id="resource-name-wrapper"></span>
@@ -156,7 +156,7 @@
 					<%= select_tag :nurse_resource_filter, grouped_options_for_select(@nurses.group_full_timer_for_select), {prompt: '従業員フィルタ', id: 'nurse_resource_filter', multiple: true} %>
 				</div>
 				<div id="planning-header-submenu">
-					<div class="header-submenu-item" id="header-calendar-button">シフト</div>
+					<div class="header-submenu-item header-submenu-item-selected" id="header-calendar-button">シフト</div>
 					<div class="header-submenu-item resource-details-button">詳細</div>
 				</div>
 			</div>

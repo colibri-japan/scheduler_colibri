@@ -396,7 +396,6 @@
 	}
 
 	#detail-container {
-		padding: 5px;
 		display: flex;
 		position: absolute;
 		width: 100%;
@@ -411,15 +410,10 @@
 		margin-bottom: 0px;
 	}
 
-	#detail-planning-title {
-		width: 100%;
-		margin-bottom: 10px;
-		margin-top:15px;
-	}
 	
 	#planning-container {
-		width: 100%;
-		
+		margin: 5px;
+		width: calc(100% - 10px)
 	}
 
 	#detail-planning-container {
@@ -482,18 +476,33 @@
 		display: block;
 	}
 
+	.fc-button-primary {
+		background-color: rgb(180, 190, 199);
+		border-color: rgb(180, 190, 199);
+	}
+
+	.fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active {
+		background-color: rgb(115, 120, 124);
+		border-color: rgb(115, 120, 124);
+	}
+
+	.fc-button-primary:disabled {
+		display: none;
+	}
+
 	/* Calendar view layouts */
 
 	#planning-header {
 		width: 100vw;
-		margin-left: -5px;
-		box-shadow: 0 4px 2px -2px #ccc;
 		margin-bottom: 10px;
 		display: block;
+		background-color: #120056;
 	}
 
 	#planning-header-submenu {
 		display: flex;
+		height: 35px;
+		line-height: 35px;
 	}
 
 	.selectize-input {
@@ -503,7 +512,12 @@
 	.header-submenu-item {
 		text-align: center;
 		flex-grow: 1;
-		border: 0.5px solid #ccc;	
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.header-submenu-item.header-submenu-item-selected {
+		color: white;
+		border-bottom: 3px solid white;
 	}
 
 	button#resource-details-button {
@@ -519,6 +533,10 @@
 		padding-top: 0px;
 		padding-left: 6px;
 		margin-bottom: 5px;
+		font-size: 1.3em;
+		line-height: 48px;
+		color: white;
+		font-weight: normal;
 	}
 
 	#resource-search-icon {
@@ -577,6 +595,7 @@
 
 	#planning-nurse-information {
 		display: flex;
+		color: white;
 	}
 
 	#resource-details-panel {
@@ -634,8 +653,12 @@
 	}
 
 	#detail-planning-title {
-		padding-left: 5px;
+		margin: 0px;
 		justify-content: space-between;
+		height: 48px;
+		line-height: 48px;
+		padding-left: 12px;
+		padding-right: 12px;
 	}
 
 	#nurse_filter_wrapper {

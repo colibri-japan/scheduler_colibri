@@ -1,4 +1,20 @@
 $('.modal').modal('hide');
-if ($('#resource-details-wrapper').is(':visible')) {
-    $('.reports-index-button').click()
+
+if (window.userHasRestrictedAccess && window.fullCalendar) {
+    console.log('restricted nurse and calendar present')
+    <% if @completion_report.reportable_type == "Appointment" %>
+      let eventToRemove = window.fullCalendar.getEventById('<%= "appointment_#{@completion_report.reportable_id}" %>')
+      if (eventToRemove) {
+        eventToRemove.remove()
+      }
+
+      window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @completion_report.reportable}).html_safe %>"), 'url1')
+    <% end %>
+}
+
+if (window.location.pathname.includes('completion_reports')) {
+    location.reload()
+} else {
+  $('.activity_back_icon').click()
+  $('.reports-index-button').click()
 }

@@ -36,6 +36,10 @@ class CompletionReportsController < ApplicationController
   end
 
   def edit
+    respond_to do |format|
+      format.js 
+      format.js.phone
+    end
   end
 
   def index

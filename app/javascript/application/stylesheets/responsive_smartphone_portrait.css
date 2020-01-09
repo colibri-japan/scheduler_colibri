@@ -249,6 +249,10 @@
 
 	/* general app-like styles */
 
+	::-webkit-scrollbar {
+		display: none !important;
+	}
+
 	.phone_activity_container {
 		width: 100vw;
 		height: 100vh;
@@ -257,11 +261,12 @@
 		left: 0;
 		z-index: 100;
 		background-color: white;
+		overflow:scroll;
 	}
 
 	.activity_header {
 		height: 48px;
-		background-color: #0B0033;
+		background-color: #120056;
 		color: white;
 		display: flex;
 		padding-left: 12px;
@@ -277,7 +282,7 @@
 	}
 
 	.activity_title {
-		font-size: 1.5em;
+		font-size: 1.3em;
 		margin-left: 12px;
 		line-height: 48px;
 	}

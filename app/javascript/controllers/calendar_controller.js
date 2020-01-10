@@ -4,6 +4,7 @@ import { Calendar } from '@fullcalendar/core'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list';
 import resourcePlugin from '@fullcalendar/resource-common'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
@@ -21,7 +22,6 @@ import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
 import '@fullcalendar/timeline/main.css';
 import '@fullcalendar/resource-timeline/main.css';
-import { InlineFunctions } from "terser"
 
 let resourceHeader = {
     left: 'prev,next today',
@@ -35,11 +35,17 @@ let header = {
     right: 'timeGridDay,timeGridWeek,dayGridMonth'
 }
 
+let mobileHeader = {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'listDay,timeGridDay,timeGridWeek,dayGridMonth'
+}
+
 $.fn.overflownY = function () { var e = this[0]; return e.scrollHeight > e.clientHeight; }
 
 let createCalendar = () => {
     let calendar = new Calendar(document.getElementById('calendar'), {
-        plugins: [interactionPlugin, timeGridPlugin, dayGridPlugin, resourcePlugin, resourceTimeGridPlugin, resourceTimelinePlugin],
+        plugins: [interactionPlugin, timeGridPlugin, listPlugin, dayGridPlugin, resourcePlugin, resourceTimeGridPlugin, resourceTimelinePlugin],
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         firstDay: window.firstDay,
         slotDuration: '00:15:00',
@@ -600,7 +606,11 @@ let updateCalendarHeader = () => {
     if (window.currentResourceType === 'team' ||(window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' && window.currentResourceId === 'all')) {
         window.fullCalendar.setOption('header', resourceHeader)
     } else {
-        window.fullCalendar.setOption('header', header)
+        if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+            window.fullCalendar.setOption('header', mobileHeader)
+        } else {
+            window.fullCalendar.setOption('header', header)
+        }
     }
 }
 
@@ -964,16 +974,26 @@ export default class extends Controller {
                 window.fullCalendar.changeView(window.defaultResourceView)
                 window.fullCalendar.setOption('header', resourceHeader)
             } else {
-                window.fullCalendar.changeView(window.defaultView)
-                window.fullCalendar.setOption('header', header)
+                if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+                    window.fullCalendar.setOption('header', mobileHeader)
+                    window.fullCalendar.changeView('listDay')
+                } else {
+                    window.fullCalendar.changeView(window.defaultView)
+                    window.fullCalendar.setOption('header', header)
+                }
             }
         } else {
             if (window.defaultResourceType === 'team' || window.defaultResourceId === 'all') {
                 window.fullCalendar.changeView(window.defaultResourceView)
                 window.fullCalendar.setOption('header', resourceHeader)
             } else {
-                window.fullCalendar.changeView(window.defaultView)
-                window.fullCalendar.setOption('header', header)
+                if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+                    window.fullCalendar.setOption('header', mobileHeader)
+                    window.fullCalendar.changeView('listDay')
+                } else {
+                    window.fullCalendar.changeView(window.defaultView)
+                    window.fullCalendar.setOption('header', header)
+                }
             }
         }
     }

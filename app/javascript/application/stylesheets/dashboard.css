@@ -119,6 +119,10 @@
 	cursor: pointer;
 }
 
+.activity_header {
+	display: none;
+}
+
 @media print {
 	#extended-daily-summary-container {
 		height: auto !important;

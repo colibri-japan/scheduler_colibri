@@ -73,6 +73,18 @@
 		display: none !important;
 	}
 
+	.turbolinks-progress-bar {
+		visibility: hidden;
+	}
+
+	.btn.btn-desktop {
+		display: none;
+	}
+
+	.btn.btn-phone-expand {
+		width: 100%;
+	}
+
 	.phone_activity_container {
 		z-index: 100;
 		position: relative;
@@ -99,6 +111,10 @@
 		display: flex;
 	}
 
+	.activity_header_responsive {
+		width: calc(100% - 50px);
+		margin-left: 50px;
+	}
 	
 	.activity_back_button {
 		line-height: 48px;
@@ -108,6 +124,10 @@
 	.activity_title {
 		font-size: 1.3em;
 		line-height: 48px;
+	}
+
+	#planning-top-right-action-container {
+		display: none;
 	}
 	
 	/* navigation styles */
@@ -280,7 +300,8 @@
 	}
 
     #detail-planning-title {
-        justify-content: space-between;
+		justify-content: space-between;
+		line-height: 48px;
     }
 
 	#planning-header {
@@ -324,7 +345,12 @@
 	.header-submenu-item {
 		text-align: center;
 		flex-grow: 1;
-		border: 0.5px solid #ccc;	
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.header-submenu-item.header-submenu-item-selected {
+		color: white;
+		border-bottom: 3px solid white;
 	}
 
     
@@ -353,7 +379,7 @@
 		position: fixed;
 		z-index: 10;
 		top: 0;
-		left: 50;
+		left: 0;
 		overflow-x: hidden;
 		padding-top: 3px;
 		padding-bottom: 60px;
@@ -440,7 +466,8 @@
 		width: calc(100% - 50px);
 		max-width: none;
         margin-left: 50px;
-        top: 0px;
+		top: 0px;
+		margin-top: 0px;
     }
 
 
@@ -468,6 +495,27 @@
 
 	.patient-left-panel {
 		width: 100%;
+	}
+
+	.payable-body {
+		margin-top: 10px;
+	}
+
+	#payable-title-wrapper {
+		width: calc(100% + 10px);
+		margin-left: -5px;
+		height: 48px;
+		background-color: #120056;
+		line-height: 48px;
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+
+	.colibri-xs-title.colibri-payable-title {
+		font-size: 1.3em;
+		font-weight: normal;
+		color: white;
+		line-height: 48px;
 	}
 
 
@@ -539,6 +587,9 @@
 	p.setting-title {
 		margin-top: 0px;
 		margin-bottom: 0px;
+		line-height: 48px;
+		font-weight: normal;
+		font-size: 1.3em;
 	}
 
 	#settings-menu-container {
@@ -547,7 +598,7 @@
 		position: fixed;
 		z-index: 10;
 		top: 0px;
-		left: 50px;
+		left: 0px;
 		padding-top: 10px;
 		background-color: #606E7C;
 		border: 0.5px solid #606E7C;
@@ -561,7 +612,7 @@
 	#settings-container {
 		margin: 0px 0px 0px 50px;
 		width: calc(100% - 50px);
-		padding: 10px 5px 5px 5px;
+		padding: 0px 5px 5px 5px;
 	}
 
 	#close-settings {

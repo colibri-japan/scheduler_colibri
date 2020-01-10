@@ -253,6 +253,19 @@
 		display: none !important;
 	}
 
+	.turbolinks-progress-bar {
+		visibility: hidden;
+	}
+
+	
+	.btn.btn-phone-expand {
+		width: 100%;
+	}
+
+	.btn.btn-desktop {
+		display: none;
+	}
+
 	.phone_activity_container {
 		width: 100vw;
 		height: 100vh;
@@ -466,9 +479,6 @@
 		margin-bottom: 0px;
 		padding-top: 5px;
 		vertical-align: middle;
-	}
-
-	#planning-top-right-action-container {
 		display: none;
 	}
 

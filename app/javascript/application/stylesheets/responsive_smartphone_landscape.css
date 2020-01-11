@@ -232,6 +232,16 @@
 		padding: 4px;
 	}
 
+	
+	.nav-tabs.nurse-restricted-nav {
+		justify-content: initial !important;
+	}
+
+	ul.nurse-restricted-nav > li.planning-menu-items {
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+
 	/* Contact form layouts */
 
 	#contact-form-background {

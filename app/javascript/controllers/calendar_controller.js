@@ -95,8 +95,15 @@ let createCalendar = () => {
                 resourceLabelText: window.resourceLabel,
                 eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
                 eventLimit: 6
+            },
+            'listDay': {
+                titleFormat: {}
             }
         },
+        buttonText: {
+            listDay: 'リスト'
+        },
+        listDayFormat: {month: 'long', day: 'numeric', weekday: 'short'},
 
 
         viewSkeletonRender: function (info) {
@@ -271,28 +278,44 @@ let createCalendar = () => {
                 info.el.classList.add('colibri-edit-requested')
             }
 
-            if (['recurring_appointment', 'appointment'].includes(info.event.extendedProps.eventType)) {
-                if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
-                    let title = info.event.extendedProps.nurse ? info.event.extendedProps.nurse.name : ''
-                    if (info.event.title !== title) {
-                        info.event.setProp('title', title)
-                    }
-                } else {
-                    let title = info.event.extendedProps.patient ? info.event.extendedProps.patient.name : ''
-                    if (info.event.title !== title) {
-                        info.event.setProp('title', title)
-                    }
+            if (info.view.type == 'listDay' && (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches)) {
+                let eventTime = info.el.getElementsByClassName('fc-list-item-time')[0].innerText
+                let newHtml = `<tr>
+                      <div class="colibri-fc-list" style="background-color:#f3f3f3">
+                        <div class="colibri-fc-list-time">${eventTime}</div>
+                        <div class="colibri-fc-list-title">${info.event.extendedProps.patient.name}様</div>
+                      </div>
+                    </tr>`
+                info.el.innerHTML = newHtml
+                if (info.event.extendedProps.description) {
+                    let fcList = document.getElementsByClassName('colibri-fc-list')[0]
+                    let pTag = `<p class="colibri-fc-list-body">${info.event.extendedProps.description}</p>`
+                    fcList.insertAdjacentHTML('beforeend', pTag)
                 }
-            } else if (info.event.extendedProps.eventType === 'private_event') {
-                if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
-                    let title = (info.event.extendedProps.nurse && info.event.extendedProps.nurse.name) ? `${info.event.extendedProps.nurse.name}: ${info.event.extendedProps.serviceType}` : info.event.title 
-                    if (info.event.title !== title) {
-                        info.event.setProp('title', title)
+            } else {
+                if (['recurring_appointment', 'appointment'].includes(info.event.extendedProps.eventType)) {
+                    if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
+                        let title = info.event.extendedProps.nurse ? info.event.extendedProps.nurse.name : ''
+                        if (info.event.title !== title) {
+                            info.event.setProp('title', title)
+                        }
+                    } else {
+                        let title = info.event.extendedProps.patient ? info.event.extendedProps.patient.name : ''
+                        if (info.event.title !== title) {
+                            info.event.setProp('title', title)
+                        }
                     }
-                } else {
-                    let title = (info.event.extendedProps.patient && info.event.extendedProps.patient.name) ? `${info.event.extendedProps.patient.name}様: ${info.event.extendedProps.serviceType}` : info.event.title 
-                    if (info.event.title !== title) {
-                        info.event.setProp('title', title)
+                } else if (info.event.extendedProps.eventType === 'private_event') {
+                    if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
+                        let title = (info.event.extendedProps.nurse && info.event.extendedProps.nurse.name) ? `${info.event.extendedProps.nurse.name}: ${info.event.extendedProps.serviceType}` : info.event.title 
+                        if (info.event.title !== title) {
+                            info.event.setProp('title', title)
+                        }
+                    } else {
+                        let title = (info.event.extendedProps.patient && info.event.extendedProps.patient.name) ? `${info.event.extendedProps.patient.name}様: ${info.event.extendedProps.serviceType}` : info.event.title 
+                        if (info.event.title !== title) {
+                            info.event.setProp('title', title)
+                        }
                     }
                 }
             }
@@ -935,6 +958,8 @@ let switchBackToCalendarOnNavigate = () => {
     if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
         $('#resource-details-wrapper').remove()
         $('#calendar').show()
+        $('.header-submenu-item').removeClass('header-submenu-item-selected')
+        $('#header-calendar-button').addClass('header-submenu-item-selected')
     }   
 }
 

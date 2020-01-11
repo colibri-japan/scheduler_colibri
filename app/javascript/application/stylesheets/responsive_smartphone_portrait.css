@@ -503,20 +503,74 @@
 		display: block;
 	}
 
-	.fc-button-primary {
-		background-color: rgb(180, 190, 199);
-		border-color: rgb(180, 190, 199);
+	.fc-button.fc-button-primary {
+		background-color: #FBFDFB;
+		border-color: #FBFDFB;
+		color: rgb(115, 120, 124);
+		border: 0.5px solid rgb(161, 171, 180);
 	}
 
 	.fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active {
-		background-color: rgb(123, 131, 138);
-		border-color: rgb(123, 131, 138);
+		background-color: rgb(161, 171, 180);
+		border-color: rgb(161, 171, 180);
 	}
 
 	.fc-button-primary:disabled {
 		display: none;
 	}
 
+	table.fc-list-table {
+		border: none;
+	}
+
+	tr.fc-list-heading {
+		border: none;
+		border-bottom: 1px solid #ccc;
+	}
+
+
+	tr.fc-list-heading > td.fc-widget-header {
+		background-color: white;
+		text-align: center;
+		border: none;
+	}
+
+	.fc-list-heading-main {
+		font-size: 1.1em;
+	}
+
+	.colibri-fc-list-header {
+		margin: 0;
+		display: flex;
+		justify-content: space-between;
+		color: black;
+		font-size: 1.1em;
+	}
+
+	p.colibri-fc-list-body {
+		margin: 0;
+		margin-left: 15px;
+		background-color: white;
+		padding: 4px;
+		border: 0.4px solid #fc7181;
+		border-radius: 3px;
+	}
+
+	.colibri-fc-list-time {
+		font-size: 0.8em;
+		line-height: 0.8em;
+	}
+
+	.fc-view.fc-listDay-view.fc-list-view {
+		border: none;
+	}
+
+	div.colibri-fc-list {
+		margin: 4px 0px 4px 0px;
+		padding: 3px 12px 2px 12px;
+		border-radius: 3px;
+		color: black;
+	}
 	/* Calendar view layouts */
 
 	#planning-header {

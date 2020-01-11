@@ -132,7 +132,9 @@
 					</div>
 					<div id="planning-top-right-action-container" class="no-print">
 						<button id="resource-details-button" class="btn btn-mid-light resource-details-button" style="margin-bottom:10px;margin-right:4px;height:41px"><span class="glyphicon glyphicon-user"></span> 詳細</button>
-                        <button id="display-completion-reports" class="btn btn-mid-light reports-index-button" style="margin-bottom:10px;height:41px"><span class="glyphicon glyphicon-file"></span> 実施記録</button>
+						<% if @corporation.elderly_care? %>
+							<button id="display-completion-reports" class="btn btn-mid-light reports-index-button" style="margin-bottom:10px;height:41px"><span class="glyphicon glyphicon-file"></span> 実施記録</button>
+                        <% end %>
 					</div>
 				</div>
 				<div id="nurse_filter_wrapper" style="display:none;margin-left:5px;text-align:left">

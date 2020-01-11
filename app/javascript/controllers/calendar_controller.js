@@ -1098,10 +1098,12 @@ export default class extends Controller {
     toggleReportsButton() {
         if (window.masterCalendar === 'false') {
             let reportsButton = document.getElementById('display-completion-reports')
-            if (window.currentResourceType === 'team' || window.currentResourceId === 'all' || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all'))) {
-                reportsButton.style.display = 'none'
-            } else {
-                reportsButton.style.display = 'inline-block'
+            if (reportsButton) {
+                if (window.currentResourceType === 'team' || window.currentResourceId === 'all' || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all'))) {
+                    reportsButton.style.display = 'none'
+                } else {
+                    reportsButton.style.display = 'inline-block'
+                }
             }
         }
     }

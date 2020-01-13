@@ -172,6 +172,10 @@ let createCalendar = () => {
                         data[resourceArgument] = window.currentResourceId || window.defaultResourceId
                     }
 
+                    if (window.fullCalendar && window.fullCalendar.view && window.fullCalendar.view.type === 'listDay') {
+                        data['list_view'] = true
+                    }
+
                     $.ajax({
                         url: url1,
                         type: 'GET',
@@ -191,6 +195,10 @@ let createCalendar = () => {
                         if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
                             let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                             data[resourceArgument] = window.currentResourceId || window.defaultResourceId
+                        }
+
+                        if (window.fullCalendar && window.fullCalendar.view && window.fullCalendar.view.type === 'listDay') {
+                            data['list_view'] = true
                         }
 
                         $.ajax({
@@ -286,11 +294,15 @@ let createCalendar = () => {
                         <div class="colibri-fc-list-title">${info.event.extendedProps.patient.name}様</div>
                       </div>
                     </tr>`
-                info.el.innerHTML = newHtml
+                info.el.innerHTML = newHtml 
+                console.log(info.el)
                 if (info.event.extendedProps.description) {
-                    let fcList = document.getElementsByClassName('colibri-fc-list')[0]
                     let pTag = `<p class="colibri-fc-list-body">${info.event.extendedProps.description}</p>`
-                    fcList.insertAdjacentHTML('beforeend', pTag)
+                    info.el.firstElementChild.insertAdjacentHTML('beforeend', pTag)
+                }
+                if (info.event.extendedProps.previous_report_comment) {
+                    let pTag = `<p class="colibri-fc-list-body">${info.event.extendedProps.previous_report_comment}</p>`
+                    info.el.firstElementChild.insertAdjacentHTML('beforeend', pTag)
                 }
             } else {
                 if (['recurring_appointment', 'appointment'].includes(info.event.extendedProps.eventType)) {

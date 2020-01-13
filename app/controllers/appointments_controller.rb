@@ -24,7 +24,7 @@ class AppointmentsController < ApplicationController
 
     if stale?(@appointments)
       respond_to do |format|
-        format.json {render json: @appointments.as_json}
+        format.json {render json: @appointments.as_json(list_view: params[:list_view].present?)}
       end
     end
   end

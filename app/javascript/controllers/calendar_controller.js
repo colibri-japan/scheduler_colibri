@@ -170,11 +170,11 @@ let createCalendar = () => {
                     if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
                         let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                         data[resourceArgument] = window.currentResourceId || window.defaultResourceId
+                        if (fetchInfo.end - fetchInfo.start === 86400000) {
+                            data['list_view'] = true
+                        }
                     }
 
-                    if (window.fullCalendar && window.fullCalendar.view && window.fullCalendar.view.type === 'listDay') {
-                        data['list_view'] = true
-                    }
 
                     $.ajax({
                         url: url1,
@@ -195,10 +195,9 @@ let createCalendar = () => {
                         if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
                             let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                             data[resourceArgument] = window.currentResourceId || window.defaultResourceId
-                        }
-
-                        if (window.fullCalendar && window.fullCalendar.view && window.fullCalendar.view.type === 'listDay') {
-                            data['list_view'] = true
+                            if (fetchInfo.end - fetchInfo.start === 86400000) {
+                                data['list_view'] = true
+                            }
                         }
 
                         $.ajax({
@@ -295,7 +294,6 @@ let createCalendar = () => {
                       </div>
                     </tr>`
                 info.el.innerHTML = newHtml 
-                console.log(info.el)
                 if (info.event.extendedProps.description) {
                     let pTag = `<p class="colibri-fc-list-body">${info.event.extendedProps.description}</p>`
                     info.el.firstElementChild.insertAdjacentHTML('beforeend', pTag)
@@ -652,7 +650,7 @@ let updateCalendarHeader = () => {
 let toggleResourceView = () => {
     let currentView = window.fullCalendar.view
     if (window.currentResourceType === 'team' || (window.currentResourceType === 'nurse' && window.currentResourceId === 'all') || (window.currentResourceType === 'patient' && window.currentResourceId === 'all')) {
-        if (['timeGridDay', 'timeGridWeek', 'dayGridMonth'].includes(currentView.type)) {
+        if (['listDay', 'timeGridDay', 'timeGridWeek', 'dayGridMonth'].includes(currentView.type)) {
             window.fullCalendar.changeView(window.defaultResourceView)
             drawHourMarks()
         }
@@ -1014,6 +1012,7 @@ export default class extends Controller {
                 if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
                     window.fullCalendar.setOption('header', mobileHeader)
                     window.fullCalendar.changeView('listDay')
+                    window.defaultView = 'listDay'
                 } else {
                     window.fullCalendar.changeView(window.defaultView)
                     window.fullCalendar.setOption('header', header)
@@ -1027,6 +1026,7 @@ export default class extends Controller {
                 if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
                     window.fullCalendar.setOption('header', mobileHeader)
                     window.fullCalendar.changeView('listDay')
+                    window.defaultView = 'listDay'
                 } else {
                     window.fullCalendar.changeView(window.defaultView)
                     window.fullCalendar.setOption('header', header)

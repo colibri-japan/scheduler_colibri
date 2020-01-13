@@ -104,6 +104,7 @@ let createCalendar = () => {
             listDay: 'リスト'
         },
         listDayFormat: {month: 'long', day: 'numeric', weekday: 'short'},
+        noEventsMessage: 'サービスがありません',
 
 
         viewSkeletonRender: function (info) {

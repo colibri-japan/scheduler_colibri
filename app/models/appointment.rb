@@ -78,6 +78,10 @@ class Appointment < ApplicationRecord
 		end
 	end
 
+	def previous_report_comment
+		CompletionReport.from_appointments.from_patient(patient_id).where('appointments.starts_at < ?', starts_at).order('appointments.starts_at DESC').first.general_comment
+	end
+
 	def borderColor 
         if self.cancelled == true 
             '#FF8484'

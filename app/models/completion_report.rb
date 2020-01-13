@@ -4,6 +4,14 @@ class CompletionReport < ApplicationRecord
     scope :from_appointments, -> { where(reportable_type: 'Appointment') }
     scope :from_recurring_appointments, -> { where(reportable_type: 'RecurringAppointment') }
 
+    def self.from_nurse(nurse_id)
+        joins('INNER JOIN appointments on appointments.id = completion_reports.reportable_id').where(appointments: {nurse_id: nurse_id})
+    end
+
+    def self.from_patient(patient_id)
+        joins('INNER JOIN appointments on appointments.id = completion_reports.reportable_id').where(appointments: {patient_id: patient_id})
+    end
+
     def with_anything_checked?
         with_personal_care? || with_handicap_care? || with_medical_care? ||  with_house_care?
     end

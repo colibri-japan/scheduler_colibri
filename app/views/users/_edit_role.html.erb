@@ -22,7 +22,7 @@
 
                     <div class="form-group">
                         <%= form.label :role, "権限", class: "colibri-form-label" %>
-                        <%= form.select :role, options_for_select([['全体.個別スケジュール', :schedule_restricted], ['全体.個別スケジュール + 給与一部', :schedule_restricted_with_salary_line_items], ['全体.個別.マスタースケジュール + 給与一部', :schedule_admin], ['全体.個別.マスタースケジュール + 給与', :corporation_admin]], @user.role), class: "form-control" %>
+                        <%= form.select :role, options_for_select([['現場従業員（個人シフトのみ）', :nurse_restricted], ['全体.個別スケジュール', :schedule_restricted], ['全体.個別スケジュール + 給与一部', :schedule_restricted_with_salary_line_items], ['全体.個別.マスタースケジュール + 給与一部', :schedule_admin], ['全体.個別.マスタースケジュール + 給与', :corporation_admin]], @user.role), class: "form-control" %>
                     </div>
 
                     <div class="actions">

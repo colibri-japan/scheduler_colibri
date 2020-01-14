@@ -7,8 +7,9 @@ pathname = window.location.pathname;
   if (pathname.includes('payable')) {
     alert("<%= j @appointment.errors[:base].first %>")
   } else {
-    $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
     $('.modal').modal('hide');
+    $('.activity_back_icon').click()
+    $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
     $('#nurse-overlap-modal').modal({ backdrop: 'static' })
 
     $('#nurse-overlap-modal').on('shown.bs.modal', function(){
@@ -38,6 +39,7 @@ pathname = window.location.pathname;
 <% else %>
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
+  $('.activity_back_icon').click()
   if (pathname.includes('payable')) {
     <% if @appointment.cancelled && @appointment.saved_change_to_cancelled? && @corporation.detailed_cancellation_options %>
         $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');

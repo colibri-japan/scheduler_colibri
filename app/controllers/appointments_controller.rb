@@ -44,6 +44,11 @@ class AppointmentsController < ApplicationController
     @patients = @corporation.cached_active_patients_ordered_by_kana
     @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).includes(:owner)
     @services_with_recommendations = @corporation.cached_most_used_services_for_select
+
+    respond_to do |format|
+      format.js 
+      format.js.phone
+    end
   end
 
   # POST /appointments

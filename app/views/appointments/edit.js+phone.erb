@@ -1,0 +1,13 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('.popover').popover('hide');
+$('#remote_container').html('<%= j render "phone_edit" %>');
+appointmentSelectize();
+appointmentSelectizeNursePatient();
+toggleEditRequested();
+toggleCancelled();
+colorSelectize();
+
+$('.activity_back_button').click(function(){
+    $.getScript("/appointments/<%= @appointment.id %>.js")
+})

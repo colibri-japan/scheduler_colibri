@@ -288,10 +288,11 @@ let createCalendar = () => {
 
             if (info.view.type == 'listDay' && (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches)) {
                 let eventTime = info.el.getElementsByClassName('fc-list-item-time')[0].innerText
+                let eventTitle = info.event.extendedProps.cancelled ? `${info.event.extendedProps.patient.name}様　（キャンセル）` : `${info.event.extendedProps.patient.name}様`
                 let newHtml = `<tr>
                       <div class="colibri-fc-list" style="background-color:#f3f3f3">
                         <div class="colibri-fc-list-time">${eventTime}</div>
-                        <div class="colibri-fc-list-title">${info.event.extendedProps.patient.name}様</div>
+                        <div class="colibri-fc-list-title">${eventTitle}</div>
                       </div>
                     </tr>`
                 info.el.innerHTML = newHtml 

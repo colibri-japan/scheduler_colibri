@@ -14,9 +14,14 @@ class CreateSalaryLineItemFromOneTimeSalaryRuleWorker
             
             case @salary_rule.date_constraint
             when 1
+                # holidays
                 targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) IN (?)', HolidayJp.between(start_of_range, end_of_range))
             when 2
+                # sundays
                 targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 0')
+            when 3
+                # saturdays
+                targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 6')
             else
             end
 
@@ -69,6 +74,7 @@ class CreateSalaryLineItemFromOneTimeSalaryRuleWorker
             #date contraint for a given date
             next if rule.date_constraint == 1 && !HolidayJp.holiday?(date)
             next if rule.date_constraint == 2 && date.wday != 0
+            next if rule.date_constraint == 3 && date.wday != 6
 
             #worked days constraint for a given date
             next if rule.min_days_worked.present? && nurse.days_worked_at(date, inside_insurance_scope: true) < rule.min_days_worked

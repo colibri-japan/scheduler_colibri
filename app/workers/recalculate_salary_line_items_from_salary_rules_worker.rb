@@ -33,11 +33,14 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
 
         case salary_rule.date_constraint
         when 1
-            #holidays
-            targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) IN (?)', HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
+          #holidays
+          targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) IN (?)', HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
         when 2
-            #sunday
-            targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 0')
+          #sunday
+          targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 0')
+        when 3
+          #saturday
+          targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 6')
         else
         end
         

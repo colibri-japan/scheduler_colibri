@@ -377,14 +377,8 @@ let createCalendar = () => {
         },
 
         eventClick: function (info) {
-            if (window.userHasRestrictedAccess) {
-                if (info.event.extendedProps.eventType === 'appointment') {
-                    if (info.event.extendedProps.completion_report_id) {
-                        $.getScript(`/appointments/${info.event.extendedProps.eventId}/completion_reports/${info.event.extendedProps.completion_report_id}/edit`)
-                    } else {
-                        $.getScript(`/appointments/${info.event.extendedProps.eventId}/completion_reports/new`)
-                    }
-                }
+            if (info.event.extendedProps.eventType === 'appointment' && (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches)) {
+                $.getScript(`/appointments/${info.event.extendedProps.eventId}.js`)
             } else {
                 let dateClicked = dateFormatter.format(info.event.start)
                 $.getScript(`${window.planningPath}/${info.event.extendedProps.eventType}s/${info.event.extendedProps.eventId}/edit.js?date=${dateClicked}`, function(){

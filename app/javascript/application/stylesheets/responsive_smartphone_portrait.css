@@ -314,6 +314,40 @@
 		background-color: white;
 	}
 
+	.activity_subtitle {
+		font-size: 1.15em;
+		font-weight: bold;
+		border-bottom: 0.3px solid #ccc;
+	}
+
+	.activity_subcontainer {
+		padding: 4px;
+		margin-top: 5px;
+	}
+
+	.comment-container {
+		margin-bottom: 6px;
+	}
+
+	.comment-header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.comment-publisher {
+		font-size: 0.8em;
+	}
+
+	.comment-published-at {
+		font-size: 0.8em;
+	}
+
+	.comment-body {
+		background-color: #defcfc;
+		padding: 3px 8px 3px 8px;
+		border-radius: 3px;
+	}
+
 	
 	/* styles for planning left menu */
 	

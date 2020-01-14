@@ -32,6 +32,8 @@ class AppointmentsController < ApplicationController
   # GET /appointments/1
   # GET /appointments/1.json
   def show
+    @patient = @appointment.patient
+    @recent_reports = CompletionReport.from_appointments.from_patient(@appointment.patient_id).includes(reportable: :nurse).order('appointments.starts_at DESC').limit(15)
   end
 
   # GET /appointments/1/edit

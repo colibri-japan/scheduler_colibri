@@ -1330,6 +1330,12 @@ $(document).on('turbolinks:load', function(){
       $('#settings-menu-container').hide()
       $('#menu-backdrop').hide()
     })
+
+    $('.header-submenu-item').click(function () {
+      $('#colibri-batch-action-button').popover('hide')
+      $('.header-submenu-item').removeClass('header-submenu-item-selected')
+      $(this).addClass('header-submenu-item-selected')
+    })
   }
 }); 
 

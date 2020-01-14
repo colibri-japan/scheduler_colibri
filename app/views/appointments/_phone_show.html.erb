@@ -1,0 +1,52 @@
+<div class="phone_activity_container">
+    <div class="activity_header" style="justify-content:space-between">
+        <div style="display:flex">
+            <div class="activity_back_button">
+                <%= image_tag "back_arrow_white.svg", width: '25px', class: 'activity_back_icon' %>
+            </div>
+            <div class="activity_title">
+                <%= @patient.try(:name) %>様
+            </div>
+        </div>
+        <div class="activity_top_right_action" style="line-height:48px">
+            <%= link_to '編集', edit_appointment_path(@appointment), remote: true, class: 'btn btn-sm btn-outline-light' %>
+        </div>
+    </div>
+    <div class="activity_body">
+        <div class="activity_subcontainer">
+            <div class="activity_subtitle">
+                サービス詳細
+            </div>
+            <div>日時：<%= "#{@appointment.starts_at.strftime("%-m月%-d日") + ' ' + weekday(@appointment.starts_at)} #{@appointment.starts_at.try(:strftime,'%H:%M')}~#{@appointment.ends_at.try(:strftime,'%H:%M')}"  %></div>
+            <% if !current_user.nurse_restricted? %>
+                <div>従業員：<%= @appointment.nurse.try(:name) %></div>
+                <div>内容：<%= @appointment.title %></div>
+            <% end %>
+            <div>住所：<%= link_to "#{@patient.try(:address)}", "https://maps.google.com/?q=#{@patient.try(:address)}", target: :_blank %></div>
+        </div>
+        <div class="activity_subcontainer">
+            <div class="activity_subtitle">
+                過去の書き込み
+            </div>
+            <div class="recent-comments-container">
+                <% @recent_reports.each do |report| %>
+                    <% if report.general_comment.present? %>
+                        <div class="comment-container">
+                            <div class="comment-header">
+                                <div class="comment-publisher">
+                                    <%= report.reportable.nurse.try(:name) %>
+                                </div>
+                                <div class="comment-published-at">
+                                    <%= report.reportable.ends_at.strftime("%-m月%-d日 %H:%M") %>
+                                </div>
+                            </div>
+                            <div class="comment-body">
+                                <%= simple_format(report.general_comment) %>
+                            </div>
+                        </div>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

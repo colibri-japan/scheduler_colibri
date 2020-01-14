@@ -42,7 +42,7 @@
           <div class="modal-subsection-title">請求情報</div>
 
           <% if @corporation.elderly_care_and_nursing? %>
-            <div id="fields_for_kaigo_invoicing">
+            <div id="fields_for_kaigo_invoicing" style="<%= 'display:none' unless @service.inside_insurance_scope? %>">
               <div class="form-group">
                 <%= form.label :official_title, "サービス正式名称", class: "colibri-form-label-dark" %>
                 <%= form.text_field :official_title, id: :service_official_title, class: "form-control " %>

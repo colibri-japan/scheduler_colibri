@@ -13,7 +13,7 @@
 	window.maxTime = '<%= j @corporation.business_end_hour %>'
 	window.firstDay = '<%= j @corporation.default_first_day.to_s %>'
 	window.holidays = "<%= j HolidayJp.between((Date.today - 1.year), (Date.today + 1.year)).to_json.html_safe %>"
-	window.userAllowedToEdit = <%= !current_user.schedule_readonly? %>
+	window.userAllowedToEdit = <%= !current_user.schedule_readonly? && !current_user.nurse_restricted? %>
 	window.currentMonth = <%= Date.today.month %>
 	window.currentYear = <%= Date.today.year %>
 	window.masterCalendar = 'false'

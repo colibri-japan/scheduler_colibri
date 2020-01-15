@@ -27,7 +27,7 @@ class SendDailyNotificationWorker
         n = Rpush::Gcm::Notification.new 
         n.app = app 
         n.registration_ids = registration_ids
-        n.data = {title: 'おはようございます！', body: '本日のサービスのまとめです', url: 'https://scheduler.colibri.jp/users/current_user_home?to=planning'}
+        n.data = {title: 'おはようございます！', body: '本日のサービスのまとめです', url: 'https://colibri-scheduler-staging.herokuapp.com/users/current_user_home?to=planning'}
         n.content_available = true
         n.priority = 'high'
         if n.save!

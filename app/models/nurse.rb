@@ -12,6 +12,7 @@ class Nurse < ApplicationRecord
 
 	belongs_to :corporation, touch: true
 	belongs_to :team, optional: true, touch: true
+	has_one :user
 	has_many :appointments, dependent: :destroy
 	has_many :private_events
 	has_many :recurring_appointments, dependent: :destroy
@@ -37,9 +38,9 @@ class Nurse < ApplicationRecord
 		where.not(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).ids.uniq)
 	end
 
-	def self.with_appointments_between(start_time, end_time)
+	def self.with_operational_appointments_between(start_time, end_time)
 		#get only nurses that have appointments in this given range
-		where(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).ids.uniq)
+		where(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).where('appointments.edit_requested is false AND appointments.cancelled is false AND appointments.archived_at is null').ids.uniq)
 	end
 	
 	def self.without_private_events_between(start_time, end_time, margin)
@@ -201,9 +202,9 @@ class Nurse < ApplicationRecord
 		self.profession ||= 4
 	end
 
-	def self.send_service_reminder
+	def self.send_reminders_by_email
 		now_in_japan = Time.current.in_time_zone('Tokyo')
-		Nurse.where(reminderable: true, displayable: true).includes(:corporation).find_each do |nurse|
+		Nurse.where(reminderable: true, displayable: true).without_mobile_devices.includes(:corporation).find_each do |nurse|
 			if nurse.corporation.can_send_reminder_today?(now_in_japan) && nurse.corporation.can_send_reminder_now?(now_in_japan)
 				selected_days = nurse.corporation.reminder_email_days(now_in_japan)
 				SendNurseReminderWorker.perform_async(nurse.id, selected_days)

@@ -28,10 +28,14 @@ class UsersController < ApplicationController
   end
 
   def current_user_home
-    if current_user.has_admin_access?
-      redirect_to dashboard_index_path
-    else
+    if params[:to].present? && params[:to] == "planning"
       redirect_to @corporation.planning
+    else
+      if current_user.has_admin_access?
+        redirect_to dashboard_index_path
+      else
+        redirect_to @corporation.planning
+      end
     end
   end
   

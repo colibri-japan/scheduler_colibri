@@ -9,7 +9,7 @@ class EmailNurseWagesWorker
     end_of_month = range_start.end_of_month
     range_end = Time.current.in_time_zone('Tokyo') > end_of_month ? end_of_month : Time.current.in_time_zone('Tokyo') 
 
-    data = corporation.nurses.part_timers.with_appointments_between(range_start, range_end).payable_summary_for(range_start..range_end)
+    data = corporation.nurses.part_timers.with_operational_appointments_between(range_start, range_end).payable_summary_for(range_start..range_end)
 
     #perform corporation mailer action
     CorporationMailer.all_nurses_payable_email(corporation, data, range_start).deliver_now

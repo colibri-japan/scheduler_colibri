@@ -36,7 +36,9 @@ class User < ApplicationRecord
 
 
   scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
-	scope :registered, -> { where.not(name: ['', nil]) }
+  scope :registered, -> { where.not(name: ['', nil]) }
+  scope :without_mobile_devices, -> { where(android_fcm_token: nil, ios_fcm_token: nil) }
+	scope :with_mobile_devices, -> { where('(android_fcm_token IS NOT NULL OR ios_fcm_token IS NOT NULL)') }
 
   def has_restricted_access?
     schedule_restricted? || schedule_readonly? || nurse_restricted?
@@ -44,6 +46,10 @@ class User < ApplicationRecord
 
   def has_admin_access?
     schedule_admin? || corporation_admin?
+  end
+
+  def with_mobile_device?
+    ios_fcm_token.present? || android_fcm_token.present?
   end
 
   def unread_posts

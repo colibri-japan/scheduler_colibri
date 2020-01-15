@@ -1,7 +1,11 @@
 desc "Heroku scheduler tasks"
 
 task :send_reminders => :environment do 
-	Nurse.send_service_reminder 
+	Nurse.send_reminders_by_email 
+end
+
+task :daily_notification => :environment do 
+	SendDailyNotificationWorker.perform_async(Time.current.in_time_zone('Tokyo'))
 end
 
 task :mark_reminderable_posts_as_unread => :environment do

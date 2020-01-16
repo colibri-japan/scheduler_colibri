@@ -629,9 +629,15 @@
 		width: calc(100% - 10px);
 	}
 
+	/* dashboard layout */
+
 	.colibri-dashboard-container-row {
 		overflow-x: auto;
 		height: 70vh;
+	}
+	
+	#posts-widget-action-container {
+		display: none;
 	}
 
 	/* settings page */

@@ -242,6 +242,10 @@
 		padding-bottom: 20px;
 	}
 
+	.glyphicon.glyphicon-cog:hover, .glyphicon.glyphicon-home:hover, .glyphicon.glyphicon-calendar:hover {
+		color: rgb(115, 120, 124) !important;
+	}
+
 	/* Contact form layouts */
 
 	#contact-form-background {

@@ -404,6 +404,15 @@
 		width: auto;
 	}
 
+	
+	li.planning-menu-items:hover {
+		color: rgb(115, 120, 124);
+	}
+
+	.glyphicon.glyphicon-cog:hover, .glyphicon.glyphicon-home:hover, .glyphicon.glyphicon-calendar:hover {
+		color: rgb(115, 120, 124) !important;
+	}
+
 	/* styles dashboard and other content container */
 
 	#posts-widget-action-container {

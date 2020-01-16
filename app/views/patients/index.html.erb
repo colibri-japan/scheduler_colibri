@@ -25,7 +25,7 @@
   </div>
 
   <div class="settings-body">
-    <%= link_to "+新規#{client_resource_name(@corporation.business_vertical)}", new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true %>
+    <%= link_to "+新規#{client_resource_name(@corporation.business_vertical)}", new_patient_path, class: 'btn btn-info text-white btn-margin-top', remote: true, data: {ripple: ""} %>
     
     <div class="patients-submenu">
       <div id="toggle-active-patients-menu" style="display:flex">

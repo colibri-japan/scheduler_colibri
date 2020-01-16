@@ -25,7 +25,7 @@
             リマインダー削除
           <% end %>
         <% else %>
-          <div class='btn btn-sm btn-secondary' id="delete-reminder">リマインダー削除</div>
+          <div class='btn btn-sm btn-secondary' id="delete-reminder" data-ripple>リマインダー削除</div>
         <% end %>
       </div>
 
@@ -33,7 +33,7 @@
   </div>
 
   <div class='modal-body'>
-    <div class="btn btn-colibri-light btn-sm" id="show-reminder-form" style="margin-bottom:15px<%= ';display:none' if post.reminders.exists? %>"><span class="glyphicon glyphicon-bell" style="color:#5f6368;font-size:13px"></span> リマインダー追加</div>
+    <div class="btn btn-colibri-light btn-sm" id="show-reminder-form" data-ripple style="margin-bottom:15px<%= ';display:none' if post.reminders.exists? %>"><span class="glyphicon glyphicon-bell" style="color:#5f6368;font-size:13px"></span> リマインダー追加</div>
 
     <div class="form-group">
       <%= form.label :published_at, "記載日時", class: "colibri-form-label" %><span class='required-field'>*</span>
@@ -63,7 +63,7 @@
         <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
       <% end %>
       <%= link_to '削除', post, method: :delete, remote: true, class: 'btn btn-danger' unless post.new_record? %>
-      <%= form.submit 'セーブする', class: 'btn btn-info' %>
+      <%= form.submit 'セーブする', class: 'btn btn-info', data: {ripple: ""} %>
     </div>
   </div>
 

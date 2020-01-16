@@ -8,8 +8,8 @@
     transform: translateZ(0);
     border-radius: inherit;
     pointer-events: none;
-    animation: ripple-shadow 0.4s forwards;
-    -webkit-animation: ripple-shadow 0.4s forwards;
+    animation: ripple-shadow 0.1s forwards;
+    -webkit-animation: ripple-shadow 0.1s forwards;
 }
 
 .rippleWave {
@@ -21,7 +21,7 @@
     background: rgba(255, 255, 255, 0.3);
     opacity: 0.45;
     animation: ripple 1s forwards;
-    -webkit-animation: ripple 1.2s forwards;
+    -webkit-animation: ripple 1s forwards;
 }
 
 @keyframes ripple {

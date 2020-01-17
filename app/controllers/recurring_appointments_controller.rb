@@ -41,6 +41,11 @@ class RecurringAppointmentsController < ApplicationController
     recurring_appointment_ids = @recurring_appointment.original_id.present? ? [@recurring_appointment.id, @recurring_appointment.original_id] : @recurring_appointment.id
     @activities = PublicActivity::Activity.where(trackable_type: 'RecurringAppointment', trackable_id: recurring_appointment_ids).includes(:owner)
     @services = @corporation.cached_most_used_services_for_select
+
+    respond_to do |format|
+      format.js
+      format.js.phone
+    end
   end
   
   def create

@@ -1,0 +1,15 @@
+$('#remote_container').html('<%= j render "phone_edit" %>');
+$('#detail-container').hide()
+$('.popover').popover('hide');
+
+recurringAppointmenSelectizeTitle();
+recurringAppointmentSelectizeNursePatient();
+toggleEditRequested();
+toggleCancelled();
+editAfterDate();
+colorSelectize()
+
+$('.activity_back_button').click(function(){
+    $('.phone_activity_container').hide()
+    $('#detail-container').show()
+})

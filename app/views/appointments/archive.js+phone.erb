@@ -1,0 +1,22 @@
+<% if @appointment.errors.any? %>
+  alert("<%= j @appointment.errors.values.join('; ') %>");
+<% else %>
+  $('#remote_container').empty()
+  $('#detail-container').show()
+  if (typeof pathname === 'undefined') {
+    let pathname
+  }
+  pathname = window.location.pathname;
+
+  if (pathname.includes('payable')) {
+    Turbolinks.reload()
+  } else {
+    $('.modal').modal('hide');
+
+    if (window.fullCalendar) {
+      let event = window.fullCalendar.getEventById('<%= "appointment_#{@appointment.id}" %>')
+      event.remove()
+    }
+  }
+
+<% end %>

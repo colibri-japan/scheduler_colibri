@@ -9,8 +9,14 @@
   }
   pathname = window.location.pathname;
 
-  $('.modal').modal('hide');
-  $('.modal-backdrop').remove();
+  if ($('.activity_back_icon').length > 0) {
+    $('#remote_container').empty()
+    $('#detail-container').show() 
+  } else {
+    $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+  }
+
 
   if (pathname.includes('payable')) {
     <% if @appointment.cancelled && @corporation.detailed_cancellation_options %>

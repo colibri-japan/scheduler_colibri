@@ -446,8 +446,8 @@
 	}
 
 	#resource-list-container {
-		background-color: #606E7C;
-		border: 0.5px solid #606E7C;
+		background-color: #5F758E;
+		border: 0.5px solid #5F758E;
 		display: flex;
 		flex-direction: column;
 		overflow:hidden;
@@ -455,12 +455,12 @@
 		min-width: 150px;
 		width:10vw;
 		position: fixed;
-		z-index: 10;
+		z-index: 30;
 		top: 0;
 		left: 0;
 		overflow-x: hidden;
 		padding-top: 3px;
-		padding-bottom: 60px;
+		padding-bottom: 0px;
 		display: none;
 	}
 
@@ -635,7 +635,7 @@
 		width: 100vw;
 		margin-bottom: 10px;
 		display: block;
-		background-color: #120056;
+		background-color: #231651;
 	}
 
 	#planning-header-submenu {
@@ -706,7 +706,7 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		z-index: 7;
+		z-index: 20;
 		height: 100vh;
 		width: 100vw;
 		background-color: black;
@@ -714,7 +714,7 @@
 	}
 
 	#resource-list-container {
-		height: calc(100% - 50px);
+		height: 100vh;
 	}
 
 	#resource-container {
@@ -880,15 +880,15 @@
 	}
 
 	#settings-menu-container {
-		height: calc(100% - 50px);
+		height: 100vh;
 		width: 200px;
 		position: fixed;
-		z-index: 10;
+		z-index: 30;
 		top: 0px;
 		left: 0px;
 		padding-top: 10px;
-		background-color: #606E7C;
-		border: 0.5px solid #606E7C;
+		background-color: #5F758E;
+		border: 0.5px solid #5F758E;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;

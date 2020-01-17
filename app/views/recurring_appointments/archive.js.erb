@@ -4,6 +4,7 @@
 <% else %>
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
+      $('.activity_back_button').click();
 
   if (window.fullCalendar) {
     let events = window.fullCalendar.getEvents()

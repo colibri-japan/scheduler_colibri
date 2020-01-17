@@ -2,6 +2,7 @@
   alert("<%= j @recurring_appointment.errors.values.join('; ') %>");
 <% else %>
   $('.modal').modal('hide');
+  $('.activity_back_button').click();
 
   if (window.fullCalendar) {
     window.fullCalendar.batchRendering(function(){

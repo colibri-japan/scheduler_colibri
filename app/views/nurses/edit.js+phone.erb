@@ -1,0 +1,31 @@
+$('#remote_container').html('<%= j render "phone_edit" %>');
+
+if ($('#settings-container').length > 0) {
+    $('#settings-container').hide()
+}
+
+if ($('#detail-container').length > 0) {
+    $('#detail-container').hide()
+}
+
+
+toggleFulltimeEmployee()
+toggleReminderable()
+phoneMailRequirement()
+skillsSelectize()
+wishesSelectize()
+wishedAreasSelectize()
+nurseMonthlyWageField()
+showMonthlyWageField()
+warekiHelper()
+nurseWarekiFields()
+
+$('.activity_back_button').click(function(){
+    $('.phone_activity_container').hide()
+    if ($('#detail-container').length > 0) {
+        $('#detail-container').show()
+    }
+    if ($('#settings-container').length > 0) {
+        $('#settings-container').show()
+    }
+})

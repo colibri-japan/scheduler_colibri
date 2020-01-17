@@ -40,6 +40,11 @@ class PatientsController < ApplicationController
   def edit
     set_nurses
     set_care_managers
+
+    respond_to do |format|
+      format.js 
+      format.js.phone
+    end
   end
 
   def toggle_active
@@ -56,6 +61,11 @@ class PatientsController < ApplicationController
     @patient = Patient.new
     set_nurses
     set_care_managers
+
+    respond_to do |format|
+      format.js 
+      format.js.phone
+    end
   end
 
   def create

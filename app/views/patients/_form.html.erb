@@ -262,7 +262,7 @@
 
   <div class="modal-footer">
     <% unless patient.new_record? %>
-      <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+      <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
       <%= link_to 'サービス停止', toggle_active_path(patient), method: :patch, data: {confirm: '将来のサービスがキャンセルされ、利用者一覧から外されます。'}, class: 'btn btn-danger text-white' if patient.active? %>
     <% end %>
     <%= form.submit 'セーブする', class: 'btn btn-info' %>

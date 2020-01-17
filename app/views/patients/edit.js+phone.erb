@@ -1,0 +1,22 @@
+$('#remote_container').html('<%= j render "phone_edit" %>');
+
+$('#detail-container').hide()
+
+caveatsSelectize()
+patientDatePicker()
+nursePatientSelectize()
+validateKatakana()
+selectizeInsurancePolicy()
+endOfContractDate()
+patientCaremanagerSelectize()
+warekiHelper()
+patientWarekiFields()
+set_kaigo_certification_validity_end()
+set_kaigo_certification_validity_start()
+set_kaigo_certification_date()
+set_birthday()
+
+$('.activity_back_button').click(function(){
+    $('.phone_activity_container').hide()
+    $('#detail-container').show()
+})

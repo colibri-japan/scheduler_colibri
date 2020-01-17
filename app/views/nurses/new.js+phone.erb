@@ -1,0 +1,19 @@
+$('#remote_container').html('<%= j render "phone_new" %>');
+
+$('#settings-container').hide()
+
+toggleFulltimeEmployee()
+toggleReminderable()
+phoneMailRequirement()
+skillsSelectize()
+wishesSelectize()
+wishedAreasSelectize()
+nurseMonthlyWageField()
+showMonthlyWageField()
+warekiHelper()
+nurseWarekiFields()
+
+$('.activity_back_button').click(function(){
+    $('.phone_activity_container').hide()
+    $('#settings-container').show()
+})

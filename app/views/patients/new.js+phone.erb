@@ -1,0 +1,17 @@
+$('#remote_container').html('<%= j render "phone_new" %>');
+
+$('#settings-container').hide()
+
+caveatsSelectize()
+patientDatePicker()
+nursePatientSelectize()
+validateKatakana()
+selectizeInsurancePolicy()
+patientCaremanagerSelectize()
+warekiHelper()
+patientWarekiFields()
+
+$('.activity_back_button').click(function(){
+    $('.phone_activity_container').hide()
+    $('#settings-container').show()
+})

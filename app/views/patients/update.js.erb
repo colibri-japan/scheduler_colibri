@@ -1,5 +1,8 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
+if ($('.activity_back_button').length > 0) {
+    $('.activity_back_button').click()
+}
 if ($('#patient_row_<%= @patient.id %>').length > 0) {
     $('#patient_row_<%= @patient.id %>').empty()
     $('#patient_row_<%= @patient.id %>').html("<%= j render 'patient_row', patient: @patient %>")

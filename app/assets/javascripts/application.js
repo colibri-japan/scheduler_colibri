@@ -50,7 +50,8 @@ let toggleFulltimeEmployee = () => {
     size: 'normal',
     onstyle: 'success',
     offstyle: 'secondary',
-    width: 170
+    width: 170,
+    height: 34
   });
 }
 
@@ -61,7 +62,8 @@ let toggleReminderable = () => {
     off: 'リマインダーなし',
     onstyle: 'success',
     offstyle: 'secondary',
-    width: 170
+    width: 170,
+    height: 34
   })
 }
 

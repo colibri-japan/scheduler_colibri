@@ -55,10 +55,19 @@ class NursesController < ApplicationController
   end
 
   def edit
+    respond_to do |format|
+      format.js 
+      format.js.phone
+    end
   end
 
   def new
     @nurse = Nurse.new
+
+    respond_to do |format|
+      format.js 
+      format.js.phone
+    end
   end
 
   def create

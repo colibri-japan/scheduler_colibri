@@ -288,7 +288,7 @@
 
 	.activity_header {
 		height: 48px;
-		background-color: #120056;
+		background-color: #231651;
 		color: white;
 		display: flex;
 		padding-left: 12px;
@@ -797,7 +797,7 @@
 
 	#payable-title-wrapper {
 		height: 48px;
-		background-color: #120056;
+		background-color: #231651;
 		line-height: 48px;
 		padding-left: 12px;
 		padding-right: 12px;

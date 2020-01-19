@@ -1,0 +1,27 @@
+<%= javascript_tag do %>
+  window.currentResourceType = ''
+  window.currentResourceId = ''
+<% end %>
+
+<%= render partial: 'plannings/planning_left_menu', locals: {resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'home' } %>
+
+
+<div class="phone_activity_container activity_with_planning_menu">
+    <div class="activity_large_header">
+        <div class="activity_header">
+            <div class="activity_title">
+                レポート・書き込み
+            </div>
+        </div>
+        <div class="activity_subheader">
+            <div data-ripple id="completion_reports_selected" class="activity_subheader_item activity_subheader_item_selected">実施記録</div>
+            <div data-ripple id="posts_item_selected" class="activity_subheader_item">掲示板</div>
+        </div>
+    </div>
+    <div class="activity_body activity_body_fixed_height">
+        <div id="daily-completion-reports-container">
+        </div>
+        <div id="posts-widget-container" style="display:none;padding:3px">
+        </div>
+    </div>
+</div>

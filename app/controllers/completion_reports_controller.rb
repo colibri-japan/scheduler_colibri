@@ -43,12 +43,18 @@ class CompletionReportsController < ApplicationController
   end
 
   def index
-    first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0).beginning_of_month
-    last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
-    now_in_Japan = (Time.current.in_time_zone('Tokyo')) < last_day ? Time.current.in_time_zone('Tokyo') : last_day
+    if params[:m].present? && params[:y].present?
+      range_start = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0).beginning_of_month
+      last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
+      range_end = (Time.current.in_time_zone('Tokyo')) < last_day ? Time.current.in_time_zone('Tokyo') : last_day
+    elsif params[:day].present?
+      day = params[:day].to_date rescue nil 
+      range_start = day.try(:beginning_of_day)
+      range_end = day.try(:end_of_day)
+    end
 
-    @appointments_without_reports = Appointment.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.where('appointments.starts_at between ? and ?', first_day, now_in_Japan).order(starts_at: :desc)
-    @recent_completion_reports = CompletionReport.includes(reportable: [:nurse, :patient]).from_appointments.joins('left join appointments on appointments.id = completion_reports.reportable_id').where('appointments.starts_at between ? and ?', first_day, now_in_Japan).order('appointments.starts_at desc')
+    @appointments_without_reports = Appointment.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.where('appointments.starts_at between ? and ?', range_start, range_end).order(starts_at: :desc)
+    @recent_completion_reports = CompletionReport.includes(reportable: [:nurse, :patient]).from_appointments.joins('left join appointments on appointments.id = completion_reports.reportable_id').where('appointments.starts_at between ? and ?', range_start, range_end).order('appointments.starts_at desc')
     
     set_main_nurse if request.format.html?
 

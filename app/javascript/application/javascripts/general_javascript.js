@@ -61,6 +61,26 @@ document.addEventListener('turbolinks:load', function () {
         $(this).addClass('header-submenu-item-selected')
     })
 
+    $('.activity_subheader_item ').click(function(){
+        $('.activity_subheader_item ').removeClass('activity_subheader_item_selected')
+        $(this).addClass('activity_subheader_item_selected')
+    })
+
+    if ($('#daily-completion-reports-container').length > 0) {
+        $.getScript(`/completion_reports.js?day=${moment().format('YYYY-MM-DD')}`)
+    }
+
+    $('#posts_item_selected').click(function(){
+        $('#posts-widget-container').show()
+        $('#daily-completion-reports-container').hide()
+        $(".activity_body").scrollTop($("#posts-container")[0].scrollHeight)
+    })
+
+    $('#completion_reports_selected').click(function(){
+        $('#posts-widget-container').hide()
+        $('#daily-completion-reports-container').show()
+    })
+
     $(document).on("mousedown", "[data-ripple]", function(e){
         var $self = $(this);
 

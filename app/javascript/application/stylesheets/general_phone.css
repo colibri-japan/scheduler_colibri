@@ -1,0 +1,38 @@
+@media screen and (orientation: landscape) and (max-width: 900px), screen and (orientation: portrait) and (max-width: 760px) {
+    .activity_large_header {
+        background-color: #231651;
+    }
+    
+    .activity_subheader {
+        background-color: #231651;
+        display: flex;
+        height: 35px;
+        line-height: 35px;
+        color: white;
+    }
+
+    .activity_subheader_item {
+        flex-grow: 1;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .activity_body.activity_body_fixed_height {
+        height: calc(100vh - 143px);
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    .activity_subheader_item.activity_subheader_item_selected {
+        color: white;
+        border-bottom: 3px solid white;
+    }
+
+    .phone_activity_container.activity_with_planning_menu {
+        z-index: 5;
+    }
+
+    #posts-widget-header {
+        display: none;
+    }
+}

@@ -1,10 +1,17 @@
 $('#remote_container').html('<%= j render "phone_completion_report" %>');
 
-$('#detail-container').hide()
+if ($('#detail-container').length > 0) {
+    $('#detail-container').hide()
+}
+
+if ($('.activity_with_planning_menu').length > 0) {
+    $('.activity_with_planning_menu').hide()
+}
 
 $('.activity_back_button').click(function(){
     $('.phone_activity_container').hide()
     $('#detail-container').show()
+    $('.activity_with_planning_menu').show()
 })
 
 completionFormSelectize()

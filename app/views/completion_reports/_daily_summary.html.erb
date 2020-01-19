@@ -1,0 +1,47 @@
+<div id="resource-details-wrapper">
+	<div class='no-print' style='margin-left:5px'>
+		<%= text_field_tag "日付", value=params[:day], id: "reports-day-query", class: "colibri-input", style: "max-width:100px" %>
+    </div>
+    <div id="uncompleted-reports" class="resource-details-subsection">
+        <div class="resource-details-subsection-title">
+            書き残し（<%= "#{@appointments_without_reports.size}件" %>）
+            <button class="close" id="close-reports-index" onclick="$('#resource-details-panel').toggle()">&times;</button>
+        </div>
+        <div class="resource-details-subsection-body">
+            <table class="table">
+                <% @appointments_without_reports.each do |appointment| %>
+                    <tr>
+                        <td style="width:29%"><%= "#{l(appointment.starts_at, format: '%H:%M ~ ')}#{l(appointment.ends_at, format: '%H:%M')}" %></td>
+                        <td style="width:28%"><%= appointment.nurse.name %></td>
+                        <td style="width:28%"><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
+                        <td style="width:10%"><%= link_to '<span class="glyphicon glyphicon-edit write-completion-report"></span>'.html_safe, new_appointment_completion_report_path(appointment), remote: true if appointment.nurse_id == current_user.nurse_id %></td>
+                    </tr>
+                <% end %>
+            </table>
+        </div>
+    </div>
+    <div id="completed-reports" class="resource-details-subsection">
+        <div class="resource-details-subsection-title">
+            入力済み
+        </div>
+        <div class="recent-comments-container" style="padding:5px">
+            <% @recent_completion_reports.each do |report| %>
+                <% if report.general_comment.present? %>
+                    <div class="comment-container clickable-comment" data-url="<%= completion_report_path(report) %>">
+                        <div class="comment-header">
+                            <div class="comment-publisher">
+                                <%= "#{report.reportable.nurse.try(:name)} > #{report.reportable.patient.try(:name)}" %>
+                            </div>
+                            <div class="comment-published-at">
+                                <%= report.reportable.ends_at.strftime("%-m月%-d日 %H:%M") %>
+                            </div>
+                        </div>
+                        <div class="comment-body">
+                            <%= simple_format(report.general_comment) %>
+                        </div>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>

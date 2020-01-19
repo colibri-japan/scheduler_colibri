@@ -17,4 +17,8 @@ if (window.location.pathname.includes('completion_reports')) {
 } else {
   $('.activity_back_icon').click()
   $('.reports-index-button').click()
+  if ($('#reports-day-query').length > 0) {
+    let day = $('#reports-day-query').val()
+    $.getScript(`/completion_reports?day=${day}`)
+  }
 }

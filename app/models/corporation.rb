@@ -96,10 +96,10 @@ class Corporation < ApplicationRecord
 
 	def cached_most_used_services_for_select
 		Rails.cache.fetch([self, 'most_used_services_for_select']) { 
-			top_6_titles_and_counts = self.services.without_nurse_id.includes(:appointments).group(:title).order(count: :desc).count(:appointments).first(6)
+			top_6_ids_and_counts = self.planning.appointments.where('starts_at > ?', Date.today - 4.months).select('title, service_id, count(*)').group('title, service_id').order(count: :desc).limit(6)
 			service_title_and_id = self.services.without_nurse_id.order(:title).pluck(:title, :id)
 			return_hash = {}
-			return_hash['サービストップ6'] = top_6_titles_and_counts.map {|title, count| [title, service_title_and_id.find{|t,id| t == title}[1]] if service_title_and_id.find{|t,id| t == title}.present? }
+			return_hash['サービストップ6'] = top_6_ids_and_counts.map { |rel| [rel.title, rel.service_id] }
 			return_hash['その他'] = service_title_and_id - return_hash['サービストップ6']
 			
 			return_hash

@@ -1,8 +1,11 @@
 class CompletionReport < ApplicationRecord
     belongs_to :reportable, polymorphic: true
 
+    belongs_to :appointment, -> { where(completion_reports: {reportable_type: 'Appointment'}) }
+
     scope :from_appointments, -> { where(reportable_type: 'Appointment') }
     scope :from_recurring_appointments, -> { where(reportable_type: 'RecurringAppointment') }
+    scope :with_general_comment, -> { where.not(general_comment: [nil, '']) }
 
     def self.from_nurse(nurse_id)
         joins('INNER JOIN appointments on appointments.id = completion_reports.reportable_id').where(appointments: {nurse_id: nurse_id})
@@ -10,6 +13,11 @@ class CompletionReport < ApplicationRecord
 
     def self.from_patient(patient_id)
         joins('INNER JOIN appointments on appointments.id = completion_reports.reportable_id').where(appointments: {patient_id: patient_id})
+    end
+
+    def appointment 
+        return unless reportable_type == "Appointment"
+        super
     end
 
     def with_anything_checked?

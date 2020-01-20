@@ -1,10 +1,10 @@
 @media screen and (orientation: landscape) and (max-width: 900px), screen and (orientation: portrait) and (max-width: 760px) {
     .activity_large_header {
-        background-color: #4e5180;
+        background-color: #0c5f6a;
     }
     
     .activity_subheader {
-        background-color: #4e5180;
+        background-color: #0c5f6a;
         display: flex;
         height: 35px;
         line-height: 35px;

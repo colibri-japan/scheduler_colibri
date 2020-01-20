@@ -446,8 +446,6 @@
 	}
 
 	#resource-list-container {
-		background-color: #5F758E;
-		border: 0.5px solid #5F758E;
 		display: flex;
 		flex-direction: column;
 		overflow:hidden;

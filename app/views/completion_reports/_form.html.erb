@@ -139,11 +139,11 @@
             <div class="form-group col-md-7">
               <%= form.label :patient_transpired, "発汗", style: 'margin-right:7px'  %>
               <%= form.label :patient_transpired_1, "有", class: 'colibri-form-label-dark' do %>
-                  <%= form.radio_button :patient_transpired, 1, {class: 'radio-inline'} %>
+                  <%= form.radio_button :patient_transpired, true, {class: 'radio-inline'} %>
                   有
               <% end %>
               <%= form.label :patient_transpired_0, "無", class: 'colibri-form-label-dark' do %>
-                  <%= form.radio_button :patient_transpired, 0, {class: 'radio-inline'} %>
+                  <%= form.radio_button :patient_transpired, false, {class: 'radio-inline'} %>
                   無
               <% end %>
             </div>

@@ -28,6 +28,10 @@
     -webkit-animation: ripple 1s forwards;
 }
 
+.recent-comments-container {
+    border-top: 0.5px solid #eee;
+}
+
 @keyframes ripple {
     to {transform: scale(24); opacity: 0}
 }

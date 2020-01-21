@@ -15,6 +15,12 @@ if (window.userHasRestrictedAccess && window.fullCalendar) {
 if (window.location.pathname.includes('completion_reports')) {
     location.reload()
 } else {
-  $('.activity_back_icon').click()
-  $('.reports-index-button').click()
+  if ($('.activity_back_icon').length > 0) {
+    $('.activity_back_icon').click()
+    $('.reports-index-button').click()
+    if ($('#daily-completion-reports-container').length > 0) {
+      let queryDay = $('#reports-day-query').val()
+      $.getScript(`/completion_reports.js?day=${queryDay}`)
+    }
+  }
 }

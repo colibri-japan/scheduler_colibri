@@ -18,6 +18,10 @@ $('#payable-query-trigger').click(function(){
     $.getScript(`/completion_reports.js?${window.currentResourceType || window.defaultResourceType}_id=${window.currentResourceId || window.defaultResourceId}&y=${year}&m=${month}`)
 })
 
+$('.comment-container.clickable-comment').click(function(){
+  $.getScript($(this).data('url'))
+})
+
 $('#reports-day-query').daterangepicker({
     singleDatePicker: true,
     locale: {

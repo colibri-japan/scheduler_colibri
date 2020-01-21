@@ -22,12 +22,12 @@
     </div>
     <div id="completed-reports" class="resource-details-subsection">
         <div class="resource-details-subsection-title">
-            入力済み
+            入力済み・コメント
         </div>
         <div class="recent-comments-container" style="padding:5px">
             <% @recent_completion_reports.each do |report| %>
                 <% if report.general_comment.present? %>
-                    <div class="comment-container clickable-comment" data-url="<%= completion_report_path(report) %>">
+                    <div class="comment-container clickable-comment" data-url="<%= edit_appointment_completion_report_path(report.reportable, report) %>">
                         <div class="comment-header">
                             <div class="comment-publisher">
                                 <%= "#{report.reportable.nurse.try(:name)} > #{report.reportable.patient.try(:name)}" %>

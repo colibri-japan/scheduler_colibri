@@ -15,10 +15,15 @@ if (window.userHasRestrictedAccess && window.fullCalendar) {
 if (window.location.pathname.includes('completion_reports')) {
     location.reload()
 } else {
-  $('.activity_back_icon').click()
-  $('.reports-index-button').click()
-  if ($('#reports-day-query').length > 0) {
-    let day = $('#reports-day-query').val()
-    $.getScript(`/completion_reports?day=${day}`)
+  if ($('#resource-details-panel').is(':visible')) {
+    $('.reports-index-button').click()
+  }
+  if ($('.activity_back_icon').length > 0) {
+    $('.activity_back_icon').click()
+    $('.reports-index-button').click()
+    if ($('#reports-day-query').length > 0) {
+      let day = $('#reports-day-query').val()
+      $.getScript(`/completion_reports?day=${day}`)
+    }
   }
 }

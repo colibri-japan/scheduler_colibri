@@ -898,6 +898,8 @@
         <% end %>
     </div>
 
+    <%= form.hidden_field :forecasted_report_id, value: completion_report.forecasted_report_id %>
+
     <div class="modal-footer">
         <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
         <%= form.submit "セーブする", class: 'btn btn-info btn-phone-expand' %>

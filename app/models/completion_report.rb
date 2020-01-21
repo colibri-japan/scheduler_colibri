@@ -1,5 +1,7 @@
 class CompletionReport < ApplicationRecord
     belongs_to :reportable, polymorphic: true
+    belongs_to :forecasted_report, class_name: 'CompletionReport', optional: true 
+    has_many :achieved_reports, class_name: 'CompletionReport', foreign_key: :forecasted_report_id
 
     scope :from_appointments, -> { where(reportable_type: 'Appointment') }
     scope :from_recurring_appointments, -> { where(reportable_type: 'RecurringAppointment') }
@@ -11,6 +13,30 @@ class CompletionReport < ApplicationRecord
 
     def self.from_patient(patient_id)
         joins('INNER JOIN appointments on appointments.id = completion_reports.reportable_id').where(appointments: {patient_id: patient_id})
+    end
+
+    def self.attributed_to_ignore_when_comparing
+        [:id, :created_at, :updated_at, :forecasted_report_id, :reportable_type, :reportable_id, :general_comment]
+    end
+
+    def identical?(other_report)
+        self.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s)) ==
+        other_report.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s))
+    end
+
+    def attributes_differences_with(forecast)
+        forecasted = forecast.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s)).to_a
+        actual = self.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s)).to_a
+        (forecasted - actual).map {|k,v| k}.uniq
+    end
+
+    def difference_between_actual_and_forecasted(forecast)
+        keys = attributes_differences_with(forecast)
+        difference_hash = {}
+        keys.each do |key|
+            difference_hash[key] = {forecasted: forecast.attributes[key], actual: self.attributes[key]}
+        end
+        difference_hash
     end
 
     def with_anything_checked?

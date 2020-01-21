@@ -9,6 +9,7 @@ class CompletionReportsController < ApplicationController
     if @reportable.class.name == 'Appointment'
       master_report = @reportable.recurring_appointment.try(:completion_report) || @reportable.original_recurring_appointment.try(:completion_report)
       @completion_report = master_report.present? ? master_report.dup : CompletionReport.new
+      @completion_report.forecasted_report = master_report
       @completion_report.reportable = @reportable
     else
       @completion_report = CompletionReport.new

@@ -3,6 +3,7 @@ $('.modal-backdrop').remove();
 $('#remote_container').html('<%= j render "edit" %>');
 $('#edit_completion_report').modal({backdrop: 'static'});
 completionFormSelectize()
+uncheckableRadioButtons()
 
 $('.toggleable-subsection-title').click(function(){
     $(this).next().toggle()

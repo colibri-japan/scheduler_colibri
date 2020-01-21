@@ -25,6 +25,65 @@ window.initializeTooltips = function() {
     })
 }
 
+window.uncheckableRadioButtons = function() {
+    delete window.patient_ate_full_plate
+    delete window.full_or_partial_body_wash
+    delete window.bath_or_shower
+    delete window.hands_and_feet_wash
+
+    $('input[name="completion_report[patient_ate_full_plate]"]').click(function () {
+        if (typeof (window.patient_ate_full_plate) === 'undefined') {
+            window.patient_ate_full_plate = $(this).val()
+        } else {
+            if (window.patient_ate_full_plate === $(this).val()) {
+                $(this).prop('checked', false)
+                delete (window.patient_ate_full_plate)
+            } else {
+                window.patient_ate_full_plate = $(this).val()
+            }
+        }
+    })
+
+    $('input[name="completion_report[full_or_partial_body_wash]"]').click(function () {
+        if (typeof (window.full_or_partial_body_wash) === 'undefined') {
+            window.full_or_partial_body_wash = $(this).val()
+        } else {
+            if (window.full_or_partial_body_wash === $(this).val()) {
+                $(this).prop('checked', false)
+                delete (window.full_or_partial_body_wash)
+            } else {
+                window.full_or_partial_body_wash = $(this).val()
+            }
+        }
+    })
+
+    $('input[name="completion_report[bath_or_shower]"]').click(function () {
+        if (typeof (window.bath_or_shower) === 'undefined') {
+            window.bath_or_shower = $(this).val()
+        } else {
+            if (window.bath_or_shower === $(this).val()) {
+                $(this).prop('checked', false)
+                delete (window.bath_or_shower)
+            } else {
+                window.bath_or_shower = $(this).val()
+            }
+        }
+    })
+
+    $('input[name="completion_report[hands_and_feet_wash]"]').click(function () {
+        if (typeof (window.hands_and_feet_wash) === 'undefined') {
+            window.hands_and_feet_wash = $(this).val()
+        } else {
+            if (window.hands_and_feet_wash === $(this).val()) {
+                $(this).prop('checked', false)
+                delete (window.hands_and_feet_wash)
+            } else {
+                window.hands_and_feet_wash = $(this).val()
+            }
+        }
+    })
+}
+
 document.addEventListener('turbolinks:load', function () {
     $('.btn-scroll').click(function(){
         var aTag = $("#" + $(this).data('anchor'));

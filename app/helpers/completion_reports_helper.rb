@@ -117,6 +117,8 @@ module CompletionReportsHelper
             "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>部分浴（足）</div>"
         when 1
             "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>部分浴（手）</div>"
+        when 2
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>部分浴（手足）</div>"
         else
             ""
         end

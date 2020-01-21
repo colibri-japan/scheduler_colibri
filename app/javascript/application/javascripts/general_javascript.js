@@ -140,6 +140,10 @@ document.addEventListener('turbolinks:load', function () {
         $('#daily-completion-reports-container').show()
     })
 
+    $('.colibri-clickable-row').click(function(){
+        $.getScript($(this).data('url'))
+    })
+
     $(document).on("mousedown", "[data-ripple]", function(e){
         var $self = $(this);
 
@@ -178,4 +182,5 @@ document.addEventListener('turbolinks:load', function () {
             }
         });
     })
+
 })

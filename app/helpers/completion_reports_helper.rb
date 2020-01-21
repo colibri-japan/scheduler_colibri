@@ -108,6 +108,14 @@ module CompletionReportsHelper
             ""
         end
     end
+
+    def phone_completion_report_title(completion_report)
+        if completion_report.new_record?
+            "新規実施記録"
+        else
+            "実施記録の編集"
+        end
+    end
     
     def hands_and_feet_wash_checked(hands_and_feet_wash)
         case hands_and_feet_wash

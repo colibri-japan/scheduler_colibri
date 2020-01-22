@@ -164,8 +164,8 @@ class NursesController < ApplicationController
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
     end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
 
-    @appointments_till_today = @nurse.appointments.not_archived.includes(:patient, :service).in_range(first_day..end_of_today_in_japan).order("starts_at #{@sort_direction}")
-    @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan)
+    @appointments_till_today = @nurse.appointments.not_archived.includes(:service, :patient, completion_report: :forecasted_report).in_range(first_day..end_of_today_in_japan).order("starts_at #{@sort_direction}")
+    @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan).includes(:salary_rule)
     @unverified_services_count = @appointments_till_today.operational.unverified.count
 
     @grouped_appointments = @nurse.appointments.operational.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')

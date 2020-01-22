@@ -16,10 +16,11 @@ class CompletionReport < ApplicationRecord
     end
 
     def self.attributed_to_ignore_when_comparing
-        [:id, :created_at, :updated_at, :forecasted_report_id, :reportable_type, :reportable_id, :general_comment]
+        [:id, :created_at, :updated_at, :forecasted_report_id, :reportable_type, :reportable_id, :general_comment, :patient_looked_good, :patient_transpired, :body_temperature, :blood_pressure_systolic, :blood_pressure_diastolic, :house_was_clean, :patient_could_discuss, :patient_could_gather_and_share_information, :checking_report, :checked_gas_when_leaving, :checked_electricity_when_leaving, :checked_water_when_leaving, :checked_door_when_leaving]
     end
 
     def identical?(other_report)
+        return true if other_report.nil?
         self.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s)) ==
         other_report.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s))
     end

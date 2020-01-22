@@ -113,7 +113,7 @@
 
 				<tbody>
 					<% @appointments_till_today.each do |appointment| %>
-					<tr>
+					<tr style="<%= 'background-color:#FFFF9B' if appointment.completion_report.present?  && !appointment.completion_report.identical?(appointment.completion_report.forecasted_report) %>">
 						<td class="<%= weekend_holiday_appointment_css(appointment) %>"><%= appointment.starts_at.strftime("%-m月%-d日") + ' ' + weekday(appointment.starts_at) %></td>
 						<td><%= appointment.title %></td>
 						<td><%= appointment.patient.try(:name) %> </td>

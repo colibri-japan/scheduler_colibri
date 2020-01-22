@@ -1,6 +1,12 @@
 $('#remote_container').html('<%= j render "phone_edit" %>');
 
-$('#detail-container').hide()
+if ($('#settings-container').length > 0) {
+    $('#settings-container').hide()
+}
+
+if ($('#detail-container').length > 0) {
+    $('#detail-container').hide()
+}
 
 caveatsSelectize()
 patientDatePicker()

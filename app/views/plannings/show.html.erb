@@ -21,6 +21,7 @@
 	window.printDates = 'true'
 	window.printNurseDates = 'true'
 	window.printPatientDates = 'true'
+	window.forceListView = <%= params[:force_list_view] || false %>
 	window.printPatientInfo = <%= @printing_option.print_patient_description %>
 	window.printNurseInfo = <%= @printing_option.print_nurse_description %>
 	window.planningPath = '<%= j planning_path(@planning) %>'

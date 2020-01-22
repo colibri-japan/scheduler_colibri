@@ -290,7 +290,7 @@ let createCalendar = () => {
                 let eventTime = info.el.getElementsByClassName('fc-list-item-time')[0].innerText
                 let eventTitle = info.event.extendedProps.cancelled ? `${info.event.extendedProps.patient.name}様　（キャンセル）` : `${info.event.extendedProps.patient.name}様`
                 let newHtml = `<tr>
-                      <div class="colibri-fc-list" style="background-color:#f3f3f3">
+                      <div class="colibri-fc-list" style="background-color:#EFF2F5">
                         <div class="colibri-fc-list-time">${eventTime}</div>
                         <div class="colibri-fc-list-title">${eventTitle}</div>
                       </div>
@@ -1007,8 +1007,10 @@ export default class extends Controller {
             } else {
                 if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
                     window.fullCalendar.setOption('header', mobileHeader)
-                    window.fullCalendar.changeView('listDay')
-                    window.defaultView = 'listDay'
+                    if (!window.userAllowedToEdit || window.forceListView) {
+                        window.fullCalendar.changeView('listDay')
+                        window.defaultView = 'listDay'
+                    }
                 } else {
                     window.fullCalendar.changeView(window.defaultView)
                     window.fullCalendar.setOption('header', header)
@@ -1021,8 +1023,10 @@ export default class extends Controller {
             } else {
                 if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
                     window.fullCalendar.setOption('header', mobileHeader)
-                    window.fullCalendar.changeView('listDay')
-                    window.defaultView = 'listDay'
+                    if (!window.userAllowedToEdit || window.forceListView) {
+                        window.fullCalendar.changeView('listDay')
+                        window.defaultView = 'listDay'
+                    }
                 } else {
                     window.fullCalendar.changeView(window.defaultView)
                     window.fullCalendar.setOption('header', header)

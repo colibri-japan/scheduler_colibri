@@ -12,10 +12,10 @@
         <div class="resource-details-subsection-body">
             <table class="table">
                 <% @appointments_without_reports.each do |appointment| %>
-                    <tr>
-                        <td style="width:40%"><%= "#{l(appointment.starts_at, format: '%-m/%-d (%a) %H:%M')}" %></td>
-                        <td style="width:40%"><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
-                        <td style="width:20%"><%= link_to '<span class="glyphicon glyphicon-edit write-completion-report"></span>'.html_safe, new_appointment_completion_report_path(appointment), remote: true %></td>
+                    <tr class="colibri-clickable-row" data-url="<%= new_appointment_completion_report_path(appointment) %>">
+                        <td style="width:48%"><%= "#{l(appointment.starts_at, format: '%-m/%-d (%a) %H:%M')}#{l(appointment.ends_at, format: '%H:%M')}" %></td>
+                        <td style="width:38%"><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
+                        <td style="width:14%"><span class="glyphicon glyphicon-edit write-completion-report" style="color:#FFAA00"></span></td>
                     </tr>
                 <% end %>
             </table>
@@ -28,10 +28,10 @@
         <div class="resource-details-subsection-body">
             <table class="table">
                 <% @recent_completion_reports.each do |completion_report| %>
-                    <tr>
-                        <td style="width:40%"><%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d (%a) %H:%M')}" %></td>
-                        <td style="width:40%"><%= appointment_resource_name(completion_report.reportable, params[:resource_type]) %></td>
-                        <td style="width:20%"><%= link_to '<span class="glyphicon glyphicon-file write-completion-report"></span>'.html_safe, edit_appointment_completion_report_path(completion_report.reportable, completion_report), remote: true %></td>
+                    <tr class="colibri-clickable-row" data-url="<%= edit_appointment_completion_report_path(completion_report.reportable, completion_report) %>">
+                        <td style="width:48%"><%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d (%a) %H:%M')}#{l(completion_report.reportable.ends_at, format: '%H:%M')}" %></td>
+                        <td style="width:38%"><%= appointment_resource_name(completion_report.reportable, params[:resource_type]) %></td>
+                        <td style="width:14%"><span class="glyphicon glyphicon-file write-completion-report" style="color:rgb(115, 120, 124)"></span></td>
                     </tr>
                 <% end %>
             </table>

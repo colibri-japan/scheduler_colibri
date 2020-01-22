@@ -21,7 +21,6 @@ class DashboardController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.html.phone
       format.js
     end
   end

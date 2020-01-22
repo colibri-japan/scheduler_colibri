@@ -288,7 +288,7 @@
 
 	.activity_header {
 		height: 48px;
-		background-color: #11464d;
+		background-color: #1E2B41;
 		color: white;
 		display: flex;
 		padding-left: 12px;
@@ -624,7 +624,7 @@
 		width: 100vw;
 		margin-bottom: 10px;
 		display: block;
-		background-color: #11464d;
+		background-color: #1E2B41;
 	}
 
 	#planning-header-submenu {
@@ -786,7 +786,7 @@
 
 	#payable-title-wrapper {
 		height: 48px;
-		background-color: #11464d;
+		background-color: #1E2B41;
 		line-height: 48px;
 		padding-left: 12px;
 		padding-right: 12px;

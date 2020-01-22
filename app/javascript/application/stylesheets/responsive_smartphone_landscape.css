@@ -106,7 +106,7 @@
 		line-height: 48px;
 		padding-left: 12px;
 		padding-right: 12px;
-		background-color: #11464d;
+		background-color: #1E2B41;
 		color: white;
 		display: flex;
 	}
@@ -370,7 +370,7 @@
 		box-shadow: 0 4px 2px -2px #ccc;
 		margin-bottom: 10px;
 		display: block;
-		background-color: #11464d;
+		background-color: #1E2B41;
 		color: white;
     }
 
@@ -565,7 +565,7 @@
 		width: calc(100% + 10px);
 		margin-left: -5px;
 		height: 48px;
-		background-color: #11464d;
+		background-color: #1E2B41;
 		line-height: 48px;
 		padding-left: 12px;
 		padding-right: 12px;

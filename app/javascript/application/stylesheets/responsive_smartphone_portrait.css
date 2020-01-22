@@ -288,7 +288,7 @@
 
 	.activity_header {
 		height: 48px;
-		background-color: #1E2B41;
+		background-color: #2B384E;
 		color: white;
 		display: flex;
 		padding-left: 12px;
@@ -624,13 +624,14 @@
 		width: 100vw;
 		margin-bottom: 10px;
 		display: block;
-		background-color: #1E2B41;
+		background-color: #2B384E;
+		border-bottom: 0.3px solid #2B384E;
 	}
 
 	#planning-header-submenu {
 		display: flex;
-		height: 35px;
-		line-height: 35px;
+		height: 38px;
+		line-height: 38px;
 	}
 
 	.selectize-input {
@@ -640,6 +641,7 @@
 	.header-submenu-item {
 		text-align: center;
 		flex-grow: 1;
+		font-size: 1em;
 		color: rgba(255, 255, 255, 0.5);
 	}
 
@@ -786,7 +788,7 @@
 
 	#payable-title-wrapper {
 		height: 48px;
-		background-color: #1E2B41;
+		background-color: #2B384E;
 		line-height: 48px;
 		padding-left: 12px;
 		padding-right: 12px;

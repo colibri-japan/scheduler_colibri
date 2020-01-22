@@ -35,4 +35,13 @@
     #posts-widget-header {
         display: none;
     }
+
+    p.colibri-fc-list-body {
+		margin: 4px 0px 4px 15px;
+		margin-left: 15px;
+		background-color: white;
+		padding: 4px 6px 4px 6px;
+		border: 0.4px solid #11464d;
+		border-radius: 3px;
+	}
 }

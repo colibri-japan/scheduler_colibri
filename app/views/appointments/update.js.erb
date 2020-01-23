@@ -26,7 +26,23 @@ pathname = window.location.pathname;
             beforeSend: function (xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) },
             success: function(data) {
               if (indexCount == appointment_ids.length) {
-                $('input#save-appointment').click();
+                let edit_url = "<%= planning_appointment_path(@appointment.planning, @appointment) %>"
+                let data = {
+                  appointment: {
+                    nurse_id: '<%= @appointment.nurse_id %>',
+                    patient_id: '<%= @appointment.patient_id %>',
+                    starts_at: '<%= @appointment.starts_at %>',
+                    ends_at: '<%= @appointment.ends_at %>',
+                    service_id: '<%= @appointment.service_id %>',
+                    color: '<%= @appointment.color %>',
+                    description: '<%= @appointment.description %>'
+                  }
+                }
+                $.ajax({
+                  url: edit_url,
+                  data: data,
+                  type: 'PATCH'
+                })
               }
             }
           })

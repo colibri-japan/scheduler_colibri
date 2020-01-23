@@ -1,8 +1,5 @@
 <% if @appointment.errors.any? %>
-  $('.modal').modal('hide');
-  $('.modal-backdrop').remove();
-  alert('キャンセル中にエラーが発生しました。')
-
+  alert("<%= j @appointment.errors.messages[:base].join('、') %>")
 <% else %>
   if (typeof pathname === 'undefined') {
     let pathname

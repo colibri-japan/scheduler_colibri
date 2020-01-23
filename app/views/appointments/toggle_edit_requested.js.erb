@@ -1,5 +1,5 @@
 <% if @appointment.errors.any? %>
-  alert("<%= j @appointment.errors.values.join('; ') %>");
+  alert("<%= j @appointment.errors.messages[:base].join('、') %>");
 <% else %>
   if (typeof pathname === 'undefined') {
     let pathname

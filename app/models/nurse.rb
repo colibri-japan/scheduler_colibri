@@ -204,7 +204,7 @@ class Nurse < ApplicationRecord
 
 	def self.send_reminders_by_email
 		now_in_japan = Time.current.in_time_zone('Tokyo')
-		Nurse.where(reminderable: true, displayable: true).without_mobile_devices.includes(:corporation).find_each do |nurse|
+		Nurse.where(reminderable: true, displayable: true).joins('left join users on users.nurse_id = nurses.id').where('users.android_fcm_token is null and users.ios_fcm_token is null').includes(:corporation).find_each do |nurse|
 			if nurse.corporation.can_send_reminder_today?(now_in_japan) && nurse.corporation.can_send_reminder_now?(now_in_japan)
 				selected_days = nurse.corporation.reminder_email_days(now_in_japan)
 				SendNurseReminderWorker.perform_async(nurse.id, selected_days)

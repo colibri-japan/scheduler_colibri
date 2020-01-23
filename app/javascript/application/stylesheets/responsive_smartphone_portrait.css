@@ -415,10 +415,6 @@
 
 	/* styles dashboard and other content container */
 
-	#posts-widget-action-container {
-		display: none;
-	}
-
 	#colibri-dashboard-container {
 		margin-left: 3px;
 		margin-right: 3px;

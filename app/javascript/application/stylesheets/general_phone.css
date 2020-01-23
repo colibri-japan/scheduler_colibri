@@ -32,9 +32,6 @@
         z-index: 5;
     }
 
-    #posts-widget-header {
-        display: none;
-    }
 
     p.colibri-fc-list-body {
 		margin: 4px 0px 4px 15px;
@@ -43,5 +40,9 @@
 		padding: 4px 6px 4px 6px;
 		border: 0.4px solid #2B384E;
 		border-radius: 3px;
-	}
+    }
+    
+    #go-to-posts {
+        display: none;
+    }
 }

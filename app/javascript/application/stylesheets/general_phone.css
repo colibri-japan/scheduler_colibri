@@ -41,8 +41,21 @@
 		border: 0.4px solid #2B384E;
 		border-radius: 3px;
     }
-    
-    #go-to-posts {
-        display: none;
+
+    #index-container {
+        width: 100% !important;
+        margin: 0px !important;
+        padding: 0px 3px 60px 3px ;
     }
+
+    #post-lookup-container {
+        padding: 5px;
+        margin-bottom: 10px;
+        border-bottom: 0.3px solid #ccc;
+    }
+
+    #lookup-button-container {
+        margin-bottom:10px;
+    }
+
 }

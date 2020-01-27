@@ -15,6 +15,9 @@ class PostsController < ApplicationController
     end
 
     def index
+        set_planning
+        set_main_nurse 
+
         @users = @corporation.cached_registered_users_ordered_by_kana
         patients = @corporation.cached_all_patients_ordered_by_kana
         @patients_for_select = [['利用者タグなし', 'nil']] + patients.pluck(:name, :id)
@@ -47,7 +50,9 @@ class PostsController < ApplicationController
 
         respond_to do |format|
             format.html
+            format.html.phone
             format.js
+            format.js.phone
             format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"経過記録_#{Date.today.strftime("%-m月%-d日")}.xlsx\""}
         end
     end

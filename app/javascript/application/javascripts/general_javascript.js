@@ -144,6 +144,11 @@ document.addEventListener('turbolinks:load', function () {
         $.getScript($(this).data('url'))
     })
 
+    $('#posts-lookup-button, #dismiss-posts-lookup').click(function(){
+        $('#lookup-button-container').toggle()
+        $('#lookup-fields-container').toggle()
+    })
+
     $(document).on("mousedown", "[data-ripple]", function(e){
         var $self = $(this);
 

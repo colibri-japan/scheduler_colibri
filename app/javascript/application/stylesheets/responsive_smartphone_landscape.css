@@ -544,6 +544,8 @@
 		padding: 0px 5px 0px 5px;
 	}
 
+
+
 	/* payable view styles */
 
 	#resource-list-container {
@@ -630,6 +632,16 @@
 	.colibri-dashboard-container-row {
 		overflow-x: auto;
 		height: 70vh;
+	}
+
+	#post-lookup-container {
+		margin-left: 50px;
+		width: calc(100vw - 50px);
+	}
+
+	#posts-index-container {
+		margin-left: 50px;
+		width: calc(100vw - 50px);
 	}
 
 	/* settings page */

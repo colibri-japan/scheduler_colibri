@@ -19,13 +19,13 @@
 				自社サービス以外
 			<% end %>
 		</div>
+		
+		<div id="appointment-form-container">
+			<%= render 'appointments/form', appointment: @appointment %>
+		</div>
+
+		<div id="private-event-form-container" style='display:none'>
+			<%= render 'private_events/form', private_event: @private_event %>
+		</div>
     </div>
-
-    <div id="appointment-form-container">
-		<%= render 'appointments/form', appointment: @appointment %>
-	</div>
-
-	<div id="private-event-form-container" style='display:none'>
-		<%= render 'private_events/form', private_event: @private_event %>
-	</div>
 </div>

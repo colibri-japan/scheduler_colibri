@@ -19,6 +19,7 @@
     <% if @appointment.cancelled && @corporation.detailed_cancellation_options %>
       $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');
       $('#cancellation_options').modal({backdrop: 'static'});
+      $('#payable-container').show()
       reloadWhenDismissedInPayable()
     <% else %>
       Turbolinks.reload()

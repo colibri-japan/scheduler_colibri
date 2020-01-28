@@ -1,3 +1,7 @@
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'settings', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
+
+<%= render 'plannings/settings_submenu', view: 'users' %>
+
 <div class="colibri-devise-form">
 	<p class="colibri-devise-title"><%= t "devise.invitations.new.header" %></p>
 

@@ -1,9 +1,8 @@
-$('.modal').modal('hide')
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('.activity_back_icon').click()
 
 <% if @appointment.errors.any? %>
-  $('.modal').modal('hide');
-  $('.modal-backdrop').remove();
-
   $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
   $('#nurse-overlap-modal').modal({ backdrop: 'static' })
   $('#nurse-overlap-modal').modal({ backdrop: 'static' }).on('shown.bs.modal', function(){

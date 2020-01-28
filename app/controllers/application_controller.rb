@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
   end
   
   def fetch_patients_grouped_by_kana
-		@patients_grouped_by_kana = @corporation.cached_active_patients_grouped_by_kana
+		@patients_grouped_by_kana = @corporation.patients.select(:id, :description, :name, :kana, :address, :phone_number, :phone_mail).all.group_by {|p| p.kana_group}
   end
   
   def save_device_token

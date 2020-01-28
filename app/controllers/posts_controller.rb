@@ -5,6 +5,11 @@ class PostsController < ApplicationController
     def new
         @post = Post.new
         @post.reminders.build
+
+        respond_to do |format|
+            format.js
+            format.js.phone
+        end
     end
 
     def posts_widget
@@ -69,6 +74,11 @@ class PostsController < ApplicationController
     def edit
         @post = Post.find(params[:id])
         @post.reminders.build if @post.reminders.none?
+
+        respond_to do |format|
+            format.js
+            format.js.phone
+        end
     end
 
     def update

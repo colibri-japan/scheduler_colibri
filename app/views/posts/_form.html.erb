@@ -60,7 +60,7 @@
   <div class="modal-footer">
     <div class="actions">
       <% if post.new_record? %>
-        <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+        <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
       <% end %>
       <%= link_to '削除', post, method: :delete, remote: true, class: 'btn btn-danger' unless post.new_record? %>
       <%= form.submit 'セーブする', class: 'btn btn-info', data: {ripple: ""} %>

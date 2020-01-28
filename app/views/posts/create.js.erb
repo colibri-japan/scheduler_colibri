@@ -1,5 +1,8 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
+if ($('.activity_back_icon').length > 0) {
+    $('.activity_back_icon').click()
+}
 $.getScript('/posts_widget.js')
 scrollPosts()
 clickablePost()

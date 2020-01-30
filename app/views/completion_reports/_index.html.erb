@@ -1,4 +1,5 @@
 <div id="resource-details-wrapper">
+    <button class="close" id="close-reports-index" onclick="$('#resource-details-panel').toggle()">&times;</button>
 	<div class='no-print' style='margin-left:5px'>
 		<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
 		<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
@@ -7,13 +8,12 @@
     <div id="uncompleted-reports" class="resource-details-subsection">
         <div class="resource-details-subsection-title">
             書き残し（<%= "#{@appointments_without_reports.size}件" %>）
-            <button class="close" id="close-reports-index" onclick="$('#resource-details-panel').toggle()">&times;</button>
         </div>
         <div class="resource-details-subsection-body">
             <table class="table">
                 <% @appointments_without_reports.each do |appointment| %>
                     <tr class="colibri-clickable-row" data-url="<%= new_appointment_completion_report_path(appointment) %>">
-                        <td style="width:48%"><%= "#{l(appointment.starts_at, format: '%-m/%-d (%a) %H:%M')}#{l(appointment.ends_at, format: '%H:%M')}" %></td>
+                        <td style="width:48%"><%= "#{l(appointment.starts_at, format: '%-m/%-d (%a) %H:%M ~ ')}#{l(appointment.ends_at, format: '%H:%M')}" %></td>
                         <td style="width:38%"><%= appointment_resource_name(appointment, params[:resource_type]) %></td>
                         <td style="width:14%"><span class="glyphicon glyphicon-edit write-completion-report" style="color:#FFAA00"></span></td>
                     </tr>

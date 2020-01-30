@@ -3,6 +3,9 @@ $('.modal-backdrop').remove();
 if ($('.activity_back_icon').length > 0) {
   $('#remote_container').empty()
   $('#detail-container').show() 
+  if (window.fullCalendar) {
+    window.fullCalendar.render()
+  }
 }
 
 <% if @appointment.errors.any? %>

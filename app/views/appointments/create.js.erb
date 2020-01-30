@@ -1,6 +1,9 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
-$('.activity_back_icon').click()
+if ($('.activity_back_icon').length > 0) {
+  $('#remote_container').empty()
+  $('#detail-container').show() 
+}
 
 <% if @appointment.errors.any? %>
   $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");

@@ -55,7 +55,7 @@ pathname = window.location.pathname;
 <% else %>
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
-  $('.activity_back_icon').click()
+
   if (pathname.includes('payable')) {
     <% if @appointment.cancelled && @appointment.saved_change_to_cancelled? && @corporation.detailed_cancellation_options %>
         $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');
@@ -68,6 +68,11 @@ pathname = window.location.pathname;
 
     if (typeof renderEvent === 'undefined') {
       let renderEvent
+    }
+
+    if ($('.activity_back_icon').length > 0) {
+      $('#remote_container').empty()
+      $('#detail-container').show() 
     }
   
     renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))

@@ -25,6 +25,15 @@ window.initializeTooltips = function() {
     })
 }
 
+window.navigateBackOnMobile = function() {
+    if ($('.activity_back_button').length > 0 && $('.activity_back_button').is(':visible')) {
+        $('.activity_back_button').click()
+        return true
+    } else {
+        return false
+    }
+}
+
 window.uncheckableRadioButtons = function() {
     delete window.patient_ate_full_plate
     delete window.full_or_partial_body_wash

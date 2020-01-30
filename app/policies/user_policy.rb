@@ -15,4 +15,8 @@ class UserPolicy < ApplicationPolicy
 	def has_corporation_admin_role?
 		user.corporation_admin?
 	end
+
+	def can_edit_private_events?
+		!user.nurse_restricted? && !user.schedule_readonly?
+	end
 end

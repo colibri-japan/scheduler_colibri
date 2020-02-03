@@ -108,7 +108,7 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         end
         
         #creating/updating provided service
-        if met_goals
+        if met_goals && total_wage != 0
           salary_line_item_from_rule = salary_rule.salary_line_items.where(nurse_id: nurse_id, planning_id: corporation.planning.id, title: salary_rule.title, hour_based_wage: salary_rule.calculate_from_hours?).in_range(@start_of_month..@end_of_month).first_or_create
           salary_line_item_from_rule.update_columns(service_counts: appointments_count, service_duration: appointments_duration, total_wage: total_wage, updated_at: Time.current, service_date: @end_of_today.beginning_of_day)
         end

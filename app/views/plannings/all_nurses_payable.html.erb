@@ -21,63 +21,65 @@
 			<div class='colibri-xs-title colibri-payable-title no-print' style='margin-left:5px'>統計.データ</div>
 		</div>
 
-		<div class='no-print' style='margin-left:5px;margin-top: 5px;'>
-			<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
-			<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
-			<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
-		</div>
+		<div class="payable-body">
+			<div class='no-print' style='margin-left:5px;margin-top: 5px;'>
+				<%= select_tag '年', options_for_select([['2018年', 2018],['2019年', 2019], ['2020年', 2020], ['2021年', 2021]], params[:y]), id: 'query_year' %>
+				<%= select_tag '月', options_for_select([['1月', 1],['2月', 2], ['3月', 3], ['4月', 4], ['5月',5], ['6月',6], ['7月', 7], ['8月', 8], ['9月', 9], ['10月', 10], ['11月', 11], ['12月', 12]], params[:m]), id: 'query_month' %>
+				<button id='payable-query-trigger' class='btn-colibri-light-gray btn btn-sm'><span class="glyphicon glyphicon-refresh" style="color:white;font-size:0.85em"></span></button>
+			</div>
 
-		<% if @corporation.teams.any? %>
+			<% if @corporation.teams.any? %>
+				<div class='colibri-dashboard-container-row no-print'>
+					<div class='colibri-dashboard-subcontainer'>
+						<div class='colibri-subcontainer-header'>
+							<span class='colibri-subcontainer-title'>チーム実績</span>
+						</div>
+						<div class="colibri-subcontainer-body" style="padding-top:8px" id="revenue-per-team-report" data-url="<%= corporation_revenue_per_team_report_path(@corporation, params: {m: params[:m], y: params[:y]}) %>">
+						</div>
+					</div>
+				</div>
+			<% end %>
 			<div class='colibri-dashboard-container-row no-print'>
-				<div class='colibri-dashboard-subcontainer'>
+				<div class='colibri-dashboard-subcontainer-no-width forty-percent-width' id="export-data">
 					<div class='colibri-subcontainer-header'>
-						<span class='colibri-subcontainer-title'>チーム実績</span>
+						<span class='colibri-subcontainer-title'>データをダウンロードする</span>
 					</div>
-					<div class="colibri-subcontainer-body" style="padding-top:8px" id="revenue-per-team-report" data-url="<%= corporation_revenue_per_team_report_path(@corporation, params: {m: params[:m], y: params[:y]}) %>">
-					</div>
-				</div>
-			</div>
-		<% end %>
-		<div class='colibri-dashboard-container-row no-print'>
-			<div class='colibri-dashboard-subcontainer-no-width forty-percent-width' id="export-data">
-				<div class='colibri-subcontainer-header'>
-					<span class='colibri-subcontainer-title'>データをダウンロードする</span>
-				</div>
-				<div class='colibri-subcontainer-body'>
-					<table class='table'>
-						<tbody>
-							<tr>
-								<td style="width:66%">従業員別実績</td>
-								<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_general_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
-							</tr>
-							<% if @corporation.elderly_care_and_nursing? %>
+					<div class='colibri-subcontainer-body'>
+						<table class='table'>
+							<tbody>
 								<tr>
-									<td style="width:66%">チーム別実績</td>
-									<td style="width:34%"><div class="btn btn-sm btn-success text-white" id="teams-report"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
+									<td style="width:66%">従業員別実績</td>
+									<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_general_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
 								</tr>
-								<tr>
-									<td style="width:66%">新規利用者</td>
-									<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_recent_patients_report_path(@planning, format: :xlsx), class: 'btn btn-success btn-sm text-white' %></td>
-								</tr>
-								<tr>
-									<td style="width:66%">業務日報</td>
-									<td style="width:34%"><button id="extended-daily-report" class="btn btn-sm btn-success text-white"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> Pdf</button></td>
-								</tr>
-							<% end %>
-						</tbody>
-					</table>				
-				</div>
-			</div>
-			<div class='colibri-dashboard-subcontainer-no-width sixty-percent-width' id='category-container' >
-				<div class='colibri-subcontainer-header' style='display:flex;justify-content:space-between'>
-					<div>
-						<span class='colibri-subcontainer-title'>サービスタイプ割合</span><span id="appointments-by-category-detail" style="font-size:0.9em;color:#aaa">(<%= "#{params[:m]}月稼動時間合計より" %>)</span>
-					</div>
-					<div class='btn btn-sm btn-colibri-light' id='service-type-filter'>
-						<span class='glyphicon glyphicon-filter' style='color:#5f6368;font-size:14px'></span>フィルター
+								<% if @corporation.elderly_care_and_nursing? %>
+									<tr>
+										<td style="width:66%">チーム別実績</td>
+										<td style="width:34%"><div class="btn btn-sm btn-success text-white" id="teams-report"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
+									</tr>
+									<tr>
+										<td style="width:66%">新規利用者</td>
+										<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_recent_patients_report_path(@planning, format: :xlsx), class: 'btn btn-success btn-sm text-white' %></td>
+									</tr>
+									<tr>
+										<td style="width:66%">業務日報</td>
+										<td style="width:34%"><button id="extended-daily-report" class="btn btn-sm btn-success text-white"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> Pdf</button></td>
+									</tr>
+								<% end %>
+							</tbody>
+						</table>				
 					</div>
 				</div>
-				<div class='colibri-subcontainer-body' id='category-subcontainer'>
+				<div class='colibri-dashboard-subcontainer-no-width sixty-percent-width' id='category-container' >
+					<div class='colibri-subcontainer-header' style='display:flex;justify-content:space-between'>
+						<div>
+							<span class='colibri-subcontainer-title'>サービスタイプ割合</span><span id="appointments-by-category-detail" style="font-size:0.9em;color:#aaa">(<%= "#{params[:m]}月稼動時間合計より" %>)</span>
+						</div>
+						<div class='btn btn-sm btn-colibri-light' id='service-type-filter'>
+							<span class='glyphicon glyphicon-filter' style='color:#5f6368;font-size:14px'></span>フィルター
+						</div>
+					</div>
+					<div class='colibri-subcontainer-body' id='category-subcontainer'>
+					</div>
 				</div>
 			</div>
 		</div>

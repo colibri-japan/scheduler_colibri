@@ -48,17 +48,18 @@
       <% end %>
     </div>
 
+
     <div class="main-page">
+      <div id="smartphone-status-background" style="position:absolute;top:-30px;height:30px;background-color:#1B263B;z-index:9">
+      </div>
       <div id="account-settings-dropdown" style="display: none">
           <ul id="account-settings-ul">
               <li id="logout-li"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'account-settings-a' %></li>
           </ul>
-          
       </div>
 
       <%= yield :content %>
       <%= yield %>
-
     </div>
 
 

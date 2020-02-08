@@ -649,9 +649,13 @@ p.setting-title {
 		height: auto !important;
 	}
 	
-	#detail-planning-container, #detail-container, #planning-container {
-		overflow: visible !important;
-		height: auto !important;
+	#detail-container {
+		height: 100vh;
+		overflow: visible;
+	}
+
+	#detail-planning-container {
+		height: auto;
 	}
 
 	#colibri-batch-action-button {

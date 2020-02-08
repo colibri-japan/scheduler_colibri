@@ -485,7 +485,7 @@
 
 	#detail-planning-container {
 		width: 100%;
-		margin: 88px 0px 150px 0px;
+		margin: 94px 0px 150px 0px;
 	}
 
 	#completion-reports-container {
@@ -935,8 +935,8 @@
 	}
 
 	#detail-planning-container {
-        height: 100vh;
-        overflow-y: hidden !important;
+        height: auto;
+		overflow-y: visible;
     }
 
 	/* Forms layouts */

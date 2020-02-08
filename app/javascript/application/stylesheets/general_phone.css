@@ -88,4 +88,12 @@
         overflow-y: scroll;
     }
 
+    .fc-toolbar.fc-header-toolbar {
+        width: calc(100% + 6px);
+        margin-top: 3px;
+        margin-left: -3px;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
 }

@@ -34,6 +34,21 @@ window.navigateBackOnMobile = function() {
     }
 }
 
+window.calculateGroceriesChange = function() {
+    $('#amount-spent, #amount-received').change(function(){
+        let amountReceivedVal = $('#amount-received').val()
+        let amountSpentVal = $('#amount-spent').val()
+
+        if (amountSpentVal && amountReceivedVal) {
+            let amountSpent = parseInt(amountSpentVal)
+            let amountReceived = parseInt(amountReceivedVal)
+
+            let change = amountReceived - amountSpent
+            $('#groceries-change').val(change)
+        }
+    })
+}
+
 window.uncheckableRadioButtons = function() {
     delete window.patient_ate_full_plate
     delete window.full_or_partial_body_wash

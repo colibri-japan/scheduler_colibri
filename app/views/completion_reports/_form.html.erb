@@ -837,15 +837,20 @@
 
               </div>
 
-              <div class="form-group">
+              <div class="form-row">
+                <div class="form-group col-md-6">
                   <%= form.label :amount_received_for_shopping, "預り金", class: 'colibri-form-label-dark' %>
-                  <%= form.number_field :amount_received_for_shopping, class: 'colibri-input', style: "width:70px" %>
-
+                  <%= form.number_field :amount_received_for_shopping, id: 'amount-received', class: 'colibri-input', style: "width:80px" %>
+                </div>
+                <div class="form-group col-md-6">
                   <%= form.label :amount_spent_for_shopping, "買い物", class: 'colibri-form-label-dark' %>
-                  <%= form.number_field :amount_spent_for_shopping, class: 'colibri-input', style: "width:70px" %>
-
-                  <%= form.label :change_left_after_shopping, "おつり", class: 'colibri-form-label-dark' %>
-                  <%= form.number_field :change_left_after_shopping, class: 'colibri-input', style: "width:70px" %>
+                  <%= form.number_field :amount_spent_for_shopping, id: 'amount-spent', class: 'colibri-input', style: "width:80px" %>
+                </div>
+              
+              </div>
+              <div class="form-group">
+                <%= form.label :change_left_after_shopping, "おつり", class: 'colibri-form-label-dark' %>
+                <%= form.number_field :change_left_after_shopping, id: 'groceries-change', class: 'colibri-input', style: "width:80px" %>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-2">

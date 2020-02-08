@@ -68,6 +68,19 @@
     }
 
     #no-appointments-today {
+        margin-top:-5px;
+    }
+
+    #no-appointments-date {
+        line-height: 18px;
+        border-bottom: 0.5px solid #ccc;
+        font-size: 14px;
+        color: #4F4F4F;
+        font-weight: bold; 
+        margin: 0px 5px 0px 5px; 
+    }
+
+    #no-appointments {
         text-align: center;
     }
 

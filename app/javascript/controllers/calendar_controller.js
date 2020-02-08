@@ -97,7 +97,7 @@ let createCalendar = () => {
                 eventLimit: 6
             },
             'listDay': {
-                titleFormat: {}
+                titleFormat: {month: 'long', day: 'numeric', weekday: 'short'}
             }
         },
         buttonText: {
@@ -237,9 +237,14 @@ let createCalendar = () => {
                             title.innerText = date
                         }
                         title.style.display = 'block'
+                    } else if (info.view.type === 'listDay') {
+                        $('#no-appointments-date').html(fullDate)
                     } else {
                         title.style.display = 'none'
                     }
+                }
+                if (info.view.type == 'dayGridMonth') {
+                    $('.fc-today-button').hide()
                 }
             }
         },

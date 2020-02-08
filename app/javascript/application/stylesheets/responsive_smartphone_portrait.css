@@ -486,6 +486,7 @@
 	#detail-planning-container {
 		width: 100%;
 		margin: 94px 0px 150px 0px;
+		padding-top:3px;
 	}
 
 	#completion-reports-container {

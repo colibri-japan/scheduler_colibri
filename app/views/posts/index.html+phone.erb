@@ -1,0 +1,32 @@
+<%= render partial: 'plannings/planning_left_menu', locals: {resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'home' } %>
+
+<div class="activity_header_responsive">
+  <div class="activity_header">
+    <div class="activity_title">
+      掲示板・ホーム
+    </div>
+  </div>
+</div>
+
+<div id="post-lookup-container">
+    <div id="lookup-button-container">
+        <button class="btn btn-info" id="posts-lookup-button">新規検索</button>
+    </div>
+    <div id="lookup-fields-container" style="display:none">
+        <div><span class='colibri-form-label-dark'>期間</span><%= text_field_tag :posts_date_range, value=nil, class: 'form-control' %></div>
+        <div><span class='colibri-form-label-dark'>送信者</span><%= select_tag :posts_author_ids_filter, options_from_collection_for_select(@users, :id, :name, {prompt: '送信元選択'}), {multiple: true} %></div>
+        <div><span class='colibri-form-label-dark'>利用者名</span><%= select_tag :posts_patient_ids_filter, options_for_select(@patients_for_select, {prompt: '利用者選択'}), {multiple: true} %></div>
+        <div style="display:flex;flex-direction:row-reverse; margin-top:10px">
+            <button class='btn btn-info' id='posts-search-button'>検索する</button>
+        </div>
+        <div style="text-align:center;margin-top:10px" id="dismiss-posts-lookup">
+            <span class="glyphicon glyphicon-chevron-up" style="color:rgb(180, 190, 199)"></span>
+        </div>
+    </div>
+</div>
+
+<div id='posts-index-container'>
+    <% @posts.each do |post| %>
+        <%= render 'post', post: post %>
+    <% end %>
+</div>

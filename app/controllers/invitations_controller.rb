@@ -17,6 +17,16 @@ class InvitationsController < Devise::InvitationsController
     end
   end
 
+  def new
+    set_corporation
+    set_planning
+    set_main_nurse
+    respond_to do |format|
+      format.html
+      format.html.phone
+    end
+    super 
+  end
 
   protected
 

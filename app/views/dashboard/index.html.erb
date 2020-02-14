@@ -5,98 +5,100 @@
 
 <%= render partial: 'plannings/planning_left_menu', locals: {resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'home' } %>
 
-<div class="activity_header_responsive">
-  <div class="activity_header">
-    <div class="activity_title">
-      掲示板・ホーム
+<div id="mobile-dashboard">
+  <div class="activity_header_responsive">
+    <div class="activity_header">
+      <div class="activity_title">
+        掲示板・ホーム
+      </div>
     </div>
   </div>
-</div>
 
-<div id='colibri-dashboard-container'>
+  <div id='colibri-dashboard-container'>
 
-  <div class='colibri-dashboard-big-container no-print'>
-    <div class='colibri-dashboard-container-column-large'>
+    <div class='colibri-dashboard-big-container no-print'>
+      <div class='colibri-dashboard-container-column-large'>
 
-      <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
-        <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'><%= @current_user_team.team_name if @current_user_team.present? %>調整中リスト（先２週間）</span>
+        <div class='colibri-dashboard-subcontainer subcontainer-column-half-height'>
+          <div class='colibri-subcontainer-header'>
+            <span class='colibri-subcontainer-title'><%= @current_user_team.team_name if @current_user_team.present? %>調整中リスト（先２週間）</span>
+          </div>
+          <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
+            <table class='table'>
+              <thead>
+                <tr>
+                  <th>提供日</th>
+                  <th>サービス</th>
+                  <th><%= client_resource_name(@corporation.business_vertical) %></th>
+                  <th>従業員</th>
+                  <th>稼働時間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @edit_requested_appointments.each do |appointment| %>
+                <tr>
+                  <td><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
+                  <td><%= appointment.title %></td>
+                  <td><%= appointment.patient.try(:name) %></td>
+                  <td><%= appointment.nurse.try(:name) %></td>
+                  <td><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light'>
+
+        <div class='colibri-dashboard-subcontainer subcontainer-column-half-height' id="dashboard-activity">
+          <div class='colibri-subcontainer-header'>
+            <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"></span>
+          </div>
+          <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light' id='activities-widget-container' >
+          </div>
+        </div>
+
+      </div>
+
+      <div class='colibri-dashboard-container-column-narrow'>
+        <div class='colibri-dashboard-subcontainer subcontainer-column-full-height' id="posts-widget-container" style="display:flex;flex-direction:column">
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class='colibri-dashboard-container-row no-print'>
+      <div class='colibri-dashboard-subcontainer'>
+        <div class='colibri-subcontainer-header'>
+          <span class='colibri-subcontainer-title'>コメント付きサービス（先２週間）</span>
+        </div>
+        <div class='colibri-subcontainer-body  scrollbar-custom colibri-scrollbar-light'>
           <table class='table'>
             <thead>
               <tr>
-                <th>提供日</th>
-                <th>サービス</th>
-                <th><%= client_resource_name(@corporation.business_vertical) %></th>
-                <th>従業員</th>
-                <th>稼働時間</th>
+                <th style="width:20%"><%= client_resource_name(@corporation.business_vertical) %></th>
+                <th style="width:20%">従業員</th>
+                <th style="width:20%">開始時間</th>
+                <th style="width:40%">コメント</th>
               </tr>
             </thead>
             <tbody>
-              <% @edit_requested_appointments.each do |appointment| %>
+              <% @commented_appointments.each do |appointment| %>
               <tr>
-                <td><%= appointment.starts_at.strftime("%-m月%-d日") %></td>
-                <td><%= appointment.title %></td>
-                <td><%= appointment.patient.try(:name) %></td>
-                <td><%= appointment.nurse.try(:name) %></td>
-                <td><%= from_seconds_to_hours_minutes(appointment.ends_at - appointment.starts_at) %></td>
+                <td style="width:15%"><%= "#{appointment.patient.try(:name) }様"%></td>
+                <td style="width:15%"><%= "#{appointment.nurse.try(:name) }"%></td>
+                <td style="width:15%"><%= appointment.starts_at.try(:strftime, "%-m月%-d日") %></td>
+                <td style="width:55%"><%= appointment.try(:description) %></td>
               </tr>
               <% end %>
             </tbody>
           </table>
         </div>
       </div>
-
-      <div class='colibri-dashboard-subcontainer subcontainer-column-half-height' id="dashboard-activity">
-        <div class='colibri-subcontainer-header'>
-          <span class='colibri-subcontainer-title'>最新履歴</span><span class="unseen-activity-count"></span>
-        </div>
-        <div class='colibri-subcontainer-body scrollbar-custom colibri-scrollbar-light' id='activities-widget-container' >
-        </div>
-      </div>
-
+      
     </div>
-
-    <div class='colibri-dashboard-container-column-narrow'>
-      <div class='colibri-dashboard-subcontainer subcontainer-column-full-height' id="posts-widget-container" style="display:flex;flex-direction:column">
-
-      </div>
-    </div>
+  
 
   </div>
-
-
-  <div class='colibri-dashboard-container-row no-print'>
-    <div class='colibri-dashboard-subcontainer'>
-      <div class='colibri-subcontainer-header'>
-        <span class='colibri-subcontainer-title'>コメント付きサービス（先２週間）</span>
-      </div>
-      <div class='colibri-subcontainer-body  scrollbar-custom colibri-scrollbar-light'>
-        <table class='table'>
-          <thead>
-            <tr>
-              <th style="width:20%"><%= client_resource_name(@corporation.business_vertical) %></th>
-              <th style="width:20%">従業員</th>
-              <th style="width:20%">開始時間</th>
-              <th style="width:40%">コメント</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @commented_appointments.each do |appointment| %>
-            <tr>
-              <td style="width:15%"><%= "#{appointment.patient.try(:name) }様"%></td>
-              <td style="width:15%"><%= "#{appointment.nurse.try(:name) }"%></td>
-              <td style="width:15%"><%= appointment.starts_at.try(:strftime, "%-m月%-d日") %></td>
-              <td style="width:55%"><%= appointment.try(:description) %></td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-  </div>
- 
-
 </div>

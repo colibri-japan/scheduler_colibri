@@ -66,7 +66,7 @@
 						<span style="float:right;display:none" class="toggle-down"><%= image_tag 'menu_thin_chevron_up.svg', width: '17px' %></span>
 					</div>
 					<div class="nurse-subsection-toggleable" style="display:none">
-						<% @patients_grouped_by_kana[kana].each do |patient| %>
+						<% (@patients_grouped_by_kana[kana] || []).each do |patient| %>
 							<p 
 								id="patient_<%= patient.id %>" 
 								data-resource-type="patient" 

@@ -13,6 +13,7 @@
     "@fullcalendar/timegrid": "^4.3.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "^4.0.7",
+    "arrive": "^2.4.1",
     "bootstrap": "4.3.1",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",

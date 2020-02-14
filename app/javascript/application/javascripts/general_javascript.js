@@ -25,6 +25,30 @@ window.initializeTooltips = function() {
     })
 }
 
+window.navigateBackOnMobile = function() {
+    if ($('.activity_back_button').length > 0 && $('.activity_back_button').is(':visible')) {
+        $('.activity_back_button').click()
+        return true
+    } else {
+        return false
+    }
+}
+
+window.calculateGroceriesChange = function() {
+    $('#amount-spent, #amount-received').change(function(){
+        let amountReceivedVal = $('#amount-received').val()
+        let amountSpentVal = $('#amount-spent').val()
+
+        if (amountSpentVal && amountReceivedVal) {
+            let amountSpent = parseInt(amountSpentVal)
+            let amountReceived = parseInt(amountReceivedVal)
+
+            let change = amountReceived - amountSpent
+            $('#groceries-change').val(change)
+        }
+    })
+}
+
 window.uncheckableRadioButtons = function() {
     delete window.patient_ate_full_plate
     delete window.full_or_partial_body_wash
@@ -84,6 +108,7 @@ window.uncheckableRadioButtons = function() {
     })
 }
 
+
 document.addEventListener('turbolinks:load', function () {
     $('.btn-scroll').click(function(){
         var aTag = $("#" + $(this).data('anchor'));
@@ -142,6 +167,11 @@ document.addEventListener('turbolinks:load', function () {
 
     $('.colibri-clickable-row').click(function(){
         $.getScript($(this).data('url'))
+    })
+
+    $('#posts-lookup-button, #dismiss-posts-lookup').click(function(){
+        $('#lookup-button-container').toggle()
+        $('#lookup-fields-container').toggle()
     })
 
     $(document).on("mousedown", "[data-ripple]", function(e){

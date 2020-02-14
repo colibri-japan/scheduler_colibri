@@ -1,0 +1,12 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('.popover').popover('hide');
+$('#remote_container').html('<%= j render "phone_edit" %>');
+$('#detail-container').hide()
+
+privateEventSelectizeNursePatient()
+
+$('.activity_back_button').click(function(){
+    $('.phone_activity_container').hide()
+    $('#detail-container').show()
+})

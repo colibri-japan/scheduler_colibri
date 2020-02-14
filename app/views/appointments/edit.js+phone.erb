@@ -8,6 +8,15 @@ toggleEditRequested();
 toggleCancelled();
 colorSelectize();
 
+if ($('#payable-container').length > 0) {
+    $('#payable-container').hide()
+}
+
 $('.activity_back_button').click(function(){
-    $.getScript("/appointments/<%= @appointment.id %>.js")
+    if ($('#payable-container').length > 0) {
+        $('.phone_activity_container').hide()
+        $('#payable-container').show()
+    } else {
+        $.getScript("/appointments/<%= @appointment.id %>.js")
+    }
 })

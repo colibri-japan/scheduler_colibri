@@ -33,7 +33,14 @@ class PrivateEventsController < ApplicationController
 	end
 
 	def edit
+		authorize current_user, :can_edit_private_events?
+
 		@activities = PublicActivity::Activity.where(trackable_type: 'PrivateEvent', trackable_id: @private_event.id, planning_id: @planning.id).includes(:owner)
+		
+		respond_to do |format|
+			format.js
+			format.js.phone
+		end
 	end
 
 	def create

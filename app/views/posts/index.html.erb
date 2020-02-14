@@ -1,6 +1,14 @@
+<%= render partial: 'plannings/planning_left_menu', locals: {resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'home' } %>
+
+<div class="activity_header_responsive">
+  <div class="activity_header">
+    <div class="activity_title">
+      掲示板・ホーム
+    </div>
+  </div>
+</div>
+
 <div id="index-container">
-
-
   <div id="index-table-container">
     <div id='posts-filters-container' class='no-print' style="margin-bottom:5px;display:flex;justify-content:space-between">
         <div style='width:29%'><span class='colibri-form-label-dark'>期間</span><%= text_field_tag :posts_date_range, value=nil, class: 'form-control' %></div>

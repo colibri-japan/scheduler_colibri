@@ -192,7 +192,7 @@
 }
 
 	footer {
-		background-color: #1B263B;
+		background-color: #1E2B41;
 		color: white;
 		padding: 35px 20px 80px 20px;
 	}
@@ -415,10 +415,6 @@
 
 	/* styles dashboard and other content container */
 
-	#posts-widget-action-container {
-		display: none;
-	}
-
 	#colibri-dashboard-container {
 		margin-left: 3px;
 		margin-right: 3px;
@@ -489,7 +485,8 @@
 
 	#detail-planning-container {
 		width: 100%;
-		margin: 0px 0px 150px 0px;
+		margin: 92px 0px 150px 0px;
+		padding-top:3px;
 	}
 
 	#completion-reports-container {
@@ -621,8 +618,10 @@
 	/* Calendar view layouts */
 
 	#planning-header {
+		position: fixed; 
+		top: 0px;
+		z-index: 9;
 		width: 100vw;
-		margin-bottom: 10px;
 		display: block;
 		background-color: #2B384E;
 		border-bottom: 0.3px solid #2B384E;
@@ -783,11 +782,15 @@
 	}
 
 	.payable-body {
+		margin-top: 48px;
 		padding: 5px;
 	}
 
 	#payable-title-wrapper {
+		position: fixed;
+		top: 0px;
 		height: 48px;
+		width: 100vw;
 		background-color: #2B384E;
 		line-height: 48px;
 		padding-left: 12px;
@@ -878,8 +881,8 @@
 		top: 0px;
 		left: 0px;
 		padding-top: 10px;
-		background-color: #5F758E;
-		border: 0.5px solid #5F758E;
+		background-color: #606E7C;
+		border: 0.5px solid #606E7C;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -894,6 +897,7 @@
 	}
 
 	.settings-body {
+		margin-top: 48px;
 		padding: 5px;
 	}
 
@@ -929,6 +933,11 @@
 	#account-edit-body {
 		padding: 0px;
 	}
+
+	#detail-planning-container {
+        height: auto;
+		overflow-y: visible;
+    }
 
 	/* Forms layouts */
 

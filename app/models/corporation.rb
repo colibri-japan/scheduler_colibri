@@ -62,8 +62,7 @@ class Corporation < ApplicationRecord
 
 	def cached_displayable_nurses_grouped_by_team_name
 		Rails.cache.fetch([self, 'displayable_nurses_grouped_by_team_name']) { 
-			team_name_by_id = self.teams.pluck(:id, :team_name).to_h
-			return nurses.displayable.not_archived.order_by_kana.group_by {|n| team_name_by_id[n.team_id] || 'チーム所属なし' }
+			nurses.displayable.not_archived.order_by_kana.includes(:team).group_by {|n| n.team.try(:team_name) || 'チーム所属なし'}
 		}
 	end
 

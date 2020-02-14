@@ -11,4 +11,12 @@ module PostsHelper
             " > #{patient_names_array[0..2].join('、')} (その他#{patient_names_array.size - 3}人)"
         end
     end
+
+    def post_form_title(post)
+        if post.new_record?
+            '新規書き込み'
+        else
+            '書き込みの編集'
+        end
+    end
 end

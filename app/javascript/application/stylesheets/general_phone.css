@@ -1,4 +1,9 @@
 @media screen and (orientation: landscape) and (max-width: 900px), screen and (orientation: portrait) and (max-width: 760px) {
+    
+    body {
+        overflow: hidden;
+    }
+    
     .activity_large_header {
         background-color: #2B384E;
     }
@@ -32,9 +37,6 @@
         z-index: 5;
     }
 
-    #posts-widget-header {
-        display: none;
-    }
 
     p.colibri-fc-list-body {
 		margin: 4px 0px 4px 15px;
@@ -43,5 +45,55 @@
 		padding: 4px 6px 4px 6px;
 		border: 0.4px solid #2B384E;
 		border-radius: 3px;
-	}
+    }
+
+    #index-container {
+        width: 100% !important;
+        margin: 0px !important;
+        padding: 0px 3px 60px 3px ;
+    }
+
+    #post-lookup-container {
+        padding: 5px;
+        margin-bottom: 10px;
+        border-bottom: 0.3px solid #ccc;
+    }
+
+    #lookup-button-container {
+        margin-bottom:10px;
+    }
+
+    div.fc-list-empty-wrap2 {
+        display: block !important;
+    }
+
+    #no-appointments-today {
+        margin-top:-5px;
+    }
+
+    #no-appointments-date {
+        line-height: 18px;
+        border-bottom: 0.5px solid #ccc;
+        font-size: 14px;
+        color: #4F4F4F;
+        font-weight: bold; 
+        margin: 0px 5px 0px 5px; 
+    }
+
+    #no-appointments {
+        text-align: center;
+    }
+
+    #planning-container {
+        overflow-y: scroll;
+    }
+
+    .fc-toolbar.fc-header-toolbar {
+        width: calc(100% + 6px);
+        margin-top: 3px;
+        margin-left: -3px;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
 }

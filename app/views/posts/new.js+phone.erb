@@ -1,0 +1,14 @@
+$('#remote_container').html('<%= j render "phone_form_container" %>');
+
+$('#mobile-dashboard').hide()
+
+$('.activity_back_button').click(function(){
+    $('.phone_activity_container').hide()
+    $('#mobile-dashboard').show()
+})
+
+postSelectize()
+postsTimePicker()
+newPostReminderLayout()
+confirmNoPatientOnSubmit()
+toggleMarkAsReadForAll()

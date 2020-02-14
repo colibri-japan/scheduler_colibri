@@ -168,7 +168,7 @@ class NursesController < ApplicationController
     @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan).includes(:salary_rule)
     @unverified_services_count = @appointments_till_today.operational.unverified.count
 
-    @grouped_appointments = @nurse.appointments.operational.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
+    @grouped_appointments = @nurse.appointments.not_archived.edit_not_requested.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
 
     @total_days_worked = @nurse.days_worked_in_range(first_day..end_of_today_in_japan)
     @total_time_worked = @appointments_till_today.operational.sum(:duration) || 0 

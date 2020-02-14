@@ -1,0 +1,31 @@
+<div class="phone_activity_container">
+    <div class="activity_header">
+        <div class="activity_back_button">
+            <%= image_tag "back_arrow_white.svg", width: '25px', class: 'activity_back_icon' %>
+        </div>
+        <div class="activity_title">
+            新規サービス
+        </div>
+    </div>
+    <div class="activity_body">
+        <div class="modal-body">
+			<%= label_tag :calendar_event_model, "内容", class: 'colibri-form-label' %>
+			<%= label_tag :calendar_event_model_appointment_selected, "自社サービス", class: 'btn btn-sm btn-colibri-light btn-colibri-light-blue toggle-event-model-button', id: 'calendar-event-appointment-button' do %>
+				<%= radio_button_tag :calendar_event_model, 'appointment_selected', checked=true, {class: 'radio-inline', id: 'event-model-appointment', style: "display:none"} %>
+				サービス
+			<% end %>
+			<%= label_tag :calendar_event_model_private_event_selected, "自社サービス以外", class: 'btn btn-sm btn-colibri-light toggle-event-model-button', id: 'calendar-event-private-event-button' do %>
+				<%= radio_button_tag :calendar_event_model, 'private_event_selected', checked=false, {class: 'radio-inline', id: 'event-model-private-event', style: "display:none"} %>
+				自社サービス以外
+			<% end %>
+		</div>
+		
+		<div id="appointment-form-container">
+			<%= render 'appointments/form', appointment: @appointment %>
+		</div>
+
+		<div id="private-event-form-container" style='display:none'>
+			<%= render 'private_events/form', private_event: @private_event %>
+		</div>
+    </div>
+</div>

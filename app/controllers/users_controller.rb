@@ -29,7 +29,9 @@ class UsersController < ApplicationController
 
   def current_user_home
     if params[:to].present? && params[:to] == "planning"
-      redirect_to @corporation.planning
+      puts 'detected params to ; params force list view:'
+      puts params[:force_list_view]
+      redirect_to planning_path(@corporation.planning, force_list_view: params[:force_list_view])
     else
       if current_user.has_admin_access?
         redirect_to dashboard_index_path

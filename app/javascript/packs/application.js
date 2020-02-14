@@ -30,3 +30,17 @@ import '../application/javascripts/general_javascript.js'
 import '../application/javascripts/posts.js'
 import '../application/javascripts/selectize_functions.js'
 import '../application/javascripts/turbolinks_scroll.js'
+
+import 'arrive'
+
+$(document).arrive(".fc-list-empty", function () {
+    $('#no-appointments-today').show()
+})
+
+$(document).arrive(".fc-list-table", function () {
+    $('#no-appointments-today').hide()
+})
+
+$(document).arrive(".fc-view > table", function () {
+    $('#no-appointments-today').hide()
+})

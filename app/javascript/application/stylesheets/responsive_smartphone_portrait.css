@@ -791,6 +791,7 @@
 		top: 0px;
 		height: 48px;
 		width: 100vw;
+		z-index: 9;
 		background-color: #2B384E;
 		line-height: 48px;
 		padding-left: 12px;

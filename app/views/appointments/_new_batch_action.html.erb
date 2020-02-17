@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <%= label_tag :action_type, "アクション", class: "colibri-form-label-dark" %><span class='required-field'>*</span> 
-                        <%= select_tag :action_type, options_for_select([['調整中リストへ', :edit_requested],['キャンセル', :cancel],['削除', :archive]]), id: :select_action_type %>
+                        <%= select_tag :action_type, options_for_select([['調整中リストへ', :edit_requested], ['キャンセル', :cancel], ['調整中とキャンセルの解除', :restore_to_operational], ['削除', :archive]]), id: :select_action_type %>
                     </div>
 
                     <div class="form-group">

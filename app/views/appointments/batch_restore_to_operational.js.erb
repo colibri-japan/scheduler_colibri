@@ -1,0 +1,28 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+
+if (window.fullCalendar) {
+    window.fullCalendar.batchRendering(function(){
+        <% @appointments.each do |appointment| %>
+            if (window.fullCalendar) {
+                if (typeof(event) === 'undefined') {
+                    let event 
+                }
+                event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
+                if (event) {
+                    event.remove()
+                }
+
+                if (typeof(renderEvent) === 'undefined') {
+                    let renderEvent 
+                }
+
+                renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
+
+                if (renderEvent) {
+                    window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"), 'url1')
+                }
+            }
+        <% end %>
+    })
+}

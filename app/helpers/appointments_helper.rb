@@ -75,6 +75,8 @@ module AppointmentsHelper
             '調整中リスト追加の確認'
         when 'archive'
             '削除するサービスの確認'
+        when 'restore_to_operational'
+            '調整中・キャンセルの解除'
         else
             ''
         end
@@ -88,6 +90,8 @@ module AppointmentsHelper
             appointments_batch_request_edit_path
         when 'archive'
             appointments_batch_archive_path
+        when 'restore_to_operational'
+            appointments_batch_restore_to_operational_path
         else
             ''
         end
@@ -101,6 +105,8 @@ module AppointmentsHelper
             '調整中へ'
         when 'archive'
             '削除する'
+        when 'restore_to_operational'
+            '調整中とキャンセルの解除'
         else
             ''
         end
@@ -114,6 +120,8 @@ module AppointmentsHelper
             'btn-success'
         when 'archive'
             'btn-secondary'
+        when 'restore_to_operational'
+            'btn-info'
         else
             ''
         end

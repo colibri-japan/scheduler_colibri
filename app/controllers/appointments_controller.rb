@@ -145,41 +145,20 @@ class AppointmentsController < ApplicationController
       @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
       @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
 
-
-      if params[:action_type] == "edit_request" || params[:action_type] == "cancel"
-        @appointments = @appointments.not_archived
-      elsif params[:action_type] == "archive"
-        cancelled = params[:cancelled]
-        edit_requested = params[:edit_requested]
-        if edit_requested == 'false' && cancelled == 'false'
-          @appointments = @appointments.where('cancelled is false AND edit_requested is false')
-        elsif edit_requested == 'undefined' && cancelled == 'undefined' 
-        elsif edit_requested == 'undefined' && cancelled == 'false'
-          @appointments = @appointments.where(cancelled: false)
-        elsif edit_requested == 'false' && cancelled == 'undefined'
-          @appointments = @appointments.where('(edit_requested is false) OR (edit_requested is true AND cancelled is true)')
-        elsif edit_requested == 'true' && cancelled == 'false'
-          @appointments = @appointments.where(edit_requested: true, cancelled: false)
-        elsif edit_requested == 'undefined' && cancelled == 'true'
-          @appointments = @appointments.where(cancelled: true)
-        elsif edit_requested == 'true' && cancelled == 'true'
-          @appointments = @appointments.where('cancelled is true OR edit_requested is true')
-        end
-      end
+      filter_appointments_by_action_type
 
       @action_type = params[:action_type]
   end
 
   def batch_archive
-    planning_id = @corporation.planning.id
-    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
     
     now = Time.current
     @appointments.update_all(archived_at: now, total_wage: 0, total_credits: 0, total_invoiced: 0, recurring_appointment_id: nil, updated_at: now)
 
     @planning.create_activity :batch_archive, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
 
-    batch_recalculate_bonus
+    batch_recalculate_salaries(bonus_only: true)
   end  
 
 
@@ -190,20 +169,29 @@ class AppointmentsController < ApplicationController
     @appointments.update_all(cancelled: true, total_wage: 0, total_credits: 0, total_invoiced: 0, recurring_appointment_id: nil, updated_at: now)
 
     @planning.create_activity :batch_cancel, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
-    batch_recalculate_bonus
+    batch_recalculate_salaries(bonus_only: true)
   end
 
 
   def batch_request_edit 
-    planning_id = @corporation.planning.id 
-    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: planning_id)
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
 
     now = Time.current
     @appointments.update_all(edit_requested: true, total_wage: 0, total_credits: 0, total_invoiced: 0, recurring_appointment_id: nil, updated_at: now)
 
     @planning.create_activity :batch_request_edit, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
 
-    batch_recalculate_bonus
+    batch_recalculate_salaries(bonus_only: true)
+  end
+
+  def batch_restore_to_operational
+    @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
+
+    now = Time.current
+    @appointments.update_all(edit_requested: false, cancelled: false, updated_at: now)
+    @planning.create_activity :batch_restore_to_operational, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
+  
+    batch_recalculate_salaries(bonus_only: false)
   end
 
 	def appointments_by_category_report
@@ -245,18 +233,45 @@ class AppointmentsController < ApplicationController
       @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse_id: previous_nurse_id, previous_patient_id: previous_patient_id, parameters: parameters
     end
 
+    def filter_appointments_by_action_type
+      if ['edit_request', 'cancel', 'restore_to_operational'].include? params[:action_type] 
+        @appointments = @appointments.not_archived
+      elsif params[:action_type] == "archive"
+        cancelled = params[:cancelled]
+        edit_requested = params[:edit_requested]
+        if edit_requested == 'false' && cancelled == 'false'
+          @appointments = @appointments.where('cancelled is false AND edit_requested is false')
+        elsif edit_requested == 'undefined' && cancelled == 'undefined' 
+        elsif edit_requested == 'undefined' && cancelled == 'false'
+          @appointments = @appointments.where(cancelled: false)
+        elsif edit_requested == 'false' && cancelled == 'undefined'
+          @appointments = @appointments.where('(edit_requested is false) OR (edit_requested is true AND cancelled is true)')
+        elsif edit_requested == 'true' && cancelled == 'false'
+          @appointments = @appointments.where(edit_requested: true, cancelled: false)
+        elsif edit_requested == 'undefined' && cancelled == 'true'
+          @appointments = @appointments.where(cancelled: true)
+        elsif edit_requested == 'true' && cancelled == 'true'
+          @appointments = @appointments.where('cancelled is true OR edit_requested is true')
+        end
+      end
+    end
+
     def recalculate_bonus 
       RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@appointment.nurse_id, @appointment.starts_at.year, @appointment.starts_at.month)
       RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(@activity.parameters[:previous_nurse_id], @appointment.starts_at.year, @appointment.starts_at.month) if @activity.parameters[:previous_nurse_id].present?
     end
 
-    def batch_recalculate_bonus
+    def batch_recalculate_salaries(bonus_only:)
       nurse_ids = @appointments.pluck(:nurse_id).uniq
       year_and_months = @appointments.pluck(:starts_at).map{|date_time| {year: date_time.year, month: date_time.month}}.uniq
 
       nurse_ids.each do |nurse_id|
         year_and_months.each do |year_and_month|
-          RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(nurse_id, year_and_month[:year], year_and_month[:month])
+          if bonus_only
+            RecalculateSalaryLineItemsFromSalaryRulesWorker.perform_async(nurse_id,  year_and_month[:year], year_and_month[:month])
+          else
+            RecalculateNurseMonthlyWageWorker.perform_async(nurse_id, year_and_month[:year], year_and_month[:month])
+          end
         end
       end
     end

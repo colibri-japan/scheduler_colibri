@@ -142,6 +142,7 @@ Rails.application.routes.draw do
   get 'batch_action_confirm/appointments' => 'appointments#batch_action_confirm', as: :appointments_batch_action_confirm
   patch 'batch_archive/appointments' => 'appointments#batch_archive', as: :appointments_batch_archive
   patch 'batch_cancel/appointments' => 'appointments#batch_cancel', as: :appointments_batch_cancel
+  patch 'batch_restore_to_operational/appointments' => 'appointments#batch_restore_to_operational', as: :appointments_batch_restore_to_operational
   patch 'batch_request_edit/appointments' => 'appointments#batch_request_edit', as: :appointments_batch_request_edit 
   patch 'appointments/:id/toggle_verified' => 'appointments#toggle_verified', as: :toggle_verified_appointment
   patch 'appointments/:id/toggle_second_verified' => 'appointments#toggle_second_verified', as: :toggle_second_verified_appointment

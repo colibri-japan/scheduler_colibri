@@ -629,10 +629,11 @@ let terminateRecurringAppointment = (date, start, end) => {
 } 
 
 let handleAppointmentOverlapRevert = (revertFunc) => {
-    $('#nurse-overlap-modal').on('shown.bs.modal', function () {
-        $('#nurse-revert-overlap').one('click', function () {
-            revertFunc()
-        })
+    $('#nurse-revert-overlap').one('click', function () {
+        revertFunc()
+    })
+    $('#close-nurse-overlap-modal').one('click', function () {
+        revertFunc()
     })
 }
 
@@ -874,18 +875,12 @@ let masterDragOptions = (eventDropInfo) => {
 }
 
 let nonMasterDragOptions = (eventDropInfo) => {
-    let minutes = moment.duration(eventDropInfo.delta).asMinutes();
-    let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
-    let previous_end = moment(eventDropInfo.event.end).subtract(minutes, "minutes");
-    let previousAppointment = `${previous_start.locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.locale('ja').format('LT')}`
-    let newAppointment = `${moment(eventDropInfo.event.start).locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).locale('ja')    .format('LT')}`
-    let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
-    let patient_name = eventDropInfo.event.extendedProps.patient.name
+
     let newPatientId
     let newNurseId
     let newResourceType
     let newResourceTitle
-    let changeInResource
+
     if ((eventDropInfo.newResource === eventDropInfo.oldResource) || (!eventDropInfo.newResource)) {
         newPatientId = eventDropInfo.event.extendedProps.patient_id
         newNurseId = eventDropInfo.event.extendedProps.nurse_id
@@ -902,6 +897,23 @@ let nonMasterDragOptions = (eventDropInfo) => {
             newResourceTitle = eventDropInfo.newResource.title
         }
     }
+
+    if (window.editConfirmRequested) {
+        showDragDropConfirm(eventDropInfo, newNurseId, newPatientId, newResourceType, newResourceTitle)
+    } else {
+        updateAppointmentFromDragDrop(eventDropInfo, newNurseId, newPatientId)
+    }
+}
+
+let showDragDropConfirm = (eventDropInfo, newNurseId, newPatientId, newResourceType, newResourceTitle) => {
+    let minutes = moment.duration(eventDropInfo.delta).asMinutes();
+    let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
+    let previous_end = moment(eventDropInfo.event.end).subtract(minutes, "minutes");
+    let previousAppointment = `${previous_start.locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.locale('ja').format('LT')}`
+    let newAppointment = `${moment(eventDropInfo.event.start).locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).locale('ja')    .format('LT')}`
+    let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
+    let patient_name = eventDropInfo.event.extendedProps.patient.name
+    let changeInResource
 
     if (newResourceTitle && newResourceType) {
         changeInResource = `<p>新規${newResourceType}: ${newResourceTitle}</p>`
@@ -920,37 +932,41 @@ let nonMasterDragOptions = (eventDropInfo) => {
     })
 
     $('#drag-drop-save').one('click', function () {
-        let ajaxData;
-        if (eventDropInfo.event.extendedProps.eventType === 'private_event') {
-            ajaxData = {
-                private_event: {
-                    starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
-                    ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
-                    nurse_id: newNurseId,
-                    patient_id: newPatientId
-                }
-            }
-        } else if (eventDropInfo.event.extendedProps.eventType === 'appointment') {
-            ajaxData = {
-                appointment: {
-                    starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
-                    ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
-                    nurse_id: newNurseId,
-                    patient_id: newPatientId
-                }
+        updateAppointmentFromDragDrop(eventDropInfo, newNurseId, newPatientId)
+    })
+}
+
+let updateAppointmentFromDragDrop = (eventDropInfo, newNurseId, newPatientId) => {
+    let ajaxData;
+    if (eventDropInfo.event.extendedProps.eventType === 'private_event') {
+        ajaxData = {
+            private_event: {
+                starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
+                nurse_id: newNurseId,
+                patient_id: newPatientId
             }
         }
-        handleAppointmentOverlapRevert(eventDropInfo.revert)
-        $.ajax({
-            url: `${window.planningPath}/${eventDropInfo.event.extendedProps.eventType}s/${eventDropInfo.event.extendedProps.eventId}.js`,
-            type: 'PATCH',
-            data: ajaxData,
-            success: function () {
-                $('.modal').modal('hide');
-                $('.modal-backdrop').remove();
+    } else if (eventDropInfo.event.extendedProps.eventType === 'appointment') {
+        ajaxData = {
+            appointment: {
+                starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
+                nurse_id: newNurseId,
+                patient_id: newPatientId
             }
-        })
-    })
+        }
+    }
+    handleAppointmentOverlapRevert(eventDropInfo.revert)
+    $.ajax({
+        url: `${window.planningPath}/${eventDropInfo.event.extendedProps.eventType}s/${eventDropInfo.event.extendedProps.eventId}.js`,
+        type: 'PATCH',
+        data: ajaxData,
+        success: function () {
+            $('.modal').modal('hide');
+            $('.modal-backdrop').remove();
+        }
+    }).then(_ => handleAppointmentOverlapRevert(eventDropInfo.revert))
 }
 
 let toggleHeaderSubmenu = () => {

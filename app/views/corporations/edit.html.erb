@@ -55,7 +55,7 @@
             </div>
 
             <div class="colibri-form-subsection" style="margin-top:25px">
-                <div class='colibri-form-subsection-title'>レイアウト設定</div>
+                <div class='colibri-form-subsection-title'>カレンダー設定</div>
 
                 <div class="form-group" style="margin-top:15px">
                     <%= form.label :business_start_hour, "日開始時間", class: "colibri-form-label-dark" %>
@@ -85,6 +85,11 @@
                 <div class="form-group">
                     <%= form.label :default_first_day, "カレンダー開始曜日", class: "colibri-form-label-dark" %>
                     <%= form.select :default_first_day, options_for_select([['月曜', 1], ['日曜', 0]], @corporation.default_first_day), class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                    <%= form.label :edit_confirm_requested, "ドラッグで編集確認画面を表示する", class: "colibri-form-label-dark" %>
+                    <%= form.check_box :edit_confirm_requested %>
                 </div>
             </div>
 

@@ -10,7 +10,7 @@ pathname = window.location.pathname;
     $('.modal').modal('hide');
     $('.activity_back_icon').click()
     $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
-    $('#nurse-overlap-modal').modal({ backdrop: 'static' })
+    $('#nurse-overlap-modal').modal({ backdrop: 'static'})
 
     $('#nurse-overlap-modal').on('shown.bs.modal', function(){
       $('#nurse-overlap-override').off('click')

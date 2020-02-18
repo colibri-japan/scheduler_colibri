@@ -30,7 +30,7 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         targeted_appointments = targeted_appointments.where('starts_at >= ?', @nurse.date_from_worked_months(salary_rule.min_months_worked)) if salary_rule.min_months_worked.present?
         targeted_appointments = targeted_appointments.where('starts_at <= ?', @nurse.date_from_worked_months(salary_rule.max_months_worked)) if salary_rule.max_months_worked.present?
 
-
+        #filter appointments by date constraint
         case salary_rule.date_constraint
         when 1
           #holidays
@@ -85,8 +85,30 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
 
         # substract number of days worked from appointments count if only_count_between_appointments
         if salary_rule.only_count_between_appointments?
-          day_count = targeted_appointments.present? ? targeted_appointments.pluck(:starts_at).map(&:to_date).uniq.size : 0
-          appointments_count -= day_count
+          if salary_rule.max_time_between_appointments.present?
+            return unless targeted_appointments.present?
+
+            appointment_start_and_end_grouped_by_date = targeted_appointments.pluck(:starts_at, :ends_at).group_by {|appointment| appointment[0].try(:to_date) }
+            count_with_condition = 0
+
+            # for each day with appointments, count the times between appointments under time constraints
+            appointment_start_and_end_grouped_by_date.each do |date, start_and_end|
+              if start_and_end.count > 1
+                for i in 0..(start_and_end.count - 2)
+                  time_difference = start_and_end[i + 1][0] - start_and_end[i][1]
+                  condition = time_difference <= (salary_rule.max_time_between_appointments * 60)
+
+                  count_with_condition += 1 if condition
+                end
+              end
+            end
+
+            appointments_count = count_with_condition
+          else
+            # simply count the times between appointments
+            day_count = targeted_appointments.present? ? targeted_appointments.pluck(:starts_at).map(&:to_date).uniq.size : 0
+            appointments_count -= day_count
+          end
         end
 
         #calculate total wage in function of operator

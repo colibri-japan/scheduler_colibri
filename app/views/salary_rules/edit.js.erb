@@ -20,3 +20,10 @@ $('#all_services_selected_checkbox').bootstrapToggle({
   size: 'small',
   width: 180
 })
+
+$('#only_count_between_appointments_checkbox').on('change', function(){
+  $('#constraints_when_counting_between_appointments').toggle()
+  if (!$(this).is(':checked')) {
+    $('input[name="salary_rule[max_time_between_appointments]"]').val('')
+  }
+})

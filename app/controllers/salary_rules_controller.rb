@@ -61,7 +61,7 @@ class SalaryRulesController < ApplicationController
     end
 
     def salary_rules_params
-      params.require(:salary_rule).permit(:title, :target_all_nurses, :target_all_services, :service_date, :date_constraint, :expires_at, :operator, :argument, :target_nurse_by_filter, :one_time_salary_rule, :min_days_worked, :max_days_worked, :min_months_worked, :max_months_worked, :substract_days_worked_from_count, :only_count_days_inside_insurance_scope, :only_count_between_appointments, :min_monthly_service_count, :max_monthly_service_count, :min_monthly_hours_worked, :max_monthly_hours_worked, :include_bonuses, nurse_id_list: [], service_title_list: [])
+      params.require(:salary_rule).permit(:title, :target_all_nurses, :target_all_services, :service_date, :date_constraint, :expires_at, :operator, :argument, :target_nurse_by_filter, :one_time_salary_rule, :min_days_worked, :max_days_worked, :min_months_worked, :max_months_worked, :substract_days_worked_from_count, :only_count_days_inside_insurance_scope, :only_count_between_appointments, :min_monthly_service_count, :max_monthly_service_count, :min_monthly_hours_worked, :max_monthly_hours_worked, :include_bonuses, :min_time_between_appointments, :max_time_between_appointments, nurse_id_list: [], service_title_list: [])
     end
 
 end

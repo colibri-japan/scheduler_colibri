@@ -20,6 +20,35 @@ $('#all_services_selected_checkbox').bootstrapToggle({
   size: 'small',
   width: 180
 })
+$('#for_holidays').bootstrapToggle({
+  onstyle: 'info',
+  offstyle: 'secondary',
+  on: '祝日のみ',
+  off: '祝日意外',
+  size: 'small',
+  width: 100
+})
+
+
+$('#for_holidays').on('change', function(){
+  if ($(this).is(':checked')) {
+    $('#target-wday-and-time').hide()
+    $('#targeted_end_time').val('')
+    $('#targeted_start_time').val('')
+    $('#targeted_wdays').val('')
+  } else {
+    $('#target-wday-and-time').show()
+  }
+})
+
+
+$('#targeted_end_time, #targeted_start_time').on('change', function(){
+  if ($('#targeted_end_time').val() || $('#targeted_start_time').val()) {
+    $('#time-constraint-operator').show()
+  } else {
+    $('#time-constraint-operator').hide()
+  }
+})
 
 $('#only_count_between_appointments_checkbox').on('change', function(){
   $('#constraints_when_counting_between_appointments').toggle()

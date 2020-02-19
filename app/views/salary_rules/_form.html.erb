@@ -76,8 +76,29 @@
     <% end %>
 
     <div class="form-group">
-      <%= form.label :date_constraint, "日時条件", class: "colibri-form-label-dark" %>
-      <%= form.select :date_constraint, options_for_select([['条件なし', 0], ['土曜',3], ['日曜',2], ['祝日',1]], salary_rule.date_constraint), id: 'all_nurses_selected_checkbox' %>
+      <%= form.check_box :for_holidays, id: :for_holidays %>
+    </div>
+
+    <div id="target-wday-and-time" style="<%= 'display:none' if salary_rule.for_holidays %>">
+      <div class="form-group">
+        <%= form.label :targeted_wdays, "曜日条件", class: "colibri-form-label-dark" %>
+        <%= form.select :targeted_wdays, options_for_select([['日曜日',0], ['月曜日',1], ['火曜日',2], ['水曜日',3], ['木曜日',4], ['金曜日',5], ['土曜日',6]], salary_rule.targeted_wdays), {}, multiple: true, id: :targeted_wdays %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :targeted_start_time, "開始時間条件", class: "colibri-form-label-dark" %>
+        <%= form.text_field :targeted_start_time, id: :targeted_start_time, placeholder: '00:00', class: 'colibri-input', style: 'width:70px' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :targeted_end_time, "終了時間条件", class: "colibri-form-label-dark" %>
+        <%= form.text_field :targeted_end_time , id: :targeted_end_time, placeholder: '23:59', class: 'colibri-input', style: 'width:70px' %>
+      </div>
+
+      <div class="form-group" id="time-constraint-operator" style="<%= 'display:none' unless salary_rule.targeted_start_time.present? || salary_rule.targeted_end_time.present? %>">
+        <%= form.label :time_constraint_operator, "詳細時間条件", class: "colibri-form-label-dark" %><span class='required-field'>*</span><br/>
+        <%= form.select :time_constraint_operator, options_for_select([['サービス開始が時間条件内', 1], ['サービス終了か開始が条件内', 2], ['開始と終了が条件内', 3]], salary_rule.time_constraint_operator), id: :time_constraint_operator %>
+      </div>
     </div>
 
     <div class="form-group">

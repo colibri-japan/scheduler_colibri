@@ -30,22 +30,68 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         targeted_appointments = targeted_appointments.where('starts_at >= ?', @nurse.date_from_worked_months(salary_rule.min_months_worked)) if salary_rule.min_months_worked.present?
         targeted_appointments = targeted_appointments.where('starts_at <= ?', @nurse.date_from_worked_months(salary_rule.max_months_worked)) if salary_rule.max_months_worked.present?
 
-        #filter appointments by date constraint
-        case salary_rule.date_constraint
-        when 1
-          #holidays
-          targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) IN (?)', HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
-        when 2
-          #sunday
-          targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 0')
-        when 3
-          #saturday
-          targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) = 6')
-        else
-        end
-        
+
         appointments_count = targeted_appointments.size 
         appointments_duration = targeted_appointments.sum(:duration)
+
+
+        #filter appointments with date constraints
+        if salary_rule.for_holidays
+          targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) IN (?)', HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
+
+          appointments_count = targeted_appointments.size 
+          appointments_duration = targeted_appointments.sum(:duration)
+        else
+          if salary_rule.targeted_wdays.present? && salary_rule.targeted_wdays != ['']
+            #exclude holidays and target by wdays
+            wdays = (salary_rule.targeted_wdays - ['']).map &:to_i
+            targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) IN (?) AND DATE(appointments.starts_at) NOT IN (?)', wdays, HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
+            
+            puts "targeting by wday: #{wdays}"
+            appointments_count = targeted_appointments.size 
+            appointments_duration = targeted_appointments.sum(:duration)
+
+            puts "count and duration: #{appointments_count}, #{appointments_duration}"
+          end
+          if salary_rule.targeted_start_time.present? || salary_rule.targeted_end_time.present?
+            #convert everything to the same date, and just compare times to see if the constraints are met
+            time_range_start = "2020-01-01 #{salary_rule.targeted_start_time || '00:00'}".to_datetime
+            time_range_end = "2020-01-01 #{salary_rule.targeted_end_time || '23:59'}".to_datetime
+
+            puts "time range start: #{time_range_start}"
+            puts "time range end: #{time_range_end}"
+
+            targeted_appointments_array = targeted_appointments.pluck :starts_at, :ends_at, :duration
+            targeted_appointments_by_time = targeted_appointments_array.map {|data| [data[0].change(day: 1, month: 1, year: 2020), data[1].change(day: 1, month: 1, year: 2020), data[3]]}
+
+            puts "targeted appointments array: #{targeted_appointments_array}"
+            puts "targeted appointments by time : #{targeted_appointments_by_time}"
+            filtered_appointments = []
+            case salary_rule.time_constraint_operator
+            when 1
+              #starts_at within constraints
+              puts "case 1"
+              filtered_appointments = targeted_appointments_by_time.filter {|data| data[0] >=time_range_start && data[0] < time_range_end }
+            when 2
+              #ends_at or starts_at within constraints
+              puts "case 2"
+              filtered_appointments = targeted_appointments_by_time.filter {|data| data[1] > time_range_start && data[0] < time_range_end }
+            when 3
+              #starts_at and ends_at both within constraints
+              puts "case 3"
+              filtered_appointments = targeted_appointments_by_time.filter {|data| data[0] >=time_range_start && data[0] < time_range_end && data[1] >time_range_start && data[1] <= time_range_end }
+            else
+              filtered_appointments = targeted_appointments_by_time
+            end
+
+            puts "filtered appointments: #{filtered_appointments}"
+            puts "appointments count: #{filtered_appointments.size}"
+            puts "appointments duration: #{filtered_appointments.sum {|data| data[3] || 0}}"  
+
+            appointments_count = filtered_appointments.size 
+            appointments_duration = filtered_appointments.sum {|data| data[3] || 0}
+          end
+        end
 
         #verify if met goals
         met_goals = true 

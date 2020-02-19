@@ -132,6 +132,10 @@ window.salaryRulesSelectize = () => {
     $('#target-service-titles').selectize({
         plugins: ['remove_button']
     })
+    $('#targeted_wdays').selectize({
+        placeholder: '条件なし',
+        plugins: ['remove_button']
+    })
 }
 
 window.wishesSelectize = () => {

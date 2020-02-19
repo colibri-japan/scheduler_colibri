@@ -94,7 +94,19 @@ window.caveatsSelectize = () => {
 }
 
 window.batchActionSelectize = () => {
-    $('#select_action_type').selectize()
+    $('#select_action_type').selectize({
+        onChange: function(current){
+            if (current === 'archive') {
+                $('#archive-filter-tag').show()
+                $('#operational-filter').show()
+            } else if (current === 'restore_to_operational') {
+                $('#archive-filter-tag').show()
+                $('#operational-filter').hide()
+            } else {
+                $('#archive-filter-tag').hide()
+            }
+        }
+    })
     $('#nurse_ids').selectize({
         delimiter: ',',
         plugins: ['remove_button']

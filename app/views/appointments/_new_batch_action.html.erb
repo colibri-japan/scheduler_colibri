@@ -29,12 +29,14 @@
                     </div>
 
                     <div class="form-group" id="archive-filter-tag" style="display:none">
-                    	<%= label_tag :cancelled_and_edit_requested_filter, "通常", class: "colibri-form-label-dark" %>
-                        <%= check_box_tag :normal_filter, 'normal', checked = true %>
-                        <%= label_tag :cancelled_and_edit_requested_filter, "調整中", class: "colibri-form-label-dark colibri-radio" %>
-                        <%= check_box_tag :edit_requested_filter, 'edit_requested', checked = true %>
-                        <%= label_tag :cancelled_and_edit_requested_filter, "キャンセル", class: "colibri-form-label-dark colibri-radio" %>
-                        <%= check_box_tag :cancelled_filter, 'cancelled', checked = true %>
+                        <span id="operational-filter">
+                    	    <%= label_tag :operational, "通常", class: "colibri-form-label-dark" %>
+                            <%= check_box_tag :operational, true, true %>
+                        </span>
+                        <%= label_tag :edit_requested, "調整中", class: "colibri-form-label-dark colibri-radio" %>
+                        <%= check_box_tag :edit_requested, true, true %>
+                        <%= label_tag :cancelled, "キャンセル", class: "colibri-form-label-dark colibri-radio" %>
+                        <%= check_box_tag :cancelled, true,  true %>
                     </div>
                 </div>
 

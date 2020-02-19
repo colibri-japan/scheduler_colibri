@@ -140,7 +140,7 @@ class AppointmentsController < ApplicationController
       range_array = params[:date_range].split('-')
       range = Range.new(range_array[0].to_datetime, range_array[1].to_datetime) rescue Date.today.beginning_of_day..Date.today.end_of_day 
 
-      @appointments = @planning.appointments.includes(:patient, :nurse).in_range(range).order(:starts_at)
+      @appointments = @planning.appointments.not_archived.includes(:patient, :nurse).in_range(range).order(:starts_at)
 
       @appointments = @appointments.where(nurse_id: params[:nurse_ids]) if params[:nurse_ids].present?
       @appointments = @appointments.where(patient_id: params[:patient_ids]) if params[:patient_ids].present?
@@ -234,24 +234,37 @@ class AppointmentsController < ApplicationController
     end
 
     def filter_appointments_by_action_type
-      if ['edit_request', 'cancel', 'restore_to_operational'].include? params[:action_type] 
-        @appointments = @appointments.not_archived
-      elsif params[:action_type] == "archive"
-        cancelled = params[:cancelled]
-        edit_requested = params[:edit_requested]
-        if edit_requested == 'false' && cancelled == 'false'
-          @appointments = @appointments.where('cancelled is false AND edit_requested is false')
-        elsif edit_requested == 'undefined' && cancelled == 'undefined' 
-        elsif edit_requested == 'undefined' && cancelled == 'false'
+      cancelled = params[:cancelled].present? ? params[:cancelled] : false
+      edit_requested = params[:edit_requested].present? ? params[:edit_requested] : false
+      operational = params[:operational].present? ? params[:operational] : false
+
+      if params[:action_type] == "restore_to_operational"
+        if !cancelled && !edit_requested
+          @appointments = @appointments.operational
+        elsif !cancelled && edit_requested
           @appointments = @appointments.where(cancelled: false)
-        elsif edit_requested == 'false' && cancelled == 'undefined'
-          @appointments = @appointments.where('(edit_requested is false) OR (edit_requested is true AND cancelled is true)')
-        elsif edit_requested == 'true' && cancelled == 'false'
-          @appointments = @appointments.where(edit_requested: true, cancelled: false)
-        elsif edit_requested == 'undefined' && cancelled == 'true'
-          @appointments = @appointments.where(cancelled: true)
-        elsif edit_requested == 'true' && cancelled == 'true'
-          @appointments = @appointments.where('cancelled is true OR edit_requested is true')
+        elsif cancelled && !edit_requested
+          @appointments = @appointments.where(edit_requested: false)
+        end
+      elsif  params[:action_type] == "archive"
+        if operational
+          if !edit_requested && !cancelled
+            @appointments = @appointments.operational
+          elsif !edit_requested && cancelled
+            @appointments = @appointments.edit_not_requested
+          elsif edit_requested && !cancelled
+            @appointments = @appointments.not_cancelled
+          end
+        else
+          if !edit_requested && !cancelled
+            @appointments = @appointments.operational
+          elsif !edit_requested && cancelled
+            @appointments = @appointments.cancelled
+          elsif edit_requested && !cancelled
+            @appointments = @appointments.edit_requested
+          elsif cancelled && edit_requested
+            @appointments = @appointments.where('cancelled is true OR edit_requested is true')
+          end
         end
       end
     end

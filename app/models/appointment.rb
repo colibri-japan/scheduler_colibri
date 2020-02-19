@@ -31,7 +31,9 @@ class Appointment < ApplicationRecord
 
 	scope :not_archived, -> { where(archived_at: nil) }
 	scope :edit_not_requested, -> { where(edit_requested: false) }
+	scope :edit_requested, -> { where(edit_requested: true) }
 	scope :not_cancelled, -> { where(cancelled: false) }
+	scope :cancelled, -> { where(cancelled: true) }
 	scope :operational, -> { not_archived.edit_not_requested.not_cancelled }
     scope :where_recurring_appointment_id_different_from, -> id { where('recurring_appointment_id IS NULL OR NOT recurring_appointment_id = ?', id) }
 	scope :commented, -> { where.not(description: ['', nil]) }

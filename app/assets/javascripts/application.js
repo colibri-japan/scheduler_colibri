@@ -194,13 +194,6 @@ let toggleServiceHourBasedWage = () => {
 
 let initializeBatchActionForm = () => {
   $("#colibri-batch-action-button").popover('hide')
-  $('#select_action_type').change(function(){
-    if ($(this).val() === 'archive') {
-      $('#archive-filter-tag').show()
-    } else {
-      $('#archive-filter-tag').hide()
-    }
-  })
   $('input[name="date_range"]').daterangepicker({
     timePicker: true,
     timePicker24Hour: true,

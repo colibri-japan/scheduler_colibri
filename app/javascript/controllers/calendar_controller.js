@@ -628,6 +628,9 @@ let terminateRecurringAppointment = (date, start, end) => {
 } 
 
 let handleAppointmentOverlapRevert = (revertFunc) => {
+    $('#nurse-revert-overlap').off()
+    $('#close-nurse-overlap-modal').off()
+
     $('#nurse-revert-overlap').one('click', function () {
         revertFunc()
     })

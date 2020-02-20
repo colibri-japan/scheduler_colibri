@@ -242,9 +242,11 @@ class AppointmentsController < ApplicationController
         if !cancelled && !edit_requested
           @appointments = @appointments.operational
         elsif !cancelled && edit_requested
-          @appointments = @appointments.where(cancelled: false)
+          @appointments = @appointments.not_cancelled.edit_requested 
         elsif cancelled && !edit_requested
-          @appointments = @appointments.where(edit_requested: false)
+          @appointments = @appointments.cancelled
+        elsif cancelled && edit_requested
+          @appointments = @appointments.where('cancelled is true OR edit_requested is true')
         end
       elsif  params[:action_type] == "archive"
         if operational

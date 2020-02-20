@@ -444,7 +444,6 @@ let createCalendar = () => {
         eventDrop: function (eventDropInfo) {
             $(".popover").remove()
 
-            
             if (window.masterCalendar === 'true') {
                 masterDragOptions(eventDropInfo)
             } else {

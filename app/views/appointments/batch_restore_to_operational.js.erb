@@ -1,28 +1,37 @@
 $('.modal').modal('hide');
 $('.modal-backdrop').remove();
 
-if (window.fullCalendar) {
-    window.fullCalendar.batchRendering(function(){
-        <% @appointments.each do |appointment| %>
-            if (window.fullCalendar) {
-                if (typeof(event) === 'undefined') {
-                    let event 
-                }
-                event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
-                if (event) {
-                    event.remove()
-                }
+<% if @overlapping_appointments.present? %>
 
-                if (typeof(renderEvent) === 'undefined') {
-                    let renderEvent 
-                }
+    $('#remote_container').html('<%= j render "overlapping_appointments_modal" %>');
+    $('#overlapping_appointments').modal('show');
 
-                renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
+<% else %>
 
-                if (renderEvent) {
-                    window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"), 'url1')
+    if (window.fullCalendar) {
+        window.fullCalendar.batchRendering(function(){
+            <% @appointments.each do |appointment| %>
+                if (window.fullCalendar) {
+                    if (typeof(event) === 'undefined') {
+                        let event 
+                    }
+                    event = window.fullCalendar.getEventById('<%= j "appointment_#{appointment.id}" %>')
+                    if (event) {
+                        event.remove()
+                    }
+
+                    if (typeof(renderEvent) === 'undefined') {
+                        let renderEvent 
+                    }
+
+                    renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{appointment.patient_id}" %>', '<%= "nurse_#{appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
+
+                    if (renderEvent) {
+                        window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: appointment}).html_safe %>"), 'url1')
+                    }
                 }
-            }
-        <% end %>
-    })
-}
+            <% end %>
+        })
+    }
+
+<% end %>

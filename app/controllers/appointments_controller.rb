@@ -186,12 +186,17 @@ class AppointmentsController < ApplicationController
 
   def batch_restore_to_operational
     @appointments = Appointment.where(id: params[:appointment_ids], planning_id: @planning.id)
+    @overlapping_appointments = []
 
-    now = Time.current
-    @appointments.update_all(edit_requested: false, cancelled: false, updated_at: now)
-    @planning.create_activity :batch_restore_to_operational, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
-  
-    batch_recalculate_salaries(bonus_only: false)
+    validate_appointments_before_restoring_to_operational
+
+    unless @overlapping_appointments.present?
+      now = Time.current
+      @appointments.update_all(edit_requested: false, cancelled: false, updated_at: now)
+      @planning.create_activity :batch_restore_to_operational, owner: current_user, planning_id: @planning.id, parameters: {appointment_ids: @appointments.ids}
+    
+      batch_recalculate_salaries(bonus_only: false)
+    end
   end
 
 	def appointments_by_category_report
@@ -269,6 +274,22 @@ class AppointmentsController < ApplicationController
           end
         end
       end
+    end
+
+    def validate_appointments_before_restoring_to_operational
+      #validate from existing appointments
+      @appointments.each do |a|
+        a.attributes = {edit_requested: false, cancelled: false}
+        
+        @overlapping_appointments << a unless a.valid?
+      end
+
+      #validate within current selection
+      
+      @overlapping_appointments << @appointments.get_overlapping_instances
+
+      @overlapping_appointments = @overlapping_appointments.flatten
+      @overlapping_appointments = @overlapping_appointments.sort_by {|a| a.try(:starts_at) }
     end
 
     def recalculate_bonus 

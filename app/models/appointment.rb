@@ -52,6 +52,22 @@ class Appointment < ApplicationRecord
 		where('((appointments.starts_at >= ? AND appointments.starts_at < ?) OR (appointments.ends_at > ? AND appointments.ends_at <= ?)) OR (appointments.starts_at < ? AND appointments.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
 	end
 
+	def self.get_overlapping_instances
+		overlapping_instances = []
+
+		Appointment.where(id: self.ids).order(:starts_at).to_a.group_by {|a| a.nurse_id}.each do |nurse_id, appointments|
+			if appointments.size > 1
+				for i in 0..appointments.size - 2
+					if appointments[i + 1].starts_at < appointments[i].ends_at  
+						overlapping_instances.push(appointments[i], appointments[i + 1])
+					end
+				end
+			end
+		end
+
+		overlapping_instances.uniq
+	end
+
 	def verified?
 		verified_at.present?
 	end

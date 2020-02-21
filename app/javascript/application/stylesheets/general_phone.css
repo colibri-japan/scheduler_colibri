@@ -16,6 +16,18 @@
         color: white;
     }
 
+
+	.activity_subtitle {
+		font-size: 1.15em;
+		font-weight: bold;
+		border-bottom: 0.3px solid #ccc;
+	}
+
+	.activity_subcontainer {
+		padding: 4px;
+		margin-top: 5px;
+	}
+
     .activity_subheader_item {
         flex-grow: 1;
         text-align: center;

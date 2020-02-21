@@ -709,8 +709,16 @@
 	}
 
 	.edit_printing_option {
-		margin-bottom: 70px;
-		margin-left:20px;	
+		margin-bottom: 70px;	
+	}
+
+	#planning-options {
+		max-width: none;
+		margin-bottom: 0px;
+	}
+
+	#printing-options {
+		max-width: none;
 	}
 
 

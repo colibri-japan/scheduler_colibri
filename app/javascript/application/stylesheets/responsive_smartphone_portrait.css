@@ -900,6 +900,7 @@
 	.settings-body {
 		margin-top: 48px;
 		padding: 5px;
+		margin-bottom: 60px;
 	}
 
 	#close-settings {
@@ -929,10 +930,6 @@
 		display:flex;
 		justify-content:space-between;
 		margin-top:15px;
-	}
-
-	#account-edit-body {
-		padding: 0px;
 	}
 
 	#detail-planning-container {

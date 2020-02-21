@@ -96,4 +96,16 @@
         padding-right: 3px;
     }
 
+    #posts-index-container {
+        margin-bottom: 80px;
+    }
+
+    #index-table-container {
+        margin-bottom: 80px;
+    }
+
+	#account-edit-body {
+		padding: 0px;
+	}
+
 }

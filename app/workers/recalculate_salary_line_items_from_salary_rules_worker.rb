@@ -36,20 +36,29 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
 
 
         #filter appointments with date constraints
-        if salary_rule.for_holidays
+        if salary_rule.holiday_operator == 2
+          #only holidays
           targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) IN (?)', HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
 
           appointments_count = targeted_appointments.size 
           appointments_duration = targeted_appointments.sum(:duration)
         else
+          if salary_rule.holiday_operator == 0
+            #no specific holiday filter
+          elsif salary_rule.holiday_operator == 1
+            #exclude holidays
+            targeted_appointments = targeted_appointments.where('DATE(appointments.starts_at) NOT IN (?)', HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
+          end
+
           if salary_rule.targeted_wdays.present? && salary_rule.targeted_wdays != ['']
             #exclude holidays and target by wdays
             wdays = (salary_rule.targeted_wdays - ['']).map &:to_i
-            targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) IN (?) AND DATE(appointments.starts_at) NOT IN (?)', wdays, HolidayJp.between(@start_of_month, @end_of_today).map(&:date))
+            targeted_appointments = targeted_appointments.where('EXTRACT(dow from appointments.starts_at) IN (?)', wdays)
             
             appointments_count = targeted_appointments.size 
             appointments_duration = targeted_appointments.sum(:duration)
           end
+          
           if salary_rule.targeted_start_time.present? || salary_rule.targeted_end_time.present?
             #convert everything to the same date, and just compare times to see if the constraints are met
             time_range_start = "2020-01-01 #{salary_rule.targeted_start_time || '00:00'}".to_datetime

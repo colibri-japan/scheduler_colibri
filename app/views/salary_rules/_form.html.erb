@@ -76,10 +76,11 @@
     <% end %>
 
     <div class="form-group">
-      <%= form.check_box :for_holidays, id: :for_holidays %>
+      <%= form.label :holiday_operator, "祝日フィルター", class: "colibri-form-label-dark" %>
+      <%= form.select :holiday_operator, options_for_select([["フィルターなし", 0], ["祝日抜き", 1], ["祝日のみ", 2]], salary_rule.holiday_operator), {}, id: :holiday_operator %>
     </div>
 
-    <div id="target-wday-and-time" style="<%= 'display:none' if salary_rule.for_holidays %>">
+    <div id="target-wday-and-time" style="<%= 'display:none' if salary_rule.holiday_operator == 2 %>">
       <div class="form-group">
         <%= form.label :targeted_wdays, "曜日条件", class: "colibri-form-label-dark" %>
         <%= form.select :targeted_wdays, options_for_select([['日曜日',0], ['月曜日',1], ['火曜日',2], ['水曜日',3], ['木曜日',4], ['金曜日',5], ['土曜日',6]], salary_rule.targeted_wdays), {}, multiple: true, id: :targeted_wdays %>

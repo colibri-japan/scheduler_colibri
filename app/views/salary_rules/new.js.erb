@@ -15,17 +15,10 @@ $('#all_services_selected_checkbox').bootstrapToggle({
   size: 'small',
   width: 180
 })
-$('#for_holidays').bootstrapToggle({
-  onstyle: 'info',
-  offstyle: 'secondary',
-  on: '祝日のみ',
-  off: '祝日意外',
-  size: 'small',
-  width: 100
-})
 
-$('#for_holidays').on('change', function(){
-  if ($(this).is(':checked')) {
+
+$('#holiday_operator').on('change', function(){
+  if ($(this).val() === "2") {
     $('#target-wday-and-time').hide()
     $('#targeted_end_time').val('')
     $('#targeted_start_time').val('')

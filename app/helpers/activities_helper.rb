@@ -21,6 +21,8 @@ module ActivitiesHelper
 			'cancel.svg'
 		elsif activity_key.include? "batch_archive"
 			'delete_icon.svg'
+		elsif activity_key.include? "batch_restore_to_operational"
+			'edit_icon.svg'
 		elsif activity_key.include? "reflect_all_master"
 			'duplicate_icon.svg'
 		elsif activity_key.include? "reflect_nurse_master"

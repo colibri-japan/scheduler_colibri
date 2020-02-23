@@ -47,7 +47,7 @@ class CompletionReportsController < ApplicationController
     if params[:m].present? && params[:y].present?
       range_start = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0, 0).beginning_of_month
       last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
-      range_end = (Time.current.in_time_zone('Tokyo')) < last_day ? Time.current.in_time_zone('Tokyo') : last_day
+      range_end = (Time.current + 10.hours) < last_day ? (Time.current + 10.hours) : last_day
     elsif params[:day].present?
       day = params[:day].to_date rescue nil 
       range_start = day.try(:beginning_of_day)

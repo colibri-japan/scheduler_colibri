@@ -906,6 +906,12 @@
 
     <%= form.hidden_field :forecasted_report_id, value: completion_report.forecasted_report_id %>
 
+    <%= form.hidden_field :latitude, id: :completion_report_latitude %>
+    <%= form.hidden_field :longitude, id: :completion_report_longitude %>
+    <%= form.hidden_field :accuracy, id: :completion_report_accuracy %>
+    <%= form.hidden_field :altitude, id: :completion_report_altitude %>
+    <%= form.hidden_field :altitude_accuracy, id: :completion_report_altitude_accuracy %>
+
     <div class="modal-footer">
         <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
         <%= form.submit "実績確定", class: 'btn btn-info btn-phone-expand' %>

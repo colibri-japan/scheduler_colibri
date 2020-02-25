@@ -14,3 +14,10 @@ $('.toggleable-subsection-title').click(function(){
 $('#toggle-detailed-report').click(function(){
     $('#report-detail-container').toggle()
 })
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(completionReportGeolocationSuccessCallback)
+} else {
+    alert('no geoloc')
+}
+

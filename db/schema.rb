@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200221094859) do
+ActiveRecord::Schema.define(version: 20200225143037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,6 +235,11 @@ ActiveRecord::Schema.define(version: 20200221094859) do
     t.boolean "batch_assisted_groceries", default: false
     t.text "watched_after_patient_safety_doing", default: [], array: true
     t.bigint "forecasted_report_id"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.decimal "accuracy"
+    t.decimal "altitude"
+    t.decimal "altitude_accuracy"
     t.index ["appointment_id"], name: "index_completion_reports_on_appointment_id"
     t.index ["forecasted_report_id"], name: "index_completion_reports_on_forecasted_report_id"
     t.index ["reportable_type", "reportable_id"], name: "index_completion_reports_on_reportable_type_and_reportable_id"

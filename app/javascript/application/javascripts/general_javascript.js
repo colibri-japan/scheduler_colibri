@@ -108,6 +108,24 @@ window.uncheckableRadioButtons = function() {
     })
 }
 
+window.completionReportGeolocationSuccessCallback = function(geolocationPosition) {
+    var latitude = geolocationPosition.coords.latitude 
+    var longitude = geolocationPosition.coords.longitude
+    var accuracy = geolocationPosition.coords.accuracy 
+    var altitude = geolocationPosition.coords.altitude
+    var altitudeAccuracy = geolocationPosition.coords.altitudeAccuracy
+    console.log(`latitude of: ${latitude} and longitude: ${longitude} with accuracy of: ${accuracy}`)
+    $('#completion_report_latitude').val(latitude)
+    $('#completion_report_longitude').val(longitude)
+    $('#completion_report_accuracy').val(accuracy)
+    $('#completion_report_altitude').val(altitude)
+    $('#completion_report_altitude_accuracy').val(altitudeAccuracy)
+
+}
+
+window.completionReportGeolocationFailureCallback = function() {
+    this.alert('実施記録を確定するために位置情報が必要です。')
+}
 
 document.addEventListener('turbolinks:load', function () {
     $('.btn-scroll').click(function(){

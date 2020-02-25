@@ -125,8 +125,10 @@ window.completionReportGeolocationSuccessCallback = function(geolocationPosition
     $('#completion_report_accuracy').val(accuracy)
     $('#completion_report_altitude').val(altitude)
     $('#completion_report_altitude_accuracy').val(altitudeAccuracy)
-    $('#geolocalization-pending').hide()
-    $('#geolocalization-success').show()
+    if ($('#geolocalization-status').length > 0) {
+        $('#geolocalization-pending').hide()
+        $('#geolocalization-success').show()
+    }
 }
 
 window.completionReportGeolocationFailureCallback = function(error) {

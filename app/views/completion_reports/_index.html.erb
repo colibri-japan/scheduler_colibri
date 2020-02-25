@@ -29,7 +29,7 @@
             <table class="table">
                 <% @recent_completion_reports.each do |completion_report| %>
                     <tr class="colibri-clickable-row" data-url="<%= edit_appointment_completion_report_path(completion_report.reportable, completion_report) %>">
-                        <td style="width:48%"><%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d (%a) %H:%M')}#{l(completion_report.reportable.ends_at, format: '%H:%M')}" %></td>
+                        <td style="width:48%"><%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d (%a) %H:%M ~ ')}#{l(completion_report.reportable.ends_at, format: '%H:%M')}" %></td>
                         <td style="width:38%"><%= appointment_resource_name(completion_report.reportable, params[:resource_type]) %></td>
                         <td style="width:14%"><span class="glyphicon glyphicon-file write-completion-report" style="color:rgb(115, 120, 124)"></span></td>
                     </tr>

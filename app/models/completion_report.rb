@@ -91,7 +91,7 @@ class CompletionReport < ApplicationRecord
     def with_handicap_care?
         (activities_done_with_the_patient != [''] && activities_done_with_the_patient != []) || 
         trained_patient_to_communicate? || 
-        trained_patient_to_memorize? || watch_after_patient_safety?
+        trained_patient_to_memorize? || watch_after_patient_safety? || (watched_after_patient_safety_doing != [''] && watched_after_patient_safety_doing != [])
     end
 
     def with_house_care?

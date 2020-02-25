@@ -75,6 +75,7 @@
               <%= trained_patient_to_communicate_checked(completion_report.trained_patient_to_communicate).html_safe %>
               <%= trained_patient_to_memorize_checked(completion_report.trained_patient_to_memorize).html_safe %>
               <%= watch_after_patient_safety_checked(completion_report.watch_after_patient_safety).html_safe %>
+              <%= watched_after_patient_safety_doing_checked(completion_report.watched_after_patient_safety_doing).html_safe %>
 
               <%= batch_assisted_house_cleaning_checked(completion_report.batch_assisted_house_cleaning).html_safe %>
               <%= clean_up_checked(completion_report.clean_up).html_safe %>
@@ -907,6 +908,6 @@
 
     <div class="modal-footer">
         <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
-        <%= form.submit "セーブする", class: 'btn btn-info btn-phone-expand' %>
+        <%= form.submit "実績確定", class: 'btn btn-info btn-phone-expand' %>
     </div>
 <% end %>

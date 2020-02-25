@@ -223,7 +223,27 @@ module CompletionReportsHelper
     
     def activities_done_with_the_patient_checked(activities_done_with_the_patient)
         if activities_done_with_the_patient.present? && activities_done_with_the_patient != ['']
-            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>共に行う</div>"
+            activities_content = []
+            (activities_done_with_the_patient - [""]).each do |activity|
+                activity_content = case activity
+                when '0'
+                    '掃除'
+                when '1'
+                    '洗濯'
+                when '2'
+                    '衣類整理'
+                when '3'
+                    '調理'
+                when '4'
+                    '買い物'
+                else
+                    ''
+                end
+
+                activities_content << activity_content
+            end
+
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>共に行う：#{activities_content.join('、')}</div>"
         else
             ""
         end
@@ -240,10 +260,60 @@ module CompletionReportsHelper
     def watch_after_patient_safety_checked(watch_after_patient_safety)
         watch_after_patient_safety ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>転倒予防の声かけ・見守り</div>" : "" 
     end
+
+    def watched_after_patient_safety_doing_checked(watched_after_patient_safety_doing)
+        if watched_after_patient_safety_doing.present? && watched_after_patient_safety_doing != ['']
+            activities_content = []
+            (watched_after_patient_safety_doing - ['']).each do |activity|
+                activity_content = case activity 
+                when '0'
+                    '入浴'
+                when '1'
+                    '更衣'
+                when '2'
+                    '移動'
+                else
+                    ''
+                end
+
+                activities_content << activity_content
+            end
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right:4px' class='glyphicon glyphicon-ok report-checkmark'></i>安全の見守り：#{activities_content.join('、')}</div>"
+        else
+            ""
+        end
+    end
     
     def clean_up_checked(clean_up)
         if clean_up.present? && clean_up != ['']
-            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>清掃</div>"
+            tasks = []
+            (clean_up - ['']).each do |clean_up_code|
+                task = case clean_up_code
+                when '0'
+                    '居室'
+                when '1'
+                    '寝室'
+                when '2'
+                    '洗面所'
+                when '3'
+                    'トイレ'
+                when '4'
+                    '卓上'
+                when '5'
+                    '台所'
+                when '6'
+                    '浴室'
+                when '7'
+                    'Pトイレ'
+                when '8'
+                    'その他'
+                else
+                    ''
+                end
+
+                tasks << task
+            end
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>清掃：#{tasks.join('、')}</div>"
         else
             ""
         end

@@ -108,24 +108,47 @@ window.uncheckableRadioButtons = function() {
     })
 }
 
+window.completionReportGeolocationRequest = function(){
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(completionReportGeolocationSuccessCallback, completionReportGeolocationFailureCallback)
+    } 
+}
+
 window.completionReportGeolocationSuccessCallback = function(geolocationPosition) {
     var latitude = geolocationPosition.coords.latitude 
     var longitude = geolocationPosition.coords.longitude
     var accuracy = geolocationPosition.coords.accuracy 
     var altitude = geolocationPosition.coords.altitude
     var altitudeAccuracy = geolocationPosition.coords.altitudeAccuracy
-    console.log(`latitude of: ${latitude} and longitude: ${longitude} with accuracy of: ${accuracy}`)
     $('#completion_report_latitude').val(latitude)
     $('#completion_report_longitude').val(longitude)
     $('#completion_report_accuracy').val(accuracy)
     $('#completion_report_altitude').val(altitude)
     $('#completion_report_altitude_accuracy').val(altitudeAccuracy)
-
+    $('#geolocalization-pending').hide()
+    $('#geolocalization-success').show()
 }
 
-window.completionReportGeolocationFailureCallback = function() {
-    this.alert('実施記録を確定するために位置情報が必要です。')
+window.completionReportGeolocationFailureCallback = function(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            this.alert('位置情報権限を許可してください。')
+            completionReportGeolocationRequest()
+            break;
+        case error.POSITION_UNAVAILABLE:
+            this.alert('位置情報が確定できません。')
+            completionReportGeolocationRequest()
+            break;
+        case error.TIMEOUT:
+            this.alert('位置情報の検索がタイムアウトしました。')
+            completionReportGeolocationRequest()
+            break;
+        case error.UNKNOWN_ERROR:
+            this.alert('エラーが発生しました。')
+            break;
+    }
 }
+
 
 document.addEventListener('turbolinks:load', function () {
     $('.btn-scroll').click(function(){

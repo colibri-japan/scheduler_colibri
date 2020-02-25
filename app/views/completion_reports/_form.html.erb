@@ -1,4 +1,4 @@
-<%= form_with model: completion_report, url: [@reportable, completion_report] do |form| %>
+<%= form_with model: completion_report, url: [@reportable, completion_report], html: {class: 'completion_report_form'} do |form| %>
 
     <div class="blue-background-form">
         <div class="modal-subsection-title">サービス情報</div>
@@ -902,7 +902,15 @@
             </div>
           </div>
         <% end %>
+
+        <div class="form-group" id="geolocalization-status">
+          <div id="geolocalization-success" style="display:none" class="colibri-form-label-dark">位置情報確定 <span class="glyphicon glyphicon-ok" style="font-size:12px"></span></div>
+          <div id="geolocalization-pending" class="colibri-form-label-dark" style="<%= 'display:none' unless completion_report.new_record? %>">位置情報読み込み中... <span class="glyphicon glyphicon-refresh" style="font-size:12px"></span></div>
+        </div>
+
     </div>
+
+
 
     <%= form.hidden_field :forecasted_report_id, value: completion_report.forecasted_report_id %>
 
@@ -914,6 +922,6 @@
 
     <div class="modal-footer">
         <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
-        <%= form.submit "実績確定", class: 'btn btn-info btn-phone-expand' %>
+        <%= form.submit "実績確定", class: 'btn btn-info btn-phone-expand', id: :submit_completion_report_form %>
     </div>
 <% end %>

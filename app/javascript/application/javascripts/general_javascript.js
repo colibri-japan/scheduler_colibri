@@ -132,19 +132,15 @@ window.completionReportGeolocationSuccessCallback = function(geolocationPosition
 window.completionReportGeolocationFailureCallback = function(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
-            this.alert('位置情報権限を許可してください。')
             completionReportGeolocationRequest()
             break;
         case error.POSITION_UNAVAILABLE:
-            this.alert('位置情報が確定できません。')
             completionReportGeolocationRequest()
             break;
         case error.TIMEOUT:
-            this.alert('位置情報の検索がタイムアウトしました。')
             completionReportGeolocationRequest()
             break;
         case error.UNKNOWN_ERROR:
-            this.alert('エラーが発生しました。')
             break;
     }
 }

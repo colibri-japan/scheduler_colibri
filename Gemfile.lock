@@ -120,6 +120,7 @@ GEM
     ffi (1.11.1)
     ffi (1.11.1-x64-mingw32)
     ffi (1.11.1-x86-mingw32)
+    geocoder (1.6.1)
     get_process_mem (0.2.4)
       ffi (~> 1.0)
     globalid (0.4.2)
@@ -342,6 +343,7 @@ DEPENDENCIES
   devise-i18n
   devise_invitable
   ffi (>= 1.9.24)
+  geocoder
   groupdate
   holiday_jp
   ice_cube

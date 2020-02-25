@@ -136,6 +136,9 @@ gem 'memory_profiler'
 #push notifications
 gem 'rpush'
 
+#geocoding
+gem 'geocoder'
+
 group :production do 
   gem 'wkhtmltopdf-heroku', '2.12.4'
 end

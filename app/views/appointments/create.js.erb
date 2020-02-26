@@ -12,6 +12,7 @@ if ($('.activity_back_icon').length > 0) {
   $('#nurse-overlapping-days').text("<%= j @appointment.errors[:base].first %>");
   $('#nurse-overlap-modal').modal({ backdrop: 'static' })
   $('#nurse-overlap-modal').modal({ backdrop: 'static' }).on('shown.bs.modal', function(){
+    $('#nurse-overlap-override').off('click')
     $('#nurse-overlap-override').one('click', function(){
       let errors = '<%= @appointment.errors.full_messages %>'
       let appointment_ids = <%=  @appointment.errors[:overlapping_ids].flatten %>;

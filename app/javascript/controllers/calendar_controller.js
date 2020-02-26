@@ -927,6 +927,10 @@ let showDragDropConfirm = (eventDropInfo, newNurseId, newPatientId, newResourceT
 
     $('#drag-drop-modal').modal()
 
+    /* need to unbind the click actions before attaching revert and save */ 
+    $('.close-drag-drop-modal').off('click')
+    $('#drag-drop-save').off('click')
+
     $('.close-drag-drop-modal').click(function () {
         eventDropInfo.revert()
         $('.modal').modal('hide');

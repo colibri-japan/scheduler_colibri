@@ -22,7 +22,7 @@
                 <div>従業員：<%= @appointment.nurse.try(:name) %></div>
                 <div>内容：<%= @appointment.title %></div>
             <% end %>
-            <div>住所：<%= link_to "#{@patient.try(:address)}", "https://maps.google.com/?q=#{@patient.try(:address)}", target: :_blank %></div>
+            <div>住所：<%= link_to "#{@patient.try(:address)}", "https://www.google.com/maps/search/?api=1&query=#{@patient.try(:address)}", target: :_blank %></div>
         </div>
         <div class="activity_subcontainer">
             <div class="activity_subtitle">

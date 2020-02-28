@@ -244,12 +244,22 @@
 						<% end %>
 					</tr>
 				<% end %>
+				<% if @cancelled_appointments.present? %>
+					<tr>
+						<td>キャンセル</td>
+						<td><%= from_seconds_to_hours_minutes(@cancelled_appointments.sum(:duration)) if @cancelled_appointments.sum(:duration) > 0 %></td>
+						<td><%= @cancelled_appointments.size %></td>
+						<% if current_user.corporation_admin? %>
+							<td><%= "#{@cancelled_appointments.sum(:total_wage)}¥" unless @nurse.full_timer? %></td>
+						<% end %>
+					</tr>
+				<% end %>
 				<tr>
 					<td>実績小計</td>
-					<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 })  %></td>
-					<td><%= @grouped_appointments.sum {|group| group.count || 0 } %></td>
+					<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 } + (@cancelled_appointments.sum(:duration) || 0))  %></td>
+					<td><%= @grouped_appointments.sum {|group| group.count || 0 } + (@cancelled_appointments.size || 0) %></td>
 					<% if current_user.corporation_admin? %>
-						<td><span style="font-weight:bold"><%="#{@grouped_appointments.sum {|group| group.sum_total_wage || 0 }}¥" unless @nurse.full_timer? %></span></td>
+						<td><span style="font-weight:bold"><%="#{@grouped_appointments.sum {|group| group.sum_total_wage || 0 } + (@cancelled_appointments.sum(:total_wage) || 0)}¥" unless @nurse.full_timer? %></span></td>
 					<% end %>
 				</tr>
 			</tbody>

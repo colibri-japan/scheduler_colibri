@@ -244,6 +244,15 @@
 						<% end %>
 					</tr>
 				<% end %>
+
+				<tr style="font-weight:bold">
+					<td>実績小計（キャンセルなし）</td>
+					<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 })  %></td>
+					<td><%= @grouped_appointments.sum {|group| group.count || 0 } %></td>
+					<% if current_user.corporation_admin? %>
+						<td><span style="font-weight:bold"><%="#{@grouped_appointments.sum {|group| group.sum_total_wage || 0 } }¥" unless @nurse.full_timer? %></span></td>
+					<% end %>
+				</tr>
 				<% if @cancelled_appointments.present? %>
 					<tr>
 						<td>キャンセル</td>
@@ -254,8 +263,8 @@
 						<% end %>
 					</tr>
 				<% end %>
-				<tr>
-					<td>実績小計</td>
+				<tr style="font-weight:bold">
+					<td>実績小計(キャンセル込)</td>
 					<td><%= from_seconds_to_hours_minutes(@grouped_appointments.sum {|group| group.sum_duration || 0 } + (@cancelled_appointments.sum(:duration) || 0))  %></td>
 					<td><%= @grouped_appointments.sum {|group| group.count || 0 } + (@cancelled_appointments.size || 0) %></td>
 					<% if current_user.corporation_admin? %>

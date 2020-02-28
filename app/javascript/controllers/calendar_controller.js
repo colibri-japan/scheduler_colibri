@@ -291,9 +291,35 @@ let createCalendar = () => {
                 info.el.classList.add('colibri-edit-requested')
             }
 
+            if (['recurring_appointment', 'appointment'].includes(info.event.extendedProps.eventType)) {
+                if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
+                    let title = info.event.extendedProps.nurse ? info.event.extendedProps.nurse.name : ''
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                } else {
+                    let title = info.event.extendedProps.patient ? `${info.event.extendedProps.patient.name}様` : ''
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                }
+            } else if (info.event.extendedProps.eventType === 'private_event') {
+                if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
+                    let title = (info.event.extendedProps.nurse && info.event.extendedProps.nurse.name) ? `${info.event.extendedProps.nurse.name}: ${info.event.extendedProps.serviceType}` : info.event.title 
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                } else {
+                    let title = (info.event.extendedProps.patient && info.event.extendedProps.patient.name) ? `${info.event.extendedProps.patient.name}様: ${info.event.extendedProps.serviceType}` : info.event.title 
+                    if (info.event.title !== title) {
+                        info.event.setProp('title', title)
+                    }
+                }
+            }
+
             if (info.view.type == 'listDay' && (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches)) {
                 let eventTime = info.el.getElementsByClassName('fc-list-item-time')[0].innerText
-                let eventTitle = info.event.extendedProps.cancelled ? `${info.event.extendedProps.patient.name}様　（キャンセル）` : `${info.event.extendedProps.patient.name}様`
+                let eventTitle = info.event.extendedProps.cancelled ? `${info.event.title}　（キャンセル）` : info.event.title
                 let newHtml = `<tr>
                       <div class="colibri-fc-list" style="background-color:#EFF2F5">
                         <div class="colibri-fc-list-time">${eventTime}</div>
@@ -309,33 +335,7 @@ let createCalendar = () => {
                     let pTag = `<p class="colibri-fc-list-body">${info.event.extendedProps.previous_report_comment}</p>`
                     info.el.firstElementChild.insertAdjacentHTML('beforeend', pTag)
                 }
-            } else {
-                if (['recurring_appointment', 'appointment'].includes(info.event.extendedProps.eventType)) {
-                    if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
-                        let title = info.event.extendedProps.nurse ? info.event.extendedProps.nurse.name : ''
-                        if (info.event.title !== title) {
-                            info.event.setProp('title', title)
-                        }
-                    } else {
-                        let title = info.event.extendedProps.patient ? info.event.extendedProps.patient.name : ''
-                        if (info.event.title !== title) {
-                            info.event.setProp('title', title)
-                        }
-                    }
-                } else if (info.event.extendedProps.eventType === 'private_event') {
-                    if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceId === 'patient')) {
-                        let title = (info.event.extendedProps.nurse && info.event.extendedProps.nurse.name) ? `${info.event.extendedProps.nurse.name}: ${info.event.extendedProps.serviceType}` : info.event.title 
-                        if (info.event.title !== title) {
-                            info.event.setProp('title', title)
-                        }
-                    } else {
-                        let title = (info.event.extendedProps.patient && info.event.extendedProps.patient.name) ? `${info.event.extendedProps.patient.name}様: ${info.event.extendedProps.serviceType}` : info.event.title 
-                        if (info.event.title !== title) {
-                            info.event.setProp('title', title)
-                        }
-                    }
-                }
-            }
+            } 
 
             if (!window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches && !window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
                 let popoverTitle = info.event.extendedProps.serviceType || ''

@@ -239,6 +239,7 @@ let createCalendar = () => {
                         title.style.display = 'block'
                     } else if (info.view.type === 'listDay') {
                         $('#no-appointments-date').html(fullDate)
+                        title.style.display = 'none'
                     } else {
                         title.style.display = 'none'
                     }

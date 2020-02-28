@@ -97,7 +97,7 @@ class Appointment < ApplicationRecord
 	end
 
 	def previous_report_comment
-		CompletionReport.from_appointments.from_patient(patient_id).where('appointments.starts_at < ?', starts_at).order('appointments.starts_at DESC').first.try(:general_comment)
+		Appointment.where(patient_id: patient_id).in_range((starts_at - 4.weeks)..(starts_at - 1.minute)).order('starts_at DESC').first.completion_report.try(:general_comment)
 	end
 
 	def borderColor 

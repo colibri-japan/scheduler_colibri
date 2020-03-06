@@ -339,47 +339,54 @@ let createCalendar = () => {
             } 
 
             if (!window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches && !window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
-                let popoverTitle = info.event.extendedProps.serviceType || ''
-                
-                let popoverContent
-                if (info.event.extendedProps.patient && info.event.extendedProps.patient.address) {
-                    popoverContent = `${info.event.extendedProps.patient.address}<br/>${info.event.extendedProps.description}`
+                if (typeof(info.event) === 'undefined') {
+                    console.log('info.event is undefined')
+                    console.log(info.event)
+                    console.log(info)
                 } else {
-                    popoverContent = info.event.extendedProps.description
-                }
+                    let popoverTitle = info.event.extendedProps.serviceType || ''
                 
-                window.popoverFocusAllowed = true;
-                
-                $(info.el).popover({
-                    html: true,
-                    title: popoverTitle,
-                    content: popoverContent,
-                    placement: 'top',
-                    container: 'body',
-                    trigger: 'manual'
-                }).on('mouseenter', function () {
-                    if (window.popoverFocusAllowed) {
-                        window.popoverFocusAllowed = false
-                        var _this = this;
-                        $(_this).popover('show');
-                        $('.popover').on('mouseleave', function () {
-                            $(_this).popover('hide');
-                        });
-                    }
-                }).on('mouseleave', function () {
-                    var _this = this
-                    var condition = $('.popover-body').overflownY();
-                    if (condition) {
-                        setTimeout(function () {
-                            if (!$('.popover:hover').length) {
-                                $(_this).popover('hide');
-                            }
-                        }, 300);
+                    let popoverContent
+                    if (info.event.extendedProps.patient && info.event.extendedProps.patient.address) {
+                        popoverContent = `${info.event.extendedProps.patient.address}<br/>${info.event.extendedProps.description}`
                     } else {
-                        $(_this).popover('hide')
+                        popoverContent = info.event.extendedProps.description
                     }
-                    window.popoverFocusAllowed = true
-                });
+                    
+                    window.popoverFocusAllowed = true;
+                    
+                    $(info.el).popover({
+                        html: true,
+                        title: popoverTitle,
+                        content: popoverContent,
+                        placement: 'top',
+                        container: 'body',
+                        trigger: 'manual'
+                    }).on('mouseenter', function () {
+                        if (window.popoverFocusAllowed) {
+                            window.popoverFocusAllowed = false
+                            var _this = this;
+                            $(_this).popover('show');
+                            $('.popover').on('mouseleave', function () {
+                                $(_this).popover('hide');
+                            });
+                        }
+                    }).on('mouseleave', function () {
+                        var _this = this
+                        var condition = $('.popover-body').overflownY();
+                        if (condition) {
+                            setTimeout(function () {
+                                if (!$('.popover:hover').length) {
+                                    $(_this).popover('hide');
+                                }
+                            }, 300);
+                        } else {
+                            $(_this).popover('hide')
+                        }
+                        window.popoverFocusAllowed = true
+                    });
+                }
+
             }
         },
 

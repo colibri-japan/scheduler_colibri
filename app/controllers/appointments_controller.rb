@@ -33,7 +33,7 @@ class AppointmentsController < ApplicationController
   # GET /appointments/1.json
   def show
     @patient = @appointment.patient
-    @recent_reports = CompletionReport.with_general_comment.where(reportable_id: Appointment.operational.where(patient_id: @appointment.patient_id).where('starts_at < ?', Time.current.in_time_zone('Tokyo')).last(15)).includes(reportable: :nurse).joins('LEFT JOIN appointments on appointments.id = completion_reports.reportable_id').order('appointments.starts_at DESC')
+    @recent_reports = CompletionReport.with_general_comment.where(reportable_type: 'Appointment', reportable_id: Appointment.operational.where(patient_id: @appointment.patient_id).where('starts_at < ?', Time.current.in_time_zone('Tokyo')).order(starts_at: :desc).limit(15).ids).includes(reportable: :nurse).joins('LEFT JOIN appointments on appointments.id = completion_reports.reportable_id').order('appointments.starts_at DESC')
   end
 
   # GET /appointments/1/edit

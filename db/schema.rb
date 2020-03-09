@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200225143037) do
+ActiveRecord::Schema.define(version: 20200309132051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,19 @@ ActiveRecord::Schema.define(version: 20200225143037) do
     t.datetime "updated_at", null: false
     t.string "phone_number"
     t.index ["care_manager_corporation_id"], name: "index_care_managers_on_care_manager_corporation_id"
+  end
+
+  create_table "care_plans", force: :cascade do |t|
+    t.bigint "patient_id"
+    t.bigint "care_manager_id"
+    t.date "kaigo_certification_validity_start"
+    t.date "kaigo_certification_validity_end"
+    t.date "kaigo_certification_date"
+    t.integer "insurance_category"
+    t.integer "kaigo_level"
+    t.integer "handicap_level"
+    t.index ["care_manager_id"], name: "index_care_plans_on_care_manager_id"
+    t.index ["patient_id"], name: "index_care_plans_on_patient_id"
   end
 
   create_table "completion_reports", force: :cascade do |t|

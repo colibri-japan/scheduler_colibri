@@ -5,7 +5,10 @@ class Patient < ApplicationRecord
 
 	belongs_to :corporation, touch: true
 	belongs_to :nurse, optional: true
+	has_many :care_plans
 	belongs_to :care_manager, optional: true
+	# for now, maintaining care manager relation but will be moved to has many CM through care plans
+	# has_many :care_managers, through: :care_plans
 	belongs_to :second_care_manager, optional: true, class_name: 'CareManager'
 	has_many :appointments
 	has_many :recurring_appointments

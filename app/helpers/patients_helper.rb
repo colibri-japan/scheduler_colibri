@@ -88,35 +88,39 @@ module PatientsHelper
         end
     end
 
-    def first_care_manager_corporation_name(patient)
-        if [8,0,1].include?(patient.kaigo_level)
-            if patient.care_manager.present? && patient.second_care_manager.present?
-                patient.second_care_manager.care_manager_corporation.try(:name)
-            elsif patient.care_manager.present?
-                patient.care_manager.care_manager_corporation.try(:name)
-            elsif patient.second_care_manager.present? 
-                patient.second_care_manager.care_manager_corporation.try(:name)
+    def first_care_manager_corporation_name(care_plan)
+        return '' if care_plan.nil?
+
+        if [8,0,1].include?(care_plan.try(:kaigo_level))
+            if care_plan.care_manager.present? && care_plan.second_care_manager.present?
+                care_plan.second_care_manager.try(:care_manager_corporation).try(:name)
+            elsif care_plan.care_manager.present?
+                care_plan.care_manager.try(:care_manager_corporation).try(:name)
+            elsif care_plan.second_care_manager.present? 
+                care_plan.second_care_manager.try(:care_manager_corporation).try(:name)
             end
         else
-            if patient.care_manager.present?
-                patient.care_manager.care_manager_corporation.try(:name)
+            if care_plan.care_manager.present?
+                care_plan.care_manager.try(:care_manager_corporation).try(:name)
             else
                 ''
             end
         end
     end
     
-    def first_care_manager_name(patient)
-        if [8,0,1].include?(patient.kaigo_level)
-            if patient.care_manager.present? && patient.second_care_manager.present?
-                patient.second_care_manager.try(:name)
-            elsif patient.care_manager.present?
-                patient.care_manager.try(:name)
-            elsif patient.second_care_manager.present? 
-                patient.second_care_manager.try(:name)
+    def first_care_manager_name(care_plan)
+        return '' if care_plan.nil? 
+        
+        if [8,0,1].include?(care_plan.kaigo_level)
+            if care_plan.care_manager.present? && care_plan.second_care_manager.present?
+                care_plan.second_care_manager.try(:name)
+            elsif care_plan.care_manager.present?
+                care_plan.care_manager.try(:name)
+            elsif care_plan.second_care_manager.present? 
+                care_plan.second_care_manager.try(:name)
             end
         else
-            patient.care_manager.try(:name)
+            care_plan.care_manager.try(:name)
         end
     end
 
@@ -128,14 +132,13 @@ module PatientsHelper
         end
     end
 
-    def second_care_manager_corporation_name(patient)
-        #not finished
-        if [8,0,1].include?(patient.kaigo_level)
-            if patient.care_manager.present? && patient.second_care_manager.present?
-                "#{patient.care_manager.care_manager_corporation.try(:name)}<br/>#{patient.care_manager.try(:name)}".html_safe
-            elsif patient.care_manager.present?
+    def second_care_manager_corporation_name(care_plan)
+        if [8,0,1].include?(care_plan.try(:kaigo_level))
+            if care_plan.care_manager.present? && care_plan.second_care_manager.present?
+                "#{care_plan.care_manager.try(:care_manager_corporation).try(:name)}<br/>#{care_plan.care_manager.try(:name)}".html_safe
+            elsif care_plan.care_manager.present?
                 ''
-            elsif patient.second_care_manager.present? 
+            elsif care_plan.second_care_manager.present? 
                 ''
             end
         else

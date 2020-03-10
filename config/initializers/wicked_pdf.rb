@@ -11,7 +11,7 @@
 if Rails.env.staging? || Rails.env.production?
   wkhtmltopdf_path =  Gem.bin_path('wkhtmltopdf-heroku', 'wkhtmltopdf-linux-amd64')
 else
-  wkhtmltopdf_path = 'C:\wkhtmltopdf\bin\wkhtmltopdf.exe'
+  wkhtmltopdf_path = '/usr/local/bin/wkhtmltopdf'
 end
 
 if Rails.env.production?

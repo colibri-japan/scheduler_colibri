@@ -31,7 +31,8 @@ class PatientsController < ApplicationController
     authorize @patient, :same_corporation_as_current_user?
 
     @nurses_with_services = Nurse.joins(:appointments).select("nurses.*, sum(appointments.duration) as sum_appointments_duration").where(appointments: {patient_id: @patient.id, archived_at: nil, cancelled: false, edit_requested: false}).displayable.not_archived.group('nurses.id').order('sum_appointments_duration DESC')
-    
+    @care_manager = @patient.care_plans.last.try(:care_manager)
+
     respond_to do |format|
       format.js 
     end
@@ -59,6 +60,8 @@ class PatientsController < ApplicationController
 
   def new
     @patient = Patient.new
+    @patient.care_plans.build
+
     set_nurses
     set_care_managers
 
@@ -121,7 +124,9 @@ class PatientsController < ApplicationController
     @invoicing_summary = @patient.invoicing_summary(@first_day..@end_of_today_in_japan)
 
     @cancelled_but_invoiceable_appointments = @appointments_till_today.where(cancelled: true).where.not(total_invoiced: [0, nil])
-    
+    @care_plan = @patient.care_plans.valid_at(@first_day).first
+    @previous_care_plan = @patient.care_plans.valid_at(@first_day - 1.month)
+
     respond_to do |format|
       format.html 
       format.pdf do
@@ -172,6 +177,8 @@ class PatientsController < ApplicationController
     @invoicing_summary = @patient.invoicing_summary(@first_day..@end_of_today_in_japan)
     
     @cancelled_but_invoiceable_appointments = @appointments_till_today.where(cancelled: true).where.not(total_invoiced: [0, nil])
+
+    @care_manager = @patient.care_plans.valid_at(@first_day).first.try(:care_manager)
 
     respond_to do |format|
       format.html 
@@ -235,14 +242,16 @@ class PatientsController < ApplicationController
   end
 
   def convert_wareki_dates(params)
-    params[:kaigo_certification_date] = Date.parse_jp_date(params[:kaigo_certification_date]) rescue nil
-    params[:kaigo_certification_validity_end] = Date.parse_jp_date(params[:kaigo_certification_validity_end]) rescue nil
-    params[:kaigo_certification_validity_start] = Date.parse_jp_date(params[:kaigo_certification_validity_start]) rescue nil
+    if params[:care_plans_attributes].present?
+      params[:care_plans_attributes]['0'][:kaigo_certification_date] = Date.parse_jp_date(params[:care_plans_attributes]['0'][:kaigo_certification_date]) rescue nil
+      params[:care_plans_attributes]['0'][:kaigo_certification_validity_end] = Date.parse_jp_date(params[:care_plans_attributes]['0'][:kaigo_certification_validity_end]) rescue nil
+      params[:care_plans_attributes]['0'][:kaigo_certification_validity_start] = Date.parse_jp_date(params[:care_plans_attributes]['0'][:kaigo_certification_validity_start]) rescue nil
+    end
     params[:birthday] = Date.parse_jp_date(params[:birthday]) rescue nil
     params
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :second_care_manager_id, :date_of_contract, :insurance_id, :birthday, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :issuing_administration_number, :issuing_administration_name, insurance_policy: [], caveat_list:[])
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :second_care_manager_id, :date_of_contract, :insurance_id, :birthday, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :issuing_administration_number, :issuing_administration_name, caveat_list:[], care_plans_attributes: [:id, :care_manager_id, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, insurance_policy: []])
   end
 end

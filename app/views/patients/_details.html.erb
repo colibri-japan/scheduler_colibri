@@ -15,11 +15,11 @@
 			</tr>
 			<tr>
 				<td class="details-table-head">CM</td>
-				<td><%= @patient.care_manager.try(:name) %></td>
+				<td><%= @care_manager.try(:name) %></td>
 			</tr>
 			<tr>
 				<td class="details-table-head">CM電話</td>
-				<td><%= @patient.care_manager.try(:phone_number) %></td>
+				<td><%= @care_manager.try(:phone_number) %></td>
 			</tr>
 			<% if @patient.phone_mail.present? %>
 				<tr>

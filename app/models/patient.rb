@@ -6,9 +6,7 @@ class Patient < ApplicationRecord
 	belongs_to :corporation, touch: true
 	belongs_to :nurse, optional: true
 	has_many :care_plans
-	belongs_to :care_manager, optional: true
-	# for now, maintaining care manager relation but will be moved to has many CM through care plans
-	# has_many :care_managers, through: :care_plans
+	has_many :care_managers, through: :care_plans
 	belongs_to :second_care_manager, optional: true, class_name: 'CareManager'
 	has_many :appointments
 	has_many :recurring_appointments
@@ -16,6 +14,8 @@ class Patient < ApplicationRecord
 	has_many :salary_line_items
 	has_many :patient_posts
 	has_many :posts, through: :patient_posts
+
+	accepts_nested_attributes_for :care_plans
 	
 	validates :kana, presence: true, format: { with: /\A[\p{katakana}\p{blank}\0-9１-９}ー－]+\z/, message: 'フリガナはカタカナで入力してください' }
 	validate :name_uniqueness
@@ -29,6 +29,7 @@ class Patient < ApplicationRecord
 	scope :from_care_manager_corporation, -> id { where(care_manager_id: CareManager.where(care_manager_corporation_id: id).pluck(:id)) }
 	scope :male, -> { where(gender: false) }
 	scope :female, -> { where(gender: true) }
+	scope :with_care_plan_valid_at, -> date { includes(:care_plans).where('care_plans.kaigo_certification_validity_start <= ? AND care_plans.kaigo_certification_validity_end >= ?', date, date) }
 
 	def age
 		if birthday.present?

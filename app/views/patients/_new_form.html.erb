@@ -151,106 +151,129 @@
 	<div class="modal-body">
 		<div class="modal-subsection-title">介護計画情報</div>
 
-		<%= form.fields_for :care_plans do |c| %>
-			<div class="form-group">
-				<%= c.label :care_manager_id, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
-				<%= c.select :care_manager_id, options_for_select(@care_managers.map{|cm| ["#{cm.name} - #{cm.care_manager_corporation.try(:name)}", cm.id]}), {include_blank: ''}, id: :patient_care_manager %>
-			</div>
-
-			<div class="colibri-form-group-flex">
-				<div style="width:23%">
-					<%= c.label :insurance_policy, "保険区分", class: "colibri-form-label-dark" %>
-				</div>
-				<div style="width:77%">
-					<%= c.select :insurance_policy, options_for_select([['障害', 0], ['介護', 1], ['医療', 2]]), {}, {multiple: true, id: 'patient-insurance-policy'} %>
-				</div>
-			</div>
-
-			<div class="colibri-form-group-flex">
-				<div style="width:23%">
-					<%= c.label :handicap_level, "障害程度区分", class: "colibri-form-label-dark" %>
-				</div>
-				<div style="width:77%">
-					<div>
-						<%= c.radio_button :handicap_level, 1, {class: "radio-inline"} %>
-						<%= label :handicap_level_1, '区分１' %>
-						<%= c.radio_button :handicap_level, 2, {class: "radio-inline"} %>
-						<%= label :handicap_level_2, '区分２' %>
-						<%= c.radio_button :handicap_level, 3, {class: "radio-inline"} %>
-						<%= label :handicap_level_3, '区分３' %>
-						<%= c.radio_button :handicap_level, 4, {class: "radio-inline"} %>
-						<%= label :handicap_level_4, '区分４' %>
-					</div>
-					<div>
-						<%= c.radio_button :handicap_level, 5, {class: "radio-inline"} %>
-						<%= label :handicap_level_5, '区分５' %>
-						<%= c.radio_button :handicap_level, 6, {class: "radio-inline"} %>
-						<%= label :handicap_level_6, '区分６' %>
-					</div>
-				</div>
-			</div>
-
-			<div class="colibri-form-group-flex">
-				<div style="width:23%">
-					<%= c.label :kaigo_level, "介護度", class: "colibri-form-label-dark" %>
-				</div>
-				<div style="width:77%">
-					<div>
-					<%= c.radio_button :kaigo_level, 7, {class: "radio-inline"} %>
-					<%= label :kaigo_level_7, '申請中' %>
-					<%= c.radio_button :kaigo_level, 8, {class: "radio-inline"} %>
-					<%= label :kaigo_level_8, '事業対象者' %>
-					<%= c.radio_button :kaigo_level, 0, {class: "radio-inline"} %>
-					<%= label :kaigo_level_0, '要支援1' %>
-					<%= c.radio_button :kaigo_level, 1, {class: "radio-inline"} %>
-					<%= label :kaigo_level_1, '要支援2' %>
-					</div>
-					<div>
-					<%= c.radio_button :kaigo_level, 2, {class: "radio-inline"} %>
-					<%= label :kaigo_level_2, '要介護1' %>
-					<%= c.radio_button :kaigo_level, 3, {class: "radio-inline"} %>
-					<%= label :kaigo_level_3, '要介護2' %>
-					<%= c.radio_button :kaigo_level, 4, {class: "radio-inline"} %>
-					<%= label :kaigo_level_4, '要介護3' %>
-					<%= c.radio_button :kaigo_level, 5, {class: "radio-inline"} %>
-					<%= label :kaigo_level_5, '要介護4' %>
-					</div>
-					<div>
-					<%= c.radio_button :kaigo_level, 6, {class: "radio-inline"} %>
-					<%= label :kaigo_level_6, '要介護5' %>
-					</div>
-				</div>
-			</div>
-
-			<div>
-				<%= c.label :kaigo_certification_date, "認定日", class: "colibri-form-label-dark" %>
-				<%= c.hidden_field :kaigo_certification_date, id: :patient_kaigo_certification_date %>
-				<%= select_tag :kaigo_certification_date_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, @patient.kaigo_certification_date.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_date_era, class: 'wareki_era colibri-input'} %>
-				<%= text_field_tag :kaigo_certification_date_era_year, value = @patient.kaigo_certification_date.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_date_year, class: 'wareki_year colibri-input'} %>年
-				<%= text_field_tag :kaigo_certification_date_era_month, value = @patient.kaigo_certification_date.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_date_month , class: 'wareki_month colibri-input'}%>月
-				<%= text_field_tag :kaigo_certification_date_era_day, value = @patient.kaigo_certification_date.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_date_day, class: 'wareki_day colibri-input'} %>日
-			</div>
-
-			<div>
-				<%= c.label :kaigo_certification_validity_start, "認定期間", class: "colibri-form-label-dark" %>
+		<div id="care-plan-fields">
+			<%= form.fields_for :care_plans do |c| %>
 				<div class="form-group">
-					<%= c.hidden_field :kaigo_certification_validity_start, id: :patient_kaigo_certification_validity_start %>
-					<%= select_tag :kaigo_certification_validity_start_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, @patient.kaigo_certification_validity_start.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_validity_start_era, class: 'wareki_era colibri-input'} %>
-					<%= text_field_tag :kaigo_certification_validity_start_year, value = @patient.kaigo_certification_validity_start.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_start_year, class: 'wareki_year colibri-input'} %>年
-					<%= text_field_tag :kaigo_certification_validity_start_month, value = @patient.kaigo_certification_validity_start.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_start_month , class: 'wareki_month colibri-input'}%>月
-					<%= text_field_tag :kaigo_certification_validity_start_day, value = @patient.kaigo_certification_validity_start.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_start_day, class: 'wareki_day colibri-input'} %>日開始 ~
+					<%= c.label :care_manager_id, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
+					<%= c.select :care_manager_id, options_for_select(@care_managers.map{|cm| ["#{cm.name} - #{cm.care_manager_corporation.try(:name)}", cm.id]}), {include_blank: ''}, id: :patient_care_manager %>
 				</div>
+
+				<div class="colibri-form-group-flex">
+					<div style="width:23%">
+						<%= c.label :insurance_policy, "保険区分", class: "colibri-form-label-dark" %>
+					</div>
+					<div style="width:77%">
+						<%= c.select :insurance_policy, options_for_select([['障害', 0], ['介護', 1], ['医療', 2]]), {}, {multiple: true, id: 'patient-insurance-policy'} %>
+					</div>
+				</div>
+
+				<div class="colibri-form-group-flex">
+					<div style="width:23%">
+						<%= c.label :handicap_level, "障害程度区分", class: "colibri-form-label-dark" %>
+					</div>
+					<div style="width:77%">
+						<div>
+							<%= c.radio_button :handicap_level, 1, {class: "radio-inline"} %>
+							<%= label :handicap_level_1, '区分１' %>
+							<%= c.radio_button :handicap_level, 2, {class: "radio-inline"} %>
+							<%= label :handicap_level_2, '区分２' %>
+							<%= c.radio_button :handicap_level, 3, {class: "radio-inline"} %>
+							<%= label :handicap_level_3, '区分３' %>
+							<%= c.radio_button :handicap_level, 4, {class: "radio-inline"} %>
+							<%= label :handicap_level_4, '区分４' %>
+						</div>
+						<div>
+							<%= c.radio_button :handicap_level, 5, {class: "radio-inline"} %>
+							<%= label :handicap_level_5, '区分５' %>
+							<%= c.radio_button :handicap_level, 6, {class: "radio-inline"} %>
+							<%= label :handicap_level_6, '区分６' %>
+						</div>
+					</div>
+				</div>
+
+				<div class="colibri-form-group-flex">
+					<div style="width:23%">
+						<%= c.label :kaigo_level, "介護度", class: "colibri-form-label-dark" %>
+					</div>
+					<div style="width:77%">
+						<div>
+						<%= c.radio_button :kaigo_level, 7, {class: "radio-inline"} %>
+						<%= label :kaigo_level_7, '申請中' %>
+						<%= c.radio_button :kaigo_level, 8, {class: "radio-inline"} %>
+						<%= label :kaigo_level_8, '事業対象者' %>
+						<%= c.radio_button :kaigo_level, 0, {class: "radio-inline"} %>
+						<%= label :kaigo_level_0, '要支援1' %>
+						<%= c.radio_button :kaigo_level, 1, {class: "radio-inline"} %>
+						<%= label :kaigo_level_1, '要支援2' %>
+						</div>
+						<div>
+						<%= c.radio_button :kaigo_level, 2, {class: "radio-inline"} %>
+						<%= label :kaigo_level_2, '要介護1' %>
+						<%= c.radio_button :kaigo_level, 3, {class: "radio-inline"} %>
+						<%= label :kaigo_level_3, '要介護2' %>
+						<%= c.radio_button :kaigo_level, 4, {class: "radio-inline"} %>
+						<%= label :kaigo_level_4, '要介護3' %>
+						<%= c.radio_button :kaigo_level, 5, {class: "radio-inline"} %>
+						<%= label :kaigo_level_5, '要介護4' %>
+						</div>
+						<div>
+						<%= c.radio_button :kaigo_level, 6, {class: "radio-inline"} %>
+						<%= label :kaigo_level_6, '要介護5' %>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<%= c.label :kaigo_certification_date, "認定日", class: "colibri-form-label-dark" %>
+					<%= c.hidden_field :kaigo_certification_date, id: :patient_kaigo_certification_date %>
+					<%= select_tag :kaigo_certification_date_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, @patient.kaigo_certification_date.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_date_era, class: 'wareki_era colibri-input'} %>
+					<%= text_field_tag :kaigo_certification_date_era_year, value = @patient.kaigo_certification_date.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_date_year, class: 'wareki_year colibri-input'} %>年
+					<%= text_field_tag :kaigo_certification_date_era_month, value = @patient.kaigo_certification_date.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_date_month , class: 'wareki_month colibri-input'}%>月
+					<%= text_field_tag :kaigo_certification_date_era_day, value = @patient.kaigo_certification_date.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_date_day, class: 'wareki_day colibri-input'} %>日
+				</div>
+
+				<div>
+					<%= c.label :kaigo_certification_validity_start, "認定期間", class: "colibri-form-label-dark" %>
+					<div class="form-group">
+						<%= c.hidden_field :kaigo_certification_validity_start, id: :patient_kaigo_certification_validity_start %>
+						<%= select_tag :kaigo_certification_validity_start_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, @patient.kaigo_certification_validity_start.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_validity_start_era, class: 'wareki_era colibri-input'} %>
+						<%= text_field_tag :kaigo_certification_validity_start_year, value = @patient.kaigo_certification_validity_start.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_start_year, class: 'wareki_year colibri-input'} %>年
+						<%= text_field_tag :kaigo_certification_validity_start_month, value = @patient.kaigo_certification_validity_start.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_start_month , class: 'wareki_month colibri-input'}%>月
+						<%= text_field_tag :kaigo_certification_validity_start_day, value = @patient.kaigo_certification_validity_start.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_start_day, class: 'wareki_day colibri-input'} %>日開始 ~
+					</div>
+					<div class="form-group">
+						<%= c.hidden_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end %>
+						<%= select_tag :kaigo_certification_validity_end_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, @patient.kaigo_certification_validity_end.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_validity_end_era, class: 'wareki_era colibri-input'} %>
+						<%= text_field_tag :kaigo_certification_validity_end_year, value = @patient.kaigo_certification_validity_end.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_end_year, class: 'wareki_year colibri-input'} %>年
+						<%= text_field_tag :kaigo_certification_validity_end_month, value = @patient.kaigo_certification_validity_end.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_end_month, class: 'wareki_month colibri-input'}%>月
+						<%= text_field_tag :kaigo_certification_validity_end_day, value = @patient.kaigo_certification_validity_end.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_end_day, class: 'wareki_day colibri-input'} %>日終了
+					</div>
+				</div>
+
 				<div class="form-group">
-					<%= c.hidden_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end %>
-					<%= select_tag :kaigo_certification_validity_end_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, @patient.kaigo_certification_validity_end.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_validity_end_era, class: 'wareki_era colibri-input'} %>
-					<%= text_field_tag :kaigo_certification_validity_end_year, value = @patient.kaigo_certification_validity_end.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_end_year, class: 'wareki_year colibri-input'} %>年
-					<%= text_field_tag :kaigo_certification_validity_end_month, value = @patient.kaigo_certification_validity_end.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_end_month, class: 'wareki_month colibri-input'}%>月
-					<%= text_field_tag :kaigo_certification_validity_end_day, value = @patient.kaigo_certification_validity_end.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_end_day, class: 'wareki_day colibri-input'} %>日終了
+					<%= c.label :short_term_goals, "短期目標", class: "colibri-form-label-dark" %>
+					<%= c.text_area :short_term_goals, class: "form-control" %>
 				</div>
-			</div>
+
+				<div class="form-group">
+					<%= c.label :long_term_goals, "長期目標", class: "colibri-form-label-dark" %>
+					<%= c.text_area :long_term_goals, class: "form-control" %>
+				</div>
+
+				<div class="form-group">
+					<%= c.label :patient_wishes, "ご本人の要望", class: "colibri-form-label-dark" %>
+					<%= c.text_area :patient_wishes, class: "form-control" %>
+				</div>
+
+				<div class="form-group">
+					<%= c.label :family_wishes, "ご家族の要望", class: "colibri-form-label-dark" %>
+					<%= c.text_area :family_wishes, class: "form-control" %>
+				</div>
 
 
-		<% end %>
+			<% end %>
+
+		</div>
 
 
 	</div>

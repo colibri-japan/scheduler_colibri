@@ -6,7 +6,37 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
-			<%= render 'form', patient: @patient %>
+			<div id="patient-management-menu"  style="display:flex;width:100%">
+				<div id="patient-form-menu" class="patient-management-item" style="flex:1;text-align:center;cursor:pointer;height:30px;vertical-align:middle">利用者情報</div>
+				<div id="patient-care-plans-menu" class="patient-management-item" style="flex:1;text-align:center;cursor:pointer;height:30px;vertical-align:middle">ケアプラン情報</div>
+				<div id="patient-documents-menu" class="patient-management-item" style="flex:1;text-align:center;cursor:pointer;height:30px;vertical-align:middle">出力・印刷</div>
+			</div>
+
+			<div id="patient-form-container" class="patient-management-container" style="<%= 'display:none' if params[:open_tab].present? %>">
+				<div id="patient-form-flash" class="js-flash" style="display:flex;justify-content:center">
+				</div>
+				<%= render 'form', patient: @patient %>
+			</div>
+
+			<div id="patient-care-plans-container" class="patient-management-container" style="<%= 'display:none' unless params[:open_tab].present? && params[:open_tab] == "care_plans" %>">
+				<div id="patient-care-plans-flash" style="display:flex;justify-content:center">
+					<% if params[:care_plan_saved].present? %>
+						<% if params[:care_plan_saved] == "true" %>
+							<div class='alert alert-success'>ケアプランの登録が成功しました。</div>
+						<% elsif params[:care_plan_saved] == "destroyed" %>
+							<div class='alert alert-success'>ケアプランの情報が削除されました。</div>
+						<% else %>
+							<div class='alert alert-warning'>ケアプランの登録が失敗しました。</div>
+						<% end %>
+					<% end %>
+				</div>
+				<%= render 'care_plans/index', care_plans: @care_plans, patient: @patient %>
+			</div>
+
+			<div id="patient-documents-container" class="patient-management-container">
+			</div>
+
+			
 		</div>
 	</div>
 </div>

@@ -1,0 +1,4 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+
+$.getScript('/patients/' + <%= @patient.id %> + '/edit.js?open_tab=care_plans&care_plan_saved=' + <%= !@care_plan.errors.any? %> )

@@ -15,3 +15,25 @@ set_kaigo_certification_validity_end()
 set_kaigo_certification_validity_start()
 set_kaigo_certification_date()
 set_birthday()
+
+$('.patient-management-item').click(function(){
+    $('.patient-management-container').hide()
+})
+
+$('#patient-form-menu').click(function(){
+    $('#patient-form-container').show()
+})
+
+$('#patient-care-plans-menu').click(function(){
+    $('#patient-care-plans-container').show()
+})
+
+$('#patient-documents-menu').click(function(){
+    $('#patient-documents-container').show()
+})
+
+$('.clickable-row').click(function(){
+    $.getScript($(this).data('url'))
+})
+
+$('#patient-care-plans-flash').delay(3000).fadeOut('slow')

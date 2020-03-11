@@ -42,6 +42,8 @@ class PatientsController < ApplicationController
     set_nurses
     set_care_managers
 
+    @care_plans = @patient.care_plans.includes(:care_manager).order(kaigo_certification_validity_start: :desc)
+
     respond_to do |format|
       format.js 
       format.js.phone

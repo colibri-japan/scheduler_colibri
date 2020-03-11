@@ -1,0 +1,9 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "edit" %>');
+$('#edit_care_plan').modal('show');
+
+selectizeInsurancePolicy()
+patientCaremanagerSelectize()
+warekiHelper()
+patientWarekiFields()

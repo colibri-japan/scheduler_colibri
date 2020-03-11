@@ -46,7 +46,9 @@ Rails.application.routes.draw do
 
   resources :salary_line_items, only: [:update, :destroy]
 
-  resources :patients
+  resources :patients do 
+    resources :care_plans
+  end
 
   resources :posts
 

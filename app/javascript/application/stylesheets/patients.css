@@ -64,3 +64,13 @@
 	overflow-x: auto;
 	margin: 3px
 }
+
+.patient-management-item:hover {
+	background-color: #f4f7f7;
+	color:#757575;
+}
+
+.patient-management-item.selected {
+	color:#757575;
+	border-bottom: 3px solid rgb(122, 213, 222);
+}

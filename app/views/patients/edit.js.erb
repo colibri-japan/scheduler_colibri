@@ -37,3 +37,8 @@ $('.clickable-row').click(function(){
 })
 
 $('#patient-care-plans-flash').delay(3000).fadeOut('slow')
+
+$('.patient-management-item').click(function(){
+    $('.patient-management-item').removeClass('selected')
+    $(this).addClass('selected')
+})

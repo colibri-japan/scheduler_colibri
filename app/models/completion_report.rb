@@ -1,7 +1,11 @@
 class CompletionReport < ApplicationRecord
+    attribute :editing_occurrences_after, :date
+
     belongs_to :reportable, polymorphic: true
     belongs_to :forecasted_report, class_name: 'CompletionReport', optional: true 
     has_many :achieved_reports, class_name: 'CompletionReport', foreign_key: :forecasted_report_id
+
+    before_update :split_recurring_appointments_and_attach_completion_reports
 
     scope :from_appointments, -> { where(reportable_type: 'Appointment') }
     scope :from_recurring_appointments, -> { where(reportable_type: 'RecurringAppointment') }
@@ -123,6 +127,41 @@ class CompletionReport < ApplicationRecord
     def with_shopping?
         batch_assisted_groceries? || grocery_shopping? ||  medecine_shopping? || amount_received_for_shopping.present? ||
         amount_spent_for_shopping.present? || change_left_after_shopping? || shopping_items.present?
+    end
+
+    private
+
+    def split_recurring_appointments_and_attach_completion_reports
+        if reportable_type == 'RecurringAppointment' && editing_occurrences_after.present?
+            split_recurring_appointments!
+            attach_completion_report_to_each_recurring_appointment
+        end
+    end
+
+    def split_recurring_appointments!            
+        current_recurring_appointment = self.reportable            
+
+        current_recurring_appointment.editing_occurrences_after = self.editing_occurrences_after
+        current_recurring_appointment.synchronize_appointments = true 
+        current_recurring_appointment.should_not_copy_completion_report = true 
+
+        current_recurring_appointment.save!
+    end
+
+    def attach_completion_report_to_each_recurring_appointment
+        original_recurring_appointment = self.reportable
+        new_recurring_appointment = RecurringAppointment.where(original_id: self.reportable_id).last 
+
+        if new_recurring_appointment.present?
+            puts 'found the new recurring appointment'
+            new_completion_report = self.dup
+            new_completion_report.reportable = new_recurring_appointment
+            new_completion_report.save
+        else
+            puts 'did not find new recurring' 
+        end
+
+        self.restore_attributes
     end
 
 

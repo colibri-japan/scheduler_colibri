@@ -27,6 +27,11 @@
           <div class="form-group">
             <%= completion_report_summary(completion_report).try(:html_safe) %>
           </div>
+
+          <% if @reportable.class.try(:name) == 'RecurringAppointment' %>
+            <%= form.label :editing_occurrences_after, "編集するサービス", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+            <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'}, {id: :completion_report_editing_occurrences_after} %>
+          <% end %>
         </div>
       <% end %>
       <% if @reportable.class.name == 'Appointment' %>

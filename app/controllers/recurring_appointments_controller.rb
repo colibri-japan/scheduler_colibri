@@ -66,7 +66,6 @@ class RecurringAppointmentsController < ApplicationController
     @recurring_appointment = RecurringAppointment.find(params[:id])
     @recurring_appointment.attributes = recurring_appointment_params
     
-    redefine_anchor_if_editing_after_some_date
     @parameters_for_activity = @recurring_appointment.changes
     
     if @recurring_appointment.save
@@ -104,12 +103,6 @@ class RecurringAppointmentsController < ApplicationController
   end
 
   private
-
-    def redefine_anchor_if_editing_after_some_date
-      if recurring_appointment_params[:anchor].blank? && recurring_appointment_params[:editing_occurrences_after].present?
-        @recurring_appointment.anchor = recurring_appointment_params[:editing_occurrences_after].to_date
-      end
-    end
 
     def set_recurring_appointment
       @recurring_appointment = RecurringAppointment.find(params[:id])
@@ -159,9 +152,13 @@ class RecurringAppointmentsController < ApplicationController
       @parameters_for_activity["patient_name"] = @new_recurring_appointment.patient.try(:name) if @parameters_for_activity['patient_id'].present?
       @parameters_for_activity["starts_at"] = [@recurring_appointment.starts_at, nil] unless @parameters_for_activity['starts_at'].present?
       @parameters_for_activity["ends_at"] = [@recurring_appointment.ends_at, nil] unless @parameters_for_activity['ends_at'].present?
-      @parameters_for_activity["anchor"] = [@recurring_appointment.anchor, nil] unless @parameters_for_activity['anchor'].present?
+      if @recurring_appointment.editing_occurrences_after.present? 
+        @parameters_for_activity["anchor"] = [@recurring_appointment.editing_occurrences_after, nil]
+      end
 
-      @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, previous_nurse_id: @recurring_appointment.nurse_id, nurse_id: @new_recurring_appointment.nurse_id, previous_patient_id: @recurring_appointment.patient_id, patient_id: @new_recurring_appointment.patient_id, parameters: @parameters_for_activity
+      if @new_recurring_appointment.present?
+        @recurring_appointment.create_activity :update, owner: current_user, planning_id: @planning.id, previous_nurse_id: @recurring_appointment.nurse_id, nurse_id: @new_recurring_appointment.nurse_id, previous_patient_id: @recurring_appointment.patient_id, patient_id: @new_recurring_appointment.patient_id, parameters: @parameters_for_activity
+      end
     end
 
     def recurring_appointment_params

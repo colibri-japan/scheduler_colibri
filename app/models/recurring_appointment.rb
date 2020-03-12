@@ -6,6 +6,7 @@ class RecurringAppointment < ApplicationRecord
 	attribute :editing_occurrences_after, :date
 	attribute :request_edit_for_overlapping_appointments, :boolean
 	attribute :synchronize_appointments, :boolean
+	attribute :should_not_copy_completion_report, :boolean
 	
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
@@ -27,6 +28,7 @@ class RecurringAppointment < ApplicationRecord
 	validate :nurse_patient_and_planning_from_same_corporation
 	validate :cannot_overlap_existing_appointment_create, on: :create
 
+	before_update :redefine_anchor_if_editing_after_some_date
 	before_update :split_recurring_appointment_before_after_update
 	after_commit :update_appointments, on: :update
 
@@ -157,13 +159,19 @@ class RecurringAppointment < ApplicationRecord
 		self.title = self.service.try(:title)
 	end
 
+	def redefine_anchor_if_editing_after_some_date
+		if self.editing_occurrences_after.present? 
+			self.anchor = self.editing_occurrences_after.to_date
+		end
+	end
+
 	def split_recurring_appointment_before_after_update
 		if editing_occurrences_after.present? 
 			new_recurring = self.dup 
 			new_recurring.original_id = self.id
 
 			if new_recurring.save 
-				copy_completion_report(new_recurring)
+				copy_completion_report(new_recurring) unless should_not_copy_completion_report
 				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
 				synchronize_appointments = self.synchronize_appointments
 				editing_occurrences_after_date = self.editing_occurrences_after.to_date

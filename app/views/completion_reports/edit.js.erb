@@ -13,3 +13,11 @@ $('.toggleable-subsection-title').click(function(){
 $('#toggle-detailed-report').click(function(){
     $('#report-detail-container').toggle()
 })
+
+$('#completion_report_editing_occurrences_after option').each(function () {
+  var $this = $(this);
+  if ($this.val()) {
+    var date = moment($(this).text(), 'YYYY-MM-DD');
+    $this.text(date.format('M月D日以降'));
+  }
+});

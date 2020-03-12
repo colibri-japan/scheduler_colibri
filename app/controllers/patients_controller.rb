@@ -223,7 +223,7 @@ class PatientsController < ApplicationController
 
     @care_plan = @patient.care_plans.valid_at(@date).first 
 
-    @recurring_appointments = @patient.recurring_appointments.not_terminated_at(@date).not_archived.includes(:completion_report)
+    @recurring_appointments = @patient.recurring_appointments.where('anchor <= ?', @date).not_terminated_at(@date).not_archived.includes(:completion_report)
 
     respond_to do |format|
       format.pdf do 

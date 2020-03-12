@@ -123,6 +123,8 @@ Rails.application.routes.draw do
   get 'plannings/:planning_id/patients/:id/payable' => 'patients#payable', as: :planning_patient_payable
   get 'patients/:id/commented_appointments' => 'patients#commented_appointments', as: :patient_commented_appointments
   get 'patients/:id/teikyohyo' => 'patients#teikyohyo', as: :patient_teikyohyo
+  get 'patients/:id/new_extract_care_plan' => 'patients#new_extract_care_plan', as: :patient_new_extract_care_plan
+  get 'patients/:id/extract_care_plan' => 'patients#extract_care_plan', as: :patient_extract_care_plan
 
   #custom routes for plannings
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report

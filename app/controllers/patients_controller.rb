@@ -215,6 +215,30 @@ class PatientsController < ApplicationController
     end
   end
 
+  def new_extract_care_plan
+  end
+
+  def extract_care_plan
+    @date = params[:query_date].to_date rescue Date.today 
+
+    @care_plan = @patient.care_plans.valid_at(@date).first 
+
+    @recurring_appointments = @patient.recurring_appointments.not_terminated_at(@date).not_archived.includes(:completion_report)
+
+    respond_to do |format|
+      format.pdf do 
+        render pdf: "#{@patient.try(:name)}様_訪問介護計画書_#{@date.j_full_year}#{@date.strftime('%-m月%-d日')}",
+        page_size: 'A4',
+        layout: 'pdf.html',
+        orientation: 'portrait',
+        encoding: 'UTF-8',
+        zoom: 1,
+        dpi: 75
+      end
+    end
+  end
+
+
   private
 
   def set_patient

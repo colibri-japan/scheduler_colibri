@@ -1,0 +1,24 @@
+<div id="care_plan_date_prompt" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">計画書の日付</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+            <div class="modal-body">
+              <div class="form-group">
+                <%= label_tag :query_date, "日付", class: "colibri-form-label-dark" %>
+                <%= text_field_tag :query_date, value=nil, class: 'form-control', id: :query_date_selector %>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+                <div class="btn btn-success" id="extract-pdf" data-url="<%= patient_extract_care_plan_path(@patient, format: :pdf) %>">Pdf出力</div>
+            </div>
+
+			
+		</div>
+	</div>
+</div>

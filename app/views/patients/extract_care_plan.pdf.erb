@@ -1,0 +1,111 @@
+<h1 style="text-align:center;margin-top:10px;line-height:50px">訪問介護計画書</h1>
+
+
+<div style="display:flex;flex-direction:row-reverse;justify-content:right">
+    <div style="max-width:300px;margin-right:0;margin-left:auto">
+        <table class="table table-bordered table-bordered-pdf">
+            <tbody>
+                <tr style="height:30px">
+                    <th>出力日時</th>
+                    <td><%= "#{@date.j_full_year}#{@date.strftime('%-m月%-d日')}" %></td>
+                </tr>
+                <tr style="height:30px">
+                    <th>担当サ責</th>
+                    <td><%= @patient.nurse.try(:name) %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top:20px">
+    <table class="table table-bordered table-bordered-pdf table-centered">
+        <tbody>
+            <tr style="height:30px">
+                <td style="width:15%">利用者名</td>
+                <td style="width:39%"><%= @patient.name %></td>
+                <td style="width:6%">性別</td>
+                <td style="width:6%"><%= gender_text(@patient.gender) %></td>
+                <td style="width:10%">生年月日</td>
+                <td style="width:9%"><%= "#{@patient.try(:birthday).try(:j_full_year)}#{@patient.try(:birthday).try(:strftime, '%-m月%-d日')}" %></td>
+                <td style="width:10%"><%= @patient.age %>才</td>
+            </tr>
+            <tr style="height:30px">
+                <td>住所</td>
+                <td colspan="3"><%= @patient.address %></td>
+                <td>電話番号</td>
+                <td colspan="2"><%= @patient.phone_number %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top:15px">
+    <table class="table table-bordered table-bordered-pdf table-centered">
+        <tbody>
+            <tr style="height:30px">
+                <td style="width:20%">ケアマネジャー</td>
+                <td style="width:80%" colspan="3"><%= "#{@care_plan.try(:care_manager).try(:name)} — #{@care_plan.try(:care_manager).try(:care_manager_corporation).try(:name)}" %></td>
+
+            </tr>
+            <tr style="height:30px">
+                <td style="width:20%">障害区分・介護度</td>
+                <td style="width:20%"><%= kaigo_level_text(@care_plan.try(:kaigo_level)) %></td>
+                <td style="width:20%">認定期間</td>
+                <td style="width:40%"><%= "#{@care_plan.try(:kaigo_certification_validity_start).try(:j_year_month)} ~ #{@care_plan.try(:kaigo_certification_validity_end).try(:j_year_month)}" %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top:15px">
+    <table class="table table-bordered table-bordered-pdf">
+        <tbody>
+            <tr style="height:30px">
+                <td style="width:20%;text-align:center;vertical-align:middle">短期目標</td>
+                <td style="width:80%"><%= simple_format(@care_plan.try(:short_term_goals)) %></td>
+            </tr>
+            <tr style="height:30px">
+                <td style="width:20%;text-align:center;vertical-align:middle">長期目標</td>
+                <td style="width:80%"><%= simple_format(@care_plan.try(:long_term_goals)) %></td>
+            </tr>
+            <tr style="height:30px">
+                <td style="width:20%;text-align:center;vertical-align:middle">本人要望</td>
+                <td style="width:80%"><%= simple_format(@care_plan.try(:patient_wishes)) %></td>
+            </tr>
+            <tr style="height:30px">
+                <td style="width:20%;text-align:center;vertical-align:middle">家族希望</td>
+                <td style="width:80%"><%= simple_format(@care_plan.try(:family_wishes)) %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<% @recurring_appointments.each do |recurring_appointment| %>
+  <div style="margin-top:15px">
+    <table class="table table-bordered table-bordered-pdf">
+        <tbody>
+            <tr style="line-height:30px;text-align:center;vertical-align:middle">
+                <td style="width:15%">サービス内容</td>
+                <td style="width:35%"><%= recurring_appointment.title %></td>
+                <td style="width:15%">日時</td>
+                <td style="width:35%"><%= "#{l(recurring_appointment.anchor, format: '(%a)')}#{l(recurring_appointment.starts_at, format: ' %H:%M ~ ')}#{l(recurring_appointment.ends_at, format: '%H:%M')}" %></td>
+            </tr>
+            <tr style="line-height:30px">
+                <td style="width:15%;text-align:center;vertical-align:middle">援助内容</td>
+                <td style="width:85%" colspan="3">
+                    <%= completion_report_summary(recurring_appointment.completion_report).try(:html_safe) %>
+                </td>
+            </tr>
+            <tr style="line-height:30px">
+                <td style="width:15%;text-align:center;vertical-align:middle">備考・特記</td>
+                <td style="width:85%" colspan="3">
+                    <%= simple_format(recurring_appointment.completion_report.try(:general_comment)) %>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+  </div>
+<% end %>

@@ -1,0 +1,18 @@
+<div class="modal-body">
+    <table class="table">
+      <tbody>
+        <tr>
+            <th>計画書</th>
+            <th><%= link_to 'Pdf', patient_new_extract_care_plan_path(@patient), remote: true, class: 'btn btn-sm btn-success' %></th>
+        </tr>
+        <tr>
+            <th>フェイスシート</th>
+            <th></th>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+</div>

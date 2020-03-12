@@ -1,0 +1,42 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+$('#remote_container').html('<%= j render "care_plan_date_prompt" %>');
+$('#care_plan_date_prompt').modal('show');
+
+$('#query_date_selector').daterangepicker({
+    singleDatePicker: true,
+    locale: {
+        format: 'YYYY-MM-DD',
+        applyLabel: "選択する",
+        cancelLabel: "取消",
+        daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土",
+        ],
+        monthNames: [
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月",
+          "9月",
+          "10月",
+          "11月",
+          "12月",
+        ],
+    }
+})
+
+$('#extract-pdf').click(function(){
+    let url = $(this).data('url') + '?query_date=' + $('#query_date_selector').val()
+    console.log(url)
+    window.open(url, '_blank')
+})

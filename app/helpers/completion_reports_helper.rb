@@ -1,5 +1,104 @@
 module CompletionReportsHelper
 
+    def phone_completion_report_title(completion_report)
+        if completion_report.new_record?
+            "新規実施記録"
+        else
+            "実施記録の編集"
+        end
+    end
+
+    def completion_report_commit_text(reportable_class_name)
+        if reportable_class_name == 'Appointment'
+            '実績確定'
+        elsif reportable_class_name == 'RecurringAppointment'
+            '計画を登録する'
+        else
+            'セーブする'
+        end
+    end
+
+    def general_comment_title(reportable_class_name)
+        if reportable_class_name == 'Appointment'
+            '特記事項'
+        elsif reportable_class_name == 'RecurringAppointment'
+            '留意事項・備考'
+        else
+            'セーブする'
+        end
+    end
+
+    def completion_report_summary(completion_report)
+        "
+            #{batch_assisted_bathroom_checked(completion_report.try(:batch_assisted_bathroom))}
+            #{batch_assisted_meal_checked(completion_report.try(:batch_assisted_meal))}
+            #{batch_assisted_bed_bath_checked(completion_report.try(:batch_assisted_bed_bath))}
+            #{batch_assisted_partial_bath_checked(completion_report.try(:batch_assisted_partial_bath))}
+            #{batch_assisted_total_bath_checked(completion_report.try(:batch_assisted_total_bath))}
+            #{batch_assisted_cosmetics_checked(completion_report.try(:batch_assisted_cosmetics))}
+            #{batch_assisted_house_cleaning_checked(completion_report.try(:batch_assisted_house_cleaning))}
+            #{batch_assisted_laundry_checked(completion_report.try(:batch_assisted_laundry))}
+            #{batch_assisted_bedmake_checked(completion_report.try(:batch_assisted_bedmake))}
+            #{batch_assisted_storing_furniture_checked(completion_report.try(:batch_assisted_storing_furniture))}
+            #{batch_assisted_cooking_checked(completion_report.try(:batch_assisted_cooking))}
+            #{batch_assisted_groceries_checked(completion_report.try(:batch_assisted_groceries))}
+            #{assisted_bathroom_checked(completion_report.try(:assisted_bathroom))}
+            #{assisted_portable_bathroom_checked(completion_report.try(:assisted_portable_bathroom))}
+            #{changed_diapers_checked(completion_report.try(:changed_diapers))}
+            #{changed_bed_pad_checked(completion_report.try(:changed_bed_pad))}
+            #{changed_stained_clothes_checked(completion_report.try(:changed_stained_clothes))}
+            #{wiped_patient_checked(completion_report.try(:wiped_patient))}
+            #{patient_urinated_checked(completion_report.try(:patient_urinated))}
+            #{patient_defecated_checked(completion_report.try(:patient_defecated))}
+            #{patient_maintains_good_posture_while_eating_checked(completion_report.try(:patient_maintains_good_posture_while_eating))}
+            #{explained_menu_to_patient_checked(completion_report.try(:explained_menu_to_patient))}
+            #{assisted_patient_to_eat_checked(completion_report.try(:assisted_patient_to_eat))}
+            #{patient_hydrated_checked(completion_report.try(:patient_hydrated))}
+            #{full_or_partial_body_wash_checked(completion_report.try(:full_or_partial_body_wash))}
+            #{hands_and_feet_wash_checked(completion_report.try(:hands_and_feet_wash))}
+            #{hair_wash_checked(completion_report.try(:hair_wash))}
+            #{bath_or_shower_checked(completion_report.try(:bath_or_shower))}
+            #{face_wash_checked(completion_report.try(:face_wash))}
+            #{mouth_wash_checked(completion_report.try(:mouth_wash))}
+            #{washing_details_checked(completion_report.try(:washing_details))}
+            #{changed_clothes_checked(completion_report.try(:changed_clothes))}
+            #{assisted_patient_to_change_body_posture_checked(completion_report.try(:assisted_patient_to_change_body_posture))}
+            #{assisted_patient_to_transfer_checked(completion_report.try(:assisted_patient_to_transfer))}
+            #{assisted_patient_to_move_checked(completion_report.try(:assisted_patient_to_move))}
+            #{commuted_to_the_hospital_checked(completion_report.try(:commuted_to_the_hospital))}
+            #{assisted_patient_to_shop_checked(completion_report.try(:assisted_patient_to_shop))}
+            #{assisted_patient_to_go_somewhere_checked(completion_report.try(:assisted_patient_to_go_somewhere))}
+            #{assisted_patient_to_go_out_of_bed_checked(completion_report.try(:assisted_patient_to_go_out_of_bed))}
+            #{assisted_patient_to_go_to_bed_checked(completion_report.try(:assisted_patient_to_go_to_bed))}
+            #{assisted_to_take_medication_checked(completion_report.try(:assisted_to_take_medication))}
+            #{assisted_to_apply_a_cream_checked(completion_report.try(:assisted_to_apply_a_cream))}
+            #{assisted_to_take_eye_drops_checked(completion_report.try(:assisted_to_take_eye_drops))}
+            #{assisted_to_extrude_mucus_checked(completion_report.try(:assisted_to_extrude_mucus))}
+            #{assisted_to_take_suppository_checked(completion_report.try(:assisted_to_take_suppository))}
+            #{activities_done_with_the_patient_checked(completion_report.try(:activities_done_with_the_patient))}
+            #{trained_patient_to_communicate_checked(completion_report.try(:trained_patient_to_communicate))}
+            #{trained_patient_to_memorize_checked(completion_report.try(:trained_patient_to_memorize))}
+            #{watch_after_patient_safety_checked(completion_report.try(:watch_after_patient_safety))}
+            #{watched_after_patient_safety_doing_checked(completion_report.try(:watched_after_patient_safety_doing))}
+            #{clean_up_checked(completion_report.try(:clean_up))}
+            #{took_out_trash_checked(completion_report.try(:took_out_trash))}
+            #{washed_clothes_checked(completion_report.try(:washed_clothes))}
+            #{dried_clothes_checked(completion_report.try(:dried_clothes))}
+            #{stored_clothes_checked(completion_report.try(:stored_clothes))}
+            #{ironed_clothes_checked(completion_report.try(:ironed_clothes))}
+            #{changed_bed_sheets_checked(completion_report.try(:changed_bed_sheets))}
+            #{changed_bed_cover_checked(completion_report.try(:changed_bed_cover))}
+            #{rearranged_clothes_checked(completion_report.try(:rearranged_clothes))}
+            #{repaired_clothes_checked(completion_report.try(:repaired_clothes))}
+            #{dried_the_futon_checked(completion_report.try(:dried_the_futon))}
+            #{set_the_table_checked(completion_report.try(:set_the_table))}
+            #{cooked_for_the_patient_checked(completion_report.try(:cooked_for_the_patient))}
+            #{cleaned_the_table_checked(completion_report.try(:cleaned_the_table))}
+            #{grocery_shopping_checked(completion_report.try(:grocery_shopping))}
+            #{medecine_shopping_checked(completion_report.try(:medecine_shopping))}
+        "
+    end
+
     def batch_assisted_bathroom_checked(batch_assisted_bathroom)
         batch_assisted_bathroom ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>排泄介助</div>" : ""
     end
@@ -106,14 +205,6 @@ module CompletionReportsHelper
             "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>全身清拭</div>"
         else
             ""
-        end
-    end
-
-    def phone_completion_report_title(completion_report)
-        if completion_report.new_record?
-            "新規実施記録"
-        else
-            "実施記録の編集"
         end
     end
     

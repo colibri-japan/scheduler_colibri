@@ -96,7 +96,8 @@ Rails.application.routes.draw do
 
   #custom routes for corporations
   get 'corporations/:id/revenue_per_team_report' => 'corporations#revenue_per_team_report', as: :corporation_revenue_per_team_report
-
+  get 'corporations/:id/new_email_monthly_nurse_wages' => 'corporations#new_email_monthly_nurse_wages', as: :corporation_new_email_monthly_nurse_wages
+  get 'corporations/:id/email_monthly_nurse_wages' => 'corporations#email_monthly_nurse_wages', as: :corporation_email_monthly_nurse_wages
 
   #custom routes for users
   patch 'users/:id/toggle_admin' => 'users#toggle_admin', as: :toggle_admin

@@ -1,6 +1,6 @@
 class CorporationsController < ApplicationController
 
-    before_action :set_corporation, only: [:edit, :revenue_per_team_report]
+    before_action :set_corporation, only: [:edit, :revenue_per_team_report, :email_monthly_nurse_wages]
     before_action :set_planning, only: :edit 
     before_action :set_main_nurse, only: :edit
 
@@ -24,7 +24,13 @@ class CorporationsController < ApplicationController
         
         @revenue_per_team = @corporation.revenue_per_team(first_day..last_day)
         @salary_per_team = @corporation.salary_per_team(first_day..last_day)
-        puts @salary_per_team
+    end
+
+
+    def email_monthly_nurse_wages
+        if params[:m].present? && params[:y].present?
+            EmailNurseWagesWorker.perform_async(@corporation.id, params[:y], params[:m])
+        end
     end
 
     private

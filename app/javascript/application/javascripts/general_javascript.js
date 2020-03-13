@@ -213,6 +213,11 @@ document.addEventListener('turbolinks:load', function () {
         $('#lookup-fields-container').toggle()
     })
 
+    $('#email-nurses-wages').click(function(){
+        $('#remote-container').html($('#email-nurses-wages-modal'))
+        $('#email-nurses-wages-modal').modal('show')
+    })
+
     $(document).on("mousedown", "[data-ripple]", function(e){
         var $self = $(this);
 

@@ -73,28 +73,28 @@
 
         <div>
             <%= form.label :kaigo_certification_date, "認定日", class: "colibri-form-label-dark" %>
-            <%= form.hidden_field :kaigo_certification_date, id: :patient_kaigo_certification_date %>
-            <%= select_tag :kaigo_certification_date_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, care_plan.kaigo_certification_date.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_date_era, class: 'wareki_era colibri-input'} %>
-            <%= text_field_tag :kaigo_certification_date_era_year, value = care_plan.kaigo_certification_date.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_date_year, class: 'wareki_year colibri-input'} %>年
-            <%= text_field_tag :kaigo_certification_date_era_month, value = care_plan.kaigo_certification_date.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_date_month , class: 'wareki_month colibri-input'}%>月
-            <%= text_field_tag :kaigo_certification_date_era_day, value = care_plan.kaigo_certification_date.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_date_day, class: 'wareki_day colibri-input'} %>日
+            <%= form.hidden_field :kaigo_certification_date, id: :care_plan_kaigo_certification_date %>
+            <%= select_tag :kaigo_certification_date_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, care_plan.kaigo_certification_date.try(:j_era)), {prompt: '選択', id: :care_plan_kaigo_certification_date_era, class: 'wareki_era colibri-input'} %>
+            <%= text_field_tag :kaigo_certification_date_era_year, value = care_plan.kaigo_certification_date.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :care_plan_kaigo_certification_date_year, class: 'wareki_year colibri-input'} %>年
+            <%= text_field_tag :kaigo_certification_date_era_month, value = care_plan.kaigo_certification_date.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :care_plan_kaigo_certification_date_month , class: 'wareki_month colibri-input'}%>月
+            <%= text_field_tag :kaigo_certification_date_era_day, value = care_plan.kaigo_certification_date.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :care_plan_kaigo_certification_date_day, class: 'wareki_day colibri-input'} %>日
         </div>
 
         <div>
             <%= form.label :kaigo_certification_validity_start, "認定期間", class: "colibri-form-label-dark" %>
             <div class="form-group">
-                <%= form.hidden_field :kaigo_certification_validity_start, id: :patient_kaigo_certification_validity_start %>
-                <%= select_tag :kaigo_certification_validity_start_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, care_plan.kaigo_certification_validity_start.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_validity_start_era, class: 'wareki_era colibri-input'} %>
-                <%= text_field_tag :kaigo_certification_validity_start_year, value = care_plan.kaigo_certification_validity_start.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_start_year, class: 'wareki_year colibri-input'} %>年
-                <%= text_field_tag :kaigo_certification_validity_start_month, value = care_plan.kaigo_certification_validity_start.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_start_month , class: 'wareki_month colibri-input'}%>月
-                <%= text_field_tag :kaigo_certification_validity_start_day, value = care_plan.kaigo_certification_validity_start.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_start_day, class: 'wareki_day colibri-input'} %>日開始 ~
+                <%= form.hidden_field :kaigo_certification_validity_start, id: :care_plan_kaigo_certification_validity_start %>
+                <%= select_tag :kaigo_certification_validity_start_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, care_plan.kaigo_certification_validity_start.try(:j_era)), {prompt: '選択', id: :care_plan_kaigo_certification_validity_start_era, class: 'wareki_era colibri-input'} %>
+                <%= text_field_tag :kaigo_certification_validity_start_year, value = care_plan.kaigo_certification_validity_start.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :care_plan_kaigo_certification_validity_start_year, class: 'wareki_year colibri-input'} %>年
+                <%= text_field_tag :kaigo_certification_validity_start_month, value = care_plan.kaigo_certification_validity_start.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :care_plan_kaigo_certification_validity_start_month , class: 'wareki_month colibri-input'}%>月
+                <%= text_field_tag :kaigo_certification_validity_start_day, value = care_plan.kaigo_certification_validity_start.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :care_plan_kaigo_certification_validity_start_day, class: 'wareki_day colibri-input'} %>日開始 ~
             </div>
             <div class="form-group">
-                <%= form.hidden_field :kaigo_certification_validity_end, id: :patient_kaigo_certification_validity_end %>
-                <%= select_tag :kaigo_certification_validity_end_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, care_plan.kaigo_certification_validity_end.try(:j_era)), {prompt: '選択', id: :patient_kaigo_certification_validity_end_era, class: 'wareki_era colibri-input'} %>
-                <%= text_field_tag :kaigo_certification_validity_end_year, value = care_plan.kaigo_certification_validity_end.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :patient_kaigo_certification_validity_end_year, class: 'wareki_year colibri-input'} %>年
-                <%= text_field_tag :kaigo_certification_validity_end_month, value = care_plan.kaigo_certification_validity_end.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :patient_kaigo_certification_validity_end_month, class: 'wareki_month colibri-input'}%>月
-                <%= text_field_tag :kaigo_certification_validity_end_day, value = care_plan.kaigo_certification_validity_end.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :patient_kaigo_certification_validity_end_day, class: 'wareki_day colibri-input'} %>日終了
+                <%= form.hidden_field :kaigo_certification_validity_end, id: :care_plan_kaigo_certification_validity_end %>
+                <%= select_tag :kaigo_certification_validity_end_era, options_for_select(ApplicationHelper::WAREKI_ERA_SHORT, care_plan.kaigo_certification_validity_end.try(:j_era)), {prompt: '選択', id: :care_plan_kaigo_certification_validity_end_era, class: 'wareki_era colibri-input'} %>
+                <%= text_field_tag :kaigo_certification_validity_end_year, value = care_plan.kaigo_certification_validity_end.try(:j_year), {style: "width:35px;height:25px", placeholder: 'yy', id: :care_plan_kaigo_certification_validity_end_year, class: 'wareki_year colibri-input'} %>年
+                <%= text_field_tag :kaigo_certification_validity_end_month, value = care_plan.kaigo_certification_validity_end.try(:month), {style: "width:35px;height:25px", placeholder: 'mm', id: :care_plan_kaigo_certification_validity_end_month, class: 'wareki_month colibri-input'}%>月
+                <%= text_field_tag :kaigo_certification_validity_end_day, value = care_plan.kaigo_certification_validity_end.try(:day), {style: "width:35px;height:25px", placeholder: 'dd', id: :care_plan_kaigo_certification_validity_end_day, class: 'wareki_day colibri-input'} %>日終了
             </div>
         </div>
 

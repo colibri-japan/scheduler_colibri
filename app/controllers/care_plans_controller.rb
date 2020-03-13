@@ -41,6 +41,10 @@ class CarePlansController < ApplicationController
         params = care_plan_params
         params_with_converted_dates = convert_wareki_dates(params)
 
+        puts 'params, and params with converted dates'
+        puts params
+        puts params_with_converted_dates
+
         respond_to do |format|
             if @care_plan.update(params_with_converted_dates)
                 format.js 

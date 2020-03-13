@@ -798,40 +798,40 @@ let handleAppointmentOverlapRevert = (revertFunc) => {
 
 
 let patientWarekiFields = () => {
-  $('#patient_kaigo_certification_validity_start_era').change(function(){
+  $('#care_plan_kaigo_certification_validity_start_era').change(function(){
     set_kaigo_certification_validity_start()
   })
-  $('#patient_kaigo_certification_validity_start_year').change(function(){
+  $('#care_plan_kaigo_certification_validity_start_year').change(function(){
     set_kaigo_certification_validity_start()
   })
-  $('#patient_kaigo_certification_validity_start_month').change(function(){
+  $('#care_plan_kaigo_certification_validity_start_month').change(function(){
     set_kaigo_certification_validity_start()
   })
-  $('#patient_kaigo_certification_validity_start_day').change(function(){
+  $('#care_plan_kaigo_certification_validity_start_day').change(function(){
     set_kaigo_certification_validity_start()
   })
-  $('#patient_kaigo_certification_date_era').change(function(){
+  $('#care_plan_kaigo_certification_date_era').change(function(){
     set_kaigo_certification_date()
   })
-  $('#patient_kaigo_certification_date_year').change(function(){
+  $('#care_plan_kaigo_certification_date_year').change(function(){
     set_kaigo_certification_date()
   })
-  $('#patient_kaigo_certification_date_month').change(function(){
+  $('#care_plan_kaigo_certification_date_month').change(function(){
     set_kaigo_certification_date()
   })
-  $('#patient_kaigo_certification_date_day').change(function(){
+  $('#care_plan_kaigo_certification_date_day').change(function(){
     set_kaigo_certification_date()
   })
-  $('#patient_kaigo_certification_validity_end_era').change(function(){
+  $('#care_plan_kaigo_certification_validity_end_era').change(function(){
     set_kaigo_certification_validity_end()
   })
-  $('#patient_kaigo_certification_validity_end_year').change(function(){
+  $('#care_plan_kaigo_certification_validity_end_year').change(function(){
     set_kaigo_certification_validity_end()
   })
-  $('#patient_kaigo_certification_validity_end_month').change(function(){
+  $('#care_plan_kaigo_certification_validity_end_month').change(function(){
     set_kaigo_certification_validity_end()
   })
-  $('#patient_kaigo_certification_validity_end_day').change(function(){
+  $('#care_plan_kaigo_certification_validity_end_day').change(function(){
     set_kaigo_certification_validity_end()
   })
   $('#patient_birthday_era').change(function(){
@@ -882,10 +882,10 @@ let set_contract_date = () => {
 }
 
 let set_kaigo_certification_validity_end = () => {
-  let era = $('#patient_kaigo_certification_validity_end_era').val() || ''
-  let year = $('#patient_kaigo_certification_validity_end_year').val() || ''
-  let month = $('#patient_kaigo_certification_validity_end_month').val() || ''
-  let day = $('#patient_kaigo_certification_validity_end_day').val() || ''
+  let era = $('#care_plan_kaigo_certification_validity_end_era').val() || ''
+  let year = $('#care_plan_kaigo_certification_validity_end_year').val() || ''
+  let month = $('#care_plan_kaigo_certification_validity_end_month').val() || ''
+  let day = $('#care_plan_kaigo_certification_validity_end_day').val() || ''
   if (year.length === 1) {
     year = `0${year}`
   }
@@ -896,14 +896,14 @@ let set_kaigo_certification_validity_end = () => {
     day = `0${day}`
   }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
-  $('#patient_kaigo_certification_validity_end').val(wareki_date)
+  $('#care_plan_kaigo_certification_validity_end').val(wareki_date)
 }
 
 let set_kaigo_certification_validity_start = () => {
-  let era = $('#patient_kaigo_certification_validity_start_era').val() || ''
-  let year = $('#patient_kaigo_certification_validity_start_year').val() || ''
-  let month = $('#patient_kaigo_certification_validity_start_month').val() || ''
-  let day = $('#patient_kaigo_certification_validity_start_day').val() || ''
+  let era = $('#care_plan_kaigo_certification_validity_start_era').val() || ''
+  let year = $('#care_plan_kaigo_certification_validity_start_year').val() || ''
+  let month = $('#care_plan_kaigo_certification_validity_start_month').val() || ''
+  let day = $('#care_plan_kaigo_certification_validity_start_day').val() || ''
   if (year.length === 1) {
     year = `0${year}`
   }
@@ -914,14 +914,14 @@ let set_kaigo_certification_validity_start = () => {
     day = `0${day}`
   }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
-  $('#patient_kaigo_certification_validity_start').val(wareki_date)
+  $('#care_plan_kaigo_certification_validity_start').val(wareki_date)
 }
 
 let set_kaigo_certification_date = () => {
-  let era = $('#patient_kaigo_certification_date_era').val() || ''
-  let year = $('#patient_kaigo_certification_date_year').val() || ''
-  let month = $('#patient_kaigo_certification_date_month').val() || ''
-  let day = $('#patient_kaigo_certification_date_day').val() || ''
+  let era = $('#care_plan_kaigo_certification_date_era').val() || ''
+  let year = $('#care_plan_kaigo_certification_date_year').val() || ''
+  let month = $('#care_plan_kaigo_certification_date_month').val() || ''
+  let day = $('#care_plan_kaigo_certification_date_day').val() || ''
   if (year.length === 1) {
     year = `0${year}`
   }
@@ -932,7 +932,7 @@ let set_kaigo_certification_date = () => {
     day = `0${day}`
   }
   let wareki_date = era + year + '年' + month + '月' + day + '日'
-  $('#patient_kaigo_certification_date').val(wareki_date)
+  $('#care_plan_kaigo_certification_date').val(wareki_date)
 }
 
 let set_birthday = () => {

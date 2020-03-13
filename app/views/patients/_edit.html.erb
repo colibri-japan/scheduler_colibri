@@ -13,13 +13,13 @@
 			</div>
 
 			<div id="patient-form-container" class="patient-management-container" style="<%= 'display:none' if params[:open_tab].present? %>">
-				<div id="patient-form-flash" class="js-flash" style="display:flex;justify-content:center">
+				<div id="patient-form-flash" class="js-flash" style="display:flex;justify-content:center;margin-top:10px">
 				</div>
 				<%= render 'form', patient: @patient %>
 			</div>
 
 			<div id="patient-care-plans-container" class="patient-management-container" style="<%= 'display:none' unless params[:open_tab].present? && params[:open_tab] == "care_plans" %>">
-				<div id="patient-care-plans-flash" style="display:flex;justify-content:center">
+				<div id="patient-care-plans-flash" style="display:flex;justify-content:center;margin-top:5px">
 					<% if params[:care_plan_saved].present? %>
 						<% if params[:care_plan_saved] == "true" %>
 							<div class='alert alert-success'>ケアプランの登録が成功しました。</div>
@@ -33,7 +33,7 @@
 				<%= render 'care_plans/index', care_plans: @care_plans, patient: @patient %>
 			</div>
 
-			<div id="patient-documents-container" class="patient-management-container">
+			<div id="patient-documents-container" style="display:none" class="patient-management-container">
 				<%= render 'printable_documents' %>
 			</div>
 

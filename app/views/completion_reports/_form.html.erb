@@ -369,34 +369,21 @@
                 <% end %>
               </div>
             </div>
+            <div class="form-group">
+              <%= form.label :bath_or_shower, "全身浴" %>
+              <%= form.label :bath_or_shower_1, "入浴", class: 'colibri-form-label-dark' do %>
+                  <%= form.radio_button :bath_or_shower, 1, {class: 'radio-inline'} %>
+                  入浴
+              <% end %>
+              <%= form.label :bath_or_shower_0, "シャワー", class: 'colibri-form-label-dark' do %>
+                  <%= form.radio_button :bath_or_shower, 0, {class: 'radio-inline'} %>
+                  シャワー
+              <% end %>
+            </div>
 
             <div class="colibri-form-subsection-separator"></div>
             <div class="modal-subsection-title-sm">身体整容</div>
-            <div class="form-row">
-              <div class="from-group col-md-6">
-                <%= form.label :bath_or_shower, "全身浴" %>
-                <%= form.label :bath_or_shower_1, "入浴", class: 'colibri-form-label-dark' do %>
-                    <%= form.radio_button :bath_or_shower, 1, {class: 'radio-inline'} %>
-                    入浴
-                <% end %>
-                <%= form.label :bath_or_shower_0, "シャワー", class: 'colibri-form-label-dark' do %>
-                    <%= form.radio_button :bath_or_shower, 0, {class: 'radio-inline'} %>
-                    シャワー
-                <% end %>
-              </div>
-              <div class="from-group col-md-3">
-                <%= form.label :face_wash, "洗面", class: 'colibri-form-label-dark' do  %>
-                    <%= form.check_box :face_wash %>
-                    洗面
-                <% end %>
-              </div>
-              <div class="from-group col-md-3">
-                <%= form.label :mouth_wash, "口腔ケア", class: 'colibri-form-label-dark' do  %>
-                    <%= form.check_box :mouth_wash %>
-                    口腔ケア
-                <% end %>
-              </div>
-            </div>
+
             <div class="form-row">
               <div class="from-group col-md-2">
                 <%= form.label :washing_details, "整容", class: 'colibri-form-label-dark' %>
@@ -408,6 +395,20 @@
                 <%= form.label :changed_clothes, "更衣介助", class: 'colibri-form-label-dark' do  %>
                     <%= form.check_box :changed_clothes %>
                     更衣介助
+                <% end %>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="from-group col-md-3">
+                <%= form.label :face_wash, "洗面", class: 'colibri-form-label-dark' do  %>
+                    <%= form.check_box :face_wash %>
+                    洗面
+                <% end %>
+              </div>
+              <div class="from-group col-md-3">
+                <%= form.label :mouth_wash, "口腔ケア", class: 'colibri-form-label-dark' do  %>
+                    <%= form.check_box :mouth_wash %>
+                    口腔ケア
                 <% end %>
               </div>
             </div>
@@ -731,9 +732,10 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                  <%= form.text_field :remarks_around_cooking, class: 'form-control' %>
-                  <%= form.label :remarks_around_cooking, "献立", class: 'colibri-form-label-dark' %>
+              <div class="form-row">
+        
+                <%= form.label :remarks_around_cooking, "献立", class: 'colibri-form-label-dark form-group col-md-1' %>
+                <%= form.text_field :remarks_around_cooking, class: 'form-control form-group col-md-11' %>
               </div>
 
               <div class="colibri-form-subsection-separator"></div>

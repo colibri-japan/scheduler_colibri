@@ -104,6 +104,11 @@
         </div>
 
         <div class="form-group">
+            <%= form.label :short_term_goals_due_date, "短期目標期限", class: "colibri-form-label-dark" %>
+            <%= form.date_field :short_term_goals_due_date, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
             <%= form.label :long_term_goals, "長期目標", class: "colibri-form-label-dark" %>
             <%= form.text_area :long_term_goals, class: "form-control" %>
         </div>

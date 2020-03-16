@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200309171429) do
+ActiveRecord::Schema.define(version: 20200316003527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 20200309171429) do
     t.text "family_wishes"
     t.bigint "second_care_manager_id"
     t.text "insurance_policy", default: [], array: true
+    t.date "short_term_goals_due_date"
     t.index ["care_manager_id"], name: "index_care_plans_on_care_manager_id"
     t.index ["patient_id"], name: "index_care_plans_on_patient_id"
     t.index ["second_care_manager_id"], name: "index_care_plans_on_second_care_manager_id"

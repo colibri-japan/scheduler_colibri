@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200316003527) do
+ActiveRecord::Schema.define(version: 20200316023538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(version: 20200316003527) do
     t.decimal "second_invoicing_bonus_ratio", default: "1.0"
     t.boolean "simple_reports", default: false
     t.boolean "edit_confirm_requested", default: true
+    t.boolean "hide_care_plan_long_term_goals", default: false
   end
 
   create_table "nurse_service_wages", force: :cascade do |t|

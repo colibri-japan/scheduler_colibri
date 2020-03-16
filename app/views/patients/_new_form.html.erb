@@ -255,10 +255,12 @@
 					<%= c.text_area :short_term_goals, class: "form-control" %>
 				</div>
 
-				<div class="form-group">
-					<%= c.label :long_term_goals, "長期目標", class: "colibri-form-label-dark" %>
-					<%= c.text_area :long_term_goals, class: "form-control" %>
-				</div>
+				<% unless @corporation.hide_care_plan_long_term_goals %>
+					<div class="form-group">
+						<%= c.label :long_term_goals, "長期目標", class: "colibri-form-label-dark" %>
+						<%= c.text_area :long_term_goals, class: "form-control" %>
+					</div>
+				<% end %>
 
 				<div class="form-group">
 					<%= c.label :patient_wishes, "ご本人の要望", class: "colibri-form-label-dark" %>

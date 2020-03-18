@@ -6,8 +6,8 @@
         <table class="table table-bordered table-bordered-pdf">
             <tbody>
                 <tr style="height:30px">
-                    <th>出力日時</th>
-                    <td><%= "#{@date.j_full_year}#{@date.strftime('%-m月%-d日')}" %></td>
+                    <th>作成日</th>
+                    <td><%= "#{@care_plan.creation_date.try(:j_full_year)}#{@care_plan.creation_date.try(:strftime, '%-m月%-d日')}" %></td>
                 </tr>
                 <tr style="height:30px">
                     <th>担当サ責</th>

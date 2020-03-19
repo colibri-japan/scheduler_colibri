@@ -129,6 +129,10 @@ hr.fc-divider {
   /* overcome neighboring borders */
 }
 
+td.fc-widget-content.fc-day {
+  border: 1px solid #ddd !important;
+}
+
 /* Internal Nav Links
 --------------------------------------------------------------------------------------------------*/
 a[data-goto] {
@@ -967,7 +971,6 @@ thead.fc-header {
       /* don't display any button-related controls */
   }
 
-    
   /* hide now indicator */
   .fc-now-indicator {
     display: none;
@@ -1068,6 +1071,23 @@ thead.fc-header {
     background: -moz-linear-gradient(90deg, white 2px, transparent 1%) center, linear-gradient(white 2px, transparent 1%) center, #FD9BA6;
     background-size: 5px 5px !important;
   }
+
+  /* layouts for resource views */
+
+  th.fc-widget-header {
+    height: 30px !important;
+    line-height: 30px !important;
+    padding-bottom:2px;
+    vertical-align: middle !important;
+    text-align: center !important;
+    font-weight: bold !important;
+  }
+
+  th.fc-widget-header > div.fc-cell-content, th.fc-widget-header > div.fc-cell-content > span.fc-cell-text {
+    line-height: 30px;
+  }
+
+
 
 }
 

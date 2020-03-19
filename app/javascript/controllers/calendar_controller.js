@@ -1098,7 +1098,7 @@ export default class extends Controller {
         toggleHeaderSubmenu()
         switchBackToCalendarOnNavigate()
         toggleNurseReminderButton()
-        this.updatePrintInfo(selectedItem)
+        this.updatePrintInfoAndLayout(selectedItem)
 
         return
     }
@@ -1140,7 +1140,7 @@ export default class extends Controller {
         updatePrintOptions()
         toggleHeaderSubmenu()
         toggleNurseReminderButton()
-        this.updatePrintInfo(event.target)
+        this.updatePrintInfoAndLayout(event.target)
 
         return
     }
@@ -1180,12 +1180,13 @@ export default class extends Controller {
         }
     }
 
-    updatePrintInfo(selectedElement) {
+    updatePrintInfoAndLayout(selectedElement) {
         let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
         document.getElementById('resource-print-address').innerHTML = ''
         document.getElementById('resource-print-phone').innerHTML = ''
         document.getElementById('resource-print-description').innerHTML = ''
         if (individualView) {
+            document.querySelector('style').textContent = ""
             if (window.printPatientInfo && selectedElement.dataset.resourceType === "patient" || (window.printNurseInfo && selectedElement.dataset.resourceType === 'nurse')) {
                 let address = selectedElement.dataset.resourceAddress
                 let phoneNumber = selectedElement.dataset.resourcePhone
@@ -1201,6 +1202,8 @@ export default class extends Controller {
                     document.getElementById('resource-print-description').innerHTML = `備考： ${description}`
                 }
             }
+        } else {
+            document.querySelector('style').textContent += "@media print { @page { size: landscape; }"
         }
     }
 

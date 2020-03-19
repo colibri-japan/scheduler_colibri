@@ -55,6 +55,10 @@
 									<td style="width:66%">従業員別給与</td>
 									<td style="width:34%"><button id="email-nurses-wages" class="btn btn-sm btn-success text-white"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> Pdf</button></td>
 								</tr>
+								<tr>
+									<td style="width:66%"><%= params[:m] %>月全サービス</td>
+									<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_appointments_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
+								</tr>
 								<% if @corporation.elderly_care_and_nursing? %>
 									<tr>
 										<td style="width:66%">チーム別実績</td>

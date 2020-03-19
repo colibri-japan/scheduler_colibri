@@ -76,6 +76,17 @@ class PlanningsController < ApplicationController
 		end
 	end
 
+	def monthly_appointments_report
+		start_date = Date.new(params[:y].to_i, params[:m].to_i, 1).beginning_of_day
+		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day
+
+		@appointments = @planning.appointments.not_archived.edit_not_requested.in_range(start_date..end_date).includes(:nurse, :service, patient: :care_managers)
+
+		respond_to do |format|
+			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="月別サービス詳細.xlsx"'}
+		end
+	end
+
 	def teams_report
 		@appointment_counts_by_title_and_team = @corporation.appointments_count_by_title_and_team_in_range(params[:range_start], params[:range_end])
 

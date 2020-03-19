@@ -55,8 +55,24 @@ module AppointmentsHelper
         end
     end
 
+    def care_manager_name(appointment)
+        if appointment.patient.try(:care_managers).try(:last).try(:name).present?
+            "#{appointment.patient.try(:care_managers).try(:last).try(:name)}樣"
+        else
+            ""
+        end
+    end
+
     def appointment_title_in_excel(appointment)
         appointment.cancelled? ? "(キャンセル)" : appointment.try(:title)
+    end
+
+    def credits_if_applicable(appointment)
+        if !appointment.cancelled? && appointment.service.try(:credit_calculation_method) == 0
+            appointment.total_credits || 0
+        else
+            0
+        end
     end
 
     def appointment_resource_name(appointment, resource_type)

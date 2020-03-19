@@ -1,0 +1,33 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+	title_style = s.add_style b: true, u: true, sz: 16, alignment: {horizontal: :center}
+	thick_border = s.add_style border: { style: :thick, color: 'FF000000'  }, sz: 12, alignment: {horizontal: :center, vertical: :center }
+	align_right = s.add_style alignment: {horizontal: :right}
+	align_right_cell = s.add_style alignment: {horizontal: :right}, border: {style: :thin, color: 'FF000000'}
+	table_header = s.add_style border: {style: :thin, color: 'FF000000'}, b: true
+	table_cells = s.add_style  border: {style: :thin, color: 'FF000000'}
+
+	wb.add_worksheet(name: "実施サービス") do |sheet|
+
+        sheet.add_row ['日付', '曜日', 'CM', '介護度', '利用者名', '従業員名', '開始', '終了', '間（分）','サービス種類', 'サービスコード', '単位', '給与', '', ''], style: title_style
+
+        @appointments.each do |appointment|
+            sheet.add_row [
+                appointment.starts_at.try(:strftime, '%-m月%-d日'),
+                weekday(appointment.starts_at),
+                care_manager_name(appointment),
+                kaigo_level_text(appointment.patient.try(:care_plans).try(:last).try(:kaigo_level)),
+                appointment.patient.try(:name),
+                appointment.nurse.try(:name),
+                appointment.starts_at.try(:strftime, '%-H:%M'),
+                appointment.ends_at.try(:strftime, '%-H:%M'),
+                (appointment.duration || 0) / 60,
+                appointment_title_in_excel(appointment),
+                appointment.service.try(:service_code),
+                credits_if_applicable(appointment),
+                appointment.total_wage
+            ], style: table_cells
+        end
+	end
+end

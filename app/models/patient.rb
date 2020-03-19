@@ -284,8 +284,8 @@ class Patient < ApplicationRecord
 
 		services_inside_insurance_scope.group_by {|service_hash| service_hash[:insurance_service_category] }.each do |category_id, service_hashes|
 			category_sub_total_credits = service_hashes.sum {|service_hash| service_hash[:sum_total_credits] || 0 }
-			category_bonus_credits = ([11,102].include?(category_id.to_i) && corporation.invoicing_bonus_ratio.present?) ? (category_sub_total_credits * (corporation.invoicing_bonus_ratio - 1)).round : 0
-			category_second_bonus_credits = ([11,102].include?(category_id.to_i) && corporation.invoicing_bonus_ratio!= 1) ? (category_sub_total_credits * (corporation.second_invoicing_bonus_ratio - 1)).round : 0
+			category_bonus_credits = ([11,102].include?(category_id.to_i) && corporation.invoicing_bonus_ratio.present?) ? (category_sub_total_credits * ((corporation.invoicing_bonus_ratio || 1) - 1)).round : 0
+			category_second_bonus_credits = ([11,102].include?(category_id.to_i) && corporation.invoicing_bonus_ratio!= 1) ? (category_sub_total_credits * ((corporation.second_invoicing_bonus_ratio || 1) - 1)).round : 0
 			category_summary = {
 				insurance_category_id: category_id,
 				category_sub_total_credits: category_sub_total_credits,

@@ -1,6 +1,12 @@
 <%= form_with model: care_plan, url: [@patient, care_plan] do |form| %>
 
     <div class="modal-body">
+
+        <div class="form-group">
+            <%= form.label :creation_date, "計画書作成日", class: "colibri-form-label-dark" %>
+            <%= form.date_select :creation_date, class: "form-control", id: :care_plan_creation_date %>
+        </div>
+
         <div class="form-group">
             <%= form.label :care_manager_id, "担当ケアマネジャー", class: "colibri-form-label-dark" %>
             <%= form.select :care_manager_id, options_for_select(@care_managers.map{|cm| ["#{cm.name} - #{cm.care_manager_corporation.try(:name)}", cm.id]}, care_plan.care_manager_id), {include_blank: ''}, id: :patient_care_manager %>
@@ -99,18 +105,13 @@
         </div>
 
         <div class="form-group">
-            <%= form.label :creation_date, "計画書作成日", class: "colibri-form-label-dark" %>
-            <%= form.date_field :creation_date, class: "form-control" %>
-        </div>
-
-        <div class="form-group">
             <%= form.label :short_term_goals, "短期目標", class: "colibri-form-label-dark" %>
             <%= form.text_area :short_term_goals, class: "form-control" %>
         </div>
 
         <div class="form-group">
             <%= form.label :short_term_goals_due_date, "短期目標期限", class: "colibri-form-label-dark" %>
-            <%= form.date_field :short_term_goals_due_date, class: "form-control" %>
+            <%= form.date_select :short_term_goals_due_date, class: "form-control", id: :care_plan_short_term_goals_due_date %>
         </div>
 
         <% unless @corporation.hide_care_plan_long_term_goals %>

@@ -80,7 +80,7 @@ class PlanningsController < ApplicationController
 		start_date = Date.new(params[:y].to_i, params[:m].to_i, 1).beginning_of_day
 		end_date = Date.new(params[:y].to_i, params[:m].to_i, -1).end_of_day
 
-		@appointments = @planning.appointments.not_archived.edit_not_requested.in_range(start_date..end_date).includes(:nurse, :service, patient: :care_managers)
+		@appointments = @planning.appointments.not_archived.edit_not_requested.in_range(start_date..end_date).includes(:nurse, :service, patient: :care_managers).order('nurses.kana COLLATE "C" asc')
 
 		respond_to do |format|
 			format.xlsx { response.headers['Content-Disposition'] = 'attachment; filename="月別サービス詳細.xlsx"'}

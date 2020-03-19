@@ -7,7 +7,7 @@
             <tr>
                 <th>ケアマネ</th>
                 <th>介護度</th>
-                <th>認定期間</th>
+                <th>短期目標</th>
             </tr>
         </thead>
         <tbody>
@@ -15,7 +15,7 @@
                 <tr class="clickable-row" data-url="<%= edit_patient_care_plan_path(@patient, care_plan) %>">
                     <td><%= care_plan.care_manager.try(:name) %></td>
                     <td><%= kaigo_level_text(care_plan.try(:kaigo_level)) %></td>
-                    <td><%= "#{care_plan.try(:kaigo_certification_validity_start).try(:j_year_month)} ~ #{care_plan.try(:kaigo_certification_validity_end).try(:j_year_month)}" %></td>
+                    <td><%= simple_format(care_plan.short_term_goals) %></td>
                 </tr>
             <% end %>
         </tbody>

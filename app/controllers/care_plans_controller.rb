@@ -5,7 +5,17 @@ class CarePlansController < ApplicationController
     before_action :set_care_managers, only: [:new, :edit]
 
     def new
-        @care_plan = @patient.care_plans.build
+        last_care_plan = @patient.care_plans.order(created_at: :asc).last
+
+        if last_care_plan.present?
+            @care_plan = last_care_plan.dup
+
+            reset_care_plan_fields!
+        else
+            @care_plan = @patient.care_plans.build
+
+            @care_plan.creation_date = Date.today.in_time_zone('Tokyo')
+        end
         
         respond_to do |format|
             format.js
@@ -41,10 +51,6 @@ class CarePlansController < ApplicationController
         params = care_plan_params
         params_with_converted_dates = convert_wareki_dates(params)
 
-        puts 'params, and params with converted dates'
-        puts params
-        puts params_with_converted_dates
-
         respond_to do |format|
             if @care_plan.update(params_with_converted_dates)
                 format.js 
@@ -60,6 +66,12 @@ class CarePlansController < ApplicationController
     end
 
     private
+
+    def reset_care_plan_fields!
+        @care_plan.creation_date = Date.today.in_time_zone('Tokyo')
+        @care_plan.short_term_goals = nil 
+        @care_plan.short_term_goals_due_date = nil 
+    end
 
     def set_patient
         @patient = Patient.find(params[:patient_id])

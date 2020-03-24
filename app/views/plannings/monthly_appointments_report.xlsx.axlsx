@@ -18,7 +18,7 @@ wb.styles do |s|
                 weekday(appointment.starts_at),
                 care_manager_name(appointment),
                 kaigo_level_text(appointment.patient.try(:care_plans).try(:last).try(:kaigo_level)),
-                appointment.patient.try(:name),
+                "#{appointment.patient.try(:name)}様",
                 appointment.nurse.try(:name),
                 appointment.starts_at.try(:strftime, '%-H:%M'),
                 appointment.ends_at.try(:strftime, '%-H:%M'),

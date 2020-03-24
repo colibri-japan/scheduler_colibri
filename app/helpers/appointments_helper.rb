@@ -57,7 +57,7 @@ module AppointmentsHelper
 
     def care_manager_name(appointment)
         if appointment.patient.try(:care_managers).try(:last).try(:name).present?
-            "#{appointment.patient.try(:care_managers).try(:last).try(:name)}樣"
+            appointment.patient.try(:care_managers).try(:last).try(:name)
         else
             ""
         end

@@ -70,6 +70,7 @@ class CarePlansController < ApplicationController
     def reset_care_plan_fields!
         @care_plan.creation_date = Date.today.in_time_zone('Tokyo')
         @care_plan.short_term_goals = nil 
+        @care_plan.short_term_goals_start_date = nil 
         @care_plan.short_term_goals_due_date = nil 
     end
 
@@ -89,7 +90,7 @@ class CarePlansController < ApplicationController
     end
 
     def care_plan_params
-        params.require(:care_plan).permit(:care_manager_id, :kaigo_level, :handicap_level, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :short_term_goals, :short_term_goals_due_date, :long_term_goals, :family_wishes, :creation_date, :patient_wishes,insurance_policy: [])
+        params.require(:care_plan).permit(:care_manager_id, :kaigo_level, :handicap_level, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :short_term_goals, :short_term_goals_start_date,  :short_term_goals_due_date, :long_term_goals, :long_term_goals_start_date, :long_term_goals_due_date, :family_wishes, :creation_date, :patient_wishes, insurance_policy: [])
     end
 
 

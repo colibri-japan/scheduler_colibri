@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200316232313) do
+ActiveRecord::Schema.define(version: 20200324074021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,9 @@ ActiveRecord::Schema.define(version: 20200316232313) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "creation_date"
+    t.date "short_term_goals_start_date"
+    t.date "long_term_goals_start_date"
+    t.date "long_term_goals_due_date"
     t.index ["care_manager_id"], name: "index_care_plans_on_care_manager_id"
     t.index ["patient_id"], name: "index_care_plans_on_patient_id"
     t.index ["second_care_manager_id"], name: "index_care_plans_on_second_care_manager_id"

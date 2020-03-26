@@ -110,14 +110,26 @@
         </div>
 
         <div class="form-group">
-            <%= form.label :short_term_goals_due_date, "短期目標期限", class: "colibri-form-label-dark" %>
-            <%= form.date_select :short_term_goals_due_date, class: "form-control", id: :care_plan_short_term_goals_due_date %>
+            <%= form.label :short_term_goals_start_date, "短期目標期間", class: "colibri-form-label-dark" %>
+            <div>
+                開始 <%= form.date_select :short_term_goals_start_date, class: "form-control", id: :care_plan_short_term_goals_start_date %> 
+                 ~ 終了<%= form.date_select :short_term_goals_due_date, class: "form-control", id: :care_plan_short_term_goals_due_date %>
+            </div>
         </div>
+
 
         <% unless @corporation.hide_care_plan_long_term_goals %>
             <div class="form-group">
                 <%= form.label :long_term_goals, "長期目標", class: "colibri-form-label-dark" %>
                 <%= form.text_area :long_term_goals, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+                <%= form.label :long_term_goals_start_date, "長期目標期間", class: "colibri-form-label-dark" %>
+                <div>
+                    開始 <%= form.date_select :long_term_goals_start_date, class: "form-control", id: :care_plan_long_term_goals_start_date %> 
+                    ~ 終了<%= form.date_select :long_term_goals_due_date, class: "form-control", id: :care_plan_long_term_goals_due_date %>
+                </div>
             </div>
         <% end %>
 

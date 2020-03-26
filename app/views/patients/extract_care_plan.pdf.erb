@@ -62,15 +62,20 @@
     <table class="table table-bordered table-bordered-pdf">
         <tbody>
             <tr style="height:30px">
-                <td style="width:20%;text-align:center;vertical-align:middle">
+                <td style="width:20%;text-align:center;vertical-align:middle;padding-top:10px">
                     短期目標<br/>
-                    <%= "<p style='font-size:0.85em'>(#{@care_plan.short_term_goals_due_date.try(:j_year_month)})</p>".html_safe if @care_plan.try(:short_term_goals_due_date).present? %>
+                    <%= "<p style='font-size:0.75em;line-height:0.75em'>#{@care_plan.short_term_goals_start_date.try(:j_year_month)}  ~  </p>".html_safe if @care_plan.try(:short_term_goals_start_date).present? %>
+                    <%= "<p style='font-size:0.75em;line-height:0.75em'>#{@care_plan.short_term_goals_due_date.try(:j_year_month)}</p>".html_safe if @care_plan.try(:short_term_goals_due_date).present? %>
                 </td>
                 <td style="width:80%"><%= simple_format(@care_plan.try(:short_term_goals)) %></td>
             </tr>
             <% unless @corporation.hide_care_plan_long_term_goals %>
                 <tr style="height:30px">
-                    <td style="width:20%;text-align:center;vertical-align:middle">長期目標</td>
+                    <td style="width:20%;text-align:center;vertical-align:middle;padding-top:10px">
+                        長期目標<br/>
+                        <%= "<p style='font-size:0.75em;line-height:0.75em'>#{@care_plan.long_term_goals_start_date.try(:j_year_month)}  ~  </p>".html_safe if @care_plan.try(:long_term_goals_start_date).present? %>
+                        <%= "<p style='font-size:0.75em;line-height:0.75em'>#{@care_plan.long_term_goals_due_date.try(:j_year_month)}</p>".html_safe if @care_plan.try(:long_term_goals_due_date).present? %>
+                    </td>
                     <td style="width:80%"><%= simple_format(@care_plan.try(:long_term_goals)) %></td>
                 </tr>
             <% end %>

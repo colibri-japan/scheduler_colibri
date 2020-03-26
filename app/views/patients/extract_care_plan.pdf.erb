@@ -114,3 +114,33 @@
     </table>
   </div>
 <% end %>
+
+<div style="display:flex;flex-direction:row-reverse;justify-content:right;margin-top:30px">
+    <div style="max-width:300px;margin-right:0;margin-left:auto">
+        <table class="table table-bordered table-bordered-pdf">
+            <tbody>
+                <tr style="height:30px">
+                    <th>説明日</th>
+                    <td><%= "#{@care_plan.meeting_date.try(:j_year_month)}#{@care_plan.meeting_date.try(:strftime, '%-d日')} #{weekday(@care_plan.meeting_date)}" %></td>
+                </tr>
+                <tr style="height:30px">
+                    <th>説明者</th>
+                    <td><%= @patient.nurse.try(:team).try(:team_name) %> <%= @patient.nurse.try(:name) %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="display:flex;flex-direction:row-reverse;justify-content:right;margin-top:30px">
+    <div style="width:40%;margin-right:0;margin-left:auto">
+        <p>上記計画について説明を受け、同意し、交付を受けました。</p>
+        <table class="table table-bordered table-bordered-pdf">
+            <tbody style="border:2px solid black">
+                <tr style="height:70px;border:2px solid black">
+                    <td style="text-align:right !important">印</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

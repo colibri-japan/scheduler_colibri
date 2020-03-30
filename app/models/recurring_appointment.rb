@@ -21,7 +21,7 @@ class RecurringAppointment < ApplicationRecord
 	before_validation :set_title_from_service_title
 	
 	validates :anchor, presence: true
-	validates :frequency, presence: true, inclusion: 0..10
+	validates :frequency, presence: true, inclusion: 0..11
 	validates :title, presence: true
 	validates :nurse_id, presence: true 
 	validates :patient_id, presence: true
@@ -41,6 +41,8 @@ class RecurringAppointment < ApplicationRecord
 		@schedule ||= begin
 
 		day_of_week = anchor.wday
+		week_number = anchor.nth_weekday
+
 		end_of_month = Date.new(anchor.year, anchor.month, -1) 
 			
 		schedule = IceCube::Schedule.new(now = anchor)
@@ -78,6 +80,17 @@ class RecurringAppointment < ApplicationRecord
 			when 10 
 				#only the forth week
 				schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week =>[4])
+			when 11
+				#the first week every three month
+				puts 'week number'
+				puts week_number
+				puts 'inclusion?'
+				puts (0..3).include? week_number
+				if (0..3).include? week_number
+					schedule.add_recurrence_rule IceCube::Rule.monthly(3).day_of_week(day_of_week => [week_number])
+				else
+					schedule.add_recurrence_rule IceCube::Rule.monthly(3).day_of_week(day_of_week => [-1])
+				end
 			else
 			end
 			schedule

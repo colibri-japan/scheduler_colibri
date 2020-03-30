@@ -61,5 +61,22 @@ class Date
             nil
         end
     end
+
+    def week_of_year(mondays = false)
+        # Use %U for weeks starting on Sunday
+        # Use %W for weeks starting on Monday
+        strftime(mondays ? "%W" : "%U").to_i + 1
+    end
+    
+    def week_of_month(mondays = false)
+      week_of_year(mondays) - beginning_of_month.week_of_year(mondays) + 1
+    end
+
+    def nth_weekday
+        first_day = self.beginning_of_month
+        wday_array = (first_day..self).to_a.select {|d| d.wday == self.wday}
+
+        wday_array.index(self) + 1
+    end
     
 end

@@ -56,6 +56,8 @@ class RecurringAppointmentsController < ApplicationController
     
     if @recurring_appointment.save 
       @activity = @recurring_appointment.create_activity :create, owner: current_user, planning_id: @planning.id, nurse_id: @recurring_appointment.nurse_id, patient_id: @recurring_appointment.patient_id, parameters: {anchor: @recurring_appointment.anchor, starts_at: @recurring_appointment.starts_at, ends_at: @recurring_appointment.ends_at, title: @recurring_appointment.title, nurse_name: @recurring_appointment.nurse.try(:name), patient_name: @recurring_appointment.patient.try(:name)}
+    else
+      puts @recurring_appointment.errors.full_messages
     end
   end
   

@@ -7,7 +7,7 @@
             <tbody>
                 <tr style="height:30px">
                     <th>作成日</th>
-                    <td><%= "#{@care_plan.creation_date.try(:j_full_year)}#{@care_plan.creation_date.try(:strftime, '%-m月%-d日')}" %></td>
+                    <td><%= "#{@care_plan.try(:creation_date).try(:j_full_year)}#{@care_plan.try(:creation_date).try(:strftime, '%-m月%-d日')}" %></td>
                 </tr>
                 <tr style="height:30px">
                     <th>担当サ責</th>
@@ -126,7 +126,7 @@
             <tbody>
                 <tr style="height:30px">
                     <th>説明日</th>
-                    <td><%= "#{@care_plan.meeting_date.try(:j_year_month)}#{@care_plan.meeting_date.try(:strftime, '%-d日')} #{weekday(@care_plan.meeting_date)}" %></td>
+                    <td><%= "#{@care_plan.try(:meeting_date).try(:j_year_month)}#{@care_plan.try(:meeting_date).try(:strftime, '%-d日')} #{weekday(@care_plan.try(:meeting_date))}" %></td>
                 </tr>
                 <tr style="height:30px">
                     <th>説明者</th>

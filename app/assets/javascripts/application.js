@@ -1247,6 +1247,56 @@ $(document).on('turbolinks:load', function(){
     }
   })
 
+  $('#cancelled-report-button').click(function(){
+    $('#cancelled_reports_modal').modal('show')
+    $('#cancelled_reports_query_range').focus(function(){
+      $(this).daterangepicker({
+        locale: {
+          format: 'M月D日',
+          applyLabel: "選択する",
+          cancelLabel: "取消",
+          daysOfWeek: [
+            "日",
+            "月",
+            "火",
+            "水",
+            "木",
+            "金",
+            "土"
+          ],
+          monthNames: [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月"
+          ],
+          firstDay: 1
+        }
+      })
+    })
+  })
+
+  $('#submit-cancelled-report').click(function(){
+    let range_start 
+    let range_end
+    if ($('#cancelled_reports_query_range').data('daterangepicker')) {
+      range_start = $('#cancelled_reports_query_range').data('daterangepicker').startDate.format('YYYY-MM-DD')
+      range_end = $('#cancelled_reports_query_range').data('daterangepicker').endDate.format('YYYY-MM-DD')
+    }
+
+    let url = $(this).data('url') + '?range_start=' + range_start + '&range_end=' + range_end;
+
+    window.location = url
+  })
+
   $('#extended-daily-report').click(function(){
     $('#extended-daily-summary-modal').modal('show')
     $('#extended_report_date').daterangepicker({

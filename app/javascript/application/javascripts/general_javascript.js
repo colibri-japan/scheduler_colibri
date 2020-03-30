@@ -218,6 +218,7 @@ document.addEventListener('turbolinks:load', function () {
         $('#email-nurses-wages-modal').modal('show')
     })
 
+
     $(document).on("mousedown", "[data-ripple]", function(e){
         var $self = $(this);
 

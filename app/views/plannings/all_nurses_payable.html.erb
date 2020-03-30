@@ -56,6 +56,10 @@
 									<td style="width:34%"><button id="email-nurses-wages" class="btn btn-sm btn-success text-white"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> Pdf</button></td>
 								</tr>
 								<tr>
+									<td style="width:66%">キャンセルサービス</td>
+									<td style="width:34%"><div class="btn btn-sm btn-success text-white" id="cancelled-report-button"><i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル</div></td>
+								</tr>
+								<tr>
 									<td style="width:66%"><%= params[:m] %>月全サービス</td>
 									<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_appointments_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
 								</tr>
@@ -177,6 +181,27 @@
 					<%= submit_tag 'メールでPdfを送信', class: 'btn btn-info', data: {disable_with: false} %>
 				</div>
 			<% end %>
+		</div>
+	</div>
+</div>
+
+<div id="cancelled_reports_modal" class="modal fade" style="display:none">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="colibri-small-title">キャンセルレポート</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+        		<div class="form-group">
+					<%= label_tag :query_range, '期間', class: 'colibri-form-bale-dark' %>
+					<%= text_field_tag :query_range, value=nil, class: 'form-control', id: :cancelled_reports_query_range %>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
+				<div id="submit-cancelled-report" class="btn btn-success text-white" data-url="<%= planning_cancelled_report_path(@planning, format: :xlsx) %>">エクセル出力</div>
+			</div>
 		</div>
 	</div>
 </div>

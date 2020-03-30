@@ -97,6 +97,20 @@ class PlanningsController < ApplicationController
 		end
 	end
 
+	def new_cancelled_report
+	end
+
+	def cancelled_report
+		@start_date = params[:range_start].to_date.try(:beginning_of_day) rescue Date.today.beginning_of_month
+		@end_date = params[:range_end].to_date.try(:end_of_day) rescue Date.today.end_of_day 
+
+		@cancelled_appointments = @planning.appointments.cancelled.not_archived.in_range(@start_date..@end_date).includes(:patient, nurse: :team).order('teams.team_name, nurses.kana collate "C" ASC, appointments.starts_at ASC')
+
+		respond_to do |format|
+			format.xlsx { response.headers['Content-Disposition'] = "attachment; filename=\"Colibri_キャンセルサービス_#{@start_date.try(:strftime, '%-m月%-d日')}_#{@end_date.try(:strftime, '%-m月%-d日')}.xlsx\"" }
+		end
+	end
+
 	def recent_patients_report
 		@recent_patients = @corporation.patients_with_contract_starting_after(Date.today - 60.days)
 

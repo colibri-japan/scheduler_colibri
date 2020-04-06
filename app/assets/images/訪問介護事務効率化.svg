@@ -1,0 +1,24 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="102" width="102" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <defs>
+   <path id="XMLID_303_" d="m135.4,69.5c0,36.6 -28.6,66.2 -65.2,66.2s-67.2,-29.6 -67.2,-66.2s30.6,-66.2 67.2,-66.2s65.2,29.6 65.2,66.2z"/>
+  </defs>
+  <clipPath id="XMLID_40_">
+   <use id="svg_1" xlink:href="#XMLID_303_"/>
+  </clipPath>
+  <circle fill="#215c6d" r="37.599998" id="XMLID_355_" cy="50.735339" cx="48.822176" class="st2"/>
+  <circle fill="#ffffff" r="32.5" id="XMLID_354_" cy="50.635339" cx="48.722176" class="st3"/>
+  <path fill="#3b4a51" id="XMLID_351_" d="m48.822176,48.835339l-13.3,-12.8c0,0 -2.3,-0.3 -1.7,1.7l13.1,12.6l0,-0.1c0.1,-0.3 0.1,-0.5 0.8,-1c0.3,-0.3 0.7,-0.4 1.1,-0.4l0,0z" class="st4"/>
+  <path fill="#3b4a51" id="XMLID_347_" d="m50.522176,51.635339l18.9,-0.1c0,0 1.7,-0.8 -0.1,-1.8l-18.8,0.3c0,0 0.1,0.4 0.1,0.8c0.1,0.3 -0.1,0.8 -0.1,0.8z" class="st4"/>
+  <rect fill="#215c6d" y="46.035339" x="48.422176" width="0.6" id="XMLID_171_" height="22.5" class="st2"/>
+  <circle fill="#215c6d" r="0.5" id="XMLID_169_" cy="46.235339" cx="48.722176" class="st2"/>
+  <circle fill="#215c6d" r="0.6" id="XMLID_168_" cy="68.335339" cx="48.722176" class="st2"/>
+  <circle stroke-miterlimit="10" stroke="#235c6d" fill="#ffffff" r="2.1" id="XMLID_328_" cy="50.735339" cx="48.822176" class="st5"/>
+  <path stroke-miterlimit="10" stroke="#070808" fill="none" id="XMLID_33_" d="m0.9,135.7" class="st6"/>
+ </g>
+</svg>

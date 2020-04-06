@@ -1,110 +1,95 @@
-<div class="white-background" id="top-subsection" style="display:flex">
+<div class="background-transition" style="margin-top:25px">
+    <%= image_tag('blue-wave-top-left-corner.svg') %>
+</div>
+
+<div class="white-background" id="top-subsection" style="display:flex;padding-top:30px">
     <div id="presentation-text">
-        <h2 class="colibri-home-presentation-title">
-            スマートな組織管理で、働きやすい事業所へ。
+        <h2 class="colibri-home-presentation-title" style="margin-bottom:40px">
+            介護事業所をスマートな組織へ。
         </h2>
+        <div class="colibri-home-text-container">
+            <p>Colibriは、ヘルパーさんの実施記録とサ責さんが日々調整するシフト、そして訪問介護計画書が一気通貫で管理できるアプリです。</p>
+
+            <p>事務作業はColibriに任せて、サービスの質と量を向上させる事業所作りに時間を使ってください！</p>
+        </div>
     </div>
     <div id="presentation-images-banner" >
-        <%= image_tag('imac_ipad.png', width: '90%', float: 'right', display: 'inline-block', id:'logo-img') %>
+        <%= image_tag('ipad_iphone_kaigo', width: '90%', float: 'right', display: 'inline-block', id: 'logo-img') %>
     </div>
 </div>
 
-<div class="colibri-home-subsection white-background">
+<div class="background-transition">
+    <%= image_tag('pink-wave-bottom-thin.svg') %>
+</div>
+
+<div class="colibri-home-subsection light-pink-background" id="issues-subsection">
     <div id="colibri-issues-head">
-        こんな経験をしたことはありませんか？
+        Colibriを導入する目標
     </div>
     <div id="colibri-issues-parent">
         <div id="colibri-issues">
             <div class="issue-container">
-                <div>
+                <div class="issue-header">
+                    <div class="issue-icon">
+                        <%= image_tag('訪問介護売上.png', width: '45px') %>
+                    </div>
                     <div class="issue-title">
-                        実施記録
-                    </div>
-                    <div class="issue-body">
-                        <p>毎月末や月数回、従業員ごとに収集した記録書を利用者ごとへ並び変える作業が大変</p>
-                        <p>記録書と訪問介護計画書に基づく予定の差異チェック作業に時間が大変</p>
-                        <p>月末のサービス分記録書のみ、遅れて回収する</p>
+                        売上アップ・コストカット
                     </div>
                 </div>
-                <div class="issue-footer">
-                    <button data-anchor="colibri-reporting" class="btn-scroll btn btn-secondary text-white btn-centered">
-                        詳しくはこちら
-                    </button>
+                <div class="issue-body">
+                    <p>サ責さんのサービス時間を増やし、事業所当り売上が月15-30万円上がります。</p>
+                    <p>特定事業所加算をColibriを利用して取得すると、更に売上が+10%上がります。</p>
+                    <p>実績収集や登録ヘルパーさんの給与計算を自動化し、無駄な紙と事務作業をなくします。</p>
                 </div>
             </div>
             <div class="issue-container">
-                <div class="issue-title">
-                    給与計算
+                <div class="issue-header">
+                    <div class="issue-icon">
+                        <%= image_tag('訪問介護事務効率化.svg', width: '55px') %>
+                    </div>
+                    <div class="issue-title">
+                        サ責の事務負担を減らしたい
+                    </div>
                 </div>
                 <div class="issue-body">
-                    <p>事業所独自の手当や給与設定があり、請求ソフトで計算できず手間がかかっている</p>
-                    <p>給与計算のために、請求ソフトとExcelで実績入力し、二度手間になっている</p>
-                    <p>マクロなど色々な工夫をしているが、特定従業員に業務が依存している</p>
-                </div>
-                <div class="issue-footer">
-                    <button data-anchor="colibri-payment" class="btn-scroll btn btn-secondary text-white btn-centered">
-                        詳しくはこちら
-                    </button>
+                    <p>計画書作成から実施記録の確認まで、サ責さん当り月20時間削減可能です。</p>
+                    <p>サ責さんは訪問介護の要です。事業所にとってもサ責さんを確保し、働きやすい環境を整えることは、死活問題です。しかし、日々の連絡から月末業務まであらゆる事務作業が集中し、非常に高い負荷が掛かっています。</p>
                 </div>
             </div>
             <div class="issue-container">
-                <div class="issue-title">
-                    シフト
+                <div class="issue-header">
+                    <div class="issue-icon">
+                        <%= image_tag('訪問介護スマホ.png', width: '40px') %>
+                    </div>
+                    <div class="issue-title">
+                        ヘルパーの記録を電子化
+                    </div>
                 </div>
                 <div class="issue-body">
-                    <p>従業員のサービス行き忘れで利用者様からクレームがきた</p>
-                    <p>急なシフト変更に対して、適切な従業員の選抜をすぐに把握できなかった</p>
-                    <p>効率的なルートになっているか、平等なシフトかどうか不安</p>
-                </div>
-                <div class="issue-footer">
-                    <button data-anchor="colibri-payment" class="btn-scroll btn btn-secondary text-white btn-centered">
-                        詳しくはこちら
-                    </button>
+                    <p>ヘルパーさんが利用するアプリはムダを削ぎ落し、価値を最大にしています。</p>
+                    <p>GPSで実績確定します。QRコードやICタグの管理や設定は不要です。</p>
+                    <p>AndroidとiPhone両方に対応しており、従業員個人のスマホでも利用可能なセキュリティ仕様です。</p>
+                    <p>ガラケーでもシフトと申し送り事項が通知可能。</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="colibri-purpose" class="home-page-text-box light-blue-background-hp">
-    <h2 class="colibri-home-subsection-title align-text-center" id="colibri-purpose-title">
-        Colibriの目標
-    </h2>
-    <div id="colibri-purpose-body">
-
-        <p><span style="margin-left:25px"></span>
-            訪問系業務の組織作りとマネージメントを高度化し、この業界で働く人達を幸せにすることで、高齢社会の抱える課題を解決します。        
-        </p>
-
-        <p><span style="margin-left:25px"></span>
-            介護保険制度や医療保険制度等諸制度のおかげで、給付管理は平準化され、日本中どこでも開業が可能になり、誰しもがサービスの恩恵を受けられるようになりました。 
-        </p>
-        
-        <p><span style="margin-left:25px"></span>
-            一方で、制度フォロー自体が目的化し、各事業所や請求ソフト企業は、本来の日常業務の改善に時間を割けない現状があります。
-        </p>
-
-        <p><span style="margin-left:25px"></span>
-            多くの事業所の皆様、関係各所の皆様から勉強させていただきながら、確信していることがあります。 
-            それは、諸制度を最小限の労力でクリアし、本当に価値ある時間は何かを自問自答した上で、継続的にサービスの質と両を向上させられる組織を持つ企業が生き残るということです。
-        </p> 
-
-        <p><span style="margin-left:25px"></span>
-            このような組織作りに対して、力強いサポートができるよう、突き進んで行きます。
-        </p>
-    </div>
+<div class="background-transition">
+    <%= image_tag('pink-wave-top-thin.svg', width: '100%') %>
 </div>
-
 
 <div class="colibri-home-subsection white-background" id="colibri-reporting">
-    <h2 class="colibri-home-subsection-title add-margin-left-md">実施記録の入力.収集をシンプルに</h2>
+    <h2 class="colibri-home-subsection-title add-margin-left-md">計画書から実施記録まで網羅</h2>
     <div class="home-subsection-content-container aligned-left-home" style='margin-bottom:25px'>
         <div class="home-subsection-image-container">
-            <%= image_tag "iphone_reports.png", width: '160px' %>
+            <%= image_tag "訪問介護計画書.png", width: '550px', class: 'responsive-img' %>
         </div>
         <div class="home-subsection-content margin-md">
-            介護・医療保険制度に基ずくサービスであるため、逐次、細かな記録を残す必要があります。
-            「時間がかかるけど、やらなきゃいけないからやる」作業を「素早くできる、大事な情報を共有する」クリティカルな仕事に変えます。	
+            <p>訪問介護計画書とシフト、現場実施記録のケア内容が紐づいています。もし、ずれた場合にはハイライトし一目でわかります。これにより、実地指導でチェックされる計画と実績のズレを未然に防げます。</p>
+            <p>予実差異を防止する為に何百枚、何千枚の紙を細かくチェックする必要がなくなります。</p>
         </div>
     </div>
     <div class="home-subsection-detailed-content">
@@ -149,16 +134,21 @@
     </div>
 </div>
 
+
+<div class="background-transition">
+    <%= image_tag('grey-wave-bottom-thin.svg') %>
+</div>
+
 <div class="colibri-home-subsection light-blue-background-hp" id="colibri-payment">
-    <h2 class="colibri-home-subsection-title add-margin-left-md">モチベーションが上がる給与.手当計算</h2>
+    <h2 class="colibri-home-subsection-title add-margin-left-md">登録ヘルパーの給与計算を自動化</h2>
     <div class="home-subsection-content-container aligned-left-home" style='margin-bottom:25px'>
         <div class="home-subsection-image-container">
-            <%= image_tag "individual_payment.png", width: '400px', class: 'shadowed-img' %>
+            <%= image_tag "individual_payment.png", width: '400px', class: 'shadowed-img responsive-img' %>
         </div>
         <div class="home-subsection-content margin-md">
-            多くの事業所は請求ソフトの給与計算機能が使えずに、自前エクセルで大勢の従業員の給与と手当を計算しています。
-            しかし、エクセルの場合、実績打ち込みと出力の手間、一部の人しか操作できないなど多くの不便とリスクを抱えています。
-            エクセルで出来てソフトで出来ない計算はありません。皆様が考えた従業員のモチベーションを最大化する手当方式を、我々がソフトに組み込みます。
+            <p>訪問介護事業所様の大きな悩みの種が給与計算かと思います。</p>
+            <p>「身体と生活の単価が異なるため、給与も差を付けたい」「労基上は業務時間と判断される場合もあるため、移動手当を用意している」「勤務年数や資格などに応じて、単価を変えたり、別途手当を用意している」など、事業所様は従業員のために様々な工夫を凝らされているはずです。従って、既存ソフトウェアの給与計算機能では対応できず、Excelや手計算が残ってしまいがちです。</p>
+            <p>Colibriは給与計算を０にすることにこだわり、非常に柔軟な仕組みで対応します。</p>
         </div>
     </div>
     <div class="home-subsection-detailed-content">
@@ -199,16 +189,21 @@
 </div>
 
 
+<div class="background-transition">
+    <%= image_tag('grey-wave-top-thin.svg') %>
+</div>
+
+
 <div class="colibri-home-subsection white-background" id="colibri-calendar">
-    <h2 class="colibri-home-subsection-title add-margin-left-md">シフトを中心にスマートな組織管理へ</h2>
+    <h2 class="colibri-home-subsection-title add-margin-left-md">スッキリするシフト管理</h2>
     <div class="home-subsection-content-container aligned-left-home" style='margin-bottom:25px'>
         <div class="home-subsection-image-container">
-            <%= image_tag "ipad_team_calendar.png", width: '400px', class: 'shadowed-img' %>
+            <%= image_tag "calendar_kaigo.png", width: '500px', class: 'responsive-img' %>
         </div>
         <div class="home-subsection-content margin-md">
-            シフトの調整や編集、従業員の希望も考えながら利用者様にとって最適な従業員を効率的なルートで配置します。
-            サービス漏れがないようにリアルタイムのシフトを確認でき、リマインダーも送れます。
-            Colibriは積極的に堅実で働きやすい訪問シフトの作成と共有をお手伝いします。
+            <p>個別従業員や利用者様のシフト、事業所ごとのシフトを特定日、週間、月間などあらゆる角度で作成・調整・共有できます。</p>
+            <p>シフト調整業務は、単純なサービス時間の把握だけではできません。現在調整中のサービスや保留中のサービスなどを可視化し、かつサービス以外の利用者様のご予定（入院・ショートステイ等）や、同行、担会、研修などあらゆる予定を総合的に考慮して行います。</p>
+            <p>そして作成調整されたシフトはリアルタイムで共有する必要があります。サ責業務のために考え抜いたシフトをご用意しています。</p>
         </div>
     </div>
     <div class="home-subsection-detailed-content">
@@ -253,50 +248,8 @@
     </div>
 </div>
 
-
-
-<div id='about-colibri' class='white-background home-page-text-box'>
-    <h2 class="colibri-home-subsection-title align-text-center">Colibriについて</h2>
-    <div>
-        <span style="margin-left:45px"></span>在宅介護経験から介護に興味を持った大学生二人が、100以上の事業所の方々に𠮟咤激励を頂戴し、失敗を重ねながら、本気で開発しているソフトウェアです。<br/><br/>
-
-        <span style="margin-left:45px"></span>規模の大小の差異なく利用者様本意の優良企業を手助けすることが、ひいては社会の為になるだろうと私たちは考えております。<br/><br/>
-
-        <span style="margin-left:45px"></span>ITは企業にとって最も大事な要素の１つである「時間」を生み出すことに、とても優れており、売上増加・コスト削減によって企業利益を向上させます。<br/><br/>
-
-        <span style="margin-left:45px"></span>しかしながら、IT業界側がリアルな介護業務について勉強不足である為に、介護ITの議論は、請求業務ソフトかIoT・AIの両極端に終始していると感じています。ところが、日常の業務は請求でもなければ、最先端のセンサーやロボットも不要だったりします。<br/><br/>
-
-        <span style="margin-left:45px"></span>2025年以降を見据えて、皆様がわくわくするほど「時間」を生み出すことができるソフトウェアを追求します。<br/><br/>
-    </div>
-
+<div class="background-transition">
+    <%= image_tag('blue-wave-bottom-thin.svg', width: '100%') %>
 </div>
-
-<div class='colibri-about-us white-background'>
-
-    <div class='founders-container'>
-        <div class='colibri-founder'>
-            <div class='colibri-self-photo-container'><%= image_tag('kinj.png', width: '100%' ) %></div>
-            <div class='founder-bio'>
-                <p class='founder-bio-important'>鎌原欣司</p>
-                <p class='founder-bio-important'>慶應義塾大学大学院</p>
-                <p>介護業界の為に、何ができるかを常に考えていたら、寝言で介護の話をし始めている。</p>
-            </div>
-        </div>
-        <div class='colibri-founder'>
-            <div class='colibri-self-photo-container'><%= image_tag('rem.png', width: '100%') %></div>
-            <div class='founder-bio'>
-                <p class='founder-bio-important'>ダステレミ</p>
-                <p class='founder-bio-important'>慶應義塾大学大学院</p>
-                <p>92歳の祖父と大勢の高齢者を助けている杖以上に役に立つ介護ソフトを開発したいと考えている。</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="white-background contact-us-button-container">
-    <%= link_to 'お問い合わせは二人が対応します！', new_contact_form_path, class:'btn btn-info btn-lg text-white' %>
-</div>
-
-
 
 <%= render 'layouts/footer' %>

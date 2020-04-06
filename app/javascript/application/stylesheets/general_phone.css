@@ -118,6 +118,10 @@
 
 	#account-edit-body {
 		padding: 0px;
+    }
+    
+	#colibri-purpose {
+		margin-top: 40px;
 	}
 
 }

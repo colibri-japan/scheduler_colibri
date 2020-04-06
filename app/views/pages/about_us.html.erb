@@ -1,0 +1,64 @@
+<div id="colibri-purpose" class="home-page-text-box light-blue-background-hp">
+    <h2 class="colibri-home-subsection-title align-text-center" id="colibri-purpose-title">
+        Colibriの目標
+    </h2>
+    <div id="colibri-purpose-body">
+
+        <p><span style="margin-left:25px"></span>
+            訪問系業務の組織作りとマネージメントを高度化し、この業界で働く人達を幸せにすることで、高齢社会の抱える課題を解決します。        
+        </p>
+
+        <p><span style="margin-left:25px"></span>
+            介護保険制度や医療保険制度等諸制度のおかげで、給付管理は平準化され、日本中どこでも開業が可能になり、誰しもがサービスの恩恵を受けられるようになりました。 
+        </p>
+        
+        <p><span style="margin-left:25px"></span>
+            一方で、制度フォロー自体が目的化し、各事業所や請求ソフト企業は、本来の日常業務の改善に時間を割けない現状があります。
+        </p>
+
+        <p><span style="margin-left:25px"></span>
+            多くの事業所の皆様、関係各所の皆様から勉強させていただきながら、確信していることがあります。 
+            それは、諸制度を最小限の労力でクリアし、本当に価値ある時間は何かを自問自答した上で、継続的にサービスの質と両を向上させられる組織を持つ企業が生き残るということです。
+        </p> 
+
+        <p><span style="margin-left:25px"></span>
+            このような組織作りに対して、力強いサポートができるよう、突き進んで行きます。
+        </p>
+    </div>
+</div>
+
+<div class="background-transition">
+    <%= image_tag('grey-wave-top-right.svg', width: '100%') %>
+</div>
+
+
+<div class='colibri-about-us white-background' style='margin-top:20px'>
+    <div class='founders-container'>
+        <div class='colibri-founder'>
+            <div class='colibri-self-photo-container'><%= image_tag('kinj.png', width: '100%' ) %></div>
+            <div class='founder-bio'>
+                <p class='founder-bio-important'>鎌原欣司</p>
+                <p class='founder-bio-important'>慶應義塾大学大学院</p>
+                <p>介護業界の為に、何ができるかを常に考えていたら、寝言で介護の話をし始めている。</p>
+            </div>
+        </div>
+        <div class='colibri-founder'>
+            <div class='colibri-self-photo-container'><%= image_tag('rem.png', width: '100%') %></div>
+            <div class='founder-bio'>
+                <p class='founder-bio-important'>ダステレミ</p>
+                <p class='founder-bio-important'>慶應義塾大学大学院</p>
+                <p>92歳の祖父と大勢の高齢者を助けている杖以上に役に立つ介護ソフトを開発したいと考えている。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="white-background contact-us-button-container">
+    <%= link_to 'お問い合わせは二人が対応します！', new_contact_form_path, class:'btn btn-info btn-lg text-white' %>
+</div>
+
+<div class="background-transition">
+    <%= image_tag('blue-wave-bottom-thin.svg', width: '100%') %>
+</div>
+
+<%= render 'layouts/footer' %>

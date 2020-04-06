@@ -89,7 +89,40 @@ a#brand-name {
 
 #top-subsection {
     margin-bottom: 0px;
-    padding: 70px 50px 0px 50px;
+    padding: 80px 50px 80px 70px;
+}
+
+#issues-subsection {
+    padding-top:0px;
+    padding-bottom: 0px;
+}
+
+#colibri-calendar {
+    padding-top: 30px;
+    margin-bottom: 100px;
+}
+
+#colibri-payment {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+#colibri-purpose {
+    padding-bottom: 10px;
+}
+
+.background-transition {
+    width: calc(100% + 4px);
+    height:calc(100% + 4px);
+    margin-bottom: -2px;
+    margin-top: -2px;
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+#colibri-reporting {
+    padding-top:50px;
+    padding-bottom: 30px;
 }
 
 .colibri-security-head {
@@ -97,7 +130,7 @@ a#brand-name {
 }
 
 #presentation-text {
-    width:45%;
+    width:55%;
     padding-top:35px;
 }
 
@@ -108,12 +141,17 @@ a#brand-name {
 }
 
 .colibri-home-presentation-title {
+    color:#1B263B;
     font-size: 2.4em;
-    line-height: 1.9em;
+    line-height: 1.7em;
 }
 
 .white-background {
     background-color: white;
+}
+
+.light-pink-background {
+    background-color: #fce7ea;
 }
 
 .light-blue-background-hp {
@@ -136,7 +174,7 @@ a#brand-name {
 footer {
     background-color: #1B263B;
     color: white;
-    padding: 70px 20px 80px 20px;
+    padding: 0px 20px 80px 20px;
 }
 
 #colibri-footer {
@@ -267,9 +305,12 @@ footer {
     width: 50%;
 }
 
+.responsive-img {
+    max-width: 100%;
+}
+
 .shadowed-img {
     box-shadow: 0px 0px 30px 6px #bbb;
-    max-width: 100%;
 }
 
 
@@ -404,7 +445,13 @@ footer {
 }
 
 #presentation-images-banner {
-    width: 55%;
+    width: 45%;
+}
+
+.colibri-home-text-container {
+    max-width:500px;   
+    font-size: 1.2em;
+    color: #1B263B;
 }
 
 #colibri-logo {
@@ -414,7 +461,16 @@ footer {
 
 #colibri-issues-head {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom:15px;
+    color: #1B263B;
+}
+
+.issue-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
 #colibri-issues-parent {
@@ -432,24 +488,20 @@ footer {
     margin-right: auto;
 }
 
+.issue-icon {
+    width: 60px;
+}
+
 .issue-container {
     flex: 1;
     max-width: 300px;
-    background-color: #FAFF81;
-    border-radius: 5px;
+    background-color: white;
+    border-radius: 20px;
     margin: 20px;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-}
-
-.issue-container:hover {
-    box-shadow: 0px 0px 4px 4px #eee;
-}
-
-.issue-body {
-    margin-bottom: 30px;
+    color: #1B263B;
 }
 
 .issue-title {

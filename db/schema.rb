@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200407032145) do
+ActiveRecord::Schema.define(version: 20200407033904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -392,6 +392,16 @@ ActiveRecord::Schema.define(version: 20200407032145) do
     t.string "public_assistance_receiver_number_2"
     t.date "kaigo_certification_date"
     t.integer "second_care_manager_id"
+    t.string "emergency_contact_1_name"
+    t.string "emergency_contact_1_address"
+    t.string "emergency_contact_1_phone"
+    t.string "emergency_contact_1_relationship"
+    t.boolean "emergency_contact_1_living_with_patient", default: false
+    t.string "emergency_contact_2_name"
+    t.string "emergency_contact_2_address"
+    t.string "emergency_contact_2_phone"
+    t.string "emergency_contact_2_relationship"
+    t.boolean "emergency_contact_2_living_with_patient", default: false
     t.index ["care_manager_id"], name: "index_patients_on_care_manager_id"
     t.index ["corporation_id", "kana"], name: "index_patients_on_corporation_id_and_kana"
     t.index ["corporation_id"], name: "index_patients_on_corporation_id"

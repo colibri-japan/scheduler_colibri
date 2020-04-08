@@ -5,7 +5,7 @@
 $(document).on 'turbolinks:load', ->
 
   $('#activity-filter').change ->
-    window.location = planningActivitiesUrl + '?n=' + $('#nurse-filter').val() + '&pat=' + $('#patient-filter').val() + '&us=' + $('#user-filter').val()
+    window.location = planningActivitiesUrl + '?n=' + $('#nurse-filter').val() + '&pat=' + $('#patient-filter').val() + '&us=' + $('#user-filter').val() + '&key=' + $('#key-filter').val()
     return
 
   return

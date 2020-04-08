@@ -27,6 +27,7 @@
 			<%= select_tag('nurse-filter', options_from_collection_for_select(@nurses, 'id', 'name', selected: @nurse_id), prompt: "全従業員") %>
 			<%= select_tag('patient-filter', options_from_collection_for_select(@patients, 'id', 'name', selected: @patient_id), prompt: "全利用者") %>
 			<%= select_tag('user-filter', options_from_collection_for_select(@users, 'id', 'name', selected: @user_id), prompt: "全ユーザー") %>
+			<%= select_tag('key-filter', options_for_select([['削除', 'archive'],['編集','update'],['作成','create']]), prompt: "全アクション") %>
 		</div>
 
 		<% @activities.each do |activity| %>

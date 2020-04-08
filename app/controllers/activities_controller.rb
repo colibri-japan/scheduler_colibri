@@ -29,6 +29,15 @@ class ActivitiesController < ApplicationController
 			@user_id = params[:us]
 			@activities = @activities.where('owner_id = ?', @user_id)
 		end
+
+		if params[:key].present? 
+			#need to differenciate: if update, include edit requested and cancelled
+			if params[:key] == "update"
+				@activities = @activities.where("key like '%update%' or key like '%cancelled%' or key like '%edit_requested%'")
+			else
+				@activities = @activities.where('key like ?', "%#{params[:key]}%")
+			end
+		end
 	end
 
 	def activities_widget

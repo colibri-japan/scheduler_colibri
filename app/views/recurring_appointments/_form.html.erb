@@ -63,7 +63,7 @@
 
       <div class="form-group">
         <%= form.label :patient_id, "#{client_resource_name(@corporation.business_vertical)}名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
-        <%= form.collection_select(:patient_id, @patients, :id, :name, {}, {required: true, id: :recurring_appointment_patient_id}) %>
+        <%= form.collection_select(:patient_id, @patients, :id, :name, {}, {required: true, disabled: !recurring_appointment.new_record?, id: :recurring_appointment_patient_id}) %>
       </div>
 
       <div class="form-group colibri-datetime-group">

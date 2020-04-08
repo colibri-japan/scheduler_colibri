@@ -25,7 +25,7 @@ module UsersHelper
 		planning = user.corporation.planning
 		options << ['全従業員', 0]
 		options << ['全利用者', 1]
-		options << ["#{user.nurse.name}個人シフト" , 2] if user.nurse.present?
+		options << ["個人シフト" , 2] if user.nurse.present?
 		options << ["#{user.nurse.team.team_name}チームシフト" , 3] if user.nurse.present? && user.nurse.team.present?
 
 		options

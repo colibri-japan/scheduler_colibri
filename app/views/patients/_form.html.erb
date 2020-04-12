@@ -100,6 +100,63 @@
     </div>
 
     <div class="blue-background-form">
+      <div class="modal-subsection-title">緊急連絡先1</div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_1_name, "名前", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_1_name, id: :patient_emergency_contact_1_name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_1_address, "住所", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_1_address, id: :patient_emergency_contact_1_address, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_1_phone, "電話番号", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_1_phone, id: :patient_emergency_contact_1_phone, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_1_relationship, "続柄", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_1_relationship, id: :patient_emergency_contact_1_relationship, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_1_living_with_patient, "同居有無", class: "colibri-form-label-dark" %>
+        <%= form.check_box :emergency_contact_1_living_with_patient, id: :emergency_contact_1_living_with_patient %>
+      </div>
+
+      <div class="modal-subsection-title">緊急連絡先2</div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_2_name, "名前", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_2_name, id: :patient_emergency_contact_2_name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_2_address, "住所", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_2_address, id: :patient_emergency_contact_2_address, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_2_phone, "電話番号", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_2_phone, id: :patient_emergency_contact_2_phone, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_2_relationship, "続柄", class: "colibri-form-label-dark" %>
+        <%= form.text_field :emergency_contact_2_relationship, id: :patient_emergency_contact_2_relationship, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :emergency_contact_2_living_with_patient, "同居有無", class: "colibri-form-label-dark" %>
+        <%= form.check_box :emergency_contact_2_living_with_patient, id: :emergency_contact_2_living_with_patient %>
+      </div>
+
+    </div>
+
+    <div class="modal-body">
 
       <div class="modal-subsection-title">請求情報</div>
       
@@ -168,6 +225,6 @@
       <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
       <%= link_to 'サービス停止', toggle_active_path(patient), method: :patch, data: {confirm: '将来のサービスがキャンセルされ、利用者一覧から外されます。'}, class: 'btn btn-danger text-white' if patient.active? %>
     <% end %>
-    <%= form.submit 'セーブする', class: 'btn btn-info' %>
+    <%= form.submit '確定する', class: 'btn btn-info' %>
   </div>
 <% end %>

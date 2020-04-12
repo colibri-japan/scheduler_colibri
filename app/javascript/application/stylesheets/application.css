@@ -18,5 +18,6 @@
 @import './recurring_appointments.css';
 @import './responsive_smartphone_landscape.css';
 @import './responsive_smartphone_portrait.css';
+@import './responsive_tablet_portrait.css';
 @import './scaffolds.css';
 @import './users.css';

@@ -1,0 +1,49 @@
+@media screen and (orientation: portrait) and (min-width: 760px) and (max-width: 1020px) {
+
+    #top-subsection {
+        padding: 30px 30px 70px 30px;
+        justify-content: space-between;
+    }
+
+    #presentation-images-banner {
+        padding-top: 30px;
+        width: 33%;
+    }
+
+    #presentation-text {
+        padding: 0;
+        width:62%;
+    }
+
+    .colibri-home-subsection {
+        padding: 50px 20px 30px 20px;
+    }
+
+    .home-subsection-content.margin-md {
+        margin: 0px;
+        padding: 20px;
+    }
+
+    #colibri-issues {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #issues-subsection {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .issue-container {
+        margin: 10px;
+        min-width: 300px;
+    }
+
+    #heroku-and-salesforce {
+        flex-direction: column;
+    }
+
+    .detailed-content-container {
+        margin: 15px;
+    }
+}

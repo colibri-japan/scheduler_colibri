@@ -109,7 +109,7 @@ class CareManagerCorporationsController < ApplicationController
   private 
 
   def care_manager_corporations_params
-    params.require(:care_manager_corporation).permit(:name, :address, :phone_number, :description)
+    params.require(:care_manager_corporation).permit(:name, :address, :phone_number, :fax_number, :description)
   end
 
   

@@ -19,19 +19,19 @@ class CompletionReport < ApplicationRecord
         joins('INNER JOIN appointments on appointments.id = completion_reports.reportable_id').where(appointments: {patient_id: patient_id})
     end
 
-    def self.attributed_to_ignore_when_comparing
-        [:id, :created_at, :updated_at, :forecasted_report_id, :reportable_type, :reportable_id, :general_comment, :patient_looked_good, :patient_transpired, :body_temperature, :blood_pressure_systolic, :blood_pressure_diastolic, :house_was_clean, :patient_could_discuss, :patient_could_gather_and_share_information, :checking_report, :checked_gas_when_leaving, :checked_electricity_when_leaving, :checked_water_when_leaving, :checked_door_when_leaving]
+    def self.attributes_to_ignore_when_comparing
+        [:id, :created_at, :updated_at, :forecasted_report_id, :reportable_type, :reportable_id, :general_comment, :patient_looked_good, :patient_transpired, :body_temperature, :blood_pressure_systolic, :blood_pressure_diastolic, :house_was_clean, :patient_could_discuss, :patient_could_gather_and_share_information, :checking_report, :checked_gas_when_leaving, :checked_electricity_when_leaving, :checked_water_when_leaving, :checked_door_when_leaving, :latitude, :longitude, :accuracy, :altitude, :altitude_accuracy]
     end
 
     def identical?(other_report)
         return true if other_report.nil?
-        self.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s)) ==
-        other_report.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s))
+        self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) ==
+        other_report.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
     end
 
     def attributes_differences_with(forecast)
-        forecasted = forecast.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s)).to_a
-        actual = self.attributes.except(*self.class.attributed_to_ignore_when_comparing.map(&:to_s)).to_a
+        forecasted = forecast.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)).to_a
+        actual = self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)).to_a
         (forecasted - actual).map {|k,v| k}.uniq
     end
 

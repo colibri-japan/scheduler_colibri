@@ -139,6 +139,9 @@ gem 'rpush'
 #geocoding
 gem 'geocoder'
 
+#use rack cache for static assets
+gem 'rack-cache'
+
 group :production do 
   gem 'wkhtmltopdf-heroku', '2.12.4'
 end

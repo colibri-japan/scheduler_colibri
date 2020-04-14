@@ -24,7 +24,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'actionview', '>= 5.1.6.2'
 
 # Upgrade nokogiri
-gem 'nokogiri',  '>= 1.10.4'
+gem 'nokogiri',  '>= 1.10.8'
 
 # Upgrade ffi
 gem 'ffi', '>= 1.9.24'

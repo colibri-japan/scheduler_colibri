@@ -102,7 +102,6 @@ Rails.application.configure do
     :metastore    => client,
     :entitystore  => client
   }
-  config.static_cache_control = "public, max-age=2592000"
 
   # Use a different logger for distributed setups.
   # require 'syslog/logger'

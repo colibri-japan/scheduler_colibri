@@ -17,7 +17,8 @@ module Scheduler
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.action_dispatch.default_headers.merge!('Cache-Control' => 'no-cache')
+    # was solving errors on ios devices - undesired 422 errors and logouts. Tried to remote it for HP caching
+    #config.action_dispatch.default_headers.merge!('Cache-Control' => 'no-cache')
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

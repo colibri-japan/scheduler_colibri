@@ -15,9 +15,11 @@ class PagesController < ApplicationController
     private 
 
     # wanted all the static pages to be cached, but root path cache conflicting with authenticated root
-    #def set_home_page_cache_headers
-    #    response.headers["Cache-Control"] = "public, max-age=2592000"
-    #end
+    def set_home_page_cache_headers
+        if params[:page] != 'home'
+            response.headers["Cache-Control"] = "public, max-age=2592000"
+        end
+    end
 
     def valid_page?
         File.exist?(Pathname.new(Rails.root + "app/views/pages/#{params[:page]}.html.erb"))

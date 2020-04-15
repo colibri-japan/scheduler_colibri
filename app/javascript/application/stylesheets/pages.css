@@ -657,6 +657,10 @@ footer {
     border: 0.5px solid #17a2b8;
 }
 
+#telework-image {
+    width: 65%;
+}
+
 #colibri-covid-text {
     display:flex;
     padding-right: 30px;

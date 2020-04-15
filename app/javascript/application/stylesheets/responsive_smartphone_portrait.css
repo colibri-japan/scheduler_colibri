@@ -38,7 +38,11 @@
         margin-top: 20px;
         margin-bottom: 40px;   
         text-align: center;    
-    }
+	}
+	
+	#telework-image {
+		width: 100%;
+	}
 
 	#presentation-text {
 		font-size: 1.5em;

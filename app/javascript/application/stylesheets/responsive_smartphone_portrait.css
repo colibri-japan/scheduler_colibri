@@ -28,9 +28,17 @@
 		border-radius: 8px;
 		margin-left:3px;
 	}
+
 	#colibri-covid {
 		margin-top: 80px;
 	}
+
+	.bloglike-subsection-image-container {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 40px;   
+        text-align: center;    
+    }
 
 	#presentation-text {
 		font-size: 1.5em;

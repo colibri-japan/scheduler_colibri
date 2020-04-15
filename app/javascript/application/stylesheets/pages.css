@@ -356,6 +356,12 @@ footer {
     text-align: center;
 }
 
+.bloglike-subsection-image-container {
+    width: 50%;
+    height: 100%;
+    text-align: left;
+}
+
 .colibri-merits-subsection {
     color: white;
     padding: 60px 10px 30px 10px;

@@ -22,12 +22,17 @@
 
 	/* Home page layouts */
 
+	#colibri-covid {
+		margin-top: 10px;
+	}
+
 	#presentation-text {
+		padding-top: 0px;
 		width: 100%;
 	}
 
 	#presentation-images-banner {
-		display: none;
+		display:none;
 	}
 
 	.colibri-home-subsection {

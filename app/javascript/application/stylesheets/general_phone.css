@@ -122,6 +122,14 @@
     
 	#colibri-purpose {
 		margin-top: 40px;
-	}
+    }
+    
+    #colibri-covid {
+        position: initial !important;
+        right: initial !important;
+        bottom: initial !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
 }

@@ -10,18 +10,23 @@
       <%= link_to 'Colibri', unauthenticated_root_path, id: 'brand-name' %>
     </div>
     <div id="colibri-nav-container">
-      <div class="dropdown colibri-nav-dropdown">
-        <div class="dropdown-toggle colibri-nav-li" data-toggle="dropdown">
-          Colibriとは<i class="glyphicon caret" style="font-size:10px;margin-left:2px"></i>
+      <div class="colibri-dropdown colibri-nav-dropdown">
+        <div onclick="colibriDropdown()" class="dropbtn colibri-nav-li colibri-nav-hover" style="margin-left:2px;display:flex">
+          <div style="margin-right:8px;margin-left:8px">Colibriとは</div>
+          <div  style="margin-right:8px;display:flex;align-items:center">
+            <div class="colibri-arrow-down">
+          </div>
+          </div>
         </div>
-        <ul class="dropdown-menu">
-          <li><a href="/pages/home">トップページ</a></li>
-          <li><a href="/pages/features">機能詳細</a></li>
-          <li><a href="/pages/security">セキュリティー</a></li>
-        </ul>
+        <div id="colibriDropdown" class="colibri-dropdown-content">
+          <a href="/pages/home" style="border-top-left-radius:3px;border-top-right-radius:3px">トップページ</a>
+          <a href="/pages/features">機能詳細</a>
+          <a href="/pages/about_us">自己紹介</a>
+          <a href="/pages/security" style="border-bottom-left-radius: 3px;border-bottom-right-radius:3px">セキュリティー</a>
+        </div>
       </div>
       <% if false %>
-        <div class="dropdown colibri-nav-dropdown">
+        <div class="dropdown colibri-nav-dropdown colibri-nav-hover">
           <div class="dropdown-toggle colibri-nav-li" data-toggle="dropdown">
             もっと便利に<i class="glyphicon caret" style="font-size:10px;margin-left:2px"></i>
           </div>
@@ -33,8 +38,8 @@
           </ul>
         </div>
       <% end %>
-      <div class="colibri-nav-li"><a href="https://colibri.hatenablog.jp/" target="_blank">コリブロ</a></div>
-      <div class="colibri-nav-li"><a href="/pages/join_us" name="採用">採用</a></div>
+      <div class="colibri-nav-li nav-centered-vertically" style="width:100px"><a class="colibri-nav-hover" href="https://colibri.hatenablog.jp/" target="_blank" style="width:100px">コリブロ</a></div>
+      <div class="colibri-nav-li nav-centered-vertically" style="width:70px"><a class="colibri-nav-hover" href="/pages/join_us" name="採用" style="width:70px">採用</a></div>
     </div>
   </div>
   <div id="pages-nav-right">
@@ -67,6 +72,7 @@
     <div class="menu-sub-item-container" style="display:none">
       <div class="menu-sub-item"><a href="/pages/home">トップページ</a></div>
       <div class="menu-sub-item"><a href="/pages/features">機能詳細</a></div>
+      <div class="menu-sub-item"><a href="/pages/about_us">自己紹介</a></div>
       <div class="menu-sub-item"><a href="/pages/security">セキュリティー</a></div>
     </div>
   </div>
@@ -89,9 +95,6 @@
   </div>
   <div class="menu-item">
     <a class="menu-item-title" href="/pages/join_us" name="採用">採用</a>
-  </div>
-  <div class="menu-item">
-    <%= link_to 'お問い合わせ', new_contact_form_path, id:'nav-contact-form-link', class: "menu-item-title" %>
   </div>
   <div class="menu-item">
   	<%= link_to 'ログイン', new_user_session_path, class: "menu-item-title" %>

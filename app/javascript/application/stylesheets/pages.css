@@ -574,6 +574,113 @@ footer {
     line-height:60px;
 }
 
+.colibri-bloglike-container {
+    padding: 80px 10px 20px 10px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.colibri-bloglike-title {
+    font-size: 2.4em;
+}
+
+.colibri-bloglike-p {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#colibri-bloglike-table-of-content-container {
+    font-size: 1.2em;
+    margin-top: 15px;
+    border-radius: 15px;
+    background-color: #f5f7f7;
+    padding: 20px;
+    display: inline-block;
+}
+
+#colibri-bloglike-table-of-content {
+    text-decoration: underline ;
+    line-height:1.6em;
+}
+#colibri-bloglike-table-of-content > div:hover {
+    cursor: pointer;
+}
+
+.colibri-sm-h3-title {
+    margin-top: 30px;
+    margin-bottom: 5px;
+    font-size: 1.5em;
+}
+
+.colibri-sm-h4-title {
+    margin-top: 30px;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+}
+
+.centered-btn-container {
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.additional-information {
+    font-size: 0.8em;
+}
+
+#colibri-covid-dot {
+    display:inline-block;
+    width:5px;
+    height:5px;
+    border-radius:5px;
+    background-color:#ff9090;
+    vertical-align:center;
+    margin-bottom:3px;
+    margin-right:2px;
+}
+
+#colibri-covid {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 0px 0px 0px;
+    border-radius: 18px;
+    width: 300px;
+    background-color: white;
+    border: 0.5px solid #17a2b8;
+}
+
+#colibri-covid-text {
+    display:flex;
+    padding-right: 30px;
+    margin-bottom:15px;
+}
+
+.margin-top {
+    padding-top: 70px;
+    margin-bottom: -20px;
+}
+
+#colibri-call-to-action-head {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+#colibri-call-to-action {
+    margin-left:auto;
+    margin-right: auto;
+    padding:30px;
+    border-radius: 15px;
+    border: 0.5px solid #17a2b8;
+}
+
+#colibri-call-to-action-body > p {
+    font-size: 1.7em;
+    text-align: center;
+}
+
 @media screen and (orientation: portrait) {
     
 

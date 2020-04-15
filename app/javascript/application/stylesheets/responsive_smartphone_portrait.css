@@ -22,6 +22,16 @@
 
 	/* styles for home page */
 
+	#colibri-covid-dot {
+		height: 8px;
+		width:8px;
+		border-radius: 8px;
+		margin-left:3px;
+	}
+	#colibri-covid {
+		margin-top: 80px;
+	}
+
 	#presentation-text {
 		font-size: 1.5em;
 	}
@@ -123,7 +133,7 @@
 	}
 
 	#top-subsection {
-		margin-top: 85px;
+		margin-top: 20px;
 		flex-direction: column-reverse;
 		padding-left: 15px;
 		padding-right: 15px;

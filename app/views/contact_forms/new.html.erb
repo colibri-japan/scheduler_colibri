@@ -1,9 +1,13 @@
 <div id="contact-form-background">
     <div id="colibri-contact-form-container">
-        <p id="colibri-contact-form-title">お問い合わせ</p>
+        <p id="colibri-contact-form-title">お問い合わせ・資料請求</p>
         <%= form_for @contact_form do |form| %>
             <div class="form-group row">
-                <%= form.label :email, "メールアドレス", class: "colibri-form-label-dark home col-sm-3" %>
+                <%= form.label :name, "氏名<span class='required-field' style='color:black'>*</span>".html_safe, class: "colibri-form-label-dark home col-sm-3" %>
+                <%= form.text_field :name, required: true, class: 'form-control home col-sm-8' %>
+            </div>
+            <div class="form-group row">
+                <%= form.label :email, "メールアドレス<span class='required-field' style='color:black;text-align:left'>*</span>".html_safe, class: "colibri-form-label-dark home col-sm-3" %>
                 <%= form.email_field :email, required: true, class: 'form-control home col-sm-8' %>
             </div>
             <div class="form-group row">
@@ -12,7 +16,7 @@
             </div>
             
             <div class="form-group actions home">
-                <%= form.submit "送信する", class: "btn btn-info col-sm-8 offset-md-3" %>
+                <%= form.submit "確定", class: "btn btn-info col-sm-8 offset-md-3" %>
             </div>
         <% end %>
     </div>

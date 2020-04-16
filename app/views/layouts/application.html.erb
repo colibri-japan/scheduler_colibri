@@ -16,13 +16,17 @@
       <!-- iOS Safari -->
       <meta name="apple-mobile-web-app-capable" content="yes">
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+      <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <% end %>
 
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% if ['pages', 'contact_forms'].include?(controller_name) %>
+      <%= javascript_include_tag 'pages', 'data-turbolinks-track': 'reload' %>
+    <% end %>
+
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     
     <% if Rails.env == 'production' %>
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136584111-1"></script>

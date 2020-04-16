@@ -13,7 +13,7 @@ class ContactFormsController < ApplicationController
     if @contact_form.deliver
       redirect_to pages_path(:home), notice: 'ご連絡ありがとうございます！確認後に改めてご連絡いたします'
     else
-      redirect_to :new 
+      redirect_to new_contact_form_path, alert: 'メールの送信が失敗しました'
     end
   end
 

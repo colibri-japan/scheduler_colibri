@@ -53,10 +53,10 @@
   	    <% end %>
   	</ul>
     <div id="colibri-mobile-nav">
-      <div id="hamburger-nav-mobile">
+      <div onclick="colibriMobileShowDropdown()" id="hamburger-nav-mobile">
         <%= image_tag 'hamburger_icon.svg', width: '40px' %>
       </div>
-      <div id="close-nav-mobile" style="display:none">
+      <div onclick="colibriMobileHideDropdown()" id="close-nav-mobile" style="display:none">
         &times;
       </div>
     </div>
@@ -65,11 +65,11 @@
 
 <div id="colibri-mobile-menu">
   <div class="menu-item">
-    <div class="menu-item-title toggle-submenu" style="display:flex;justify-content:space-between">
+    <div class="menu-item-title toggle-submenu" onclick="colibriMobileDropdown()" style="display:flex;justify-content:space-between">
       <div>Colibriとは</div>
       <div><i class="glyphicon glyphicon-chevron-down" style="font-weight:normal;font-size:0.7em"></i></div>
     </div>
-    <div class="menu-sub-item-container" style="display:none">
+    <div class="menu-sub-item-container" id="colibri-mobile-submenu" style="display:none">
       <div class="menu-sub-item"><a href="/pages/home">トップページ</a></div>
       <div class="menu-sub-item"><a href="/pages/features">機能詳細</a></div>
       <div class="menu-sub-item"><a href="/pages/about_us">自己紹介</a></div>
@@ -90,6 +90,9 @@
       </div>
     </div>
   <% end %>
+  <div class="menu-item">
+    <a class="menu-item-title" href="/pages/telework">コロナ対策<div id="colibri-covid-dot"></div></a>
+  </div>
   <div class="menu-item">
     <a class="menu-item-title" href="https://colibri.hatenablog.jp/" target="_blank">コリブロ</a>
   </div>

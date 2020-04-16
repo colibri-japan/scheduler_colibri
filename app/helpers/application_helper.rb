@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+	def title(text)
+		content_for :title, text
+	end
+	
 	def key_helper(key)
 		if key == 'notice'
 			'success'

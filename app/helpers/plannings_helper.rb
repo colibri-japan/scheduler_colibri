@@ -2,10 +2,6 @@ module PlanningsHelper
 
 	HIRAGANAS = ['あ','か','さ','た','な','は','ま','や','ら','わ','カナなし'] 
 
-	def title(planning)
-		planning.title.present? ? "#{planning.title} (#{planning.business_month}月)" : "#{planning.business_month}月のスケジュール"
-	end
-
 	def insurance_category(boolean)
 		boolean ? '医療' : '介護'
 	end

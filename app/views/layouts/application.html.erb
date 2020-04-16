@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Colibri</title>
+    <title>
+      <%= if content_for?(:title) then yield(:title) + ' | ' end %>
+      Colibri
+    </title>
     <%= csrf_meta_tags %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, IE=edge">
+
+    <meta name="description" content="<%= yield(:description) %>">
 
     <% if user_signed_in? %>
       <meta name="theme-color" content="#2B384E">

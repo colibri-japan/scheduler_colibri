@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  match '(*any)', to: redirect(subdomain: ''), via: :all, constraints: {subdomain: ['www', 'scheduler']}
   get 'bonuses/new'
 
   get 'calendar_event/new'

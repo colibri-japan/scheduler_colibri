@@ -1,5 +1,5 @@
 document.addEventListener('turbolinks:load', function () {
     if (typeof gtag === 'function') {
-        gtag('config', 'UA-136584111-1')
+        gtag('config', 'UA-136584111-2')
     }
 });

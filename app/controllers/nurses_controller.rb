@@ -95,10 +95,10 @@ class NursesController < ApplicationController
     respond_to do |format|
       if @nurse.update(params)
         format.js
-        format.html {redirect_back(fallback_location: authenticated_root_path, notice: '従業員の情報がアップデートされました')}
+        format.html {redirect_back(fallback_location: current_user_home_path, notice: '従業員の情報がアップデートされました')}
       else
         format.js
-        format.html {redirect_back(fallback_location: authenticated_root_path, alert: '従業員の情報のアップデートが失敗しました')}
+        format.html {redirect_back(fallback_location: current_user_home_path, alert: '従業員の情報のアップデートが失敗しました')}
       end
     end
   end
@@ -216,9 +216,9 @@ class NursesController < ApplicationController
     if params[:y].present? && params[:m].present?
       RecalculateNurseMonthlyWageWorker.perform_async(@nurse.id, params[:y], params[:m])
 
-      redirect_back(fallback_location: authenticated_root_path, notice: "#{@nurse.name}の給与を計算中です。")
+      redirect_back(fallback_location: current_user_home_path, notice: "#{@nurse.name}の給与を計算中です。")
     else
-      redirect_back(fallback_location: authenticated_root_path)
+      redirect_back(fallback_location: current_user_home_path)
     end
   end
 

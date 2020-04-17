@@ -15,7 +15,7 @@ class PrintingOptionsController < ApplicationController
         @printing_option = PrintingOption.find(params[:id])
 
         if @printing_option.update(printing_option_params)
-            redirect_back(fallback_location: authenticated_root_path, notice: '印刷設定がセーブされました。')
+            redirect_back(fallback_location: current_user_home_path, notice: '印刷設定がセーブされました。')
         end
     end
 

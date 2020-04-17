@@ -96,10 +96,10 @@ class PatientsController < ApplicationController
     respond_to do |format|
       if @patient.update(params)
         format.js
-        format.html { redirect_back(fallback_location: authenticated_root_path, notice: '利用者様の情報がアップデートされました') }
+        format.html { redirect_back(fallback_location: current_user_home_path, notice: '利用者様の情報がアップデートされました') }
       else
         format.js
-        format.html { redirect_back(fallback_location: authenticated_root_path, alert: '利用者様の情報のアップデートが失敗しました') }
+        format.html { redirect_back(fallback_location: current_user_home_path, alert: '利用者様の情報のアップデートが失敗しました') }
       end
     end
   end
@@ -211,7 +211,7 @@ class PatientsController < ApplicationController
         end 
       end
     else
-      redirect_back fallback_location: authenticated_root_path
+      redirect_back fallback_location: current_user_home_path
     end
   end
 

@@ -188,12 +188,6 @@ Rails.application.routes.draw do
   get 'care_manager_corporations/:id/teikyohyo' => 'care_manager_corporations#teikyohyo', as: :care_manager_corporation_teikyohyo
   get 'care_manager_corporations/:id/commented_appointments' => 'care_manager_corporations#commented_appointments', as: :care_manager_corporation_commented_appointments
 
-  authenticated :user do  
-    root  to: 'users#current_user_home', as: :authenticated_root
-  end
-
-  unauthenticated do 
-    root to: 'pages#show', page: 'home', as: :unauthenticated_root
-  end
+  root to: 'pages#show', page: 'home'
 
 end

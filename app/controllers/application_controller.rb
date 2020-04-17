@@ -22,6 +22,10 @@ class ApplicationController < ActionController::Base
 
   private 
 
+  def after_sign_in_path_for(resource)
+    current_user_home_path
+  end
+
   def detect_device_format
     case request.user_agent
     when /iPad/i
@@ -41,7 +45,7 @@ class ApplicationController < ActionController::Base
     policy_name = exception.policy.class.to_s.underscore
 
     flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_to(request.referrer || authenticated_root_path)
+    redirect_to(request.referrer || current_user_home_path)
   end
 
   def set_corporation

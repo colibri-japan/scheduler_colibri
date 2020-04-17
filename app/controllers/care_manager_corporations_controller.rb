@@ -75,7 +75,7 @@ class CareManagerCorporationsController < ApplicationController
         end 
       end
     else
-      redirect_back fallback_location: authenticated_root_path
+      redirect_back fallback_location: current_user_home_path
     end
   end
 
@@ -102,7 +102,7 @@ class CareManagerCorporationsController < ApplicationController
         end 
       end
     else
-      redirect_back fallback_location: authenticated_root_path
+      redirect_back fallback_location: current_user_home_path
     end
   end
 

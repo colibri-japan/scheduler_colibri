@@ -20,7 +20,7 @@ class ServicesController < ApplicationController
         @service = @corporation.services.new(service_params)
         
         if @service.save
-            redirect_back fallback_location: authenticated_root_path, notice: 'サービスタイプが登録されました'
+            redirect_back fallback_location: current_user_home_path, notice: 'サービスタイプが登録されました'
         end
     end
     
@@ -38,10 +38,10 @@ class ServicesController < ApplicationController
         set_nurse_if_present
         respond_to do |format|
             if @service.update(service_params)
-                format.html { redirect_back fallback_location: authenticated_root_path, notice: 'サービスの詳細が編集されました' }
+                format.html { redirect_back fallback_location: current_user_home_path, notice: 'サービスの詳細が編集されました' }
                 format.js
             else
-                format.html { redirect_back fallback_location: authenticated_root_path, alert: 'サービスの編集が失敗しました' }
+                format.html { redirect_back fallback_location: current_user_home_path, alert: 'サービスの編集が失敗しました' }
                 format.js
             end
         end
@@ -63,7 +63,7 @@ class ServicesController < ApplicationController
 
         MergeAndDestroyServiceWorker.perform_async(params[:id], params[:destination_service_id])
 
-        redirect_back fallback_location: authenticated_root_path, notice: 'サービスの統合.削除を開始しました。数分後に終了します。'
+        redirect_back fallback_location: current_user_home_path, notice: 'サービスの統合.削除を開始しました。数分後に終了します。'
     end
 
     private

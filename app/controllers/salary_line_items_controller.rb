@@ -9,7 +9,7 @@ class SalaryLineItemsController < ApplicationController
 		@salary_line_item.planning_id = current_user.corporation.planning.id
 
 		if @salary_line_item.save
-		  redirect_back fallback_location: authenticated_root_path, notice: "新規手当がセーブされました"
+		  redirect_back fallback_location: current_user_home_path, notice: "新規手当がセーブされました"
 		end
 	end
 
@@ -20,16 +20,16 @@ class SalaryLineItemsController < ApplicationController
 		respond_to do |format|
 			if @salary_line_item.update(salary_line_item_params)
 				format.js
-				format.html {redirect_back fallback_location: authenticated_root_path, notice: '実績がアップデートされました' }
+				format.html {redirect_back fallback_location: current_user_home_path, notice: '実績がアップデートされました' }
 			else
-				format.html {redirect_back fallback_location: authenticated_root_path, notice: '実績のアップデートが失敗しました' }
+				format.html {redirect_back fallback_location: current_user_home_path, notice: '実績のアップデートが失敗しました' }
 			end
 		end
 	end
 
 	def destroy
 		if @salary_line_item.delete
-			redirect_back fallback_location: authenticated_root_path, notice: '実績が削除されました'
+			redirect_back fallback_location: current_user_home_path, notice: '実績が削除されました'
 		end
 	end
 

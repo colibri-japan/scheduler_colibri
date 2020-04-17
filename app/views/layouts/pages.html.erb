@@ -7,8 +7,8 @@
 <nav id="colibri-pages-nav">
   <div id="pages-nav-left">
     <div id="brand-container">
-      <%= link_to image_tag('colibri_logo_full_pink.svg', size: '45', id: 'colibri-logo'), unauthenticated_root_path %>
-      <%= link_to 'Colibri', unauthenticated_root_path, id: 'brand-name' %>
+      <%= link_to image_tag('colibri_logo_full_pink.svg', size: '45', id: 'colibri-logo'), root_path %>
+      <%= link_to 'Colibri', root_path, id: 'brand-name' %>
     </div>
     <div id="colibri-nav-container">
       <div class="colibri-dropdown colibri-nav-dropdown">
@@ -48,7 +48,7 @@
   	<ul id="colibri-nav-right-list">
   	    <% if user_signed_in? %>
           <li class="li-float-right btn btn-outline-info" style="margin-right:8px">
-            <%= link_to 'アプリへ', authenticated_root_path, title: 'ホームページ.ダッシュボード' %>  
+            <%= link_to 'アプリへ', current_user_home_path, title: 'ホームページ.ダッシュボード' %>  
           </li>
   	    <% else %>
   	      <li class="btn btn-outline-info" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>

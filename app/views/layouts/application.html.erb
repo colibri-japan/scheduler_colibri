@@ -5,11 +5,13 @@
       <%= if content_for?(:title) then yield(:title) + ' | ' end %>
       Colibri
     </title>
+
     <%= csrf_meta_tags %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, IE=edge">
-
     <meta name="description" content="<%= yield(:description) %>">
+
+    <%= favicon_link_tag asset_path('colibri_logo_full_pink.ico') %>
 
     <% if user_signed_in? %>
       <meta name="theme-color" content="#2B384E">
@@ -22,24 +24,20 @@
 
     <% if ['pages', 'contact_forms'].include?(controller_name) %>
       <%= javascript_include_tag 'pages', 'data-turbolinks-track': 'reload' %>
+      <% if Rails.env == 'production' %>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136584111-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        </script>
+      <% end %>
     <% end %>
 
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    
-    <% if Rails.env == 'production' %>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136584111-1"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-      </script>
-    <% end %>
-
-    <%= favicon_link_tag asset_path('colibri_logo_full_pink.ico') %>
-
     <style><%= yield :stylesheets %></style>
+    
   </head>
 
   <body>

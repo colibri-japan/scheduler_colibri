@@ -55,8 +55,12 @@ class PatientsController < ApplicationController
     @patient.toggled_active_at = Time.now 
 
     if @patient.save(validate: false)
-      CancelPatientAppointmentsWorker.perform_async(@patient.id)
-      redirect_to patients_path, notice: "#{@patient.try(:name)}様のサービスが停止されました。"
+      if @patient.active 
+        redirect_to patients_path, notice: "#{@patient.try(:name)}様をサービス実施中に戻しました。"
+      else
+        CancelPatientAppointmentsWorker.perform_async(@patient.id)
+        redirect_to patients_path, notice: "#{@patient.try(:name)}様のサービスが停止されました。"
+      end
     end
   end
 

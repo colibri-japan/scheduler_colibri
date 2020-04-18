@@ -213,6 +213,10 @@
         <%= form.text_field :end_of_contract, class: 'form-control', id: :patient_end_of_contract %>
       </div>
 
+      <div class="form-group">
+        <%= link_to 'サービス実施中に戻す', toggle_active_path(patient), method: :patch, data: {confirm: '利用者がサービス実施中にもどされます。サービスは再入力してください。'}, class: 'btn btn-success text-white' if !patient.active? %>
+      </div>
+
     <% end %>
 
 

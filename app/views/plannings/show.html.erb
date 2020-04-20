@@ -121,7 +121,7 @@
 	<div id="menu-backdrop">
 	</div>
 	<div id="detail-container" class="<%= 'nurse-restricted-detail-container' if current_user.nurse_restricted? %>">
-		<div id="detail-planning-container">
+		<div id="detail-planning-container" class="<%= 'smaller-top-margin' if current_user.nurse_restricted? %>">
 			<div id="planning-header">
 				<div id="detail-planning-title">
 					<div id="planning-nurse-information">

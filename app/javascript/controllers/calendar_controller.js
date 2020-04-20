@@ -168,9 +168,7 @@ let createCalendar = () => {
 
                     data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
                     data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                    if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
-                        let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
-                        data[resourceArgument] = window.currentResourceId || window.defaultResourceId
+                    if ((window.currentResourceId && window.currentResourceId !== 'all' && window.currentResourceType !== 'team') || (!window.currentResourceId && window.defaultResourceId !== 'all' && window.defaultResourceType !== 'team')) {
                         if (fetchInfo.end - fetchInfo.start === 86400000) {
                             data['list_view'] = true
                         }
@@ -193,13 +191,6 @@ let createCalendar = () => {
                         let data = {}
                         data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
                         data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                        if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
-                            let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
-                            data[resourceArgument] = window.currentResourceId || window.defaultResourceId
-                            if (fetchInfo.end - fetchInfo.start === 86400000) {
-                                data['list_view'] = true
-                            }
-                        }
 
                         $.ajax({
                             url: url2,

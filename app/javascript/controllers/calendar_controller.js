@@ -215,7 +215,6 @@ let createCalendar = () => {
 
         datesRender: function(info) {
             responsiveHeader(info.view)
-            console.log('rendering dates')
 
             if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
                 var fcCenter = document.getElementsByClassName('fc-center')[0]
@@ -230,7 +229,6 @@ let createCalendar = () => {
                         }
                         title.style.display = 'block'
                     } else if (info.view.type === 'listDay') {
-                        console.log('list day, should not show title')
                         $('#no-appointments-date').html(fullDate)
                         title.style.display = 'none'
                     } else {

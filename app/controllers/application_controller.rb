@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
     current_user_home_path
   end
 
+  def after_sign_out_path_for(resource)
+    '/pages/logout'
+  end
+
   def detect_device_format
     case request.user_agent
     when /iPad/i

@@ -469,6 +469,7 @@
 		height: 100%;
 		overflow-y: scroll;
 		overflow-x: hide;
+		padding-bottom:40px;
 	}
 
 
@@ -484,11 +485,11 @@
 	}
 
 	#nurses-resource {
-		padding-bottom: 0px;
+		padding-bottom: 40px;
 	}
 
 	#patients-resource {
-		padding-bottom: 0px;
+		padding-bottom: 40px;
 	}
 
 

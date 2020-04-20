@@ -730,14 +730,15 @@
 		height: 100%;
 		overflow-y: scroll;
 		overflow-x: hide;
+		padding-bottom: 70px;
 	}
 
 	#nurses-resource {
-		padding-bottom: 0px;
+		padding-bottom: 70px;
 	}
 
 	#patients-resource {
-		padding-bottom: 0px;
+		padding-bottom: 70px;
 	}
 
 

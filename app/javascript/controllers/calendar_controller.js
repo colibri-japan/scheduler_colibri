@@ -168,8 +168,11 @@ let createCalendar = () => {
 
                     data['start'] = moment(fetchInfo.start).format('YYYY-MM-DD HH:mm')
                     data['end'] = moment(fetchInfo.end).format('YYYY-MM-DD HH:mm')
-                    if ((window.currentResourceId && window.currentResourceId !== 'all' && window.currentResourceType !== 'team') || (!window.currentResourceId && window.defaultResourceId !== 'all' && window.defaultResourceType !== 'team')) {
-                        if (fetchInfo.end - fetchInfo.start === 86400000) {
+                    if ((window.currentResourceId && window.currentResourceId !== 'all') || (!window.currentResourceId && window.defaultResourceId !== 'all')) {
+                        let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
+                        data[resourceArgument] = window.currentResourceId || window.defaultResourceId
+
+                        if (fetchInfo.end - fetchInfo.start === 86400000 && (!window.currentResourceType && window.defaultResourceType !== 'team' || window.currentResourceType !== 'team')) {
                             data['list_view'] = true
                         }
                     }

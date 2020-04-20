@@ -99,7 +99,6 @@ a#brand-name {
 
 #colibri-calendar {
     padding-top: 30px;
-    margin-bottom: 100px;
 }
 
 #colibri-payment {
@@ -123,6 +122,14 @@ a#brand-name {
 #colibri-reporting {
     padding-top:50px;
     padding-bottom: 30px;
+}
+
+.colibri-bottom-action-container {
+    max-width:800px;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:50px;
 }
 
 .colibri-security-head {

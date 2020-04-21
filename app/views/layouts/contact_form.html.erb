@@ -5,14 +5,6 @@
 <%= content_for :content do %>
 <nav id="colibri-pages-nav">
   <div id="pages-nav-left">
-    <div id="colibri-mobile-nav">
-      <div onclick="colibriMobileShowDropdown()" id="hamburger-nav-mobile">
-        <%= image_tag 'hamburger_icon.svg', width: '40px' %>
-      </div>
-      <div onclick="colibriMobileHideDropdown()" id="close-nav-mobile" style="display:none">
-        &times;
-      </div>
-    </div>
     <div id="brand-container">
       <%= link_to image_tag('colibri_logo_full_pink.svg', size: '45', id: 'colibri-logo'), root_path %>
       <%= link_to 'Colibri', root_path, id: 'brand-name' %>
@@ -33,19 +25,6 @@
           <a href="/pages/security" style="border-bottom-left-radius: 3px;border-bottom-right-radius:3px">セキュリティー</a>
         </div>
       </div>
-      <% if false %>
-        <div class="dropdown colibri-nav-dropdown colibri-nav-hover">
-          <div class="dropdown-toggle colibri-nav-li" data-toggle="dropdown">
-            もっと便利に<i class="glyphicon caret" style="font-size:10px;margin-left:2px"></i>
-          </div>
-          <ul class="dropdown-menu">
-            <li><a href="/pages/data">経営データの分析</a></li>
-            <li><a href="/pages/posts">掲示板.情報共有</a></li>
-            <li><a href="/pages/todolist">シフトToDoリスト</a></li>
-            <li><a href="/pages/availabilities">従業員の空き情報.希望</a></li>
-          </ul>
-        </div>
-      <% end %>
       <div class="colibri-nav-li nav-centered-vertically" style="width:100px"><a class="colibri-nav-hover" href="https://colibri.hatenablog.jp/" target="_blank" style="width:100px">コリブロ</a></div>
       <div class="colibri-nav-li nav-centered-vertically" style="width:70px"><a class="colibri-nav-hover" href="/pages/join_us" name="採用" style="width:70px">採用</a></div>
     </div>
@@ -60,7 +39,14 @@
   	      <li class="btn btn-outline-info" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>
   	    <% end %>
   	</ul>
-
+    <div id="colibri-mobile-nav">
+      <div onclick="colibriMobileShowDropdown()" id="hamburger-nav-mobile">
+        <%= image_tag 'hamburger_icon.svg', width: '40px' %>
+      </div>
+      <div onclick="colibriMobileHideDropdown()" id="close-nav-mobile" style="display:none">
+        &times;
+      </div>
+    </div>
   <div>
 </nav>
 
@@ -77,20 +63,6 @@
       <div class="menu-sub-item"><a href="/pages/security">セキュリティー</a></div>
     </div>
   </div>
-  <% if false %>
-    <div class="menu-item">
-      <div class="menu-item-title toggle-submenu" style="display:flex;justify-content:space-between">
-        <div>もっと便利に</div>
-        <div><i class="glyphicon glyphicon-chevron-down" style="font-weight:normal;font-size:0.7em"></i></div>
-      </div>
-      <div class="menu-sub-item-container" style="display:none">
-        <div class="menu-sub-item"><a href="/pages/data">経営データの分析</a></div>
-        <div class="menu-sub-item"><a href="/pages/posts">掲示板.情報共有</a></div>
-        <div class="menu-sub-item"><a href="/pages/todolist">シフトToDoリスト</a></div>
-        <div class="menu-sub-item"><a href="/pages/availabilities">従業員の空き情報.希望</a></div>
-      </div>
-    </div>
-  <% end %>
   <div class="menu-item">
     <a class="menu-item-title" href="/pages/telework">コロナ対策<div id="colibri-covid-dot"></div></a>
   </div>

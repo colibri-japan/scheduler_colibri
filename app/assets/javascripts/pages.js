@@ -13,14 +13,20 @@ window.colibriMobileDropdown = function() {
 
 window.colibriMobileShowDropdown = function() {
   document.getElementById("hamburger-nav-mobile").style.display = 'none'
-  document.getElementById("mobile-only-contact-form-button").style.display = 'none'
+  var button = document.getElementById("mobile-only-contact-form-button")
+  if (button) {
+    button.style.display = 'none'
+  }
   document.getElementById("close-nav-mobile").style.display = 'block'
   document.getElementById("colibri-mobile-menu").style.display = 'block'
 }
 
 window.colibriMobileHideDropdown = function() {          
   document.getElementById("hamburger-nav-mobile").style.display = 'block'
-  document.getElementById("mobile-only-contact-form-button").style.display = 'block'
+  var button = document.getElementById("mobile-only-contact-form-button")
+  if (button) {
+    button.style.display = 'block'
+  }
   document.getElementById("close-nav-mobile").style.display = 'none'
   document.getElementById("colibri-mobile-menu").style.display = 'none'
 }

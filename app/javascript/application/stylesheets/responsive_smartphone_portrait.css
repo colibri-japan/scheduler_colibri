@@ -81,11 +81,7 @@
 		padding:10px;
 		width: 100%;
 		font-size: 1.5em;
-		font-weight: 500;
-	}
-
-	#nav-contact-form-link {
-		color: black;
+		font-weight: 350;
 	}
 
 	.menu-sub-item {
@@ -206,14 +202,24 @@
 		flex-direction: column;
 	}
 
-	
-#colibri-security-text {
-    width: 100%;
-}
 
-#security-icon-container {
-	width: 100%;
-}
+	#mobile-only-contact-form-button {
+		display: block;
+	}
+
+
+	#mobile-menu-call-to-action {
+		font-size: 1.3em;
+	}
+
+	
+	#colibri-security-text {
+		width: 100%;
+	}
+
+	#security-icon-container {
+		width: 100%;
+	}
 
 	footer {
 		background-color: #1B263B;
@@ -241,9 +247,9 @@
 	}
 
 	/* styles for contact page */
-
-	#colibri-contact-form-container {
-		margin-top: 60px;
+	#contact-form-background {
+		height: auto;
+		margin: 90px 0px 50px 0px;
 	}
 
 	#contact-form-login-button {

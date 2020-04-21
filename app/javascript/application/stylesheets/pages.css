@@ -136,6 +136,10 @@ a#brand-name {
     display: flex;
 }
 
+#mobile-only-contact-form-button {
+    display: none;
+}
+
 #presentation-text {
     width:55%;
     padding-top:35px;

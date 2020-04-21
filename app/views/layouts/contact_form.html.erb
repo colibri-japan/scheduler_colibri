@@ -5,6 +5,14 @@
 <%= content_for :content do %>
 <nav id="colibri-pages-nav">
   <div id="pages-nav-left">
+    <div id="colibri-mobile-nav">
+      <div onclick="colibriMobileShowDropdown()" id="hamburger-nav-mobile">
+        <%= image_tag 'hamburger_icon.svg', width: '40px' %>
+      </div>
+      <div onclick="colibriMobileHideDropdown()" id="close-nav-mobile" style="display:none">
+        &times;
+      </div>
+    </div>
     <div id="brand-container">
       <%= link_to image_tag('colibri_logo_full_pink.svg', size: '45', id: 'colibri-logo'), root_path %>
       <%= link_to 'Colibri', root_path, id: 'brand-name' %>
@@ -52,14 +60,7 @@
   	      <li class="btn btn-outline-info" id="nav-login-button"><%= link_to 'ログイン', new_user_session_path %></li>
   	    <% end %>
   	</ul>
-    <div id="colibri-mobile-nav">
-      <div onclick="colibriMobileShowDropdown()" id="hamburger-nav-mobile">
-        <%= image_tag 'hamburger_icon.svg', width: '40px' %>
-      </div>
-      <div onclick="colibriMobileHideDropdown()" id="close-nav-mobile" style="display:none">
-        &times;
-      </div>
-    </div>
+
   <div>
 </nav>
 

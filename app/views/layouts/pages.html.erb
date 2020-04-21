@@ -26,19 +26,6 @@
           <a href="/pages/security" style="border-bottom-left-radius: 3px;border-bottom-right-radius:3px">セキュリティー</a>
         </div>
       </div>
-      <% if false %>
-        <div class="dropdown colibri-nav-dropdown colibri-nav-hover">
-          <div class="dropdown-toggle colibri-nav-li" data-toggle="dropdown">
-            もっと便利に<i class="glyphicon caret" style="font-size:10px;margin-left:2px"></i>
-          </div>
-          <ul class="dropdown-menu">
-            <li><a href="/pages/data">経営データの分析</a></li>
-            <li><a href="/pages/posts">掲示板.情報共有</a></li>
-            <li><a href="/pages/todolist">シフトToDoリスト</a></li>
-            <li><a href="/pages/availabilities">従業員の空き情報.希望</a></li>
-          </ul>
-        </div>
-      <% end %>
       <div class="colibri-nav-li nav-centered-vertically" style="width:100px"><a class="colibri-nav-hover" href="/pages/telework" style="width:120px"><div id="colibri-covid-dot"></div>コロナ対策</a></div>
       <div class="colibri-nav-li nav-centered-vertically" style="width:100px"><a class="colibri-nav-hover" href="https://colibri.hatenablog.jp/" target="_blank" style="width:100px">コリブロ</a></div>
       <div class="colibri-nav-li nav-centered-vertically" style="width:70px"><a class="colibri-nav-hover" href="/pages/join_us" name="採用" style="width:70px">採用</a></div>
@@ -55,7 +42,10 @@
   	      <li class="btn btn-info" id="nav-contact-button"><%= link_to '資料請求', new_contact_form_path, id:'nav-contact-form-link' %></li>
   	    <% end %>
   	</ul>
-    <div id="colibri-mobile-nav">
+    <div id="mobile-only-contact-form-button">
+      <%= link_to '資料請求', new_contact_form_path, class: 'btn btn-info', style: 'margin-right:10px' %>
+    </div>
+    <div id="colibri-mobile-nav" style='margin-right:10px;margin-left:10px'>
       <div onclick="colibriMobileShowDropdown()" id="hamburger-nav-mobile">
         <%= image_tag 'hamburger_icon.svg', width: '40px' %>
       </div>
@@ -63,6 +53,8 @@
         &times;
       </div>
     </div>
+
+
   <div>
 </nav>
 
@@ -79,20 +71,6 @@
       <div class="menu-sub-item"><a href="/pages/security">セキュリティー</a></div>
     </div>
   </div>
-  <% if false %>
-    <div class="menu-item">
-      <div class="menu-item-title toggle-submenu" style="display:flex;justify-content:space-between">
-        <div>もっと便利に</div>
-        <div><i class="glyphicon glyphicon-chevron-down" style="font-weight:normal;font-size:0.7em"></i></div>
-      </div>
-      <div class="menu-sub-item-container" style="display:none">
-        <div class="menu-sub-item"><a href="/pages/data">経営データの分析</a></div>
-        <div class="menu-sub-item"><a href="/pages/posts">掲示板.情報共有</a></div>
-        <div class="menu-sub-item"><a href="/pages/todolist">シフトToDoリスト</a></div>
-        <div class="menu-sub-item"><a href="/pages/availabilities">従業員の空き情報.希望</a></div>
-      </div>
-    </div>
-  <% end %>
   <div class="menu-item">
     <a class="menu-item-title" href="/pages/telework">コロナ対策<div id="colibri-covid-dot"></div></a>
   </div>
@@ -103,10 +81,12 @@
     <a class="menu-item-title" href="/pages/join_us" name="採用">採用</a>
   </div>
   <div class="menu-item">
-    <%= link_to '資料請求', new_contact_form_path, id:'nav-contact-form-link', class: "menu-item-title" %>
-  </div>
-  <div class="menu-item">
   	<%= link_to 'ログイン', new_user_session_path, class: "menu-item-title" %>
+  </div>
+  <div id="mobile-menu-contact-form-button" style="margin-top:30px">
+    <div style="width:170px;margin-left:auto;margin-right:auto">
+      <%= link_to '資料請求', new_contact_form_path, class: "btn btn-info text-white btn-block", id: "mobile-menu-call-to-action" %>
+    </div>
   </div>
 </div>
   

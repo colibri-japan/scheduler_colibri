@@ -61,7 +61,7 @@
 								</tr>
 								<tr>
 									<td style="width:66%"><%= params[:m] %>月全サービス</td>
-									<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_appointments_report_path(@planning, format: :xlsx, params: {m: params[:m], y: params[:y]}), class: 'btn btn-success btn-sm text-white' %></td>
+									<td style="width:34%"><%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:16px"></i> エクセル'.html_safe, planning_monthly_appointments_report_path(@planning, params: {m: params[:m], y: params[:y]}), data: {confirm: "全サービスのエクセルをメール（#{@corporation.email}）に送信致します。"}, class: 'btn btn-success btn-sm text-white' %></td>
 								</tr>
 								<% if @corporation.elderly_care_and_nursing? %>
 									<tr>
@@ -113,7 +113,7 @@
 			 </div>
 
 			 <div class="form-group">
-			  <button class="btn btn-block btn-info text-white" id="teams-report-download" data-url="<%= planning_teams_report_path(@planning, format: :xlsx) %>">データをダウンロードする</button>
+			  　<button class="btn btn-block btn-info text-white" id="teams-report-download" data-url="<%= planning_teams_report_path(@planning, format: :xlsx) %>">データをダウンロードする</button>
 			 </div>
 			</div>
 		</div>

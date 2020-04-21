@@ -130,7 +130,6 @@ gem 'unread'
 gem 'wicked_pdf'
 
 #memory measurement tools
-gem 'scout_apm', group: :production
 gem 'memory_profiler'
 
 #push notifications
@@ -143,6 +142,8 @@ gem 'geocoder'
 gem 'rack-cache'
 
 group :production do 
+  gem 'newrelic_rpm'
+  gem 'scout_apm'
   gem 'wkhtmltopdf-heroku', '2.12.4'
 end
 

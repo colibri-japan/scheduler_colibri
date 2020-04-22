@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200412070618) do
+ActiveRecord::Schema.define(version: 20200422033925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -308,6 +308,7 @@ ActiveRecord::Schema.define(version: 20200412070618) do
     t.boolean "simple_reports", default: false
     t.boolean "edit_confirm_requested", default: true
     t.boolean "hide_care_plan_long_term_goals", default: false
+    t.boolean "separate_posts_by_team", default: true
   end
 
   create_table "nurse_service_wages", force: :cascade do |t|
@@ -751,6 +752,7 @@ ActiveRecord::Schema.define(version: 20200412070618) do
     t.string "default_resource_id"
     t.string "android_fcm_token"
     t.string "ios_fcm_token"
+    t.bigint "team_id"
     t.index ["corporation_id"], name: "index_users_on_corporation_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -759,6 +761,7 @@ ActiveRecord::Schema.define(version: 20200412070618) do
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
     t.index ["nurse_id"], name: "index_users_on_nurse_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["team_id"], name: "index_users_on_team_id"
   end
 
   create_table "wished_slots", force: :cascade do |t|

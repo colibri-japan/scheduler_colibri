@@ -11,6 +11,7 @@ class User < ApplicationRecord
   
   belongs_to :corporation, touch: true
   belongs_to :nurse, optional: true
+  belongs_to :team, optional: true
   has_many :posts, foreign_key: 'author_id', class_name: 'Post'
 
   enum role: {

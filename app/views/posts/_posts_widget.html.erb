@@ -1,7 +1,7 @@
 <div class='colibri-subcontainer-header' id="posts-widget-header">
   <div style='display:flex;justify-content:space-between;margin-bottom:3px' id='dashboard-posts-header-container'>
     <div id='dashboard-posts-header'>
-      <span class='colibri-subcontainer-title'>掲示板</span>
+      <span class='colibri-subcontainer-title'><%= " #{current_user.try(:team).try(:team_name)}" if current_user.try(:team).try(:team_name).present? && @corporation.separate_posts_by_team %>掲示板</span>
       <% if unread_count > 0 %>
         <span id='unread-count' style='font-weight:bold;margin-left:4px'><%= "未読#{unread_count}件" %></span>
       <% end %>

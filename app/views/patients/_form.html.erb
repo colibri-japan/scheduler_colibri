@@ -69,14 +69,15 @@
         <%= form.text_area :address, id: :patient_address, class: "form-control" %>
       </div>
 
-      <div class="form-group">
-        <%= form.label :date_of_contract, "契約日", class: "colibri-form-label-dark" %>
-        <%= form.text_field :date_of_contract, id: :patient_date_of_contract, class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= form.label :caveat_list, "特徴.要求タグ", class: "colibri-form-label-dark" %>
-        <%= form.select :caveat_list, options_from_collection_for_select(@caveats, 'name', 'name', patient.caveat_list), {}, {multiple: true, id: "patient_caveat_list"} %>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <%= form.label :date_of_contract, "契約日", class: "colibri-form-label-dark" %>
+          <%= form.text_field :date_of_contract, id: :patient_date_of_contract, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-6">
+          <%= form.label :team_id, "担当チーム", class: "colibri-form-label-dark" %>
+          <%= form.collection_select(:team_id, @teams, :id, :team_name, {include_blank: '担当チームなし'}) %>
+        </div>
       </div>
 
       <div class="form-row">
@@ -90,6 +91,11 @@
             <%= form.text_field :doctor_name, id: :patient_doctor_name, class: "form-control" %>
           </div>
         <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :caveat_list, "特徴.要求タグ", class: "colibri-form-label-dark" %>
+        <%= form.select :caveat_list, options_from_collection_for_select(@caveats, 'name', 'name', patient.caveat_list), {}, {multiple: true, id: "patient_caveat_list"} %>
       </div>
 
       <div class="form-group">

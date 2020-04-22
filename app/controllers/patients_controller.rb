@@ -41,6 +41,7 @@ class PatientsController < ApplicationController
   def edit
     set_nurses
     set_care_managers
+    set_teams
 
     @care_plans = @patient.care_plans.includes(:care_manager).order(created_at: :desc)
 
@@ -70,6 +71,7 @@ class PatientsController < ApplicationController
 
     set_nurses
     set_care_managers
+    set_teams
 
     respond_to do |format|
       format.js 
@@ -265,6 +267,10 @@ class PatientsController < ApplicationController
     care_manager_corporation_ids = @corporation.care_manager_corporations.ids
     @care_managers = CareManager.where(care_manager_corporation_id: care_manager_corporation_ids).includes(:care_manager_corporation).order(:care_manager_corporation_id)
   end
+
+  def set_teams 
+    @teams = @corporation.teams
+  end
   
   def set_month_and_year_params
     @selected_year = params[:y].present? ? params[:y] : Date.today.year
@@ -282,6 +288,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :second_care_manager_id, :date_of_contract, :insurance_id, :birthday, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :issuing_administration_number, :issuing_administration_name, :emergency_contact_1_name, :emergency_contact_1_address, :emergency_contact_1_phone, :emergency_contact_1_relationship, :emergency_contact_1_living_with_patient, :emergency_contact_2_name, :emergency_contact_2_address, :emergency_contact_2_phone, :emergency_contact_2_relationship, :emergency_contact_2_living_with_patient, caveat_list:[], care_plans_attributes: [:id, :care_manager_id, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :kaigo_level, :short_term_goals,:long_term_goals, :family_wishes, :patient_wishes, :handicap_level, insurance_policy: []])
+    params.require(:patient).permit(:name, :kana, :phone_mail, :phone_number, :address, :gender, :description, :team_id, :handicap_level, :kaigo_level, :nurse_id, :doctor_name, :care_manager_name, :care_manager_id, :second_care_manager_id, :date_of_contract, :insurance_id, :birthday, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :ratio_paid_by_patient, :public_assistance_id_1, :public_assistance_receiver_number_1, :public_assistance_id_2, :public_assistance_receiver_number_2, :end_of_contract, :issuing_administration_number, :issuing_administration_name, :emergency_contact_1_name, :emergency_contact_1_address, :emergency_contact_1_phone, :emergency_contact_1_relationship, :emergency_contact_1_living_with_patient, :emergency_contact_2_name, :emergency_contact_2_address, :emergency_contact_2_phone, :emergency_contact_2_relationship, :emergency_contact_2_living_with_patient, caveat_list:[], care_plans_attributes: [:id, :care_manager_id, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :kaigo_level, :short_term_goals,:long_term_goals, :family_wishes, :patient_wishes, :handicap_level, insurance_policy: []])
   end
 end

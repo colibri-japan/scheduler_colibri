@@ -4,6 +4,7 @@ class Patient < ApplicationRecord
 	acts_as_taggable_on :caveats
 
 	belongs_to :corporation, touch: true
+	belongs_to :team, optional: true
 	belongs_to :nurse, optional: true
 	has_many :care_plans
 	has_many :care_managers, through: :care_plans

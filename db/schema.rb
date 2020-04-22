@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200422033925) do
+ActiveRecord::Schema.define(version: 20200422061830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -404,10 +404,12 @@ ActiveRecord::Schema.define(version: 20200422033925) do
     t.string "emergency_contact_2_phone"
     t.string "emergency_contact_2_relationship"
     t.boolean "emergency_contact_2_living_with_patient", default: false
+    t.bigint "team_id"
     t.index ["care_manager_id"], name: "index_patients_on_care_manager_id"
     t.index ["corporation_id", "kana"], name: "index_patients_on_corporation_id_and_kana"
     t.index ["corporation_id"], name: "index_patients_on_corporation_id"
     t.index ["nurse_id"], name: "index_patients_on_nurse_id"
+    t.index ["team_id"], name: "index_patients_on_team_id"
   end
 
   create_table "plannings", force: :cascade do |t|

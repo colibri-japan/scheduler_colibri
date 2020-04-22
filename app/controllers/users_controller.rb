@@ -17,6 +17,23 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def edit
+    @main_nurse = current_user.nurse ||= @corporation.nurses.displayable.order_by_kana.first
+    @planning = @corporation.planning
+    @teams = current_user.corporation.teams
+
+    @user = current_user
+  end
+
+  def update 
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      redirect_back fallback_location: current_user_home_path , notice: '個人情報が編集されました。'
+    else
+      redirect_back fallback_location: current_user_home_path, alert: '個人情報が編集できませんです。'
+    end
+  end
+
   def update_role
     authorize current_user, :has_corporation_admin_role?
 
@@ -43,6 +60,10 @@ class UsersController < ApplicationController
 
   def user_role_params
     params.require(:user).permit(:role)
+  end
+
+  def user_params 
+    params.require(:user).permit(:name, :kana, :nurse_id, :default_calendar_option, :team_id)
   end
 
 end

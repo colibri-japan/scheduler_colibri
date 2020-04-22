@@ -14,7 +14,7 @@
                     <%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
                     </div>
                     <p class="planning-activity-module-title setting-title">
-                        <%= corporation_resource_name(@corporation.business_vertical) %>設定
+                        法人設定
                     </p>
                 </div>
             </div>
@@ -160,8 +160,15 @@
                     <%= form.label :hide_care_plan_long_term_goals, "長期目標を外す", class: 'colibri-form-label-dark' %>
                     <%= form.check_box :hide_care_plan_long_term_goals, checked: @corporation.hide_care_plan_long_term_goals %>
                 </div>
+            </div>
 
+            <div class="colibri-form-subsection">
+                <div class="colibri-form-subsection-title">チーム設定</div>
 
+                <div class="form-group">
+                    <%= form.label :separate_posts_by_team, "掲示板の書き込みをチーム別にする", class: 'colibri-form-label-dark' %>
+                    <%= form.check_box :separate_posts_by_team, checked: @corporation.separate_posts_by_team %>
+                </div>
             </div>
 
             <div class="colibri-form-subsection">

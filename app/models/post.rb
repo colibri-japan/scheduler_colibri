@@ -12,6 +12,8 @@ class Post < ApplicationRecord
   accepts_nested_attributes_for :reminders, allow_destroy: true, reject_if: lambda { |attributes| attributes['anchor'].blank? }
 
   before_validation :add_default_publication_date
+  
+  scope :filter_by_team, -> team { where(author_id: team.users.ids) }
 
   private
 

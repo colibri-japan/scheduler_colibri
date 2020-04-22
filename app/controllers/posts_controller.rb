@@ -13,10 +13,18 @@ class PostsController < ApplicationController
     end
 
     def posts_widget
-        @read_posts = current_user.cached_recent_read_posts
-        @unread_posts = current_user.unread_posts
-        @unread_ids = @unread_posts.ids
-        @unread_count = @unread_posts.count
+        user_team = current_user.team
+        if @corporation.separate_posts_by_team && user_team.present?
+            @read_posts = Post.where(author_id: user_team.users.ids).includes(:author, :patients, :reminders).read_by(current_user).order(published_at: :desc).limit(40)
+            @unread_posts = Post.filter_by_team(user_team).includes(:author, :patients, :reminders).unread_by(current_user).order(published_at: :desc)
+            @unread_ids = @unread_posts.ids 
+            @unread_count = @unread_posts.size
+        else
+            @read_posts = current_user.cached_recent_read_posts
+            @unread_posts = current_user.unread_posts
+            @unread_ids = @unread_posts.ids
+            @unread_count = @unread_posts.size
+        end
     end
 
     def index

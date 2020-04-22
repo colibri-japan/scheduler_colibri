@@ -82,10 +82,6 @@ class RecurringAppointment < ApplicationRecord
 				schedule.add_recurrence_rule IceCube::Rule.monthly(1).day_of_week(day_of_week =>[4])
 			when 11
 				#the first week every three month
-				puts 'week number'
-				puts week_number
-				puts 'inclusion?'
-				puts (0..3).include? week_number
 				if (0..3).include? week_number
 					schedule.add_recurrence_rule IceCube::Rule.monthly(3).day_of_week(day_of_week => [week_number])
 				else

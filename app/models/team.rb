@@ -1,4 +1,6 @@
 class Team < ApplicationRecord
+  include PublicActivity::Common
+  
   attribute :member_ids
   
   belongs_to :corporation, touch: true

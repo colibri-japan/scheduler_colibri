@@ -72,6 +72,24 @@ class TeamsController < ApplicationController
         @salary_per_nurse = @team.salary_per_nurse(first_day..last_day)
     end
 
+
+	def new_master_to_schedule
+        authorize current_user, :has_admin_access?
+        
+        @team = Team.find(params[:id])
+	end
+
+    def master_to_schedule
+        authorize current_user, :has_admin_access?
+        
+        @team = Team.find(params[:id])
+        authorize @team, :same_corporation_as_current_user?
+        
+		CopyTeamPlanningFromMasterWorker.perform_async(@team.id, params[:month], params[:year])
+
+		@team.create_activity :reflect_team_master, owner: current_user, parameters: {year: params[:year].to_i, month: params[:month].to_i, team_name: @team.team_name}
+	end
+
     private
 
     def team_params

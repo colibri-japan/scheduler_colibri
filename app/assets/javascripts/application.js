@@ -1161,8 +1161,7 @@ $(document).on('turbolinks:load', function(){
   })
   
   $('body').on('click', 'span#colibri-master-action-button', function(){
-    console.log('clicked master reflect button')
-    let individualResource = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+    let individualResource = (window.currentResourceType && window.currentResourceId !== 'all') || (!window.currentResourceType && window.defaultResourceId !== 'all')
     if (individualResource) {
       $.getScript(`/${window.currentResourceType || window.defaultResourceType}s/${window.currentResourceId || window.defaultResourceId}/new_master_to_schedule`)
     } else {

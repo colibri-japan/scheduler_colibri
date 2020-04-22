@@ -94,6 +94,8 @@ Rails.application.routes.draw do
   get 'plannings/:planning_id/teams/:id/payable' => 'teams#payable', as: :planning_team_payable
   get 'plannings/:planning_id/teams/:id/master' => 'teams#master', as: :planning_team_master
   get 'teams/:id/revenue_per_nurse_report' => 'teams#revenue_per_nurse_report', as: :team_revenue_per_nurse_report
+  get 'teams/:id/new_master_to_schedule' => 'teams#new_master_to_schedule', as: :new_team_master_to_schedule
+  patch 'teams/:id/master_to_schedule' => 'teams#master_to_schedule', as: :team_master_to_schedule
 
   #custom routes for corporations
   get 'corporations/:id/revenue_per_team_report' => 'corporations#revenue_per_team_report', as: :corporation_revenue_per_team_report

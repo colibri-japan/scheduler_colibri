@@ -15,7 +15,7 @@
 			</tr>
 			<tr>
 				<td class="details-table-head">CM</td>
-				<td><%= @care_manager.try(:name) %></td>
+				<td><%= @care_manager.try(:name) %> - <%= @care_manager.try(:care_manager_corporation).try(:name) %></td>
 			</tr>
 			<tr>
 				<td class="details-table-head">CM電話</td>

@@ -6,19 +6,27 @@ class PatientsController < ApplicationController
   before_action :set_caveats, only: [:new, :edit]
 
   def index
-    if params[:start].present? && params[:end].present? && params[:resource_type] == 'appointments' && params[:planning_id].to_i == @corporation.planning.id
-      @patients = @corporation.patients.active.joins(:appointments).where(appointments: {archived_at: nil, planning_id: params[:planning_id], starts_at: params[:start].to_date.beginning_of_day..params[:end].to_date.beginning_of_day}).order_by_kana
-    elsif params[:start].present? && params[:end].present? && params[:resource_type] == 'recurring_appointments' && params[:planning_id].to_i == @corporation.planning.id
-      patient_ids_from_recurring_appointments = RecurringAppointment.where(planning_id: params[:planning_id]).not_archived.not_terminated_at(params[:start].to_date).occurs_in_range(params[:start].to_date.beginning_of_day..(params[:end].to_date - 1.day).beginning_of_day).pluck(:patient_id).uniq
-      @patients = @corporation.patients.active.where(id: patient_ids_from_recurring_appointments).order_by_kana
-    else
-      @patients = @corporation.cached_active_patients_grouped_by_kana
-      @deactivated_patients = @corporation.cached_inactive_patients_ordered_by_kana
-      @planning = @corporation.planning
-      set_main_nurse
-    end
+    set_planning 
 
-    @planning = Planning.find(params[:planning_id]) if params[:planning_id].present?
+    if params[:start].present? && params[:end].present? && params[:resource_type] == 'appointments' && params[:planning_id].to_i == @planning.id
+      @patients = @corporation.patients.active.joins(:appointments).where(appointments: {archived_at: nil, planning_id: params[:planning_id], starts_at: params[:start].to_date.beginning_of_day..params[:end].to_date.beginning_of_day}).order_by_kana
+      @patients = @patients.where(team_id: [current_user.team_id, nil]) if @corporation.separate_patients_by_team && current_user.team_id.present?
+    elsif params[:start].present? && params[:end].present? && params[:resource_type] == 'recurring_appointments' && params[:planning_id].to_i == @planning.id
+      patient_ids_from_recurring_appointments = RecurringAppointment.where(planning_id: params[:planning_id]).not_archived.not_terminated_at(params[:start].to_date).occurs_in_range(params[:start].to_date.beginning_of_day..(params[:end].to_date - 1.day).beginning_of_day).pluck(:patient_id).uniq
+      @patients = @corporation.patients.active.where(id: patient_ids_from_recurring_appointments).order_by_kana if @corporation.separate_patients_by_team && current_user.team_id.present?
+      @patients = @patients.where(team_id: [current_user.team_id, nil])
+    else
+      # patients index page
+      user_team = current_user.team
+      set_main_nurse
+      if @corporation.separate_patients_by_team && user_team.present?
+        @patients = @corporaiton.patients.active.where(team_id: [user_team.id, nil]).group_by_kana
+        @deactivated_patients = @corporation.patients.deactivated.where(team_id: [user_team.id, nil]).order_by_kana
+      else
+        @patients = @corporation.cached_active_patients_grouped_by_kana
+        @deactivated_patients = @corporation.cached_inactive_patients_ordered_by_kana
+      end
+    end
     
     respond_to do |format|
       format.html

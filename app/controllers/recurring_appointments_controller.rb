@@ -3,7 +3,7 @@ class RecurringAppointmentsController < ApplicationController
   before_action :set_planning
   before_action :set_corporation
   before_action :set_grouped_nurses, only: [:new, :edit]
-  before_action :set_patients, only: [:new, :edit]
+  before_action :fetch_patients, only: [:new, :edit]
 
 
   def index
@@ -112,10 +112,6 @@ class RecurringAppointmentsController < ApplicationController
 
     def set_grouped_nurses
       @grouped_nurses_for_select = @corporation.cached_displayable_nurses_grouped_by_fulltimer_for_select
-    end
-
-    def set_patients
-      @patients = @corporation.cached_active_patients_ordered_by_kana
     end
 
     def set_planning

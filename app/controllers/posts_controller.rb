@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
     before_action :set_corporation
-    before_action :set_patients, only: [:new, :edit]
+    before_action :fetch_patients, only: [:new, :edit]
 
     def new
         @post = Post.new
@@ -108,10 +108,6 @@ class PostsController < ApplicationController
     end
 
     private
-
-    def set_patients 
-        @patients = @corporation.cached_active_patients_ordered_by_kana
-    end
 
     def fetch_post_readers
         @posts_readers = {}

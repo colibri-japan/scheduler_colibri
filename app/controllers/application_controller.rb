@@ -91,7 +91,20 @@ class ApplicationController < ActionController::Base
   end
   
   def fetch_patients_grouped_by_kana
-		@patients_grouped_by_kana = @corporation.patients.active.select(:id, :description, :name, :kana, :address, :phone_number, :phone_mail).order_by_kana.all.group_by {|p| p.kana_group}
+    if @corporation.separate_patients_by_team && current_user.team_id.present?
+      @patients = @corporation.patients.active.where(team_id: [current_user.team_id, nil]).select(:id, :description, :name, :kana, :address, :phone_number, :phone_mail).order_by_kana
+		  @patients_grouped_by_kana = @patients.all.group_by {|p| p.kana_group}
+    else
+		  @patients_grouped_by_kana = @corporation.patients.active.select(:id, :description, :name, :kana, :address, :phone_number, :phone_mail).order_by_kana.all.group_by {|p| p.kana_group}
+    end
+  end
+
+  def fetch_patients 
+    if @corporation.separate_patients_by_team && current_user.team_id.present? 
+        @patients = @corporation.patients.active.where(team_id: [current_user.team_id, nil]).order_by_kana
+    else
+        @patients = @corporation.cached_active_patients_ordered_by_kana
+    end
   end
   
   def save_device_token

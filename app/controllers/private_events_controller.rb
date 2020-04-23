@@ -3,7 +3,7 @@ class PrivateEventsController < ApplicationController
 	before_action :set_planning
 	before_action :set_corporation
 	before_action :set_grouped_nurses, only: :edit
-	before_action :set_patients, only: :edit
+	before_action :fetch_patients, only: :edit
 
 
 	def index
@@ -110,10 +110,6 @@ class PrivateEventsController < ApplicationController
 
 	def set_grouped_nurses
 		@grouped_nurses_for_select = @corporation.cached_nurses_grouped_by_fulltimer_for_select
-	end
-	
-	def set_patients
-		@patients = @corporation.cached_active_patients_ordered_by_kana
 	end
 
 	def private_event_params

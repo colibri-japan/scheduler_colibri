@@ -17,11 +17,11 @@ class PatientsController < ApplicationController
       @patients = @patients.where(team_id: [current_user.team_id, nil])
     else
       # patients index page
-      user_team = current_user.team
+      @user_team = current_user.team
       set_main_nurse
-      if @corporation.separate_patients_by_team && user_team.present?
-        @patients = @corporaiton.patients.active.where(team_id: [user_team.id, nil]).group_by_kana
-        @deactivated_patients = @corporation.patients.deactivated.where(team_id: [user_team.id, nil]).order_by_kana
+      if @corporation.separate_patients_by_team && @user_team.present?
+        @patients = @corporation.patients.active.where(team_id: [@user_team.id, nil]).group_by_kana
+        @deactivated_patients = @corporation.patients.deactivated.where(team_id: [@user_team.id, nil]).order_by_kana
       else
         @patients = @corporation.cached_active_patients_grouped_by_kana
         @deactivated_patients = @corporation.cached_inactive_patients_ordered_by_kana

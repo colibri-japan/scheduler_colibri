@@ -198,6 +198,15 @@ document.addEventListener('turbolinks:load', function () {
         $('#email-nurses-wages-modal').modal('show')
     })
 
+    $('.kana-header').click(function(){
+        if (!$(this).hasClass('already-loaded'))  {
+            $.getScript(`/search_by_kana_group/patients?kana_group=${$(this).data('kana-group')}`)
+            $(this).addClass('already-loaded')
+        }
+        $(this).next().toggle()
+        $(this).children('.kana-toggle-arrow').toggle()
+    })
+
 
     $(document).on("mousedown", "[data-ripple]", function(e){
         var $self = $(this);

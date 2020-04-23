@@ -1,0 +1,12 @@
+<table class="table table-hover">
+    <% @patients.each do |patient| %>
+        <tr class='patient-clickable-row' data-link="<%= edit_patient_path(patient, format: :js) %>" id='<%= "patient_row_#{patient.id}" %>'>
+          <td style="width:20%;min-width:100px"><%= patient.name %></td>
+          <% if @corporation.elderly_care_and_nursing? %>
+            <td style="width:20%;min-width:120px"><%= "#{patient.date_of_contract.strftime("%Y年%-m月%-d日")} ~ " if patient.date_of_contract.present? %><%= patient.end_of_contract.strftime("%Y年%-m月%-d日") if patient.end_of_contract.present? %></td>
+          <% end %>
+          <td style="width:20%;min-width:120px"><%= patient.phone_number %></td>
+          <td style="width:40%;min-width:120px"><%= patient.address %></td>
+        </tr>
+    <% end %>
+</table>

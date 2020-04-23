@@ -74,3 +74,14 @@
 	color:#757575;
 	border-bottom: 3px solid rgb(122, 213, 222);
 }
+
+.kana-header {
+	padding: 6px 10px 6px 10px;
+	border-bottom: 0.5px solid #dee2e6;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.kana-toggle-arrow {
+	float: right;
+}

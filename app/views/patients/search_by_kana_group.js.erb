@@ -1,0 +1,7 @@
+$('#nurses_for_kana_<%= @kana %>').empty()
+$('#nurses_for_kana_<%= @kana %>').html("<%= j render(partial: 'patients/patients_by_kana').html_safe %>")
+$('#nurses_for_kana_<%= @kana %>').show()
+
+$('tr.patient-clickable-row').click(function(){
+    $.getScript($(this).data('link'))
+})

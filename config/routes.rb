@@ -129,6 +129,7 @@ Rails.application.routes.draw do
   get 'patients/:id/teikyohyo' => 'patients#teikyohyo', as: :patient_teikyohyo
   get 'patients/:id/new_extract_care_plan' => 'patients#new_extract_care_plan', as: :patient_new_extract_care_plan
   get 'patients/:id/extract_care_plan' => 'patients#extract_care_plan', as: :patient_extract_care_plan
+  get 'search_by_kana_group/patients' => 'patients#search_by_kana_group', as: :patients_search_by_kana_group
 
   #custom routes for plannings
   get 'plannings/:id/monthly_general_report' => 'plannings#monthly_general_report', as: :planning_monthly_general_report

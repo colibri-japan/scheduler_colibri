@@ -43,7 +43,7 @@
 								サービス：<%= sum_appointments = @nurse.full_timer ? 0 : (@appointments_till_today.sum(:total_wage) || 0)%>¥<br/>
 								手当：<%= sum_salary_line_items = @salary_line_items.sum(:total_wage) || 0 %>¥<br/>
 								合計：<%= total_wage = (@nurse.monthly_wage || 0) + sum_salary_line_items + sum_appointments || 0 %>¥<br/>
-								キャンセル数:<%= @appointments_till_today.where(cancelled: true).size %><br/>
+								キャンセル数:<%= @cancelled_appointments.size %><br/>
 							</div>
 						<% end %>
 						<div id="hours-worked-pied-container" style="padding-left:10px">

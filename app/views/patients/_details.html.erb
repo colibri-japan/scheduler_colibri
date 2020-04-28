@@ -52,7 +52,7 @@
 
 	<div id="service-history-block">
 		<div class='resource-details-block-title'>過去のヘルパー</div>
-		<% @nurses_with_services.limit(3).each_with_index do |nurse, index| %>
+		<% @nurses_with_services[0..2].each_with_index do |nurse, index| %>
 			<div class="resource-history"><%= index + 1 %><%= " - #{nurse.name}様：" %><%= from_seconds_to_hours_minutes(nurse.sum_appointments_duration) %></div>
 		<% end %>
 		<% if @nurses_with_services.all[2..-1].present? %>

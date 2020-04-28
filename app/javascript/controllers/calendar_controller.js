@@ -172,7 +172,7 @@ let createCalendar = () => {
                         let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                         data[resourceArgument] = window.currentResourceId || window.defaultResourceId
 
-                        if (fetchInfo.end - fetchInfo.start === 86400000 && (!window.currentResourceType && window.defaultResourceType !== 'team' || window.currentResourceType !== 'team')) {
+                        if (fetchInfo.end - fetchInfo.start === 86400000 && ((!window.currentResourceType && window.defaultResourceType !== 'team') && window.currentResourceType !== 'team')) {
                             data['list_view'] = true
                         }
                     }

@@ -1201,11 +1201,21 @@ $(document).on('turbolinks:load', function(){
   $('.reports-index-button').click(function () {
     var data = {};
     data['resource_type'] = window.currentResourceType || window.defaultResourceType
+
+    if (data['resource_type'] === 'team') {
+      return
+    }
+
     if (window.currentResourceType === 'nurse' || (!window.currentResourceType && window.defaultResourceType === 'nurse')) {
       data['nurse_id'] = window.currentResourceId || window.defaultResourceId
     } else if (window.currentResourceType === 'patient' || (!window.currentResourceType && window.defaultResourceType === 'patient')) {
       data['patient_id'] = window.currentResourceId || window.defaultResourceId
     }
+
+    if (data['nurse_id'] === 'all' || data['patient_id'] === 'all') {
+      return
+    }
+
     data['m'] = window.currentMonth
     data['y'] = window.currentYear
 

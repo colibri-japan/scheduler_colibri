@@ -153,7 +153,7 @@ class Appointment < ApplicationRecord
 		categories.map {|category| return_hash[category] = {sum_weighted_service_duration: 0, sum_weighted_credits: 0, weighted_service_duration_percentage: 0, sum_weighted_total_wage: 0, sum_count: 0} }
 
 		if self.present?
-			data_grouped_by_title = self.group(:service_id).select('appointments.service_id, sum(appointments.duration) as sum_service_duration, sum(appointments.total_wage) as sum_total_wage, sum(appointments.total_credits) as sum_total_credits, count(*)')
+			data_grouped_by_title = self.includes(:service).group(:service_id).select('appointments.service_id, sum(appointments.duration) as sum_service_duration, sum(appointments.total_wage) as sum_total_wage, sum(appointments.total_credits) as sum_total_credits, count(*)')
 
 			data_grouped_by_title.each do |grouped_appointment|
 				service = grouped_appointment.service

@@ -56,9 +56,11 @@ pathname = window.location.pathname;
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
 
+  let cancellationOptionsModal = '<%= j render "appointments/cancellation_options" %>'
+
   if (pathname.includes('payable')) {
     <% if @appointment.cancelled && @appointment.saved_change_to_cancelled? && @corporation.detailed_cancellation_options %>
-        $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');
+        $('#remote_container').html(cancellationOptionsModal);
         $('#cancellation_options').modal({backdrop: 'static'});
         reloadWhenDismissedInPayable()
     <% else %>
@@ -89,7 +91,7 @@ pathname = window.location.pathname;
     }
 
     <% if @appointment.cancelled? && @appointment.saved_change_to_cancelled && @corporation.detailed_cancellation_options %>
-      $('#remote_container').html('<%= j render "appointments/cancellation_options" %>');
+      $('#remote_container').html(cancellationOptionsModal);
       $('#cancellation_options').modal('show');
       reloadWhenDismissedInPayable()
     <% end %>

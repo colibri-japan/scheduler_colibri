@@ -14,43 +14,7 @@
       $('#remote_container').empty()
       $('#detail-container').show() 
     } 
-
-    if (typeof fullcalendar === 'undefined') {
-      let fullcalendar;
-    }
-    if (typeof toggleEditRender === 'undefined') {
-      let toggleEditRender;
-    }
-
-    if ($('.calendar').length > 0) {
-      fullcalendar = $('.calendar');
-      toggleEditRender = true;
-    } else if ($('.patient_calendar').length > 0) {
-      fullcalendar = $('.patient_calendar');
-      toggleEditRender = '<%= @appointment.patient_id %>' == window.patientId 
-    } else if ($('.nurse_calendar').length > 0) {
-      fullcalendar = $('.nurse_calendar');
-      toggleEditRender = '<%= @appointment.nurse_id %>' == window.nurseId
-    } else if ($('.master_calendar').length > 0) {
-      fullcalendar = $('.master_calendar');
-      toggleEditRender = '<%= @appointment.patient_id %>' == window.patientId || '<%= @appointment.nurse_id %>' == window.nurseId
-    } else {
-      fullcalendar = ''
-      toggleEditRender = ''
-    }    
-
-    if (fullcalendar) {
-      calendar.fullCalendar('removeEvents', '<%= "appointment_#{@appointment.id}" %>' );
-    }
-
-    if (toggleEditRender) {
-      calendar.fullCalendar(
-        'renderEvent', 
-        $.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe  %>"), 
-        false
-      );
-    }
-
+    
     if (typeof renderEvent === 'undefined') {
       let renderEvent
     }

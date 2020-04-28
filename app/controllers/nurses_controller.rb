@@ -2,7 +2,7 @@ class NursesController < ApplicationController
   before_action :set_corporation
   before_action :set_nurse, except: [:index, :new, :create, :master_availabilities, :smart_search, :smart_search_results]
   before_action :set_planning, only: [:show, :payable]
-  before_action :set_printing_option, only: [:show, :master_availabilities]
+  before_action :set_printing_option, only: [:master_availabilities]
   before_action :set_skills, only: [:new, :edit, :smart_search]
   before_action :set_wishes, only: [:new, :edit, :smart_search]
   before_action :set_wished_areas, only: [:new, :edit, :smart_search]

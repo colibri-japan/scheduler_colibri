@@ -2,7 +2,6 @@ class PatientsController < ApplicationController
   before_action :set_corporation
   before_action :set_patient, except: [:index, :create, :new, :search_by_kana_group]
   before_action :set_planning, only: [:show, :payable]
-  before_action :set_printing_option, only: [:show]
   before_action :set_caveats, only: [:new, :edit]
 
   def index

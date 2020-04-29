@@ -91,7 +91,7 @@ let createCalendar = () => {
             },
             'resourceTimelineWeek': {
                 slotDuration: { days: 1 },
-                resourceAreaWidth: '15%',
+                resourceAreaWidth: 100,
                 resourceLabelText: window.resourceLabel,
                 eventTimeFormat: {omitZeroMinute: false, hour: 'numeric', minute: '2-digit'},
                 eventLimit: 6
@@ -1036,7 +1036,7 @@ let updatePrintInfoAndLayout = (selectedElement) => {
     } else {
         if (window.fullCalendar && window.fullCalendar.view && window.fullCalendar.view.type === 'resourceTimelineWeek') {
             console.log('timeline week for resource')
-            document.querySelector('style').textContent += "@media print { @page { size: landscape; }"
+            document.querySelector('style').textContent += "@media print { @page { size: landscape; margin: 10px 0px 10px 0px }"
         } else {
             document.querySelector('style').textContent = ""
         }

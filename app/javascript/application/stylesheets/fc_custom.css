@@ -129,10 +129,6 @@ hr.fc-divider {
   /* overcome neighboring borders */
 }
 
-td.fc-widget-content.fc-day {
-  border: 1px solid #ddd !important;
-}
-
 /* Internal Nav Links
 --------------------------------------------------------------------------------------------------*/
 a[data-goto] {
@@ -1092,6 +1088,14 @@ thead.fc-header {
     border-width: 2.5px !important;
   }
 
+  td.fc-widget-content.fc-day {
+    border: 1px solid #ddd !important;
+    z-index: 1000;
+  }
+
+  .fc-rows > table > tbody > tr > td > div, .fc-rows > table > tbody > tr > td, .fc-rows > table > tbody > tr {
+    background: transparent !important;
+  }
 
 
 }

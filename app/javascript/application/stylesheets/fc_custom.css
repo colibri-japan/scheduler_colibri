@@ -1077,7 +1077,7 @@ thead.fc-header {
   th.fc-widget-header {
     height: 30px !important;
     line-height: 30px !important;
-    padding-bottom:2px;
+    padding-bottom:12px;
     vertical-align: middle !important;
     text-align: center !important;
     font-weight: bold !important;
@@ -1085,6 +1085,11 @@ thead.fc-header {
 
   th.fc-widget-header > div.fc-cell-content, th.fc-widget-header > div.fc-cell-content > span.fc-cell-text {
     line-height: 30px;
+  }
+
+  a.fc-timeline-event {
+    margin-bottom:8px !important;
+    border-width: 2.5px !important;
   }
 
 

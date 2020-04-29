@@ -150,6 +150,9 @@ let createCalendar = () => {
                     day_number.css('color', '#ff304f')
                 }
             }
+
+            let selectedItem = document.getElementById(`${window.currentResourceType || window.defaultResourceType}_${window.currentResourceId || window.defaultResourceId}`)
+            updatePrintInfoAndLayout(selectedItem)
         },
 
         resources: function (fetchInfo, successCallback, failureCallback) {
@@ -1008,6 +1011,38 @@ let toggleNurseReminderButton = () => {
     }
 }
 
+let updatePrintInfoAndLayout = (selectedElement) => {
+    let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
+    document.getElementById('resource-print-address').innerHTML = ''
+    document.getElementById('resource-print-phone').innerHTML = ''
+    document.getElementById('resource-print-description').innerHTML = ''
+    if (individualView) {
+        document.querySelector('style').textContent = ""
+        if (window.printPatientInfo && selectedElement.dataset.resourceType === "patient" || (window.printNurseInfo && selectedElement.dataset.resourceType === 'nurse')) {
+            let address = selectedElement.dataset.resourceAddress
+            let phoneNumber = selectedElement.dataset.resourcePhone
+            let description = selectedElement.dataset.resourceDescription
+
+            if (address) {
+                document.getElementById('resource-print-address').innerHTML = `<i class="glyphicon glyphicon-home"></i> ${address}`
+            }
+            if (phoneNumber) {
+                document.getElementById('resource-print-phone').innerHTML = `<i class="glyphicon glyphicon-phone"></i> ${phoneNumber}`
+            }
+            if (description) {
+                document.getElementById('resource-print-description').innerHTML = `備考： ${description}`
+            }
+        }
+    } else {
+        if (window.fullCalendar && window.fullCalendar.view && window.fullCalendar.view.type === 'resourceTimelineWeek') {
+            console.log('timeline week for resource')
+            document.querySelector('style').textContent += "@media print { @page { size: landscape; }"
+        } else {
+            document.querySelector('style').textContent = ""
+        }
+    }
+}
+
 export default class extends Controller {
 
     static targets = [ 'resourceName' ]
@@ -1091,7 +1126,7 @@ export default class extends Controller {
         toggleHeaderSubmenu()
         switchBackToCalendarOnNavigate()
         toggleNurseReminderButton()
-        this.updatePrintInfoAndLayout(selectedItem)
+        updatePrintInfoAndLayout(selectedItem)
 
         return
     }
@@ -1133,7 +1168,7 @@ export default class extends Controller {
         updatePrintOptions()
         toggleHeaderSubmenu()
         toggleNurseReminderButton()
-        this.updatePrintInfoAndLayout(event.target)
+        updatePrintInfoAndLayout(event.target)
 
         return
     }
@@ -1173,32 +1208,7 @@ export default class extends Controller {
         }
     }
 
-    updatePrintInfoAndLayout(selectedElement) {
-        let individualView = (window.currentResourceType && (window.currentResourceType !== 'team' && window.currentResourceId !== 'all')) || (!window.currentResourceType && (window.defaultResourceType !== 'team' && window.defaultResourceId !== 'all'))
-        document.getElementById('resource-print-address').innerHTML = ''
-        document.getElementById('resource-print-phone').innerHTML = ''
-        document.getElementById('resource-print-description').innerHTML = ''
-        if (individualView) {
-            document.querySelector('style').textContent = ""
-            if (window.printPatientInfo && selectedElement.dataset.resourceType === "patient" || (window.printNurseInfo && selectedElement.dataset.resourceType === 'nurse')) {
-                let address = selectedElement.dataset.resourceAddress
-                let phoneNumber = selectedElement.dataset.resourcePhone
-                let description = selectedElement.dataset.resourceDescription
-    
-                if (address) {
-                    document.getElementById('resource-print-address').innerHTML = `<i class="glyphicon glyphicon-home"></i> ${address}`
-                }
-                if (phoneNumber) {
-                    document.getElementById('resource-print-phone').innerHTML = `<i class="glyphicon glyphicon-phone"></i> ${phoneNumber}`
-                }
-                if (description) {
-                    document.getElementById('resource-print-description').innerHTML = `備考： ${description}`
-                }
-            }
-        } else {
-            document.querySelector('style').textContent += "@media print { @page { size: landscape; }"
-        }
-    }
+
 
     disconnect() {
         window.fullCalendar.destroy()

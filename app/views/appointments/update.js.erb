@@ -56,7 +56,11 @@ pathname = window.location.pathname;
   $('.modal').modal('hide');
   $('.modal-backdrop').remove();
 
-  let cancellationOptionsModal = '<%= j render "appointments/cancellation_options" %>'
+  if (typeof cancellationOptionsModal === 'undefined') {
+    let renderEvent
+  }  
+
+  cancellationOptionsModal = '<%= j render "appointments/cancellation_options" %>'
 
   if (pathname.includes('payable')) {
     <% if @appointment.cancelled && @appointment.saved_change_to_cancelled? && @corporation.detailed_cancellation_options %>

@@ -1036,7 +1036,7 @@ let updatePrintInfoAndLayout = (selectedElement) => {
     } else {
         if (window.fullCalendar && window.fullCalendar.view && window.fullCalendar.view.type === 'resourceTimelineWeek') {
             console.log('timeline week for resource')
-            document.querySelector('style').textContent = "@media print { @page { size: landscape; margin: 10px 0px 10px 0px }"
+            document.querySelector('style').textContent = "@media print { @page { size: auto; margin: 10px 0px 10px 0px;}"
         } else {
             document.querySelector('style').textContent = ""
         }

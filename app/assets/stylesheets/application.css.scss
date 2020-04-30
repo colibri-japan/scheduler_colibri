@@ -613,6 +613,7 @@ div.popover-body {
 @media print {
 
 	@page {
+		size:auto;
 		margin: 5mm 5mm 5mm 5mm;
 	}
 

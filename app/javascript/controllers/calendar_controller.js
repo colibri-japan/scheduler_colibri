@@ -15,10 +15,11 @@ require('selectize/dist/css/selectize.bootstrap3.css')
 
 require('moment')
 
-const moment = require('moment').default;
+const moment = require('moment');
+import 'moment/locale/ja'
 moment.locale('ja')
 
-
+console.log(moment().format('M月D日（dd）'))
 
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';

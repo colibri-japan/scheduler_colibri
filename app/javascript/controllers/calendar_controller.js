@@ -13,9 +13,12 @@ import jaLocale from '@fullcalendar/core/locales/ja'
 require('selectize')
 require('selectize/dist/css/selectize.bootstrap3.css')
 
-var moment = require('moment')
-import 'moment/locale/ja'
+require('moment')
+
+const moment = require('moment').default;
 moment.locale('ja')
+
+
 
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
@@ -916,7 +919,7 @@ let showDragDropConfirm = (eventDropInfo, newNurseId, newPatientId, newResourceT
     let previous_start = moment(eventDropInfo.event.start).subtract(minutes, "minutes");
     let previous_end = moment(eventDropInfo.event.end).subtract(minutes, "minutes");
     let previousAppointment = `${previous_start.locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.locale('ja').format('LT')}`
-    let newAppointment = `${moment(eventDropInfo.event.start).locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).locale('ja')    .format('LT')}`
+    let newAppointment = `${moment(eventDropInfo.event.start).locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).locale('ja').format('LT')}`
     let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
     let patient_name = eventDropInfo.event.extendedProps.patient.name
     let changeInResource

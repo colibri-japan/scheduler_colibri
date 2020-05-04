@@ -1090,7 +1090,6 @@ thead.fc-header {
 
   td.fc-widget-content.fc-day {
     border: 1px solid #ddd !important;
-    z-index: 1000;
   }
 
   .fc-rows > table > tbody > tr > td > div, .fc-rows > table > tbody > tr > td, .fc-rows > table > tbody > tr {

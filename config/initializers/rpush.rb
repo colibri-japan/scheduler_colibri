@@ -133,3 +133,28 @@ Rpush.reflect do |on|
   # on.error do |error|
   # end
 end
+
+module Rpush
+  module Client
+    module ActiveRecord
+      module Gcm
+        class Notification < Rpush::Client::ActiveRecord::Notification
+          include Rpush::Client::ActiveModel::Gcm::Notification
+
+          acts_as_readable
+
+        end
+      end
+    end
+  end
+end
+
+module Rpush
+  module Client
+    module ActiveRecord
+      class Notification < ::ActiveRecord::Base
+        acts_as_readable
+      end
+    end
+  end
+end

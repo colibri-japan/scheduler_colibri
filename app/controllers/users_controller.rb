@@ -45,6 +45,8 @@ class UsersController < ApplicationController
   end
 
   def current_user_home
+    mark_notification_as_read
+
     if params[:to].present? && params[:to] == "planning"
       redirect_to planning_path(@corporation.planning, force_list_view: params[:force_list_view])
     else
@@ -57,6 +59,17 @@ class UsersController < ApplicationController
   end
   
   private
+
+  def mark_notification_as_read
+    if params[:notification_id].present? 
+      n = Rpush::Gcm::Notification.find(params[:notification_id])
+
+      puts 'looked for notification'
+      puts n 
+
+      n.mark_as_read! for: current_user
+    end
+  end
 
   def user_role_params
     params.require(:user).permit(:role)

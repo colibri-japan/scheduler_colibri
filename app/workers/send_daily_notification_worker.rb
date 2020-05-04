@@ -31,11 +31,13 @@ class SendDailyNotificationWorker
         n = Rpush::Gcm::Notification.new 
         n.app = app 
         n.registration_ids = registration_ids
-        n.data = {title: 'おはようございます！', body: '本日のサービスのまとめです', url: 'https://scheduler.colibri.jp/users/current_user_home?to=planning&force_list_view=true'}
         n.content_available = true
         n.priority = 'high'
         if n.save!
-            Rpush.push
+            n.data = {title: 'おはようございます！', body: '本日のサービスのまとめです', url: "https://scheduler.colibri.jp/users/current_user_home?to=planning&force_list_view=true&notification_id=#{n.id}"}
+            if n.save!
+                Rpush.push
+            end
         end
     end
 
@@ -47,9 +49,12 @@ class SendDailyNotificationWorker
         n.registration_ids = registration_ids
         n.content_available = true
         n.priority = 'high'
-        n.data = {url: 'https://scheduler.colibri.jp/users/current_user_home?to=planning&force_list_view=true'}
+        
         if n.save!
-            Rpush.push 
+            n.data = {url: "https://scheduler.colibri.jp/users/current_user_home?to=planning&force_list_view=true&notification_id=#{n.id}"}
+            if n.save! 
+                Rpush.push 
+            end
         end
     end
 

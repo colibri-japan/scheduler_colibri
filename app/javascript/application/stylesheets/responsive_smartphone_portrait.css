@@ -558,6 +558,11 @@
 
 	/* Fullcalendar custom smartphone layouts */
 
+	div .fc-scroller {
+		overflow: visible !important;
+		height: auto !important;
+	}
+	
 
     .fc-center > h2 {
 		color: black;

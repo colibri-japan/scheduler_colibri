@@ -644,11 +644,7 @@ p.setting-title {
 
 
 @media screen and (orientation: portrait) {
-	div .fc-scroller {
-		overflow: visible !important;
-		height: auto !important;
-	}
-	
+
 	#detail-container {
 		height: 100vh;
 		overflow: visible;

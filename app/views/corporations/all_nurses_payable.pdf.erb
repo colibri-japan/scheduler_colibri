@@ -1,4 +1,4 @@
-<% @data.each do |nurse, data| %>
+    <% @data.each do |nurse, data| %>
     <div class="nurse-payable-title">
         給与支払明細書
     </div>
@@ -37,7 +37,7 @@
                         <td><%= appointment_title_in_excel(appointment) %></td>
                         <td><%= appointment.starts_at.try(:strftime, "%H:%M") %></td>
                         <td><%= appointment.ends_at.try(:strftime, "%H:%M") %></td>
-                        <td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
+                        <td><%= appointment.cancelled? ? '00:00' : from_seconds_to_hours_minutes(appointment.duration) %></td>
                         <td style="text-align:right"><%= number_with_delimiter(total_wage, delimiter: ',') %></td>
                     </tr>
                 <% end %>

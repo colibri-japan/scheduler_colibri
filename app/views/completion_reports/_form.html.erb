@@ -858,6 +858,7 @@
 
     <div class="modal-footer">
         <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>
-        <%= form.submit completion_report_commit_text(@reportable.try(:class).try(:name)), class: 'btn btn-info btn-phone-expand', id: :submit_completion_report_form %>
+        <div id="submit-completion-report-button" class='btn btn-info btn-phone-expand'><%= completion_report_commit_text(@reportable.try(:class).try(:name)) %></div>
+        <%= form.submit completion_report_commit_text(@reportable.try(:class).try(:name)), class: 'btn btn-info btn-phone-expand', id: :submit_completion_report_form, style: 'display:none' %>
     </div>
 <% end %>

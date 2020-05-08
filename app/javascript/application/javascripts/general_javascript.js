@@ -111,6 +111,8 @@ window.completionReportGeolocationRequest = function(){
 }
 
 window.completionReportGeolocationSuccessCallback = function(geolocationPosition) {
+    console.log('found location')
+
     var latitude = geolocationPosition.coords.latitude 
     var longitude = geolocationPosition.coords.longitude
     var accuracy = geolocationPosition.coords.accuracy 
@@ -128,18 +130,30 @@ window.completionReportGeolocationSuccessCallback = function(geolocationPosition
         $('#geolocalization-failure').hide()
         $('#geolocalization-success').show()
     }
+
+    if (window.submitReport) {
+        console.log('successfully found location, should save report')
+        $('#submit_completion_report_form').click()
+        window.submitReport = false
+    }
 }
 
 window.completionReportGeolocationFailureCallback = function(error) {
+    console.log('failed to get geolocation')
     console.log(error.message)
-    console.log(error.code)
+
+    $('#completion_report_latitude').val('')
+    $('#completion_report_longitude').val('')
+    $('#completion_report_accuracy').val('')
+    $('#completion_report_altitude').val('')
     $('#completion_report_geolocation_error_code').val(error.code)
     $('#completion_report_geolocation_error_message').val(error.message)
+
     if ($('#geolocalization-status').length > 0) {
         $('#geolocalization-pending').hide()
         $('#geolocalization-failure').show()
     }
-    
+
     switch(error.code) {
         case error.PERMISSION_DENIED:
             break;
@@ -150,6 +164,34 @@ window.completionReportGeolocationFailureCallback = function(error) {
         case error.UNKNOWN_ERROR:
             break;
     }
+
+    if (window.submitReport) {
+        console.log('should click on submit button again')
+        window.requireGeolocationErrorConfirmation = true
+        $('#submit-completion-report-button').click()
+    }
+}
+
+window.submitCompletionReportAction = function(){
+    $('#submit-completion-report-button').click(function(){
+        if ($('#completion_report_latitude').val() === '') {
+            if (window.requireGeolocationErrorConfirmation) {
+                let message = confirm("位置情報なしで実績が確定されます。GPSエラーメッセージは保存されます。")
+                if (message) {
+                    $('#submit_completion_report_form').click()
+                }
+                window.submitReport = false
+                window.requireGeolocationErrorConfirmation = false 
+            } else {
+                window.submitReport = true
+                completionReportGeolocationRequest()
+            }
+    
+        } else {
+            $('#submit_completion_report_form').click()
+            window.submitReport = false
+        }
+    })
 }
 
 

@@ -120,23 +120,32 @@ window.completionReportGeolocationSuccessCallback = function(geolocationPosition
     $('#completion_report_longitude').val(longitude)
     $('#completion_report_accuracy').val(accuracy)
     $('#completion_report_altitude').val(altitude)
+    $('#completion_report_geolocation_error_code').val('')
+    $('#completion_report_geolocation_error_message').val('')
     $('#completion_report_altitude_accuracy').val(altitudeAccuracy)
     if ($('#geolocalization-status').length > 0) {
         $('#geolocalization-pending').hide()
+        $('#geolocalization-failure').hide()
         $('#geolocalization-success').show()
     }
 }
 
 window.completionReportGeolocationFailureCallback = function(error) {
+    console.log(error.message)
+    console.log(error.code)
+    $('#completion_report_geolocation_error_code').val(error.code)
+    $('#completion_report_geolocation_error_message').val(error.message)
+    if ($('#geolocalization-status').length > 0) {
+        $('#geolocalization-pending').hide()
+        $('#geolocalization-failure').show()
+    }
+    
     switch(error.code) {
         case error.PERMISSION_DENIED:
-            completionReportGeolocationRequest()
             break;
         case error.POSITION_UNAVAILABLE:
-            completionReportGeolocationRequest()
             break;
         case error.TIMEOUT:
-            completionReportGeolocationRequest()
             break;
         case error.UNKNOWN_ERROR:
             break;

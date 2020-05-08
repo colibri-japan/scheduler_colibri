@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200422065843) do
+ActiveRecord::Schema.define(version: 20200508032100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,6 +270,8 @@ ActiveRecord::Schema.define(version: 20200422065843) do
     t.decimal "accuracy"
     t.decimal "altitude"
     t.decimal "altitude_accuracy"
+    t.integer "geolocation_error_code"
+    t.string "geolocation_error_message"
     t.index ["appointment_id"], name: "index_completion_reports_on_appointment_id"
     t.index ["forecasted_report_id"], name: "index_completion_reports_on_forecasted_report_id"
     t.index ["reportable_type", "reportable_id"], name: "index_completion_reports_on_reportable_type_and_reportable_id"

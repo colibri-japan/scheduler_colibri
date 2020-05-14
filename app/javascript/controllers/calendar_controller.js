@@ -41,7 +41,7 @@ let header = {
 let mobileHeader = {
     left: 'prev,next today',
     center: 'title',
-    right: 'listDay,timeGridDay,timeGridWeek,dayGridMonth'
+    right: 'listDay,timeGridWeek,dayGridMonth'
 }
 
 $.fn.overflownY = function () { var e = this[0]; return e.scrollHeight > e.clientHeight; }
@@ -104,7 +104,7 @@ let createCalendar = () => {
             }
         },
         buttonText: {
-            listDay: 'リスト'
+            listDay: '日'
         },
         listDayFormat: {month: 'long', day: 'numeric', weekday: 'short'},
         noEventsMessage: 'サービスがありません',

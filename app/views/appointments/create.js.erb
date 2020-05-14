@@ -46,6 +46,7 @@ if ($('.activity_back_icon').length > 0) {
 
   if (window.fullCalendar && renderEvent) {
     window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @appointment}).html_safe %>"), 'url1')
+    window.fullCalendar.render()
   }
 
 <% end %>

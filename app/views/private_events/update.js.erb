@@ -18,5 +18,6 @@ if (window.fullCalendar) {
 
   if (renderEvent) {
     window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'private_events/private_event.json', locals: {private_event: @private_event}).html_safe %>"), 'url2')
+    window.fullCalendar.render()
   }
 }

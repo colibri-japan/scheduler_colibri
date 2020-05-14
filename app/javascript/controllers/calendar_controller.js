@@ -64,7 +64,7 @@ let createCalendar = () => {
         firstDay: window.firstDay,
         refetchResourcesOnNavigate: true,
         displayEventEnd: true,
-        editable: true,
+        editable: window.userAllowedToEdit,
         height: function () {
             var height
             if (window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {

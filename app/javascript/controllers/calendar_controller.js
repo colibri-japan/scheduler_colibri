@@ -113,11 +113,6 @@ let createCalendar = () => {
         viewSkeletonRender: function (info) {
             drawHourMarks()
             makeTimeAxisPrintFriendly()
-            if (info.view.type !== 'dayGridMonth') {
-                $('.fc-center').addClass('no-print')
-            } else {
-                $('.fc-center').removeClass('no-print')
-            }
         },
 
         resourceRender: function(renderInfo) {
@@ -152,6 +147,12 @@ let createCalendar = () => {
                     let day_number = $("[data-date = " + moment(info.date).format('YYYY-MM-DD') + "] > span");
                     day_number.css('color', '#ff304f')
                 }
+            }
+
+            if (info.view.type !== 'dayGridMonth') {
+                $('.fc-center').addClass('no-print')
+            } else {
+                $('.fc-center').removeClass('no-print')
             }
 
             let selectedItem = document.getElementById(`${window.currentResourceType || window.defaultResourceType}_${window.currentResourceId || window.defaultResourceId}`)

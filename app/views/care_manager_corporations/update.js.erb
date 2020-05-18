@@ -3,5 +3,7 @@ $('.modal-backdrop').remove();
 
 $('#care_manager_corporation_<%= @care_manager_corporation.id %>').empty()
 $('#care_manager_corporation_<%= @care_manager_corporation.id %>').html('<%= j render "care_manager_corporation" %>')
+$('#care_manager_corporation_<%= @care_manager_corporation.id %>').next().toggle()
 
 careManagerCorporationActions()
+toggleCareManagers()

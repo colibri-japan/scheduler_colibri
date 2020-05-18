@@ -216,9 +216,24 @@ window.careManagerCorporationActions = function() {
     })
 }
 
+window.toggleCareManagers = function() {
+    $('.care-manager-corporation-header').unbind()
+    $('.care-manager-corporation-header').click(function(){
+        if (!$(this).hasClass('already-loaded'))  {
+            $.getScript(`/care_manager_corporations/${$(this).data('care-manager-corporation-id')}/care_managers.js`)
+            $(this).addClass('already-loaded')
+        }
+        $(this).next().toggle()
+        $(this).find('span.toggle-arrow-left').toggle()
+    })
+}
+
 document.addEventListener('turbolinks:load', function () {
 
-    careManagerCorporationActions()
+    if ($('#care-manager-corporations-container').length > 0) {
+        careManagerCorporationActions()
+        toggleCareManagers()
+    }
 
     $('.btn-scroll').click(function(){
         var aTag = $("#" + $(this).data('anchor'));
@@ -280,15 +295,6 @@ document.addEventListener('turbolinks:load', function () {
         }
         $(this).next().toggle()
         $(this).children('.kana-toggle-arrow').toggle()
-    })
-
-    $('.care-manager-corporation-header').click(function(){
-        if (!$(this).hasClass('already-loaded'))  {
-            $.getScript(`/care_manager_corporations/${$(this).data('care-manager-corporation-id')}/care_managers.js`)
-            $(this).addClass('already-loaded')
-        }
-        $(this).next().toggle()
-        $(this).find('span.toggle-arrow-left').toggle()
     })
 
 

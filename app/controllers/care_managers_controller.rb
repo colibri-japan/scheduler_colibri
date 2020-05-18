@@ -30,8 +30,10 @@ class CareManagersController < ApplicationController
     respond_to do |format|
       if @care_manager.update(care_manager_params)
         format.html { redirect_to care_manager_corporations_path, notice: "ケアマネが編集されました" }
+        format.js
       else
         format.html { redirect_to care_manager_corporations_path, alert: "ケアマネの編集が失敗しました" }
+        format.js
       end
     end
   end

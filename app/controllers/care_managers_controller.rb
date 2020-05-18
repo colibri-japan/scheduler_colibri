@@ -12,9 +12,10 @@ class CareManagersController < ApplicationController
 
     respond_to do |format|
         if @care_manager.save 
-            format.html { redirect_to care_manager_corporations_path, notice: "ケアマネが登録されました" }
+          @care_managers = @care_manager_corporation.care_managers.order_by_kana
+          format.js
         else
-            format.html { redirect_to care_manager_corporations_path, alert: "ケアマネの登録が失敗しました" }
+          format.js
         end
     end
   end
@@ -29,10 +30,8 @@ class CareManagersController < ApplicationController
   
     respond_to do |format|
       if @care_manager.update(care_manager_params)
-        format.html { redirect_to care_manager_corporations_path, notice: "ケアマネが編集されました" }
         format.js
       else
-        format.html { redirect_to care_manager_corporations_path, alert: "ケアマネの編集が失敗しました" }
         format.js
       end
     end

@@ -1,0 +1,12 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+
+$('#care_managers_for_corporation_<%= @care_manager_corporation.id %>').empty()
+$('#care_managers_for_corporation_<%= @care_manager_corporation.id %>').html("<%= j render(partial: 'care_managers/index').html_safe %>")
+$('#care_managers_for_corporation_<%= @care_manager_corporation.id %>').show()
+
+colibriClickableRow()
+
+$('tr.patient-clickable-row').click(function(){
+    $.getScript($(this).data('link'))
+})

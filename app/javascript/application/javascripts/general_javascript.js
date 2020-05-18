@@ -202,6 +202,17 @@ window.colibriClickableRow = function(){
 } 
 
 document.addEventListener('turbolinks:load', function () {
+
+    $('.edit-care-manager-corporation-button').click(function(e){
+        e.stopPropagation()
+        $.getScript($(this).data('url'))
+    })
+
+    $('.create-care-manager-button').click(function(e){
+        e.stopPropagation()
+        $.getScript($(this).data('url'))
+    })
+
     $('.btn-scroll').click(function(){
         var aTag = $("#" + $(this).data('anchor'));
         $('html,body').animate({ scrollTop: aTag.offset().top }, 'slow')

@@ -47,8 +47,8 @@
             <div style="width:20%"><%= care_manager_corporation.phone_number %></div>
             <div style="width:20%"><%= care_manager_corporation.address %></div>
             <div style="width:20%">
-              <%= link_to '編集', edit_care_manager_corporation_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-secondary text-white' %>
-              <%= link_to '+ケアマネ', new_care_manager_corporation_care_manager_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-info text-white' %>
+              <div data-url="<%= edit_care_manager_corporation_path(care_manager_corporation) %>" class='btn btn-sm btn-secondary text-white edit-care-manager-corporation-button'>編集</div>
+              <div data-url="<%= new_care_manager_corporation_care_manager_path(care_manager_corporation) %>" class="btn btn-sm btn-info text-white create-care-manager-button">+ケアマネ</div>
             </div>
           </div>
 

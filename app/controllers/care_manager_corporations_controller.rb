@@ -5,7 +5,7 @@ class CareManagerCorporationsController < ApplicationController
   def index 
     @planning = @corporation.planning
     set_main_nurse
-    @care_manager_corporations = @corporation.care_manager_corporations.includes(:care_managers)
+    @care_manager_corporations = @corporation.care_manager_corporations.includes(:care_managers).order_by_kana
   end
 
   def new 
@@ -109,7 +109,7 @@ class CareManagerCorporationsController < ApplicationController
   private 
 
   def care_manager_corporations_params
-    params.require(:care_manager_corporation).permit(:name, :address, :phone_number, :fax_number, :description)
+    params.require(:care_manager_corporation).permit(:name, :kana, :address, :phone_number, :fax_number, :description)
   end
 
   

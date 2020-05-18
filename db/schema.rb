@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200508032100) do
+ActiveRecord::Schema.define(version: 20200518134823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 20200508032100) do
     t.datetime "updated_at", null: false
     t.bigint "corporation_id"
     t.string "fax_number"
+    t.string "kana"
     t.index ["corporation_id"], name: "index_care_manager_corporations_on_corporation_id"
   end
 

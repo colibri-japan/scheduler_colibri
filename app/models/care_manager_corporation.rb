@@ -3,6 +3,8 @@ class CareManagerCorporation < ApplicationRecord
     belongs_to :corporation
     has_many :care_managers, dependent: :destroy
 
+    scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
+
     def teikyohyo_data(first_day, last_day)
         # issue here, change in relation between care manager corporation and patients
         #patients = Patient.where(care_manager_id: self.care_managers.ids).still_active_at(first_day.to_date).order_by_kana

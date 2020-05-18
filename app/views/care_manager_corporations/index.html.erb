@@ -38,7 +38,7 @@
 
       <div id="care-manager-corporations-container">
         <% @care_manager_corporations.each do |care_manager_corporation| %>
-          <div style="display:flex;width:100%" class="care-manager-corporation-header" data-care-manager-corporation-id="<%= care_manager_corporation.id %>">
+          <div style="display:flex;width:100%" class="care-manager-corporation-header" id="care_manager_corporation_<%= care_manager_corporation.id %>" data-care-manager-corporation-id="<%= care_manager_corporation.id %>">
             <div style="width:40%" class="table-important-fields care-manager-corporation-name">
               <span class="toggle-arrow-left"><%= image_tag 'right_arrow_black.svg', width: '17px' %></span>
               <span class="toggle-arrow-left" style="display:none"><%= image_tag 'down_arrow_black.svg', width: '17px' %></span>

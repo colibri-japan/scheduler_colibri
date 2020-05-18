@@ -201,7 +201,9 @@ window.colibriClickableRow = function(){
     })
 } 
 
-document.addEventListener('turbolinks:load', function () {
+window.careManagerCorporationActions = function() {
+    $('.edit-care-manager-corporation-button').unbind()
+    $('.create-care-manager-button').unbind()
 
     $('.edit-care-manager-corporation-button').click(function(e){
         e.stopPropagation()
@@ -212,6 +214,11 @@ document.addEventListener('turbolinks:load', function () {
         e.stopPropagation()
         $.getScript($(this).data('url'))
     })
+}
+
+document.addEventListener('turbolinks:load', function () {
+
+    careManagerCorporationActions()
 
     $('.btn-scroll').click(function(){
         var aTag = $("#" + $(this).data('anchor'));

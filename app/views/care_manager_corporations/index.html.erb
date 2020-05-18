@@ -23,38 +23,41 @@
 
     <%= link_to '+居宅介護支援事業所', new_care_manager_corporation_path, remote: true, class: 'btn btn-info text-white btn-margin-top', data: {ripple: ""} %>
     
-    <div id="index-table-container" class="table-responsive">
+    <div class="table-responsive">
       <table class="table">
         <thead>
           <tr>
-            <th style="width:40%;min-width:150px">名前</th>
-            <th style="width:20%;min-width:120px">電話</th>
-            <th style="width:20%;min-width:150px">住所</th>
-            <th colspan="2" style="width:20%;min-width:200px">アクション</th>
+            <th style="width:40%">名前</th>
+            <th style="width:20%">電話</th>
+            <th style="width:20%">住所</th>
+            <th colspan="2" style="width:20%">アクション</th>
           </tr>
         </thead>
-        <tbody>
-            <% @care_manager_corporations.each do |care_manager_corporation| %>
-              <tr>
-              <td class="table-important-fields"><%= care_manager_corporation.name %></td>
-              <td class="table-important-fields"><%= care_manager_corporation.phone_number %></td>
-              <td class="table-important-fields"><%= care_manager_corporation.address %></td>
-              <td class="table-important-fields"><%= link_to '編集', edit_care_manager_corporation_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-secondary text-white' %></td>
-              <td class="table-important-fields"><%= link_to '+ケアマネ', new_care_manager_corporation_care_manager_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-info text-white' %></td>
-            </tr>
-            <% care_manager_corporation.care_managers.each do |care_manager| %>
-              <tr class="nurse-clickable-row" id="care_manager_<%= care_manager.id %>" data-link="<%= edit_care_manager_corporation_care_manager_path(care_manager_corporation, care_manager) %>">
-                <td><%= care_manager.name %></td>
-                <td><%= care_manager.phone_number %></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            <% end %>
-          <% end %>
-
-        </tbody>
       </table>
+      </div>
+
+      <div id="care-manager-corporations-container">
+        <% @care_manager_corporations.each do |care_manager_corporation| %>
+          <div style="display:flex;width:100%" class="care-manager-corporation-header" data-care-manager-corporation-id="<%= care_manager_corporation.id %>">
+            <div style="width:40%" class="table-important-fields care-manager-corporation-name">
+              <span class="toggle-arrow-left"><%= image_tag 'right_arrow_black.svg', width: '17px' %></span>
+              <span class="toggle-arrow-left" style="display:none"><%= image_tag 'down_arrow_black.svg', width: '17px' %></span>
+              <%= care_manager_corporation.name %>
+            </div>
+            <div style="width:20%"><%= care_manager_corporation.phone_number %></div>
+            <div style="width:20%"><%= care_manager_corporation.address %></div>
+            <div style="width:20%">
+              <%= link_to '編集', edit_care_manager_corporation_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-secondary text-white' %>
+              <%= link_to '+ケアマネ', new_care_manager_corporation_care_manager_path(care_manager_corporation), remote: true, class: 'btn btn-sm btn-info text-white' %>
+            </div>
+          </div>
+
+          <div id="care_managers_for_corporation_<%= care_manager_corporation.id %>">
+          </div>
+          
+        <% end %>
+
+      </div>
     </div>
   </div>
 </div>

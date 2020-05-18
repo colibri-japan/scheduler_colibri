@@ -194,6 +194,12 @@ window.submitCompletionReportAction = function(){
     })
 }
 
+window.colibriClickableRow = function(){
+    $('.colibri-clickable-row').unbind()
+    $('.colibri-clickable-row').click(function(){
+        $.getScript($(this).data('url'))
+    })
+} 
 
 document.addEventListener('turbolinks:load', function () {
     $('.btn-scroll').click(function(){
@@ -256,6 +262,15 @@ document.addEventListener('turbolinks:load', function () {
         }
         $(this).next().toggle()
         $(this).children('.kana-toggle-arrow').toggle()
+    })
+
+    $('.care-manager-corporation-header').click(function(){
+        if (!$(this).hasClass('already-loaded'))  {
+            $.getScript(`/care_manager_corporations/${$(this).data('care-manager-corporation-id')}/care_managers.js`)
+            $(this).addClass('already-loaded')
+        }
+        $(this).next().toggle()
+        $(this).find('span.toggle-arrow-left').toggle()
     })
 
 

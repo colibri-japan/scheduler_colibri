@@ -5,6 +5,8 @@ class CareManager < ApplicationRecord
 
     before_destroy :remove_reference_from_patients
 
+    scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
+
     private
 
     def remove_reference_from_patients

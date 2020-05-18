@@ -1,0 +1,11 @@
+<table class="table table-hover" style="margin:0px">
+    <% @care_managers.each do |care_manager| %>
+        <tr class="colibri-clickable-row" id="care_manager_<%= care_manager.id %>" data-url="<%= edit_care_manager_corporation_care_manager_path(@care_manager_corporation, care_manager) %>">
+            <td><%= care_manager.name %></td>
+            <td><%= care_manager.phone_number %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    <% end %>
+</table>

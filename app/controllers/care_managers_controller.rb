@@ -48,6 +48,10 @@ class CareManagersController < ApplicationController
     end 
   end
 
+  def index
+    @care_managers = @care_manager_corporation.care_managers.order_by_kana
+  end
+
   private 
 
   def set_care_manager_corporation

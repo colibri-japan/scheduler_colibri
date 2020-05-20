@@ -1,5 +1,6 @@
 class CarePlan < ApplicationRecord
     belongs_to :care_manager, optional: true
+    belongs_to :second_care_manager, optional: true, class_name: 'CareManager'
     belongs_to :patient
     belongs_to :attending_nurse, optional: true
 

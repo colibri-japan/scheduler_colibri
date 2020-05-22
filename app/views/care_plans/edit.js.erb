@@ -10,3 +10,9 @@ patientWarekiFields()
 set_kaigo_certification_validity_end()
 set_kaigo_certification_validity_start()
 set_kaigo_certification_date()
+toggleKaigoCertificationStatus()
+
+if (<%= @care_plan.kaigo_certification_status == 1 %>) {
+    $('#kaigo-level-container').hide()
+    $('#handicap-level-container').hide()
+}

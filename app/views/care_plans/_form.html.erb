@@ -31,14 +31,14 @@
                 <%= form.label :kaigo_certification_status, "認定状況", class: "colibri-form-label-dark" %>
             </div>
             <div style="width:77%">
-                <%= form.radio_button :kaigo_certification_status, 1, {class: "radio-inline"} %>
+                <%= form.radio_button :kaigo_certification_status, 1, {class: "radio-inline", id: :pending_kaigo_certification} %>
                 <%= label :kaigo_certification_status_1, '申請中' %>
-                <%= form.radio_button :kaigo_certification_status, 2, {class: "radio-inline"} %>
+                <%= form.radio_button :kaigo_certification_status, 2, {class: "radio-inline", id: :completed_kaigo_certification} %>
                 <%= label :kaigo_certification_status_2, '認定済み' %>
             </div>
         </div>
 
-        <div class="colibri-form-group-flex">
+        <div class="colibri-form-group-flex" id="handicap-level-container">
             <div style="width:23%">
                 <%= form.label :handicap_level, "障害程度区分", class: "colibri-form-label-dark" %>
             </div>
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <div class="colibri-form-group-flex">
+        <div class="colibri-form-group-flex" id="kaigo-level-container">
             <div style="width:23%">
                 <%= form.label :kaigo_level, "介護度", class: "colibri-form-label-dark" %>
             </div>

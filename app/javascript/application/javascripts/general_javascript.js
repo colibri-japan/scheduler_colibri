@@ -228,6 +228,20 @@ window.toggleCareManagers = function() {
     })
 }
 
+window.toggleKaigoCertificationStatus = function() {
+    $('#pending_kaigo_certification').click(function(){
+        $('input[name="care_plan[kaigo_level]"]').prop('checked', false)
+        $('input[name="care_plan[handicap_level]"]').prop('checked', false)
+        $('#kaigo-level-container').hide()
+        $('#handicap-level-container').hide()
+    })
+
+    $('#completed_kaigo_certification').click(function(){
+        $('#kaigo-level-container').show()
+        $('#handicap-level-container').show()
+    })
+}
+
 document.addEventListener('turbolinks:load', function () {
 
     if ($('#care-manager-corporations-container').length > 0) {

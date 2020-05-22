@@ -5,6 +5,8 @@ class DashboardController < ApplicationController
 
 
   def index
+    authorize current_user, :has_greater_access_than_nurse_restricted?
+
     @planning = @corporation.planning
 
     #appointments : today, upcoming two weeks, since monday

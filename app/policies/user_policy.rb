@@ -4,6 +4,10 @@ class UserPolicy < ApplicationPolicy
 		user.admin == true
 	end
 
+	def has_greater_access_than_nurse_restricted?
+		!user.nurse_restricted?
+	end
+
 	def has_access_to_salary_line_items?
 		user.schedule_restricted_with_salary_line_items? || user.schedule_admin? || user.corporation_admin?
 	end

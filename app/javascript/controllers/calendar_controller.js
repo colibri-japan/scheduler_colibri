@@ -391,6 +391,10 @@ let createCalendar = () => {
         },
 
         eventClick: function (info) {
+            if (!window.userAllowedToEdit) {
+                return
+            }
+            
             if (info.event.extendedProps.eventType === 'appointment' && (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches)) {
                 $.getScript(`/appointments/${info.event.extendedProps.eventId}.js`)
             } else {

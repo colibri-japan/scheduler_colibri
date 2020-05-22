@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200520164400) do
+ActiveRecord::Schema.define(version: 20200522091000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 20200520164400) do
     t.date "long_term_goals_due_date"
     t.date "meeting_date"
     t.bigint "attending_nurse_id"
+    t.integer "kaigo_certification_status", default: 2
     t.index ["attending_nurse_id"], name: "index_care_plans_on_attending_nurse_id"
     t.index ["care_manager_id"], name: "index_care_plans_on_care_manager_id"
     t.index ["patient_id"], name: "index_care_plans_on_patient_id"

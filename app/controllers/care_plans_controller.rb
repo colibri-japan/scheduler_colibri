@@ -90,7 +90,7 @@ class CarePlansController < ApplicationController
     end
 
     def care_plan_params
-        params.require(:care_plan).permit(:care_manager_id, :attending_nurse_id, :kaigo_level, :handicap_level, :kaigo_certification_date, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :short_term_goals, :short_term_goals_start_date,  :short_term_goals_due_date, :long_term_goals, :long_term_goals_start_date, :long_term_goals_due_date, :family_wishes, :creation_date, :patient_wishes, :meeting_date, insurance_policy: [])
+        params.require(:care_plan).permit(:care_manager_id, :attending_nurse_id, :kaigo_level, :handicap_level, :kaigo_certification_date, :kaigo_certification_status, :kaigo_certification_validity_start, :kaigo_certification_validity_end, :short_term_goals, :short_term_goals_start_date,  :short_term_goals_due_date, :long_term_goals, :long_term_goals_start_date, :long_term_goals_due_date, :family_wishes, :creation_date, :patient_wishes, :meeting_date, insurance_policy: [])
     end
 
 

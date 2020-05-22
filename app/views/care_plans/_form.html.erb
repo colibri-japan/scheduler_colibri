@@ -28,6 +28,18 @@
 
         <div class="colibri-form-group-flex">
             <div style="width:23%">
+                <%= form.label :kaigo_certification_status, "認定状況", class: "colibri-form-label-dark" %>
+            </div>
+            <div style="width:77%">
+                <%= form.radio_button :kaigo_certification_status, 1, {class: "radio-inline"} %>
+                <%= label :kaigo_certification_status_1, '申請中' %>
+                <%= form.radio_button :kaigo_certification_status, 2, {class: "radio-inline"} %>
+                <%= label :kaigo_certification_status_2, '認定済み' %>
+            </div>
+        </div>
+
+        <div class="colibri-form-group-flex">
+            <div style="width:23%">
                 <%= form.label :handicap_level, "障害程度区分", class: "colibri-form-label-dark" %>
             </div>
             <div style="width:77%">
@@ -56,28 +68,26 @@
             </div>
             <div style="width:77%">
                 <div>
-                <%= form.radio_button :kaigo_level, 7, {class: "radio-inline"} %>
-                <%= label :kaigo_level_7, '申請中' %>
-                <%= form.radio_button :kaigo_level, 8, {class: "radio-inline"} %>
-                <%= label :kaigo_level_8, '事業対象者' %>
-                <%= form.radio_button :kaigo_level, 0, {class: "radio-inline"} %>
-                <%= label :kaigo_level_0, '要支援1' %>
-                <%= form.radio_button :kaigo_level, 1, {class: "radio-inline"} %>
-                <%= label :kaigo_level_1, '要支援2' %>
-                </div>
-                <div>
-                <%= form.radio_button :kaigo_level, 2, {class: "radio-inline"} %>
-                <%= label :kaigo_level_2, '要介護1' %>
-                <%= form.radio_button :kaigo_level, 3, {class: "radio-inline"} %>
-                <%= label :kaigo_level_3, '要介護2' %>
-                <%= form.radio_button :kaigo_level, 4, {class: "radio-inline"} %>
-                <%= label :kaigo_level_4, '要介護3' %>
-                <%= form.radio_button :kaigo_level, 5, {class: "radio-inline"} %>
-                <%= label :kaigo_level_5, '要介護4' %>
-                </div>
-                <div>
                 <%= form.radio_button :kaigo_level, 6, {class: "radio-inline"} %>
-                <%= label :kaigo_level_6, '要介護5' %>
+                <%= label :kaigo_level_6, '事業対象者' %>
+                <%= form.radio_button :kaigo_level, 12, {class: "radio-inline"} %>
+                <%= label :kaigo_level_12, '要支援1' %>
+                <%= form.radio_button :kaigo_level, 13, {class: "radio-inline"} %>
+                <%= label :kaigo_level_13, '要支援2' %>
+                </div>
+                <div>
+                <%= form.radio_button :kaigo_level, 21, {class: "radio-inline"} %>
+                <%= label :kaigo_level_21, '要介護1' %>
+                <%= form.radio_button :kaigo_level, 22, {class: "radio-inline"} %>
+                <%= label :kaigo_level_22, '要介護2' %>
+                <%= form.radio_button :kaigo_level, 23, {class: "radio-inline"} %>
+                <%= label :kaigo_level_23, '要介護3' %>
+                <%= form.radio_button :kaigo_level, 24, {class: "radio-inline"} %>
+                <%= label :kaigo_level_24, '要介護4' %>
+                </div>
+                <div>
+                <%= form.radio_button :kaigo_level, 25, {class: "radio-inline"} %>
+                <%= label :kaigo_level_25, '要介護5' %>
                 </div>
             </div>
         </div>

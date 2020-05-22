@@ -81,6 +81,14 @@ class ApplicationController < ActionController::Base
       @nurses = @corporation.nurses.displayable.order_by_kana
     end
   end
+
+  def fetch_team_users
+    if @corporation.separate_patients_by_team? && current_user.team_id.present?
+      @users = @corporation.users.registered.where(team_id: [current_user.team_id, nil]).order_by_kana
+    else
+      @corporation.cached_registered_users_ordered_by_kana
+    end
+  end
 	
 	def reorder_nurses_grouped_by_team
 		my_team = current_user.nurse.team.team_name 

@@ -31,25 +31,25 @@ class PostsController < ApplicationController
         set_planning
         set_main_nurse 
 
-        @users = @corporation.cached_registered_users_ordered_by_kana
-        patients = @corporation.cached_all_patients_ordered_by_kana
-        @patients_for_select = [['利用者タグなし', 'nil']] + patients.pluck(:name, :id)
+        fetch_team_users
+        fetch_patients
+        @patients_for_select = [['利用者タグなし', 'nil']] + @patients.pluck(:name, :id)
 
         if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
-            @posts = @corporation.posts.includes(:reminders, :author, :patients).order(published_at: 'DESC')
+            fetch_team_posts
             @posts = @posts.where('published_at BETWEEN ? AND ?', params[:range_start], params[:range_end]) if params[:range_start].present? && params[:range_end].present?
             @posts = @posts.where(author_id: params[:author_ids]) if params[:author_ids].present? && (params[:author_ids].map(&:to_i) - @users.ids).empty?
             if params[:patient_ids].present? 
                 if params[:patient_ids].include? 'nil'
                     posts_without_patient = @posts.left_outer_joins(:patient_posts).where(patient_posts: {id: nil})
-                    posts_with_patients = @posts.joins(:patient_posts).where(patient_posts: {patient_id: params[:patient_ids]}) if ((params[:patient_ids] - ['nil']).map(&:to_i) - patients.ids).empty?
+                    posts_with_patients = @posts.joins(:patient_posts).where(patient_posts: {patient_id: params[:patient_ids]}) if ((params[:patient_ids] - ['nil']).map(&:to_i) - @patients.ids).empty?
                     @posts = (posts_without_patient + (posts_with_patients || [])).uniq
                 else
                     @posts = @posts.joins(:patients).where(patients: {id: params[:patient_ids]}) if (params[:patient_ids].map(&:to_i) - patients.ids).empty?
                 end
             end
         else
-            @posts = @corporation.cached_recent_posts
+            fetch_recent_team_posts
         end
         fetch_post_readers
 
@@ -114,6 +114,22 @@ class PostsController < ApplicationController
         @posts.each do |post|
             readers = @corporation.users.registered.have_read(post).pluck(:name)
             @posts_readers[post.id] = readers 
+        end
+    end
+
+    def fetch_recent_team_posts
+        if @corporation.separate_patients_by_team? && current_user.team.present?
+            @posts = @corporation.posts.includes(:author, :patients, :reminders).where(author_id: current_user.team.users.registered.ids).order(published_at: :desc).limit(40)
+        else
+            @posts = @corporation.cached_recent_posts
+        end
+    end
+
+    def fetch_team_posts
+        if @corporation.separate_patients_by_team? && current_user.team.present?
+            @posts = @corporation.posts.includes(:author, :patients, :reminders).where(author_id: current_user.team.users.registered.ids).order(published_at: :desc)
+        else
+            @posts = @corporation.posts.includes(:reminders, :author, :patients).order(published_at: 'DESC')
         end
     end
 

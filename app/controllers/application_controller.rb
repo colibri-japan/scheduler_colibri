@@ -72,7 +72,15 @@ class ApplicationController < ActionController::Base
     else
       @grouped_nurses = @corporation.cached_displayable_nurses_grouped_by_fulltimer
     end
-	end
+  end
+  
+  def fetch_team_nurses
+    if @corporation.separate_patients_by_team? && current_user.team_id.present?
+      @nurses = @corporation.nurses.displayable.where(team_id: [current_user.team_id, nil]).order_by_kana
+    else
+      @nurses = @corporation.nurses.displayable.order_by_kana
+    end
+  end
 	
 	def reorder_nurses_grouped_by_team
 		my_team = current_user.nurse.team.team_name 

@@ -131,8 +131,8 @@ class AppointmentsController < ApplicationController
 	end
 
   def new_batch_action
-      @nurses = @corporation.nurses.displayable.order_by_kana
-      @patients = @corporation.patients.active.order_by_kana
+      fetch_team_nurses
+      fetch_patients
   end
 
   def batch_action_confirm

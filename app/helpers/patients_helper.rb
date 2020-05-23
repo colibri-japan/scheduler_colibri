@@ -57,26 +57,24 @@ module PatientsHelper
 
     def kaigo_level_text(kaigo_level)
         case kaigo_level
-        when 7
-            '申請中'
-        when 8
-            '事業対象者'
-        when 0
-            '要支援1'
-        when 1
-            '要支援2'
-        when 2
-            '要介護1'
-        when 3
-            '要介護2'
-        when 4
-            '要介護3'
-        when 5
-            '要介護4'
+        when 12
+            '要支援１'
+        when 13
+            '要支援２'
+        when 21
+            '要介護１'
+        when 22
+            '要介護２'
+        when 23
+            '要介護３'
+        when 24
+            '要介護４'
+        when 25
+            '要介護５'
         when 6
-            '要介護5'
+            '事業対象者'
         else 
-            ''
+            ' - '
         end
     end
 

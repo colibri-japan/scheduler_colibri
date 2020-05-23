@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
     if @corporation.separate_patients_by_team? && current_user.team_id.present?
       @users = @corporation.users.registered.where(team_id: [current_user.team_id, nil]).order_by_kana
     else
-      @corporation.cached_registered_users_ordered_by_kana
+      @users = @corporation.cached_registered_users_ordered_by_kana
     end
   end
 	

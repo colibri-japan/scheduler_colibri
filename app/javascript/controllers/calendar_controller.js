@@ -229,29 +229,7 @@ let createCalendar = () => {
         datesRender: function(info) {
             responsiveHeader(info.view)
 
-            if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
-                var fcCenter = document.getElementsByClassName('fc-center')[0]
-                if (fcCenter) {
-                    var title = fcCenter.childNodes[0]
-                    var fullDate = title.textContent
-                    var date
-                    if (info.view.type === 'resourceTimeGridDay' || info.view.type === 'dayGridMonth') {
-                        if (fullDate.length >= 7) {
-                            date = fullDate.substr(5)
-                            title.innerText = date
-                        }
-                        title.style.display = 'block'
-                    } else if (info.view.type === 'listDay') {
-                        $('#no-appointments-date').html(fullDate)
-                        title.style.display = 'none'
-                    } else {
-                        title.style.display = 'none'
-                    }
-                }
-                if (info.view.type == 'dayGridMonth') {
-                    $('.fc-today-button').hide()
-                }
-            }
+            restyleMobileCalendarDates(info.view)
         },
 
         eventPositioned: function(info) {
@@ -390,14 +368,13 @@ let createCalendar = () => {
             }
         },
 
-        eventClick: function (info) {
-            if (!window.userAllowedToEdit) {
-                return
-            }
-            
+        eventClick: function (info) {            
             if (info.event.extendedProps.eventType === 'appointment' && (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches)) {
                 $.getScript(`/appointments/${info.event.extendedProps.eventId}.js`)
             } else {
+                if (!window.userAllowedToEdit) {
+                    return
+                }
                 let dateClicked = dateFormatter.format(info.event.start)
                 $.getScript(`${window.planningPath}/${info.event.extendedProps.eventType}s/${info.event.extendedProps.eventId}/edit.js?date=${dateClicked}`, function(){
                     let screenStart = moment(info.view.activeStart).format('YYYY-MM-DD HH:mm')
@@ -582,6 +559,32 @@ let setRecurringAppointmentRange = (start, end, view) => {
         $(`#recurring_appointment_${window.currentResourceType || window.defaultResourceType}_id`).val(window.currentResourceId || window.defaultResourceId);
     } 
 
+}
+
+let restyleMobileCalendarDates = (view) => {
+    if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
+        var fcCenter = document.getElementsByClassName('fc-center')[0]
+        if (fcCenter) {
+            var title = fcCenter.childNodes[0]
+            var fullDate = title.textContent
+            var date
+            if (view.type === 'resourceTimeGridDay' || view.type === 'dayGridMonth') {
+                if (fullDate.length >= 7) {
+                    date = fullDate.substr(5)
+                    title.innerText = date
+                }
+                title.style.display = 'block'
+            } else if (view.type === 'listDay') {
+                $('#no-appointments-date').html(fullDate)
+                title.style.display = 'none'
+            } else {
+                title.style.display = 'none'
+            }
+        }
+        if (view.type == 'dayGridMonth') {
+            $('.fc-today-button').hide()
+        }
+    }
 }
 
 let responsiveHeader = (view) => {
@@ -1148,6 +1151,7 @@ export default class extends Controller {
         window.currentResourceType = event.target.dataset.resourceType
         window.currentResourceId = event.target.dataset.resourceId
         window.resourceLabel = window.currentResourceType === 'patient' ? '利用者' : '従業員'
+        removeEvents()
         switchBackToCalendarOnNavigate()
         
         updateCalendarHeader()
@@ -1158,13 +1162,16 @@ export default class extends Controller {
         document.getElementById('resource-details-panel').style.display = 'none'
 
         updateSelectize()
-
         updatePayableUrl()
-        removeEvents()
         updateMasterEventsUrl()
               
         window.fullCalendar.refetchResources()
         window.fullCalendar.refetchEvents()
+
+        if (window.fullCalendar && window.fullCalendar.view) {
+            restyleMobileCalendarDates(window.fullCalendar.view)
+            responsiveHeader(window.fullCalendar.view)
+        }
 
         this.updateResourceTitle(event)
         

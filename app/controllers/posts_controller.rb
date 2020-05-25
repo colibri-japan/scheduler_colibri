@@ -45,7 +45,7 @@ class PostsController < ApplicationController
                     posts_with_patients = @posts.joins(:patient_posts).where(patient_posts: {patient_id: params[:patient_ids]}) if ((params[:patient_ids] - ['nil']).map(&:to_i) - @patients.ids).empty?
                     @posts = (posts_without_patient + (posts_with_patients || [])).uniq
                 else
-                    @posts = @posts.joins(:patients).where(patients: {id: params[:patient_ids]}) if (params[:patient_ids].map(&:to_i) - patients.ids).empty?
+                    @posts = @posts.joins(:patients).where(patients: {id: params[:patient_ids]}) if (params[:patient_ids].map(&:to_i) - @patients.ids).empty?
                 end
             end
         else

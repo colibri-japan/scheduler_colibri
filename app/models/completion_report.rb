@@ -1,6 +1,8 @@
 class CompletionReport < ApplicationRecord
     attribute :editing_occurrences_after, :date
 
+    belongs_to :patient 
+    belongs_to :planning
     belongs_to :reportable, polymorphic: true
     belongs_to :forecasted_report, class_name: 'CompletionReport', optional: true 
     has_many :achieved_reports, class_name: 'CompletionReport', foreign_key: :forecasted_report_id

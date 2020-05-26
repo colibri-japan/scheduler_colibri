@@ -7,6 +7,7 @@ class Planning < ApplicationRecord
 	has_many :private_events
 	has_many :wished_slots
 	has_many :salary_line_items
+	has_many :completion_reports
 
 	before_save :default_title
 

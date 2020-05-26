@@ -15,6 +15,7 @@ class Patient < ApplicationRecord
 	has_many :salary_line_items
 	has_many :patient_posts
 	has_many :posts, through: :patient_posts
+	has_many :completion_reports
 
 	accepts_nested_attributes_for :care_plans
 	

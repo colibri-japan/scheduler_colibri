@@ -26,6 +26,8 @@ class CompletionReportsController < ApplicationController
     
     @completion_report = CompletionReport.new(completion_report_params)
     @completion_report.reportable = @reportable
+    @completion_report.planning = @reportable.planning 
+    @completion_report.patient = @reportable.patient
     
     @completion_report.save 
   end

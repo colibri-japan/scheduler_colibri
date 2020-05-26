@@ -32,7 +32,7 @@ class PostsController < ApplicationController
         set_main_nurse 
 
         fetch_team_users
-        fetch_patients
+        fetch_patients_for_posts_filter
         @patients_for_select = [['利用者タグなし', 'nil']] + @patients.pluck(:name, :id)
 
         if params[:patient_ids].present? || params[:author_ids].present? || params[:range_start].present?
@@ -114,6 +114,14 @@ class PostsController < ApplicationController
         @posts.each do |post|
             readers = @corporation.users.registered.have_read(post).pluck(:name)
             @posts_readers[post.id] = readers 
+        end
+    end
+
+    def fetch_patients_for_posts_filter
+        if @corporation.separate_patients_by_team? && current_user.team_id.present? 
+            @patients = @corporation.patients.where(team_id: [current_user.team_id, nil]).order_by_kana
+        else
+            @patients = @corporation.cached_all_patients_ordered_by_kana
         end
     end
 

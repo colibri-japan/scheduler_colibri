@@ -13,17 +13,19 @@
 		<div id="patients-resource" class="no-print">
 			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="">全利用者</div>
 			
-			<% PlanningsHelper::HIRAGANAS.each do |kana| %>
-				<div class="nurses-resource-subsection-title nurse-subsection-toggleable resource-title-selectable">
-					<%= kana %>
-					<span style="float:right;<%= 'display:none' if @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_down.svg', width: '17px' %></span>
-					<span style="float:right;<%= 'display:none' unless @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_up.svg', width: '17px' %></span>
-				</div>
-				<div class="nurse-subsection-toggleable" style="<%= 'display:none' unless @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>">
-					<% (@patients_grouped_by_kana[kana] || []).each do |patient| %>
-						<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.try(:id) %>" data-url=""><%= patient.try(:name) %></p>
-					<% end %>
-				</div>
+			<% if false %>
+				<% PlanningsHelper::HIRAGANAS.each do |kana| %>
+					<div class="nurses-resource-subsection-title nurse-subsection-toggleable resource-title-selectable">
+						<%= kana %>
+						<span style="float:right;<%= 'display:none' if @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_down.svg', width: '17px' %></span>
+						<span style="float:right;<%= 'display:none' unless @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_up.svg', width: '17px' %></span>
+					</div>
+					<div class="nurse-subsection-toggleable" style="<%= 'display:none' unless @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>">
+						<% (@patients_grouped_by_kana[kana] || []).each do |patient| %>
+							<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.try(:id) %>" data-url=""><%= patient.try(:name) %></p>
+						<% end %>
+					</div>
+				<% end %>
 			<% end %>
 		</div>
     </div>

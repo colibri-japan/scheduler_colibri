@@ -1,5 +1,8 @@
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'admin_reports', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+<%= javascript_tag do %>
+	window.completionReportsSummaryUrl = "<%= j planning_completion_reports_summary_path(@planning) %>"
+<% end %>
 
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'admin_reports', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
 
 <div id="menu-backdrop">
 </div>
@@ -40,11 +43,16 @@
 	</div>
 
     <div class="payable-body">
-        <div id="completion-reports-header" style="padding:5px;display:flex;justify-content:space-between;border-bottom:0.5px solid #ccc" class='no-print'>
-            <div style="display:flex;margin-top:20px;margin-bottom:10px">
+        <div id="completion-reports-header" style="margin-top:20px;margin-bottom:10px;padding:5px;display:flex;justify-content:space-between" class='no-print'>
+            <div style="display:flex">
                 <div class="colibri-horizontal-menu-item item-selected" id="select-completed-reports">記録済み (<%= @completion_reports.try(:size) %>)</div>
                 <div class="colibri-horizontal-menu-item" id="select-uncompleted-reports">書き残し (<%= @appointments_without_reports.try(:size) %>)</div>
             </div>
+			<div style="display:flex" id="completion-reports-query-date-container">
+				<div id='japanese-query-date'><%= l(@date, format: '%-m月%-d日 (%a)') %></div>
+				<%= text_field_tag :query_date, value=l(@date, format: '%Y-%-m-%-d'), {id: :completion_reports_query_date, style: 'border:none;font-size:0.1em;width:20px;color:white'} %>
+				<div class="btn btn-colibri-light" id="date-picker-button"><span style="font-weight:bold;line-height:30px">日付</span>  <span class="glyphicon glyphicon-calendar glyphicon-no-hover-style" style="font-size:14px"></span></div>
+			</div>
 			<% if false %>
             <div style="display:flex">
                 <div style="width:20px" class="btn-colibri-light">日</div>

@@ -4,6 +4,10 @@
 	color: white !important;
 }
 
+.glyphicon.glyphicon.glyphicon-calendar.glyphicon-no-hover-style:hover {
+    color: inherit;
+}
+
 .button:focus {
   outline: none !important;
 }

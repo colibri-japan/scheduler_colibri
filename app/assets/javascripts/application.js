@@ -1047,6 +1047,46 @@ let availabilitiesDate = () => {
 
 $(document).on('turbolinks:load', function(){
 
+  $('#completion_reports_query_date').daterangepicker({
+    singleDatePicker: true,
+    locale: {
+      format: 'YYYY-MM-DD',
+      daysOfWeek: [
+          "日",
+          "月",
+          "火",
+          "水",
+          "木",
+          "金",
+          "土",
+      ],
+      monthNames: [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月",
+      ],
+      firstDay: 1
+    }
+  })
+
+  $('#completion_reports_query_date').change(function(){
+    var url = completionReportsSummaryUrl + '?reports_date=' + $(this).val()
+    window.location = url
+  })
+
+  $('#date-picker-button').click(function(){
+    $('#completion_reports_query_date').click()
+  })
+
   $(window).resize(function(){
     if (window.fullCalendar) {
       if (!window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches && !window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {

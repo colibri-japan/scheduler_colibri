@@ -1,7 +1,7 @@
 class PlanningsController < ApplicationController
 	before_action :set_corporation
 	before_action :set_planning, except: [:recent_patients_report] 
-	before_action :fetch_patients_grouped_by_kana, only: [:show, :master]
+	before_action :fetch_patients_grouped_by_kana, only: [:show, :master, :completion_reports_summary]
 	before_action :fetch_nurses_grouped_by_team, only: [:show, :master]
 
 
@@ -21,6 +21,21 @@ class PlanningsController < ApplicationController
 		@nurses = @corporation.nurses.displayable.not_archived
 	end
 
+	def completion_reports_summary
+		authorize @planning, :same_corporation_as_current_user?
+		authorize current_user, :has_admin_access?
+
+		set_main_nurse
+		set_reports_date
+
+		@completion_reports = @planning.completion_reports.from_appointments.joins_appointments.includes(reportable: [:nurse, :patient]).in_range(@date.beginning_of_day..@date.end_of_day).order('appointments.starts_at DESC')
+		@appointments_without_reports = @planning.appointments.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.in_range(@date.beginning_of_day..@date.end_of_day).order(starts_at: :desc)
+	end
+
+	def completion_reports_query
+		authorize @planning, :same_corporation_as_current_user?
+
+	end
 
 	def new_master_to_schedule
 		authorize current_user, :has_admin_access?
@@ -120,6 +135,14 @@ class PlanningsController < ApplicationController
 
 	def set_planning
 		@planning = Planning.find(params[:id])
+	end
+
+	def set_reports_date
+		if params[:reports_date].present?
+			@date = params[:reports_date].to_date rescue Date.today 
+		else
+			@date = Date.today
+		end
 	end
 
 	def planning_params

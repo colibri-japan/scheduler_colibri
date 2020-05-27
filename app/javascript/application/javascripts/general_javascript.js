@@ -244,6 +244,20 @@ window.toggleKaigoCertificationStatus = function() {
 
 document.addEventListener('turbolinks:load', function () {
 
+    $('#select-completed-reports').click(function(){
+        $('#completed-reports').show()
+        $('#uncompleted-reports').hide()
+        $('.colibri-horizontal-menu-item').removeClass('item-selected')
+        $(this).addClass('item-selected')
+    })
+
+    $('#select-uncompleted-reports').click(function(){
+        $('#completed-reports').hide()
+        $('#uncompleted-reports').show()
+        $('.colibri-horizontal-menu-item').removeClass('item-selected')
+        $(this).addClass('item-selected')
+    })
+
     if ($('#care-manager-corporations-container').length > 0) {
         careManagerCorporationActions()
         toggleCareManagers()

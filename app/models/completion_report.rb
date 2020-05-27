@@ -12,6 +12,8 @@ class CompletionReport < ApplicationRecord
     scope :from_appointments, -> { where(reportable_type: 'Appointment') }
     scope :from_recurring_appointments, -> { where(reportable_type: 'RecurringAppointment') }
     scope :with_general_comment, -> { where.not(general_comment: [nil, '']) }
+    scope :in_range, -> range { where('appointments.starts_at between ? AND ?', range.first, range.last) }
+    scope :joins_appointments, -> { joins('left join appointments on appointments.id = completion_reports.reportable_id') }
 
     def self.from_nurse(nurse_id)
         joins('INNER JOIN appointments on appointments.id = completion_reports.reportable_id').where(appointments: {nurse_id: nurse_id})

@@ -29,13 +29,26 @@ class CompletionReportsController < ApplicationController
     @completion_report.planning = @reportable.planning 
     @completion_report.patient = @reportable.patient
     
-    @completion_report.save 
+    if @completion_report.save 
+      puts 'saved'
+    else
+      puts @completion_report.errors.full_messages
+    end
   end
   
   def update
     authorize @planning, :same_corporation_as_current_user?
 
     @completion_report.update(completion_report_params)
+
+    @completion_report.planning = @reportable.planning 
+    @completion_report.patient = @reportable.patient
+        
+    if @completion_report.save 
+      puts 'saved'
+    else
+      puts @completion_report.errors.full_messages
+    end
   end
 
   def edit

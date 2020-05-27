@@ -24,3 +24,20 @@
     color: black;
     font-size: 1.1em;
 }
+
+.colibri-horizontal-menu-item {
+    font-size:1.3em;
+    text-align:center;
+    margin-right:25px;
+    color: #85929E;
+}
+
+.colibri-horizontal-menu-item.item-selected {
+    border-bottom: 3px solid #85929E;
+}
+
+.colibri-horizontal-menu-item:hover {
+    cursor: pointer;
+    font-weight: bold;
+    border-bottom: 3px solid #85929E;
+}

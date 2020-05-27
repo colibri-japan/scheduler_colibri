@@ -144,6 +144,7 @@ Rails.application.routes.draw do
   patch 'plannings/:id/master_to_schedule' => 'plannings#master_to_schedule', as: :master_to_schedule
   get 'plannings/:id/new_master_to_schedule' => 'plannings#new_master_to_schedule', as: :new_planning_master_to_schedule
   get 'plannings/:id/cancelled_report' => 'plannings#cancelled_report', as: :planning_cancelled_report  
+  get 'plannings/:id/completion_reports_summary' => 'plannings#completion_reports_summary', as: :planning_completion_reports_summary
 
   #custom routes for appointments
   patch 'plannings/:planning_id/appointments/:id/toggle_cancelled' => 'appointments#toggle_cancelled', as: :planning_appointment_toggle_cancelled

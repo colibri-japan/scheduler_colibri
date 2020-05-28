@@ -143,6 +143,11 @@ class PatientsController < ApplicationController
 
     @completion_reports = @patient.completion_reports.from_appointments.joins_appointments.includes(reportable: [:nurse, :patient]).in_range(@range.first..@range.last).order('appointments.starts_at DESC')
 		@appointments_without_reports = @patient.appointments.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.in_range(@range.first..@range.last).order(starts_at: :desc)
+  
+    respond_to do |format|
+      format.html 
+      format.html.phone 
+    end
   end
 
   def teikyohyo

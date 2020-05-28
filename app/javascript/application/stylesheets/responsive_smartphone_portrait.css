@@ -740,7 +740,7 @@
 	#resource-container {
 		height: 100%;
 		overflow-y: scroll;
-		overflow-x: hide;
+		overflow-x: hidden;
 		padding-bottom: 70px;
 	}
 

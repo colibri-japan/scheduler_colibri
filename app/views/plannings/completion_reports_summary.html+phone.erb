@@ -1,0 +1,106 @@
+<%= javascript_tag do %>
+	window.completionReportsSummaryUrl = "<%= j planning_completion_reports_summary_path(@planning) %>"
+<% end %>
+
+<%= render partial: 'plannings/planning_left_menu', locals: {view: 'admin_reports', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+
+<div id="menu-backdrop">
+</div>
+
+<div id="resource-list-container" class="no-print" style="overflow:scroll">
+    <div>
+        <div style="text-align:right;font-size:1.3em;color:#D6D9DC;padding-right:3px">
+            <span id="close-resource">&times;</span>
+        </div>
+
+        <div id="resource-container">
+            <div id="patients-resource" class="no-print">
+                <div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_completion_reports_summary_path(@planning) %>">全利用者</div>
+                <% PlanningsHelper::HIRAGANAS.each do |kana| %>
+                    <div class="nurses-resource-subsection-title nurse-subsection-toggleable resource-title-selectable">
+                        <%= kana %>
+                        <span style="float:right;<%= 'display:none' if @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_down.svg', width: '17px' %></span>
+                        <span style="float:right;<%= 'display:none' unless @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>" class="toggle-down"><%= image_tag 'menu_thin_chevron_up.svg', width: '17px' %></span>
+                    </div>
+                    <div class="nurse-subsection-toggleable" style="<%= 'display:none' unless @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>">
+                        <% (@patients_grouped_by_kana[kana] || []).each do |patient| %>
+                            <p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.try(:id) %>" data-url="<%= patient_completion_reports_summary_path(patient) %>"><%= patient.try(:name) %></p>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="payable-container">
+	<div id="planning-header">
+		<div id="detail-planning-title">
+			<div id="planning-nurse-information">
+				<div id="payable-menu" style="<%= 'display:none' if current_user.nurse_restricted? %>">
+					<%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
+				</div>
+				<div class="planning-resource-module-title">
+					<span id="resource-name-wrapper">全利用者の実施記録</span>
+				</div>
+			</div>
+		</div>
+		<div id="planning-header-submenu">
+			<div data-ripple class="header-submenu-item header-submenu-item-selected" id="select-completed-reports">記録済み (<%= @completion_reports.try(:size) %>)</div>
+			<div data-ripple class="header-submenu-item resource-details-button" id="select-uncompleted-reports">書き残し (<%= @appointments_without_reports.try(:size) %>)</div>
+		</div>
+	</div>
+
+    <div class="payable-body" id="patient-completion-reports-body" style="padding-top:10px">
+		<div style="display:flex;justify-content:space-between;margin-bottom:5px" id="completion-reports-query-date-container">
+			<div style="color:white;font-size:3px;width:60px">・</div>
+            <div id='japanese-query-date'>
+			    <%= text_field_tag :query_date, value=l(@date, format: '%Y-%-m-%-d'), {id: :completion_reports_query_date, style: 'border:none;font-size:0.01em;width:1px;color:white'} %>
+                <%= l(@date, format: '%-m月%-d日 (%a)') %>
+            </div>
+			<div class="btn btn-sm btn-colibri-light" id="date-picker-button"><span style="font-weight:bold">日付</span>  <span class="glyphicon glyphicon-calendar glyphicon-no-hover-style" style="font-size:12px"></span></div>
+		</div>
+
+        <div id="completion-reports-body">
+			<div id="completed-reports">
+				<% @completion_reports.each do |completion_report| %>
+                    <div class="completion-report-container">
+                        <div class="completion-report-message-heading">
+                            <div class="completion-report-nurse-patient">
+                                <%= "#{completion_report.reportable.try(:nurse).try(:name)} > #{completion_report.reportable.try(:patient).try(:name)}様" %>
+                            </div>
+                            <div class="completion-report-datetime">
+                                <%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d %-H:%M ~ ' )}#{completion_report.reportable.ends_at.strftime('%-H:%M')}" %>
+                            </div>
+                        </div>
+                        <div class="completion-report-message-body">
+                            <div class="completion-report-tasks">
+                                <%= completion_report_summary(completion_report).html_safe %>
+                            </div>
+                            <div class="completion-report-comment">
+                                <%= simple_format(completion_report.general_comment) %>
+                            </div>
+                        </div>
+                    </div>
+
+				<% end %>
+			</div>
+			<div id="uncompleted-reports" class="table-responsive" style="display:none">
+				<table class="table">
+					<thead>
+						<th style="width:50%">日時</th>
+						<th style="width:50%">従業員名</th>
+					</thead>
+					<tbody>
+						<% @appointments_without_reports.each do |appointment| %>
+							<tr>
+								<td><%= "#{l(appointment.starts_at, format: '%-m/%-d (%a) %-H:%M ~ ')}#{appointment.ends_at.strftime('%-H:%M')}" %></td>
+								<td><%= appointment.try(:nurse).try(:name) %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+        </div>
+    </div>
+</div>

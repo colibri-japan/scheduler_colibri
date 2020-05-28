@@ -154,4 +154,11 @@
         margin-bottom: 5px;
     }
 
+    #japanese-query-date {
+        font-size:1.3em;
+        text-align:center;
+        color: #212529;
+        line-height: unset;
+    }
+
 }

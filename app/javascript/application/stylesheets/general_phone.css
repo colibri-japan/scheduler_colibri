@@ -132,4 +132,26 @@
         margin-right: auto;
     }
 
+    /* Completion Reports layouts */
+
+    .completion-report-container {
+        padding: 5px;
+    }
+
+    .completion-report-message-heading {
+        display:flex;
+        justify-content:space-between;
+        font-size: 0.9em;
+    }
+
+    .completion-report-message-body {
+        background-color:#defcfc;
+        padding:5px;
+        border-radius:5px;
+    }
+
+    .completion-report-tasks {
+        margin-bottom: 5px;
+    }
+
 }

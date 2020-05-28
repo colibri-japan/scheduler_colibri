@@ -738,6 +738,12 @@
 		max-width: none;
 	}
 
+	/* Completion Reportslayouts */
+
+	#patient-completion-reports-body {
+		margin-top: 15px;
+	}
+
 
 
 }

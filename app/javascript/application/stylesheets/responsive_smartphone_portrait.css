@@ -990,5 +990,10 @@
 		margin-bottom: 3px;
 	}
 
+	/* Completion Reports layouts */
+
+	#patient-completion-reports-body {
+		margin-top: 86px;
+	}
 
 }

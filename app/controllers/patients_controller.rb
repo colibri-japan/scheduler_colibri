@@ -1,7 +1,7 @@
 class PatientsController < ApplicationController
   before_action :set_corporation
   before_action :set_patient, except: [:index, :create, :new, :search_by_kana_group]
-  before_action :set_planning, only: [:show, :payable]
+  before_action :set_planning, only: [:show, :payable, :completion_reports_summary]
   before_action :set_caveats, only: [:new, :edit]
 
   def index
@@ -131,6 +131,18 @@ class PatientsController < ApplicationController
       format.json { head :no_content }
       format.js
     end
+  end
+
+  def completion_reports_summary
+    authorize @planning, :same_corporation_as_current_user?
+    authorize current_user, :has_admin_access?
+  
+    set_main_nurse
+    fetch_patients_grouped_by_kana
+    set_query_range
+
+    @completion_reports = @patient.completion_reports.from_appointments.joins_appointments.includes(reportable: [:nurse, :patient]).in_range(@range.first..@range.last).order('appointments.starts_at DESC')
+		@appointments_without_reports = @patient.appointments.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.in_range(@range.first..@range.last).order(starts_at: :desc)
   end
 
   def teikyohyo
@@ -299,6 +311,16 @@ class PatientsController < ApplicationController
     end
     params[:birthday] = Date.parse_jp_date(params[:birthday]) rescue nil
     params
+  end
+
+  def set_query_range
+    if params[:m].present? && params[:y].present? 
+      first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1,0,0) rescue Time.current.in_time_zone('Tokyo')
+      @range = first_day..first_day.end_of_month
+    else
+      now = Time.current.in_time_zone('Tokyo')
+      @range = now.beginning_of_month..now.end_of_month
+    end
   end
 
   def query_by_kana_params(kana_group)

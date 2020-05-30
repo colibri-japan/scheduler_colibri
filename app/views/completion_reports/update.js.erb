@@ -1,15 +1,21 @@
 $('.modal').modal('hide');
 
-if (window.userHasRestrictedAccess && window.fullCalendar) {
-    console.log('restricted nurse and calendar present')
-    <% if @completion_report.reportable_type == "Appointment" %>
-      let eventToRemove = window.fullCalendar.getEventById('<%= "appointment_#{@completion_report.reportable_id}" %>')
-      if (eventToRemove) {
-        eventToRemove.remove()
-      }
+if (window.fullCalendar) {
+  <% if @completion_report.reportable_type == "RecurringAppointment" %>
+    let events = window.fullCalendar.getEvents()
+    var date_start = Date.parse('<%= j params[:start] %>')
 
-      window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @completion_report.reportable}).html_safe %>"), 'url1')
-    <% end %>
+    for (let event of events) {
+      if (event.id === '<%= j "recurring_#{@completion_report.reportable_id}" %>' && event.start >= date_start) {
+        event.remove()
+      }
+    }
+
+    var newRecurringAppointments = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe %>")
+    for (let event of newRecurringAppointments) {
+      window.fullCalendar.addEvent(event, 'url1')
+    }    
+  <% end %>
 }
 
 if (window.location.pathname.includes('completion_reports')) {

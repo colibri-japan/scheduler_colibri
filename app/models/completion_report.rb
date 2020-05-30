@@ -7,6 +7,7 @@ class CompletionReport < ApplicationRecord
     belongs_to :forecasted_report, class_name: 'CompletionReport', optional: true 
     has_many :achieved_reports, class_name: 'CompletionReport', foreign_key: :forecasted_report_id
 
+    before_create :add_reference_to_planning_and_patient
     before_update :split_recurring_appointments_and_attach_completion_reports
 
     scope :from_appointments, -> { where(reportable_type: 'Appointment') }
@@ -135,6 +136,12 @@ class CompletionReport < ApplicationRecord
 
     private
 
+    def add_reference_to_planning_and_patient
+        puts 'before save filter for references'
+        self.planning_id = self.reportable.try(:planning_id)
+        self.patient_id = self.reportable.try(:patient_id)
+    end
+
     def split_recurring_appointments_and_attach_completion_reports
         if reportable_type == 'RecurringAppointment' && editing_occurrences_after.present?
             split_recurring_appointments!
@@ -157,12 +164,10 @@ class CompletionReport < ApplicationRecord
         new_recurring_appointment = RecurringAppointment.where(original_id: self.reportable_id).last 
 
         if new_recurring_appointment.present?
-            puts 'found the new recurring appointment'
             new_completion_report = self.dup
             new_completion_report.reportable = new_recurring_appointment
+            
             new_completion_report.save
-        else
-            puts 'did not find new recurring' 
         end
 
         self.restore_attributes

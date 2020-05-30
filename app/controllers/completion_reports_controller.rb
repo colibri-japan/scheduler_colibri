@@ -26,28 +26,20 @@ class CompletionReportsController < ApplicationController
     
     @completion_report = CompletionReport.new(completion_report_params)
     @completion_report.reportable = @reportable
-    @completion_report.planning = @reportable.planning 
     @completion_report.patient = @reportable.patient
+    @completion_report.planning = @reportable.planning
     
-    if @completion_report.save 
-      puts 'saved'
-    else
-      puts @completion_report.errors.full_messages
-    end
+    @completion_report.save 
   end
   
   def update
     authorize @planning, :same_corporation_as_current_user?
 
-    @completion_report.update(completion_report_params)
-
-    @completion_report.planning = @reportable.planning 
+    @completion_report.planning = @reportable.planning
     @completion_report.patient = @reportable.patient
-        
-    if @completion_report.save 
-      puts 'saved'
-    else
-      puts @completion_report.errors.full_messages
+
+    if @completion_report.update(completion_report_params) && @completion_report.reportable_type == 'RecurringAppointment'
+      @new_recurring_appointment = RecurringAppointment.where(original_id: @completion_report.reportable_id).first
     end
   end
 

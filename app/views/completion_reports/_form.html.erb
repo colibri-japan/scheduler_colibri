@@ -842,9 +842,9 @@
 
     </div>
 
-
-
     <%= form.hidden_field :forecasted_report_id, value: completion_report.forecasted_report_id %>
+    <%= hidden_field_tag :start, params[:start] %>
+    <%= hidden_field_tag :end, params[:end] %>
 
     <!-- geolocation hidden fields -->
 

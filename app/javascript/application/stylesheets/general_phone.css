@@ -161,4 +161,20 @@
         line-height: unset;
     }
 
+    #more-planning-menu-items {
+        position: fixed;
+        background-color: #FBFDFB;
+        padding-top:5px;
+        padding-bottom:10px;
+        z-index: 6;
+    }
+
+    li.planning-menu-selected {
+		color: rgb(115, 120, 124);
+    }
+    
+    li.planning-menu-items:hover {
+        color: rgb(115, 120, 124) !important;
+    }
+
 }

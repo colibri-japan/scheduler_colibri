@@ -98,7 +98,22 @@
 		padding-bottom: 7px;
 	}
 
+	#more-menu-items-list {
+		display:flex;
+		flex-direction:column;
+	}
 
+	#more-planning-menu-items {
+		bottom: 60px;
+		right: 0px;
+		border-top: 0.5px solid #ccc;
+		border-left: 0.5px solid #ccc;
+	}
+
+	.planning-menu-items.more-items {
+		margin-top: 6px;
+		margin-bottom: 6px;
+	}
 
 	#colibri-issues {
 		flex-direction: column;
@@ -393,10 +408,6 @@
 
 	li.planning-menu-items {
 		color:rgb(180, 190, 199);
-	}
-
-	li.planning-menu-selected {
-		color: rgb(115, 120, 124);
 	}
 
 	.nav-tabs {

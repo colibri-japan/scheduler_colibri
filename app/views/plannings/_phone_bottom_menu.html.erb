@@ -1,5 +1,5 @@
 <div id="planning-menu-container" class="no-print">
-	<div id="planning-menu-list">
+	<div id="planning-menu-list" style="padding-left:10px;padding-right:10px;">
 		<ul id="left-menu-ul" class="nav-tabs <%= 'nurse-restricted-nav' if current_user.nurse_restricted? %>">
 			<% unless current_user.nurse_restricted? %>
 				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'home' %>" data-url="<%= dashboard_index_path %>" title="ホーム.ダッシュボード"><span class="glyphicon glyphicon-home <%= view == 'home' ? 'glyphicon-selected' : 'glyphicon-default' %>"  style="font-size:24px"></span></li>
@@ -8,19 +8,21 @@
 			<% unless current_user.has_restricted_access? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'admin_reports' %>" data-url="<%= planning_completion_reports_summary_path(@planning) %>" title="実施記録">記</li>
 			<% end %>
-			<% unless current_user.has_restricted_access? %>
-				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= resource_payable_path %>" id="go-to-payable" title="給与.請求">給</li>
-			<% end %>
 			<% if current_user.nurse_restricted? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'reports' %>" data-url="<%= completion_reports_path(params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}) %>" title="実施記録"><span class="glyphicon glyphicon-file <%= view == 'reports' ? 'glyphicon-selected' : 'glyphicon-default' %>"  style="margin-left:3px;font-size:24px"></span></li>
 			<% end %>
-			<% unless current_user.nurse_restricted? %>
-				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  planning_master_path(@planning) %>" title="マスター">マ</li>
-			<% end %>
-			<% unless current_user.role == "nurse_restricted" %>
-				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%= patients_path %>" title="設定"><span class="glyphicon glyphicon-cog <%= view == 'settings' ? 'glyphicon-selected' : 'glyphicon-default' %>" style="font-size:25px"></span></li>
-			<% end %>
-		</ul>
+            <% unless current_user.nurse_restricted? %>
+                <li class="planning-menu-items" id="more-planning-menu-button">...</li>
+            <% end %>
+        </ul>
+            <div id="more-planning-menu-items" style='display:none'>
+                <ul id="more-menu-items-list">
+                    <li class="planning-menu-items more-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  planning_master_path(@planning) %>" title="マスター">マ</li>
+                    <% unless current_user.has_restricted_access? %>
+                        <li class="planning-menu-items more-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= resource_payable_path %>" id="go-to-payable" title="給与.請求">給</li>
+                    <% end %>
+                    <li class="planning-menu-items more-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%= patients_path %>" title="設定"><span class="glyphicon glyphicon-cog <%= view == 'settings' ? 'glyphicon-selected' : 'glyphicon-default' %>" style="font-size:25px"></span></li>
+                </ul>
+            </div>
 	</div>
 </div>
-

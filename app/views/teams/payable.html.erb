@@ -4,7 +4,12 @@
   window.currentResourceId = '<%= @team.id %>'
 <% end %>
 
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_payable_path: planning_team_payable_path(@planning, @team, params: {m: @selected_month, y: @selected_year})} %>
+<% if request.variant.phone? %>
+	<%= render partial: 'plannings/phone_bottom_menu', locals: {view: 'payable', resource_payable_path: planning_team_payable_path(@planning, @team, params: {m: @selected_month, y: @selected_year})} %>
+<% else %>
+	<%= render partial: 'plannings/planning_left_menu', locals: {view: 'payable', resource_payable_path: planning_team_payable_path(@planning, @team, params: {m: @selected_month, y: @selected_year})} %>
+<% end %>
+
 <%= render partial: 'plannings/resources_submenu', locals: {individual_resource: 'false', resource_type: 'nurse', view: 'payable'} %>
 
 

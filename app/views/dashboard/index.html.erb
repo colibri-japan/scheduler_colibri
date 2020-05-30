@@ -5,6 +5,12 @@
 
 <%= render partial: 'plannings/planning_left_menu', locals: {resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'home' } %>
 
+<% if request.variant.phone? %>
+  <%= render partial: 'plannings/phone_bottom_menu', locals: {resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'home' } %>
+<% else %>
+  <%= render partial: 'plannings/planning_left_menu', locals: {resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}), view: 'home' } %>
+<% end %>
+
 <div id="mobile-dashboard">
   <div class="activity_header_responsive">
     <div class="activity_header">

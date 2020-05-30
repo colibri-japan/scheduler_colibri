@@ -331,6 +331,11 @@ document.addEventListener('turbolinks:load', function () {
     })
 
 
+    $('#more-planning-menu-button').click(function(){
+        $('#more-planning-menu-items').toggle()
+    })
+
+
     $(document).on("mousedown", "[data-ripple]", function(e){
         var $self = $(this);
 

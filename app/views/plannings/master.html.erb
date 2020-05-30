@@ -31,7 +31,12 @@
 	window.userHasRestrictedAccess = <%= current_user.has_restricted_access? %>
 <% end %>
 
-<%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+<% if request.variant.phone? %>
+	<%= render partial: 'plannings/phone_bottom_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+<% else %>
+	<%= render partial: 'plannings/planning_left_menu', locals: {view: 'master', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>
+<% end %>
+
 
 <div id="planning-page-wrapper" data-controller="calendar">
 	<div id="resource-list-container" class="no-print" style="<%= 'display:none' if current_user.nurse_restricted? %>">

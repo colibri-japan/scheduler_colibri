@@ -198,8 +198,8 @@
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
-		padding-top: 30px;
-		padding-bottom: 30px;
+		padding-top: 20px;
+		padding-bottom: 20px;
 	}
 
 	li.planning-menu-items {
@@ -760,11 +760,5 @@
 	#patient-completion-reports-body {
 		margin-top: 15px;
 	}
-
-	#more-planning-menu-items {
-
-	}
-
-
 
 }

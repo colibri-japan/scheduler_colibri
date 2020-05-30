@@ -166,10 +166,10 @@
         background-color: #FBFDFB;
         padding-top:5px;
         padding-bottom:10px;
-        z-index: 6;
+        z-index: 10000;
     }
 
-    li.planning-menu-selected {
+    li.planning-menu-items.planning-menu-selected {
 		color: rgb(115, 120, 124);
     }
     

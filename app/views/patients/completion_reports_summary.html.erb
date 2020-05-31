@@ -24,7 +24,7 @@
 				</div>
 				<div class="nurse-subsection-toggleable" style="<%= 'display:none' unless @patient.present? && @patients_grouped_by_kana[kana].present? && @patients_grouped_by_kana[kana].map(&:id).include?(@patient.id) %>">
 					<% (@patients_grouped_by_kana[kana] || []).each do |patient| %>
-						<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.try(:id) %>" data-url="<%= patient_completion_reports_summary_path(patient) %>"><%= patient.try(:name) %></p>
+						<p id='<%= "patient_#{patient.id}" %>' class="resource-list-element colibri-clickable-link <%= 'resource-selected' if patient.id == @patient.try(:id) %>" data-url="<%= patient_completion_reports_summary_path(patient, params: {m: params[:m], y: params[:y]}) %>"><%= patient.try(:name) %></p>
 					<% end %>
 				</div>
 			<% end %>

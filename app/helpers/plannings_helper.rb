@@ -100,6 +100,14 @@ module PlanningsHelper
 		end
 	end
 
+	def laptop_report_icon(view)
+		if view == 'admin_reports'
+			'white-report.svg'
+		else
+			'light-grey-report.svg'
+		end
+	end
+
 	def report_icon(view)
 		if view == 'admin_reports'
 			'dark-grey-report.svg'

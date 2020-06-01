@@ -56,7 +56,7 @@ window.uncheckableRadioButtons = function() {
             window.patient_ate_full_plate = $(this).val()
         } else {
             if (window.patient_ate_full_plate === $(this).val()) {
-                $(this).prop('checked', false)
+                $('#no_full_plate').click()
                 delete (window.patient_ate_full_plate)
             } else {
                 window.patient_ate_full_plate = $(this).val()
@@ -69,7 +69,7 @@ window.uncheckableRadioButtons = function() {
             window.full_or_partial_body_wash = $(this).val()
         } else {
             if (window.full_or_partial_body_wash === $(this).val()) {
-                $(this).prop('checked', false)
+                $('#no_full_nor_partial_body_wash').click()
                 delete (window.full_or_partial_body_wash)
             } else {
                 window.full_or_partial_body_wash = $(this).val()
@@ -82,7 +82,7 @@ window.uncheckableRadioButtons = function() {
             window.bath_or_shower = $(this).val()
         } else {
             if (window.bath_or_shower === $(this).val()) {
-                $(this).prop('checked', false)
+                $('#no_bath_nor_shower').click()
                 delete (window.bath_or_shower)
             } else {
                 window.bath_or_shower = $(this).val()
@@ -95,7 +95,7 @@ window.uncheckableRadioButtons = function() {
             window.hands_and_feet_wash = $(this).val()
         } else {
             if (window.hands_and_feet_wash === $(this).val()) {
-                $(this).prop('checked', false)
+                $('#no_hands_nor_feet_wash').click()
                 delete (window.hands_and_feet_wash)
             } else {
                 window.hands_and_feet_wash = $(this).val()

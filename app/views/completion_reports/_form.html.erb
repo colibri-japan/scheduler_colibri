@@ -266,14 +266,15 @@
             <div class="form-row">
               <div class="form-group col-md-7">
                 <%= form.label :patient_ate_full_plate, "食事量", style: 'margin-right:7px' %>
-                <%= form.label :patient_ate_full_plate_1, "完食", class: 'colibri-form-label-dark' do %>
-                    <%= form.radio_button :patient_ate_full_plate, 1, {class: 'radio-inline radio-uncheckable'} %>
+                <%= form.label :patient_ate_full_plate_true, "完食", class: 'colibri-form-label-dark' do %>
+                    <%= form.radio_button :patient_ate_full_plate, true, {class: 'radio-inline radio-uncheckable'} %>
                     完食
                 <% end %>
-                <%= form.label :patient_ate_full_plate_0, "残量", class: 'colibri-form-label-dark' do %>
-                    <%= form.radio_button :patient_ate_full_plate, 0, {class: 'radio-inline radio-uncheckable'} %>
+                <%= form.label :patient_ate_full_plate_false, "残量", class: 'colibri-form-label-dark' do %>
+                    <%= form.radio_button :patient_ate_full_plate, false, {class: 'radio-inline radio-uncheckable'} %>
                     残量
                 <% end %>
+                <%= form.radio_button :patient_ate_full_plate, "", {style: 'display:none', id: :no_full_plate} %>
                 ( <%= form.number_field :ratio_of_leftovers, class: 'colibri-input', style: 'width:50px' %> )
               </div>
               <div class="form-group col-md-5">
@@ -346,6 +347,7 @@
                     <%= form.radio_button :full_or_partial_body_wash, 0, {class: 'radio-inline'} %>
                     部分
                 <% end %>
+                <%= form.radio_button :full_or_partial_body_wash, 2, {class: 'radio-inline', style: 'display:none', id: :no_full_nor_partial_body_wash} %>
               </div>
               <div class="from-group col-md-5">
                 <%= form.label :hands_and_feet_wash, "部分浴" %>
@@ -361,6 +363,7 @@
                     <%= form.radio_button :hands_and_feet_wash, 2, {class: 'radio-inline'} %>
                     手足
                 <% end %>
+                <%= form.radio_button :hands_and_feet_wash, 3, {style: 'display:none', id: :no_hands_nor_feet_wash} %>
               </div>
               <div class="from-group col-md-2">
                 <%= form.label :hair_wash, "洗髪", class: 'colibri-form-label-dark' do  %>
@@ -372,13 +375,14 @@
             <div class="form-group">
               <%= form.label :bath_or_shower, "全身浴" %>
               <%= form.label :bath_or_shower_1, "入浴", class: 'colibri-form-label-dark' do %>
-                  <%= form.radio_button :bath_or_shower, 1, {class: 'radio-inline'} %>
-                  入浴
+                <%= form.radio_button :bath_or_shower, 1, {class: 'radio-inline'} %>
+                入浴
               <% end %>
               <%= form.label :bath_or_shower_0, "シャワー", class: 'colibri-form-label-dark' do %>
-                  <%= form.radio_button :bath_or_shower, 0, {class: 'radio-inline'} %>
-                  シャワー
+                <%= form.radio_button :bath_or_shower, 0, {class: 'radio-inline'} %>
+                シャワー
               <% end %>
+              <%= form.radio_button :bath_or_shower, 2, {class: 'radio-inline',id: :no_bath_nor_shower, style: 'display:none'} %>
             </div>
 
             <div class="colibri-form-subsection-separator"></div>

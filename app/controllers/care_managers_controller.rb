@@ -14,8 +14,10 @@ class CareManagersController < ApplicationController
         if @care_manager.save 
           @care_managers = @care_manager_corporation.care_managers.order_by_kana
           format.js
+          format.js.phone
         else
           format.js
+          format.js.phone
         end
     end
   end
@@ -31,8 +33,10 @@ class CareManagersController < ApplicationController
     respond_to do |format|
       if @care_manager.update(care_manager_params)
         format.js
+        format.js.phone
       else
         format.js
+        format.js.phone
       end
     end
   end

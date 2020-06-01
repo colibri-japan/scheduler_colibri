@@ -44,7 +44,7 @@
         </thead>
         <tbody>
             <% @care_managers.each do |care_manager| %>
-                <tr >
+                <tr id="care_manager_<%= care_manager.id %>">
                     <td><%= care_manager.name %></td>
                     <td><%= care_manager.phone_number %></td>
                     <td><%= link_to '<span class="glyphicon glyphicon-edit" style="font-size:16px;color:#2B384E"></span>'.html_safe, edit_care_manager_corporation_care_manager_path(@care_manager_corporation, care_manager), remote: true %></td>

@@ -1,0 +1,5 @@
+$('.modal').modal('hide');
+$('.modal-backdrop').remove();
+
+$('#care_manager_<%= @care_manager.id %>').empty()
+$('#care_manager_<%= @care_manager.id %>').html("<%= j render 'phone_care_manager' %>")

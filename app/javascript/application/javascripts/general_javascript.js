@@ -111,8 +111,6 @@ window.completionReportGeolocationRequest = function(){
 }
 
 window.completionReportGeolocationSuccessCallback = function(geolocationPosition) {
-    console.log('found location')
-
     var latitude = geolocationPosition.coords.latitude 
     var longitude = geolocationPosition.coords.longitude
     var accuracy = geolocationPosition.coords.accuracy 
@@ -132,7 +130,6 @@ window.completionReportGeolocationSuccessCallback = function(geolocationPosition
     }
 
     if (window.submitReport) {
-        console.log('successfully found location, should save report')
         $('#submit_completion_report_form').click()
         window.submitReport = false
     }

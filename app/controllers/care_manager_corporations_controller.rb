@@ -1,6 +1,7 @@
 class CareManagerCorporationsController < ApplicationController
 
   before_action :set_corporation
+  before_action :set_care_manager_corporation, only: [:edit, :update, :destroy, :show]
 
   def index 
     @planning = @corporation.planning
@@ -24,19 +25,22 @@ class CareManagerCorporationsController < ApplicationController
     end
   end
 
-  def edit 
-    @care_manager_corporation = CareManagerCorporation.find(params[:id])
+  def show
+    set_planning
+    set_main_nurse
+    
+    @care_managers = @care_manager_corporation.care_managers.order_by_kana
+
   end
 
-  def update 
-    @care_manager_corporation = CareManagerCorporation.find(params[:id])
-    
+  def edit 
+  end
+
+  def update     
     @care_manager_corporation.update(care_manager_corporations_params)
   end
 
   def destroy
-    @care_manager_corporation = CareManagerCorporation.find(params[:id])
-
     respond_to do |format|
       if @care_manager_corporation.destroy 
         format.html { redirect_to care_manager_corporations_path, notice: '居宅介護支援事業所が削除されました' }
@@ -110,6 +114,10 @@ class CareManagerCorporationsController < ApplicationController
 
   def care_manager_corporations_params
     params.require(:care_manager_corporation).permit(:name, :kana, :address, :phone_number, :fax_number, :description)
+  end
+
+  def set_care_manager_corporation
+    @care_manager_corporation = CareManagerCorporation.find(params[:id])
   end
 
   

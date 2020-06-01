@@ -42,7 +42,6 @@ Rails.application.routes.draw do
     resources :care_managers
   end
 
-
   resources :calendar_events, only: :new
 
   resources :salary_line_items, only: [:update, :destroy]

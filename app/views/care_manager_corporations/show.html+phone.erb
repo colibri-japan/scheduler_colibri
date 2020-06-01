@@ -1,0 +1,62 @@
+<%= render partial: 'plannings/phone_bottom_menu', locals: {view: 'settings', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year})} %>
+
+
+<div id="menu-backdrop">
+</div>
+
+<div id="settings-container">
+  <div id="planning-header">
+    <div id="detail-planning-title">
+      <div style="display:flex">
+        <div id="activity-back-button" class="colibri-clickable-link" data-url="<%= care_manager_corporations_path %>">
+          <%= image_tag "back_arrow_white.svg", width: '25px', class: 'activity_back_icon' %>
+        </div>
+        <p class="planning-activity-module-title setting-title" >
+          <%= @care_manager_corporation.name %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-body">
+
+    <div style="display:flex;justify-content:space-between;padding-bottom: 3px;border-bottom:0.5px solid #ccc">
+        <div style="font-size:1.2em;line-height:31px;font-weight:bold">事業所情報</div>
+        <%= link_to '編集する', edit_care_manager_corporation_path(@care_manager_corporation), remote: true, class: 'btn btn-sm btn-colibri-light', data: {ripple: ""} %>
+    </div>
+    <div style="margin-bottom:10px">
+        <div>電話番号： <%= @care_manager_corporation.phone_number %></div>
+        <div>FAX: <%= @care_manager_corporation.fax_number %></div>
+        <div>住所: <%= @care_manager_corporation.address %></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding-bottom: 3px">
+        <div style="font-size:1.2em;line-height:31px;font-weight:bold">ケアマネ一覧</div>
+        <%= link_to '+ケアマネを追加する', new_care_manager_corporation_care_manager_path(@care_manager_corporation), remote: true, class: 'btn btn-sm btn-info text-white', data: {ripple: ""} %>
+    </div>
+    <div class="table-responsive" style="margin-top:5px">
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:38%">名前</th>
+            <th style="width:50%">電話番号</th>
+            <th style="width:12%"></th>
+          </tr>
+        </thead>
+        <tbody>
+            <% @care_managers.each do |care_manager| %>
+                <tr >
+                    <td><%= care_manager.name %></td>
+                    <td><%= care_manager.phone_number %></td>
+                    <td><%= link_to '<span class="glyphicon glyphicon-edit" style="font-size:16px;color:#2B384E"></span>'.html_safe, edit_care_manager_corporation_care_manager_path(@care_manager_corporation, care_manager), remote: true %></td>
+                </tr>          
+            <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+  

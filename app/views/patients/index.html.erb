@@ -23,7 +23,7 @@
           <%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
         </div>
         <p class="planning-activity-module-title setting-title">
-          利用者一覧
+          利用者一覧<%="（#{@user_team.team_name}）" if @user_team.present? %>
         </p>
       </div>
     </div>
@@ -34,8 +34,8 @@
     
     <div class="patients-submenu">
       <div id="toggle-active-patients-menu" style="display:flex">
-        <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px"><%= @user_team.team_name if @user_team.present? %>サービス実施中 (<%= @active_patients_count %>)</div>
-        <div id="deactivated-patients" class="toggle-active-element"><%= @user_team.team_name if @user_team.present? %>サービス終了 (<%= @deactivated_patients.size %>)</div>
+        <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px">実施中 (<%= @active_patients_count %>)</div>
+        <div id="deactivated-patients" class="toggle-active-element">終了 (<%= @deactivated_patients.size %>)</div>
       </div>
       <div id="patients-excel">
         <%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:15px"></i> エクセル'.html_safe, patients_path(format: :xlsx), class: 'btn btn-colibri-light-gray' %>

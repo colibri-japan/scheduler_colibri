@@ -515,8 +515,12 @@
 
 	#detail-planning-container {
 		width: 100%;
-		margin: 92px 0px 150px 0px;
+		margin: 92px 0px 80px 0px;
 		padding-top:3px;
+	}
+
+	#calendar {
+		margin-bottom: 90px;
 	}
 
 	#detail-planning-container.smaller-top-margin {
@@ -1005,6 +1009,7 @@
 
 	#patient-completion-reports-body {
 		margin-top: 86px;
+		margin-bottom: 90px;
 	}
 
 }

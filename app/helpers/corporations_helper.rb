@@ -49,16 +49,16 @@ module CorporationsHelper
                 "訪問介護処遇改善加算I"
             else
             end
-        elsif insurance_category_id == 102
+        elsif [102,103,104].include? insurance_category_id
             case corporation.invoicing_bonus_ratio
             when 1
                 ""
             when 1.055
-                "訪問型独自処遇改善加算III"
+                "訪問型独自サービス処遇改善加算III"
             when 1.1
-                "訪問型独自処遇改善加算II"
+                "訪問型独自サービス処遇改善加算II"
             when 1.137
-                "訪問型独自処遇改善加算I"
+                "訪問型独自サービス処遇改善加算I"
             else
             end
         else
@@ -76,6 +76,17 @@ module CorporationsHelper
                 "訪問介護特定処遇改善加算I"
             else
             end
+        elsif [102,103,104].include? insurance_category_id
+            case corporation.second_invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.042
+                "訪問型独自サービス特定処遇改善加算II"
+            when 1.063
+                "訪問型独自サービス特定処遇改善加算I"
+            else
+            end
+        else
         end
     end
 
@@ -92,14 +103,16 @@ module CorporationsHelper
                 "116275"
             else
             end
-        elsif insurance_category_id == 102
+        elsif [102,103,104].include? insurance_category_id
             case corporation.invoicing_bonus_ratio
             when 1
                 ""
             when 1.055
                 "A26271"
-            when 1.063
+            when 1.1
                 "A26270"
+            when 1.137
+                "A26269"
             else
             end
         else
@@ -115,6 +128,16 @@ module CorporationsHelper
                 "116278"
             when 1.063
                 "116279"
+            else
+            end
+        elsif [102,103,104].include? insurance_category_id
+            case corporation.second_invoicing_bonus_ratio
+            when 1
+                ""
+            when 1.042
+                "A26278"
+            when 1.063
+                "A26279"
             else
             end
         else

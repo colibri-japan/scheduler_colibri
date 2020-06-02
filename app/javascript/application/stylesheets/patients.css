@@ -67,11 +67,11 @@
 
 .patient-management-item:hover {
 	background-color: #f4f7f7;
-	color:#757575;
+	color:#828E99;
 }
 
 .patient-management-item.selected {
-	color:#757575;
+	color:#828E99;
 	border-bottom: 3px solid rgb(122, 213, 222);
 }
 

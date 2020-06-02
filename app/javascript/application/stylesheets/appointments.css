@@ -6,3 +6,28 @@
     margin-bottom: 5px;
     font-size: 0.9em;
 }
+
+#toggle-appointment-and-completion-report {
+    display:flex;
+    justify-content:space-around;
+    font-size:1.4em;
+    color:#697580;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.appointment-menu-toggle-item {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.appointment-menu-toggle-item:hover {
+    cursor:pointer;
+    color: #4F5B66;
+}
+
+.appointment-menu-toggle-item.item-selected {
+    border-bottom: 3px solid #7AD5DE;
+}

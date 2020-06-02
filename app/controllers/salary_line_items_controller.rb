@@ -9,7 +9,7 @@ class SalaryLineItemsController < ApplicationController
 		@salary_line_item.planning_id = current_user.corporation.planning.id
 
 		if @salary_line_item.save
-		  redirect_back fallback_location: current_user_home_path, notice: "新規手当がセーブされました"
+		  redirect_back fallback_location: current_user_home_path, notice: "新規手当が登録されました"
 		end
 	end
 

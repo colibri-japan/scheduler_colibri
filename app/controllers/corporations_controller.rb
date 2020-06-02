@@ -13,7 +13,7 @@ class CorporationsController < ApplicationController
         @corporation = Corporation.find(params[:id])
 
         if @corporation.update(corporation_params)
-            redirect_back(fallback_location: current_user_home_path, notice: '設定がセーブされました')
+            redirect_back(fallback_location: current_user_home_path, notice: '設定が登録されました')
         end
     end
 

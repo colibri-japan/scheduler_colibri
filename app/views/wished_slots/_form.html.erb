@@ -89,6 +89,6 @@
       <div class="btn btn-colibri-light" data-dismiss="modal">閉じる</div>
     <% end %>
     <%= link_to '削除', planning_wished_slot_path(@planning, wished_slot), method: :delete, remote: true, class: 'btn btn-danger', data: {confirm: 'シフト希望のすべての繰り返しがスケジュールから消えます'} unless wished_slot.new_record? %>
-    <%= form.submit 'セーブする', class: 'btn btn-info' %>
+    <%= form.submit '確定する', class: 'btn btn-info' %>
   </div>
 <% end %>

@@ -1,0 +1,84 @@
+<%= form_with model: appointment, url: [@planning, appointment] do |form| %>
+  <% if appointment.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+
+    <ul>
+      <% appointment.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+
+
+  <div class="modal-body">
+    
+    <div class="form-group">
+      <%= form.label :service_id, "サービスタイトル", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+      <%= form.select :service_id, grouped_options_for_select(@services_with_recommendations, appointment.service_id), {}, {id: :appointment_service_id, required: true} %>
+    </div>
+
+
+    <div class="form-group colibri-datetime-group">
+      <div>
+        <%= form.label :starts_at, "開始日時", class: "colibri-form-label-dark", style: 'min-width:80px' %>
+      </div>
+      <div class="colibri-datetime-input-container">
+        <div class="colibri-date-input">
+          <%= form.date_select :starts_at %><span class="colibri-datetime-separator">—</span> 
+        </div>
+        <div>
+          <%= form.time_select :starts_at, ignore_date: true, minute_step: 5 %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group colibri-datetime-group">
+      <div>
+        <%= form.label :ends_at, "終了日時", class: "colibri-form-label-dark", style: 'min-width:80px' %>
+      </div>
+      <div class="colibri-datetime-input-container">
+        <div class="colibri-date-input">
+          <%= form.date_select :ends_at %><span class="colibri-datetime-separator">—</span> 
+        </div>
+        <div>
+          <%= form.time_select :ends_at, ignore_date: true, minute_step: 5 %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :nurse_id, "従業員名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+      <%= form.select :nurse_id, grouped_options_for_select(@grouped_nurses_for_select, appointment.nurse_id), {}, {required: true, disabled: true, id: :appointment_nurse_id} %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :patient_id, "#{client_resource_name(@corporation.business_vertical)}名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+      <%= form.collection_select(:patient_id, @patients, :id, :name, {}, {required: true, disabled: true, id: :appointment_patient_id}) %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description, "コメント", class: "colibri-form-label-dark" %>
+      <%= form.text_area :description, id: :appointment_description, class: "form-control" %>
+    </div>
+
+    <%= hidden_field_tag :patient_resource, true if params[:patient_resource].present? %>
+
+    <div class="actions">
+      <%= form.submit "確定", class: "btn btn-info btn-block", id: "save-appointment", data: {ripple: ''} %>
+    </div>
+  </div>
+
+<% end %>
+
+
+<% if @activities.present? %>
+	<div class="modal-body light-blue-background">
+		<div class="appointment-section-title">編集履歴</div>
+		<% @activities.each do |activity| %>
+			<%= render partial: 'activities/activity', locals: {activity: activity}  %>
+		<% end %>
+	</div>
+<% end %>

@@ -42,6 +42,7 @@ class AppointmentsController < ApplicationController
 
     fetch_patients
 
+    @completion_report = @appointment.completion_report
     @grouped_nurses_for_select = @corporation.cached_nurses_grouped_by_fulltimer_for_select
     @activities = PublicActivity::Activity.where(trackable_type: 'Appointment', trackable_id: @appointment.id, planning_id: @planning.id).includes(:owner)
     @services_with_recommendations = @corporation.cached_most_used_services_for_select

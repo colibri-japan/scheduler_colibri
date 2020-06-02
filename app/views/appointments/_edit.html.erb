@@ -2,22 +2,24 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1  class="colibri-small-title">サービス編集</h1>
+				<h1  class="colibri-small-title"><%= @completion_report.present? ? '実績編集' : 'サービス編集' %></h1>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 
 			<div id='edit-appointment-body'>
-				<div>
-					<%= render 'form', appointment: @appointment %>
-				</div>
-
-				<% if @activities.present? %>
-					<div class="modal-body light-blue-background">
-						<div class="appointment-section-title">編集履歴</div>
-						<% @activities.each do |activity| %>
-							<%= render partial: 'activities/activity', locals: {activity: activity}  %>
-						<% end %>
+				<% if @completion_report.present? %>
+					<div id="toggle-appointment-and-completion-report" style="display:flex;justify-content:space-around;font-size:1.3em;color:#bbb">
+						<div class="appointment-menu-toggle-item item-selected">サービス</div>
+						<div class="appointment-menu-toggle-item">実施記録</div>
 					</div>
+					<div id="edit-appointment">
+						<%= render 'simple_form', appointment: @appointment %>
+					</div>
+					<div id="edit-completion-report" style='display:none'>
+						<%= render 'completion_reports/form_for_double_check', completion_report: @completion_report, reportable: @appointment %>
+					</div>
+				<% else %>
+					<%= render 'form', appointment: @appointment %>
 				<% end %>
 			</div>
 

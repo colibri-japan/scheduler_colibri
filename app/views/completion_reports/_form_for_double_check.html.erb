@@ -1,47 +1,18 @@
 <%= form_with model: completion_report, url: [reportable, completion_report], html: {class: 'completion_report_form'} do |form| %>
 
-    <div class="blue-background-form">
-        <div class="modal-subsection-title">サービス情報</div>
 
-        <div class="form-row">
-            <div class="col">
-              利用者名：<%= reportable.patient.try(:name) %>様
-            </div>
-            <div class="col">
-              内容：<%= reportable.title %>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col ">
-              従業員：<%= reportable.nurse.try(:name) %>
-            </div>
-            <div class="col">
-              稼働時間：<%= from_seconds_to_hours_minutes(reportable.ends_at - reportable.starts_at) %>
-            </div>
-        </div>
+    <div class="modal-body">
+      <div class="modal-subsection-title">記録された内容</div>
+      <div class="form-group">
+        <%= completion_report_summary(completion_report).try(:html_safe) %>
+      </div>
     </div>
 
-      <% if completion_report.with_anything_checked? %>
-        <div class="modal-body">
-          <div class="modal-subsection-title">サービス内容のまとめ</div>
-          <div class="form-group">
-            <%= completion_report_summary(completion_report).try(:html_safe) %>
-          </div>
-
-          <% if reportable.class.try(:name) == 'RecurringAppointment' %>
-            <%= form.label :editing_occurrences_after, "編集するサービス", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
-            <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'}, {id: :completion_report_editing_occurrences_after} %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if reportable.class.name == 'Appointment' %>
-        <div class="modal-body">
-          <div class="form-group">
-            <div class="btn btn-sm btn-colibri-light btn-pointer" id="toggle-detailed-report">内容変更・追加<i class="glyphicon glyphicon-pencil" style="font-size:12px;margin-left:5px"></i></div>
-          </div>
-        </div>
-      <% end %>
-    
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="btn btn-sm btn-colibri-light btn-pointer" id="toggle-detailed-report">内容変更・追加<i class="glyphicon glyphicon-pencil" style="font-size:12px;margin-left:5px"></i></div>
+      </div>
+    </div>
 
     <!-- beginning of the checklist area -->
 
@@ -808,57 +779,11 @@
             <%= form.text_area :general_comment, class: 'form-control' %>
         </div>
 
-        <% if !@corporation.simple_reports? && reportable.try(:class).try(:name) == 'Appointment' %>
-
-          <div class="form-group">
-            <div class='colibri-form-label-dark'>退室確認</div>
-            <div class="form-row">
-              <%= form.label :checked_gas_when_leaving, "火元", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_gas_when_leaving %>
-                  火元
-              <% end %>
-
-              <%= form.label :checked_electricity_when_leaving, "電気", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_electricity_when_leaving %>
-                  電気
-              <% end %>
-
-              <%= form.label :checked_water_when_leaving, "水道", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_water_when_leaving %>
-                  水道
-              <% end %>
-
-              <%= form.label :checked_door_when_leaving, "戸締り", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_door_when_leaving %>
-                  戸締り
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-
-        <% if reportable.try(:class).try(:name) == 'Appointment' %>
-          <div class="form-group" id="geolocalization-status">
-            <div id="geolocalization-success" style="display:none" class="colibri-form-label-dark">位置情報確定 <span class="glyphicon glyphicon-ok" style="font-size:12px"></span></div>
-            <div id="geolocalization-failure" style="display:none" class="colibri-form-label-dark">位置情報読み込み失敗 <div style="inline" class="btn btn-sm btn-colibri-light" style="margin-left:4px" onclick="completionReportGeolocationRequest()">リフレッシュ<span class="glyphicon glyphicon-refresh" style="font-size:12px;margin-left:4px"></span></div></div>
-            <div id="geolocalization-pending" class="colibri-form-label-dark" style="<%= 'display:none' unless completion_report.new_record? %>">位置情報読み込み中... <span class="glyphicon glyphicon-refresh" style="font-size:12px"></span></div>
-          </div>
-        <% end %>
-
     </div>
 
     <%= form.hidden_field :forecasted_report_id, value: completion_report.forecasted_report_id %>
     <%= hidden_field_tag :start, params[:start] %>
     <%= hidden_field_tag :end, params[:end] %>
-
-    <!-- geolocation hidden fields -->
-
-    <%= form.hidden_field :latitude, id: :completion_report_latitude %>
-    <%= form.hidden_field :longitude, id: :completion_report_longitude %>
-    <%= form.hidden_field :accuracy, id: :completion_report_accuracy %>
-    <%= form.hidden_field :altitude, id: :completion_report_altitude %>
-    <%= form.hidden_field :altitude_accuracy, id: :completion_report_altitude_accuracy %>
-    <%= form.hidden_field :geolocation_error_code, id: :completion_report_geolocation_error_code %>
-    <%= form.hidden_field :geolocation_error_message, id: :completion_report_geolocation_error_message %>
 
     <div class="modal-footer">
         <div class="btn btn-colibri-light btn-desktop" data-dismiss="modal">閉じる</div>

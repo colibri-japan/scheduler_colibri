@@ -18,7 +18,7 @@ class CareManagerCorporationsController < ApplicationController
 
     respond_to do |format|
         if @care_manager_corporation.save 
-            format.html { redirect_to care_manager_corporations_path, notice: "事業所がセーブされました" }
+            format.html { redirect_to care_manager_corporations_path, notice: "事業所が登録されました" }
         else
             format.html { redirect_to care_manager_corporations_path, alert: "事業所の登録が失敗しました" }
         end

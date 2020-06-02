@@ -24,7 +24,7 @@ class SalaryRulesController < ApplicationController
       respond_to do |format|
         if @salary_rule.save 
           format.js 
-          format.html { redirect_back fallback_location: current_user_home_path, notice: "手当が計算され、セーブされました" }
+          format.html { redirect_back fallback_location: current_user_home_path, notice: "手当が計算され、登録されました" }
         else
           format.js
           format.html { redirect_back fallback_location: current_user_home_path, notice: "手当の計算が失敗しました" }

@@ -12,9 +12,9 @@ module CompletionReportsHelper
         if reportable_class_name == 'Appointment'
             '実績確定'
         elsif reportable_class_name == 'RecurringAppointment'
-            '計画を登録する'
+            '計画を確定する'
         else
-            'セーブする'
+            '確定'
         end
     end
 
@@ -24,7 +24,7 @@ module CompletionReportsHelper
         elsif reportable_class_name == 'RecurringAppointment'
             '留意事項・備考'
         else
-            'セーブする'
+            '確定'
         end
     end
 

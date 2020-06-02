@@ -103,9 +103,18 @@
     <%= hidden_field_tag :patient_resource, true if params[:patient_resource].present? %>
 
     <div class="actions">
-      <%= form.submit "セーブ", class: "btn btn-info btn-block", id: "save-appointment", data: {ripple: ''} %>
+      <%= form.submit "確定", class: "btn btn-info btn-block", id: "save-appointment", data: {ripple: ''} %>
     </div>
   </div>
 
- 
+<% end %>
+
+
+<% if @activities.present? %>
+	<div class="modal-body light-blue-background">
+		<div class="appointment-section-title">編集履歴</div>
+		<% @activities.each do |activity| %>
+			<%= render partial: 'activities/activity', locals: {activity: activity}  %>
+		<% end %>
+	</div>
 <% end %>

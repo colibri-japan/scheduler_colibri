@@ -19,7 +19,9 @@ html {
 .table.table-bordered-pdf > thead > tr > td, .table.table-bordered-pdf > tbody > tr > td {
     border: 1px solid #312F2F;
     padding: 1px;
+    padding-top: 1px;
     vertical-align: middle;
+    font-size: 15px;
 }
 
 .table.table-bordered-pdf > tbody > tr {

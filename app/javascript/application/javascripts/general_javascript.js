@@ -241,6 +241,10 @@ window.toggleKaigoCertificationStatus = function() {
 
 document.addEventListener('turbolinks:load', function () {
 
+    $('.completion-report-message-body').click(function(){
+        $.getScript($(this).data('url'))
+    })
+
     $('.patient_completion_report_date_select').change(function(){
         var url = window.completionReportsSummaryUrl
         window.location = url + '?y=' + $('#query_year').val() + '&m=' + $('#query_month').val()

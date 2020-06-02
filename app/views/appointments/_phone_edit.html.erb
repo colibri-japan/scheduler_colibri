@@ -4,10 +4,23 @@
             <%= image_tag "back_arrow_white.svg", width: '25px', class: 'activity_back_icon' %>
         </div>
         <div class="activity_title">
-            サービス編集
+            <%= @completion_report.present? ? '実績編集' : 'サービス編集' %>
         </div>
     </div>
     <div class="activity_body">
-        <%= render "form", appointment: @appointment %>
+    	<% if @completion_report.present? %>
+			<div id="toggle-appointment-and-completion-report">
+				<div class="appointment-menu-toggle-item item-selected">サービス</div>
+				<div class="appointment-menu-toggle-item">実施記録</div>
+			</div>
+			<div id="edit-appointment">
+				<%= render 'simple_form', appointment: @appointment %>
+			</div>
+			<div id="edit-completion-report" style='display:none'>
+				<%= render 'completion_reports/form_for_double_check', completion_report: @completion_report, reportable: @appointment %>
+			</div>
+		<% else %>
+			<%= render 'form', appointment: @appointment %>
+		<% end %>
     </div>
 </div>

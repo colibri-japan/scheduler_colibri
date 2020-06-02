@@ -20,3 +20,29 @@ $('.activity_back_button').click(function(){
         $.getScript("/appointments/<%= @appointment.id %>.js")
     }
 })
+
+<% if @completion_report.present? %>
+    $('.appointment-menu-toggle-item').click(function(){
+        $('.appointment-menu-toggle-item').removeClass('item-selected')
+        $(this).addClass('item-selected')
+        $('#edit-appointment').toggle()
+        $('#edit-completion-report').toggle()
+    })
+
+    $('#submit-completion-report-button').click(function(){
+        $('#submit_completion_report_form').click()
+    })
+
+    $('.toggleable-subsection-title').click(function(){
+        $(this).next().toggle()
+    })
+
+    $('#toggle-detailed-report').click(function(){
+        $('#report-detail-container').toggle()
+    })
+
+    completionFormSelectize()
+    uncheckableRadioButtons()
+    calculateGroceriesChange()
+
+<% end %>

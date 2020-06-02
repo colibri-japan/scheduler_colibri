@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200526125039) do
+ActiveRecord::Schema.define(version: 20200602135915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -318,6 +318,7 @@ ActiveRecord::Schema.define(version: 20200526125039) do
     t.boolean "hide_care_plan_long_term_goals", default: false
     t.boolean "separate_posts_by_team", default: true
     t.boolean "separate_patients_by_team", default: true
+    t.boolean "teikyohyo_with_services_outside_insurance_scope", default: false
   end
 
   create_table "nurse_service_wages", force: :cascade do |t|

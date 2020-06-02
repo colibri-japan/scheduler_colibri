@@ -150,7 +150,7 @@
         </div>
     </div>
 
-    <% if invoicing_summary[:outside_insurance_scope].present? %>
+    <% if invoicing_summary[:outside_insurance_scope].present? && @corporation.teikyohyo_with_services_outside_insurance_scope? %>
         <div class="teikyohyo-container" style="page-break-after:always">
             <div class="teikyohyo_title">保険外サービス提供表</div>
             <div class="teikyohyo_1_header">

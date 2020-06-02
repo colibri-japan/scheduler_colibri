@@ -70,6 +70,8 @@ pathname = window.location.pathname;
     <% else %>
       Turbolinks.reload()
     <% end %>
+  } else if (pathname.includes('completion_reports_summary')) {
+    Turbolinks.reload()
   } else {
 
     if (typeof renderEvent === 'undefined') {

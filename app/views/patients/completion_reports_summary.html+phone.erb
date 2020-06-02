@@ -70,7 +70,7 @@
                                 <%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d %-H:%M ~ ' )}#{completion_report.reportable.ends_at.strftime('%-H:%M')}" %>
                             </div>
                         </div>
-                        <div class="completion-report-message-body">
+                        <div class="completion-report-message-body" data-url="<%= edit_appointment_path(completion_report.reportable) %>">
                             <div class="completion-report-tasks">
                                 <%= completion_report_summary(completion_report).html_safe %>
                             </div>

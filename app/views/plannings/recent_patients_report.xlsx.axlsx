@@ -19,7 +19,7 @@ wb.styles do |s|
         sheet.add_row ['契約日', '名前', '住所', '保険区分', '介護度', 'ケアマネジャー', '主治医', '担当従業員', '備考'], style: table_header
 
         @recent_patients.each do |patient|
-            sheet.add_row [japanese_date_if_present(patient.try(:date_of_contract)), patient.try(:name), patient.try(:address), insurance_category(patient.try(:insurance_category)), kaigo_level(patient.try(:kaigo_level)), patient.try(:care_manager_name), patient.try(:doctor_name), patient.nurse.try(:name), patient.try(:description)], style: table_cells
+            sheet.add_row [japanese_date_if_present(patient.try(:date_of_contract)), patient.try(:name), patient.try(:address), insurance_category(patient.try(:insurance_category)), kaigo_level_text(patient.try(:kaigo_level)), patient.try(:care_manager_name), patient.try(:doctor_name), patient.nurse.try(:name), patient.try(:description)], style: table_cells
         end
 
         sheet.column_widths 15, 12, 25, 10, 10, 15, 12, 12, 25

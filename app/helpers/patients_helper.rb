@@ -21,19 +21,19 @@ module PatientsHelper
 
     def short_kaigo_level(kaigo_level)
         case kaigo_level
-        when 0
+        when 12
             '支1'
-        when 1
+        when 13
             '支2'
-        when 2
+        when 21
             '介1'
-        when 3
+        when 22
             '介2'
-        when 4
+        when 23
             '介3'
-        when 5
+        when 24
             '介4'
-        when 6
+        when 25
             '介5'
         else 
             ''
@@ -42,19 +42,19 @@ module PatientsHelper
 
     def maximum_budget(kaigo_level)
         case kaigo_level
-        when 0
+        when 12
             '5,003単位'
-        when 1
+        when 13
             '10,473単位'
-        when 2
+        when 21
             '16,692単位'
-        when 3
+        when 22
             '19,616単位'
-        when 4
+        when 23
             '26,931単位'
-        when 5
+        when 24
             '30,806単位'
-        when 6
+        when 25
             '36,065単位'
         else 
             ''
@@ -85,7 +85,7 @@ module PatientsHelper
     end
 
     def first_care_manager_corporation_title(kaigo_level)
-        if [8,0,1].include?(kaigo_level)
+        if [6,12,13].include?(kaigo_level)
             '担当地域包括'
         else
             '居宅介護事業所'
@@ -95,7 +95,7 @@ module PatientsHelper
     def first_care_manager_corporation_name(care_plan)
         return '' if care_plan.nil?
 
-        if [8,0,1].include?(care_plan.try(:kaigo_level))
+        if [6,12,13].include?(care_plan.try(:kaigo_level))
             if care_plan.care_manager.present? && care_plan.second_care_manager.present?
                 care_plan.second_care_manager.try(:care_manager_corporation).try(:name)
             elsif care_plan.care_manager.present?
@@ -115,7 +115,7 @@ module PatientsHelper
     def first_care_manager_name(care_plan)
         return '' if care_plan.nil? 
         
-        if [8,0,1].include?(care_plan.kaigo_level)
+        if [6,12,13].include?(care_plan.kaigo_level)
             if care_plan.care_manager.present? && care_plan.second_care_manager.present?
                 care_plan.second_care_manager.try(:name)
             elsif care_plan.care_manager.present?
@@ -129,7 +129,7 @@ module PatientsHelper
     end
 
     def second_care_manager_corporation_title(kaigo_level)
-        if [8,0,1].include?(kaigo_level)
+        if [6,12,13].include?(kaigo_level)
             '居宅介護事業所'
         else
             '保険者確認印'
@@ -137,7 +137,7 @@ module PatientsHelper
     end
 
     def second_care_manager_corporation_name(care_plan)
-        if [8,0,1].include?(care_plan.try(:kaigo_level))
+        if [6,12,13].include?(care_plan.try(:kaigo_level))
             if care_plan.care_manager.present? && care_plan.second_care_manager.present?
                 "#{care_plan.care_manager.try(:care_manager_corporation).try(:name)}<br/>#{care_plan.care_manager.try(:name)}".html_safe
             elsif care_plan.care_manager.present?

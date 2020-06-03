@@ -10,7 +10,13 @@ module PatientsHelper
     end
 
     def gender_text(gender)
-        gender ? '女' : '男'
+        if gender == 1
+            '男'
+        elsif gender == 2
+            '女'
+        else
+            ''
+        end
     end
 
     def short_kaigo_level(kaigo_level)

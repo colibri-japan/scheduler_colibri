@@ -135,9 +135,9 @@ module CorporationsHelper
             when 1
                 ""
             when 1.042
-                "A26278"
-            when 1.063
                 "A26279"
+            when 1.063
+                "A26278"
             else
             end
         else

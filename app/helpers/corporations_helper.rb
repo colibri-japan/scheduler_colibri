@@ -125,9 +125,9 @@ module CorporationsHelper
             when 1
                 ""
             when 1.042
-                "116278"
-            when 1.063
                 "116279"
+            when 1.063
+                "116278"
             else
             end
         elsif [102,103,104].include? insurance_category_id

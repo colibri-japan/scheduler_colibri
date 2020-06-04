@@ -348,7 +348,9 @@ class Patient < ApplicationRecord
 	def shifts_by_title_and_date_range(service_title, date_range)
 		array_of_shifts = []
 
-		shift_dates = self.appointments.where(title: service_title).in_range(date_range).pluck(:starts_at, :ends_at)
+		appointment_shift_dates = self.appointments.where(title: service_title).in_range(date_range).pluck(:starts_at, :ends_at)
+		recurring_appointment_shift_dates = self.recurring_appointments.where(title: service_title).not_terminated_at(date_range.first).not_archived.pluck(:starts_at, :ends_at)
+		shift_dates = appointment_shift_dates + recurring_appointment_shift_dates
 		shift_dates.map {|e| e[0] = e[0].strftime("%H:%M")}
 		shift_dates.map {|e| e[1] = e[1].strftime("%H:%M")}
 		shift_dates.uniq!

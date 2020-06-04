@@ -166,8 +166,6 @@ class PatientsController < ApplicationController
     @care_plan = @patient.care_plans.valid_at(@first_day).first
     @previous_care_plan = @patient.care_plans.valid_at(@first_day - 1.month)
 
-    puts "outside insurance scope"
-    puts @invoicing_summary[:outside_insurance_scope]
 
     respond_to do |format|
       format.html 

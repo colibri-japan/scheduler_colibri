@@ -359,7 +359,7 @@ class Patient < ApplicationRecord
 					
 			shift_hash[:start_time] = start_and_end[0]
 			shift_hash[:end_time] = start_and_end[1]
-			shift_hash[:previsional] = self.recurring_appointments.where(title: service_title).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).not_terminated_at(date_range.first).map {|r| r.appointments(date_range.first, date_range.last).map(&:to_date)}.flatten
+			shift_hash[:previsional] = self.recurring_appointments.where(title: service_title).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).not_archived.not_terminated_at(date_range.first).map {|r| r.appointments(date_range.first, date_range.last).map(&:to_date)}.flatten
 			shift_hash[:provided] = self.appointments.where(title: service_title).operational.in_range(date_range).where('appointments.starts_at::timestamp::time = ? AND appointments.ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).pluck(:starts_at).map(&:to_date)
 	
 			array_of_shifts << shift_hash unless shift_hash[:previsional].blank? && shift_hash[:provided].blank?

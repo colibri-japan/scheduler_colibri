@@ -25,13 +25,19 @@ class CompletionReport < ApplicationRecord
     end
 
     def self.attributes_to_ignore_when_comparing
-        [:id, :created_at, :updated_at, :forecasted_report_id, :reportable_type, :reportable_id, :general_comment, :patient_looked_good, :patient_transpired, :body_temperature, :blood_pressure_systolic, :blood_pressure_diastolic, :house_was_clean, :patient_could_discuss, :patient_could_gather_and_share_information, :checking_report, :checked_gas_when_leaving, :checked_electricity_when_leaving, :checked_water_when_leaving, :checked_door_when_leaving, :latitude, :longitude, :accuracy, :altitude, :altitude_accuracy, :urination_count, :amount_of_urine, :defecation_count, :visual_aspect_of_feces, :patient_ate_full_plate, :amount_of_liquid_drank, :meal_specificities, :remarks_around_cooking, :remarks_around_medication, :amount_received_for_shopping, :amount_spent_for_shopping, :change_left_after_shopping, :shopping_items]
+        [:id, :created_at, :updated_at, :forecasted_report_id, :patient_id, :planning_id, :reportable_type, :reportable_id, :general_comment, :patient_looked_good, :patient_transpired, :body_temperature, :blood_pressure_systolic, :blood_pressure_diastolic, :house_was_clean, :patient_could_discuss, :patient_could_gather_and_share_information, :checking_report, :checked_gas_when_leaving, :checked_electricity_when_leaving, :checked_water_when_leaving, :checked_door_when_leaving, :latitude, :longitude, :accuracy, :altitude, :altitude_accuracy, :geolocation_error_message, :urination_count, :amount_of_urine, :defecation_count, :visual_aspect_of_feces, :patient_ate_full_plate, :amount_of_liquid_drank, :meal_specificities, :remarks_around_cooking, :remarks_around_medication, :amount_received_for_shopping, :amount_spent_for_shopping, :change_left_after_shopping, :shopping_items]
     end
 
     def identical?(other_report)
         return true if other_report.nil?
         self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) ==
         other_report.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+    end
+
+    def changed_from_forecast?
+        return false if forecasted_report.nil?
+        self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) !=
+        forecasted_report.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
     end
 
     def attributes_differences_with(forecast)

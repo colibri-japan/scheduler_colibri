@@ -599,6 +599,14 @@ p.master-reflect-option {
 	display: none;
 }
 
+td.report-caution {
+	background-color:#FFFF9B;
+}
+
+td.report-items {
+	padding: 0px !important;
+}
+
 /* styles for left menu backdrop */
 
 #menu-backdrop {

@@ -79,7 +79,18 @@
 								<td><%= "#{completion_report.reportable.starts_at.strftime('%H:%M')} ~ #{completion_report.reportable.ends_at.strftime('%H:%M')}" %></td>
 								<td><%= "#{completion_report.reportable.try(:patient).try(:name)}様" %></td>
 								<td><%= completion_report.reportable.try(:nurse).try(:name) %></td>
-								<td><%= completion_report_summary(completion_report).html_safe %></td>
+								<td class="report-items <%= 'report-caution' if completion_report.changed_from_forecast? %>">
+									<div  style="margin:6px;padding:6px;background-color:white">
+										<div>
+											<%= completion_report_summary(completion_report).html_safe %>
+										</div>
+										<% if completion_report.changed_from_forecast? %>
+											<div class='btn btn-sm btn-colibri-light colibri-tooltip' data-content="<%= completion_report_summary(completion_report.forecasted_report).html_safe %>" style="margin-top:5px;width:90px;display:block;margin-left:auto;margin-right:auto">
+												予定と比較
+											</div>
+										<% end %>
+									</div>
+								</td>
 								<td><%= simple_format(completion_report.general_comment) %></td>
 								<td><%= link_to '編集', edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-light-gray' %></td>
 							</tr>

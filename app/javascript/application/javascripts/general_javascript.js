@@ -241,6 +241,8 @@ window.toggleKaigoCertificationStatus = function() {
 
 document.addEventListener('turbolinks:load', function () {
 
+    initializeTooltips()
+
     $('.completion-report-message-body').click(function(){
         $.getScript($(this).data('url'))
     })

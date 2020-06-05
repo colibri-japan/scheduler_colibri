@@ -19,13 +19,14 @@
 }
 
 .appointment-menu-toggle-item {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .appointment-menu-toggle-item:hover {
     cursor:pointer;
     color: #4F5B66;
+    border-bottom:3px solid #828E99;
 }
 
 .appointment-menu-toggle-item.item-selected {

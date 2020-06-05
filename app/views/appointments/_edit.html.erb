@@ -7,10 +7,10 @@
 			</div>
 
 			<div id='edit-appointment-body'>
-				<% if false %>
+				<% if @completion_report.present? %>
 					<div id="toggle-appointment-and-completion-report">
-						<div class="appointment-menu-toggle-item item-selected">サービス</div>
-						<div class="appointment-menu-toggle-item">実施記録</div>
+						<div class="appointment-menu-toggle-item item-selected"><span class="glyphicon glyphicon-calendar" style="font-size:19px"></span> サービス</div>
+						<div class="appointment-menu-toggle-item"><%= image_tag('dark-grey-report.svg', width: '26px', style: "margin-bottom:2px") %> 実施記録</div>
 					</div>
 					<div id="edit-appointment">
 						<%= render 'simple_form', appointment: @appointment %>

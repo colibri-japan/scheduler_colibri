@@ -25,7 +25,7 @@
         <div class="modal-body">
           <div class="modal-subsection-title">サービス内容のまとめ</div>
           <div class="form-group">
-            <%= completion_report_summary(completion_report).try(:html_safe) %>
+            <%= completion_report_summary(completion_report, detailed_report: true).try(:html_safe) %>
           </div>
 
           <% if reportable.class.try(:name) == 'RecurringAppointment' %>
@@ -293,7 +293,7 @@
                         残量
                     <% end %>
                     <%= form.radio_button :patient_ate_full_plate, "", {style: 'display:none', id: :no_full_plate} %>
-                    ( <%= form.number_field :ratio_of_leftovers, class: 'colibri-input', style: 'width:50px' %> )
+                    ( <%= form.text_field :ratio_of_leftovers, class: 'colibri-input', style: 'width:50px' %> )
                 </div>
               <% end %>
               <div class="form-group col-md-5">

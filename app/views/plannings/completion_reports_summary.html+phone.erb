@@ -75,7 +75,7 @@
                         </div>
                         <div class="completion-report-message-body"  data-url="<%= edit_appointment_path(completion_report.reportable) %>">
                             <div class="completion-report-tasks">
-                                <%= completion_report_summary(completion_report).html_safe %>
+                                <%= completion_report_summary(completion_report, detailed: true).html_safe %>
                             </div>
                             <div class="completion-report-comment">
                                 <%= simple_format(completion_report.general_comment) %>

@@ -76,7 +76,7 @@
 								<td><%= l(completion_report.reportable.starts_at, format: '%-m/%-d (%a)') %></td>
 								<td><%= "#{completion_report.reportable.starts_at.strftime('%H:%M')} ~ #{completion_report.reportable.ends_at.strftime('%H:%M')}" %></td>
 								<td><%= completion_report.reportable.try(:nurse).try(:name) %></td>
-								<td><%= completion_report_summary(completion_report).html_safe %></td>
+								<td><%= completion_report_summary(completion_report, detailed_report: true).html_safe %></td>
 								<td><%= simple_format(completion_report.general_comment) %></td>
 								<td><%= link_to '編集', edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-secondary' %></td>
 							</tr>

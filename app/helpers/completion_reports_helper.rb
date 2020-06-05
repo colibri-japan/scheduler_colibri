@@ -28,7 +28,8 @@ module CompletionReportsHelper
         end
     end
 
-    def completion_report_summary(completion_report)
+    def completion_report_summary(completion_report, options = {})
+        detailed_report = options[:detailed] || false
         "
             #{batch_assisted_bathroom_checked(completion_report.try(:batch_assisted_bathroom))}
             #{batch_assisted_meal_checked(completion_report.try(:batch_assisted_meal))}
@@ -48,11 +49,11 @@ module CompletionReportsHelper
             #{changed_bed_pad_checked(completion_report.try(:changed_bed_pad))}
             #{changed_stained_clothes_checked(completion_report.try(:changed_stained_clothes))}
             #{wiped_patient_checked(completion_report.try(:wiped_patient))}
-            #{patient_urinated_checked(completion_report.try(:patient_urinated))}
-            #{patient_defecated_checked(completion_report.try(:patient_defecated))}
+            #{patient_urinated_checked(completion_report, detailed_report)}
+            #{patient_defecated_checked(completion_report, detailed_report)}
             #{patient_maintains_good_posture_while_eating_checked(completion_report.try(:patient_maintains_good_posture_while_eating))}
             #{explained_menu_to_patient_checked(completion_report.try(:explained_menu_to_patient))}
-            #{assisted_patient_to_eat_checked(completion_report.try(:assisted_patient_to_eat))}
+            #{assisted_patient_to_eat_checked(completion_report, detailed_report)}
             #{patient_hydrated_checked(completion_report.try(:patient_hydrated))}
             #{full_or_partial_body_wash_checked(completion_report.try(:full_or_partial_body_wash))}
             #{hands_and_feet_wash_checked(completion_report.try(:hands_and_feet_wash))}
@@ -171,12 +172,32 @@ module CompletionReportsHelper
         wiped_patient ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>陰部の清潔介助</div>" : "" 
     end
 
-    def patient_urinated_checked(patient_urinated)
-        patient_urinated ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>排尿</div>" : "" 
+    def patient_urinated_checked(completion_report, detailed_report)
+        if detailed_report && (completion_report.try(:amount_of_urine).present? || completion_report.try(:urination_count).present?)
+            amount_of_urine = completion_report.try(:amount_of_urine).present? ? " #{completion_report.try(:amount_of_urine)}cc" : ""
+            urination_count = completion_report.try(:urination_count).present? ? " #{completion_report.try(:urination_count)}回" : ""
+            completion_report.try(:patient_urinated) ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>排尿:#{urination_count}#{amount_of_urine}</div>" : "" 
+        else
+            completion_report.try(:patient_urinated) ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>排尿</div>" : "" 
+        end
     end
 
-    def patient_defecated_checked(patient_defecated)
-        patient_defecated ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>排便</div>" : "" 
+    def amount_of_urine_text(urine_amount)
+    end
+
+    def patient_defecated_checked(completion_report, detailed_report)
+        if completion_report.try(:patient_defecated?)
+            if detailed_report && (completion_report.try(:defecation_count).present? || completion_report.try(:visual_aspect_of_feces).present?)
+                defecation_count = completion_report.try(:defecation_count).present? ? " #{completion_report.try(:defecation_count)}回" : ""
+                
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>排便:#{defecation_count} #{completion_report.try(:visual_aspect_of_feces)}</div>" 
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>排便</div>" 
+            end
+        else
+            ""
+        end
+
     end
 
     def patient_maintains_good_posture_while_eating_checked(patient_maintains_good_posture_while_eating)
@@ -187,8 +208,20 @@ module CompletionReportsHelper
         explained_menu_to_patient ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>メニュー.材料の説明</div>" : "" 
     end
 
-    def assisted_patient_to_eat_checked(assisted_patient_to_eat)
-        assisted_patient_to_eat ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>食事介助</div>" : "" 
+    def assisted_patient_to_eat_checked(completion_report, detailed_report)
+        if completion_report.try(:assisted_patient_to_eat?)
+            puts 'assisted to eat'
+            puts completion_report.patient_ate_full_plate
+            if detailed_report && !completion_report.try(:patient_ate_full_plate).nil?
+                puts 'detailed report'
+                full_plate_text = completion_report.try(:patient_ate_full_plate) ? "完食" : "残量 #{completion_report.try(:ratio_of_leftovers)}"
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>食事介助: #{full_plate_text}</div>" 
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>食事介助</div>" 
+            end
+        else
+            ""
+        end
     end
 
     def patient_hydrated_checked(patient_hydrated)

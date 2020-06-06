@@ -190,7 +190,6 @@ window.submitCompletionReportAction = function(){
                 window.submitReport = false
             }
         } else {
-            console.log('resource type does not match appointment, skip geolocation')
             $('#submit_completion_report_form').click()
         }
     })

@@ -25,7 +25,7 @@
         <div class="modal-body">
           <div class="modal-subsection-title">サービス内容のまとめ</div>
           <div class="form-group">
-            <%= completion_report_summary(completion_report, detailed_report: true).try(:html_safe) %>
+            <%= completion_report_summary(completion_report, detailed: true).try(:html_safe) %>
           </div>
 
           <% if reportable.class.try(:name) == 'RecurringAppointment' %>

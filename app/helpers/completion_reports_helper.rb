@@ -54,7 +54,7 @@ module CompletionReportsHelper
             #{patient_maintains_good_posture_while_eating_checked(completion_report.try(:patient_maintains_good_posture_while_eating))}
             #{explained_menu_to_patient_checked(completion_report.try(:explained_menu_to_patient))}
             #{assisted_patient_to_eat_checked(completion_report, detailed_report)}
-            #{patient_hydrated_checked(completion_report.try(:patient_hydrated))}
+            #{patient_hydrated_checked(completion_report, detailed_report)}
             #{full_or_partial_body_wash_checked(completion_report.try(:full_or_partial_body_wash))}
             #{hands_and_feet_wash_checked(completion_report.try(:hands_and_feet_wash))}
             #{hair_wash_checked(completion_report.try(:hair_wash))}
@@ -68,7 +68,7 @@ module CompletionReportsHelper
             #{assisted_patient_to_move_checked(completion_report.try(:assisted_patient_to_move))}
             #{commuted_to_the_hospital_checked(completion_report.try(:commuted_to_the_hospital))}
             #{assisted_patient_to_shop_checked(completion_report.try(:assisted_patient_to_shop))}
-            #{assisted_patient_to_go_somewhere_checked(completion_report.try(:assisted_patient_to_go_somewhere))}
+            #{assisted_patient_to_go_somewhere_checked(completion_report, detailed_report)}
             #{assisted_patient_to_go_out_of_bed_checked(completion_report.try(:assisted_patient_to_go_out_of_bed))}
             #{assisted_patient_to_go_to_bed_checked(completion_report.try(:assisted_patient_to_go_to_bed))}
             #{assisted_to_take_medication_checked(completion_report.try(:assisted_to_take_medication))}
@@ -93,7 +93,7 @@ module CompletionReportsHelper
             #{repaired_clothes_checked(completion_report.try(:repaired_clothes))}
             #{dried_the_futon_checked(completion_report.try(:dried_the_futon))}
             #{set_the_table_checked(completion_report.try(:set_the_table))}
-            #{cooked_for_the_patient_checked(completion_report.try(:cooked_for_the_patient))}
+            #{cooked_for_the_patient_checked(completion_report, detailed_report)}
             #{cleaned_the_table_checked(completion_report.try(:cleaned_the_table))}
             #{grocery_shopping_checked(completion_report.try(:grocery_shopping))}
             #{medecine_shopping_checked(completion_report.try(:medecine_shopping))}
@@ -224,8 +224,16 @@ module CompletionReportsHelper
         end
     end
 
-    def patient_hydrated_checked(patient_hydrated)
-        patient_hydrated ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>水分補給</div>" : "" 
+    def patient_hydrated_checked(completion_report, detailed_report)
+        if completion_report.try(:patient_hydrated?)
+            if detailed_report && completion_report.try(:amount_of_liquid_drank).present? 
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>水分補給: #{completion_report.try(:amount_of_liquid_drank)}cc</div>"
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>水分補給</div>"
+            end
+        else
+            ""
+        end
     end
     
     def full_or_partial_body_wash_checked(full_or_partial_body_wash)
@@ -283,7 +291,23 @@ module CompletionReportsHelper
     
     def washing_details_checked(washing_details)
         if washing_details.present? && washing_details != ['']
-            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>整容</div>"
+            washing_text = washing_details.reject(&:empty?).map {|item| washing_details_item_to_text(item) }.join('、')
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>整容: #{washing_text}</div>"
+        else
+            ""
+        end
+    end
+
+    def washing_details_item_to_text(item)
+        case item 
+        when '0'
+            '爪'
+        when '1'
+            '耳'
+        when '3'
+            '髪'
+        when '4'
+            '化粧'
         else
             ""
         end
@@ -313,8 +337,17 @@ module CompletionReportsHelper
         assisted_patient_to_shop ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>買い物介助</div>" : "" 
     end
     
-    def assisted_patient_to_go_somewhere_checked(assisted_patient_to_go_somewhere)
-        assisted_patient_to_go_somewhere ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>外出同行</div>" : "" 
+    def assisted_patient_to_go_somewhere_checked(completion_report, detailed_report)
+        if completion_report.try(:assisted_patient_to_go_somewhere?)
+            if detailed_report
+                destination = completion_report.try(:patient_destination_place).present? ? ": #{completion_report.try(:patient_destination_place)}" : ""
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>外出同行#{destination}</div>"
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>外出同行</div>"
+            end
+        else
+            ""
+        end
     end
     
     def assisted_patient_to_go_out_of_bed_checked(assisted_patient_to_go_out_of_bed)
@@ -487,8 +520,17 @@ module CompletionReportsHelper
         set_the_table ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>下拵え</div>" : "" 
     end
     
-    def cooked_for_the_patient_checked(cooked_for_the_patient)
-        cooked_for_the_patient ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>調理</div>" : "" 
+    def cooked_for_the_patient_checked(completion_report, detailed_report)
+        if completion_report.try(:cooked_for_the_patient?)
+            if detailed_report
+                menu = completion_report.try(:remarks_around_cooking).present? ? ": #{completion_report.try(:remarks_around_cooking)}" : "" 
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>調理#{menu}</div>"
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>調理</div>"
+            end
+        else
+            ""
+        end
     end
     
     def cleaned_the_table_checked(cleaned_the_table)

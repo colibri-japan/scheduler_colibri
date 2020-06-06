@@ -11,6 +11,7 @@ class CompletionReportsController < ApplicationController
       @completion_report = master_report.present? ? master_report.dup : CompletionReport.new
       @completion_report.forecasted_report = master_report
       @completion_report.reportable = @reportable
+      fix_report_attributes!
     else
       @completion_report = CompletionReport.new
     end
@@ -86,6 +87,17 @@ class CompletionReportsController < ApplicationController
     elsif params[:recurring_appointment_id].present? 
       @reportable = RecurringAppointment.find(params[:recurring_appointment_id])
     end
+  end
+
+  def fix_report_attributes!
+    @completion_report.general_comment = nil 
+    @completion_report.latitude = nil
+    @completion_report.longitude = nil
+    @completion_report.altitude = nil
+    @completion_report.accuracy = nil
+    @completion_report.altitude_accuracy = nil
+    @completion_report.geolocation_error_code = nil
+    @completion_report.geolocation_error_message = nil
   end
 
   def set_completion_report

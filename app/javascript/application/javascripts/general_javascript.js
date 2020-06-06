@@ -171,22 +171,27 @@ window.completionReportGeolocationFailureCallback = function(error) {
 
 window.submitCompletionReportAction = function(){
     $('#submit-completion-report-button').click(function(){
-        if ($('#completion_report_latitude').val() === '') {
-            if (window.requireGeolocationErrorConfirmation) {
-                let message = confirm("位置情報なしで実績が確定されます。GPSエラーメッセージは保存されます。")
-                if (message) {
-                    $('#submit_completion_report_form').click()
+        if ($(this).data('resource-type') === 'Appointment') {
+            if ($('#completion_report_latitude').val() === '') {
+                if (window.requireGeolocationErrorConfirmation) {
+                    let message = confirm("位置情報なしで実績が確定されます。GPSエラーメッセージは保存されます。")
+                    if (message) {
+                        $('#submit_completion_report_form').click()
+                    }
+                    window.submitReport = false
+                    window.requireGeolocationErrorConfirmation = false 
+                } else {
+                    window.submitReport = true
+                    completionReportGeolocationRequest()
                 }
-                window.submitReport = false
-                window.requireGeolocationErrorConfirmation = false 
+        
             } else {
-                window.submitReport = true
-                completionReportGeolocationRequest()
+                $('#submit_completion_report_form').click()
+                window.submitReport = false
             }
-    
         } else {
+            console.log('resource type does not match appointment, skip geolocation')
             $('#submit_completion_report_form').click()
-            window.submitReport = false
         }
     })
 }

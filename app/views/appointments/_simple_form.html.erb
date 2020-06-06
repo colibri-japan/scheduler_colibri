@@ -59,6 +59,12 @@
       <%= form.collection_select(:patient_id, @patients, :id, :name, {}, {required: true, disabled: true, id: :appointment_patient_id}) %>
     </div>
 
+
+    <div class="form-group">
+      <%= form.label :cancelled, "キャンセル", class: "colibri-form-label-dark", style: 'min-width:100px' %>
+      <%= form.check_box :cancelled, class: "cancelled-toggle", data: {cancelled: appointment.cancelled} %>
+    </div>
+
     <div class="form-group">
       <%= form.label :description, "コメント", class: "colibri-form-label-dark" %>
       <%= form.text_area :description, id: :appointment_description, class: "form-control" %>

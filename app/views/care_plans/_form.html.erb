@@ -162,7 +162,7 @@
     <div class="modal-footer">
         <%= link_to '戻る', edit_patient_path(@patient, open_tab: 'care_plans'), remote: true, class: 'btn btn-colibri-light' %>
         <%= link_to '削除', patient_care_plan_path(@patient, care_plan), method: :delete, remote: true, class: 'btn btn-danger' unless care_plan.new_record? %>
-        <%= form.submit '登録する', class: 'btn btn-info' %>
+        <%= form.submit '確定', class: 'btn btn-info' %>
     </div>
 
 

@@ -8,7 +8,7 @@
 
 			<div id="patient-management-menu"  style="display:flex;width:100%;height:40px;font-size:1.2em;line-height:40px;color:#9e9e9e">
 				<div id="patient-form-menu" class="patient-management-item <%= 'selected' unless params[:open_tab].present?  %>" style="flex:1;text-align:center;cursor:pointer;height:40px;vertical-align:middle">利用者情報</div>
-				<div id="patient-care-plans-menu" class="patient-management-item <%= 'selected' if params[:open_tab].present? %>" style="flex:1;text-align:center;cursor:pointer;height:40px;vertical-align:middle">ケアプラン情報</div>
+				<div id="patient-care-plans-menu" class="patient-management-item <%= 'selected' if params[:open_tab].present? %>" style="flex:1;text-align:center;cursor:pointer;height:40px;vertical-align:middle">計画書情報</div>
 				<div id="patient-documents-menu" class="patient-management-item" style="flex:1;text-align:center;cursor:pointer;height:40px;vertical-align:middle">出力・印刷</div>
 			</div>
 
@@ -22,11 +22,11 @@
 				<div id="patient-care-plans-flash" style="display:flex;justify-content:center;margin-top:5px">
 					<% if params[:care_plan_saved].present? %>
 						<% if params[:care_plan_saved] == "true" %>
-							<div class='alert alert-success'>ケアプランの登録が成功しました。</div>
+							<div class='alert alert-success'>計画書が登録されました。</div>
 						<% elsif params[:care_plan_saved] == "destroyed" %>
-							<div class='alert alert-success'>ケアプランの情報が削除されました。</div>
+							<div class='alert alert-success'>計画書が削除されました。</div>
 						<% else %>
-							<div class='alert alert-warning'>ケアプランの登録が失敗しました。</div>
+							<div class='alert alert-warning'>計画書の登録が失敗しました。</div>
 						<% end %>
 					<% end %>
 				</div>

@@ -95,8 +95,7 @@ module CompletionReportsHelper
             #{set_the_table_checked(completion_report.try(:set_the_table))}
             #{cooked_for_the_patient_checked(completion_report, detailed_report)}
             #{cleaned_the_table_checked(completion_report.try(:cleaned_the_table))}
-            #{grocery_shopping_checked(completion_report.try(:grocery_shopping))}
-            #{medecine_shopping_checked(completion_report.try(:medecine_shopping))}
+            #{grocery_or_medecine_shopping_checked(completion_report, detailed_report)}
         "
     end
 
@@ -537,12 +536,31 @@ module CompletionReportsHelper
         cleaned_the_table ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>配.下膳</div>" : "" 
     end
     
-    def grocery_shopping_checked(grocery_shopping)
-        grocery_shopping ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>日常品などの買い物</div>" : "" 
-    end
-    
-    def medecine_shopping_checked(medecine_shopping)
-        medecine_shopping ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>薬の受取り</div>" : "" 
+    def grocery_or_medecine_shopping_checked(completion_report, detailed_report)
+        if completion_report.try(:grocery_shopping?) && completion_report.try(:medecine_shopping?)
+            if detailed_report
+                details = completion_report.try(:amount_received_for_shopping).present? ? ": 預かり金#{completion_report.try(:amount_received_for_shopping)}円、買い物#{completion_report.try(:amount_spent_for_shopping) || '＿'}円、おつり#{completion_report.try(:change_left_after_shopping) || '＿'}円" : ""
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>日常品などの買い物、薬の受取り#{details}</div>"
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>日常品などの買い物</div><div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>薬の受取り</div>"
+            end
+        elsif completion_report.try(:grocery_shopping?)
+            if detailed_report
+                details = completion_report.try(:amount_received_for_shopping).present? ? ": 預かり金#{completion_report.try(:amount_received_for_shopping)}円、買い物#{completion_report.try(:amount_spent_for_shopping) || '＿'}円、おつり#{completion_report.try(:change_left_after_shopping) || '＿'}円" : ""
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>日常品などの買い物#{details}</div>"
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>日常品などの買い物</div>"
+            end
+        elsif completion_report.try(:medecine_shopping?)
+            if detailed_report
+                details = completion_report.try(:amount_received_for_shopping).present? ? ": 預かり金#{completion_report.try(:amount_received_for_shopping)}円、買い物#{completion_report.try(:amount_spent_for_shopping) || '＿'}円、おつり#{completion_report.try(:change_left_after_shopping) || '＿'}円" : ""
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>薬の受取り#{details}</div>"
+            else
+                "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>薬の受取り</div>"
+            end
+        else
+            ""
+        end
     end
     
 end

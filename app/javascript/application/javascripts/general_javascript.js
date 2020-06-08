@@ -11,13 +11,38 @@ window.onclick = function(event) {
     }
 }
 
+$.fn.overflownY = function () { var e = this[0]; return e.scrollHeight > e.clientHeight; }
+
 window.initializeTooltips = function() {
     $('.colibri-tooltip').each(function () {
         $(this).popover({
             html: true,
             content: $(this).data('content'),
-            trigger: 'hover'
-        })
+            container: 'body',
+            trigger: 'manual'
+        }).on('mouseenter', function () {
+            if (window.popoverFocusAllowed) {
+                window.popoverFocusAllowed = false
+                var _this = this;
+                $(_this).popover('show');
+                $('.popover').on('mouseleave', function () {
+                    $(_this).popover('hide');
+                });
+            }
+        }).on('mouseleave', function () {
+            var _this = this
+            var condition = $('.popover-body').overflownY();
+            if (condition) {
+                setTimeout(function () {
+                    if (!$('.popover:hover').length) {
+                        $(_this).popover('hide');
+                    }
+                }, 300);
+            } else {
+                $(_this).popover('hide')
+            }
+            window.popoverFocusAllowed = true
+        });
     })
 }
 

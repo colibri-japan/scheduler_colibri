@@ -331,8 +331,6 @@ let createCalendar = () => {
                         popoverContent = info.event.extendedProps.description
                     }
                     
-                    window.popoverFocusAllowed = true;
-                    
                     $(info.el).popover({
                         html: true,
                         title: popoverTitle,

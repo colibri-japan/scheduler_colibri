@@ -1,5 +1,6 @@
 <%= javascript_tag do %>
 	window.completionReportsSummaryUrl = "<%= j planning_completion_reports_summary_path(@planning) %>"
+	window.popoverFocusAllowed = <%= true %>
 <% end %>
 
 <%= render partial: 'plannings/planning_left_menu', locals: {view: 'admin_reports', resource_payable_path: planning_nurse_payable_path(@planning, @main_nurse, params: {m: Date.today.in_time_zone('Tokyo').month,y: Date.today.in_time_zone('Tokyo').year})} %>

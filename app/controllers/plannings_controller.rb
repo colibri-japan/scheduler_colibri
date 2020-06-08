@@ -23,7 +23,7 @@ class PlanningsController < ApplicationController
 
 	def completion_reports_summary
 		authorize @planning, :same_corporation_as_current_user?
-		authorize current_user, :has_admin_access?
+		authorize current_user, :has_access_to_salary_line_items?
 
 		set_main_nurse
 		set_reports_date

@@ -141,6 +141,8 @@ class PatientsController < ApplicationController
     fetch_patients_grouped_by_kana
     set_query_range
 
+    @team = current_user.nurse.try(:team)
+
     @completion_reports = @patient.completion_reports.from_appointments.joins_appointments.includes(reportable: [:nurse, :patient]).in_range(@range.first..@range.last).order('appointments.starts_at DESC')
 		@appointments_without_reports = @patient.appointments.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.in_range(@range.first..@range.last).order(starts_at: :desc)
   

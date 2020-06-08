@@ -8,7 +8,7 @@
 			<% end %>
 			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'resource' %>" data-url="<%= planning_path(@planning) %>" title="実績シフト"><span class="glyphicon glyphicon-calendar <%= view == 'resource' ? 'glyphicon-selected' : 'glyphicon-default' %>"  style="margin-left:3px;font-size:24px"></span></li>
 			<% unless current_user.has_restricted_access? %>
-				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'admin_reports' %>" data-url="<%= planning_completion_reports_summary_path(@planning) %>" style="margin-left:17px;margin-right:17px" title="実施記録"><%= image_tag(report_icon(view), width: '30px') %></li>
+				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'admin_reports' %>" data-url="<%= current_user.nurse.try(:team).present? ? team_completion_reports_summary_path(current_user.nurse.try(:team)) : planning_completion_reports_summary_path(@planning) %>" style="margin-left:17px;margin-right:17px" title="実施記録"><%= image_tag(report_icon(view), width: '30px') %></li>
 			<% end %>
 			<% if current_user.nurse_restricted? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'reports' %>" data-url="<%= completion_reports_path(params: {m: Date.today.in_time_zone('Tokyo').month, y: Date.today.in_time_zone('Tokyo').year}) %>" title="実施記録"><span class="glyphicon glyphicon-file <%= view == 'reports' ? 'glyphicon-selected' : 'glyphicon-default' %>"  style="margin-left:3px;font-size:24px"></span></li>

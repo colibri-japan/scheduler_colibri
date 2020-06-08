@@ -6,7 +6,7 @@
 			<% end %>
 			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'resource' %>" data-url="<%= planning_path(@planning) %>" title="実績シフト"><span class="glyphicon glyphicon-calendar <%= view == 'resource' ? 'glyphicon-selected' : 'glyphicon-default' %>"  style="margin-left:3px;font-size:24px"></span></li>
 			<% unless current_user.has_restricted_access? %>
-				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'admin_reports' %>" data-url="<%= planning_completion_reports_summary_path(@planning) %>" title="実施記録"><%= image_tag(laptop_report_icon(view)) %></li>
+				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'admin_reports' %>" data-url="<%= current_user.nurse.try(:team).present? ? team_completion_reports_summary_path(current_user.nurse.try(:team)) : planning_completion_reports_summary_path(@planning) %>" title="実施記録"><%= image_tag(laptop_report_icon(view)) %></li>
 			<% end %>
 			<% unless current_user.has_restricted_access? %>
 				<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'payable' %>" data-url="<%= resource_payable_path %>" id="go-to-payable" title="給与.請求">給</li>

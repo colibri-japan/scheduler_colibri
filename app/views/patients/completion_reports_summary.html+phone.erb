@@ -17,6 +17,9 @@
         <div id="resource-container">
             <div id="patients-resource" class="no-print">
                 <div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_completion_reports_summary_path(@planning) %>">全利用者</div>
+                <% if @team.present? %>
+			    	<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= team_completion_reports_summary_path(@team) %>"><%= @team.team_name %></div>
+			    <% end %>
                 <% PlanningsHelper::HIRAGANAS.each do |kana| %>
                     <div class="nurses-resource-subsection-title nurse-subsection-toggleable resource-title-selectable">
                         <%= kana %>

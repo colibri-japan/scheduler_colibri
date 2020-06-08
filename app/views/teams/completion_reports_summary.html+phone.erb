@@ -15,10 +15,10 @@
 
         <div id="resource-container">
             <div id="patients-resource" class="no-print">
+    
                 <div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= planning_completion_reports_summary_path(@planning) %>">全利用者</div>
-                <% if @team.present? %>
-			    	<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url="<%= team_completion_reports_summary_path(@team) %>"><%= @team.team_name %></div>
-			    <% end %>
+    			<div class="nurses-resource-subsection-title resource-title-selectable colibri-clickable-link" data-url=""><%= @team.team_name %></div>
+
                 <% PlanningsHelper::HIRAGANAS.each do |kana| %>
                     <div class="nurses-resource-subsection-title nurse-subsection-toggleable resource-title-selectable">
                         <%= kana %>
@@ -44,7 +44,7 @@
 					<%= image_tag 'hamburger_icon_white.svg', size: '35', class: 'hamburger_menu'  %>
 				</div>
 				<div class="planning-resource-module-title">
-					<span id="resource-name-wrapper">全利用者の実施記録</span>
+					<span id="resource-name-wrapper"><%= @team.team_name %>の実施記録</span>
 				</div>
 			</div>
 		</div>

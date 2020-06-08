@@ -1,6 +1,7 @@
 class TeamsController < ApplicationController
 
     before_action :set_corporation
+    before_action :set_team, except: [:new, :index, :create]
 
     def index 
         @planning = @corporation.planning 
@@ -25,10 +26,25 @@ class TeamsController < ApplicationController
         end
     end
 
+    def edit
+        authorize current_user, :has_admin_access?
+    end
+
+
+    def update
+        authorize current_user, :has_admin_access?
+
+        if @team.update(team_params)
+            redirect_to teams_path, notice: 'チーム情報がアップデートされました。'
+        end
+    end
+
+    def delete
+    end
+
 
     def payable
         @planning = Planning.find(params[:planning_id])
-        @team = Team.find(params[:id])
 
         authorize current_user, :has_access_to_salary_line_items?
         authorize @planning, :same_corporation_as_current_user?
@@ -41,29 +57,7 @@ class TeamsController < ApplicationController
         fetch_patients_grouped_by_kana
     end
 
-    def edit
-        authorize current_user, :has_admin_access?
-
-        @team = Team.find(params[:id])
-    end
-
-
-    def update
-        authorize current_user, :has_admin_access?
-
-        @team = Team.find(params[:id])
-
-        if @team.update(team_params)
-            redirect_to teams_path, notice: 'チーム情報がアップデートされました。'
-        end
-    end
-
-    def delete
-    end
-
     def revenue_per_nurse_report
-        @team = Team.find(params[:id])
-
 		first_day = DateTime.new(params[:y].to_i, params[:m].to_i, 1, 0,0)
 		last_day_of_month = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59)
 		last_day = Date.today.end_of_day > last_day_of_month ? last_day_of_month : Date.today.end_of_day
@@ -75,22 +69,49 @@ class TeamsController < ApplicationController
 
 	def new_master_to_schedule
         authorize current_user, :has_admin_access?
-        
-        @team = Team.find(params[:id])
 	end
 
     def master_to_schedule
         authorize current_user, :has_admin_access?
-        
-        @team = Team.find(params[:id])
         authorize @team, :same_corporation_as_current_user?
         
 		CopyTeamPlanningFromMasterWorker.perform_async(@team.id, params[:month], params[:year])
 
 		@team.create_activity :reflect_team_master, owner: current_user, parameters: {year: params[:year].to_i, month: params[:month].to_i, team_name: @team.team_name}
-	end
+    end
+    
+    def completion_reports_summary
+        set_planning
+        authorize @planning, :same_corporation_as_current_user?
+        authorize current_user, :has_access_to_salary_line_items?
+
+        set_main_nurse
+        fetch_patients_grouped_by_kana
+        set_reports_date
+        nurse_ids = @team.nurses.ids
+    
+        @completion_reports = @planning.completion_reports.from_appointments.joins_appointments.includes(reportable: [:nurse, :patient]).in_range(@date.beginning_of_day..@date.end_of_day).where(appointments: {nurse_id: nurse_ids}).order('appointments.starts_at DESC')
+        @appointments_without_reports = @planning.appointments.operational.where(nurse_id: nurse_ids).left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).in_range(@date.beginning_of_day..@date.end_of_day).order(starts_at: :desc)
+      
+        respond_to do |format|
+          format.html 
+          format.html.phone 
+        end
+    end
 
     private
+
+    def set_team
+        @team = Team.find(params[:id])
+    end
+
+	def set_reports_date
+		if params[:reports_date].present?
+			@date = params[:reports_date].to_date rescue Date.today 
+		else
+			@date = Date.today
+		end
+	end
 
     def team_params
         params.require(:team).permit(:team_name, :phone_number, :fax_number, member_ids: [])

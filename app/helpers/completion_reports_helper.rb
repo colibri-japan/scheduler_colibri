@@ -181,6 +181,19 @@ module CompletionReportsHelper
         end
     end
 
+    def patient_urinated_field(completion_report, detailed_report)
+        if completion_report.try(:patient_urinated?)
+            if detailed_report
+                form.label :patient_urinated, "排尿", class: 'colibri-form-label-dark' do
+                    form.check_box :patient_urinated
+                    '排尿'
+                end
+            else
+            end
+        else
+        end
+    end
+
     def amount_of_urine_text(urine_amount)
     end
 

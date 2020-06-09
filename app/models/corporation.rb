@@ -145,8 +145,8 @@ class Corporation < ApplicationRecord
 				nurse_ids = team.nurses.not_archived.pluck(:id)
 	
 				team_salary_line_items = self.planning.appointments.in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).group(:title).count
-				team_salary_line_items_female = self.planning.appointments.joins(:patient).in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).where(patients: {gender: true}).group(:title).count
-				team_salary_line_items_male = self.planning.appointments.joins(:patient).in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).where(patients: {gender: false}).group(:title).count
+				team_salary_line_items_female = self.planning.appointments.joins(:patient).in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).where(patients: {gender: 2}).group(:title).count
+				team_salary_line_items_male = self.planning.appointments.joins(:patient).in_range(start_date..end_date).operational.where(nurse_id: nurse_ids).where(patients: {gender: 1}).group(:title).count
 	
 				titles.each do |title|
 					team_hash[title] = {
@@ -161,8 +161,8 @@ class Corporation < ApplicationRecord
 		else
 			corporation_hash = {}
 			salary_line_items = self.planning.appointments.in_range(starts_date..end_date).operational.group(:title).count
-			salary_line_items_female = self.planning.appointments.joins(:patient).where(patients: {gender: true}).in_range(starts_date..end_date).operational.group(:title).count
-			salary_line_items_male = self.planning.appointments.joins(:patient).where(patients: {gender: false}).in_range(starts_date..end_date).operational.group(:title).count
+			salary_line_items_female = self.planning.appointments.joins(:patient).where(patients: {gender: 2}).in_range(starts_date..end_date).operational.group(:title).count
+			salary_line_items_male = self.planning.appointments.joins(:patient).where(patients: {gender: 1}).in_range(starts_date..end_date).operational.group(:title).count
 			
 			titles.each do |title|
 				corporation_hash[title] = {

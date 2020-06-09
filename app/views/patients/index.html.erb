@@ -37,9 +37,11 @@
         <div id="active-patients" class="toggle-active-element toggle-active-selected" style="margin-right:20px">実施中 (<%= @active_patients_count %>)</div>
         <div id="deactivated-patients" class="toggle-active-element">終了 (<%= @deactivated_patients.size %>)</div>
       </div>
-      <div id="patients-excel">
-        <%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:15px"></i> エクセル'.html_safe, patients_path(format: :xlsx), class: 'btn btn-colibri-light-gray' %>
-      </div>
+      <% if false %>
+        <div id="patients-excel">
+          <%= link_to '<i class="glyphicon glyphicon-download" style="color:white;font-size:15px"></i> エクセル'.html_safe, patients_path(format: :xlsx), class: 'btn btn-colibri-light-gray' %>
+        </div>
+      <% end %>
     </div>
 
     <div id="index-table-container" class="table-responsive">

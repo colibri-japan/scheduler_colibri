@@ -29,8 +29,8 @@ class Patient < ApplicationRecord
 	scope :deactivated, -> { where(active: false) }
 	scope :still_active_at, -> date { where('active IS TRUE OR (active IS FALSE AND end_of_contract > ?)', date) }
 	scope :from_care_manager_corporation, -> id { where(care_manager_id: CareManager.where(care_manager_corporation_id: id).pluck(:id)) }
-	scope :male, -> { where(gender: false) }
-	scope :female, -> { where(gender: true) }
+	scope :male, -> { where(gender: 1) }
+	scope :female, -> { where(gender: 2) }
 	scope :with_care_plan_valid_at, -> date { includes(:care_plans).where('care_plans.kaigo_certification_validity_start <= ? AND care_plans.kaigo_certification_validity_end >= ?', date, date) }
 
 	def age

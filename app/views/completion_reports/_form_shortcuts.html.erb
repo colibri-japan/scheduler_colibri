@@ -98,6 +98,8 @@
             <%= form.check_box :assisted_patient_to_eat %>
             食事介助
         <% end %>
+    </div>
+    <div class="report-prefilled-item">
         <%= form.label :patient_ate_full_plate, "食事量", style: 'margin-right:7px' %>
         <%= form.label :patient_ate_full_plate_true, "完食", class: 'colibri-form-label-dark' do %>
             <%= form.radio_button :patient_ate_full_plate, true, {class: 'radio-inline radio-uncheckable'} %>
@@ -108,7 +110,7 @@
             残量
         <% end %>
         <%= form.radio_button :patient_ate_full_plate, "", {style: 'display:none', id: :no_full_plate} %>
-        ( <%= form.text_field :ratio_of_leftovers, class: 'colibri-input', style: 'width:50px' %> )
+        ( <%= form.text_field :ratio_of_leftovers, class: 'colibri-input', style: 'width:50px' %> )割
     </div>
 <% end %>
 
@@ -118,7 +120,7 @@
         <%= form.check_box :patient_hydrated %>
         水分補給
     <% end %>
-    ( <%= form.number_field :amount_of_liquid_drank, {step: 1, class: 'colibri-input', style: 'width:50px'} %> cc)
+    ( <%= form.number_field :amount_of_liquid_drank, {step: 1, class: 'colibri-input', style: 'width:70px'} %> cc)
     </div>
 <% end %>
 

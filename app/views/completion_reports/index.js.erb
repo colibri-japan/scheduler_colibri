@@ -1,5 +1,7 @@
 var reportsIndex = "<%= j render('completion_reports/index').html_safe %>"
 
+window.scrollTo(0,0)
+
 if (window.matchMedia("(orientation: portrait) and (max-width: 760px)").matches || window.matchMedia("(orientation: landscape) and (max-width: 900px)").matches) {
     $('#resource-details-wrapper').remove()
     $('#calendar').hide()

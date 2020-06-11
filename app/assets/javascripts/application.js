@@ -1239,6 +1239,7 @@ $(document).on('turbolinks:load', function(){
     $('#resource-details-wrapper').remove()
     $('#calendar').show()
     window.fullCalendar.render()
+    window.scrollTo(0,0)
     $('#colibri-batch-action-button').show()
   })
 
@@ -1433,7 +1434,6 @@ $(document).on('turbolinks:load', function(){
       $('#colibri-batch-action-button').popover('hide')
       $('.header-submenu-item').removeClass('header-submenu-item-selected')
       $(this).addClass('header-submenu-item-selected')
-      window.scrollTo(0,0)
     })
   }
 }); 

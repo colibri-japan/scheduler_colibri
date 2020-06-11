@@ -567,7 +567,7 @@ let restyleMobileCalendarDates = (view) => {
             var fullDate = title.textContent
             var date
             if (view.type === 'resourceTimeGridDay' || view.type === 'dayGridMonth') {
-                if (fullDate.length >= 7) {
+                if (fullDate.length >= 9) {
                     date = fullDate.substr(5)
                     title.innerText = date
                 }

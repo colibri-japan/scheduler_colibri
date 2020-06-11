@@ -529,12 +529,13 @@
 
 	#completion-reports-container {
 		margin-left: 0px;
+		margin-bottom: 120px;
 	}
 
 	#payable-container {
 		width: 100%;
 		max-width: 100%;
-		margin: 0px 0px 90px 0px;
+		margin: 0px 0px 120px 0px;
 		padding: 0px;
 	}
 
@@ -797,6 +798,10 @@
 
 	#display-completion-reports {
 		display: none !important;
+	}
+
+	#completed-reports {
+		margin-bottom: 90px;
 	}
 
 

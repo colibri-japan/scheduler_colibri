@@ -268,6 +268,13 @@ window.toggleKaigoCertificationStatus = function() {
     })
 }
 
+window.mobileScrollTop = function() {
+    var myDiv = document.getElementsByClassName('phone_activity_container')[0]
+    if (myDiv) {
+        myDiv.scrollTop = 0
+    }
+}
+
 document.addEventListener('turbolinks:load', function () {
 
     initializeTooltips()

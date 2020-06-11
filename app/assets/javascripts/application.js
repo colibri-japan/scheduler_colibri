@@ -1433,6 +1433,7 @@ $(document).on('turbolinks:load', function(){
       $('#colibri-batch-action-button').popover('hide')
       $('.header-submenu-item').removeClass('header-submenu-item-selected')
       $(this).addClass('header-submenu-item-selected')
+      window.scrollTo(0,0)
     })
   }
 }); 

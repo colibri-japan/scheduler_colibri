@@ -28,6 +28,7 @@
 	window.planningPath = '<%= j planning_path(@planning) %>'
 	window.userHasRestrictedAccess = <%= current_user.has_restricted_access? %>
 	window.editConfirmRequested = <%= @corporation.edit_confirm_requested %>
+	window.corporationHasTeams = <%= @teams_id_by_name.present? %>
 <% end %>
 
 

@@ -1205,7 +1205,11 @@ $(document).on('turbolinks:load', function(){
     if (individualResource) {
       $.getScript(`/${window.currentResourceType || window.defaultResourceType}s/${window.currentResourceId || window.defaultResourceId}/new_master_to_schedule`)
     } else {
-      $.getScript(`${window.planningPath}/new_master_to_schedule`)
+      if (window.corporationHasTeams) {
+        alert('反映はチーム別、または従業員別で行ってください。')
+      } else {
+        $.getScript(`${window.planningPath}/new_master_to_schedule`)
+      }
     }
   })
 

@@ -511,6 +511,9 @@
 	#planning-container {
 		margin: 5px;
 		width: calc(100% - 10px);
+	}
+	
+	#smartphone-planning-wrapper {
 		margin-bottom: 120px;
 	}
 

@@ -32,10 +32,11 @@ class UpdateIndividualAppointmentsWorker
                 appointment.patient_id = recurring_appointment.patient_id 
                 appointment.service_id = recurring_appointment.service_id
                 appointment.planning_id = recurring_appointment.planning_id
-                appointment.should_request_edit_for_overlapping_appointments = true
                 appointment.recurring_appointment_id = recurring_appointment.id
+
+                #instead of batch validation, validate each appointment
+                appointment.edit_requested = true unless appointment.valid?
                 
-                appointment.run_callbacks(:save) { false }
                 new_appointments << appointment
             end
 

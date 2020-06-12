@@ -27,8 +27,9 @@ class CreateIndividualAppointmentsWorker
                 recurring_appointment_id: recurring_appointment.id,
                 original_recurring_appointment_id: recurring_appointment.id,
                 color: recurring_appointment.color,
-                should_request_edit_for_overlapping_appointments: true
             )
+
+            new_appointment.edit_requested = true unless new_appointment.valid?
             new_appointment.run_callbacks(:save) { false }
             new_appointments << new_appointment
         end

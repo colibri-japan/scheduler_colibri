@@ -299,7 +299,7 @@
     </div>
 <% end %>
 
-<% if completion_report.assisted_patient_to_go_to_bed? %>
+<% if completion_report.assisted_to_apply_a_cream? %>
     <div class="report-prefilled-item">
         <%= form.label :assisted_to_apply_a_cream, "薬の塗", class: 'colibri-form-label-dark' do  %>
             <%= form.check_box :assisted_to_apply_a_cream %>
@@ -308,7 +308,7 @@
     </div>
 <% end %>
 
-<% if completion_report.assisted_patient_to_go_to_bed? %>
+<% if completion_report.assisted_to_take_eye_drops? %>
     <div class="report-prefilled-item">
         <%= form.label :assisted_to_take_eye_drops, "点眼", class: 'colibri-form-label-dark' do  %>
             <%= form.check_box :assisted_to_take_eye_drops %>
@@ -317,7 +317,7 @@
     </div>
 <% end %>
 
-<% if completion_report.assisted_patient_to_go_to_bed? %>
+<% if completion_report.assisted_to_extrude_mucus? %>
     <div class="report-prefilled-item">
         <%= form.label :assisted_to_extrude_mucus, "淡の吸引", class: 'colibri-form-label-dark' do  %>
             <%= form.check_box :assisted_to_extrude_mucus %>

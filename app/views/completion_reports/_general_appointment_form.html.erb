@@ -182,7 +182,7 @@
               <% end %>
               <% unless completion_report.assisted_patient_to_eat? %>
                 <div class="form-group col-md-4">
-                  <%= form.check_box :assisted_patient_to_eat, id: :completion_reportassisted_patient_to_eat %>
+                  <%= form.check_box :assisted_patient_to_eat, id: :completion_report_assisted_patient_to_eat %>
                   <%= form.label :assisted_patient_to_eat, "食事介助", class: 'colibri-form-label-dark' %>
                 </div>
               <% end %>
@@ -261,7 +261,6 @@
                 <div class="from-group col-md-2">
                   <%= form.check_box :hair_wash, id: :completion_report_hair_wash %>
                   <%= form.label :hair_wash, "洗髪", class: 'colibri-form-label-dark' %>
-
                 </div>
               <% end %>
             </div>
@@ -454,8 +453,7 @@
                   <% unless completion_report.watch_after_patient_safety? %>
                     <div class="form-group col-md-6">
                       <%= form.check_box :watch_after_patient_safety, id: :completion_report_watch_after_patient_safety %>
-                      <%= form.label :watch_after_patient_safety, "安全の見守り", class: 'colibri-form-label-dark' %>
-
+                      <%= form.label :watch_after_patient_safety, "転倒予防の声かけ・見守り", class: 'colibri-form-label-dark' %>
                     </div>
                   <% end %>
                   <% if completion_report.watched_after_patient_safety_doing == [''] || completion_report.watched_after_patient_safety_doing == [] %>

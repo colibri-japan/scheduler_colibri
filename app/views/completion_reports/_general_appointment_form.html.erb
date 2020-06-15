@@ -76,16 +76,12 @@
 
           <div class="form-row">
             <div class="form-group col-md-3">
-              <%= form.label :house_was_clean, "環境整備", class: 'colibri-form-label-dark' do  %>
-                  <%= form.check_box :house_was_clean %>
-                  環境整備
-              <% end %>
+              <%= form.check_box :house_was_clean, include_hidden: false %>
+              <%= form.label :house_was_clean, "環境整備", class: 'colibri-form-label-dark'  %>
             </div>
             <div class="form-group col-md-3">
-              <%= form.label :patient_could_discuss, "相談援助", class: 'colibri-form-label-dark' do  %>
-                  <%= form.check_box :patient_could_discuss %>
-                  相談援助
-              <% end %>
+              <%= form.check_box :patient_could_discuss, include_hidden: false %>
+              <%= form.label :patient_could_discuss, "相談援助", class: 'colibri-form-label-dark'  %>
             </div>
             <div class="form-group col-md-3">
               <%= form.label :patient_could_gather_and_share_information, "情報収集", class: 'colibri-form-label-dark' do  %>

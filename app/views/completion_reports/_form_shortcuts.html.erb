@@ -1,7 +1,7 @@
 <% if completion_report.assisted_bathroom? %>
     <div class="report-prefilled-item">
-    <%= form.label :assisted_bathroom, "トイレ介助", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :assisted_bathroom %>
+    <%= form.label :assisted_bathroom, "トイレ介助" do  %>
+        <%= form.check_box :assisted_bathroom, class: 'colibri-checkbox' %>
         トイレ介助
     <% end %>
     </div>
@@ -9,8 +9,8 @@
 
 <% if completion_report.assisted_portable_bathroom? %>
     <div class="report-prefilled-item">
-    <%= form.label :assisted_portable_bathroom, "Pトイレ介助", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :assisted_portable_bathroom %>
+    <%= form.label :assisted_portable_bathroom, "Pトイレ介助" do  %>
+        <%= form.check_box :assisted_portable_bathroom, class: 'colibri-checkbox' %>
         Pトイレ介助
     <% end %>
     </div>
@@ -18,8 +18,8 @@
 
 <% if completion_report.changed_diapers? %>
     <div class="report-prefilled-item">
-    <%= form.label :changed_diapers, "おむつ交換", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :changed_diapers %>
+    <%= form.label :changed_diapers, "おむつ交換" do  %>
+        <%= form.check_box :changed_diapers, class: 'colibri-checkbox' %>
         おむつ交換
     <% end %>
     </div>
@@ -27,8 +27,8 @@
 
 <% if completion_report.changed_bed_pad? %>
     <div class="report-prefilled-item">
-    <%= form.label :changed_bed_pad, "パッド交換", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :changed_bed_pad %>
+    <%= form.label :changed_bed_pad, "パッド交換" do  %>
+        <%= form.check_box :changed_bed_pad, class: 'colibri-checkbox' %>
         パッド交換
     <% end %>
     </div>
@@ -36,8 +36,8 @@
 
 <% if completion_report.changed_stained_clothes? %>
     <div class="report-prefilled-item">
-    <%= form.label :changed_stained_clothes, "汚れた衣服などの交換処理", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :changed_stained_clothes %>
+    <%= form.label :changed_stained_clothes, "汚れた衣服などの交換処理" do  %>
+        <%= form.check_box :changed_stained_clothes, class: 'colibri-checkbox' %>
         汚れた衣服やリネンなどの交換処理
     <% end %>
     </div>
@@ -45,8 +45,8 @@
 
 <% if completion_report.wiped_patient? %>
     <div class="report-prefilled-item">
-    <%= form.label :wiped_patient, "陰部の清潔介助", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :wiped_patient %>
+    <%= form.label :wiped_patient, "陰部の清潔介助" do  %>
+        <%= form.check_box :wiped_patient, class: 'colibri-checkbox' %>
         陰部の清潔介助
     <% end %>
     </div>
@@ -54,30 +54,30 @@
 
 <% if completion_report.patient_urinated? %>
     <div class='report-prefilled-item'>
-    <%= form.label :patient_urinated, "排尿", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :patient_urinated %>
+    <%= form.label :patient_urinated, "排尿", class: '' do  %>
+        <%= form.check_box :patient_urinated, class: 'colibri-checkbox' %>
         排尿
     <% end %>
-    <%= form.number_field :urination_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class="colibri-form-label-dark"> 回</span>
-    <%= form.number_field :amount_of_urine, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class="colibri-form-label-dark"> cc</span>
+    <%= form.number_field :urination_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class=""> 回</span>
+    <%= form.number_field :amount_of_urine, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class=""> cc</span>
     </div>
 <% end %>
 
 <% if completion_report.patient_defecated? %>
     <div class="report-prefilled-item">
-    <%= form.label :patient_defecated, "排便", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :patient_defecated %>
+    <%= form.label :patient_defecated, "排便", class: '' do  %>
+        <%= form.check_box :patient_defecated, class: 'colibri-checkbox' %>
         排便
     <% end %>
-        <%= form.number_field :defecation_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class="colibri-form-label-dark"> 回</span>
-        <span class="colibri-form-label-dark"> 性状 </span><%= form.text_field :visual_aspect_of_feces, class: 'colibri-input', style: 'width:50px' %>
+        <%= form.number_field :defecation_count, {step: 1, class: 'colibri-input', style: 'width:50px'} %><span class=""> 回</span>
+        <span class=""> 性状 </span><%= form.text_field :visual_aspect_of_feces, class: 'colibri-input', style: 'width:50px' %>
     </div>
 <% end %>
 
 <% if completion_report.patient_maintains_good_posture_while_eating? %>
     <div class="report-prefilled-item">
-    <%= form.label :patient_maintains_good_posture_while_eating, "姿勢の確保", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :patient_maintains_good_posture_while_eating %>
+    <%= form.label :patient_maintains_good_posture_while_eating, "姿勢の確保", class: '' do  %>
+        <%= form.check_box :patient_maintains_good_posture_while_eating, class: 'colibri-checkbox' %>
         姿勢の確保
     <% end %>
     </div>
@@ -85,8 +85,8 @@
 
 <% if completion_report.explained_menu_to_patient? %>
     <div class="report-prefilled-item">
-    <%= form.label :explained_menu_to_patient, "メニュー.材料の説明", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :explained_menu_to_patient %>
+    <%= form.label :explained_menu_to_patient, "メニュー.材料の説明", class: '' do  %>
+        <%= form.check_box :explained_menu_to_patient, class: 'colibri-checkbox' %>
         メニュー.材料の説明
     <% end %>
     </div>
@@ -94,19 +94,19 @@
 
 <% if completion_report.assisted_patient_to_eat? %>
     <div class="report-prefilled-item">
-        <%= form.label :assisted_patient_to_eat, "食事介助", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :assisted_patient_to_eat %>
+        <%= form.label :assisted_patient_to_eat, "食事介助", class: '' do  %>
+            <%= form.check_box :assisted_patient_to_eat, class: 'colibri-checkbox' %>
             食事介助
         <% end %>
     </div>
     <div class="report-prefilled-item">
         <%= form.label :patient_ate_full_plate, "食事量", style: 'margin-right:7px' %>
-        <%= form.label :patient_ate_full_plate_true, "完食", class: 'colibri-form-label-dark' do %>
-            <%= form.radio_button :patient_ate_full_plate, true, {class: 'radio-inline radio-uncheckable'} %>
+        <%= form.label :patient_ate_full_plate_true, "完食", class: '' do %>
+            <%= form.radio_button :patient_ate_full_plate, true, {class: 'radio-inline radio-uncheckable colibri-checkbox'} %>
             完食
         <% end %>
-        <%= form.label :patient_ate_full_plate_false, "残量", class: 'colibri-form-label-dark' do %>
-            <%= form.radio_button :patient_ate_full_plate, false, {class: 'radio-inline radio-uncheckable'} %>
+        <%= form.label :patient_ate_full_plate_false, "残量", class: '' do %>
+            <%= form.radio_button :patient_ate_full_plate, false, {class: 'radio-inline radio-uncheckable colibri-checkbox'} %>
             残量
         <% end %>
         <%= form.radio_button :patient_ate_full_plate, "", {style: 'display:none', id: :no_full_plate} %>
@@ -116,8 +116,8 @@
 
 <% if completion_report.patient_hydrated? %>
     <div class="report-prefilled-item">
-    <%= form.label :patient_hydrated, "水分補給", class: 'colibri-form-label-dark' do  %>
-        <%= form.check_box :patient_hydrated %>
+    <%= form.label :patient_hydrated, "水分補給", class: '' do  %>
+        <%= form.check_box :patient_hydrated, class: 'colibri-checkbox' %>
         水分補給
     <% end %>
     ( <%= form.number_field :amount_of_liquid_drank, {step: 1, class: 'colibri-input', style: 'width:70px'} %> cc)
@@ -127,31 +127,31 @@
 <% if [0,1].include?(completion_report.full_or_partial_body_wash) %>
     <div class="report-prefilled-item">
     <%= form.label :full_or_partial_body_wash, "清拭" %>
-    <%= form.label :full_or_partial_body_wash_1, "全身", class: 'colibri-form-label-dark' do %>
-        <%= form.radio_button :full_or_partial_body_wash, 1, {class: 'radio-inline'} %>
+    <%= form.label :full_or_partial_body_wash_1, "全身", class: '' do %>
+        <%= form.radio_button :full_or_partial_body_wash, 1, {class: 'radio-inline colibri-checkbox'} %>
         全身
     <% end %>
-    <%= form.label :full_or_partial_body_wash_0, "部分", class: 'colibri-form-label-dark' do %>
-        <%= form.radio_button :full_or_partial_body_wash, 0, {class: 'radio-inline'} %>
+    <%= form.label :full_or_partial_body_wash_0, "部分", class: '' do %>
+        <%= form.radio_button :full_or_partial_body_wash, 0, {class: 'radio-inline colibri-checkbox'} %>
         部分
     <% end %>
-    <%= form.radio_button :full_or_partial_body_wash, 2, {class: 'radio-inline', style: 'display:none', id: :no_full_nor_partial_body_wash} %>
+    <%= form.radio_button :full_or_partial_body_wash, 2, {class: 'radio-inline colibri-checkbox', style: 'display:none', id: :no_full_nor_partial_body_wash} %>
     </div>
 <% end %>
 
 <% if [0,1,2].include?(completion_report.hands_and_feet_wash) %>
     <div class="report-prefilled-item">
       <%= form.label :hands_and_feet_wash, "部分浴" %>
-      <%= form.label :hands_and_feet_wash_1, "手", class: 'colibri-form-label-dark' do %>
-          <%= form.radio_button :hands_and_feet_wash, 1, {class: 'radio-inline'} %>
+      <%= form.label :hands_and_feet_wash_1, "手", class: '' do %>
+          <%= form.radio_button :hands_and_feet_wash, 1, {class: 'radio-inline colibri-checkbox'} %>
           手
       <% end %>
-      <%= form.label :hands_and_feet_wash_0, "足", class: 'colibri-form-label-dark' do %>
-          <%= form.radio_button :hands_and_feet_wash, 0, {class: 'radio-inline'} %>
+      <%= form.label :hands_and_feet_wash_0, "足", class: '' do %>
+          <%= form.radio_button :hands_and_feet_wash, 0, {class: 'radio-inline colibri-checkbox'} %>
           足
       <% end %>
-      <%= form.label :hands_and_feet_wash_2, "手足", class: 'colibri-form-label-dark' do %>
-          <%= form.radio_button :hands_and_feet_wash, 2, {class: 'radio-inline'} %>
+      <%= form.label :hands_and_feet_wash_2, "手足", class: '' do %>
+          <%= form.radio_button :hands_and_feet_wash, 2, {class: 'radio-inline colibri-checkbox' } %>
           手足
       <% end %>
       <%= form.radio_button :hands_and_feet_wash, 3, {style: 'display:none', id: :no_hands_nor_feet_wash} %>
@@ -160,8 +160,8 @@
 
 <% if completion_report.hair_wash? %>
     <div class="report-prefilled-item">
-      <%= form.label :hair_wash, "洗髪", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :hair_wash %>
+      <%= form.label :hair_wash, "洗髪", class: '' do  %>
+          <%= form.check_box :hair_wash, class: 'colibri-checkbox' %>
           洗髪
       <% end %>
     </div>
@@ -170,29 +170,29 @@
 <% if completion_report.bath_or_shower != nil %>
     <div class="report-prefilled-item">
       <%= form.label :bath_or_shower, "全身浴" %>
-      <%= form.label :bath_or_shower_1, "入浴", class: 'colibri-form-label-dark' do %>
-        <%= form.radio_button :bath_or_shower, 1, {class: 'radio-inline'} %>
+      <%= form.label :bath_or_shower_1, "入浴", class: '' do %>
+        <%= form.radio_button :bath_or_shower, 1, {class: 'radio-inline colibri-checkbox'} %>
         入浴
       <% end %>
-      <%= form.label :bath_or_shower_0, "シャワー", class: 'colibri-form-label-dark' do %>
-        <%= form.radio_button :bath_or_shower, 0, {class: 'radio-inline'} %>
+      <%= form.label :bath_or_shower_0, "シャワー", class: '' do %>
+        <%= form.radio_button :bath_or_shower, 0, {class: 'radio-inline colibri-checkbox'} %>
         シャワー
       <% end %>
-      <%= form.radio_button :bath_or_shower, 2, {class: 'radio-inline',id: :no_bath_nor_shower, style: 'display:none'} %>
+      <%= form.radio_button :bath_or_shower, 2, {class: 'radio-inline colibri-checkbox',id: :no_bath_nor_shower, style: 'display:none'} %>
     </div>
 <% end %>
 
 <% if completion_report.washing_details != [''] && completion_report.washing_details != [] %>
     <div class="report-prefilled-item">
-        <%= form.label :washing_details, "整容", class: 'colibri-form-label-dark' %>
+        <%= form.label :washing_details, "整容", class: '' %>
         <%= form.select :washing_details, options_for_select([['爪', 0], ['耳', 1], ['髪', 3], ['化粧', 4]], completion_report.washing_details), {prompt: '選択する'}, {multiple: true, id: 'completion_details_washing_details'} %>
     </div>
 <% end %>
 
 <% if completion_report.changed_clothes? %>
     <div class="report-prefilled-item">
-        <%= form.label :changed_clothes, "更衣介助", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :changed_clothes %>
+        <%= form.label :changed_clothes, "更衣介助", class: '' do  %>
+            <%= form.check_box :changed_clothes, class: 'colibri-checkbox' %>
             更衣介助
         <% end %>
     </div>
@@ -200,8 +200,8 @@
 
 <% if completion_report.face_wash? %>
     <div class="report-prefilled-item">
-      <%= form.label :face_wash, "洗面", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :face_wash %>
+      <%= form.label :face_wash, "洗面", class: '' do  %>
+          <%= form.check_box :face_wash, class: 'colibri-checkbox' %>
           洗面
       <% end %>
     </div>
@@ -209,8 +209,8 @@
 
 <% if completion_report.mouth_wash? %>
     <div class="report-prefilled-item">
-      <%= form.label :mouth_wash, "口腔ケア", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :mouth_wash %>
+      <%= form.label :mouth_wash, "口腔ケア", class: '' do  %>
+          <%= form.check_box :mouth_wash, class: 'colibri-checkbox' %>
           口腔ケア
       <% end %>
     </div>            
@@ -218,8 +218,8 @@
 
 <% if completion_report.assisted_patient_to_change_body_posture? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_patient_to_change_body_posture, "体位変更", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_patient_to_change_body_posture %>
+      <%= form.label :assisted_patient_to_change_body_posture, "体位変更", class: '' do  %>
+          <%= form.check_box :assisted_patient_to_change_body_posture, class: 'colibri-checkbox' %>
           体位変更
       <% end %>
     </div>
@@ -227,8 +227,8 @@
 
 <% if completion_report.assisted_patient_to_transfer? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_patient_to_transfer, "移乗介助", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_patient_to_transfer %>
+      <%= form.label :assisted_patient_to_transfer, "移乗介助", class: '' do  %>
+          <%= form.check_box :assisted_patient_to_transfer, class: 'colibri-checkbox' %>
           移乗介助
       <% end %>
     </div>
@@ -236,8 +236,8 @@
 
 <% if completion_report.assisted_patient_to_move? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_patient_to_move, "移動介助", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_patient_to_move %>
+      <%= form.label :assisted_patient_to_move, "移動介助", class: '' do  %>
+          <%= form.check_box :assisted_patient_to_move, class: 'colibri-checkbox' %>
           移動介助
       <% end %>
     </div>
@@ -245,8 +245,8 @@
 
 <% if completion_report.commuted_to_the_hospital? %>
     <div class="report-prefilled-item">
-      <%= form.label :commuted_to_the_hospital, "通院介助", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :commuted_to_the_hospital %>
+      <%= form.label :commuted_to_the_hospital, "通院介助", class: '' do  %>
+          <%= form.check_box :commuted_to_the_hospital, class: 'colibri-checkbox' %>
           通院介助
       <% end %>
     </div>
@@ -254,8 +254,8 @@
 
 <% if completion_report.assisted_patient_to_shop? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_patient_to_shop, "買い物介助", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_patient_to_shop %>
+      <%= form.label :assisted_patient_to_shop, "買い物介助", class: '' do  %>
+          <%= form.check_box :assisted_patient_to_shop, class: 'colibri-checkbox' %>
           買い物介助
       <% end %>
     </div>
@@ -263,19 +263,19 @@
 
 <% if completion_report.assisted_patient_to_go_somewhere? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_patient_to_go_somewhere, "外出同行", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_patient_to_go_somewhere %>
+      <%= form.label :assisted_patient_to_go_somewhere, "外出同行", class: '' do  %>
+          <%= form.check_box :assisted_patient_to_go_somewhere, class: 'colibri-checkbox' %>
           外出同行
       <% end %>
-      <%= form.label :patient_destination_place, "行先", class: 'colibri-form-label-dark'  %>
+      <%= form.label :patient_destination_place, "行先", class: ''  %>
       <%= form.text_field :patient_destination_place, class: 'colibri-input additional-padding input-text-left' %>
     </div>
 <% end %>
 
 <% if completion_report.assisted_patient_to_go_out_of_bed? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_patient_to_go_out_of_bed, "起床介助", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_patient_to_go_out_of_bed %>
+      <%= form.label :assisted_patient_to_go_out_of_bed, "起床介助", class: '' do  %>
+          <%= form.check_box :assisted_patient_to_go_out_of_bed, class: 'colibri-checkbox' %>
           起床介助
       <% end %>
     </div>
@@ -283,8 +283,8 @@
 
 <% if completion_report.assisted_patient_to_go_to_bed? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_patient_to_go_to_bed, "就寝介助", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_patient_to_go_to_bed %>
+      <%= form.label :assisted_patient_to_go_to_bed, "就寝介助", class: '' do  %>
+          <%= form.check_box :assisted_patient_to_go_to_bed, class: 'colibri-checkbox' %>
           就寝介助
       <% end %>
     </div>
@@ -292,8 +292,8 @@
 
 <% if completion_report.assisted_to_take_medication? %>
     <div class="report-prefilled-item">
-        <%= form.label :assisted_to_take_medication, "服薬介助.確認", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :assisted_to_take_medication %>
+        <%= form.label :assisted_to_take_medication, "服薬介助.確認", class: '' do  %>
+            <%= form.check_box :assisted_to_take_medication, class: 'colibri-checkbox' %>
             服薬介助.確認
         <% end %>
     </div>
@@ -301,8 +301,8 @@
 
 <% if completion_report.assisted_to_apply_a_cream? %>
     <div class="report-prefilled-item">
-        <%= form.label :assisted_to_apply_a_cream, "薬の塗", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :assisted_to_apply_a_cream %>
+        <%= form.label :assisted_to_apply_a_cream, "薬の塗", class: '' do  %>
+            <%= form.check_box :assisted_to_apply_a_cream, class: 'colibri-checkbox' %>
             薬の塗布
         <% end %>
     </div>
@@ -310,8 +310,8 @@
 
 <% if completion_report.assisted_to_take_eye_drops? %>
     <div class="report-prefilled-item">
-        <%= form.label :assisted_to_take_eye_drops, "点眼", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :assisted_to_take_eye_drops %>
+        <%= form.label :assisted_to_take_eye_drops, "点眼", class: '' do  %>
+            <%= form.check_box :assisted_to_take_eye_drops, class: 'colibri-checkbox' %>
             点眼
         <% end %>
     </div>
@@ -319,8 +319,8 @@
 
 <% if completion_report.assisted_to_extrude_mucus? %>
     <div class="report-prefilled-item">
-        <%= form.label :assisted_to_extrude_mucus, "淡の吸引", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :assisted_to_extrude_mucus %>
+        <%= form.label :assisted_to_extrude_mucus, "淡の吸引", class: '' do  %>
+            <%= form.check_box :assisted_to_extrude_mucus, class: 'colibri-checkbox' %>
             淡の吸引
         <% end %>
     </div>
@@ -328,8 +328,8 @@
 
 <% if completion_report.assisted_to_take_suppository? %>
     <div class="report-prefilled-item">
-      <%= form.label :assisted_to_take_suppository, "浣腸", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :assisted_to_take_suppository %>
+      <%= form.label :assisted_to_take_suppository, "浣腸", class: '' do  %>
+          <%= form.check_box :assisted_to_take_suppository, class: 'colibri-checkbox' %>
           浣腸
       <% end %>
     </div>
@@ -337,15 +337,15 @@
 
 <% if completion_report.activities_done_with_the_patient != [''] && completion_report.activities_done_with_the_patient != [] %>
     <div class="report-prefilled-item">
-        <%= form.label :activities_done_with_the_patient, "共に行う", class: 'colibri-form-label-dark' %>
+        <%= form.label :activities_done_with_the_patient, "共に行う", class: '' %>
         <%= form.select :activities_done_with_the_patient, options_for_select([['掃除', 0], ['洗濯', 1],['衣類整理', 2],['調理', 3],['買い物', 4]], completion_report.activities_done_with_the_patient), {prompt: '選択する'}, {multiple: true, id: 'completion_report_activities_done_with_the_patient'} %>
     </div>
 <% end %>
 
 <% if completion_report.trained_patient_to_communicate? %>
     <div class="report-prefilled-item">
-      <%= form.label :trained_patient_to_communicate, "コミュニケーション", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :trained_patient_to_communicate %>
+      <%= form.label :trained_patient_to_communicate, "コミュニケーション", class: '' do  %>
+          <%= form.check_box :trained_patient_to_communicate, class: 'colibri-checkbox' %>
           コミュニケーション
       <% end %>
     </div>
@@ -353,8 +353,8 @@
 
 <% if completion_report.trained_patient_to_memorize? %>
     <div class="report-prefilled-item">
-      <%= form.label :trained_patient_to_memorize, "記憶への働きかけ", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :trained_patient_to_memorize %>
+      <%= form.label :trained_patient_to_memorize, "記憶への働きかけ", class: '' do  %>
+          <%= form.check_box :trained_patient_to_memorize, class: 'colibri-checkbox' %>
           記憶への働きかけ
       <% end %>
     </div>
@@ -362,8 +362,8 @@
 
 <% if completion_report.watch_after_patient_safety? %>
     <div class="report-prefilled-item">
-      <%= form.label :watch_after_patient_safety, "安全の見守り", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :watch_after_patient_safety %>
+      <%= form.label :watch_after_patient_safety, "安全の見守り", class: '' do  %>
+          <%= form.check_box :watch_after_patient_safety, class: 'colibri-checkbox' %>
           転倒予防の声かけ・見守り
       <% end %>
     </div>
@@ -371,22 +371,22 @@
 
 <% if completion_report.watched_after_patient_safety_doing != [''] && completion_report.watched_after_patient_safety_doing != [] %>
     <div class="report-prefilled-item">
-      <%= form.label :watched_after_patient_safety_doing, '見守り：', class: "colibri-form-label-dark" %>
+      <%= form.label :watched_after_patient_safety_doing, '見守り：', class: "" %>
       <%= form.select :watched_after_patient_safety_doing, options_for_select([['入浴', 0], ['更衣', 1],['移動', 2]], completion_report.watched_after_patient_safety_doing), {prompt: '選択する'}, {multiple: true, id: 'completion_report_watched_after_patient_safety_doing'} %>
     </div>
 <% end %>
 
 <% if completion_report.clean_up != [''] && completion_report.clean_up != [] %>
     <div class="report-prefilled-item">
-        <%= form.label :clean_up, "清掃", class: 'colibri-form-label-dark' %>
+        <%= form.label :clean_up, "清掃", class: '' %>
         <%= form.select :clean_up, options_for_select([['居室', 0], ['寝室', 1],['洗面所', 2],['トイレ', 3],['卓上', 4],['台所', 5],['浴室', 6],['Pトイレ', 7],['その他', 8]], completion_report.clean_up), {prompt: '選択する'}, {multiple: true, id: 'completion_report_cleanup'} %>
     </div>
 <% end %>
 
 <% if completion_report.took_out_trash? %>
     <div class="report-prefilled-item">
-      <%= form.label :took_out_trash, "ゴミ出し", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :took_out_trash %>
+      <%= form.label :took_out_trash, "ゴミ出し", class: '' do  %>
+          <%= form.check_box :took_out_trash, class: 'colibri-checkbox' %>
           ゴミ出し
       <% end %>
     </div>
@@ -394,8 +394,8 @@
 
 <% if completion_report.washed_clothes? %>
     <div class="report-prefilled-item">
-      <%= form.label :washed_clothes, "洗濯", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :washed_clothes %>
+      <%= form.label :washed_clothes, "洗濯", class: '' do  %>
+          <%= form.check_box :washed_clothes, class: 'colibri-checkbox' %>
           洗濯
       <% end %>
     </div>
@@ -403,8 +403,8 @@
 
 <% if completion_report.dried_clothes? %>
     <div class="report-prefilled-item">
-        <%= form.label :dried_clothes, "乾燥", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :dried_clothes %>
+        <%= form.label :dried_clothes, "乾燥", class: '' do  %>
+            <%= form.check_box :dried_clothes, class: 'colibri-checkbox' %>
             乾燥
         <% end %>
     </div>
@@ -412,8 +412,8 @@
 
 <% if completion_report.stored_clothes? %>
     <div class="report-prefilled-item">
-        <%= form.label :stored_clothes, "取り込み.収納", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :stored_clothes %>
+        <%= form.label :stored_clothes, "取り込み.収納", class: '' do  %>
+            <%= form.check_box :stored_clothes, class: 'colibri-checkbox' %>
             取り込み.収納
         <% end %>
     </div>
@@ -421,8 +421,8 @@
 
 <% if completion_report.ironed_clothes? %>
     <div class="report-prefilled-item">
-        <%= form.label :ironed_clothes, "アイロン", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :ironed_clothes %>
+        <%= form.label :ironed_clothes, "アイロン", class: '' do  %>
+            <%= form.check_box :ironed_clothes, class: 'colibri-checkbox' %>
             アイロン
         <% end %>
     </div>
@@ -430,8 +430,8 @@
 
 <% if completion_report.changed_bed_sheets? %>
     <div class="report-prefilled-item">
-        <%= form.label :changed_bed_sheets, "シーツ交換", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :changed_bed_sheets %>
+        <%= form.label :changed_bed_sheets, "シーツ交換", class: '' do  %>
+            <%= form.check_box :changed_bed_sheets, class: 'colibri-checkbox' %>
             シーツ交換
         <% end %>
     </div>
@@ -439,8 +439,8 @@
 
 <% if completion_report.changed_bed_cover? %>
     <div class="report-prefilled-item">
-        <%= form.label :changed_bed_cover, "布団カバー交換", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :changed_bed_cover %>
+        <%= form.label :changed_bed_cover, "布団カバー交換", class: '' do  %>
+            <%= form.check_box :changed_bed_cover, class: 'colibri-checkbox' %>
             布団カバー交換
         <% end %>
     </div>
@@ -448,8 +448,8 @@
 
 <% if completion_report.rearranged_clothes? %>
     <div class="report-prefilled-item">
-        <%= form.label :rearranged_clothes, "衣類の整理", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :rearranged_clothes %>
+        <%= form.label :rearranged_clothes, "衣類の整理", class: '' do  %>
+            <%= form.check_box :rearranged_clothes, class: 'colibri-checkbox' %>
             衣類の整理
         <% end %>
     </div>
@@ -457,8 +457,8 @@
 
 <% if completion_report.repaired_clothes? %>
     <div class="report-prefilled-item">
-        <%= form.label :repaired_clothes, "被服の補修", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :repaired_clothes %>
+        <%= form.label :repaired_clothes, "被服の補修", class: '' do  %>
+            <%= form.check_box :repaired_clothes, class: 'colibri-checkbox' %>
             被服の補修
         <% end %>
     </div>
@@ -466,8 +466,8 @@
 
 <% if completion_report.dried_the_futon? %>
     <div class="report-prefilled-item">
-        <%= form.label :dried_the_futon, "布団干し", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :dried_the_futon %>
+        <%= form.label :dried_the_futon, "布団干し", class: '' do  %>
+            <%= form.check_box :dried_the_futon, class: 'colibri-checkbox' %>
             布団干し
         <% end %>
     </div>
@@ -475,8 +475,8 @@
 
 <% if completion_report.set_the_table? %>
     <div class="report-prefilled-item">
-        <%= form.label :set_the_table, "下拵え", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :set_the_table %>
+        <%= form.label :set_the_table, "下拵え", class: '' do  %>
+            <%= form.check_box :set_the_table, class: 'colibri-checkbox' %>
             下拵え
         <% end %>
     </div>
@@ -484,19 +484,19 @@
 
 <% if completion_report.cooked_for_the_patient? %>
     <div class="report-prefilled-item">
-        <%= form.label :cooked_for_the_patient, "調理", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :cooked_for_the_patient %>
+        <%= form.label :cooked_for_the_patient, "調理", class: '' do  %>
+            <%= form.check_box :cooked_for_the_patient, class: 'colibri-checkbox' %>
             調理
         <% end %>
-        <%= form.label :remarks_around_cooking, "献立", class: 'colibri-form-label-dark ' %>
+        <%= form.label :remarks_around_cooking, "献立", class: ' ' %>
         <%= form.text_field :remarks_around_cooking, class: 'colibri-input' %>
     </div>
 <% end %>
 
 <% if completion_report.cleaned_the_table? %>
     <div class="report-prefilled-item">
-        <%= form.label :cleaned_the_table, "配.下膳", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :cleaned_the_table %>
+        <%= form.label :cleaned_the_table, "配.下膳", class: '' do  %>
+            <%= form.check_box :cleaned_the_table, class: 'colibri-checkbox' %>
             配.下膳
         <% end %>
     </div>
@@ -504,8 +504,8 @@
 
 <% if completion_report.grocery_shopping? %>
     <div class="report-prefilled-item">
-      <%= form.label :grocery_shopping, "日常品などの買い物", class: 'colibri-form-label-dark' do  %>
-          <%= form.check_box :grocery_shopping %>
+      <%= form.label :grocery_shopping, "日常品などの買い物", class: '' do  %>
+          <%= form.check_box :grocery_shopping, class: 'colibri-checkbox' %>
           日常品などの買い物
       <% end %>
     </div>
@@ -513,8 +513,8 @@
 
 <% if completion_report.medecine_shopping? %>
     <div class="report-prefilled-item">
-        <%= form.label :medecine_shopping, "薬の受取り", class: 'colibri-form-label-dark' do  %>
-            <%= form.check_box :medecine_shopping %>
+        <%= form.label :medecine_shopping, "薬の受取り", class: '' do  %>
+            <%= form.check_box :medecine_shopping, class: 'colibri-checkbox' %>
             薬の受取り
         <% end %>
     </div>
@@ -522,15 +522,15 @@
 
 <% if completion_report.grocery_shopping? || completion_report.medecine_shopping? %>
     <div class="report-prefilled-item">
-        <%= form.label :amount_received_for_shopping, "預り金", class: 'colibri-form-label-dark' %>
+        <%= form.label :amount_received_for_shopping, "預り金", class: '' %>
         <%= form.number_field :amount_received_for_shopping, id: 'amount-received', class: 'colibri-input', style: "width:80px" %>
     </div>
     <div class="report-prefilled-item">
-        <%= form.label :amount_spent_for_shopping, "買い物", class: 'colibri-form-label-dark' %>
+        <%= form.label :amount_spent_for_shopping, "買い物", class: '' %>
         <%= form.number_field :amount_spent_for_shopping, id: 'amount-spent', class: 'colibri-input', style: "width:80px" %>
     </div>
     <div class="report-prefilled-item">
-        <%= form.label :change_left_after_shopping, "おつり", class: 'colibri-form-label-dark' %>
+        <%= form.label :change_left_after_shopping, "おつり", class: '' %>
         <%= form.number_field :change_left_after_shopping, id: 'groceries-change', class: 'colibri-input', style: "width:80px" %>
     </div>
 

@@ -22,7 +22,13 @@
 
 .report-prefilled-item {
     color: black;
-    font-size: 1.1em;
+    font-size: 1.15em;
+}
+
+.colibri-checkbox {
+    width:15px;
+    height:15px;
+    border-radius: 2px;
 }
 
 .colibri-horizontal-menu-item {

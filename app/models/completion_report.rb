@@ -36,14 +36,35 @@ class CompletionReport < ApplicationRecord
 
     def changed_from_forecast?
         return false if forecasted_report.nil?
-        self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) !=
-        forecasted_report.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+        actual = self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+        forecasted = forecasted_report.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+
+        actual['washing_details'].sort! 
+        forecasted['washing_details'].sort! 
+        actual['watched_after_patient_safety_doing'].sort! 
+        forecasted['watched_after_patient_safety_doing'].sort! 
+        actual['clean_up'].sort! 
+        forecasted['clean_up'].sort! 
+        actual['activities_done_with_the_patient'].sort! 
+        forecasted['activities_done_with_the_patient'].sort! 
+
+        actual != forecasted
     end
 
     def attributes_differences_with(forecast)
-        forecasted = forecast.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)).to_a
-        actual = self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)).to_a
-        (forecasted - actual).map {|k,v| k}.uniq
+        forecasted = forecast.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+        actual = self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+
+        actual['washing_details'].sort! 
+        forecasted['washing_details'].sort! 
+        actual['watched_after_patient_safety_doing'].sort! 
+        forecasted['watched_after_patient_safety_doing'].sort! 
+        actual['clean_up'].sort! 
+        forecasted['clean_up'].sort! 
+        actual['activities_done_with_the_patient'].sort! 
+        forecasted['activities_done_with_the_patient'].sort! 
+
+        (forecasted.to_a - actual.to_a).map {|k,v| k}.uniq
     end
 
     def difference_between_actual_and_forecasted(forecast)

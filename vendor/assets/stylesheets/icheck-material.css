@@ -4,14 +4,14 @@
  * Licensed under MIT (https://github.com/bantikyan/icheck-material/blob/master/LICENSE)
  */
 [class*="icheck-material"] {
-  min-height: 16px;
+  min-height: 22px;
   margin-top: 6px !important;
   margin-bottom: 6px !important;
   padding-left: 0px; }
   [class*="icheck-material"] > label {
     padding-left: 29px !important;
-    min-height: 16px;
-    line-height: 16px;
+    min-height: 22px;
+    line-height: 22px;
     display: inline-block;
     position: relative;
     vertical-align: top;
@@ -30,8 +30,8 @@
     -ms-appearance: none;
     display: block;
     pointer-events: none;
-    width: 16px;
-    height: 16px;
+    width: 22px;
+    height: 22px;
     outline: none;
     transform: scale(2);
     -ms-transform: scale(2);
@@ -53,8 +53,8 @@
       content: "";
       display: inline-block;
       position: absolute;
-      width: 16px;
-      height: 16px;
+      width: 22px;
+      height: 22px;
       border: 2px solid #787878;
       border-radius: 3px;
       margin-left: -29px;
@@ -74,7 +74,9 @@
       transform: translate(7.75px, 4.5px) rotate(45deg);
       -ms-transform: translate(7.75px, 4.5px) rotate(45deg);
       box-sizing: border-box; }
-
+    [class*="icheck-material"] > input:first-child:not(:checked):not(:disabled):hover + label::before,
+    [class*="icheck-material"] > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+      border-width: 2px; }
     [class*="icheck-material"] > input:first-child::-ms-check {
       opacity: 0;
       border-radius: 50%; }
@@ -93,20 +95,20 @@
   [class*="icheck-material"] > input[type="radio"]:first-child:checked + input[type="hidden"] + label::after {
     content: "";
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     border: none;
-    top: 4px;
-    left: 4px;
+    top: 6px;
+    left: 6px;
     transform: none;
     -ms-transform: none; }
   [class*="icheck-material"] > input[type="checkbox"]:first-child:checked + label::after,
   [class*="icheck-material"] > input[type="checkbox"]:first-child:checked + input[type="hidden"] + label::after {
-    width: 6px;
-    height: 10px;
-    transform: translate(5px, 2px) rotate(45deg);
-    -ms-transform: translate(5px, 2px) rotate(45deg); }
+    width: 8px;
+    height: 14px;
+    transform: translate(7px, 2px) rotate(45deg);
+    -ms-transform: translate(7px, 2px) rotate(45deg); }
 
 .icheck-inline {
   display: inline-block; }
@@ -118,7 +120,9 @@
   background-color: #f44336; }
   .icheck-material-red > input:first-child::-ms-check {
     background-color: #f44336; }
-
+  .icheck-material-red > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-red > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #f44336; }
   .icheck-material-red > input:first-child:checked + label::before,
   .icheck-material-red > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #f44336;
@@ -136,7 +140,9 @@
   background-color: #e91e63; }
   .icheck-material-pink > input:first-child::-ms-check {
     background-color: #e91e63; }
-
+  .icheck-material-pink > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-pink > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #e91e63; }
   .icheck-material-pink > input:first-child:checked + label::before,
   .icheck-material-pink > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #e91e63;
@@ -154,7 +160,9 @@
   background-color: #9c27b0; }
   .icheck-material-purple > input:first-child::-ms-check {
     background-color: #9c27b0; }
-
+  .icheck-material-purple > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-purple > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #9c27b0; }
   .icheck-material-purple > input:first-child:checked + label::before,
   .icheck-material-purple > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #9c27b0;
@@ -172,7 +180,9 @@
   background-color: #673ab7; }
   .icheck-material-deeppurple > input:first-child::-ms-check {
     background-color: #673ab7; }
-
+  .icheck-material-deeppurple > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-deeppurple > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #673ab7; }
   .icheck-material-deeppurple > input:first-child:checked + label::before,
   .icheck-material-deeppurple > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #673ab7;
@@ -190,7 +200,9 @@
   background-color: #3f51b5; }
   .icheck-material-indigo > input:first-child::-ms-check {
     background-color: #3f51b5; }
-
+  .icheck-material-indigo > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-indigo > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #3f51b5; }
   .icheck-material-indigo > input:first-child:checked + label::before,
   .icheck-material-indigo > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #3f51b5;
@@ -208,7 +220,9 @@
   background-color: #2196f3; }
   .icheck-material-blue > input:first-child::-ms-check {
     background-color: #2196f3; }
-
+  .icheck-material-blue > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-blue > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #2196f3; }
   .icheck-material-blue > input:first-child:checked + label::before,
   .icheck-material-blue > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #2196f3;
@@ -226,7 +240,9 @@
   background-color: #03a9f4; }
   .icheck-material-lightblue > input:first-child::-ms-check {
     background-color: #03a9f4; }
-
+  .icheck-material-lightblue > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-lightblue > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #03a9f4; }
   .icheck-material-lightblue > input:first-child:checked + label::before,
   .icheck-material-lightblue > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #03a9f4;
@@ -244,7 +260,9 @@
   background-color: #00bcd4; }
   .icheck-material-cyan > input:first-child::-ms-check {
     background-color: #00bcd4; }
-
+  .icheck-material-cyan > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-cyan > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #00bcd4; }
   .icheck-material-cyan > input:first-child:checked + label::before,
   .icheck-material-cyan > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #00bcd4;
@@ -262,7 +280,9 @@
   background-color: #009688; }
   .icheck-material-teal > input:first-child::-ms-check {
     background-color: #009688; }
-
+  .icheck-material-teal > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-teal > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #009688; }
   .icheck-material-teal > input:first-child:checked + label::before,
   .icheck-material-teal > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #009688;
@@ -280,7 +300,9 @@
   background-color: #4caf50; }
   .icheck-material-green > input:first-child::-ms-check {
     background-color: #4caf50; }
-
+  .icheck-material-green > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-green > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #4caf50; }
   .icheck-material-green > input:first-child:checked + label::before,
   .icheck-material-green > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #4caf50;
@@ -298,7 +320,9 @@
   background-color: #8bc34a; }
   .icheck-material-lightgreen > input:first-child::-ms-check {
     background-color: #8bc34a; }
-
+  .icheck-material-lightgreen > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-lightgreen > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #8bc34a; }
   .icheck-material-lightgreen > input:first-child:checked + label::before,
   .icheck-material-lightgreen > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #8bc34a;
@@ -316,7 +340,9 @@
   background-color: #cddc39; }
   .icheck-material-lime > input:first-child::-ms-check {
     background-color: #cddc39; }
-
+  .icheck-material-lime > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-lime > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #cddc39; }
   .icheck-material-lime > input:first-child:checked + label::before,
   .icheck-material-lime > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #cddc39;
@@ -334,7 +360,9 @@
   background-color: #ffeb3b; }
   .icheck-material-yellow > input:first-child::-ms-check {
     background-color: #ffeb3b; }
-
+  .icheck-material-yellow > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-yellow > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #ffeb3b; }
   .icheck-material-yellow > input:first-child:checked + label::before,
   .icheck-material-yellow > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #ffeb3b;
@@ -352,7 +380,9 @@
   background-color: #ffc107; }
   .icheck-material-amber > input:first-child::-ms-check {
     background-color: #ffc107; }
-
+  .icheck-material-amber > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-amber > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #ffc107; }
   .icheck-material-amber > input:first-child:checked + label::before,
   .icheck-material-amber > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #ffc107;
@@ -370,7 +400,9 @@
   background-color: #ff9800; }
   .icheck-material-orange > input:first-child::-ms-check {
     background-color: #ff9800; }
-
+  .icheck-material-orange > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-orange > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #ff9800; }
   .icheck-material-orange > input:first-child:checked + label::before,
   .icheck-material-orange > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #ff9800;
@@ -388,7 +420,9 @@
   background-color: #ff5722; }
   .icheck-material-deeporange > input:first-child::-ms-check {
     background-color: #ff5722; }
-
+  .icheck-material-deeporange > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-deeporange > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #ff5722; }
   .icheck-material-deeporange > input:first-child:checked + label::before,
   .icheck-material-deeporange > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #ff5722;
@@ -406,7 +440,9 @@
   background-color: #795548; }
   .icheck-material-brown > input:first-child::-ms-check {
     background-color: #795548; }
-
+  .icheck-material-brown > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-brown > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #795548; }
   .icheck-material-brown > input:first-child:checked + label::before,
   .icheck-material-brown > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #795548;
@@ -424,7 +460,9 @@
   background-color: #9e9e9e; }
   .icheck-material-grey > input:first-child::-ms-check {
     background-color: #9e9e9e; }
-
+  .icheck-material-grey > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-grey > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #9e9e9e; }
   .icheck-material-grey > input:first-child:checked + label::before,
   .icheck-material-grey > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #9e9e9e;
@@ -442,7 +480,9 @@
   background-color: #607d8b; }
   .icheck-material-bluegrey > input:first-child::-ms-check {
     background-color: #607d8b; }
-
+  .icheck-material-bluegrey > input:first-child:not(:checked):not(:disabled):hover + label::before,
+  .icheck-material-bluegrey > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: #607d8b; }
   .icheck-material-bluegrey > input:first-child:checked + label::before,
   .icheck-material-bluegrey > input:first-child:checked + input[type="hidden"] + label::before {
     background-color: #607d8b;

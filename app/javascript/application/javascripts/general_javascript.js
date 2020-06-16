@@ -277,7 +277,7 @@ window.mobileScrollTop = function() {
 
 document.addEventListener('turbolinks:load', function () {
 
-    $('label').hover(function() {
+    $('label').click(function() {
         alert(`checked? ${$(this).prev().is(':checked')}`)
     });
 

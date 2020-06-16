@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="form-group icheck-material-cyan">
-                    <%= form.check_box :edit_confirm_requested, include_hidden: false, id: :corporation_edit_confirm_requested %>
+                    <%= form.check_box :edit_confirm_requested, include_hidden: false, id: :corporation_edit_confirm_requested, onclick: '' %>
                     <%= form.label :edit_confirm_requested, "ドラッグで編集確認画面を表示する", class: "colibri-form-label-dark" %>
                 </div>
             </div>
@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="form-group icheck-material-cyan">
-                    <%= form.check_box :include_description_in_nurse_mailer, include_hidden: false, id: :corporation_include_description_in_nurse_mailer %>
+                    <%= form.check_box :include_description_in_nurse_mailer, include_hidden: false, id: :corporation_include_description_in_nurse_mailer, onclick: 'void(0)' %>
                     <%= form.label :include_description_in_nurse_mailer, "リマインダーメールシフトのコメント", class: "colibri-form-label-dark" %>
                 </div>
 

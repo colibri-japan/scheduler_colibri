@@ -32,10 +32,7 @@
     pointer-events: none;
     width: 16px;
     height: 16px;
-    outline: none;
-    transform: scale(2);
-    -ms-transform: scale(2);
-    transition: opacity 0.3s, transform 0.3s; }
+    outline: none; }
     [class*="icheck-material"] > input:first-child:disabled {
       cursor: default; }
       [class*="icheck-material"] > input:first-child:disabled + label,
@@ -78,11 +75,7 @@
     [class*="icheck-material"] > input:first-child::-ms-check {
       opacity: 0;
       border-radius: 50%; }
-    [class*="icheck-material"] > input:first-child:active {
-      transform: scale(0);
-      -ms-transform: scale(0);
-      opacity: 1;
-      transition: opacity 0s, transform 0s; }
+
   [class*="icheck-material"] > input[type="radio"]:first-child + label::before,
   [class*="icheck-material"] > input[type="radio"]:first-child + input[type="hidden"] + label::before {
     border-radius: 50%; }

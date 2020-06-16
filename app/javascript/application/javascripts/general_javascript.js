@@ -277,7 +277,9 @@ window.mobileScrollTop = function() {
 
 document.addEventListener('turbolinks:load', function () {
 
-    $('label').click(function() {});
+    $('label').click(function() {
+        alert('tapped')
+    });
 
     initializeTooltips()
 

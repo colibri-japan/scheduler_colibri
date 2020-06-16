@@ -160,9 +160,9 @@
             <div class="colibri-form-subsection">
                 <div class="colibri-form-subsection-title">計画書の設定</div>
 
-                <div class="form-group icheck-material-cyan" onclick="void(0)">
+                <div class="form-group icheck-material-cyan" >
                     <%= form.check_box :hide_care_plan_long_term_goals, checked: @corporation.hide_care_plan_long_term_goals, include_hidden: false, id: :corporation_hide_care_plan_long_term_goals %>
-                    <%= form.label :hide_care_plan_long_term_goals, "長期目標を外す", class: 'colibri-form-label-dark' %>
+                    <%= form.label :hide_care_plan_long_term_goals, "長期目標を外す", class: 'colibri-form-label-dark', onclick: 'alert("hey")' %>
                 </div>
             </div>
 
@@ -171,12 +171,12 @@
 
                 <div class="form-group icheck-material-cyan">
                     <%= form.check_box :separate_posts_by_team, checked: @corporation.separate_posts_by_team, include_hidden: false, id: :corporation_separate_posts_by_team  %>
-                    <%= form.label :separate_posts_by_team, "掲示板の書き込みをチーム別にする", class: 'colibri-form-label-dark' %>
+                    <%= form.label :separate_posts_by_team, "掲示板の書き込みをチーム別にする", class: 'colibri-form-label-dark', onclick: 'alert("hey")' %>
                 </div>
 
                 <div class="form-group icheck-material-cyan">
                     <%= form.check_box :separate_patients_by_team, checked: @corporation.separate_patients_by_team, include_hidden: false, id: :corporation_separate_patients_by_team %>
-                    <%= form.label :separate_patients_by_team, "利用者の表示をチーム別にする", class: 'colibri-form-label-dark' %>
+                    <%= form.label :separate_patients_by_team, "利用者の表示をチーム別にする", class: 'colibri-form-label-dark', onclick: 'alert("hey")' %>
                 </div>
             </div>
 

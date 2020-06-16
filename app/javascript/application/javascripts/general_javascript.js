@@ -277,10 +277,6 @@ window.mobileScrollTop = function() {
 
 document.addEventListener('turbolinks:load', function () {
 
-    $('label').click(function() {
-        alert(`checked? ${$(this).prev().is(':checked')}`)
-    });
-
     initializeTooltips()
 
     $('.completion-report-message-body').click(function(){

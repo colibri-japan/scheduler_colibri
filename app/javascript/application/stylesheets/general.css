@@ -40,6 +40,11 @@
     border-top: 0.5px solid #eee;
 }
 
+html.touch *:hover {
+    pointer-events: none !important;
+    all: unset !important;
+}
+
 @keyframes ripple {
     to {transform: scale(24); opacity: 0}
 }

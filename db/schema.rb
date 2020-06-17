@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200602135915) do
+ActiveRecord::Schema.define(version: 20200617150513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 20200602135915) do
     t.string "geolocation_error_message"
     t.bigint "planning_id"
     t.bigint "patient_id"
+    t.boolean "nurse_ping", default: false
     t.index ["appointment_id"], name: "index_completion_reports_on_appointment_id"
     t.index ["forecasted_report_id"], name: "index_completion_reports_on_forecasted_report_id"
     t.index ["patient_id"], name: "index_completion_reports_on_patient_id"

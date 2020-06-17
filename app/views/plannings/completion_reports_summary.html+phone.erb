@@ -83,6 +83,7 @@
                             </div>
                             <div class="completion-report-notification">
                                 <%= report_has_changed_from_forecast(completion_report.changed_from_forecast?).html_safe %>
+                                <%= nurse_ping_mark(completion_report.nurse_ping?).html_safe %>
                             </div>
                             <div class="completion-report-tasks" style="display:flex">
                                 <div style="flex-grow:1">

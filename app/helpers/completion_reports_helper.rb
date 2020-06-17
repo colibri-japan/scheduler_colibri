@@ -551,7 +551,15 @@ module CompletionReportsHelper
 
     def report_has_changed_from_forecast(changed)
         if changed
-            "<div><div style='width:10px;height:13px;background-color:#FFFF9B;border:1px solid black;display:inline-block'> </div> 計画と異なる</div>"
+            "<div><div style='width:10px;height:18px;background-color:#FBC32D;display:inline-block'> </div> 予定と異なる</div>"
+        else
+            ""
+        end
+    end
+
+    def nurse_ping_mark(nurse_did_ping)
+        if nurse_did_ping
+            "<div><div style='width:10px;height:18px;background-color:#FF9090;display:inline-block'> </div> ヘルパーから注意</div>"
         else
             ""
         end

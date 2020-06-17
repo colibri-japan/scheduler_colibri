@@ -59,6 +59,15 @@
       <% end %>
     <% end %>
 
+    <% if completion_report.new_record? && reportable.class.try(:name) == 'Appointment' %>
+      <div class="blue-background-form">
+        <div class="icheck-material-cyan">
+          <%= form.check_box :nurse_ping, include_hidden: false, id: :completion_report_nurse_ping %>
+          <%= form.label :nurse_ping, 'サ責に注意マークを見せる' %>
+        </div>
+      </div>
+    <% end %>
+
     <%= form.hidden_field :forecasted_report_id, value: completion_report.forecasted_report_id %>
     <%= hidden_field_tag :start, params[:start] %>
     <%= hidden_field_tag :end, params[:end] %>

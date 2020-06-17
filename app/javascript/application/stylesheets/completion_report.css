@@ -55,3 +55,21 @@
     font-weight: bold;
     border-bottom: 3px solid #85929E;
 }
+
+.reportable-information {
+    font-size: 1.05em;
+}
+
+.completion-report-message-body {
+    background-color:#defcfc;
+    padding:5px;
+    border-radius:5px;
+}
+
+.reportable-time-information {
+    margin-bottom: 4px;
+}
+
+.reportable-nurse-patient-information {
+    margin-bottom: 4px;
+}

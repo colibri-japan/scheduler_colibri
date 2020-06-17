@@ -144,12 +144,6 @@
         font-size: 0.9em;
     }
 
-    .completion-report-message-body {
-        background-color:#defcfc;
-        padding:5px;
-        border-radius:5px;
-    }
-
     .completion-report-tasks {
         margin-bottom: 5px;
     }

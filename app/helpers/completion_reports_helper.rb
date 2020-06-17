@@ -548,6 +548,14 @@ module CompletionReportsHelper
     def cleaned_the_table_checked(cleaned_the_table)
         cleaned_the_table ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>配.下膳</div>" : "" 
     end
+
+    def report_has_changed_from_forecast(changed)
+        if changed
+            "<div><div style='width:10px;height:13px;background-color:#FFFF9B;border:1px solid black;display:inline-block'> </div> 計画と異なる</div>"
+        else
+            ""
+        end
+    end
     
     def grocery_or_medecine_shopping_checked(completion_report, detailed_report)
         if completion_report.try(:grocery_shopping?) && completion_report.try(:medecine_shopping?)

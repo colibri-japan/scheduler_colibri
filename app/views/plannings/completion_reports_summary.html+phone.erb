@@ -77,12 +77,34 @@
                                 <%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d %-H:%M ~ ' )}#{completion_report.reportable.ends_at.strftime('%-H:%M')}" %>
                             </div>
                         </div>
-                        <div class="completion-report-message-body"  data-url="<%= edit_appointment_path(completion_report.reportable) %>">
-                            <div class="completion-report-tasks">
-                                <%= completion_report_summary(completion_report, detailed: true).html_safe %>
+                        <div style="border:0.5px solid #ccc;border-radius:4px;padding:5px;background-color:#FEFFFE">
+                            <div class="completion-report-title">
+                                <%= completion_report.reportable.try(:title) %>
                             </div>
-                            <div class="completion-report-comment">
+                            <div class="completion-report-notification">
+                                <%= report_has_changed_from_forecast(completion_report.changed_from_forecast?).html_safe %>
+                            </div>
+                            <div class="completion-report-tasks" style="display:flex">
+                                <div style="flex-grow:1">
+                                    <%= completion_report_summary(completion_report, detailed: true).html_safe %>
+                                </div>
+                                <% if completion_report.changed_from_forecast? %>
+                                    <div style="flex-grow:1">
+                                        <div class='btn btn-sm btn-colibri-light compare-with-forecast' style='margin-top:6px'>
+                                            予定と比較
+                                        </div>
+                                        <div class='forecasted-report-summary' style="display:none;">
+                                            <%= completion_report_summary(completion_report.forecasted_report, detailed: false).html_safe %>
+                                        </div>
+                                    </div>
+                                <% end %>
+                            </div>
+                            <div class="completion-report-message-body">
                                 <%= simple_format(completion_report.general_comment) %>
+                            </div>
+                            <div class="completion-report-action" style="display:flex;flex-direction:row-reverse">
+                                <%= link_to '確認', toggle_verified_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-info', style: 'margin-left:6px' %>
+                                <%= link_to '編集', edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-colibri-light' %>
                             </div>
                         </div>
                     </div>

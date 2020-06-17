@@ -144,8 +144,19 @@
         font-size: 0.9em;
     }
 
+    .completion-report-comment {
+        border-top: 1px solid #2B384E;
+        padding-top: 5px;
+    }
+
+    .completion-report-action {
+        padding-top:6px;
+        margin-top:6px;
+        border-top:1px solid #ccc;
+    }
+
     .completion-report-tasks {
-        margin-bottom: 5px;
+        margin-bottom: 8px;
     }
 
     #japanese-query-date {

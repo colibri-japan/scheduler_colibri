@@ -277,6 +277,11 @@ window.mobileScrollTop = function() {
 
 document.addEventListener('turbolinks:load', function () {
 
+    $('.compare-with-forecast').click(function(){
+        $(this).toggle()
+        $(this).next().toggle()
+    })
+
     initializeTooltips()
 
     $('.completion-report-message-body').click(function(){

@@ -66,35 +66,67 @@
 			<div id="completed-reports">
 				<table class="table">
 					<thead>
-						<th style="width:8%">日時</th>
-						<th style="width:11%">時間</th>
-						<th style="width:10%">利用者名</th>
-						<th style="width:10%">従業員名</th>
-						<th style="width:15%">ケア内容</th>
-						<th style="width:37%">特記事項</th>
-						<th style="width:7%"></th>
+						<th style="width:18%">サービス情報</th>
+						<th style="width:15%">注意事項</th>
+						<th style="width:17%">ケア内容</th>
+						<th style="width:38%">特記事項</th>
+						<th style="width:12%">アクション</th>
 					</thead>
 					<tbody>
 						<% @completion_reports.each do |completion_report| %>
 							<tr>
-								<td><%= l(completion_report.reportable.starts_at, format: '%-m/%-d (%a)') %></td>
-								<td><%= "#{completion_report.reportable.starts_at.strftime('%H:%M')} ~ #{completion_report.reportable.ends_at.strftime('%H:%M')}" %></td>
-								<td><%= "#{completion_report.reportable.try(:patient).try(:name)}様" %></td>
-								<td><%= completion_report.reportable.try(:nurse).try(:name) %></td>
-								<td class="report-items <%= 'report-caution' if completion_report.changed_from_forecast? %>">
+								<td>
+									<div class="reportable-information">
+										<div class="reportable-nurse-patient-information">
+											<%= completion_report.reportable.try(:nurse).try(:name) %> > <%= "#{completion_report.reportable.try(:patient).try(:name)}様" %>
+										</div>
+										<div class="reportable-time-information">
+											<%= l(completion_report.reportable.starts_at, format: '%-m/%-d (%a) ') %><%= "#{completion_report.reportable.starts_at.strftime('%H:%M')} ~ #{completion_report.reportable.ends_at.strftime('%H:%M')}" %>
+										</div>
+										<div class="reportable-title">
+											<%= completion_report.reportable.try(:title) %>
+										</div>
+									</div>
+								</td>
+								<td>
+									<%= nurse_ping_mark(completion_report.nurse_ping?).html_safe %>
+									<%= report_has_changed_from_forecast(completion_report.changed_from_forecast?).html_safe %>
+								</td>
+								<td class="report-items">
 									<div  style="margin:6px;padding:6px;background-color:white">
 										<div>
 											<%= completion_report_summary(completion_report, detailed: true).html_safe %>
 										</div>
 										<% if completion_report.changed_from_forecast? %>
-											<div class='btn btn-sm btn-colibri-light colibri-tooltip' data-content="<%= completion_report_summary(completion_report.forecasted_report, detailed: false).html_safe %>" style="margin-top:5px;width:90px;display:block;margin-left:auto;margin-right:auto">
+											<div class='btn btn-sm btn-colibri-light colibri-tooltip' data-content="<%= completion_report_summary(completion_report.forecasted_report, detailed: false).html_safe %>" style='margin-top:6px'>
 												予定と比較
 											</div>
 										<% end %>
 									</div>
 								</td>
-								<td><%= simple_format(completion_report.general_comment) %></td>
-								<td><%= link_to '編集', edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-light-gray' %></td>
+								<td>
+									<div class="completion-report-message-body">
+										<%= simple_format(completion_report.general_comment) %>
+									</div>
+								</td>
+								<td>
+									<div><%= link_to '編集 <span style="font-size:13px" class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-mid-light' %></div>
+                                	<div style="margin-top:5px" id="appointment-<%= completion_report.reportable_id %>">
+										<% if completion_report.reportable.try(:verified?) %>
+											<span class='glyphicon glyphicon-check'  style="color: #42B97C"></span><%= link_to "#{completion_report.reportable.verifier.try(:name)} #{completion_report.reportable.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+										<% else %>
+											<%= link_to '確認１', toggle_verified_appointment_path(completion_report.reportable), method: :patch, remote: :true, class: 'btn btn-success btn-sm' %>
+										<% end %>
+									</div>
+									<div style='margin-top:5px' id='appointment-second-verified-<%= completion_report.reportable_id %>'>
+										<% if completion_report.reportable.try(:second_verified?) %>
+											<span class='glyphicon glyphicon-check' style="color: #42B97C"></span>
+											<%= link_to "#{completion_report.reportable.second_verifier.try(:name)}#{completion_report.reportable.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+										<% else %>
+											<%= link_to '確認２', toggle_second_verified_appointment_path(completion_report.reportable), method: :patch, remote: :true, class: 'btn btn-success btn-sm' %>
+										<% end %>
+										</div>
+								</td>
 							</tr>
 						<% end %>
 					</tbody>

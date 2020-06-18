@@ -62,7 +62,7 @@
 			    <%= text_field_tag :query_date, value=l(@date, format: '%Y-%-m-%-d'), {id: :completion_reports_query_date, style: 'border:none;font-size:0.01em;width:1px;color:white'} %>
                 <%= l(@date, format: '%-m月%-d日 (%a)') %>
             </div>
-			<div class="btn btn-sm btn-colibri-light" id="date-picker-button"><span style="font-weight:bold">日付</span>  <span class="glyphicon glyphicon-calendar glyphicon-no-hover-style" style="font-size:12px"></span></div>
+			<div class="btn btn-sm btn-colibri-mid-light" id="date-picker-button"><span style="font-weight:bold">日付</span>  <span class="glyphicon glyphicon-calendar glyphicon-no-hover-style" style="font-size:12px"></span></div>
 		</div>
 
         <div id="completion-reports-body">
@@ -83,20 +83,20 @@
                                     </div>
                                 </div>
                                 <div class='edit-reportable'>
-                                    <%= link_to '編集 <span style="font-size:13px" class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-light' %>
+                                    <%= link_to '編集 <span style="font-size:13px" class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-mid-light' %>
                                 </div>  
                             </div>
                             <div class="completion-report-notification">
                                 <%= nurse_ping_mark(completion_report.nurse_ping?).html_safe %>
                                 <%= report_has_changed_from_forecast(completion_report.changed_from_forecast?).html_safe %>
                             </div>
-                            <div class="completion-report-tasks" style="display:flex">
+                            <div class="completion-report-tasks" style="display:flex;margin-top:4px">
                                 <div style="flex-grow:1">
                                     <%= completion_report_summary(completion_report, detailed: true).html_safe %>
                                 </div>
                                 <% if completion_report.changed_from_forecast? %>
                                     <div style="flex-grow:1">
-                                        <div class='btn btn-sm btn-colibri-light compare-with-forecast' style='margin-top:6px'>
+                                        <div class='btn btn-sm btn-colibri-mid-light compare-with-forecast' style='margin-top:6px'>
                                             予定と比較
                                         </div>
                                         <div class='forecasted-report-summary' style="display:none;">

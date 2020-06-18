@@ -53,7 +53,7 @@
 			<div style="display:flex" id="completion-reports-query-date-container">
 				<div id='japanese-query-date'><%= l(@date, format: '%-m月%-d日 (%a)') %></div>
 				<%= text_field_tag :query_date, value=l(@date, format: '%Y-%-m-%-d'), {id: :completion_reports_query_date, style: 'border:none;font-size:0.1em;width:20px;color:white'} %>
-				<div class="btn btn-colibri-light" id="date-picker-button"><span style="font-weight:bold;line-height:30px">日付</span>  <span class="glyphicon glyphicon-calendar glyphicon-no-hover-style" style="font-size:14px"></span></div>
+				<div class="btn btn-colibri-mid-light" id="date-picker-button"><span style="font-weight:bold;line-height:30px">日付</span>  <span class="glyphicon glyphicon-calendar glyphicon-no-hover-style" style="font-size:14px"></span></div>
 			</div>
 			<% if false %>
             <div style="display:flex">
@@ -112,7 +112,7 @@
 									</div>
 								</td>
 								<td>
-									<div><%= link_to '編集 <span style="font-size:13px" class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-light' %></div>
+									<div><%= link_to '編集 <span style="font-size:13px" class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-mid-light' %></div>
                                 	<div style="margin-top:5px" id="appointment-<%= completion_report.reportable_id %>">
 										<% if completion_report.reportable.try(:verified?) %>
 											<span class='glyphicon glyphicon-check'  style="color: #42B97C"></span><%= link_to "#{completion_report.reportable.verifier.try(:name)} #{completion_report.reportable.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>

@@ -69,21 +69,26 @@
 			<div id="completed-reports">
 				<% @completion_reports.each do |completion_report| %>
                     <div class="completion-report-container">
-                        <div class="completion-report-message-heading">
-                            <div class="completion-report-nurse-patient">
-                                <%= "#{completion_report.reportable.try(:nurse).try(:name)} > #{completion_report.reportable.try(:patient).try(:name)}様" %>
-                            </div>
-                            <div class="completion-report-datetime">
-                                <%= "#{l(completion_report.reportable.starts_at, format: '%-m/%-d %-H:%M ~ ' )}#{completion_report.reportable.ends_at.strftime('%-H:%M')}" %>
-                            </div>
-                        </div>
                         <div style="border:0.5px solid #ccc;border-radius:4px;padding:5px;background-color:#FEFFFE">
-                            <div class="completion-report-title">
-                                <%= completion_report.reportable.try(:title) %>
+                            <div style="display:flex;justify-content:space-between">
+                                <div class='reportable-information' style='font-size:0.9em;'>
+                                    <div class="completion-report-nurse-patient">
+                                        <%= "#{completion_report.reportable.try(:nurse).try(:name)} > #{completion_report.reportable.try(:patient).try(:name)}様" %>
+                                    </div>
+                                    <div class="completion-report-datetime">
+                                        <%= "#{l(completion_report.reportable.starts_at, format: '%-m月%-d日 %-H:%M ~ ' )}#{completion_report.reportable.ends_at.strftime('%-H:%M')}" %>
+                                    </div>
+                                    <div class="completion-report-title" >
+                                        <%= completion_report.reportable.try(:title) %>
+                                    </div>
+                                </div>
+                                <div class='edit-reportable'>
+                                    <%= link_to '編集 <span style="font-size:13px" class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-light' %>
+                                </div>  
                             </div>
                             <div class="completion-report-notification">
-                                <%= report_has_changed_from_forecast(completion_report.changed_from_forecast?).html_safe %>
                                 <%= nurse_ping_mark(completion_report.nurse_ping?).html_safe %>
+                                <%= report_has_changed_from_forecast(completion_report.changed_from_forecast?).html_safe %>
                             </div>
                             <div class="completion-report-tasks" style="display:flex">
                                 <div style="flex-grow:1">
@@ -103,9 +108,23 @@
                             <div class="completion-report-message-body">
                                 <%= simple_format(completion_report.general_comment) %>
                             </div>
-                            <div class="completion-report-action" style="display:flex;flex-direction:row-reverse">
-                                <%= link_to '確認', toggle_verified_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-info', style: 'margin-left:6px' %>
-                                <%= link_to '編集', edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-colibri-light' %>
+                            <div class="completion-report-action" style="text-align:right">
+                                
+                                <div style="margin-bottom:4px" id="appointment-<%= completion_report.reportable_id %>">
+                                    <% if completion_report.reportable.try(:verified?) %>
+										<span class='glyphicon glyphicon-check'  style="color: #42B97C"></span><%= link_to "#{completion_report.reportable.verifier.try(:name)} #{completion_report.reportable.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+									<% else %>
+										<%= link_to '確認１', toggle_verified_appointment_path(completion_report.reportable), method: :patch, remote: :true, class: 'btn btn-success btn-sm' %>
+									<% end %>
+                                </div>
+                                <div id="appointment-second-verified-<%= completion_report.reportable_id %>">
+                                	<% if completion_report.reportable.try(:second_verified?) %>
+										<span class='glyphicon glyphicon-check' style="color: #42B97C"></span>
+										<%= link_to "#{completion_report.reportable.second_verifier.try(:name)}#{completion_report.reportable.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+									<% else %>
+										<%= link_to '確認２', toggle_second_verified_appointment_path(completion_report.reportable), method: :patch, remote: :true, class: 'btn btn-success btn-sm' %>
+									<% end %>
+                                </div>
                             </div>
                         </div>
                     </div>

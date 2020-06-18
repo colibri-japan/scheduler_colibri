@@ -136,6 +136,7 @@
 
     .completion-report-container {
         padding: 5px;
+        margin-top:5px;
     }
 
     .completion-report-message-heading {

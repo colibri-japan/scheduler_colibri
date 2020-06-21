@@ -109,14 +109,14 @@
                                 
                                 <div style="margin-bottom:4px" id="appointment-<%= completion_report.reportable_id %>">
                                     <% if completion_report.reportable.try(:verified?) %>
-										<span class='glyphicon glyphicon-check'  style="color: #42B97C"></span><%= link_to "#{completion_report.reportable.verifier.try(:name)} #{completion_report.reportable.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
+										<span class='glyphicon glyphicon-check'  style="color: #4f5b66"></span><%= link_to "#{completion_report.reportable.verifier.try(:name)} #{completion_report.reportable.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
 									<% else %>
 										<%= link_to '確認１', toggle_verified_appointment_path(completion_report.reportable), method: :patch, remote: :true, class: 'btn btn-success btn-sm' %>
 									<% end %>
                                 </div>
                                 <div id="appointment-second-verified-<%= completion_report.reportable_id %>">
                                 	<% if completion_report.reportable.try(:second_verified?) %>
-										<span class='glyphicon glyphicon-check' style="color: #42B97C"></span>
+										<span class='glyphicon glyphicon-check' style="color: #4f5b66"></span>
 										<%= link_to "#{completion_report.reportable.second_verifier.try(:name)}#{completion_report.reportable.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(completion_report.reportable), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
 									<% else %>
 										<%= link_to '確認２', toggle_second_verified_appointment_path(completion_report.reportable), method: :patch, remote: :true, class: 'btn btn-success btn-sm' %>

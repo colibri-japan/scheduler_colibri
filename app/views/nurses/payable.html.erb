@@ -136,7 +136,7 @@
 									<span>調整中</span>
 								<% else %>
 									<% if appointment.verified? %>
-									<span class='glyphicon glyphicon-check'  style="color: #42B97C"></span>
+									<span class='glyphicon glyphicon-check'  style="color: #4f5b66"></span>
 									<%= link_to "#{appointment.verifier.try(:name)} #{appointment.verified_at.try(:strftime,'%y/%m/%d')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
 									<% else %>
 									<%= link_to '確認１', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm'  %>
@@ -153,7 +153,7 @@
 								<% elsif appointment.edit_requested? %>
 								<% else %>
 									<% if appointment.second_verified? %>
-										<span class='glyphicon glyphicon-check' style="color: #42B97C"></span>
+										<span class='glyphicon glyphicon-check' style="color: #4f5b66"></span>
 										<%= link_to "#{appointment.second_verifier.try(:name)}#{appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
 									<% else %>
 										<%= link_to '確認２', toggle_second_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' %>

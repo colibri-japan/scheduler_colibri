@@ -129,7 +129,7 @@
                   <td><%= appointment.title %></td>
                   <td class='verify-provided-service' id='appointment-<%= appointment.id %>'>
                     <% if appointment.verified? %>
-                        <div><span class='glyphicon glyphicon-check'  style="color: #42B97C"></span></div>
+                        <div><span class='glyphicon glyphicon-check'  style="color:#4f5b66"></span></div>
                         <%= link_to "#{appointment.verifier.try(:name)} #{appointment.try(:verified_at).strftime('%-m月%-d日')}", toggle_verified_appointment_path(appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>
                     <% else %>
                       <%= link_to '確認', toggle_verified_appointment_path(appointment), method: :patch, remote: :true, class: 'btn btn-success btn-sm' if !appointment.verified? %>

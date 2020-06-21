@@ -1,5 +1,5 @@
 <% if @appointment.second_verified? %>
-    $('#appointment-second-verified-<%= @appointment.id %>').html('<span class="glyphicon glyphicon-check"  style="color: #42B97C"></span><%= link_to "#{@appointment.second_verifier.try(:name)} #{@appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(@appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>')
+    $('#appointment-second-verified-<%= @appointment.id %>').html('<span class="glyphicon glyphicon-check"  style="color: #4f5b66"></span><%= link_to "#{@appointment.second_verifier.try(:name)} #{@appointment.second_verified_at.try(:strftime,'%y/%m/%d')}", toggle_second_verified_appointment_path(@appointment), remote: true, method: :patch, class: 'verified-at-and-by', data: {confirm: '実績の確認が解除されます'} %>')
 <% else %>
     $('#appointment-second-verified-<%= @appointment.id %>').html('<%= link_to "確認２", toggle_second_verified_appointment_path(@appointment), method: :patch, remote: :true, class: "btn btn-success btn-sm" %>')
 <% end %>

@@ -383,7 +383,7 @@ module CompletionReportsHelper
     end
     
     def assisted_to_extrude_mucus_checked(assisted_to_extrude_mucus)
-        assisted_to_extrude_mucus ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>淡の吸引</div>" : "" 
+        assisted_to_extrude_mucus ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>痰の吸引</div>" : "" 
     end
     
     def assisted_to_take_suppository_checked(assisted_to_take_suppository)

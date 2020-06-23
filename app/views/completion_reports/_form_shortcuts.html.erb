@@ -453,6 +453,10 @@
         <%= form.label :change_left_after_shopping, "おつり" %>
         <%= form.number_field :change_left_after_shopping, id: 'groceries-change', class: 'colibri-input', style: "width:80px" %>
     </div>
+    <div class="report-prefilled-item">
+        <%= form.label :shopping_items, "内訳　" %>
+        <%= form.text_field :shopping_items, class: 'colibri-input', style: 'width:300px' %>
+    </div>
 
 <% end %>
 

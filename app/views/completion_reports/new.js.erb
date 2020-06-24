@@ -6,7 +6,11 @@ $('#new_completion_report').modal({backdrop: 'static'});
 completionFormSelectize()
 uncheckableRadioButtons()
 calculateGroceriesChange()
-completionReportGeolocationRequest()
+<% if @reportable.class.name == 'Appointment' %>
+    window.requireGeolocationErrorConfirmation = false 
+    window.submitReport = false
+    completionReportGeolocationRequest()
+<% end %>
 
 $('.toggleable-subsection-title').click(function(){
     $(this).next().toggle()
@@ -16,8 +20,6 @@ $('#toggle-detailed-report').click(function(){
     $('#report-detail-container').toggle()
 })
 
-window.requireGeolocationErrorConfirmation = false 
-window.submitReport = false
 
 submitCompletionReportAction()
 

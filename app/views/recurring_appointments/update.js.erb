@@ -16,7 +16,6 @@
     }
   
     renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@recurring_appointment.patient_id}" %>', '<%= "nurse_#{@recurring_appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@recurring_appointment.patient_id}" %>', '<%= "nurse_#{@recurring_appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
-    renderNewEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@new_recurring_appointment.patient_id}" %>', '<%= "nurse_#{@new_recurring_appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@new_recurring_appointment.patient_id}" %>', '<%= "nurse_#{@new_recurring_appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
 
     if (window.fullCalendar) {
       window.fullCalendar.batchRendering(function(){
@@ -35,6 +34,8 @@
         }
 
         <% if @new_recurring_appointment.present? %>
+          renderNewEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@new_recurring_appointment.patient_id}" %>', '<%= "nurse_#{@new_recurring_appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@new_recurring_appointment.patient_id}" %>', '<%= "nurse_#{@new_recurring_appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
+
           if (renderNewEvent) {
             let newEvents = $.parseJSON("<%= j render(partial: 'recurring_appointments/recurring_appointment.json', locals: {recurring_appointment: @new_recurring_appointment}).html_safe %>")
 

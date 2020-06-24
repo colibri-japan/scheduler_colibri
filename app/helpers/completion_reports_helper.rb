@@ -375,7 +375,7 @@ module CompletionReportsHelper
     end
     
     def assisted_to_apply_a_cream_checked(assisted_to_apply_a_cream)
-        assisted_to_apply_a_cream ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>薬の塗</div>" : "" 
+        assisted_to_apply_a_cream ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>薬の塗布</div>" : "" 
     end
     
     def assisted_to_take_eye_drops_checked(assisted_to_take_eye_drops)

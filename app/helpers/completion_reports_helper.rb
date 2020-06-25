@@ -320,6 +320,8 @@ module CompletionReportsHelper
             '髪'
         when '4'
             '化粧'
+        when '5'
+            '髭剃り'
         else
             ""
         end

@@ -171,7 +171,7 @@
 <% if completion_report.washing_details != [''] && completion_report.washing_details != [] %>
     <div class="report-prefilled-item icheck-material-green">
         <%= form.label :washing_details, "整容" %>
-        <%= form.select :washing_details, options_for_select([['爪', 0], ['耳', 1], ['髪', 3], ['化粧', 4]], completion_report.washing_details), {prompt: '選択する'}, {multiple: true, id: 'completion_details_washing_details'} %>
+        <%= form.select :washing_details, options_for_select([['爪', 0], ['耳', 1], ['髪', 3], ['化粧', 4], ['髭剃り', 5]], completion_report.washing_details), {prompt: '選択する'}, {multiple: true, id: 'completion_details_washing_details'} %>
     </div>
 <% end %>
 

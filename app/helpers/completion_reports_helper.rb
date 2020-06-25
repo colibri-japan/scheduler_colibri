@@ -407,6 +407,8 @@ module CompletionReportsHelper
                     '調理'
                 when '4'
                     '買い物'
+                when '5'
+                    '片付け'
                 else
                     ''
                 end

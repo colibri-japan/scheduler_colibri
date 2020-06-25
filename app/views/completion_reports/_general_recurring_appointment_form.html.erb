@@ -256,7 +256,7 @@
             <div class="toggleable-subsection" style='<%= "display:none" unless reportable.class.name == 'RecurringAppointment'  %>'>
                 <div class="form-group">
                     <%= form.label :activities_done_with_the_patient, "共に行う", class: 'colibri-form-label-dark' %>
-                    <%= form.select :activities_done_with_the_patient, options_for_select([['掃除', 0], ['洗濯', 1],['衣類整理', 2],['調理', 3],['買い物', 4]], completion_report.activities_done_with_the_patient), {prompt: '選択する'}, {multiple: true, id: 'completion_report_activities_done_with_the_patient'} %>
+                    <%= form.select :activities_done_with_the_patient, options_for_select([['掃除', 0], ['洗濯', 1],['衣類整理', 2],['調理', 3],['買い物', 4], ['片付け', 5]], completion_report.activities_done_with_the_patient), {prompt: '選択する'}, {multiple: true, id: 'completion_report_activities_done_with_the_patient'} %>
                 </div>
                 <div class="form-row">
                     <div class="form-group  col-md-5">

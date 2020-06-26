@@ -30,6 +30,13 @@
       </div>
 
       <div class="form-group">
+        <%= form.label :min_monthly_days_worked, "勤務日数目標（月）" %>
+        <%= form.number_field :min_monthly_days_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>日から
+        <%= form.number_field :max_monthly_days_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>日まで
+        <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "例：10日から15日と指摘された場合。10日から15日間働いた従業員が対象です。<br/><br/>10 ≤ 勤務日数 ≤ 15"}  %>
+      </div>
+
+      <div class="form-group">
         <%= form.label :min_days_worked, "合計稼動日数" %>
         <%= form.number_field :min_days_worked,  {step: 1, class: 'colibri-input', style: 'width:50px'} %>日から
         <%= form.number_field :max_days_worked, {step: 1, class: 'colibri-input', style: 'width:50px'} %>まで

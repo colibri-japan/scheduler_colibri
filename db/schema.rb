@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200626173835) do
+ActiveRecord::Schema.define(version: 20200626191604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -671,6 +671,8 @@ ActiveRecord::Schema.define(version: 20200626173835) do
     t.string "targeted_end_time"
     t.integer "time_constraint_operator"
     t.integer "holiday_operator"
+    t.integer "min_monthly_days_worked"
+    t.integer "max_monthly_days_worked"
     t.index ["corporation_id"], name: "index_salary_rules_on_corporation_id"
   end
 

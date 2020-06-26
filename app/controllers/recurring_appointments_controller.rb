@@ -160,7 +160,7 @@ class RecurringAppointmentsController < ApplicationController
     end
 
     def recurring_appointment_params
-      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :duration, :editing_occurrences_after, :service_id, :synchronize_appointments)
+      params.require(:recurring_appointment).permit(:title, :anchor, :end_day, :starts_at, :ends_at, :frequency, :nurse_id, :patient_id, :planning_id, :color, :description, :duration, :editing_occurrences_after, :service_id, :synchronize_appointments, :updating_from_drag_and_drop)
     end
 
 

@@ -833,6 +833,12 @@ let masterDragOptions = (eventDropInfo) => {
 
     $('#drag-drop-master').modal({ backdrop: 'static' })
 
+    /* clearing previous click actions */
+    $('.close-drag-drop-modal').off('click')
+    $('#master-drag-copy').off('click')
+    $('#master-drag-move').off('click')
+
+
     $('.close-drag-drop-modal').click(function () {
         eventDropInfo.revert()
         $('.modal').modal('hide');
@@ -877,7 +883,8 @@ let masterDragOptions = (eventDropInfo) => {
                     nurse_id: newNurseId,
                     patient_id: newPatientId,
                     editing_occurrences_after: previousStart.format('YYYY-MM-DD'),
-                    synchronize_appointments: 1
+                    synchronize_appointments: 1,
+                    updating_from_drag_and_drop: 1
                 }
             },
             success: function(){

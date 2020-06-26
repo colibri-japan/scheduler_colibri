@@ -1,6 +1,3 @@
-puts params[:start]
-puts params[:end]
-
 appointments = recurring_appointment.appointments(params[:start], params[:end])
 
 json.array! appointments do |appointment|

@@ -7,6 +7,7 @@ class RecurringAppointment < ApplicationRecord
 	attribute :request_edit_for_overlapping_appointments, :boolean
 	attribute :synchronize_appointments, :boolean
 	attribute :should_not_copy_completion_report, :boolean
+	attribute :updating_from_drag_and_drop, :boolean
 	
 	belongs_to :nurse, optional: true
 	belongs_to :patient, optional: true
@@ -28,7 +29,7 @@ class RecurringAppointment < ApplicationRecord
 	validate :nurse_patient_and_planning_from_same_corporation
 	validate :cannot_overlap_existing_appointment_create, on: :create
 
-	before_update :redefine_anchor_if_editing_after_some_date
+	before_update :redefine_anchor_if_editing_after_some_date, unless: :updating_from_drag_and_drop
 	before_update :split_recurring_appointment_before_after_update
 	after_commit :update_appointments, on: :update
 

@@ -90,6 +90,17 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         #verify if met goals
         met_goals = true 
 
+        #verify monthly days worked goal
+        days_worked = @nurse.days_worked_in_range(@start_of_month..@end_of_today) 
+        if salary_rule.min_monthly_days_worked.present? && !salary_rule.max_monthly_days_worked.present?
+          met_goals = days_worked >= salary_rule.min_monthly_days_worked
+        elsif salary_rule.max_monthly_days_worked.present? && !salary_rule.min_monthly_days_worked.present? 
+          met_goals = days_worked <= salary_rule.max_monthly_days_worked
+        elsif salary_rule.min_monthly_days_worked.present? && salary_rule.max_monthly_days_worked.present?
+          met_goals = (days_worked >= salary_rule.min_monthly_days_worked) && (days_worked <= salary_rule.max_monthly_days_worked)
+        end
+
+        #verify monthly service count goal, and calculate appointments count
         if salary_rule.min_monthly_service_count.present? && (!salary_rule.max_monthly_service_count.present?)
           met_goals = appointments_count >= salary_rule.min_monthly_service_count
           appointments_count = appointments_count >= salary_rule.min_monthly_service_count ? (appointments_count - salary_rule.min_monthly_service_count) : 0
@@ -107,7 +118,7 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
           end
         end
         
-        #filtering duration from goals
+        #verify appointments hours worked goal, and calculate appointments duration
         if salary_rule.min_monthly_hours_worked.present? && (!salary_rule.max_monthly_hours_worked.present?)
           met_goals = appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600)
           appointments_duration = appointments_duration >= (salary_rule.min_monthly_hours_worked * 3600) ? (appointments_duration - (salary_rule.min_monthly_hours_worked * 3600)) : 0

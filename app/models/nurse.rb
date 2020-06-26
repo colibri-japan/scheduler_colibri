@@ -169,8 +169,12 @@ class Nurse < ApplicationRecord
 		end
 	end
 
-	def days_worked_in_range(range)
-		self.appointments.operational.in_range(range).pluck(:starts_at).map(&:to_date).uniq.size
+	def days_worked_in_range(range, options = {})
+		if options[:inside_insurance_scope].present? && options[:inside_insurance_scope] == true
+			self.appointments.operational.joins(:service).where(services: {inside_insurance_scope: true}).in_range(range).pluck(:starts_at).map(&:to_date).uniq.size
+		else
+			self.appointments.operational.in_range(range).pluck(:starts_at).map(&:to_date).uniq.size
+		end
 	end
 
 	def date_from_work_day_number(day_number, options = {})

@@ -290,6 +290,13 @@
     </div>
 <% end %>
 
+<% if completion_report.changed_wet_compress? %>
+    <div class="report-prefilled-item icheck-material-green">
+        <%= form.check_box :changed_wet_compress, class: 'colibri-checkbox', include_hidden: false, id: :completion_report_changed_wet_compress %>
+        <%= form.label :changed_wet_compress, "湿布・パッチ貼り替え"  %>
+    </div>
+<% end %>
+
 <% if completion_report.activities_done_with_the_patient != [''] && completion_report.activities_done_with_the_patient != [] %>
     <div class="report-prefilled-item">
         <%= form.label :activities_done_with_the_patient, "共に行う" %>

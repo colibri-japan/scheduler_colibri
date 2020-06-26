@@ -76,6 +76,7 @@ module CompletionReportsHelper
             #{assisted_to_take_eye_drops_checked(completion_report.try(:assisted_to_take_eye_drops))}
             #{assisted_to_extrude_mucus_checked(completion_report.try(:assisted_to_extrude_mucus))}
             #{assisted_to_take_suppository_checked(completion_report.try(:assisted_to_take_suppository))}
+            #{changed_wet_compress_checked(completion_report.try(:changed_wet_compress))}
             #{activities_done_with_the_patient_checked(completion_report.try(:activities_done_with_the_patient))}
             #{trained_patient_to_communicate_checked(completion_report.try(:trained_patient_to_communicate))}
             #{trained_patient_to_memorize_checked(completion_report.try(:trained_patient_to_memorize))}
@@ -390,6 +391,10 @@ module CompletionReportsHelper
     
     def assisted_to_take_suppository_checked(assisted_to_take_suppository)
         assisted_to_take_suppository ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>浣腸</div>" : "" 
+    end
+    
+    def changed_wet_compress_checked(changed_wet_compress)
+        changed_wet_compress ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>湿布・パッチ貼り替え</div>" : "" 
     end
     
     def activities_done_with_the_patient_checked(activities_done_with_the_patient)

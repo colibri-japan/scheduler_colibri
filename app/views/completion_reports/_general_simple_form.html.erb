@@ -222,20 +222,6 @@
               <% end %>
             </div>
 
-            <% if !@corporation.simple_reports? %>
-              <div class="form-row">
-                <div class="from-group col-md-2">
-                  <%= form.label :assisted_to_take_suppository, "浣腸", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :assisted_to_take_suppository %>
-                      浣腸
-                  <% end %>
-                </div>
-                <div class="from-group col-md-10">
-                  <%= form.label :remarks_around_medication, "医療行為の準備.後片付け", class: 'colibri-form-label-dark'  %>
-                  <%= form.text_field :remarks_around_medication, class: 'colibri-input additional-padding input-text-left' %>
-                </div>
-              </div>
-            <% end %>
           </div>
       </div>
 
@@ -247,41 +233,6 @@
                 <%= form.label :activities_done_with_the_patient, "共に行う", class: 'colibri-form-label-dark' %>
                 <%= form.select :activities_done_with_the_patient, options_for_select([['掃除', 0], ['洗濯', 1],['衣類整理', 2],['調理', 3],['買い物', 4], ['片付け', 5]], completion_report.activities_done_with_the_patient), {prompt: '選択する'}, {multiple: true, id: 'completion_report_activities_done_with_the_patient'} %>
             </div>
-
-            <% if !@corporation.simple_reports? %>
-
-              <div class="form-row">
-                <div class="form-group  col-md-5">
-                  <%= form.label :trained_patient_to_communicate, "コミュニケーション", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :trained_patient_to_communicate %>
-                      コミュニケーション
-                  <% end %>
-                </div>
-                <div class="form-group  col-md-4">
-                  <%= form.label :trained_patient_to_memorize, "記憶への働きかけ", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :trained_patient_to_memorize %>
-                      記憶への働きかけ
-                  <% end %>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <%= form.label :watch_after_patient_safety, "安全の見守り", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :watch_after_patient_safety %>
-                      転倒予防の声かけ・見守り
-                  <% end %>
-                </div>
-                <div class="form-group col-md-6">
-                  <%= form.select :watched_after_patient_safety_doing, options_for_select([['入浴', 0], ['更衣', 1],['移動', 2]], completion_report.watched_after_patient_safety_doing), {prompt: '選択する'}, {multiple: true, id: 'completion_report_watched_after_patient_safety_doing'} %>
-                </div>
-              </div>
-
-              <div class="form-group">
-                  <%= form.label :other_assistance_for_patient_independency, "その他", class: "colibri-form-label-dark" %>
-                  <%= form.text_area :other_assistance_for_patient_independency, class: 'form-control' %>
-              </div>
-            <% end %>
           </div>
       </div>
 
@@ -290,216 +241,41 @@
           
           <div class="toggleable-subsection" style='<%= "display:none" unless reportable.class.name == 'RecurringAppointment' || @completion_report.with_house_care? %>'>
             
-            <% if @corporation.simple_reports? %>
-              <div class="form-row">
-                <div class='colibri-form-label-dark col-md-3'>
-                  <%= form.check_box :batch_assisted_house_cleaning %>
-                  <%= form.label :batch_assisted_house_cleaning, '掃除', class: "colibri-form-label-dark" %>
-                </div>
-            <% else %>
-              <div class="modal-subsection-title-sm">掃除</div>
-
-              <div class="form-row">
-                <div class="form-group col-md-2">
-                  <%= form.label :clean_up, "清掃", class: 'colibri-form-label-dark' %>
-                </div>
-                <div class="form-group col-md-7">
-                  <%= form.select :clean_up, options_for_select([['居室', 0], ['寝室', 1],['洗面所', 2],['トイレ', 3],['卓上', 4],['台所', 5],['浴室', 6],['Pトイレ', 7],['その他', 8]], completion_report.clean_up), {prompt: '選択する'}, {multiple: true, id: 'completion_report_cleanup'} %>
-                </div>
-                <div class="form-group col-md-3">
-                  <%= form.label :took_out_trash, "ゴミ出し", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :took_out_trash %>
-                      ゴミ出し
-                  <% end %>
-                </div>
+            <div class="form-row">
+              <div class='colibri-form-label-dark col-md-3'>
+                <%= form.check_box :batch_assisted_house_cleaning %>
+                <%= form.label :batch_assisted_house_cleaning, '掃除', class: "colibri-form-label-dark" %>
               </div>
-              <div class="colibri-form-subsection-separator"></div>
-            <% end %>
-              
-            <% if @corporation.simple_reports? %>
+
               <div class='colibri-form-label-dark col-md-3'>
                 <%= form.check_box :batch_assisted_laundry %>
                 <%= form.label :batch_assisted_laundry, '洗濯', class: 'colibri-form-label-dark' %>
               </div>
-            <% else %>
-              <div class="modal-subsection-title-sm">洗濯</div>
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                  <%= form.label :washed_clothes, "洗濯", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :washed_clothes %>
-                      洗濯
-                  <% end %>
-                </div>
-                <div class="form-group col-md-2">
-                  <%= form.label :dried_clothes, "乾燥", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :dried_clothes %>
-                      乾燥
-                  <% end %>
-                </div>
-                <div class="form-group col-md-4">
-                  <%= form.label :stored_clothes, "取り込み.収納", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :stored_clothes %>
-                      取り込み.収納
-                  <% end %>
-                </div>
-                <div class="form-group col-md-3">
-                  <%= form.label :ironed_clothes, "アイロン", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :ironed_clothes %>
-                      アイロン
-                  <% end %>
-                </div>
-              </div>
-              <div class="colibri-form-subsection-separator"></div>
-            <% end %>
               
-            <% if @corporation.simple_reports? %>
-                <div class='colibri-form-label-dark col-md-4'>
-                  <%= form.check_box :batch_assisted_bedmake %>
-                  <%= form.label :batch_assisted_bedmake, 'ベッドメイク', class: 'colibri-form-label-dark' %>
-                </div>
+              <div class='colibri-form-label-dark col-md-4'>
+                <%= form.check_box :batch_assisted_bedmake %>
+                <%= form.label :batch_assisted_bedmake, 'ベッドメイク', class: 'colibri-form-label-dark' %>
               </div>
-            <% else %>
-              <div class="modal-subsection-title-sm">ベッドメイク</div>
-              <div class="form-row">
-                <div  class="form-group col-md-3">
-                  <%= form.label :changed_bed_sheets, "シーツ交換", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :changed_bed_sheets %>
-                      シーツ交換
-                  <% end %>
-                </div>
-                <div  class="form-group col-md3">
-                  <%= form.label :changed_bed_cover, "布団カバー交換", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :changed_bed_cover %>
-                      布団カバー交換
-                  <% end %>
-                </div>
-              </div>
-              <div class="colibri-form-subsection-separator"></div>
-            <% end %>
+            </div>
 
-            <% if @corporation.simple_reports? %>
-              <div class="form-row">
-                <div class='colibri-form-label-dark col-md-6'>
-                  <%= form.check_box :batch_assisted_storing_furniture %>
-                  <%= form.label :batch_assisted_storing_furniture, '衣類の整理.被服の補修', class: 'colibri-form-label-dark' %>
-                </div>
-            <% else %>
-              <div class="modal-subsection-title-sm">衣類.寝具</div>
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                  <%= form.label :rearranged_clothes, "衣類の整理", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :rearranged_clothes %>
-                      衣類の整理
-                  <% end %>
-                </div>
-                <div class="form-group col-md-3">
-                  <%= form.label :repaired_clothes, "被服の補修", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :repaired_clothes %>
-                      被服の補修
-                  <% end %>
-                </div>
-                <div class="form-group col-md-3">
-                  <%= form.label :dried_the_futon, "布団干し", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :dried_the_futon %>
-                      布団干し
-                  <% end %>
-                </div>
-              </div>
-              <div class="colibri-form-subsection-separator"></div>
-            <% end %>
-
-
-            <% if @corporation.simple_reports? %>
-                <div class='colibri-form-label-dark col-md-6'>
-                  <%= form.check_box :batch_assisted_cooking %>
-                  <%= form.label :batch_assisted_cooking, '一般的な調理、配下膳', class: 'colibri-form-label-dark' %>
-                </div>
-              </div>
-            <% else %>
-              <div class="modal-subsection-title-sm">調理</div>
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                  <%= form.label :set_the_table, "下拵え", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :set_the_table %>
-                      下拵え
-                  <% end %>
-                </div>
-                <div class="form-group col-md-3">
-                  <%= form.label :cooked_for_the_patient, "調理", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :cooked_for_the_patient %>
-                      調理
-                  <% end %>
-                </div>
-                <div class="form-group col-md-3">
-                  <%= form.label :cleaned_the_table, "配.下膳", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :cleaned_the_table %>
-                      配.下膳
-                  <% end %>
-                </div>
+            <div class="form-row">
+              <div class='colibri-form-label-dark col-md-6'>
+                <%= form.check_box :batch_assisted_storing_furniture %>
+                <%= form.label :batch_assisted_storing_furniture, '衣類の整理.被服の補修', class: 'colibri-form-label-dark' %>
               </div>
 
-              <% if reportable.class.name == 'Appointment' %>
-                <div class="form-row">
-                  <%= form.label :remarks_around_cooking, "献立", class: 'colibri-form-label-dark form-group col-md-1' %>
-                  <%= form.text_field :remarks_around_cooking, class: 'form-control form-group col-md-11' %>
-                </div>
-              <% end %>
-
-              <div class="colibri-form-subsection-separator"></div>
-            <% end %>
-
+              <div class='colibri-form-label-dark col-md-6'>
+                <%= form.check_box :batch_assisted_cooking %>
+                <%= form.label :batch_assisted_cooking, '一般的な調理、配下膳', class: 'colibri-form-label-dark' %>
+              </div>
+            </div>
             
-            <% if @corporation.simple_reports? %> 
-              <div class="form-row">
-                <div class='colibri-form-label-dark col-md-6'>
-                  <%= form.check_box :batch_assisted_groceries %>
-                  <%= form.label :batch_assisted_groceries, '買い物.薬の受け取り', class: 'colibri-form-label-dark' %>
-                </div>
+            <div class="form-row">
+              <div class='colibri-form-label-dark col-md-6'>
+                <%= form.check_box :batch_assisted_groceries %>
+                <%= form.label :batch_assisted_groceries, '買い物.薬の受け取り', class: 'colibri-form-label-dark' %>
               </div>
-            <% else %>
-              <div class="modal-subsection-title-sm">買い物など</div>
-              <div class="form-row">
-                <div class="form-group col-md-5">
-                  <%= form.label :grocery_shopping, "日常品などの買い物", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :grocery_shopping %>
-                      日常品などの買い物
-                  <% end %>
-                </div>
-                <div class="form-group col-md-4">
-                  <%= form.label :medecine_shopping, "薬の受取り", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :medecine_shopping %>
-                      薬の受取り
-                  <% end %>
-                </div>
-
-              </div>
-
-              <% if reportable.class.name == 'Appointment' %>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <%= form.label :amount_received_for_shopping, "預り金", class: 'colibri-form-label-dark' %>
-                    <%= form.number_field :amount_received_for_shopping, id: 'amount-received', class: 'colibri-input', style: "width:80px" %>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <%= form.label :amount_spent_for_shopping, "買い物", class: 'colibri-form-label-dark' %>
-                    <%= form.number_field :amount_spent_for_shopping, id: 'amount-spent', class: 'colibri-input', style: "width:80px" %>
-                  </div>
-                
-                </div>
-                <div class="form-group">
-                  <%= form.label :change_left_after_shopping, "おつり", class: 'colibri-form-label-dark' %>
-                  <%= form.number_field :change_left_after_shopping, id: 'groceries-change', class: 'colibri-input', style: "width:80px" %>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-2">
-                    <%= form.label :shopping_items, "内訳", class: 'colibri-form-label-dark' %>
-                  </div>
-                  <div class="form-group col-md-10">
-                    <%= form.text_field :shopping_items, class: 'form-control' %>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
+            </div>
           </div>
         </div>
       </div>

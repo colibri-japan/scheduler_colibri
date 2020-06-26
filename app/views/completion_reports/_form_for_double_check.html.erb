@@ -423,14 +423,18 @@
 
             <% if !@corporation.simple_reports? %>
               <div class="form-row">
-                <div class="from-group col-md-2">
+                <div class="from-group col-md-3">
                   <%= form.check_box :assisted_to_take_suppository, id: :completion_report_assisted_to_take_suppository %>
                   <%= form.label :assisted_to_take_suppository, "浣腸", class: 'colibri-form-label-dark' %>
                 </div>
-                <div class="from-group col-md-10">
-                  <%= form.label :remarks_around_medication, "医療行為の準備.後片付け", class: 'colibri-form-label-dark'  %>
-                  <%= form.text_field :remarks_around_medication, class: 'colibri-input additional-padding input-text-left' %>
+                <div class="from-group col-md-9">
+                  <%= form.check_box :changed_wet_compress, id: :completion_report_changed_wet_compress %>
+                  <%= form.label :changed_wet_compress, "湿布・パッチ貼り替え", class: 'colibri-form-label-dark' %>
                 </div>
+              </div>
+              <div class="from-group">
+                <%= form.label :remarks_around_medication, "医療行為の準備.後片付け", class: 'colibri-form-label-dark'  %>
+                <%= form.text_field :remarks_around_medication, class: 'colibri-input additional-padding input-text-left' %>
               </div>
             <% end %>
           </div>

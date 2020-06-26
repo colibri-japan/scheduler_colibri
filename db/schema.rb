@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200617150513) do
+ActiveRecord::Schema.define(version: 20200626173835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -277,6 +277,7 @@ ActiveRecord::Schema.define(version: 20200617150513) do
     t.bigint "planning_id"
     t.bigint "patient_id"
     t.boolean "nurse_ping", default: false
+    t.boolean "changed_wet_compress"
     t.index ["appointment_id"], name: "index_completion_reports_on_appointment_id"
     t.index ["forecasted_report_id"], name: "index_completion_reports_on_forecasted_report_id"
     t.index ["patient_id"], name: "index_completion_reports_on_patient_id"

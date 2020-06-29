@@ -25,7 +25,7 @@
         </div>
 
         <div class="settings-body">
-            <%= form_for @corporation do |form| %>
+            <%= form_with model: @corporation do |form| %>
             <div class="colibri-form-subsection" style="margin-top:25px">
                 <div class='colibri-form-subsection-title'>基本情報</div>
 
@@ -91,8 +91,8 @@
                     <%= form.select :default_first_day, options_for_select([['月曜', 1], ['日曜', 0]], @corporation.default_first_day), class: "form-control" %>
                 </div>
 
-                <div class="form-group icheck-material-cyan">
-                    <%= form.check_box :edit_confirm_requested, include_hidden: false, id: :corporation_edit_confirm_requested, onclick: '' %>
+                <div class="form-group ">
+                    <%= form.check_box :edit_confirm_requested, id: :corporation_edit_confirm_requested, onclick: '' %>
                     <%= form.label :edit_confirm_requested, "ドラッグで編集確認画面を表示する", class: "colibri-form-label-dark" %>
                 </div>
             </div>
@@ -123,8 +123,8 @@
                     <%= form.text_field :email, required: true, class: "form-control" %>
                 </div>
 
-                <div class="form-group icheck-material-cyan" onclick="void(0)">
-                    <%= form.check_box :include_description_in_nurse_mailer, include_hidden: false, id: :corporation_include_description_in_nurse_mailer %>
+                <div class="form-group " onclick="void(0)">
+                    <%= form.check_box :include_description_in_nurse_mailer, id: :corporation_include_description_in_nurse_mailer %>
                     <%= form.label :include_description_in_nurse_mailer, "リマインダーメールシフトのコメント", class: "colibri-form-label-dark" %>
                 </div>
 
@@ -140,10 +140,10 @@
             　</div>
 
             <div class="colibri-form-subsection">
-                <div class="colibri-form-subsection-title">サービス設定のデフォルト</div>
+                <div class="colibri-form-subsection-title">サービス設定</div>
 
-                <div class="form-group icheck-material-cyan" onclick="void(0)">
-                    <%= form.check_box :detailed_cancellation_options, checked: @corporation.detailed_cancellation_options, include_hidden: false, id: :corporation_detailed_cancellation_options %>
+                <div class="form-group " onclick="void(0)">
+                    <%= form.check_box :detailed_cancellation_options, checked: @corporation.detailed_cancellation_options, id: :corporation_detailed_cancellation_options %>
                     <%= form.label :detailed_cancellation_options, "キャンセル後の手当.請求オプション", class: 'colibri-form-label-dark' %>
                 </div>
 
@@ -158,10 +158,20 @@
             </div>
 
             <div class="colibri-form-subsection">
+                <div class="colibri-form-subsection-title">実施記録の設定</div>
+
+                <div class="form-group " onclick="void(0)">
+                    <%= form.check_box :show_before_appointment_checklist_in_report_shortcut, id: :corporation_show_before_appointment_checklist_in_report_shortcut %>
+                    <%= form.label :show_before_appointment_checklist_in_report_shortcut, "事前チェックを実施記録ショートカットに表示する", class: 'colibri-form-label-dark' %>
+                </div>
+
+            </div>
+
+            <div class="colibri-form-subsection">
                 <div class="colibri-form-subsection-title">計画書の設定</div>
 
-                <div class="form-group icheck-material-cyan" >
-                    <%= form.check_box :hide_care_plan_long_term_goals, checked: @corporation.hide_care_plan_long_term_goals, include_hidden: false, id: :corporation_hide_care_plan_long_term_goals %>
+                <div class="form-group " >
+                    <%= form.check_box :hide_care_plan_long_term_goals, checked: @corporation.hide_care_plan_long_term_goals, id: :corporation_hide_care_plan_long_term_goals %>
                     <%= form.label :hide_care_plan_long_term_goals, "長期目標を外す", class: 'colibri-form-label-dark' %>
                 </div>
             </div>
@@ -169,21 +179,21 @@
             <div class="colibri-form-subsection">
                 <div class="colibri-form-subsection-title">チーム設定</div>
 
-                <div class="form-group icheck-material-cyan">
-                    <%= form.check_box :separate_posts_by_team, checked: @corporation.separate_posts_by_team, include_hidden: false, id: :corporation_separate_posts_by_team  %>
+                <div class="form-group ">
+                    <%= form.check_box :separate_posts_by_team, checked: @corporation.separate_posts_by_team, id: :corporation_separate_posts_by_team  %>
                     <%= form.label :separate_posts_by_team, "掲示板の書き込みをチーム別にする", class: 'colibri-form-label-dark' %>
                 </div>
 
-                <div class="form-group icheck-material-cyan">
-                    <%= form.check_box :separate_patients_by_team, checked: @corporation.separate_patients_by_team, include_hidden: false, id: :corporation_separate_patients_by_team %>
+                <div class="form-group ">
+                    <%= form.check_box :separate_patients_by_team, checked: @corporation.separate_patients_by_team, id: :corporation_separate_patients_by_team %>
                     <%= form.label :separate_patients_by_team, "利用者の表示をチーム別にする", class: 'colibri-form-label-dark' %>
                 </div>
             </div>
 
             <div class="colibri-form-subsection">
                 <div class="colibri-form-subsection-title">提供表の設定</div>
-                <div class="form-group icheck-material-cyan">
-                    <%= form.check_box :teikyohyo_with_services_outside_insurance_scope, checked: @corporation.teikyohyo_with_services_outside_insurance_scope, include_hidden: false, id: :corporation_teikyohyo_with_services_outside_insurance_scope %>
+                <div class="form-group ">
+                    <%= form.check_box :teikyohyo_with_services_outside_insurance_scope, checked: @corporation.teikyohyo_with_services_outside_insurance_scope, id: :corporation_teikyohyo_with_services_outside_insurance_scope %>
                     <%= form.label :teikyohyo_with_services_outside_insurance_scope, "保険外サービスを提供表に追加する", class: 'colibri-form-label-dark' %>
                 </div>
 

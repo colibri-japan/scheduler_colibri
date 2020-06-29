@@ -21,30 +21,34 @@
         </div>
     </div>
 
-      <% if completion_report.with_anything_checked? %>
-        <div class="modal-body">
-          <div class="modal-subsection-title">サービス内容のまとめ</div>
-          <div class="form-group">
-            <% if !@corporation.simple_reports? && reportable.class.try(:name) == 'Appointment' %>
-              <%= render 'form_shortcuts', form: form, completion_report: completion_report %>
-            <% else %>
-              <%= completion_report_summary(completion_report, detailed: true).try(:html_safe) %>
-            <% end %>
-          </div>
+    <% if reportable.class.try(:name) == 'Appointment' && @corporation.show_before_appointment_checklist_in_report_shortcut? %>
+      <%= render partial: 'completion_reports/before_appointment_checklist', locals: {form: form, completion_report: completion_report, reportable: reportable} %>
+    <% end %>
 
-          <% if reportable.class.try(:name) == 'RecurringAppointment' %>
-            <%= form.label :editing_occurrences_after, "編集するサービス", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
-            <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'}, {id: :completion_report_editing_occurrences_after} %>
+    <% if completion_report.with_anything_checked? %>
+      <div class="modal-body">
+        <div class="modal-subsection-title">サービス内容のまとめ</div>
+        <div class="form-group">
+          <% if !@corporation.simple_reports? && reportable.class.try(:name) == 'Appointment' %>
+            <%= render 'form_shortcuts', form: form, completion_report: completion_report %>
+          <% else %>
+            <%= completion_report_summary(completion_report, detailed: true).try(:html_safe) %>
           <% end %>
         </div>
-      <% end %>
-      <% if reportable.class.name == 'Appointment' %>
-        <div class="modal-body">
-          <div class="form-group">
-            <div class="btn btn-sm btn-colibri-light btn-pointer" id="toggle-detailed-report">内容変更・追加<i class="glyphicon glyphicon-pencil" style="font-size:12px;margin-left:5px"></i></div>
-          </div>
+
+        <% if reportable.class.try(:name) == 'RecurringAppointment' %>
+          <%= form.label :editing_occurrences_after, "編集するサービス", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
+          <%= form.select :editing_occurrences_after, options_for_select([params[:date]], params[:date]), {prompt: '全繰り返し'}, {id: :completion_report_editing_occurrences_after} %>
+        <% end %>
+      </div>
+    <% end %>
+    <% if reportable.class.name == 'Appointment' %>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="btn btn-sm btn-colibri-light btn-pointer" id="toggle-detailed-report">内容変更・追加<i class="glyphicon glyphicon-pencil" style="font-size:12px;margin-left:5px"></i></div>
         </div>
-      <% end %>
+      </div>
+    <% end %>
     
 
     <!-- beginning of the checklist area -->

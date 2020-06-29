@@ -675,6 +675,8 @@
             <%= form.text_area :general_comment, class: 'form-control' %>
         </div>
 
+        <%= render partial: 'completion_reports/after_appointment_checklist', locals: {form: form} %>
+
     </div>
 
     <%= form.hidden_field :forecasted_report_id, value: completion_report.forecasted_report_id %>

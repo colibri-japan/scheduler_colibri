@@ -1,94 +1,7 @@
 <div id="report-detail-container" style="display:none">
-    <% if reportable.try(:class).try(:name) == 'Appointment' %>
-        <div class="modal-body" id="preliminary_check">
-          <div class="modal-subsection-title">
-            事前チェック
-          </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-5">
-              <%= form.label :patient_looked_good, "顔色", style: 'margin-right:7px' %>
-
-              <%= form.radio_button :patient_looked_good, true, {class: 'radio-inline', id: :completion_report_patient_looked_good_true} %>
-              <%= form.label :patient_looked_good_true, "良", class: 'colibri-form-label-dark' %>
-
-              <%= form.radio_button :patient_looked_good, false, {class: 'radio-inline', id: :completion_report_patient_looked_good_false} %>
-              <%= form.label :patient_looked_good_false, "不良", class: 'colibri-form-label-dark'%>
-            </div>
-            <div class="form-group col-md-7">
-              <%= form.label :patient_transpired, "発汗", style: 'margin-right:7px'  %>
-
-              <%= form.radio_button :patient_transpired, true, {class: 'radio-inline', id: :completion_report_patient_transpired_1} %>
-              <%= form.label :patient_transpired_1, "有", class: 'colibri-form-label-dark' %>
-
-              <%= form.radio_button :patient_transpired, false, {class: 'radio-inline', id: :completion_report_patient_transpired_0} %>
-              <%= form.label :patient_transpired_0, "無", class: 'colibri-form-label-dark' %>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-5">
-              <%= form.label :body_temperature, "体温", class: 'colibri-form-label-dark' %>
-              <%= form.number_field :body_temperature, {step: 0.1, class: 'colibri-input', style: 'width:60px'} %><span class="colibri-form-label-dark"> °C</span>
-            </div>
-            <div class="form-group col-md-7">
-              <%= form.label :blood_pressure_systolic, "血圧", class: 'colibri-form-label-dark'  %>
-              <%= form.number_field :blood_pressure_systolic, {step: 1, class: 'colibri-input', style: 'width:60px'} %><span class="colibri-form-label-dark"> /</span>
-              <%= form.number_field :blood_pressure_diastolic, {step: 1, class: 'colibri-input', style: 'width:60px'} %>
-            </div>
-          </div>
-
-          <% if reportable.nurse.try(:profession) == 1 %>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <%= form.label :heart_rate_bpm, '脈拍', class: 'colibri-form-label-dark' %>
-                <%= form.number_field :heart_rate_bpm, {step: 1, style: 'width:45px'} %>回/分
-              </div>
-              <div class="form-group col-md-4">
-                <%= form.label :heart_rythm_anomalies, '不整脈', class: 'colibri-form-label-dark' %>
-                <%= form.select :heart_rythm_anomalies, options_for_select([['無',0], ['有',1]], completion_report.heart_rythm_anomalies) %>
-              </div>
-              <div class="form-group col-md-4">
-                <%= form.label :breathe_rate, '呼吸', class: 'colibri-form-label-dark' %>
-                <%= form.number_field :breathe_rate, {step: 1, style: 'width:45px'} %>回/分
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <%= form.label :blood_sugar, '血糖値', class: 'colibri-form-label-dark' %>
-                <%= form.number_field :blood_sugar, {step: 1, style: 'width:45px'} %>mg/dL
-              </div>
-              <div class="form-group col-md-4">
-                <%= form.label :blood_oxygen_rate, 'SpO²', class: 'colibri-form-label-dark' %>
-                <%= form.number_field :blood_oxygen_rate, {step: 0.1, style: 'width:45px'} %>%
-              </div>
-              <div class="form-group col-md-4">
-                <%= form.label :body_weight, '体重', class: 'colibri-form-label-dark' %>
-                <%= form.number_field :body_weight, {step: 1, style: 'width:45px'} %>kg
-              </div>
-            </div>
-          <% end %>
-
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <%= form.check_box :house_was_clean, id: :completion_report_house_was_clean %>
-              <%= form.label :house_was_clean, "環境整備", class: 'colibri-form-label-dark'  %>
-            </div>
-            <div class="form-group col-md-3">
-              <%= form.check_box :patient_could_discuss, id: :completion_report_patient_could_discuss %>
-              <%= form.label :patient_could_discuss, "相談援助", class: 'colibri-form-label-dark'  %>
-            </div>
-            <div class="form-group col-md-3">
-              <%= form.check_box :patient_could_gather_and_share_information, id: :completion_report_patient_could_gather_and_share_information %>
-              <%= form.label :patient_could_gather_and_share_information, "情報収集", class: 'colibri-form-label-dark' %>
-            </div>
-            <div class="form-group col-md-3">
-              <%= form.check_box :checking_report, id: :completion_report_checking_report %>
-              <%= form.label :checking_report, "記録", class: 'colibri-form-label-dark'  %>
-            </div>
-          </div>
-        </div>
+      <% if !@corporation.show_before_appointment_checklist_in_report_shortcut? %>
+        <%= render partial: 'before_appointment_checklist', locals: {form: form, completion_report: completion_report, reportable: reportable} %>
       <% end %>
 
       <div class="blue-background-form" id="personal_care">
@@ -649,7 +562,9 @@
                 </div>
           </div>
         </div>
+
       </div>
+
 
       <!-- end of the checklist area -->
 
@@ -660,36 +575,13 @@
             <%= form.text_area :general_comment, class: 'form-control' %>
         </div>
 
-          <div class="form-group">
-            <div class='colibri-form-label-dark'>退室確認</div>
-            <div class="form-row">
-              <div class="form-group col-md-2">
-                <%= form.check_box :checked_gas_when_leaving, id: :completion_report_checked_gas_when_leaving %>
-                <%= form.label :checked_gas_when_leaving, "火元", class: 'colibri-form-label-dark' %>
-              </div>
+        <%= render partial: 'after_appointment_checklist', locals: {form: form} %>
 
-              <div class="form-group col-md-2">
-                <%= form.check_box :checked_electricity_when_leaving, id: :completion_report_checked_electricity_when_leaving %>
-                <%= form.label :checked_electricity_when_leaving, "電気", class: 'colibri-form-label-dark'  %>
-              </div>
-
-              <div class="form-group col-md-2">
-                <%= form.check_box :checked_water_when_leaving, id: :completion_report_checked_water_when_leaving %>
-                <%= form.label :checked_water_when_leaving, "水道", class: 'colibri-form-label-dark'  %>
-              </div>
-
-              <div class="form-group col-md-2">
-                <%= form.check_box :checked_door_when_leaving, id: :completion_report_checked_door_when_leaving %>
-                <%= form.label :checked_door_when_leaving, "戸締り", class: 'colibri-form-label-dark ' %>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group" id="geolocalization-status">
-            <div id="geolocalization-success" style="display:none" class="colibri-form-label-dark">位置情報確定 <span class="glyphicon glyphicon-ok" style="font-size:12px"></span></div>
-            <div id="geolocalization-failure" style="display:none" class="colibri-form-label-dark">位置情報読み込み失敗 <div style="inline" class="btn btn-sm btn-colibri-light" style="margin-left:4px" onclick="completionReportGeolocationRequest()">リフレッシュ<span class="glyphicon glyphicon-refresh" style="font-size:12px;margin-left:4px"></span></div></div>
-            <div id="geolocalization-pending" class="colibri-form-label-dark" style="<%= 'display:none' unless completion_report.new_record? %>">位置情報読み込み中... <span class="glyphicon glyphicon-refresh" style="font-size:12px"></span></div>
-          </div>
+        <div class="form-group" id="geolocalization-status">
+          <div id="geolocalization-success" style="display:none" class="colibri-form-label-dark">位置情報確定 <span class="glyphicon glyphicon-ok" style="font-size:12px"></span></div>
+          <div id="geolocalization-failure" style="display:none" class="colibri-form-label-dark">位置情報読み込み失敗 <div style="inline" class="btn btn-sm btn-colibri-light" style="margin-left:4px" onclick="completionReportGeolocationRequest()">リフレッシュ<span class="glyphicon glyphicon-refresh" style="font-size:12px;margin-left:4px"></span></div></div>
+          <div id="geolocalization-pending" class="colibri-form-label-dark" style="<%= 'display:none' unless completion_report.new_record? %>">位置情報読み込み中... <span class="glyphicon glyphicon-refresh" style="font-size:12px"></span></div>
+        </div>
 
     </div>
 

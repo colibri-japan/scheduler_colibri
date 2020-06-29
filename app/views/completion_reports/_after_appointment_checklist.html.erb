@@ -1,0 +1,24 @@
+<div class="form-group">
+  <div class='colibri-form-label-dark'>退室確認</div>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <%= form.check_box :checked_gas_when_leaving, id: :completion_report_checked_gas_when_leaving %>
+      <%= form.label :checked_gas_when_leaving, "火元", class: 'colibri-form-label-dark' %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= form.check_box :checked_electricity_when_leaving, id: :completion_report_checked_electricity_when_leaving %>
+      <%= form.label :checked_electricity_when_leaving, "電気", class: 'colibri-form-label-dark'  %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= form.check_box :checked_water_when_leaving, id: :completion_report_checked_water_when_leaving %>
+      <%= form.label :checked_water_when_leaving, "水道", class: 'colibri-form-label-dark'  %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= form.check_box :checked_door_when_leaving, id: :completion_report_checked_door_when_leaving %>
+      <%= form.label :checked_door_when_leaving, "戸締り", class: 'colibri-form-label-dark ' %>
+    </div>
+  </div>
+</div>

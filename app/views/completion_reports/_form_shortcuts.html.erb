@@ -169,8 +169,8 @@
 <% end %>
 
 <% if completion_report.washing_details != [''] && completion_report.washing_details != [] %>
-    <div class="report-prefilled-item icheck-material-green">
-        <%= form.label :washing_details, "整容" %>
+    <div class="report-prefilled-item">
+        <%= form.label :washing_details, "整容：" %>
         <%= form.select :washing_details, options_for_select([['爪', 0], ['耳', 1], ['髪', 3], ['化粧', 4], ['髭剃り', 5]], completion_report.washing_details), {prompt: '選択する'}, {multiple: true, id: 'completion_details_washing_details'} %>
     </div>
 <% end %>
@@ -299,7 +299,7 @@
 
 <% if completion_report.activities_done_with_the_patient != [''] && completion_report.activities_done_with_the_patient != [] %>
     <div class="report-prefilled-item">
-        <%= form.label :activities_done_with_the_patient, "共に行う" %>
+        <%= form.label :activities_done_with_the_patient, "共に行う：" %>
         <%= form.select :activities_done_with_the_patient, options_for_select([['掃除', 0], ['洗濯', 1],['衣類整理', 2],['調理', 3],['買い物', 4], ['片付け', 5]], completion_report.activities_done_with_the_patient), {prompt: '選択する'}, {multiple: true, id: 'completion_report_activities_done_with_the_patient'} %>
     </div>
 <% end %>
@@ -334,7 +334,7 @@
 
 <% if completion_report.clean_up != [''] && completion_report.clean_up != [] %>
     <div class="report-prefilled-item">
-        <%= form.label :clean_up, "清掃" %>
+        <%= form.label :clean_up, "清掃：" %>
         <%= form.select :clean_up, options_for_select([['居室', 0], ['寝室', 1],['洗面所', 2],['トイレ', 3],['卓上', 4],['台所', 5],['浴室', 6],['Pトイレ', 7],['その他', 8]], completion_report.clean_up), {prompt: '選択する'}, {multiple: true, id: 'completion_report_cleanup'} %>
     </div>
 <% end %>
@@ -421,8 +421,8 @@
         <%= form.check_box :cooked_for_the_patient, class: 'colibri-checkbox', include_hidden: false, id: :completion_report_cooked_for_the_patient  %>
         <%= form.label :cooked_for_the_patient, "調理"  %>
 
-        <%= form.label :remarks_around_cooking, "献立", class: ' ' %>
-        <%= form.text_field :remarks_around_cooking, class: 'colibri-input' %>
+        <%= form.label :remarks_around_cooking, "献立" %>
+        <%= form.text_field :remarks_around_cooking, class: 'colibri-input', style: 'height:20px;' %>
     </div>
 <% end %>
 

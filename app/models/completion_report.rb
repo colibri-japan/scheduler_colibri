@@ -103,7 +103,7 @@ class CompletionReport < ApplicationRecord
     end
 
     def with_body_cleaning?
-        batch_assisted_partial_bath? || batch_assisted_total_bath? || batch_assisted_cosmetics? || bath_or_shower? || face_wash? ||  mouth_wash? || 
+        batch_assisted_partial_bath? || batch_assisted_total_bath? || batch_assisted_cosmetics? || bath_or_shower? || face_wash? ||  mouth_wash? || 
         (washing_details != [''] && washing_details != []) || 
         changed_clothes? 
     end

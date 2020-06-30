@@ -200,26 +200,6 @@
                     服薬介助.確認
                 <% end %>
               </div>
-              <% if !@corporation.simple_reports? %>
-                <div class="from-group col-md-3">
-                  <%= form.label :assisted_to_apply_a_cream, "薬の塗布", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :assisted_to_apply_a_cream %>
-                      薬の塗布
-                  <% end %>
-                </div>
-                <div class="from-group col-md-2">
-                  <%= form.label :assisted_to_take_eye_drops, "点眼", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :assisted_to_take_eye_drops %>
-                      点眼
-                  <% end %>
-                </div>
-                <div class="from-group col-md-3">
-                  <%= form.label :assisted_to_extrude_mucus, "痰の吸引", class: 'colibri-form-label-dark' do  %>
-                      <%= form.check_box :assisted_to_extrude_mucus %>
-                      痰の吸引
-                  <% end %>
-                </div>
-              <% end %>
             </div>
 
           </div>
@@ -288,34 +268,6 @@
         <div class="form-group">
             <%= form.text_area :general_comment, class: 'form-control' %>
         </div>
-
-        <% if !@corporation.simple_reports? && reportable.try(:class).try(:name) == 'Appointment' %>
-
-          <div class="form-group">
-            <div class='colibri-form-label-dark'>退室確認</div>
-            <div class="form-row">
-              <%= form.label :checked_gas_when_leaving, "火元", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_gas_when_leaving %>
-                  火元
-              <% end %>
-
-              <%= form.label :checked_electricity_when_leaving, "電気", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_electricity_when_leaving %>
-                  電気
-              <% end %>
-
-              <%= form.label :checked_water_when_leaving, "水道", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_water_when_leaving %>
-                  水道
-              <% end %>
-
-              <%= form.label :checked_door_when_leaving, "戸締り", class: 'colibri-form-label-dark col-md-2' do  %>
-                  <%= form.check_box :checked_door_when_leaving %>
-                  戸締り
-              <% end %>
-            </div>
-          </div>
-        <% end %>
 
         <% if reportable.try(:class).try(:name) == 'Appointment' %>
           <div class="form-group" id="geolocalization-status">

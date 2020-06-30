@@ -99,11 +99,11 @@ class CompletionReport < ApplicationRecord
     end
 
     def with_grooming?
-        full_or_partial_body_wash? || hands_and_feet_wash? || hair_wash?
+        batch_assisted_bed_bath? || full_or_partial_body_wash? || hands_and_feet_wash? || hair_wash?
     end
 
     def with_body_cleaning?
-        bath_or_shower? || face_wash? ||  mouth_wash? || 
+        batch_assisted_partial_bath? || batch_assisted_total_bath? || batch_assisted_cosmetics? || bath_or_shower? || face_wash? ||  mouth_wash? || 
         (washing_details != [''] && washing_details != []) || 
         changed_clothes? 
     end
@@ -120,7 +120,7 @@ class CompletionReport < ApplicationRecord
     
     def with_medical_care?
         assisted_to_take_medication || assisted_to_apply_a_cream || 
-        assisted_to_take_eye_drops || assisted_to_extrude_mucus || 
+        assisted_to_take_eye_drops || assisted_to_extrude_mucus || changed_wet_compress || 
         assisted_to_take_suppository || remarks_around_medication.present?
     end
     

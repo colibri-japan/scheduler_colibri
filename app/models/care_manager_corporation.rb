@@ -6,10 +6,8 @@ class CareManagerCorporation < ApplicationRecord
     scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
 
     def teikyohyo_data(first_day, last_day)
-        # issue here, change in relation between care manager corporation and patients
-        #patients = Patient.where(care_manager_id: self.care_managers.ids).still_active_at(first_day.to_date).order_by_kana
         care_plans = CarePlan.where(care_manager_id: self.care_managers.ids).valid_at(first_day.to_date)
-        patients = Patient.where(id: care_plans.pluck(:patient_id).uniq.compact).still_active_at(first_day.to_date)
+        patients = Patient.where(id: care_plans.pluck(:patient_id).uniq.compact).still_active_at(first_day.to_date).order_by_kana
 
         services_and_shifts_per_patient = {}
         care_plans_per_patient = {}

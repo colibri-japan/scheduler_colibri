@@ -538,7 +538,7 @@ module CompletionReportsHelper
     end
     
     def set_the_table_checked(set_the_table)
-        set_the_table ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>下拵え</div>" : "" 
+        set_the_table ? "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>下ごしらえ</div>" : "" 
     end
     
     def cooked_for_the_patient_checked(completion_report, detailed_report)

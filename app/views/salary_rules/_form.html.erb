@@ -124,10 +124,17 @@
       <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "例：移動手当の計算でサービスの間の件数のみを数える場合。"}  %>
     </div>
 
-    <div class="form-group" id="constraints_when_counting_between_appointments" style="<%= 'display:none' unless salary_rule.only_count_between_appointments %>">
-      <%= form.label :max_time_between_appointments, "サービスの間の時間上限", class: "colibri-form-label-dark" %>
-      <%= form.number_field :max_time_between_appointments, step: 1, style: 'width:90px' %> 分
-      <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "例：移動手当で一時間半以内の移動を数えたい場合は90分と入力する。"}  %>
+    <div id="constraints_when_counting_between_appointments" style="<%= 'display:none' unless salary_rule.only_count_between_appointments %>">
+      <div class="form-group">
+        <%= form.label :min_time_between_appointments, "サービスの間の時間下限", class: "colibri-form-label-dark" %>
+        <%= form.number_field :min_time_between_appointments, step: 1, style: 'width:90px' %> 分
+        <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "<p>例①:15分以内の移動をカウントしたくない場合、15分と入力する。</p><p>例②:移動手当で連続のサービスをカウントしたくない場合、1分と入力する。</p>"}  %>
+      </div>
+      <div class="form-group">
+        <%= form.label :max_time_between_appointments, "サービスの間の時間上限", class: "colibri-form-label-dark" %>
+        <%= form.number_field :max_time_between_appointments, step: 1, style: 'width:90px' %> 分
+        <%= image_tag "question.svg", width: '18px', class: 'colibri-tooltip', data: {content: "例：移動手当で一時間半以内の移動を数えたい場合は90分と入力する。"}  %>
+      </div>
     </div>
 
   </div>

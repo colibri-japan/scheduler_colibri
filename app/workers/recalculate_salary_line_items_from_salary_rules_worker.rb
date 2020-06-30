@@ -136,7 +136,7 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
 
         # substract number of days worked from appointments count if only_count_between_appointments
         if salary_rule.only_count_between_appointments?
-          if salary_rule.max_time_between_appointments.present?
+          if salary_rule.max_time_between_appointments.present? || salary_rule.min_time_between_appointments.present?
             return unless targeted_appointments.present?
 
             appointment_start_and_end_grouped_by_date = targeted_appointments.pluck(:starts_at, :ends_at).group_by {|appointment| appointment[0].try(:to_date) }
@@ -147,7 +147,9 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
               if start_and_end.count > 1
                 for i in 0..(start_and_end.count - 2)
                   time_difference = start_and_end[i + 1][0] - start_and_end[i][1]
-                  condition = time_difference <= (salary_rule.max_time_between_appointments * 60)
+
+                  #time difference should be greater than minimum (or 0) and less than maximum (or 24hours i.e 1440min)
+                  condition = (time_difference >= ((salary_rule.min_time_between_appointments || 0) * 60)) && (time_difference <= ((salary_rule.max_time_between_appointments || 1440)* 60))
 
                   count_with_condition += 1 if condition
                 end

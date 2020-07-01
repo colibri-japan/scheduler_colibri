@@ -2,7 +2,7 @@ module CalendarEvent
     extend ActiveSupport::Concern
 
     def on_weekend_or_holiday?
-        !starts_at.on_weekday? || !ends_at.on_weekday? || HolidayJp.between(starts_at, ends_at).present?
+        !starts_at.on_weekday? || HolidayJp.between(starts_at, ends_at).present?
     end
 
     def all_day?

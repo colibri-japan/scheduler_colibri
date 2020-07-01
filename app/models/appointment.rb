@@ -110,10 +110,6 @@ class Appointment < ApplicationRecord
         end
 	end
 
-	def weekend_holiday_salary_line_item?
-		!self.starts_at.on_weekday? || HolidayJp.holiday?(self.starts_at.to_date)
-	end
-
 	def as_json(options = {})
 		date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
 		{
@@ -232,9 +228,7 @@ class Appointment < ApplicationRecord
 
 	def calculate_credits_invoice_and_wage
 		if self.edit_requested? || (self.cancelled? && self.will_save_change_to_cancelled?)
-			self.total_credits = 0
-			self.total_invoiced = 0
-			self.total_wage = 0
+			set_credits_invoice_and_wage_to_zero
 		elsif self.cancelled? && !self.will_save_change_to_cancelled?
 		else
 			if self.service.present?
@@ -242,18 +236,23 @@ class Appointment < ApplicationRecord
 				self.total_invoiced = self.service.invoiced_amount
 				first_nurse_service_wages = self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first
 				if first_nurse_service_wages.present?
-					unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (first_nurse_service_wages.weekend_unit_wage || first_nurse_service_wages.unit_wage || 0) : (first_nurse_service_wages.unit_wage || 0)
+					#rectify the order of fallback
+					unit_wage_to_apply = self.on_weekend_or_holiday? ? (first_nurse_service_wages.weekend_unit_wage || first_nurse_service_wages.unit_wage || self.service.try(:weekend_unit_wage) || self.service.try(:unit_wage) || 0) : (first_nurse_service_wages.unit_wage || self.service.try(:unit_wage) || 0)
 					self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i).round : unit_wage_to_apply.to_i
 				else
-					unit_wage_to_apply = self.weekend_holiday_salary_line_item? ? (self.service.weekend_unit_wage || self.service.unit_wage || 0) : (self.service.unit_wage || 0)
+					unit_wage_to_apply = self.on_weekend_or_holiday? ? (self.service.weekend_unit_wage || self.service.unit_wage || 0) : (self.service.unit_wage || 0)
 					self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i).round : unit_wage_to_apply.to_i
 				end
 			else
-				self.total_credits = 0
-				self.total_invoiced = 0
-				self.total_wage = 0
+				set_credits_invoice_and_wage_to_zero
 			end
 		end
+	end
+
+	def set_credits_invoice_and_wage_to_zero
+		self.total_credits = 0
+		self.total_invoiced = 0
+		self.total_wage = 0
 	end
 
 	def request_edit_for_overlapping_appointments

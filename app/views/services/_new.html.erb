@@ -92,6 +92,11 @@
             <%= form.label :weekend_unit_wage, "デフォルト週末.祝日給与", class: "colibri-form-label-dark" %>
             <%= form.number_field :weekend_unit_wage, step: 1, id: :service_weekend_unit_wage, class: 'form-control' %>
           </div>
+
+          <div class="form-group" id="minimum-wage-fields" style='<%= "display:none" unless @service.corporation.hour_based_payroll%>'>
+            <%= form.label :minimum_wage, "最低賃金", class: "colibri-form-label-dark" %>
+            <%= form.number_field :minimum_wage, step: 1, id: :service_minimum_wage, class: 'form-control' %>
+          </div>
         </div>
 
 

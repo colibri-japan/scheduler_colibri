@@ -749,6 +749,20 @@ let insuranceScopeBootstrapToggle = () => {
   })
 }
 
+let toggleMinimumWageFields = () => {
+  $('#service_hour_based_wage').change(function() {
+      console.log('change function called')
+      if ($(this).is(':checked')) {
+          console.log('is checked')
+          $('#minimum-wage-fields').show()
+      } else {
+          console.log('not checked')
+          $('#service_minimum_wage').val('')
+          $('#minimum-wage-fields').hide()
+      }
+  })
+}
+
 let endOfContractDate = () => {
   $('#patient_end_of_contract').focus(function(){
     $(this).daterangepicker({

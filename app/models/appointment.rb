@@ -236,12 +236,30 @@ class Appointment < ApplicationRecord
 				self.total_invoiced = self.service.invoiced_amount
 				first_nurse_service_wages = self.service.nurse_service_wages.where(nurse_id: self.nurse_id).first
 				if first_nurse_service_wages.present?
-					#rectify the order of fallback
 					unit_wage_to_apply = self.on_weekend_or_holiday? ? (first_nurse_service_wages.weekend_unit_wage || first_nurse_service_wages.unit_wage || self.service.try(:weekend_unit_wage) || self.service.try(:unit_wage) || 0) : (first_nurse_service_wages.unit_wage || self.service.try(:unit_wage) || 0)
-					self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i).round : unit_wage_to_apply.to_i
+					if self.service.hour_based_wage?
+						hour_based_calculation = ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i).round
+						if self.service.minimum_wage.present? 
+							self.total_wage = hour_based_calculation >= self.service.minimum_wage ?  hour_based_calculation : self.service.minimum_wage
+						else
+							self.total_wage = hour_based_calculation
+						end
+					else
+						self.total_wage = unit_wage_to_apply.to_i
+					end
 				else
 					unit_wage_to_apply = self.on_weekend_or_holiday? ? (self.service.weekend_unit_wage || self.service.unit_wage || 0) : (self.service.unit_wage || 0)
-					self.total_wage = self.service.hour_based_wage? ? ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i).round : unit_wage_to_apply.to_i
+					if self.service.hour_based_wage?
+						hour_based_calculation = ((self.duration.to_f / 3600) * unit_wage_to_apply.to_i).round
+						if self.service.minimum_wage.present?
+							self.total_wage = hour_based_calculation >= self.service.minimum_wage ? hour_based_calculation : self.service.minimum_wage
+						else
+							self.total_wage = hour_based_calculation
+						end
+						
+					else
+						self.total_wage = unit_wage_to_apply.to_i
+					end
 				end
 			else
 				set_credits_invoice_and_wage_to_zero

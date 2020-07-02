@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200701134441) do
+ActiveRecord::Schema.define(version: 20200702102749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,11 +89,14 @@ ActiveRecord::Schema.define(version: 20200701134441) do
     t.datetime "second_verified_at"
     t.bigint "second_verifier_id"
     t.bigint "original_recurring_appointment_id"
+    t.bigint "second_nurse_id"
+    t.integer "second_nurse_wage"
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["original_recurring_appointment_id"], name: "index_appointments_on_original_recurring_appointment_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
     t.index ["planning_id"], name: "index_appointments_on_planning_id"
     t.index ["recurring_appointment_id"], name: "index_appointments_on_recurring_appointment_id"
+    t.index ["second_nurse_id"], name: "index_appointments_on_second_nurse_id"
     t.index ["second_verifier_id"], name: "index_appointments_on_second_verifier_id"
     t.index ["service_id"], name: "index_appointments_on_service_id"
     t.index ["starts_at", "nurse_id"], name: "index_appointments_on_starts_at_and_nurse_id"
@@ -675,6 +678,7 @@ ActiveRecord::Schema.define(version: 20200701134441) do
     t.integer "holiday_operator"
     t.integer "min_monthly_days_worked"
     t.integer "max_monthly_days_worked"
+    t.boolean "include_appointments_as_second_nurse", default: false
     t.index ["corporation_id"], name: "index_salary_rules_on_corporation_id"
   end
 
@@ -699,6 +703,8 @@ ActiveRecord::Schema.define(version: 20200701134441) do
     t.integer "invoiced_amount"
     t.boolean "inside_insurance_scope", default: false
     t.integer "minimum_wage"
+    t.integer "second_nurse_unit_wage"
+    t.boolean "second_nurse_hour_based_wage"
     t.index ["corporation_id"], name: "index_services_on_corporation_id"
     t.index ["nurse_id"], name: "index_services_on_nurse_id"
   end

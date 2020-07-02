@@ -110,6 +110,11 @@
     </div>
 
     <div class="form-group">
+      <%= form.label :include_appointments_as_second_nurse, "同行も含む", id: :salary_rule_include_appointments_as_second_nurse, class: "colibri-form-label-dark" %>
+      <%= form.check_box :include_appointments_as_second_nurse %>
+    </div>
+
+    <div class="form-group">
       <%= form.check_box :target_all_services, checked: salary_rule.target_all_services, id: 'all_services_selected_checkbox' %>
     </div>
 

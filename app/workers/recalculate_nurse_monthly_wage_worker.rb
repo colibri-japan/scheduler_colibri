@@ -39,6 +39,9 @@ class RecalculateNurseMonthlyWageWorker
                     end
                     appointment.update_column(:total_wage, total_wage)
                 end
+                if appointment.second_nurse_id.present? && appointment.service.second_nurse_unit_wage.present? 
+                    appointment.second_nurse_wage = appointment.service.second_nurse_hour_based_wage? ? ((appointment.duration.to_f / 3600) * appointment.service.second_nurse_unit_wage.to_i).round : appointment.service.second_nurse_unit_wage
+                end
             end
         end
 

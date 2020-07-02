@@ -42,6 +42,19 @@
     </div>
 
     <div class="form-group">
+      <div class="btn btn-colibri-mid-light btn-sm" id="add-second-nurse" style="<%= 'display:none' unless appointment.second_nurse_id == nil %>">+同行</div>
+
+      <div id="second-nurse-container" style="<%= 'display:none' if appointment.second_nurse_id == nil %>">
+        <%= form.label :second_nurse_id, "同行従業員", class: 'colibri-form-label-dark' %>
+        <%= form.select :second_nurse_id, grouped_options_for_select(@grouped_nurses_for_select, appointment.second_nurse_id), {}, {id: :appointment_second_nurse_id} %>
+      </div>
+
+      <%= form.hidden_field :remove_second_nurse, value: nil %>
+
+      <div class="btn btn-colibri-mid-light btn-sm" id="remove-second-nurse" style="<%= 'display:none' if appointment.second_nurse_id == nil %>">同行削除</div>
+    </div>
+
+    <div class="form-group">
       <%= form.label :patient_id, "#{client_resource_name(@corporation.business_vertical)}名", class: "colibri-form-label-dark" %><span class='required-field'>*</span>
       <%= form.collection_select(:patient_id, @patients, :id, :name, {}, {required: true, disabled: !appointment.new_record?, id: :appointment_patient_id}) %>
     </div>

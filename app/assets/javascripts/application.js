@@ -189,6 +189,23 @@ let toggleServiceHourBasedWage = () => {
   })
 };
 
+let toggleSecondNurse = () => {
+  $('#add-second-nurse').click(function(){
+    $(this).hide()
+    $('#second-nurse-container').show()
+    $('#remove-second-nurse').show()
+    $('input[name="appointment[remove_second_nurse]"]').val('')
+  })
+
+  $('#remove-second-nurse').click(function(){
+    $(this).hide()
+    $('#second-nurse-container').hide()
+    $('#add-second-nurse').show()
+    $('#appointment_second_nurse_id').val('')
+    $('input[name="appointment[remove_second_nurse]"]').val('true')
+  })
+}
+
 let initializeBatchActionForm = () => {
   $("#colibri-batch-action-button").popover('hide')
   $('input[name="date_range"]').daterangepicker({

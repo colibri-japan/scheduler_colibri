@@ -5,6 +5,7 @@ class Appointment < ApplicationRecord
 
 	attribute :should_request_edit_for_overlapping_appointments, :boolean 
 	attribute :skip_credits_invoice_and_wage_calculations, :boolean 
+	attribute :remove_second_nurse, :boolean
 
 	belongs_to :nurse, optional: true
 	belongs_to :second_nurse, class_name: 'Nurse', optional: true
@@ -19,10 +20,11 @@ class Appointment < ApplicationRecord
 	
 	before_validation :request_edit_for_overlapping_appointments, if: :should_request_edit_for_overlapping_appointments?
 	before_validation :set_title_from_service_title
+	before_validation :remove_second_nurse_if_same_as_nurse
+	before_validation :remove_second_nurse_if_requested
 	
 	validates :title, presence: true
 	validate :do_not_overlap
-	validate :nurse_patient_and_planning_from_same_corporation
 	
 	before_save :request_edit_if_undefined_nurse
 	before_save :set_duration
@@ -206,6 +208,14 @@ class Appointment < ApplicationRecord
 		self.verifier_id = nil 
 		self.second_verified_at = nil 
 		self.second_verifier_id = nil
+	end
+
+	def remove_second_nurse_if_same_as_nurse
+		self.second_nurse_id = nil if second_nurse_id == nurse_id
+	end
+
+	def remove_second_nurse_if_requested
+		self.second_nurse_id = nil if remove_second_nurse
 	end
 	
 	def request_edit_if_undefined_nurse

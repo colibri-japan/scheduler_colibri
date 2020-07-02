@@ -27,6 +27,7 @@ window.recurringAppointmentSelectizeNursePatient = () => {
 
 window.appointmentSelectizeNursePatient = () => {
     $('#appointment_nurse_id').selectize();
+    $('#appointment_second_nurse_id').selectize();
     $('#appointment_patient_id').selectize();
 }
 

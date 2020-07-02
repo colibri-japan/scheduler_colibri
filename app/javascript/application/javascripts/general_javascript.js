@@ -275,8 +275,6 @@ window.mobileScrollTop = function() {
     }
 }
 
-
-
 document.addEventListener('turbolinks:load', function () {
 
     $('.compare-with-forecast').click(function(){

@@ -14,6 +14,7 @@ class Nurse < ApplicationRecord
 	belongs_to :team, optional: true, touch: true
 	has_one :user
 	has_many :appointments, dependent: :destroy
+	has_many :appointments_as_second_nurse, foreign_key: "second_nurse_id", class_name: "Appointment"
 	has_many :private_events
 	has_many :recurring_appointments, dependent: :destroy
 	has_many :salary_line_items, dependent: :destroy

@@ -7,6 +7,7 @@ class Appointment < ApplicationRecord
 	attribute :skip_credits_invoice_and_wage_calculations, :boolean 
 
 	belongs_to :nurse, optional: true
+	belongs_to :second_nurse, class_name: 'Nurse', optional: true
 	belongs_to :patient, optional: true
 	belongs_to :planning
 	belongs_to :original_recurring_appointment, class_name: 'RecurringAppointment', optional: true

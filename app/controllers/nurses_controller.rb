@@ -164,20 +164,23 @@ class NursesController < ApplicationController
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
     end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
 
-    @appointments_till_today = @nurse.appointments.not_archived.includes(:service, :patient, completion_report: :forecasted_report).in_range(first_day..end_of_today_in_japan).order("starts_at #{@sort_direction}")
+    @appointments_till_today = Appointment.with_nurse_or_second_nurse_by_id(@nurse.id).not_archived.in_range(first_day..end_of_today_in_japan).includes(:service, :patient, completion_report: :forecasted_report).order("starts_at #{@sort_direction}")
+
     @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan).includes(:salary_rule)
-    @unverified_services_count = @appointments_till_today.operational.unverified.count
-
-    @grouped_appointments = @nurse.appointments.operational.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
-    @cancelled_appointments = @nurse.appointments.not_archived.cancelled.in_range(first_day..end_of_today_in_japan)
-
+    
+    @grouped_appointments_as_main_nurse = @nurse.appointments.operational.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(total_wage) as sum_total_wage')
+    @grouped_appointments_as_second_nurse = @nurse.appointments_as_second_nurse.operational.in_range(first_day..end_of_today_in_japan).order(:title).group(:title).select('title, sum(duration) as sum_duration, count(*), sum(second_nurse_wage) as sum_total_wage')
+    @cancelled_appointments_as_main_nurse = @nurse.appointments.not_archived.cancelled.in_range(first_day..end_of_today_in_japan)
+    @cancelled_appointments_as_second_nurse = @nurse.appointments_as_second_nurse.not_archived.cancelled.in_range(first_day..end_of_today_in_japan)
+    
+    @total_wage_from_services = @appointments_till_today.calculate_wage_for_nurse_with_id(@nurse.id)
     @total_days_worked = @appointments_till_today.pluck(:starts_at).map {|datetime| datetime.strftime('%d')}.try(:uniq).try(:compact).try(:count)
     @total_time_worked = @appointments_till_today.operational.sum(:duration) || 0 
-    @total_time_pending = first_day > end_of_today_in_japan ? @nurse.appointments.operational.in_range(first_day..last_day).sum(:duration) || 0 : @nurse.appointments.operational.in_range(end_of_today_in_japan..last_day).sum(:duration) || 0
+    @total_time_pending = first_day > end_of_today_in_japan ? Appointment.with_nurse_or_second_nurse_by_id(@nurse.id).operational.in_range(first_day..last_day).sum(:duration) || 0 : Appointment.with_nurse_or_second_nurse_by_id(@nurse.id).operational.in_range(end_of_today_in_japan..last_day).sum(:duration) || 0
     @percentage_of_time_worked = @total_time_worked + @total_time_pending == 0 ? 100 : (@total_time_worked.to_f * 100 / (@total_time_pending + @total_time_worked)).round(1)
     @percentage_of_time_pending = 100 - @percentage_of_time_worked
 
-    @appointments_grouped_by_category = @nurse.appointments.operational.where(planning_id: @planning.id).in_range(first_day..end_of_today_in_japan).grouped_by_weighted_category
+    @appointments_grouped_by_category = Appointment.with_nurse_or_second_nurse_by_id(@nurse.id).operational.where(planning_id: @planning.id).in_range(first_day..end_of_today_in_japan).grouped_by_weighted_category
 
     respond_to do |format|
       format.html

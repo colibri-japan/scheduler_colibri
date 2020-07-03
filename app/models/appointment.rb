@@ -42,7 +42,7 @@ class Appointment < ApplicationRecord
 	scope :commented, -> { where.not(description: ['', nil]) }
 	scope :in_range, -> range { where(starts_at: range) }
 	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
-	scope :with_nurse_or_second_nurse_by_id, -> nurse_id { where('(nurse_id = ?) OR (second_nurse_id = ?)', nurse_id, nurse_id) }
+	scope :with_nurse_or_second_nurse_by_id, -> nurse_id { where('(appointments.nurse_id = ?) OR (appointments.second_nurse_id = ?)', nurse_id, nurse_id) }
 
 	def with_nurse_id?(id)
 		nurse_id == id 
@@ -62,6 +62,15 @@ class Appointment < ApplicationRecord
 
 	def self.overlapping(range)
 		where('((appointments.starts_at >= ? AND appointments.starts_at < ?) OR (appointments.ends_at > ? AND appointments.ends_at <= ?)) OR (appointments.starts_at < ? AND appointments.ends_at > ?)', range.first, range.last, range.first, range.last, range.first, range.last)
+	end
+
+	def self.calculate_wage_for_nurse_with_id(nurse_id)
+		total_wage = 0 
+
+		wage_as_main_nurse = self.where(nurse_id: nurse_id).sum(:total_wage) || 0
+		wage_as_second_nurse = self.where(second_nurse_id: nurse_id).sum(:second_nurse_wage) || 0
+
+		total_wage = wage_as_main_nurse + wage_as_second_nurse
 	end
 
 	def self.get_overlapping_instances

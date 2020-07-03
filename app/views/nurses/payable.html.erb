@@ -288,17 +288,17 @@
 						<% end %>
 					</tr>
 				<% end %>
-				<% @grouped_appointments_as_main_nurse.each do |appointment_group| %>
-					<% if @grouped_appointments_as_second_nurse.present? %>
-						<tr style="font-weight:bold">
-							<td>通常サービス</td>
-							<td></td>
-							<td></td>
-							<% if current_user.corporation_admin? %>
-								<td></td>
-							<% end %>
-						</tr>
+
+				<tr style="font-weight:bold">
+					<td>通常サービス</td>
+					<td></td>
+					<td></td>
+					<% if current_user.corporation_admin? %>
+						<td></td>
 					<% end %>
+				</tr>
+
+				<% @grouped_appointments_as_main_nurse.each do |appointment_group| %>
 					<tr>
 						<td><%= appointment_group.title %></td>
 						<td><%= from_seconds_to_hours_minutes(appointment_group.sum_duration) if appointment_group.sum_duration > 0 %></td>

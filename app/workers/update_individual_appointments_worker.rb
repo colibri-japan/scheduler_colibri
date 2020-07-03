@@ -36,7 +36,8 @@ class UpdateIndividualAppointmentsWorker
 
                 #instead of batch validation, validate each appointment
                 appointment.edit_requested = true unless appointment.valid?
-                
+                appointment.run_callbacks(:save) { false }
+
                 new_appointments << appointment
             end
 

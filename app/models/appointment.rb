@@ -42,6 +42,15 @@ class Appointment < ApplicationRecord
 	scope :commented, -> { where.not(description: ['', nil]) }
 	scope :in_range, -> range { where(starts_at: range) }
 	scope :unverified, -> { where('verified_at IS NULL AND second_verified_at IS NULL') }
+	scope :with_nurse_or_second_nurse_by_id, -> nurse_id { where('(nurse_id = ?) OR (second_nurse_id = ?)', nurse_id, nurse_id) }
+
+	def with_nurse_id?(id)
+		nurse_id == id 
+	end
+
+	def with_second_nurse_id?(id)
+		second_nurse_id == id 
+	end
 
 	def verifying_appointment
 		will_save_change_to_verified_at? || will_save_change_to_second_verified_at?

@@ -131,8 +131,17 @@ class Appointment < ApplicationRecord
         end
 	end
 
+	def resource_ids_for_calendar
+		if second_nurse_id.present?
+			["patient_#{patient_id}", "nurse_#{nurse_id}", "nurse_#{second_nurse_id}"]
+		else
+			["patient_#{patient_id}", "nurse_#{nurse_id}"]
+		end
+	end
+
 	def as_json(options = {})
 		date_format = self.all_day? ? '%Y-%m-%d' : '%Y-%m-%dT%H:%M'
+
 		{
 			id: "appointment_#{self.id}",
 			title: "#{self.patient.try(:name)} - #{self.nurse.try(:name)}",
@@ -142,7 +151,7 @@ class Appointment < ApplicationRecord
 			nurse_id: self.nurse_id,
 			edit_requested: self.edit_requested,
 			description: self.description || '',
-			resourceIds: ["patient_#{self.patient_id}", "nurse_#{self.nurse_id}"],
+			resourceIds: self.resource_ids_for_calendar,
 			allDay: self.all_day?,
 			backgroundColor: self.color,
 			borderColor: self.borderColor,

@@ -89,8 +89,8 @@ class PrivateEventsController < ApplicationController
 		parameters["title"] = [@private_event.title, nil] unless parameters["title"].present?
 		parameters["starts_at"] = [@private_event.starts_at, nil] unless parameters["starts_at"].present?
 		parameters["ends_at"] = [@private_event.ends_at, nil] unless parameters["ends_at"].present?
-		parameters["previous_nurse_name"] = Nurse.find(parameters["nurse_id"][0]) if parameters["nurse_id"].present?
-		parameters["previous_patient_name"] = Nurse.find(parameters["patient_id"][0]) if parameters["patient_id"].present?
+		parameters["previous_nurse_name"] = Nurse.find(parameters["nurse_id"][0]).try(:name) if parameters["nurse_id"].present?
+		parameters["previous_patient_name"] = Nurse.find(parameters["patient_id"][0]).try(:name) if parameters["patient_id"].present?
 		parameters["nurse_name"] = @private_event.nurse.try(:name)
 		parameters["patient_name"] = @private_event.patient.try(:name)
 		previous_nurse_id = parameters["nurse_id"].present? ? parameters["nurse_id"][0] : nil

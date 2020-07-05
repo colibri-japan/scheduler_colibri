@@ -311,11 +311,11 @@ let createCalendar = () => {
                     </tr>`
                 info.el.innerHTML = newHtml 
                 if (info.event.extendedProps.description) {
-                    let pTag = `<p class="colibri-fc-list-body">${info.event.extendedProps.description}</p>`
+                    let pTag = `<p class="colibri-list-subtitle">サ責からの指示</p><p class="colibri-fc-list-body">${info.event.extendedProps.description}</p>`
                     info.el.firstElementChild.insertAdjacentHTML('beforeend', pTag)
                 }
                 if (info.event.extendedProps.previous_report_comment) {
-                    let pTag = `<p class="colibri-fc-list-body">${info.event.extendedProps.previous_report_comment}</p>`
+                    let pTag = `<p class="colibri-list-subtitle">前回のサービス内容</p><p class="colibri-fc-list-body">${info.event.extendedProps.previous_report_comment}</p>`
                     info.el.firstElementChild.insertAdjacentHTML('beforeend', pTag)
                 }
             } 

@@ -50,8 +50,16 @@
     }
 
 
+    p.colibri-list-subtitle {
+        margin-bottom: 0px;
+        margin-left: 15px;
+        padding-top: 5px;
+        color: #2B384E;
+        font-size: 0.9em;
+    }
+
     p.colibri-fc-list-body {
-		margin: 4px 0px 4px 15px;
+		margin: 0px 0px 4px 15px;
 		margin-left: 15px;
 		background-color: white;
 		padding: 4px 6px 4px 6px;

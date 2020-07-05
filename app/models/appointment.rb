@@ -327,10 +327,12 @@ class Appointment < ApplicationRecord
 		nurse = Nurse.find(self.nurse_id)
 
 		unless nurse.name == '未定' || self.archived? || self.edit_requested? || self.cancelled?
-			overlapping_ids = Appointment.where(edit_requested: false, planning_id: self.planning_id, nurse_id: self.nurse_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
+			nurse_overlapping_ids = Appointment.with_nurse_or_second_nurse_by_id(self.nurse_id).where(edit_requested: false, planning_id: self.planning_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id)
+			second_nurse_overlapping_ids = Appointment.with_nurse_or_second_nurse_by_id(self.second_nurse_id).where(edit_requested: false, planning_id: self.planning_id, archived_at: nil, cancelled: false).where.not(id: self.id).overlapping(self.starts_at..self.ends_at).pluck(:id) if second_nurse_id.present? && second_nurse.name != '未定' 
 
-			errors[:base] << "その日の従業員が重複しています。" if overlapping_ids.present?
-			errors[:overlapping_ids] << overlapping_ids if overlapping_ids.present?
+			errors[:base] << "その日の従業員が重複しています。" if nurse_overlapping_ids.present?
+			errors[:base] << "その日の同行の従業員が重複しています。" if second_nurse_overlapping_ids.present?
+			errors[:overlapping_ids] << (nurse_overlapping_ids || []) + (second_nurse_overlapping_ids || []) if nurse_overlapping_ids.present? || second_nurse_overlapping_ids.present?
 		end
 	end
 

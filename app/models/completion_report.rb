@@ -180,7 +180,7 @@ class CompletionReport < ApplicationRecord
         current_recurring_appointment = self.reportable            
 
         current_recurring_appointment.editing_occurrences_after = self.editing_occurrences_after
-        current_recurring_appointment.synchronize_appointments = true 
+        current_recurring_appointment.synchronize_appointments = false
         current_recurring_appointment.should_not_copy_completion_report = true 
 
         current_recurring_appointment.save!

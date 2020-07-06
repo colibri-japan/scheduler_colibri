@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200702102749) do
+ActiveRecord::Schema.define(version: 20200706150712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 20200702102749) do
     t.boolean "previous_cancelled"
     t.bigint "previous_patient_id"
     t.bigint "previous_nurse_id"
+    t.bigint "second_nurse_id"
+    t.bigint "previous_second_nurse_id"
     t.index ["nurse_id"], name: "index_activities_on_nurse_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
@@ -58,8 +60,10 @@ ActiveRecord::Schema.define(version: 20200702102749) do
     t.index ["planning_id"], name: "index_activities_on_planning_id"
     t.index ["previous_nurse_id"], name: "index_activities_on_previous_nurse_id"
     t.index ["previous_patient_id"], name: "index_activities_on_previous_patient_id"
+    t.index ["previous_second_nurse_id"], name: "index_activities_on_previous_second_nurse_id"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
     t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"
+    t.index ["second_nurse_id"], name: "index_activities_on_second_nurse_id"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
     t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
   end

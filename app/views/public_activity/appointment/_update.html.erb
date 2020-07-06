@@ -3,6 +3,7 @@
 <span class="activity-before-update-state">
 	編集前：
 	<%= activity.parameters['previous_nurse_name'] || activity.parameters['nurse_name'] %>
+	<%= " / 同行：#{activity.parameters['previous_second_nurse_name']}" if activity.parameters['previous_second_nurse_name'].present? %>
 	<%= " #{activity.parameters['starts_at'][0].try(:strftime, "%-m月%-d日#{weekday(activity.parameters['starts_at'][0])} %-H:%M")}" if activity.parameters['starts_at'].present? && activity.parameters['starts_at'][0].present?  %>
 	<%= "~ #{activity.parameters['ends_at'][0].try(:strftime, "%H:%M")}"  if activity.parameters['ends_at'].present? %>
 	<%= activity.parameters['title'][0] if activity.parameters['title'].present? %>
@@ -11,6 +12,7 @@
 
 編集内容：
 <span class="activity-important-fields"><%= "新規従業員：#{activity.parameters['nurse_name']} " if activity.parameters['nurse_id'].present? %></span>
+<span class="activity-important-fields"><%= "新規同行従業員：#{activity.parameters['second_nurse_name']} " if activity.parameters['second_nurse_id'].present? %></span>
 <span class="activity-important-fields"><%= "新規利用者：#{activity.parameters['patient_name']}" if activity.parameters['patient_id'].present? %></span>
 <% if activity.parameters['starts_at'].present? && activity.parameters['ends_at'].present? && (activity.parameters['starts_at'][1].present? || activity.parameters['ends_at'][1].present?) %>
 	<%= activity.parameters['starts_at'][1].present? ? activity.parameters['starts_at'][1].strftime("%-m月%-d日#{weekday(activity.parameters['starts_at'][1])} %-H:%M") : activity.parameters['starts_at'][0].strftime("%-m月%-d日#{weekday(activity.parameters['starts_at'][0])} %-H:%M") %>

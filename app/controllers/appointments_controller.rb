@@ -229,15 +229,18 @@ class AppointmentsController < ApplicationController
       parameters = @appointment.previous_changes
       parameters["previous_nurse_name"] = Nurse.find(parameters["nurse_id"][0]).try(:name) if parameters["nurse_id"].present?
       parameters["previous_patient_name"] = Patient.find(parameters["patient_id"][0]).try(:name) if parameters["patient_id"].present? 
+      parameters["previous_second_nurse_name"] = Nurse.find(parameters["second_nurse_id"][0]).try(:name) if parameters["second_nurse_id"].present? && parameters["second_nurse_id"][0].present? 
       parameters["nurse_name"] = @appointment.nurse.try(:name)
+      parameters["second_nurse_name"] = @appointment.second_nurse.try(:name)
       parameters["patient_name"] = @appointment.patient.try(:name)
       parameters["starts_at"] = [@appointment.starts_at, nil]  unless parameters["starts_at"].present?
       parameters["ends_at"] = [@appointment.ends_at, nil]  unless parameters["ends_at"].present?
       previous_nurse_id = parameters["nurse_id"].present? ? parameters["nurse_id"][0] : nil
+      previous_second_nurse_id = parameters["second_nurse_id"].present? ? parameters["second_nurse_id"][0] : nil
       previous_patient_id = parameters["patient_id"].present? ? parameters["patient_id"][0] : nil
       parameters.delete("updated_at")
 
-      @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, patient_id: @appointment.patient_id, previous_nurse_id: previous_nurse_id, previous_patient_id: previous_patient_id, parameters: parameters
+      @activity = @appointment.create_activity :update, owner: current_user, planning_id: @planning.id, nurse_id: @appointment.nurse_id, second_nurse_id: @appointment.second_nurse_id, patient_id: @appointment.patient_id, previous_nurse_id: previous_nurse_id, previous_patient_id: previous_patient_id, parameters: parameters
     end
 
     def filter_appointments_by_action_type

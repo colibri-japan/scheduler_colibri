@@ -17,7 +17,7 @@ class ActivitiesController < ApplicationController
 
 		if params[:n].present? && @nurses.ids.include?(params[:n].to_i)
 			@nurse_id = params[:n]
-			@activities = @activities.where('nurse_id = ? OR previous_nurse_id = ?', params[:n], params[:n])
+			@activities = @activities.where('(nurse_id = ?) OR (previous_nurse_id = ?) OR (second_nurse_id = ?) OR (previous_second_nurse_id = ?)', params[:n], params[:n], params[:n], params[:n])
 		end
 
 		if params[:pat].present? && @patients.ids.include?(params[:pat].to_i)

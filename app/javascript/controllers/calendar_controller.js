@@ -913,7 +913,7 @@ let nonMasterDragOptions = (eventDropInfo) => {
 
             if (eventDropInfo.oldResource.title === eventDropInfo.event.extendedProps.nurse.name) {
                 newResourceType = '従業員'
-            } else if (eventDropInfo.oldResource.title === eventDropInfo.event.extendedProps.second_nurse.name) {
+            } else if (eventDropInfo.event.extendedProps.second_nurse && eventDropInfo.oldResource.title === eventDropInfo.event.extendedProps.second_nurse.name) {
                 newResourceType = '同行従業員'
             } else {
                 newResourceType = ''
@@ -926,9 +926,6 @@ let nonMasterDragOptions = (eventDropInfo) => {
             newResourceTitle = eventDropInfo.newResource.title
         }
     }
-
-    console.log('new resource type')
-    console.log(newResourceType)
 
     if (window.editConfirmRequested) {
         showDragDropConfirm(eventDropInfo, newNurseId, newPatientId, newResourceType, newResourceTitle)
@@ -944,7 +941,10 @@ let showDragDropConfirm = (eventDropInfo, newNurseId, newPatientId, newResourceT
     let previousAppointment = `${previous_start.locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.locale('ja').format('LT')}`
     let newAppointment = `${moment(eventDropInfo.event.start).locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).locale('ja').format('LT')}`
     let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
-    let second_nurse_name = eventDropInfo.event.extendedProps.second_nurse.name;
+    let second_nurse_name
+    if (eventDropInfo.event.extendedProps.second_nurse) {
+        second_nurse_name = eventDropInfo.event.extendedProps.second_nurse.name;
+    }
     let patient_name = eventDropInfo.event.extendedProps.patient.name
     let changeInResource
     let secondNurseText = ''

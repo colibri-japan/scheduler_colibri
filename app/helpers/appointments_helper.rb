@@ -71,6 +71,14 @@ module AppointmentsHelper
         "（同行）" if was_second_nurse
     end
 
+    def appointment_wage_with_nurse_status_as_integer(appointment, nurse_id)
+        if appointment.with_second_nurse_id?(nurse_id)
+            appointment.second_nurse_wage
+        else
+            appointment.total_wage
+        end
+    end
+
     def appointment_wage_with_nurse_status(appointment, nurse_id)
         if appointment.with_second_nurse_id?(nurse_id)
             "#{appointment.second_nurse_wage}¥"

@@ -26,11 +26,11 @@
         </thead>
         <tbody>
             <% @appointments_till_today.each do |appointment| %>
-                <% total_wage = @nurse.full_timer ? '' : appointment.try(:total_wage) %>
+                <% total_wage = @nurse.full_timer ? '' : appointment_wage_with_nurse_status(appointment, @nurse.id) %>
                 <tr>
                     <td><%= "#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}" %></td>
                     <td><%= "#{appointment.patient.try(:name)}様" %></td>
-                    <td><%= appointment_title_in_excel(appointment) %></td>
+                    <td><%= "#{appointment_title_in_excel(appointment)}#{appointment_was_as_second_nurse(appointment.with_second_nurse_id?(@nurse.id))}}" %></td>
                     <td><%= appointment.starts_at.try(:strftime, "%H:%M") %></td>
                     <td><%= appointment.ends_at.try(:strftime, "%H:%M") %></td>
                     <td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>
@@ -45,7 +45,7 @@
                     <td></td>
                     <td></td>
                     <td>合計：</td>
-                    <td>￥<%= @appointments_till_today.sum(:total_wage) %></td>
+                    <td>￥<%= @total_wage_from_services %></td>
                 </tr>
             <% end %>
         </tbody>

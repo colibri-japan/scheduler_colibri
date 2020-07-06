@@ -41,9 +41,9 @@ wb.styles do |s|
 			end
 			
 			total_wage = @nurse.full_timer ? '' : appointment.try(:total_wage)
-			sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", "#{appointment.patient.try(:name)}様", appointment_title_in_excel(appointment), appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"), from_seconds_to_hours_minutes(appointment.duration), total_wage], style: Array.new(8,table_cells_centered)
+			sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", "#{appointment.patient.try(:name)}様", "#{appointment_title_in_excel(appointment)}#{appointment_was_as_second_nurse(appointment.with_second_nurse_id?(@nurse.id))}", appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"), from_seconds_to_hours_minutes(appointment.duration), appointment_wage_with_nurse_status(appointment, @nurse.id)], style: Array.new(8,table_cells_centered)
 		end
-		sum_appointments = @appointments_till_today.sum(:total_wage)
+		sum_appointments = @total_wage_from_services
 		unless @nurse.full_timer?
 			sheet.add_row ['','','','','','合計',sum_appointments], style: align_center
 		end

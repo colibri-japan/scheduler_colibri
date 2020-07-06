@@ -223,10 +223,7 @@ module CompletionReportsHelper
 
     def assisted_patient_to_eat_checked(completion_report, detailed_report)
         if completion_report.try(:assisted_patient_to_eat?)
-            puts 'assisted to eat'
-            puts completion_report.patient_ate_full_plate
             if detailed_report && !completion_report.try(:patient_ate_full_plate).nil?
-                puts 'detailed report'
                 full_plate_text = completion_report.try(:patient_ate_full_plate) ? "完食" : "残量 #{completion_report.try(:ratio_of_leftovers)}"
                 "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>食事介助: #{full_plate_text}</div>" 
             else

@@ -40,7 +40,7 @@
 
           <div class="form-group">
             <%= f.label :nurse_id, '従業員に紐づける', class: "colibri-form-label-dark" %>
-            <%= f.collection_select(:nurse_id, current_user.corporation.nurses.displayable.order_by_kana, :id, :name, {include_blank: '選択する'}) %>
+            <%= f.collection_select(:nurse_id, current_user.corporation.nurses.displayable.order_by_kana, :id, :name, {include_blank: '選択する'}, {}) %>
           </div>
 
           <div class="form-group">

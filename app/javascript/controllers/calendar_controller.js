@@ -908,9 +908,16 @@ let nonMasterDragOptions = (eventDropInfo) => {
         newNurseId = eventDropInfo.event.extendedProps.nurse_id
     } else {
         if (eventDropInfo.newResource.extendedProps.model_name === 'nurse') {
-            newPatientId = eventDropInfo.event.extendedProps.patient_id
+            newPatientId = eventDropInfo.newResource.extendedProps.patient_id
             newNurseId = eventDropInfo.newResource.extendedProps.record_id 
-            newResourceType = '従業員'
+
+            if (eventDropInfo.oldResource.title === eventDropInfo.event.extendedProps.nurse.name) {
+                newResourceType = '従業員'
+            } else if (eventDropInfo.oldResource.title === eventDropInfo.event.extendedProps.second_nurse.name) {
+                newResourceType = '同行従業員'
+            } else {
+                newResourceType = ''
+            }
             newResourceTitle = eventDropInfo.newResource.title
         } else if (eventDropInfo.newResource.extendedProps.model_name === 'patient') {
             newPatientId = eventDropInfo.newResource.extendedProps.record_id
@@ -920,10 +927,13 @@ let nonMasterDragOptions = (eventDropInfo) => {
         }
     }
 
+    console.log('new resource type')
+    console.log(newResourceType)
+
     if (window.editConfirmRequested) {
         showDragDropConfirm(eventDropInfo, newNurseId, newPatientId, newResourceType, newResourceTitle)
     } else {
-        updateAppointmentFromDragDrop(eventDropInfo, newNurseId, newPatientId)
+        updateAppointmentFromDragDrop(eventDropInfo, newResourceType, newNurseId, newPatientId)
     }
 }
 
@@ -934,8 +944,15 @@ let showDragDropConfirm = (eventDropInfo, newNurseId, newPatientId, newResourceT
     let previousAppointment = `${previous_start.locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${previous_end.locale('ja').format('LT')}`
     let newAppointment = `${moment(eventDropInfo.event.start).locale('ja').format('M[月]D[日][(]dd[)] LT')} ~ ${moment(eventDropInfo.event.end).locale('ja').format('LT')}`
     let nurse_name = eventDropInfo.event.extendedProps.nurse.name;
+    let second_nurse_name = eventDropInfo.event.extendedProps.second_nurse.name;
     let patient_name = eventDropInfo.event.extendedProps.patient.name
     let changeInResource
+    let secondNurseText = ''
+
+    if (second_nurse_name) {
+        secondNurseText = ` / 同行従業員：${second_nurse_name}`
+    }
+
 
     if (newResourceTitle && newResourceType) {
         changeInResource = `<p>新規${newResourceType}: ${newResourceTitle}</p>`
@@ -943,7 +960,7 @@ let showDragDropConfirm = (eventDropInfo, newNurseId, newPatientId, newResourceT
         changeInResource = ''
     }
 
-    $('#drag-drop-content').html(`<p>従業員：${nurse_name} / ${window.clientResourceName}: ${patient_name} </p>${changeInResource}<p>${previousAppointment} >> </p><p>${newAppointment}</p>`)
+    $('#drag-drop-content').html(`<p>従業員：${nurse_name}${secondNurseText}</p> <p>${window.clientResourceName}: ${patient_name}</p>${changeInResource}<p>${previousAppointment} >> </p><p>${newAppointment}</p>`)
 
     $('#drag-drop-modal').modal()
 
@@ -958,11 +975,11 @@ let showDragDropConfirm = (eventDropInfo, newNurseId, newPatientId, newResourceT
     })
 
     $('#drag-drop-save').one('click', function () {
-        updateAppointmentFromDragDrop(eventDropInfo, newNurseId, newPatientId)
+        updateAppointmentFromDragDrop(eventDropInfo, newResourceType, newNurseId, newPatientId)
     })
 }
 
-let updateAppointmentFromDragDrop = (eventDropInfo, newNurseId, newPatientId) => {
+let updateAppointmentFromDragDrop = (eventDropInfo, newResourceType, newNurseId, newPatientId) => {
     let ajaxData;
     if (eventDropInfo.event.extendedProps.eventType === 'private_event') {
         ajaxData = {
@@ -974,12 +991,23 @@ let updateAppointmentFromDragDrop = (eventDropInfo, newNurseId, newPatientId) =>
             }
         }
     } else if (eventDropInfo.event.extendedProps.eventType === 'appointment') {
-        ajaxData = {
-            appointment: {
-                starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
-                ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
-                nurse_id: newNurseId,
-                patient_id: newPatientId
+        if (newResourceType === '同行従業員') {
+            ajaxData = {
+                appointment: {
+                    starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                    ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
+                    second_nurse_id: newNurseId,
+                    patient_id: newPatientId
+                }
+            }
+        } else {
+            ajaxData = {
+                appointment: {
+                    starts_at: moment(eventDropInfo.event.start).format('YYYY-MM-DD HH:mm'),
+                    ends_at: moment(eventDropInfo.event.end).format('YYYY-MM-DD HH:mm'),
+                    nurse_id: newNurseId,
+                    patient_id: newPatientId
+                }
             }
         }
     }

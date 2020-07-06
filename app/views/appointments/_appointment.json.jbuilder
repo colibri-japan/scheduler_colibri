@@ -12,12 +12,14 @@ json.resourceIds appointment.resource_ids_for_calendar
 json.nurse do 
     json.name appointment.nurse.name 
 end
+json.second_nurse do 
+    json.name appointment.second_nurse.try(:name)
+end
 json.patient do 
     json.name appointment.patient.name 
     json.address appointment.patient.address 
 end
 json.serviceType appointment.title || ''
-json.completion_report_id appointment.completion_report.try(:id)
 
 json.borderColor appointment.borderColor    
 json.eventType 'appointment'

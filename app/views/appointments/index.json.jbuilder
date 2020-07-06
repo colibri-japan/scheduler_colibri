@@ -14,7 +14,6 @@ json.array! @appointments.each do |appointment|
         json.serviceType appointment.title || ''
         json.eventType 'appointment'
         json.eventId appointment.id
-        json.completion_report_id appointment.completion_report.try(:id)
 
         json.patient do 
             json.name appointment.patient.name 
@@ -23,6 +22,10 @@ json.array! @appointments.each do |appointment|
 
         json.nurse do 
             json.name appointment.nurse.name
+        end
+
+        json.second_nurse do 
+            json.name appointment.second_nurse.try(:name)
         end
 
         json.borderColor appointment.borderColor

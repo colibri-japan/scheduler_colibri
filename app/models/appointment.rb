@@ -161,13 +161,15 @@ class Appointment < ApplicationRecord
 			nurse: {
 				name: self.nurse.try(:name),
 			},
+			second_nurse: {
+				name: self.second_nurse.try(:name),
+			},
 			patient: {
 				name: self.patient.try(:name),
 				address: self.patient.try(:address)
 			},
 			eventType: 'appointment',
 			eventId: self.id,
-			completion_report_id: self.completion_report.try(:id),
 			previous_report_comment: options[:list_view] == true ? self.previous_report_comment : ''
 		}
 	end

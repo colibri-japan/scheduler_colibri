@@ -30,7 +30,7 @@
                 <tr>
                     <td><%= "#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}" %></td>
                     <td><%= "#{appointment.patient.try(:name)}様" %></td>
-                    <td><%= "#{appointment_title_in_excel(appointment)}#{appointment_was_as_second_nurse(appointment.with_second_nurse_id?(@nurse.id))}}" %></td>
+                    <td><%= "#{appointment_title_in_excel(appointment)}#{appointment_was_as_second_nurse(appointment.with_second_nurse_id?(@nurse.id))}" %></td>
                     <td><%= appointment.starts_at.try(:strftime, "%H:%M") %></td>
                     <td><%= appointment.ends_at.try(:strftime, "%H:%M") %></td>
                     <td><%= from_seconds_to_hours_minutes(appointment.duration) %></td>

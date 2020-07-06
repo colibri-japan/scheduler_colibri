@@ -31,7 +31,6 @@ Rails.application.routes.draw do
     resources :nurses
     resources :patients
     resources :activities
-    resources :scans
     resources :printing_options, only: :show
     resources :teams, only: :show
   end

@@ -90,7 +90,7 @@ class TeamsController < ApplicationController
         set_reports_date
         nurse_ids = @team.nurses.ids
     
-        @completion_reports = @planning.completion_reports.from_appointments.joins_appointments.includes(reportable: [:nurse, :patient]).in_range(@date.beginning_of_day..@date.end_of_day).where(appointments: {nurse_id: nurse_ids}).order('appointments.starts_at DESC')
+        @completion_reports = @planning.completion_reports.from_appointments.joins_appointments.includes(reportable: [:nurse, :second_nurse, :patient]).in_range(@date.beginning_of_day..@date.end_of_day).where(appointments: {nurse_id: nurse_ids}).order('appointments.starts_at DESC')
         @appointments_without_reports = @planning.appointments.operational.where(nurse_id: nurse_ids).left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).in_range(@date.beginning_of_day..@date.end_of_day).order(starts_at: :desc)
       
         respond_to do |format|

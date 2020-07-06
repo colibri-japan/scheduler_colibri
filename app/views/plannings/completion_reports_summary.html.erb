@@ -82,6 +82,11 @@
 										<div class="reportable-nurse-patient-information">
 											<%= completion_report.reportable.try(:nurse).try(:name) %> > <%= "#{completion_report.reportable.try(:patient).try(:name)}様" %>
 										</div>
+										<% if completion_report.reportable.second_nurse_id.present? %>
+											<div class="reportable-nurse-patient-information">
+												<%= "同行：#{completion_report.reportable.try(:second_nurse).try(:name)}" %> 
+											</div>
+										<% end %>
 										<div class="reportable-time-information">
 											<%= l(completion_report.reportable.starts_at, format: '%-m/%-d (%a) ') %><%= "#{completion_report.reportable.starts_at.strftime('%H:%M')} ~ #{completion_report.reportable.ends_at.strftime('%H:%M')}" %>
 										</div>

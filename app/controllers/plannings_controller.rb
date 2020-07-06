@@ -29,7 +29,7 @@ class PlanningsController < ApplicationController
 		set_reports_date
 		@team = current_user.nurse.try(:team)
 
-		@completion_reports = @planning.completion_reports.from_appointments.joins_appointments.includes(:forecasted_report, reportable: [:nurse, :patient]).in_range(@date.beginning_of_day..@date.end_of_day).order('appointments.starts_at DESC')
+		@completion_reports = @planning.completion_reports.from_appointments.joins_appointments.includes(:forecasted_report, reportable: [:nurse, :second_nurse, :patient]).in_range(@date.beginning_of_day..@date.end_of_day).order('appointments.starts_at DESC')
 		@appointments_without_reports = @planning.appointments.left_outer_joins(:completion_report).where(completion_reports: {id: nil}).includes(:nurse, :patient).operational.in_range(@date.beginning_of_day..@date.end_of_day).order(starts_at: :desc)
 	end
 

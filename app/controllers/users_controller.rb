@@ -64,9 +64,6 @@ class UsersController < ApplicationController
     if params[:notification_id].present? 
       n = Rpush::Gcm::Notification.find(params[:notification_id])
 
-      puts 'looked for notification'
-      puts n 
-
       n.mark_as_read! for: current_user
     end
   end

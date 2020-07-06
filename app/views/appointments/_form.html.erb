@@ -46,7 +46,7 @@
 
       <div id="second-nurse-container" style="<%= 'display:none' if appointment.second_nurse_id == nil %>">
         <%= form.label :second_nurse_id, "同行従業員", class: 'colibri-form-label-dark' %>
-        <%= form.select :second_nurse_id, grouped_options_for_select(@grouped_nurses_for_select, appointment.second_nurse_id), {}, {id: :appointment_second_nurse_id} %>
+        <%= form.select :second_nurse_id, grouped_options_for_select(@grouped_nurses_for_select, appointment.second_nurse_id), {prompt: '選択する'}, {id: :appointment_second_nurse_id} %>
       </div>
 
       <%= form.hidden_field :remove_second_nurse, value: nil %>

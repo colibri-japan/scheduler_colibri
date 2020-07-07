@@ -77,8 +77,8 @@ gem 'pundit'
 
 #create excel templates with axlsx
 gem 'rubyzip', '>= 1.3.0'
-gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
-gem 'axlsx_rails'
+gem 'caxlsx'
+gem 'caxlsx_rails'
 
 #charting library
 gem 'chartkick', '>= 3.3.0'

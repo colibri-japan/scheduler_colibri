@@ -9,11 +9,11 @@ class AppointmentsController < ApplicationController
     authorize @planning, :same_corporation_as_current_user?
 
     if params[:nurse_id].present? 
-      @appointments = Appointment.where(nurse_id: params[:nurse_id]).not_archived.includes(:patient, :nurse, :second_nurse)
+      @appointments = Appointment.with_nurse_or_second_nurse_by_id(params[:nurse_id]).not_archived.includes(:patient, :nurse, :second_nurse)
     elsif params[:patient_id].present?
       @appointments = Appointment.where(patient_id: params[:patient_id]).not_archived.includes(:patient, :nurse, :second_nurse)
     elsif params[:team_id].present? 
-      @appointments = Appointment.where(nurse_id: Team.find(params[:team_id]).nurses.pluck(:id)).not_archived.includes(:patient, :nurse, :second_nurse)
+      @appointments = Appointment.with_nurse_or_second_nurse_by_id(Team.find(params[:team_id]).nurses.pluck(:id)).not_archived.includes(:patient, :nurse, :second_nurse)
     else
       @appointments = @planning.appointments.not_archived.includes(:patient, :nurse, :second_nurse)
     end

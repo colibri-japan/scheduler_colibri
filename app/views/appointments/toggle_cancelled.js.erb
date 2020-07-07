@@ -35,7 +35,7 @@
       let renderEvent
     }
   
-    renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
+    renderEvent = (window.currentResourceType === 'team') || (window.currentResourceId === 'all') || (window.currentResourceType && ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>', '<%= "nurse_#{@appointment.second_nurse_id}" %>'].includes(`${window.currentResourceType}_${window.currentResourceId}`)) || (!window.currentResourceType && (window.defaultResourceType === 'team' || window.defaultResourceId === 'all' || ['<%= "patient_#{@appointment.patient_id}" %>', '<%= "nurse_#{@appointment.nurse_id}" %>','<%= "nurse_#{@appointment.second_nurse_id}" %>'].includes(`${window.defaultResourceType}_${window.defaultResourceId}`)))
 
     if (window.fullCalendar) {
       let event_to_remove = window.fullCalendar.getEventById('<%= "appointment_#{@appointment.id}" %>')

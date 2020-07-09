@@ -1,0 +1,82 @@
+<% title "訪問介護実施記録 | 訪問介護シフト | 訪問介護給与計算" %>
+
+<%= render 'colibri_covid' %>
+
+<div class="section-title-container" style="padding-top:85px">
+    <h1 class="colibri-section-title">Colibriの説明動画</h1>
+</div>
+
+<div class="colibri-home-subsection white-background">
+    <h2 class="colibri-sm-subsection-title">ヘルパーのアプリ</h2>
+    <div class="home-subsection-content-container aligned-left-home">
+        <div class="home-subsection-image-container flex-1">
+            <%= video_iframe("https://colibrischeduler.s3-ap-northeast-1.amazonaws.com/videos/%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC%E3%82%A2%E3%83%97%E3%83%AA2.mp4") %>
+        </div>
+        <div style="height:10px;width:45px">
+        </div>
+        <div class="home-subsection-content flex-1">
+            <p>
+                シンプルを第一にするヘルパー記録アプリを用意しました！
+            </p>
+            <p>
+                ヘルパーさんが記録をする際に迷わないレイアウトを作りました。サ責がColibriで作成できる訪問介護計画書に記録が連携する為、サービスの内容は既にチェックされています。
+            </p>
+            <p>
+                訪問前に必要なサ責の指示や過去のヘルパーの記録が一目で確認できます。利用者様の住所などもGoogleMapsでワンタッチで開けて便利です！
+            </p>
+            <p>
+                実績の確定は厚生労働省がテレワーク対策で推奨するGPSで行われ、利用者様のご自宅にタグやQRコードの配置が不要になる他、ヘルパーさん達が既にお持ちのスマホで利用できます。
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="colibri-home-subsection white-background">
+    <h2 class="colibri-sm-subsection-title align-text-right-home">サ責のアプリ</h2>
+    <div class="home-subsection-content-container aligned-right-home">
+        <div class="home-subsection-image-container flex-1">
+            <%= video_iframe("https://colibrischeduler.s3-ap-northeast-1.amazonaws.com/videos/%E3%82%B5%E8%B2%AC%E3%82%A2%E3%83%97%E3%83%AA%EF%BC%92.mp4") %>
+        </div>
+        <div style="height:10px;width:45px">
+        </div>
+        <div class="home-subsection-content flex-1">
+            <p>いつでもどこでもサ責の仕事がやりやすいアプリを考えました！</p>
+            <p>出先でも全てのシフト情報がリアウルタイムで確認・編集できます。自分のサービス、登録ヘルパーのシフト、そして同じ法人の他の事業所のシフト状況が一眼で把握できます。</p>
+            <p>当然、ヘルパーアプリと同じように、サービス後の実施記録が作成できます。</p>
+            <p>サ責間のコミュニケーションをより円滑にするために、掲示板で利用者様の大事な情報が共有できます。</p>
+        </div>
+    </div>
+</div>
+
+<% if false %>
+    <div class="colibri-home-subsection white-background">
+        <h2 class="colibri-sm-subsection-title">サ責のPCアプリ</h2>
+        <div class="home-subsection-content-container aligned-left-home">
+            <div class="home-subsection-image-container flex-1">
+                <%= image_tag "iphone_notification.png", width: '160px' %>
+            </div>
+            <div style="height:10px;width:45px">
+            </div>
+            <div class="home-subsection-content flex-1">
+                特定事業所加算取得を検討される場合、サービスごとに事前申し送り事項の共有や、サービス後の報告が必要です。
+                未読文章や未記入の記録が、一覧で把握できるため業務が楽になりかつ、ストレスなく要件を満たすことが出来ます。
+            </div>
+        </div>
+    </div>
+<% end %>
+
+
+
+<div class="colibri-home-subsection white-background">
+    <div class="colibri-bottom-action-container">
+        <%= link_to '資料請求はこちら', new_contact_form_path, class: 'btn btn-info' %>
+        <%= link_to 'テレワーク対策へ', '/pages/telework', class: 'btn btn-outline-info' %>
+    </div>
+</div>
+
+
+<div class="background-transition">
+    <%= image_tag('blue-wave-bottom-thin.svg', width: '100%') %>
+</div>
+
+<%= render 'layouts/footer' %>

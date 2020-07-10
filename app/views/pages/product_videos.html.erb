@@ -1,6 +1,5 @@
 <% title "訪問介護実施記録 | 訪問介護シフト | 訪問介護給与計算" %>
 
-<%= render 'colibri_covid' %>
 
 <div class="section-title-container" style="padding-top:85px">
     <h1 class="colibri-section-title">Colibriの説明動画</h1>
@@ -10,7 +9,9 @@
     <h2 class="colibri-sm-subsection-title">ヘルパーのアプリ</h2>
     <div class="home-subsection-content-container aligned-left-home">
         <div class="home-subsection-image-container flex-1">
-            <%= video_iframe("https://colibrischeduler.s3-ap-northeast-1.amazonaws.com/videos/%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC%E3%82%A2%E3%83%97%E3%83%AA2.mp4") %>
+            <div class="colibri-iframe-container">
+                <%= video_iframe("https://colibrischeduler.s3-ap-northeast-1.amazonaws.com/videos/%E3%83%98%E3%83%AB%E3%83%91%E3%83%BC%E3%82%A2%E3%83%97%E3%83%AA2.mp4") %>
+            </div>
         </div>
         <div style="height:10px;width:45px">
         </div>
@@ -35,7 +36,9 @@
     <h2 class="colibri-sm-subsection-title align-text-right-home">サ責のアプリ</h2>
     <div class="home-subsection-content-container aligned-right-home">
         <div class="home-subsection-image-container flex-1">
-            <%= video_iframe("https://colibrischeduler.s3-ap-northeast-1.amazonaws.com/videos/%E3%82%B5%E8%B2%AC%E3%82%A2%E3%83%97%E3%83%AA%EF%BC%92.mp4") %>
+            <div class="colibri-iframe-container">
+                <%= video_iframe("https://colibrischeduler.s3-ap-northeast-1.amazonaws.com/videos/%E3%82%B5%E8%B2%AC%E3%82%A2%E3%83%97%E3%83%AA%EF%BC%92.mp4") %>
+            </div>
         </div>
         <div style="height:10px;width:45px">
         </div>

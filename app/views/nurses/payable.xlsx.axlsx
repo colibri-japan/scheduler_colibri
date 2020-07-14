@@ -41,11 +41,11 @@ wb.styles do |s|
 			end
 			
 			total_wage = @nurse.full_timer ? '' : appointment.try(:total_wage)
-			sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", "#{appointment.patient.try(:name)}様", "#{appointment_title_in_excel(appointment)}#{appointment_was_as_second_nurse(appointment.with_second_nurse_id?(@nurse.id))}", appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"), from_seconds_to_hours_minutes(appointment.duration), appointment_wage_with_nurse_status(appointment, @nurse.id)], style: Array.new(8,table_cells_centered)
+			sheet.add_row ["#{appointment.starts_at.strftime('%-d日')} #{weekday(appointment.starts_at)}", "#{appointment.patient.try(:name)}様", "#{appointment_title_in_excel(appointment)}#{appointment_was_as_second_nurse(appointment.with_second_nurse_id?(@nurse.id))}", appointment.starts_at.try(:strftime, "%H:%M"), appointment.ends_at.try(:strftime, "%H:%M"), from_seconds_to_hours_minutes(appointment.duration), number_with_delimiter(appointment_wage_with_nurse_status_as_integer(appointment, @nurse.id), delimiter: ',')], style: Array.new(8,table_cells_centered)
 		end
 		sum_appointments = @total_wage_from_services
 		unless @nurse.full_timer?
-			sheet.add_row ['','','','','','合計',sum_appointments], style: align_center
+			sheet.add_row ['','','','','','合計', number_with_delimiter(sum_appointments, delimiter: ',')], style: align_center
 		end
 		
 
@@ -69,7 +69,7 @@ wb.styles do |s|
 					if salary_line_item.salary_rule_id.present? 
 						line_item_row = sheet.add_row ['','', '', salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
 					else 
-						line_item_row = sheet.add_row ['','', "#{salary_line_item.service_date.strftime('%-d日')} #{weekday(salary_line_item.service_date)}", salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5),'','',salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
+						line_item_row = sheet.add_row ['','', "#{salary_line_item.service_date.strftime('%-d日')} #{weekday(salary_line_item.service_date)}", salary_line_item_title_with_counts(salary_line_item, salary_line_item.salary_rule.try(:operator) || 5),'','', salary_line_item.try(:total_wage)], style: [nil, nil, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered, table_cells_centered]
 					end
 					sheet.merge_cells line_item_row.cells[(3..5)]
 				else 
@@ -79,7 +79,7 @@ wb.styles do |s|
 			end
 
 			sum_line_items = @salary_line_items.sum(:total_wage)
-			sheet.add_row ['','','','','','手当合計', sum_line_items], style: align_center
+			sheet.add_row ['','','','','','手当合計', number_with_delimiter(sum_line_items, delimiter: ',')], style: align_center
 		end
 
 		sheet.add_row
@@ -89,12 +89,12 @@ wb.styles do |s|
 		sheet.add_row
 
 		base_salary = @nurse.full_timer ? @nurse.try(:monthly_wage) : sum_appointments
-		sheet.add_row ['', '', '', '', '', '基本給合計', base_salary], style: [nil,nil,nil,nil,nil, table_cells, table_cells_centered]
+		sheet.add_row ['', '', '', '', '', '基本給合計', number_with_delimiter(base_salary, delimiter: ',')], style: [nil,nil,nil,nil,nil, table_cells, table_cells_centered]
 		if @salary_line_items.present?
-			sheet.add_row ['', '', '', '', '', '手当合計', sum_line_items], style: [nil,nil,nil,nil,nil, table_cells, table_cells_centered]
+			sheet.add_row ['', '', '', '', '', '手当合計', number_with_delimiter(sum_line_items, delimiter: ',')], style: [nil,nil,nil,nil,nil, table_cells, table_cells_centered]
 		end
 		total_wage = (base_salary || 0) + (sum_line_items || 0)
-		sheet.add_row ['', '', '', '', '', '合計', total_wage], style: [nil,nil,nil,nil,nil, final_wage_title, final_wage]
+		sheet.add_row ['', '', '', '', '', '合計', "¥#{number_with_delimiter(total_wage, delimiter: ',')}"], style: [nil,nil,nil,nil,nil, final_wage_title, final_wage]
 	
 		sheet.column_widths 10, 14, 17, nil, nil, nil, nil
 	end

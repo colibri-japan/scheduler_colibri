@@ -63,7 +63,7 @@
       <% end %>
     <% end %>
 
-    <% if completion_report.new_record? && reportable.class.try(:name) == 'Appointment' %>
+    <% if reportable.class.try(:name) == 'Appointment' %>
       <div class="blue-background-form">
         <div class="icheck-material-cyan">
           <%= form.check_box :nurse_ping, include_hidden: false, id: :completion_report_nurse_ping %>

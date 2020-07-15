@@ -164,7 +164,6 @@ class CompletionReport < ApplicationRecord
     private
 
     def add_reference_to_planning_and_patient
-        puts 'before save filter for references'
         self.planning_id = self.reportable.try(:planning_id)
         self.patient_id = self.reportable.try(:patient_id)
     end

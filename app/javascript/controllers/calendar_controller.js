@@ -179,10 +179,16 @@ let createCalendar = () => {
                         let resourceArgument = `${window.currentResourceType || window.defaultResourceType}_id`
                         data[resourceArgument] = window.currentResourceId || window.defaultResourceId
 
-                        if (fetchInfo.end - fetchInfo.start === 86400000 && ((!window.currentResourceType && window.defaultResourceType !== 'team') && window.currentResourceType !== 'team')) {
+                        console.log(fetchInfo.end - fetchInfo.start)
+                        if (fetchInfo.end - fetchInfo.start === 86400000 && window.defaultResourceType !== 'team' && window.currentResourceType !== 'team') {
                             data['list_view'] = true
+                            console.log('data list view true    ')
                         }
                     }
+                    
+                    console.log('data')
+                    console.log(data)
+                    console.log(data['list_view'])
 
 
                     $.ajax({

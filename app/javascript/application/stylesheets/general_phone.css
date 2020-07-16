@@ -18,15 +18,19 @@
 
 
 	.activity_subtitle {
-		font-size: 1.15em;
-		font-weight: bold;
-		border-bottom: 0.3px solid #ccc;
+		font-size: 1.3em;
+        color: #4F4F4F;
+		border-bottom: 0.5px solid rgb(180, 190, 199);
 	}
 
 	.activity_subcontainer {
 		padding: 4px;
 		margin-top: 5px;
-	}
+    }
+    
+    .activity_subcontainer > p {
+        margin-bottom: 0px;
+    }
 
     .activity_subheader_item {
         flex-grow: 1;
@@ -38,6 +42,12 @@
         height: calc(100vh - 143px);
         overflow-x: hidden;
         overflow-y: scroll;
+    }
+
+    .activity_simple_format > p {
+        margin-bottom: 5px;
+        font-size: 1rem;
+        line-height: 1.5;
     }
 
     .activity_subheader_item.activity_subheader_item_selected {

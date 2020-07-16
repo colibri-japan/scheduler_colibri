@@ -17,12 +17,20 @@
             <div class="activity_subtitle">
                 サービス詳細
             </div>
-            <div>日時：<%= "#{@appointment.starts_at.strftime("%-m月%-d日") + ' ' + weekday(@appointment.starts_at)} #{@appointment.starts_at.try(:strftime,'%H:%M')}~#{@appointment.ends_at.try(:strftime,'%H:%M')}"  %></div>
+            <p>日時：<%= "#{@appointment.starts_at.strftime("%-m月%-d日") + ' ' + weekday(@appointment.starts_at)} #{@appointment.starts_at.try(:strftime,'%H:%M')}~#{@appointment.ends_at.try(:strftime,'%H:%M')}"  %></p>
             <% if !current_user.nurse_restricted? %>
-                <div>従業員：<%= @appointment.nurse.try(:name) %></div>
-                <div>内容：<%= @appointment.title %></div>
+                <p>従業員：<%= @appointment.nurse.try(:name) %></p>
+                <p>内容：<%= @appointment.title %></p>
             <% end %>
-            <div>住所：<%= link_to "#{@patient.try(:address)}", "https://www.google.com/maps/search/?api=1&query=#{@patient.try(:address)}", target: :_blank %></div>
+            <p>住所：<%= link_to "#{@patient.try(:address)}", "https://www.google.com/maps/search/?api=1&query=#{@patient.try(:address)}", target: :_blank %></p>
+        </div>
+        <div class="activity_subcontainer">
+            <div class="activity_subtitle">
+                手順書
+            </div>
+            <div class="activity_simple_format">
+                <%= simple_format(@patient.try(:care_instructions)) %>
+            </div>
         </div>
         <div class="activity_subcontainer">
             <div class="activity_subtitle">

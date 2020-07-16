@@ -20,8 +20,14 @@
 	.activity_subtitle {
 		font-size: 1.3em;
         color: #4F4F4F;
-		border-bottom: 0.5px solid rgb(180, 190, 199);
-	}
+        border-bottom: 0.5px solid rgb(180, 190, 199);
+        display:flex;
+        justify-content: space-between;
+    }
+    
+    .toggleable_activity {
+        display: none;
+    }
 
 	.activity_subcontainer {
 		padding: 4px;

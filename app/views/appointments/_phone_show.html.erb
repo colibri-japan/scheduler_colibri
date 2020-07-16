@@ -25,18 +25,26 @@
             <p>住所：<%= link_to "#{@patient.try(:address)}", "https://www.google.com/maps/search/?api=1&query=#{@patient.try(:address)}", target: :_blank %></p>
         </div>
         <div class="activity_subcontainer">
-            <div class="activity_subtitle">
-                手順書
+            <div class="activity_subtitle toggleable_activity_title">
+                <div>手順書</div>
+                <div>
+                    <div class="toggleable-arrow arrow-down"><%= image_tag 'down_arrow_black.svg', width: '17px' %></div>
+                    <div class="toggleable-arrow arrow-up" style="display:none"><%= image_tag 'up_arrow_black.svg', width: '17px' %></div>
+                </div>
             </div>
-            <div class="activity_simple_format">
+            <div class="toggleable_activity activity_simple_format">
                 <%= simple_format(@patient.try(:care_instructions)) %>
             </div>
         </div>
         <div class="activity_subcontainer">
-            <div class="activity_subtitle">
-                過去の書き込み
+            <div class="activity_subtitle toggleable_activity_title">
+                <div>過去の書き込み</div>
+                <div>
+                    <div class="toggleable-arrow arrow-down"><%= image_tag 'down_arrow_black.svg', width: '17px' %></div>
+                    <div class="toggleable-arrow arrow-up" style="display:none"><%= image_tag 'up_arrow_black.svg', width: '17px' %></div>
+                </div>
             </div>
-            <div class="recent-comments-container">
+            <div class="toggleable_activity recent-comments-container">
                 <% @recent_reports.each do |report| %>
                     <% if report.general_comment.present? %>
                         <div class="comment-container">

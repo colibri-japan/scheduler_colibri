@@ -62,6 +62,9 @@ gem 'devise', '>= 4.7.1'
 #add invitable to devise
 gem 'devise_invitable'
 
+#Jwt authentication management
+gem 'knock'
+
 #activity tracker
 gem 'public_activity', '>= 1.6.3'
 
@@ -73,6 +76,7 @@ gem 'rails-i18n', '~> 5.1'
 
 #authorizations
 gem 'pundit'
+
 
 
 #create excel templates with axlsx

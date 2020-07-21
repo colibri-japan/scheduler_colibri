@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  post 'user_token' => 'user_token#create'
   match '(*any)', to: redirect(subdomain: ''), via: :all, constraints: {subdomain: ['www', 'scheduler']}
   get 'bonuses/new'
 
@@ -10,6 +11,13 @@ Rails.application.routes.draw do
   get 'contact_form/create'
 
   get 'tags/index'
+
+  namespace :api, defaults: {format: :json} do 
+    namespace :v1 do
+      resources :appointments
+      resources :corporations
+    end
+  end
 
   devise_for :users, controllers: {
     invitations: "invitations",

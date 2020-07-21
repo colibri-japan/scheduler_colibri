@@ -5,6 +5,8 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
   :recoverable, :rememberable, :trackable, :validatable
 
+  alias_method :authenticate, :valid_password?
+
   attribute :default_calendar_option, :integer
   
   acts_as_reader
@@ -40,6 +42,10 @@ class User < ApplicationRecord
   scope :registered, -> { where.not(name: ['', nil]) }
   scope :without_mobile_devices, -> { where(android_fcm_token: nil, ios_fcm_token: nil) }
 	scope :with_mobile_devices, -> { where('(android_fcm_token IS NOT NULL OR ios_fcm_token IS NOT NULL)') }
+
+  def self.from_token_payload(payload)
+    self.find payload["sub"]
+  end
 
   def has_restricted_access?
     schedule_restricted? || schedule_readonly? || nurse_restricted?

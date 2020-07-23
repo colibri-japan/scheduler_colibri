@@ -9,7 +9,7 @@ module Api
             respond_to :json
 
             def index
-                respond_with Corporation.all
+                respond_with CorporationSerializer.new(Corporation.all, is_collection: true).serialized_json
             end
         end
     end

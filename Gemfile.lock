@@ -113,6 +113,8 @@ GEM
     enumerable-statistics (2.0.1)
     erubi (1.9.0)
     execjs (2.7.0)
+    fast_jsonapi (1.5)
+      activesupport (>= 4.2)
     ffi (1.13.1)
     ffi (1.13.1-x64-mingw32)
     ffi (1.13.1-x86-mingw32)
@@ -343,6 +345,7 @@ DEPENDENCIES
   devise (>= 4.7.1)
   devise-i18n
   devise_invitable
+  fast_jsonapi
   ffi (>= 1.9.24)
   geocoder
   groupdate

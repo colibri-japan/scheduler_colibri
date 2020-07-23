@@ -77,6 +77,9 @@ gem 'rails-i18n', '~> 5.1'
 #authorizations
 gem 'pundit'
 
+#api serialization
+gem 'fast_jsonapi'
+
 
 
 #create excel templates with axlsx

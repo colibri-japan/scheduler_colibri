@@ -6,6 +6,9 @@
                 <%= form.label :name, "氏名<span class='required-field' style='color:black'>*</span>".html_safe, class: "colibri-form-label-dark home col-sm-3" %>
                 <%= form.text_field :name, required: true, class: 'form-control home col-sm-8' %>
             </div>
+
+            <%= form.invisible_captcha :company %>
+
             <div class="form-group row">
                 <%= form.label :email, "メールアドレス<span class='required-field' style='color:black;text-align:left'>*</span>".html_safe, class: "colibri-form-label-dark home col-sm-3" %>
                 <%= form.email_field :email, required: true, class: 'form-control home col-sm-8' %>

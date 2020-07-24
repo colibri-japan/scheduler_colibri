@@ -132,6 +132,8 @@ GEM
     i18n (1.8.4)
       concurrent-ruby (~> 1.0)
     ice_cube (0.16.3)
+    invisible_captcha (1.0.1)
+      rails (>= 4.2)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
     jquery-rails (4.4.0)
@@ -351,6 +353,7 @@ DEPENDENCIES
   groupdate
   holiday_jp
   ice_cube
+  invisible_captcha
   jbuilder (~> 2.5)
   jquery-rails
   knock

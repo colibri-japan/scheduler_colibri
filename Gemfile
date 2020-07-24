@@ -148,6 +148,9 @@ gem 'geocoder'
 #use rack cache for static assets
 gem 'rack-cache'
 
+#prevent form spaming
+gem 'invisible_captcha'
+
 group :production do 
   gem 'newrelic_rpm'
   gem 'scout_apm'

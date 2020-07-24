@@ -62,9 +62,9 @@ class UsersController < ApplicationController
 
   def mark_notification_as_read
     if params[:notification_id].present? 
-      n = Rpush::Gcm::Notification.find(params[:notification_id])
+      n = Rpush::Gcm::Notification.find(params[:notification_id]) rescue nil
 
-      n.mark_as_read! for: current_user
+      n.mark_as_read!(for: current_user) if n.present?
     end
   end
 

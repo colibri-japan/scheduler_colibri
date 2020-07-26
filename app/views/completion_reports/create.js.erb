@@ -1,7 +1,7 @@
 $('.modal').modal('hide');
 
 <% if @completion_report.errors.any? %>
-  alert("<%= @completion_report.errors.full_messages.join('、') %>")
+  alert("実施記録の確定はサービスにつき一回のみです。")
 <% end %>
 
 

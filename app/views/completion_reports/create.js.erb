@@ -1,16 +1,9 @@
 $('.modal').modal('hide');
 
-if (window.userHasRestrictedAccess && window.fullCalendar) {
-    console.log('restricted nurse and calendar present')
-    <% if @completion_report.reportable_type == "Appointment" %>
-      let eventToRemove = window.fullCalendar.getEventById('<%= "appointment_#{@completion_report.reportable_id}" %>')
-      if (eventToRemove) {
-        eventToRemove.remove()
-      }
+<% if @completion_report.errors.any? %>
+  alert("<%= @completion_report.errors.full_messages.join('、') %>")
+<% end %>
 
-      window.fullCalendar.addEvent($.parseJSON("<%= j render(partial: 'appointments/appointment.json', locals: {appointment: @completion_report.reportable}).html_safe %>"), 'url1')
-    <% end %>
-}
 
 if (window.location.pathname.includes('completion_reports')) {
     location.reload()

@@ -2,6 +2,8 @@ ja:
  activerecord:
   errors:
    models:
+    completion_report: 実施記録
+    appointment: サービス
     recurring_appointment:
      attributes:
       frequency:

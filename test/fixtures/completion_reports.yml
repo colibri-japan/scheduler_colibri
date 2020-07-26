@@ -4,8 +4,11 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one: 
+ id: 1
+ reportable_type: Appointment
+ reportable_id: 1
+ planning_id: 1
+ patient_id: 1
+ assisted_bathroom: true
+ general_comment: '排泄介護を行いました'

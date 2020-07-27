@@ -112,9 +112,11 @@
 									</div>
 								</td>
 								<td>
-									<div class="completion-report-message-body">
-										<%= simple_format(completion_report.general_comment) %>
-									</div>
+									<% if completion_report.general_comment.present? %>
+										<div class="completion-report-message-body">
+											<%= simple_format(completion_report.general_comment) %>
+										</div>
+									<% end %>
 								</td>
 								<td>
 									<div><%= link_to '編集 <span style="font-size:13px" class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_appointment_path(completion_report.reportable), remote: true, class: 'btn btn-sm btn-colibri-mid-light' %></div>

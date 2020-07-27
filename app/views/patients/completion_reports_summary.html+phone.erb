@@ -107,9 +107,11 @@
                                     </div>
                                 <% end %>
                             </div>
-                            <div class="completion-report-message-body">
-                                <%= simple_format(completion_report.general_comment) %>
-                            </div>
+                            <% if completion_report.general_comment.present? %>
+                                <div class="completion-report-message-body">
+                                    <%= simple_format(completion_report.general_comment) %>
+                                </div>
+                            <% end %>
                             <div class="completion-report-action" style="text-align:right">
                                 
                                 <div style="margin-bottom:4px" id="appointment-<%= completion_report.reportable_id %>">

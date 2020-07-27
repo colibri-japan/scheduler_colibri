@@ -154,7 +154,7 @@
                   <%= form.radio_button :full_or_partial_body_wash, 2, {class: 'radio-inline', style: 'display:none', id: :no_full_nor_partial_body_wash} %>
                 </div>
               <% end %>
-              <% if completion_report.full_or_partial_body_wash == nil || completion_report.full_or_partial_body_wash == 3 %>
+              <% if completion_report.hands_and_feet_wash == nil || completion_report.hands_and_feet_wash == 3 %>
                 <div class="from-group col-md-5">
                   <%= form.label :hands_and_feet_wash, "部分浴" %>
 

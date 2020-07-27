@@ -27,7 +27,7 @@ class CompletionReport < ApplicationRecord
     end
 
     def self.attributes_to_ignore_when_comparing
-        [:id, :created_at, :updated_at, :forecasted_report_id, :patient_id, :planning_id, :reportable_type, :reportable_id, :general_comment, :patient_looked_good, :patient_transpired, :body_temperature, :blood_pressure_systolic, :blood_pressure_diastolic, :house_was_clean, :patient_could_discuss, :patient_could_gather_and_share_information, :checking_report, :checked_gas_when_leaving, :checked_electricity_when_leaving, :checked_water_when_leaving, :checked_door_when_leaving, :latitude, :longitude, :accuracy, :altitude, :altitude_accuracy, :geolocation_error_code, :geolocation_error_message, :urination_count, :amount_of_urine, :defecation_count, :visual_aspect_of_feces, :patient_ate_full_plate, :amount_of_liquid_drank, :meal_specificities, :remarks_around_cooking, :remarks_around_medication, :amount_received_for_shopping, :amount_spent_for_shopping, :change_left_after_shopping, :shopping_items, :patient_destination_place, :nurse_ping]
+        [:id, :appointment_id, :created_at, :updated_at, :forecasted_report_id, :patient_id, :planning_id, :reportable_type, :reportable_id, :general_comment, :patient_looked_good, :patient_transpired, :body_temperature, :blood_pressure_systolic, :blood_pressure_diastolic, :body_weight, :breathe_rate, :blood_oxygen_rate, :blood_sugar, :heart_rythm_anomalies, :heart_rate_bpm, :house_was_clean, :patient_could_discuss, :patient_could_gather_and_share_information, :checking_report, :checked_gas_when_leaving, :checked_electricity_when_leaving, :checked_water_when_leaving, :checked_door_when_leaving, :latitude, :longitude, :accuracy, :altitude, :altitude_accuracy, :geolocation_error_code, :geolocation_error_message, :urination_count, :amount_of_urine, :defecation_count, :visual_aspect_of_feces, :patient_ate_full_plate, :ratio_of_leftovers, :amount_of_liquid_drank, :meal_specificities, :remarks_around_cooking, :other_assistance_for_patient_independency, :remarks_around_medication, :amount_received_for_shopping, :amount_spent_for_shopping, :change_left_after_shopping, :shopping_items, :patient_destination_place, :nurse_ping, :editing_occurrences_after]
     end
 
     def identical?(other_report)
@@ -54,6 +54,8 @@ class CompletionReport < ApplicationRecord
     end
 
     def attributes_differences_with(forecast)
+        return [] if forecast.nil?
+
         forecasted = forecast.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
         actual = self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
 
@@ -70,12 +72,38 @@ class CompletionReport < ApplicationRecord
     end
 
     def difference_between_actual_and_forecasted(forecast)
+        return {} if forecast.nil? 
+
         keys = attributes_differences_with(forecast)
         difference_hash = {}
         keys.each do |key|
             difference_hash[key] = {forecasted: forecast.attributes[key], actual: self.attributes[key]}
         end
         difference_hash
+    end
+
+    def active_attributes
+        active_attributes = []
+
+        self.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)).each do |attribute, value|
+            case CompletionReport.type_for_attribute(attribute).type 
+            when :boolean
+                active_attributes << attribute if value == true
+            when :integer 
+                case attribute 
+                when "full_or_partial_body_wash"
+                    active_attributes << attribute if [0,1].include? value
+                when "hands_and_feet_wash"
+                    active_attributes << attribute if [0,1,2].include? value
+                when "bath_or_shower"
+                    active_attributes << attribute if [0,1].include? value
+                end
+            when :text 
+                active_attributes << attribute if (value != [''] && value != [])
+            end
+        end
+
+        active_attributes
     end
 
     def with_anything_checked?

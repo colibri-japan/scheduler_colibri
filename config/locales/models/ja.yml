@@ -1,0 +1,15 @@
+ja:
+  activerecord:
+    models:
+      appointment: サービス
+      completion_report: 実施記録
+    attributes:
+      completion_report:
+        reportable_type: サービス
+        reportable_id: サービス
+      appointment:
+        edit_requested: 調整中
+        cancelled: キャンセル
+        starts_at: 開始日時
+        ends_at: 終了日時
+

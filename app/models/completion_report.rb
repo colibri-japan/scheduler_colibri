@@ -7,7 +7,7 @@ class CompletionReport < ApplicationRecord
     belongs_to :forecasted_report, class_name: 'CompletionReport', optional: true 
     has_many :achieved_reports, class_name: 'CompletionReport', foreign_key: :forecasted_report_id
 
-    validates :reportable_id, uniqueness: {scope: :reportable_type, message: 'はサービスごとに一回しか記録できません'}
+    validates :reportable_id, uniqueness: {scope: :reportable_type, message: 'にすでに実施記録が登録されています。'}
 
     before_create :add_reference_to_planning_and_patient
     before_update :split_recurring_appointments_and_attach_completion_reports

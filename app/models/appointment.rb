@@ -52,6 +52,10 @@ class Appointment < ApplicationRecord
 		second_nurse_id == id 
 	end
 
+	def spot_appointment?
+		recurring_appointment_id.nil? && original_recurring_appointment_id.nil?
+	end
+
 	def verifying_appointment
 		will_save_change_to_verified_at? || will_save_change_to_second_verified_at?
 	end

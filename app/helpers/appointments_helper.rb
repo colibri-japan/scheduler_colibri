@@ -163,4 +163,12 @@ module AppointmentsHelper
         end
     end
 
+    def spot_appointment_mark(is_spot_appointment)
+        if is_spot_appointment
+            "<div><span style='width:11px;height:14px;background-color:#7AD5DE;display:inline-block'> </span> <span style='margin-bottom:2px;font-weight:bold'>スポット</span></div>"
+        else
+            ""
+        end
+    end
+
 end

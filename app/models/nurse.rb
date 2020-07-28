@@ -40,8 +40,10 @@ class Nurse < ApplicationRecord
 	end
 
 	def self.with_operational_appointments_between(start_time, end_time)
-		#get only nurses that have appointments in this given range
-		where(id: self.left_outer_joins(:appointments).where('appointments.starts_at between ? and ? OR appointments.ends_at between ? and ? OR (appointments.starts_at < ? AND appointments.ends_at > ?)', start_time, end_time, start_time, end_time, start_time, end_time).where('appointments.edit_requested is false AND appointments.cancelled is false AND appointments.archived_at is null').ids.uniq)
+		#get only nurses that have appointments as first or second nurse in this given range
+		nurse_ids = Appointment.operational.in_range(start_time..end_time).pluck(:nurse_id, :second_nurse_id).flatten.uniq
+
+		where(id: nurse_ids)
 	end
 	
 	def self.without_private_events_between(start_time, end_time, margin)

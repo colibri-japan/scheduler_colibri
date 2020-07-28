@@ -33,6 +33,7 @@ class UpdateIndividualAppointmentsWorker
                 appointment.service_id = recurring_appointment.service_id
                 appointment.planning_id = recurring_appointment.planning_id
                 appointment.recurring_appointment_id = recurring_appointment.id
+                appointment.original_recurring_appointment_id = recurring_appointment.id
 
                 #instead of batch validation, validate each appointment
                 appointment.edit_requested = true unless appointment.valid?

@@ -182,8 +182,8 @@ class RecurringAppointment < ApplicationRecord
 
 			if new_recurring.save 
 				copy_completion_report(new_recurring) unless should_not_copy_completion_report
-				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id)
-				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(original_recurring_appointment_id: self.id).update_all(updated_at: Time.current, original_recurring_appointment_id: new_recurring.id)
+				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: nil, original_recurring_appointment_id: self.id).update_all(updated_at: Time.current, original_recurring_appointment_id: new_recurring.id)
+				Appointment.not_archived.where('starts_at >= ?', editing_occurrences_after).where(recurring_appointment_id: self.id).update_all(updated_at: Time.current, recurring_appointment_id: new_recurring.id, original_recurring_appointment_id: new_recurring.id)
 				synchronize_appointments = self.synchronize_appointments
 				editing_occurrences_after_date = self.editing_occurrences_after.to_date
 				self.restore_attributes

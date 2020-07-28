@@ -301,25 +301,7 @@ module CompletionReportsHelper
     
     def washing_details_checked(washing_details)
         if washing_details.present? && washing_details != ['']
-            washing_text = washing_details.reject(&:empty?).map {|item| washing_details_item_to_text(item) }.join('、')
-            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>整容: #{washing_text}</div>"
-        else
-            ""
-        end
-    end
-
-    def washing_details_item_to_text(item)
-        case item 
-        when '0'
-            '爪'
-        when '1'
-            '耳'
-        when '3'
-            '髪'
-        when '4'
-            '化粧'
-        when '5'
-            '髭剃り'
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>整容: #{washing_details_text(washing_details)}</div>"
         else
             ""
         end
@@ -396,29 +378,7 @@ module CompletionReportsHelper
     
     def activities_done_with_the_patient_checked(activities_done_with_the_patient)
         if activities_done_with_the_patient.present? && activities_done_with_the_patient != ['']
-            activities_content = []
-            (activities_done_with_the_patient - [""]).each do |activity|
-                activity_content = case activity
-                when '0'
-                    '掃除'
-                when '1'
-                    '洗濯'
-                when '2'
-                    '衣類整理'
-                when '3'
-                    '調理'
-                when '4'
-                    '買い物'
-                when '5'
-                    '片付け'
-                else
-                    ''
-                end
-
-                activities_content << activity_content
-            end
-
-            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>共に行う：#{activities_content.join('、')}</div>"
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right: 4px' class='glyphicon glyphicon-ok report-checkmark'></i>共に行う：#{activities_done_with_the_patient_text(activities_done_with_the_patient)}</div>"
         else
             ""
         end
@@ -438,22 +398,7 @@ module CompletionReportsHelper
 
     def watched_after_patient_safety_doing_checked(watched_after_patient_safety_doing)
         if watched_after_patient_safety_doing.present? && watched_after_patient_safety_doing != ['']
-            activities_content = []
-            (watched_after_patient_safety_doing - ['']).each do |activity|
-                activity_content = case activity 
-                when '0'
-                    '入浴'
-                when '1'
-                    '更衣'
-                when '2'
-                    '移動'
-                else
-                    ''
-                end
-
-                activities_content << activity_content
-            end
-            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right:4px' class='glyphicon glyphicon-ok report-checkmark'></i>安全の見守り：#{activities_content.join('、')}</div>"
+            "<div class='report-prefilled-item'><i style='font-size:13px;margin-right:4px' class='glyphicon glyphicon-ok report-checkmark'></i>安全の見守り：#{watched_after_patient_safety_doing_text(watched_after_patient_safety_doing)}</div>"
         else
             ""
         end
@@ -596,6 +541,225 @@ module CompletionReportsHelper
         else
             ""
         end
+    end
+
+    def changed_attributes_summary(completion_report)
+        difference = completion_report.difference_between_actual_and_forecasted(completion_report.forecasted_report)
+
+        return "" if difference == {}
+
+        html_elements = []
+
+        difference.each do |attribute, forecasted_and_actual|
+            html_elements << "<div style='font-weight:bold'>#{CompletionReport.human_attribute_name(attribute)}</div><div>#{completion_report_attribute_to_text_for_comparison(attribute, forecasted_and_actual[:forecasted])} → #{completion_report_attribute_to_text_for_comparison(attribute, forecasted_and_actual[:actual])}</div><div>______</div>"
+        end
+
+        html_elements.join
+    end
+
+    def completion_report_attribute_to_text_for_comparison(attribute, value)
+        case CompletionReport.type_for_attribute(attribute).type 
+        when :boolean
+            value == true ? '有' : '無'
+        when :integer
+            integer_attribute_for_comparison(attribute, value)
+        when :text 
+            text_attribute_for_comparison(attribute, value)
+        else
+            ""
+        end
+    end
+
+    def integer_attribute_for_comparison(attribute, value)
+        text_to_render = case attribute 
+        when "full_or_partial_body_wash"
+            full_or_partial_body_wash_text(value)
+        when "hands_and_feet_wash"
+            hands_and_feet_wash_text(value)
+        when "bath_or_shower"
+            bath_or_shower_text(value)
+        end
+
+        text_to_render == "" ? "無" : text_to_render
+    end
+
+    def text_attribute_for_comparison(attribute, value)
+        text_to_render = case attribute 
+        when "clean_up"
+            clean_up_text(value)
+        when "activities_done_with_the_patient"
+            activities_done_with_the_patient_text(value)
+        when "watched_after_patient_safety_doing"
+            watched_after_patient_safety_doing_text(value)
+        when "washing_details"
+            washing_details_text(value)
+        else
+            ""
+        end
+
+        text_to_render == "" ? "無" : text_to_render
+    end
+
+    def full_or_partial_body_wash_text(value)
+        return "" if value.nil? 
+
+        case value.to_i
+        when 0
+            "部分"
+        when 1
+            "全身"
+        when 2
+            ""
+        else
+            ""
+        end
+    end
+
+    def hands_and_feet_wash_text(value)
+        return "" if value.nil? 
+
+        case value.to_i 
+        when 0
+            "足"
+        when 1
+            "手"
+        when 2
+            "手足"
+        when 3
+            ""
+        else
+            ""
+        end
+    end
+
+    def bath_or_shower_text(value)
+        return "" if value.nil?
+
+        case value.to_i 
+        when 0
+            "シャワー"
+        when 1
+            "入浴"
+        when 2
+            ""
+        else
+            ""
+        end
+
+    end
+
+    def clean_up_text(array)
+        array_of_text = []
+
+        array.sort.each do |value|
+            next if value == ""
+
+            text_to_add = case value.to_i
+            when 0
+                '居室'
+            when 1
+                '寝室'
+            when 2
+                '洗面所'
+            when 3
+                'トイレ'
+            when 4
+                '卓上'
+            when 5
+                '台所'
+            when 6
+                '浴室'
+            when 7
+                'Pトイレ'
+            when 8
+                'その他'
+            else
+                ''
+            end
+
+            array_of_text << text_to_add
+        end
+
+        array_of_text.join('、')
+    end
+
+    def washing_details_text(array)
+        array_of_text = []
+
+        array.sort.each do |value|
+            next if value == ""
+
+            text_to_add = case value.to_i 
+            when 0
+                '爪'
+            when 1
+                '耳'
+            when 3
+                '髪'
+            when 4
+                '化粧'
+            when 5
+                '髭剃り'
+            else
+                ""
+            end
+
+            array_of_text << text_to_add
+        end
+
+        array_of_text.join('、')
+    end
+
+    def activities_done_with_the_patient_text(array)
+        array_of_text = []
+
+        array.sort.each do |value|
+            next if value == ""
+
+            text_to_add = case value.to_i 
+            when 0
+                '掃除'
+            when 1
+                '洗濯'
+            when 2
+                '衣類整理'
+            when 3
+                '調理'
+            when 4
+                '買い物'
+            when 5
+                '片付け'
+            else
+                ''
+            end
+
+            array_of_text << text_to_add
+        end
+
+        array_of_text.join('、')
+    end
+
+    def watched_after_patient_safety_doing_text(array)
+        array_of_text = []
+
+        array.sort.each do |value|
+            next if value == ""
+
+            text_to_add = case value.to_i
+            when 0
+                '入浴'
+            when 1
+                '更衣'
+            when 2
+                '移動'
+            else
+                ''
+            end
+
+            array_of_text << text_to_add
+        end
+
+        array_of_text.join('、')
     end
     
 end

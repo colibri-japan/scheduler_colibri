@@ -7,6 +7,73 @@ ja:
       completion_report:
         reportable_type: サービス
         reportable_id: サービス
+        assisted_bathroom: トイレ介助
+        assisted_portable_bathroom: Pトイレ介助
+        changed_diapers: おむつ交換
+        changed_bed_pad: パッド交換
+        changed_stained_clothes: 汚れた衣服などの交換処理
+        wiped_patient: 陰部の清潔介助
+        patient_urinated: 排尿
+        patient_defecated: 排便
+        patient_maintains_good_posture_while_eating: 姿勢の確保
+        explained_menu_to_patient: メニュー.材料の説明
+        assisted_patient_to_eat: 食事介助
+        patient_hydrated: 水分補給
+        full_or_partial_body_wash: 清拭
+        hands_and_feet_wash: 部分浴
+        hair_wash: 洗髪
+        bath_or_shower: 全身浴
+        face_wash: 洗面
+        mouth_wash: 口腔ケア
+        washing_details: 整容
+        changed_clothes: 更衣介助
+        assisted_patient_to_change_body_posture: 体位変更
+        assisted_patient_to_transfer: 移乗介助
+        assisted_patient_to_move: 移動介助
+        commuted_to_the_hospital: 通院介助
+        assisted_patient_to_shop: 買い物介助
+        assisted_patient_to_go_somewhere: 外出同行
+        assisted_patient_to_go_out_of_bed: 起床介助
+        assisted_patient_to_go_to_bed: 就寝介助
+        activities_done_with_the_patient: 共に行う
+        trained_patient_to_communicate: コミュニケーション
+        trained_patient_to_memorize: 記憶への働きかけ
+        watch_after_patient_safety: 転倒予防の声かけ・見守り
+        watched_after_patient_safety_doing: 安全の見守り
+        assisted_to_take_medication: 服薬介助.確認
+        assisted_to_apply_a_cream: 薬の塗布
+        assisted_to_take_eye_drops: 点眼
+        assisted_to_extrude_mucus: 痰の吸引
+        assisted_to_take_suppository: 浣腸
+        clean_up: 清掃
+        took_out_trash: ゴミ出し
+        washed_clothes: 洗濯
+        dried_clothes: 乾燥
+        stored_clothes: 取り込み.収納
+        ironed_clothes: アイロン
+        changed_bed_sheets: シーツ交換
+        changed_bed_cover: 布団カバー交換
+        rearranged_clothes: 衣類の整理
+        repaired_clothes: 被服の補修
+        dried_the_futon: 布団干し
+        set_the_table: 下ごしらえ
+        cooked_for_the_patient: 調理
+        cleaned_the_table: 配.下膳
+        grocery_shopping: 日常品などの買い物
+        medecine_shopping: 薬の受取り
+        batch_assisted_bathroom: 排泄介助
+        batch_assisted_meal: 食事介助
+        batch_assisted_bed_bath: 清拭
+        batch_assisted_partial_bath: 部分浴
+        batch_assisted_total_bath: 全身浴
+        batch_assisted_cosmetics: 身体整容
+        batch_assisted_house_cleaning: 掃除
+        batch_assisted_laundry: 洗濯
+        batch_assisted_bedmake: ベッドメイク
+        batch_assisted_storing_furniture: 衣類の整理.被服の補修
+        batch_assisted_cooking: 一般的な調理、配下膳
+        batch_assisted_groceries: 買い物.薬の受け取り
+        changed_wet_compress: 湿布・パッチ貼り替え
       appointment:
         edit_requested: 調整中
         cancelled: キャンセル

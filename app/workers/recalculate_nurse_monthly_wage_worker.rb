@@ -17,7 +17,7 @@ class RecalculateNurseMonthlyWageWorker
                     if appointment.service.hour_based_wage?
                         hour_based_calculation = (((appointment.duration.to_f || 0) / 3600) * unit_wage_to_apply.to_i).round
                         if appointment.service.minimum_wage.present? 
-                            total_wage = hour_based_calculation >= service.minimum_wage ? hour_based_calculation : service.minimum_wage
+                            total_wage = hour_based_calculation >= appointment.service.minimum_wage ? hour_based_calculation : appointment.service.minimum_wage
                         else
                             total_wage = hour_based_calculation
                         end

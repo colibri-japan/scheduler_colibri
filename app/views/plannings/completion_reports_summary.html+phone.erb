@@ -104,10 +104,10 @@
                                 <% if completion_report.changed_from_forecast? %>
                                     <div style="flex-grow:1">
                                         <div class='btn btn-sm btn-colibri-mid-light compare-with-forecast' style='margin-top:6px'>
-                                            予定と比較
+                                            変更点
                                         </div>
                                         <div class='forecasted-report-summary' style="display:none;">
-                                            <%= completion_report_summary(completion_report.forecasted_report, detailed: false).html_safe %>
+                                            <%= changed_attributes_summary(completion_report).html_safe %>
                                         </div>
                                     </div>
                                 <% end %>

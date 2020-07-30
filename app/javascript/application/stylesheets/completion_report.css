@@ -78,3 +78,18 @@
     padding-top: 6px;
     border-top: 0.5px solid #ccc;
 }
+
+.report-comparison-attribute {
+    color: black;
+}
+
+.report-comparison-details {
+    color: #5f6368;
+}
+
+.report-comparison-item-separator {
+    width:50px;
+    height:8px;
+    border-bottom: 1px solid #85929E;
+    margin-bottom: 8px;
+}

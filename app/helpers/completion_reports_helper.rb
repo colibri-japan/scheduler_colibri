@@ -551,10 +551,10 @@ module CompletionReportsHelper
         html_elements = []
 
         difference.each do |attribute, forecasted_and_actual|
-            html_elements << "<div style='font-weight:bold'>#{CompletionReport.human_attribute_name(attribute)}</div><div>#{completion_report_attribute_to_text_for_comparison(attribute, forecasted_and_actual[:forecasted])} → #{completion_report_attribute_to_text_for_comparison(attribute, forecasted_and_actual[:actual])}</div><div>______</div>"
+            html_elements << "<div class='report-comparison-attribute'>#{CompletionReport.human_attribute_name(attribute)}</div><div class='report-comparison-details'>#{completion_report_attribute_to_text_for_comparison(attribute, forecasted_and_actual[:forecasted])} → #{completion_report_attribute_to_text_for_comparison(attribute, forecasted_and_actual[:actual])}</div>"
         end
 
-        html_elements.join
+        html_elements.join("<div class='report-comparison-item-separator'></div>")
     end
 
     def completion_report_attribute_to_text_for_comparison(attribute, value)

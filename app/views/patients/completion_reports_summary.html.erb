@@ -106,8 +106,8 @@
 											<%= completion_report_summary(completion_report, detailed: true).html_safe %>
 										</div>
 										<% if completion_report.changed_from_forecast? %>
-											<div class='btn btn-sm btn-colibri-light colibri-tooltip' data-content="<%= completion_report_summary(completion_report.forecasted_report, detailed: false).html_safe %>" style='margin-top:6px'>
-												予定と比較
+											<div class='btn btn-sm btn-colibri-light colibri-tooltip' data-content="<%= changed_attributes_summary(completion_report).html_safe  %>" style='margin-top:6px'>
+												変更点
 											</div>
 										<% end %>
 									</div>

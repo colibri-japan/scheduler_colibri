@@ -95,6 +95,7 @@
                                 <%= nurse_ping_mark(completion_report.nurse_ping?).html_safe %>
                                 <%= report_has_changed_from_forecast(completion_report.changed_from_forecast?).html_safe %>
                                 <%= spot_appointment_mark(completion_report.reportable.spot_appointment?).html_safe %>
+								<%= changed_datetime_mark(completion_report.reportable.changed_datetime?).html_safe %>
                             </div>
                             <div class="completion-report-tasks" style="display:flex;margin-top:4px">
                                 <div style="flex-grow:1">

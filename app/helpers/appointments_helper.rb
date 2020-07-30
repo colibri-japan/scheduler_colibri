@@ -171,4 +171,12 @@ module AppointmentsHelper
         end
     end
 
+    def changed_datetime_mark(changed_datetime)
+        if changed_datetime
+            "<div><span style='width:11px;height:14px;background-color:#7678ED;display:inline-block'> </span> <span style='margin-bottom:2px;font-weight:bold'>時間変更</span></div>"
+        else
+            ""
+        end
+    end
+
 end

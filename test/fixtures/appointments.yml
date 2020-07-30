@@ -1,0 +1,19 @@
+edit_requested:
+  id: 1
+  title: ''
+  service_id:
+  nurse_id:
+  patient_id: 
+  starts_at: '2020-01-01 09:00:00'
+  ends_at: '2020-01-01 09:30:00'
+  edit_requested: true
+
+cancelled:
+  id: 1
+  title: ''
+  service_id:
+  nurse_id:
+  patient_id: 
+  starts_at: '2020-01-01 09:00:00'
+  ends_at: '2020-01-01 09:30:00'
+  cancelled: true

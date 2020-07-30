@@ -5,8 +5,11 @@
 # below each fixture, per the syntax in the comments below
 #
 one: 
+  id: 1
   name: 'ダステレミ'
   kana: 'ダステレミ'
+  phone_mail: 'remi.daste@colibri.jp'
+  corporation_id: 1
 #
 two: {}
 # column: value

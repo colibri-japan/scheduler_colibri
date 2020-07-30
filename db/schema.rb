@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200716141726) do
+ActiveRecord::Schema.define(version: 20200730074235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,8 @@ ActiveRecord::Schema.define(version: 20200716141726) do
     t.bigint "original_recurring_appointment_id"
     t.bigint "second_nurse_id"
     t.integer "second_nurse_wage"
+    t.boolean "changed_datetime", default: false
+    t.boolean "spot_appointment", default: false
     t.index ["nurse_id"], name: "index_appointments_on_nurse_id"
     t.index ["original_recurring_appointment_id"], name: "index_appointments_on_original_recurring_appointment_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"

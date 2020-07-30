@@ -10,5 +10,8 @@ one:
   kana: 'リヨウシャ１'
 # column: value
 #
-two: {}
+two:
+  id: 2
+  name: '利用者２'
+  kana: 'リヨウシャ２'
 # column: value

@@ -29,7 +29,10 @@ class Appointment < ApplicationRecord
 	before_save :request_edit_if_undefined_nurse
 	before_save :set_duration
 	before_save :calculate_credits_invoice_and_wage, unless: :skip_credits_invoice_and_wage_calculations
-
+	
+	before_create :set_spot_appointment
+	
+	before_update :set_changed_datetime
 	before_update :reset_verifications, unless: :verifying_appointment
 
 	scope :not_archived, -> { where(archived_at: nil) }
@@ -50,10 +53,6 @@ class Appointment < ApplicationRecord
 
 	def with_second_nurse_id?(id)
 		second_nurse_id == id 
-	end
-
-	def spot_appointment?
-		recurring_appointment_id.nil? && original_recurring_appointment_id.nil?
 	end
 
 	def verifying_appointment
@@ -262,12 +261,32 @@ class Appointment < ApplicationRecord
 		end
 	end
 
+	def set_spot_appointment
+		self.spot_appointment = !self.recurring_appointment_id.present?
+	end
+
 	def set_title_from_service_title
 		self.title = self.service.try(:title)
 	end
 
 	def set_duration
 		self.duration = self.ends_at - self.starts_at
+	end
+
+	def set_changed_datetime
+		if !self.spot_appointment?
+			reference = self.recurring_appointment || self.original_recurring_appointment
+			if reference.present? && reference.has_occurrences_between?(self.starts_at, self.ends_at)
+				recurring_starts_at = DateTime.new(starts_at.year, starts_at.month, starts_at.day, reference.starts_at.hour, reference.starts_at.min)
+				recurring_ends_at = DateTime.new(ends_at.year, ends_at.month, ends_at.day, reference.ends_at.hour, reference.ends_at.min)
+
+				self.changed_datetime = (starts_at != recurring_starts_at) || (ends_at != recurring_ends_at)
+			else
+				self.changed_datetime = true
+			end
+		else
+			self.changed_datetime = false 
+		end
 	end
 
 	def calculate_credits_invoice_and_wage

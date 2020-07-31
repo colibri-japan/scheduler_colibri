@@ -41,7 +41,8 @@ class User < ApplicationRecord
   scope :order_by_kana, -> { order('kana COLLATE "C" ASC') }
   scope :registered, -> { where.not(name: ['', nil]) }
   scope :without_mobile_devices, -> { where(android_fcm_token: nil, ios_fcm_token: nil) }
-	scope :with_mobile_devices, -> { where('(android_fcm_token IS NOT NULL OR ios_fcm_token IS NOT NULL)') }
+  scope :with_mobile_devices, -> { where('(android_fcm_token IS NOT NULL OR ios_fcm_token IS NOT NULL)') }
+  scope :not_a_restricted_nurse, -> { where.not(role: :nurse_restricted) }
 
   def self.from_token_payload(payload)
     self.find payload["sub"]

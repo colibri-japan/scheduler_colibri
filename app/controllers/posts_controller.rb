@@ -75,8 +75,11 @@ class PostsController < ApplicationController
         @post.author = current_user
         @post.corporation = @corporation 
         @post.patients << Patient.where(id: post_params[:patient_id])
-        @post.save
-        mark_post_as_read
+
+        if @post.save
+            mark_post_as_read
+            SendPostNotificationWorker.perform_async(current_user.id, @post.id) if @post.share_to_all
+        end
     end
 
     def edit
@@ -91,9 +94,12 @@ class PostsController < ApplicationController
 
     def update
         @post = Post.find(params[:id])
-        @post.update(post_params)
-        @post_readers = @corporation.users.registered.have_read(@post).pluck(:name)
-        mark_post_as_read
+
+        if @post.update(post_params)
+            @post_readers = @corporation.users.registered.have_read(@post).pluck(:name)
+            mark_post_as_read
+            SendPostNotificationWorker.perform_async(current_user.id, @post.id) if @post.share_to_all
+        end
     end
 
     def destroy

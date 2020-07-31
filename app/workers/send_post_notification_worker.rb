@@ -13,9 +13,9 @@ class SendPostNotificationWorker
         team = @user.team
 
         if team.present? 
-            @recipients = team.users.not_a_restricted_nurse.with_mobile_devices
+            @recipients = team.users.where.not(id: @user.id).not_a_restricted_nurse.with_mobile_devices
         else
-            @recipients = corporation.users.not_a_restricted_nurse.with_mobile_devices
+            @recipients = corporation.users.where.not(id: @user.id).not_a_restricted_nurse.with_mobile_devices
         end
 
         action = deduce_action_from_post_timestamps

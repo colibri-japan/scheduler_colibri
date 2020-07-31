@@ -107,6 +107,12 @@ class PostsController < ApplicationController
         current_user.touch
     end
 
+    def mark_as_read
+        @post = Post.find(params[:id])
+
+        @post.mark_as_read! for: current_user
+    end
+
     private
 
     def fetch_post_readers

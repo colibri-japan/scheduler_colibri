@@ -7,7 +7,7 @@
       <% end %>
     </div>
     <div id="posts-widget-action-container">
-      <%= link_to '<i class="glyphicon glyphicon-flag" style="color:white;font-size:0.9em"></i> 既読にする'.html_safe, mark_all_posts_as_read_path(current_user), method: :patch, remote: true, id: 'mark-posts-as-read-button', class: 'btn btn-sm btn-info' if unread_count > 0 %>
+      <%= link_to '<i class="glyphicon glyphicon-flag" style="color:white;font-size:0.9em"></i> 一斉に既読'.html_safe, mark_all_posts_as_read_path(current_user), method: :patch, remote: true, id: 'mark-posts-as-read-button', class: 'btn btn-sm btn-info' if unread_count > 0 %>
       <%= link_to '<i class="glyphicon glyphicon-search" style="color:white;font-size:0.9em"></i>  検索'.html_safe, posts_path, class: 'btn btn-sm btn-colibri-light-gray text-white', id: "go-to-posts" %>
     </div>
   </div>
@@ -33,6 +33,9 @@
           </div>
           <div class="post-body post-clickable <%= 'unread-post' if @unread_ids.present? && @unread_ids.include?(unread_post.id) %> <%= 'reminderable-post' if unread_post.reminders.present? %>" data-url="<%= edit_post_path(unread_post) %>">
               <%= simple_format(unread_post.body) %>
+          </div>
+          <div style="text-align:right;margin-top:4px">
+            <%= link_to "<i class='glyphicon glyphicon-flag' style='font-size:0.9em'></i> 既読".html_safe, post_mark_as_read_path(unread_post), remote: true, method: :patch, class: 'btn btn-colibri-light btn-sm' %>
           </div>
       </div>
     <% end %>

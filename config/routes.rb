@@ -188,6 +188,7 @@ Rails.application.routes.draw do
   #custom routes for posts
   patch 'users/:user_id/posts/mark_all_posts_as_read' => 'posts#mark_all_posts_as_read', as: :mark_all_posts_as_read
   get 'posts_widget' => 'posts#posts_widget', as: :posts_widget
+  patch 'posts/:id/mark_as_read' => 'posts#mark_as_read', as: :post_mark_as_read
 
   #custom routes for activities
   get 'activities_widget' => 'activities#activities_widget', as: :activities_widget

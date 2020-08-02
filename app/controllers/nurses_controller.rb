@@ -164,7 +164,7 @@ class NursesController < ApplicationController
     last_day = DateTime.new(params[:y].to_i, params[:m].to_i, -1, 23, 59).end_of_month
     end_of_today_in_japan = (Time.current + 9.hours).end_of_day < last_day ? (Time.current + 9.hours).end_of_day : last_day
 
-    @appointments_till_today = Appointment.with_nurse_or_second_nurse_by_id(@nurse.id).not_archived.in_range(first_day..end_of_today_in_japan).includes(:service, :patient, completion_report: :forecasted_report).order("starts_at #{@sort_direction}")
+    @appointments_till_today = Appointment.with_nurse_or_second_nurse_by_id(@nurse.id).not_archived.in_range(first_day..end_of_today_in_japan).includes(:service, :patient).order("starts_at #{@sort_direction}")
 
     @salary_line_items = @nurse.salary_line_items.not_from_appointments.in_range(first_day..end_of_today_in_japan).includes(:salary_rule)
     

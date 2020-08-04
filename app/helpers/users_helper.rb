@@ -9,14 +9,21 @@ module UsersHelper
 	end
 
 	def user_role(user)
-		if user.role == 'schedule_restricted'
+		case user.role 
+		when 'nurse_restricted'
+			'現場従業員（個人シフトのみ）'
+		when 'schedule_readonly'
+			'シフト閲覧のみ'
+		when 'schedule_restricted'
 			'全体.個別スケジュール'
-		elsif user.role == 'schedule_restricted_with_salary_line_items'
+		when 'schedule_restricted_with_salary_line_items'
 			'全体.個別スケジュール　+　給与一部'
-		elsif user.role == 'schedule_admin'
+		when 'schedule_admin'
 			'全体.個別.マスタースケジュール　+　給与一部'
-		elsif user.role == 'corporation_admin'
+		when 'corporation_admin'
 			'全体.個別.マスタースケジュール　+　給与'
+		else
+			''
 		end
 	end
 

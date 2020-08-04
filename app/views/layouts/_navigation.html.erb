@@ -10,7 +10,7 @@
               <p class="colibri-nav-link colibri-nav-username"><%= current_user.name %><span id='account-dropdown-icon' class='glyphicon glyphicon-chevron-down' style="color:white;font-size:0.7em"></span></p>
           </li>
           <li>
-            <%= link_to 'ホーム', dashboard_index_path,title: 'ホームページ.ダッシュボード', class: 'colibri-nav-link' %>  
+            <%= link_to 'ホーム', dashboard_index_path,title: 'ホームページ.ダッシュボード', class: 'colibri-nav-link' unless current_user.nurse_restricted? || current_user.schedule_readonly? %>  
           </li>
         <% else %>
           <li><%= link_to 'ログイン', new_user_session_path, class: 'colibri-nav-link' %></li>

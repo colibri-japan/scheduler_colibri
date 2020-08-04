@@ -1,7 +1,7 @@
 <div id="planning-menu-container" class="no-print">
 	<div id="planning-menu-list">
 		<ul id="left-menu-ul" class="nav-tabs <%= 'nurse-restricted-nav' if current_user.nurse_restricted? %>">
-			<% unless current_user.nurse_restricted? %>
+			<% unless (current_user.nurse_restricted? || current_user.schedule_readonly?) %>
 				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'home' %>" data-url="<%= dashboard_index_path %>" title="ホーム.ダッシュボード"><span class="glyphicon glyphicon-home <%= view == 'home' ? 'glyphicon-selected' : 'glyphicon-default' %>"  style="font-size:24px"></span></li>
 			<% end %>
 			<li class="planning-menu-items colibri-clickable-link  <%= 'planning-menu-selected' if view == 'resource' %>" data-url="<%= planning_path(@planning) %>" title="実績シフト"><span class="glyphicon glyphicon-calendar <%= view == 'resource' ? 'glyphicon-selected' : 'glyphicon-default' %>"  style="margin-left:3px;font-size:24px"></span></li>
@@ -18,7 +18,11 @@
 				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'master' %>" data-url="<%=  planning_master_path(@planning) %>" title="マスター">マ</li>
 			<% end %>
 			<% unless current_user.role == "nurse_restricted" %>
-				<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%= patients_path %>" title="設定"><span class="glyphicon glyphicon-cog <%= view == 'settings' ? 'glyphicon-selected' : 'glyphicon-default' %>" style="font-size:25px"></span></li>
+				<% if current_user.schedule_readonly? %>
+					<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%= edit_user_path(current_user) %>" title="設定"><span class="glyphicon glyphicon-cog <%= view == 'settings' ? 'glyphicon-selected' : 'glyphicon-default' %>" style="font-size:25px"></span></li>
+				<% else %>
+					<li class="planning-menu-items colibri-clickable-link <%= 'planning-menu-selected' if view == 'settings' %>"  data-url="<%= patients_path %>" title="設定"><span class="glyphicon glyphicon-cog <%= view == 'settings' ? 'glyphicon-selected' : 'glyphicon-default' %>" style="font-size:25px"></span></li>
+				<% end %>
 			<% end %>
 		</ul>
 	</div>

@@ -90,38 +90,36 @@
                 </thead>
                 <tbody>
                     <% count = 0 %>
-                    <% invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
-                      <% array_of_service_and_shifts_hashes.each do |hash_of_service_and_shifts| %>
-                        <% hash_of_service_and_shifts[:shifts_hash].each do |shift| %>
+                    <% invoicing_summary[:inside_insurance_scope].each do |category_hash, service_and_shifts_hash| %>
+                        <% service_and_shifts_hash[:shifts_hashes].each do |shift_hash| %>
                           <tr style="page-break-inside:avoid;height:29px">
-                              <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= "#{shift[:start_time]} ~ #{shift[:end_time]}" %></td>
-                              <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
+                              <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= "#{shift_hash[:start_time]} ~ #{shift_hash[:end_time]}" %></td>
+                              <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= shift_hash[:official_title] || shift_hash[:title] %></td>
                               <td rowspan="2" style="page-break-inside:avoid !important;height:29px"><%= @corporation.name %></td>
                               <td>予定</td>
                               <% (@first_day..@last_day).each do |date| %>
-                                  <td><%= shift[:previsional].include?(date.to_date) ? '1' : '' %></td>
+                                  <td><%= shift_hash[:previsional].include?(date.to_date) ? '1' : '' %></td>
                               <% end %>
                               <% (31 - (@first_day..@last_day).count).times do  %>
                                   <td></td>
                               <% end %>
-                              <td><%= shift[:previsional].count %></td>
+                              <td><%= shift_hash[:previsional].count %></td>
                           </tr>
                           <tr style="height:29px">
                               <td>実績</td>
                               <% (@first_day..@last_day).each do |date| %>
-                                  <td><%= shift[:provided].include?(date.to_date) ? '1' : '' %></td>
+                                  <td><%= shift_hash[:provided].include?(date.to_date) ? '1' : '' %></td>
                               <% end %>
                               <% (31 - (@first_day..@last_day).count).times do  %>
                                   <td></td>
                               <% end %>
-                              <td><%= shift[:provided].count %></td>
+                              <td><%= shift_hash[:provided].count %></td>
                           </tr>
                           <% count += 1 %>
                         <% end %>
-                      <% end %>
                     <% end %>
                     
-                    <% shift_line_count = invoicing_summary[:inside_insurance_scope].sum {|category_hash, array_of_service_and_shifts_hashes| array_of_service_and_shifts_hashes.sum {|hash| hash[:shifts_hash].count } } %>
+                    <% shift_line_count = invoicing_summary[:inside_insurance_scope].sum {|category_hash, service_and_shifts_hash| service_and_shifts_hash[:shifts_hashes].count } %>
                     <% if shift_line_count < 10 %>
                         <% (10 - shift_line_count).times do %>
                             <tr>
@@ -324,18 +322,18 @@
                     <td>％</td>
                     <td>単位数</td>
                   </tr>
-                    <% invoicing_summary[:inside_insurance_scope].each do |category_hash, array_of_service_and_shifts_hashes| %>
-                        <% array_of_service_and_shifts_hashes.each do |hash_of_service_and_shifts| %>
+                    <% invoicing_summary[:inside_insurance_scope].each do |category_hash, service_and_shifts_hash| %>
+                        <% service_and_shifts_hash[:services_hashes].each do |service_hash| %>
                             <tr>
                                 <td><%= @corporation.name %></td>
                                 <td><%= @corporation.identifier %></td>
-                                <td><%= hash_of_service_and_shifts[:service_hash][:official_title] || hash_of_service_and_shifts[:service_hash][:title] %></td>
-                                <td><%= hash_of_service_and_shifts[:service_hash][:service_code] %></td>
-                                <td><%= number_with_delimiter(hash_of_service_and_shifts[:service_hash][:unit_credits], delimiter: ',') %></td>
+                                <td><%= service_hash[:official_title] || service_hash[:title] %></td>
+                                <td><%= service_hash[:service_code] %></td>
+                                <td><%= number_with_delimiter(service_hash[:unit_credits], delimiter: ',') %></td>
                                 <td></td>
                                 <td></td>
-                                <td><%= hash_of_service_and_shifts[:service_hash][:count] %></td>
-                                <td><%= number_with_delimiter(hash_of_service_and_shifts[:service_hash][:sum_total_credits], delimiter: ',') %></td>
+                                <td><%= service_hash[:count] %></td>
+                                <td><%= number_with_delimiter(service_hash[:sum_total_credits], delimiter: ',') %></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -348,7 +346,7 @@
                                 <td></td>
                             </tr>
                         <% end %>
-                        <% if array_of_service_and_shifts_hashes.count > 0 && [11,102].include?(category_hash[:insurance_category_id].to_i) && @corporation.invoicing_bonus_ratio.present? %>
+                        <% if service_and_shifts_hash[:services_hashes].present? && [11,102].include?(category_hash[:insurance_category_id].to_i) && @corporation.invoicing_bonus_ratio.present? %>
                             <tr>
                                 <td><%= @corporation.name %></td>
                                 <td><%= @corporation.identifier %></td>
@@ -371,7 +369,7 @@
                                 <td></td>
                             </tr>
                         <% end %>
-                        <% if array_of_service_and_shifts_hashes.count > 0 && category_hash[:insurance_category_id].to_i == 11 && @corporation.second_invoicing_bonus_ratio != 1 %>
+                        <% if service_and_shifts_hash[:services_hashes].present? && category_hash[:insurance_category_id].to_i == 11 && @corporation.second_invoicing_bonus_ratio != 1 %>
                             <tr>
                                 <td><%= @corporation.name %></td>
                                 <td><%= @corporation.identifier %></td>

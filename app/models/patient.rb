@@ -255,7 +255,7 @@ class Patient < ApplicationRecord
 		services_outside_insurance_scope.each do |service_hash|
 			service_shift_hash = {service_hash: {}, shifts_hash: {}}
 			service_shift_hash[:service_hash] = service_hash 
-			service_shift_hash[:shifts_hash] = self.shifts_by_title_and_date_range(service_hash[:title], date_range)
+			service_shift_hash[:shifts_hash] = self.shifts_by_title_and_date_range(service_hash[:title], service_hash[:official_title], date_range)
 			summary_hash[:outside_insurance_scope] << service_shift_hash
 		end
 
@@ -296,13 +296,12 @@ class Patient < ApplicationRecord
 				category_total_credits: category_sub_total_credits + category_bonus_credits + category_second_bonus_credits
 			}
 			array_of_service_and_shifts_hashed = []
+			shifts_hashes = []
 			service_hashes.each do |service_hash|
-				service_shift_hash = {service_hash: {}, shifts_hash: {}}
-				service_shift_hash[:service_hash] = service_hash
-				service_shift_hash[:shifts_hash] = self.shifts_by_title_and_date_range(service_hash[:title], date_range)   
-				array_of_service_and_shifts_hashed << service_shift_hash
+				shifts_hashes << self.shifts_by_title_and_date_range(service_hash[:title], service_hash[:official_title], date_range)   
 			end
-			inside_insurance_scope_hash[category_summary] = array_of_service_and_shifts_hashed
+
+			inside_insurance_scope_hash[category_summary] = {services_hashes: service_hashes, shifts_hashes: shifts_hashes.flatten.sort_by {|shift_hash| [shift_hash[:start_time], shift_hash[:end_time], shift_hash[:title]] }}
 		end
 
 		summary_hash[:inside_insurance_scope] = inside_insurance_scope_hash 
@@ -345,7 +344,7 @@ class Patient < ApplicationRecord
 		summary_hash
 	end
 
-	def shifts_by_title_and_date_range(service_title, date_range)
+	def shifts_by_title_and_date_range(service_title, official_title, date_range)
 		array_of_shifts = []
 
 		appointment_shift_dates = self.appointments.where(title: service_title).in_range(date_range).pluck(:starts_at, :ends_at)
@@ -359,6 +358,8 @@ class Patient < ApplicationRecord
 		shift_dates.each do |start_and_end|
 			shift_hash = {}
 					
+			shift_hash[:title] = service_title
+			shift_hash[:official_title] = official_title
 			shift_hash[:start_time] = start_and_end[0]
 			shift_hash[:end_time] = start_and_end[1]
 			shift_hash[:previsional] = self.recurring_appointments.where(title: service_title).where('starts_at::timestamp::time = ? AND ends_at::timestamp::time = ?', start_and_end[0], start_and_end[1]).not_archived.not_terminated_at(date_range.first).map {|r| r.appointments(date_range.first, date_range.last).map(&:to_date)}.flatten

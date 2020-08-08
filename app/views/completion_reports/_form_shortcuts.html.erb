@@ -321,13 +321,13 @@
 <% if completion_report.watch_after_patient_safety? %>
     <div class="report-prefilled-item icheck-material-green">
         <%= form.check_box :watch_after_patient_safety, class: 'colibri-checkbox', include_hidden: false, id: :completion_report_watch_after_patient_safety  %>
-        <%= form.label :watch_after_patient_safety, "安全の見守り"   %>
+        <%= form.label :watch_after_patient_safety, "転倒予防の声かけ・見守り"   %>
     </div>
 <% end %>
 
 <% if completion_report.watched_after_patient_safety_doing != [''] && completion_report.watched_after_patient_safety_doing != [] %>
     <div class="report-prefilled-item">
-      <%= form.label :watched_after_patient_safety_doing, '見守り：', class: "" %>
+      <%= form.label :watched_after_patient_safety_doing, '安全の見守り：', class: "" %>
       <%= form.select :watched_after_patient_safety_doing, options_for_select([['入浴', 0], ['更衣', 1],['移動', 2]], completion_report.watched_after_patient_safety_doing), {prompt: '選択する'}, {multiple: true, id: 'completion_report_watched_after_patient_safety_doing'} %>
     </div>
 <% end %>

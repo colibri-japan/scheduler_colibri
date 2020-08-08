@@ -148,7 +148,7 @@
     <div class="modal-subsection-title-sm">手当計算式</div>
 
     <div class="form-group">
-      <% operators = @nurse.present? ? [['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['(給与 + 手当) x', 4], ['+', 3]] : [['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['+', 3]] %>
+      <% operators = @nurse.present? ? [['+/回数', 0], ['+/時', 1], ['給与 x', 2], ['(給与 + 手当) x', 4], ['+', 3]] : [['+/回数', 0], ['+/時', 1], ['給与 x', 2],['+/稼働日数', 5], ['+', 3]] %>
       <%= form.select :operator, options_for_select(operators, salary_rule.operator) %>
       <%= form.number_field :argument, {step: 0.01, class: 'colibri-input'} %>
     </div>

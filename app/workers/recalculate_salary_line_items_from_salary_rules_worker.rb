@@ -178,6 +178,10 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         when 3
             #add arg only once if goals are met
             total_wage = met_goals ? (salary_rule.argument || 0) : 0
+        when 5
+            #multiply arg per number of days worked
+            number_of_days_worked = targeted_appointments.present? ? targeted_appointments.pluck(:starts_at).map(&:to_date).uniq.count : 0
+            total_wage = number_of_days_worked * (salary_rule.argument || 0)
         else
             total_wage = 0
         end

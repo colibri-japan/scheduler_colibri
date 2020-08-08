@@ -17,6 +17,8 @@ module SalaryRulesHelper
             "給与計 * #{salary_rule.argument}"
         when 3
             "+#{salary_rule.argument.to_i}円"
+        when 5
+            "+#{salary_rule.argument.to_i}円/日数"
         else
             ""
         end

@@ -20,7 +20,7 @@ class RecalculateSalaryLineItemsFromSalaryRulesWorker
         next if skip_because_of_worked_duration_constraint(salary_rule)
         
         targeted_titles = salary_rule.target_all_services ? corporation.services.where(nurse_id: nil).pluck(:title) : salary_rule.service_title_list
-        targeted_appointments = salary_rule.include_appointments_as_second_nurse ? Appointment.with_nurse_or_second_nurse_by_id(nurse_id).operational.where(title: targeted_titles).in_range(@start_of_month..@end_of_today) : @nurse.appointments.operational.where(title: targeted_titles).in_range(@start_of_month..@end_of_today)
+        targeted_appointments = salary_rule.include_appointments_as_second_nurse ? Appointment.with_nurse_or_second_nurse_by_id(nurse_id).operational.where(title: targeted_titles).in_range(@start_of_month..@end_of_today).order(starts_at: :asc) : @nurse.appointments.operational.where(title: targeted_titles).in_range(@start_of_month..@end_of_today).order(starts_at: :asc)
 
         # here specify the targeted appointments from min max days worked rule
         targeted_appointments = targeted_appointments.where('starts_at >= ?', @nurse.date_from_work_day_number(salary_rule.min_days_worked, inside_insurance_scope: salary_rule.only_count_days_inside_insurance_scope).beginning_of_day) if salary_rule.min_days_worked.present?
